@@ -9,6 +9,21 @@
     <meta property="og:title" content="JSON.fit — BYO AI. We'll do the rest.">
     <meta property="og:description" content="Import AI workout programs free. Unlock dietitian-level nutrition for $9.99 USD. One purchase, lifetime access.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ryannovinc.github.io/JSON.fit/">
+    <meta property="og:image" content="https://ryannovinc.github.io/JSON.fit/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="JSON.fit — BYO AI. We'll do the rest. Import AI workouts and meal plans.">
+    <meta property="og:site_name" content="JSON.fit">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JSON.fit — BYO AI. We'll do the rest.">
+    <meta name="twitter:description" content="Import AI workout programs free. Unlock dietitian-level nutrition for $9.99 USD.">
+    <meta name="twitter:image" content="https://ryannovinc.github.io/JSON.fit/og-image.png">
+    <link rel="canonical" href="https://ryannovinc.github.io/JSON.fit/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -435,6 +450,60 @@
 
         .cta-btn-full { width: 100%; justify-content: center; padding: 1rem; font-size: 1rem; }
 
+        /* ── Screenshots ── */
+        .screenshots {
+            padding: 5rem 0;
+            overflow: hidden;
+        }
+
+        .screenshots-scroll {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .screenshot-item {
+            flex: 0 0 auto;
+            width: 220px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .screenshot-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-cyan);
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 860px) {
+            .screenshots-scroll {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                padding: 0 1.25rem;
+                gap: 1rem;
+            }
+
+            .screenshot-item {
+                width: 200px;
+                flex-shrink: 0;
+                scroll-snap-align: start;
+            }
+        }
+
         /* ── Footer ── */
         footer {
             border-top: 1px solid var(--border); padding: 2.5rem 2rem;
@@ -623,6 +692,20 @@
                 <p>Your program loads instantly — ready to track every set, rep, meal, and macro. Generated in under a second.</p>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section class="screenshots reveal">
+    <div class="container" style="text-align: center; margin-bottom: 2rem;">
+        <span class="section-label">The App</span>
+    </div>
+    <div class="screenshots-scroll">
+        <div class="screenshot-item"><img src="images/screenshot-1.jpg" alt="BYO AI - JSON.fit splash screen" loading="lazy"></div>
+        <div class="screenshot-item"><img src="images/screenshot-2.jpg" alt="Import any AI workout program" loading="lazy"></div>
+        <div class="screenshot-item"><img src="images/screenshot-3.jpg" alt="Track every set and rep" loading="lazy"></div>
+        <div class="screenshot-item"><img src="images/screenshot-4.jpg" alt="Import any AI meal plan" loading="lazy"></div>
+        <div class="screenshot-item"><img src="images/screenshot-5.jpg" alt="Track every meal and macro" loading="lazy"></div>
     </div>
 </section>
 
