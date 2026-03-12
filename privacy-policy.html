@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — JSON.fit</title>
+    <meta name="description" content="JSON.fit Privacy Policy. Your data stays on your device. Always.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.15);
+            --bg: #000000;
+            --card: #0a0a0b;
+            --card-border: #18181b;
+            --text: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(34, 211, 238, 0.08);
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: var(--cyan); }
+
+        .nav-back {
+            color: var(--cyan);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-back:hover { opacity: 0.7; }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-header .subtitle {
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .page-header .updated {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .info-box {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            background: var(--cyan-dim);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            margin: 1rem 0 1.5rem;
+        }
+
+        .info-box-icon {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .info-box strong {
+            color: var(--cyan);
+            font-weight: 700;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+        }
+
+        section h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        section p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        section strong {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .sub-heading {
+            color: var(--cyan);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+
+        ul li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            padding-left: 1.25rem;
+            position: relative;
+            margin-bottom: 0.25rem;
+        }
+
+        ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--card-border);
+            margin: 2rem 0;
+        }
+
+        footer {
+            border-top: 1px solid var(--card-border);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-logo span { color: var(--cyan); }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover { color: var(--cyan); }
+
+        @media (max-width: 768px) {
+            .container { padding: 6rem 1.25rem 3rem; }
+            .page-header h1 { font-size: 2rem; }
+            nav { padding: 1rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <svg style="display:inline-block;vertical-align:middle;margin-right:0.4rem;" width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/>
+                <rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/>
+                <rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/>
+            </svg>
+            JSON<span>.fit</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Privacy Policy</h1>
+            <div class="subtitle">🔒 Your data stays on your device. Always.</div>
+            <div class="updated">Last Updated: March 2026</div>
+        </div>
+
+        <section>
+            <h2>1. Data Collection Overview</h2>
+            <p>JSON.fit is a comprehensive fitness and nutrition app that prioritises your privacy by storing all personal data locally on your device. We do NOT collect, store, or transmit your workout routines, meal plans, health data, or personal information to external servers.</p>
+            <div class="info-box">
+                <span class="info-box-icon">🛡️</span>
+                <p><strong>Local Storage Only:</strong> All your workouts, nutrition plans, health information, and personal data remain on your device and never leave it.</p>
+            </div>
+            <p>This includes sensitive health information such as dietary restrictions, medical conditions, weight tracking, and nutritional goals — all stored securely on your device only.</p>
+        </section>
+
+        <section>
+            <h2>2. What Data We Store Locally</h2>
+            <p>The following information is stored exclusively on your device:</p>
+
+            <p class="sub-heading">Fitness & Workout Data:</p>
+            <ul>
+                <li>Imported workout routines</li>
+                <li>Exercise progress and logs</li>
+                <li>Workout calendar data</li>
+                <li>Personal notes and customisations</li>
+            </ul>
+
+            <p class="sub-heading">Nutrition & Health Data:</p>
+            <ul>
+                <li>Personal nutrition goals and macro targets</li>
+                <li>Health conditions and dietary restrictions</li>
+                <li>Weight tracking history and measurements</li>
+                <li>Meal plans, recipes, and cooking instructions</li>
+                <li>Food inventory and grocery shopping lists</li>
+                <li>Budget information and location for pricing</li>
+                <li>Supplement intake and nutrient deficiency tracking</li>
+                <li>Meal timing schedules and food preferences</li>
+                <li>Meal prep sessions and cooking instructions</li>
+            </ul>
+
+            <p class="sub-heading">General App Data:</p>
+            <ul>
+                <li>App preferences and settings</li>
+                <li>Purchase history for Pro Access features</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. What We Don't Collect</h2>
+            <p>We do not collect, process, or store:</p>
+            <ul>
+                <li>Personal identifying information</li>
+                <li>Workout performance data</li>
+                <li>Device location data</li>
+                <li>Usage analytics or tracking</li>
+                <li>Social media or contact information</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Health Data and Nutrition Information</h2>
+            <p>Our app collects and processes sensitive health and nutrition information to provide personalised meal planning and dietary guidance. This includes:</p>
+            <div class="info-box">
+                <span class="info-box-icon">🛡️</span>
+                <p><strong>Health Data Sensitivity:</strong> We treat your health information with the highest level of privacy protection by keeping it exclusively on your device.</p>
+            </div>
+            <ul>
+                <li>Medical conditions that affect nutrition (diabetes, hypertension, etc.)</li>
+                <li>Known nutrient deficiencies and supplementation</li>
+                <li>Pregnancy, breastfeeding, or other life stage considerations</li>
+                <li>Digestive issues and food absorption concerns</li>
+                <li>Energy levels and metabolic patterns</li>
+            </ul>
+            <p><strong>Important:</strong> This app is not a substitute for professional medical advice. Always consult healthcare providers for medical nutrition therapy or if you have serious health conditions.</p>
+        </section>
+
+        <section>
+            <h2>5. App Store Purchases</h2>
+            <p>When you purchase Pro Access through the App Store, Apple handles all payment processing. We receive only basic purchase confirmation to unlock premium features. No payment details are stored by our app.</p>
+        </section>
+
+        <section>
+            <h2>6. Data Security</h2>
+            <p>Since all data is stored locally on your device, your information security depends on your device's security measures:</p>
+            <ul>
+                <li>Use device passcode/biometric locks</li>
+                <li>Keep your device's OS updated</li>
+                <li>Regular device backups protect your data</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>7. Data Backup and Sync</h2>
+            <p>Your workout data may be included in iOS device backups (iCloud or iTunes). This backup process is managed entirely by Apple according to their privacy policies. We do not have access to your backup data.</p>
+        </section>
+
+        <section>
+            <h2>8. Children's Privacy</h2>
+            <p>Our app is suitable for users 13 and older. We do not knowingly collect information from children under 13. Since all data is stored locally, parental supervision of device usage is recommended for younger users.</p>
+        </section>
+
+        <section>
+            <h2>9. Changes to Privacy Policy</h2>
+            <p>Any updates to this privacy policy will be communicated through app updates. Since we don't collect personal data, policy changes typically involve clarifications rather than new data practices.</p>
+        </section>
+
+        <section>
+            <h2>10. Contact Information</h2>
+            <p>Questions about our privacy practices? Contact us at <a href="mailto:support@json.fit" style="color: var(--cyan); text-decoration: none;">support@json.fit</a> or through the App Store. Since we don't store personal data, most privacy concerns can be resolved through local device management.</p>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-logo">JSON<span>.fit</span></div>
+        <p>
+            <a href="index.html">Home</a> ·
+            <a href="terms-of-service.html">Terms of Service</a> ·
+            <a href="mailto:support@json.fit">Support</a>
+        </p>
+        <p style="margin-top: 0.75rem;">© 2026 JSON.fit. All rights reserved.</p>
+    </footer>
+</body>
+</html>
