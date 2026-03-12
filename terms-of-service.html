@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — JSON.fit</title>
+    <meta name="description" content="JSON.fit Terms of Service.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.15);
+            --bg: #000000;
+            --card: #0a0a0b;
+            --card-border: #18181b;
+            --text: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(34, 211, 238, 0.08);
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: var(--cyan); }
+
+        .nav-back {
+            color: var(--cyan);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-back:hover { opacity: 0.7; }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-header .updated {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+        }
+
+        section h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        section p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        section strong {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+
+        ul li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            padding-left: 1.25rem;
+            position: relative;
+            margin-bottom: 0.25rem;
+        }
+
+        ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        .warning-box {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            margin: 1rem 0 1.5rem;
+        }
+
+        .warning-box-icon {
+            color: #ef4444;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .warning-box p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        footer {
+            border-top: 1px solid var(--card-border);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-logo span { color: var(--cyan); }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover { color: var(--cyan); }
+
+        @media (max-width: 768px) {
+            .container { padding: 6rem 1.25rem 3rem; }
+            .page-header h1 { font-size: 2rem; }
+            nav { padding: 1rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <svg style="display:inline-block;vertical-align:middle;margin-right:0.4rem;" width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/>
+                <rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/>
+                <rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/>
+            </svg>
+            JSON<span>.fit</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Terms of Service</h1>
+            <div class="updated">Last Updated: March 2026</div>
+        </div>
+
+        <section>
+            <h2>1. Application Services</h2>
+            <p>JSON.fit is a comprehensive fitness and nutrition application that helps you import, manage, and track workout routines, create personalised meal plans, and manage nutritional goals. All your data is stored locally on your device.</p>
+            <ul>
+                <li>Workout routine import, management, and tracking</li>
+                <li>Personalised nutrition planning and meal generation</li>
+                <li>Health-conscious meal planning with dietary restrictions</li>
+                <li>Grocery list generation with local pricing estimates</li>
+                <li>Weight tracking and macro goal management</li>
+                <li>Meal prep guidance and cooking instructions</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>2. Data Storage</h2>
+            <p>All your workout routines, meal plans, health information, and personal data are stored locally on your device. We do not collect, store, or transmit your personal fitness, nutrition, or health data to external servers.</p>
+            <p>This includes sensitive information such as dietary restrictions, health conditions, weight tracking, nutritional goals, meal preferences, and grocery shopping data.</p>
+        </section>
+
+        <section>
+            <h2>3. Pro Access Purchase</h2>
+            <p>Pro Access is a one-time purchase that unlocks premium nutrition and advanced fitness features. This is not a subscription — you pay once and own the features forever.</p>
+            <ul>
+                <li>Complete nutrition planning and meal generation</li>
+                <li>Personalised meal plans with dietary restrictions</li>
+                <li>Grocery lists with local pricing estimates</li>
+                <li>Meal prep guidance and cooking instructions</li>
+                <li>Advanced health and macro tracking</li>
+                <li>Unlimited workout routines and analytics</li>
+                <li>No recurring charges</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Health and Nutrition Disclaimers</h2>
+            <div class="warning-box">
+                <span class="warning-box-icon">⚠️</span>
+                <p><strong style="color: #ef4444;">Important Health Notice:</strong> This app provides general nutrition and fitness information for educational purposes only. It is not intended to replace professional medical advice, diagnosis, or treatment.</p>
+            </div>
+            <ul>
+                <li>Always consult healthcare professionals before making significant dietary changes</li>
+                <li>Meal plans are estimates and may not meet all nutritional needs</li>
+                <li>Food allergies and medical conditions require professional supervision</li>
+                <li>Calorie and macro calculations are approximations</li>
+                <li>Not suitable for pregnant/nursing mothers without medical approval</li>
+                <li>Stop use and consult a doctor if adverse reactions occur</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Acceptable Use</h2>
+            <p>You agree to use the app for personal fitness and nutrition purposes only. Do not attempt to reverse engineer, modify, or distribute the application.</p>
+        </section>
+
+        <section>
+            <h2>6. Limitation of Liability</h2>
+            <p>The app is provided "as is" for fitness tracking and nutrition planning purposes. Always consult healthcare professionals before starting new workout routines or making significant dietary changes. We are not liable for any injuries, health issues, allergic reactions, or nutritional deficiencies resulting from use of our recommendations.</p>
+            <p>You acknowledge that nutrition and fitness needs are highly individual and that our recommendations may not be suitable for your specific health conditions, goals, or circumstances.</p>
+        </section>
+
+        <section>
+            <h2>7. Updates and Changes</h2>
+            <p>We may update these terms occasionally. Continued use of the app constitutes acceptance of updated terms. Major changes will be communicated through app updates.</p>
+        </section>
+
+        <section>
+            <h2>8. Contact Information</h2>
+            <p>Questions about these terms? Contact us at <a href="mailto:support@json.fit" style="color: var(--cyan); text-decoration: none;">support@json.fit</a> or through the App Store.</p>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-logo">JSON<span>.fit</span></div>
+        <p>
+            <a href="index.html">Home</a> ·
+            <a href="privacy-policy.html">Privacy Policy</a> ·
+            <a href="mailto:support@json.fit">Support</a>
+        </p>
+        <p style="margin-top: 0.75rem;">© 2026 JSON.fit. All rights reserved.</p>
+    </footer>
+</body>
+</html>
