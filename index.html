@@ -596,15 +596,16 @@
             .cta-price .big { font-size: 2.5rem; }
 
             .nav-links {
-                display: none; position: fixed; inset: 0;
-                background: var(--bg);
+                display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                width: 100%; height: 100vh; height: 100dvh;
+                background: #050508;
                 flex-direction: column; justify-content: center; align-items: center;
-                gap: 2rem; z-index: 999;
+                gap: 2.5rem; z-index: 9999;
             }
 
             .nav-links.open { display: flex; }
             .nav-links a { font-size: 1.2rem; }
-            .hamburger { display: block; z-index: 1001; }
+            .hamburger { display: block; z-index: 10000; }
             .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
             .hamburger.open span:nth-child(2) { opacity: 0; }
             .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
