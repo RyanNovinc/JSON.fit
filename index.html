@@ -523,16 +523,13 @@
 <section class="hero">
     <div class="hero-inner">
         <div class="badge"><span class="dot"></span> BYO AI — Now on the App Store for iOS</div>
-        <h1>You already have the AI.<br><span class="dim">We do the rest.</span></h1>
+        <h1>You already have the AI.<br><span class="cyan">We do the rest.</span></h1>
         <p class="hero-sub">Stop paying $20/month for another AI fitness app. Use ChatGPT, Claude, or Gemini — the AI you already have. Import personalised workout programs and meal plans in seconds. Track everything.</p>
         <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="hero-cta" onclick="gtag('event', 'download_click', { 'button_location': 'hero' });">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Free
         </a>
         <p class="hero-meta">Free workouts forever · Nutrition unlock <strong>$9.99 USD</strong> one-time · <span style="color:var(--red);">⚡ Launch pricing</span></p>
-    </div>
-    <div class="hero-phone">
-        <img src="images/screenshot-1.jpg" alt="JSON.fit app" loading="eager">
     </div>
 </section>
 
@@ -808,4 +805,10 @@
             var href = a.getAttribute('href');
             if (href === '#') return;
             e.preventDefault();
-            var t =
+            var t = document.querySelector(href);
+            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+</script>
+</body>
+</html>
