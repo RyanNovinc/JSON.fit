@@ -111,7 +111,7 @@
         }
         .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--cyan-glow); }
 
-        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; position: relative; }
         .hamburger span { display: block; width: 20px; height: 2px; background: var(--text); margin: 4px 0; transition: all 0.3s; }
 
         /* ── Hero ── */
@@ -471,11 +471,11 @@
                 width: 100%; height: 100vh; height: 100dvh;
                 background: #050508;
                 flex-direction: column; justify-content: center; align-items: center;
-                gap: 2rem; z-index: 9999;
+                gap: 2rem; z-index: 9998;
             }
             .nav-links.open { display: flex; }
             .nav-links a { font-size: 1.1rem; color: var(--text-2); }
-            .hamburger { display: block; z-index: 10000; }
+            .hamburger { display: block; position: fixed; top: 16px; right: 16px; z-index: 9999; }
             .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
             .hamburger.open span:nth-child(2) { opacity: 0; }
             .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
@@ -522,7 +522,7 @@
 <!-- HERO -->
 <section class="hero">
     <div class="hero-inner">
-        <div class="badge"><span class="dot"></span> BYO AI — Now on the App Store for iOS</div>
+        <div class="badge"><span class="dot"></span> Now on the App Store for iOS</div>
         <h1>You already have the AI.<br><span class="cyan">We do the rest.</span></h1>
         <p class="hero-sub">Stop paying $20/month for another AI fitness app. Use ChatGPT, Claude, or Gemini — the AI you already have. Import personalised workout programs and meal plans in seconds. Track everything.</p>
         <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="hero-cta" onclick="gtag('event', 'download_click', { 'button_location': 'hero' });">
@@ -782,10 +782,13 @@
     // Mobile menu
     var burger = document.getElementById('burger');
     var navLinks = document.getElementById('navLinks');
-    burger.addEventListener('click', function() {
+    burger.addEventListener('click', function(e) {
+        e.stopPropagation();
         burger.classList.toggle('open');
         navLinks.classList.toggle('open');
     });
+
+    // Close menu when any nav link is tapped
     navLinks.querySelectorAll('a').forEach(function(a) {
         a.addEventListener('click', function() {
             burger.classList.remove('open');
@@ -799,14 +802,17 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
 
-    // Smooth scroll
+    // Smooth scroll — only for non-menu anchor links
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
         a.addEventListener('click', function(e) {
             var href = a.getAttribute('href');
             if (href === '#') return;
             e.preventDefault();
-            var t = document.querySelector(href);
-            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Small delay to let menu close first on mobile
+            setTimeout(function() {
+                var t = document.querySelector(href);
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
         });
     });
 </script>
