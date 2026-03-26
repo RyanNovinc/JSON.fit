@@ -227,6 +227,7 @@
             padding: 0.9rem 1.5rem; border-radius: 12px; font-size: 0.92rem; font-weight: 500;
             z-index: 10001; opacity: 0; transition: all 0.35s ease;
             box-shadow: 0 8px 32px rgba(0,0,0,0.4); pointer-events: none;
+            white-space: nowrap; max-width: 90vw;
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast .toast-icon { color: var(--green); margin-right: 0.5rem; }
@@ -296,6 +297,34 @@
         }
 
         .step-card p { color: var(--text-2); font-size: 0.95rem; line-height: 1.7; }
+
+        /* ── Blurb ── */
+        .blurb {
+            padding: 4rem 0 0; text-align: center;
+        }
+
+        .blurb-inner {
+            max-width: 640px; margin: 0 auto;
+        }
+
+        .blurb h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800;
+            letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.5rem;
+        }
+
+        .blurb-questions {
+            color: var(--text-2); font-size: 1rem; line-height: 2;
+            margin-bottom: 1.5rem;
+        }
+
+        .blurb-questions span {
+            display: inline;
+        }
+
+        .blurb-answer {
+            font-size: 1.1rem; font-weight: 600; line-height: 1.7;
+        }
 
         /* ── Free Banner ── */
         .free-banner {
@@ -739,8 +768,23 @@
     </div>
 </section>
 
-<!-- FREE TIER -->
+<!-- WORKOUT BLURB -->
 <section class="section">
+    <div class="container">
+        <div class="blurb reveal">
+            <div class="blurb-inner">
+                <h2>Stop second-guessing <span class="cyan">every decision.</span></h2>
+                <p class="blurb-questions">
+                    How many sets should I train per muscle group? What training split fits my schedule? How many reps for progressive overload? How long do I rest between sets? When do I take rest days?
+                </p>
+                <p class="blurb-answer"><span class="cyan">Every answer, personalised to you.</span> Every detail handled. Just train.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FREE TIER -->
+<section class="section" style="padding-top: 0;">
     <div class="container">
         <div class="free-banner reveal">
             <div class="free-banner-text">
@@ -761,8 +805,23 @@
     </h2>
 </section>
 
-<!-- NUTRITION -->
-<section class="section" id="nutrition">
+<!-- NUTRITION BLURB -->
+<section class="section" id="nutrition" style="padding-bottom: 0;">
+    <div class="container">
+        <div class="blurb reveal">
+            <div class="blurb-inner">
+                <h2>Stop overthinking <span class="cyan">every meal.</span></h2>
+                <p class="blurb-questions">
+                    What macros should I hit for my weight and goals? What exactly do I buy at the shops? What do I meal prep on Sunday? I've got leftover chicken and rice — how do I use it? I only have a microwave and slow cooker — what can I make? What time should I eat each meal?
+                </p>
+                <p class="blurb-answer"><span class="cyan">Your perfect macros every day.</span> Exactly what to buy. Exactly what to cook. Pay once, never think about it again.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NUTRITION FEATURES -->
+<section class="section">
     <div class="container">
         <div class="nutrition-hero reveal">
             <span class="section-label">Unlock for $9.99 USD</span>
@@ -901,7 +960,7 @@
 </section>
 
 <!-- TOAST -->
-<div class="toast" id="androidToast"><span class="toast-icon">✓</span> Thanks for letting us know!</div>
+<div class="toast" id="androidToast"><span class="toast-icon">✓</span> Noted — Android is coming!</div>
 
 <!-- FOOTER -->
 <footer>
