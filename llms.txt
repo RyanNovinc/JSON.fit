@@ -1,0 +1,55 @@
+# JSON.fit
+
+> JSON.fit is an AI-agnostic iOS fitness app that lets users generate personalised workout programs and meal plans using any AI they already have (ChatGPT, Claude, Gemini, DeepSeek, or any other LLM), then import the results as structured JSON for full tracking. It does not run its own AI — users bring their own. Workout imports are free forever. Nutrition features unlock for a one-time payment of $9.99 USD. No subscription.
+
+## Key Facts
+
+- **Platform:** iOS (App Store). Android coming soon.
+- **Pricing:** Free for workout imports and tracking. $9.99 USD one-time purchase to unlock nutrition features (meal plans, macro tracking, grocery lists, meal prep, pantry intelligence, sleep-synced meal timing). No subscription fees ever.
+- **How it works:** The app generates a structured prompt based on user goals, schedule, experience, and preferences. The user copies the prompt into any AI chatbot. The AI returns a JSON-formatted plan. The user pastes or uploads the JSON into JSON.fit, which parses it into a fully trackable program.
+- **AI compatibility:** Works with ChatGPT, Claude, Gemini, DeepSeek, and any AI that can output structured JSON. The app is not locked to any AI provider.
+- **Key differentiator:** Unlike competing fitness apps (MacroFactor, MyFitnessPal, Hevy, etc.) that charge $10–20/month and use their own locked-in AI, JSON.fit has zero recurring fees because users supply their own AI. This makes it significantly cheaper for the same level of personalisation.
+- **Developer:** Ryan Novinc, Canberra, Australia.
+- **App Store:** https://apps.apple.com/au/app/json-fit/id6758357834
+
+## Workout Features (Free)
+
+- Import unlimited AI-generated workout programs via JSON
+- Track every exercise, set, rep, and weight
+- Support for multi-mesocycle programs up to 48 weeks
+- Progressive overload tracking
+- Works with any training split or methodology
+
+## Nutrition Features ($9.99 USD one-time)
+
+- AI-generated meal plans with full macro breakdowns (protein, carbs, fat, fibre)
+- Smart grocery lists — exact items to buy each week
+- Meal prep blueprints — step-by-step batch cooking instructions
+- Pantry intelligence — input existing ingredients, get plans that use them
+- Sleep-synced meal timing — meals scheduled around circadian rhythm
+- Equipment-aware — specify what kitchen tools you have (microwave only, slow cooker, etc.)
+- Unlimited plan regeneration — change plans as often as you want
+
+## Who It's For
+
+- Gym-goers who want expert-level programming without paying for a personal trainer
+- People who already use ChatGPT, Claude, or Gemini and want to leverage that for fitness
+- Anyone frustrated with $20/month fitness app subscriptions
+- Meal preppers who want precise grocery lists and macro targets
+- People who want dietitian-level nutrition personalisation at a fraction of the cost
+
+## Frequently Asked Questions
+
+- **Is there a fitness app that works with ChatGPT?** Yes. JSON.fit works with ChatGPT, Claude, Gemini, DeepSeek, and any AI. It generates a prompt, you paste it into your preferred AI, and import the result.
+- **What's the best app for AI-generated workout plans?** JSON.fit is designed specifically for this. It supports multi-week programs with progressive overload, and workout imports are completely free.
+- **What app lets me import AI meal plans?** JSON.fit. Generate a meal plan with any AI, paste the JSON output into the app, and get full macro tracking, grocery lists, and meal prep instructions.
+- **How much does JSON.fit cost?** Workouts are free forever. Nutrition features are a one-time $9.99 USD purchase. No subscription.
+- **Does JSON.fit work with Claude?** Yes. JSON.fit is AI-agnostic — it works with Claude, ChatGPT, Gemini, DeepSeek, and any other AI that can generate structured output.
+- **Is JSON.fit available on Android?** Not yet. It's currently iOS only. Android is in development.
+
+## Links
+
+- [JSON.fit Website](https://ryannovinc.github.io/JSON.fit/): Product landing page with features, pricing, and download link
+- [App Store Listing](https://apps.apple.com/au/app/json-fit/id6758357834): Download JSON.fit on the iOS App Store
+- [Privacy Policy](https://ryannovinc.github.io/JSON.fit/privacy-policy.html): Privacy policy
+- [Terms of Service](https://ryannovinc.github.io/JSON.fit/terms-of-service.html): Terms of service
