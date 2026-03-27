@@ -18,8 +18,8 @@
     <meta property="og:title" content="JSON.fit — You already have the AI. We do the rest.">
     <meta property="og:description" content="Stop paying for another AI fitness app. Use the AI you already have. Free workout imports forever. Nutrition unlock $9.99 once.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ryannovinc.github.io/JSON.fit/">
-    <meta property="og:image" content="https://ryannovinc.github.io/JSON.fit/og-image.png">
+    <meta property="og:url" content="https://json.fit/">
+    <meta property="og:image" content="https://json.fit/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="JSON.fit — You already have the AI. We do the rest.">
@@ -27,9 +27,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="JSON.fit — You already have the AI. We do the rest.">
     <meta name="twitter:description" content="Stop paying for another AI fitness app. Use the AI you already have. Free workout imports forever. Nutrition unlock $9.99 once.">
-    <meta name="twitter:image" content="https://ryannovinc.github.io/JSON.fit/og-image.png">
-    <link rel="canonical" href="https://ryannovinc.github.io/JSON.fit/">
-    <link rel="alternate" type="text/plain" href="https://ryannovinc.github.io/JSON.fit/llms.txt" title="LLM-readable site summary">
+    <meta name="twitter:image" content="https://json.fit/og-image.png">
+    <link rel="canonical" href="https://json.fit/">
+    <link rel="alternate" type="text/plain" href="https://json.fit/llms.txt" title="LLM-readable site summary">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -38,7 +38,7 @@
       "operatingSystem": "iOS",
       "applicationCategory": "HealthApplication",
       "description": "AI-agnostic fitness app that lets you generate personalised workout programs and meal plans using any AI (ChatGPT, Claude, Gemini, DeepSeek), then import them as JSON for full tracking. Workout imports are free forever. Nutrition unlock $9.99 USD one-time. No subscription.",
-      "url": "https://ryannovinc.github.io/JSON.fit/",
+      "url": "https://json.fit/",
       "downloadUrl": "https://apps.apple.com/au/app/json-fit/id6758357834",
       "softwareVersion": "1.8",
       "author": {
@@ -388,6 +388,135 @@
         .ss-item:hover { transform: translateY(-3px); border-color: var(--border-cyan); }
         .ss-item img { width: 100%; height: auto; display: block; }
 
+        /* ── See It Working (social proof) ── */
+        .proof-section { padding: 5rem 0; }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 1px;
+        }
+
+        .proof-grid-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border-radius: 0 0 14px 14px;
+            overflow: hidden;
+        }
+
+        .proof-card {
+            background: var(--surface);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .proof-card:hover { background: var(--surface-2); }
+
+        .proof-card-label {
+            font-family: 'DM Mono', monospace; font-size: 0.6rem;
+            text-transform: uppercase; letter-spacing: 0.18em;
+            color: var(--text-3);
+        }
+
+        .proof-card h3 {
+            font-size: 0.95rem; font-weight: 700; line-height: 1.4;
+        }
+
+        .proof-card p {
+            color: var(--text-2); font-size: 0.82rem; line-height: 1.65;
+        }
+
+        .proof-img {
+            border-radius: 10px; overflow: hidden;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .proof-img img {
+            width: 100%; height: auto; display: block;
+            max-height: 320px; object-fit: cover; object-position: top;
+        }
+
+        .proof-stat {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: flex-start; gap: 0.25rem;
+        }
+
+        .proof-stat-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 2.8rem; font-weight: 500;
+            color: var(--cyan); line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .proof-stat-label {
+            font-size: 0.8rem; color: var(--text-2); font-weight: 500;
+        }
+
+        .proof-volume {
+            display: flex; flex-direction: column; gap: 0.5rem; width: 100%;
+        }
+
+        .proof-vol-row {
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+
+        .proof-vol-name {
+            font-family: 'DM Mono', monospace; font-size: 0.68rem;
+            color: var(--text-2); width: 90px; flex-shrink: 0;
+        }
+
+        .proof-vol-bar-wrap {
+            flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+        }
+
+        .proof-vol-bar {
+            height: 100%; background: var(--cyan); border-radius: 2px;
+            transition: width 1s ease;
+        }
+
+        .proof-vol-sets {
+            font-family: 'DM Mono', monospace; font-size: 0.65rem;
+            color: var(--cyan); width: 40px; text-align: right; flex-shrink: 0;
+        }
+
+        .proof-tutorial-link {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            color: var(--cyan); text-decoration: none; font-size: 0.82rem;
+            font-weight: 600; transition: gap 0.2s;
+            font-family: 'DM Mono', monospace; letter-spacing: 0.01em;
+        }
+        .proof-tutorial-link:hover { gap: 0.6rem; }
+        .proof-tutorial-link svg { flex-shrink: 0; }
+
+        .proof-pipeline {
+            display: flex; flex-direction: column; gap: 0.5rem; width: 100%;
+        }
+
+        .proof-pipe-step {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.5rem 0.6rem; border-radius: 6px;
+            border: 1px solid var(--border); background: rgba(255,255,255,0.02);
+        }
+
+        .proof-pipe-num {
+            font-family: 'DM Mono', monospace; font-size: 0.6rem;
+            color: var(--cyan); width: 18px; flex-shrink: 0; font-weight: 500;
+        }
+
+        .proof-pipe-text {
+            font-size: 0.75rem; color: var(--text-2); line-height: 1.3;
+        }
+
         /* ── Free Banner ── */
         .free-banner {
             border: 1px solid var(--border); border-radius: 14px;
@@ -551,6 +680,53 @@
             max-height: 300px; padding-top: 0.75rem;
         }
 
+        /* ── Lightbox ── */
+        .proof-img { cursor: zoom-in; }
+
+        .lightbox {
+            position: fixed; inset: 0; z-index: 99999;
+            background: rgba(5,5,8,0.96);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .lightbox.open { opacity: 1; pointer-events: all; }
+
+        .lightbox-img {
+            max-width: min(480px, 90vw);
+            max-height: 90vh;
+            height: auto; width: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border-cyan);
+            box-shadow: 0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px var(--border);
+            transform: scale(0.94);
+            transition: transform 0.25s ease;
+            display: block;
+        }
+        .lightbox.open .lightbox-img { transform: scale(1); }
+
+        .lightbox-close {
+            position: absolute; top: 1.25rem; right: 1.25rem;
+            background: var(--surface-2); border: 1px solid var(--border);
+            color: var(--text-2); width: 36px; height: 36px;
+            border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; line-height: 1;
+            transition: border-color 0.2s, color 0.2s;
+            font-family: 'DM Mono', monospace;
+        }
+        .lightbox-close:hover { border-color: var(--cyan); color: var(--cyan); }
+
+        .lightbox-hint {
+            position: absolute; bottom: 1.5rem; left: 50%;
+            transform: translateX(-50%);
+            font-family: 'DM Mono', monospace; font-size: 0.65rem;
+            color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase;
+            white-space: nowrap;
+        }
+
         /* ── Android + Toast ── */
         .android-interest-link {
             color: var(--cyan); text-decoration: none; font-weight: 500;
@@ -589,6 +765,9 @@
         /* ── Responsive ── */
         @media (max-width: 860px) {
             .steps, .feat-grid { grid-template-columns: 1fr; }
+
+            .proof-grid { grid-template-columns: 1fr; }
+            .proof-grid-bottom { grid-template-columns: 1fr; border-radius: 14px; margin-top: 1px; }
 
             .free-banner {
                 flex-direction: column; text-align: center; padding: 2rem 1.25rem; gap: 1.25rem;
@@ -636,6 +815,8 @@
             .ai-strip span { font-size: 0.62rem; }
             .cta-card { padding: 2rem 1.25rem; }
             .free-banner { padding: 1.5rem 1rem; }
+            .proof-card { padding: 1.5rem; }
+            .proof-stat-num { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -734,6 +915,158 @@
         <div class="ss-item"><img src="images/screenshot-3.jpg" alt="Track every set and rep" loading="lazy"></div>
         <div class="ss-item"><img src="images/screenshot-4.jpg" alt="Import AI meal plan" loading="lazy"></div>
         <div class="ss-item"><img src="images/screenshot-5.jpg" alt="Track every meal and macro" loading="lazy"></div>
+    </div>
+</section>
+
+<!-- SEE IT WORKING — social proof -->
+<section class="proof-section" id="proof">
+    <div class="container">
+        <div class="reveal" style="margin-bottom:2.5rem;">
+            <span class="label">See It Working</span>
+            <h2 style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem;">Real AI output.<br><span class="cyan">Real programs.</span></h2>
+            <p style="color:var(--text-2);font-size:1rem;max-width:480px;">Not a demo. Not a mockup. This is what ChatGPT generates from the app's prompt pipeline — and what gets imported in under a second.</p>
+        </div>
+
+        <!-- Top row: 2 columns -->
+        <div class="proof-grid reveal">
+
+            <!-- Card 1: ChatGPT response screenshot -->
+            <div class="proof-card">
+                <span class="proof-card-label">ChatGPT Output</span>
+                <h3>AI verifies its own work before you import</h3>
+                <p>The 3-step prompt pipeline asks the AI to review its own volume distribution, exercise selection, and progressive overload — then format it for import. What you get is a checked program, not a first draft.</p>
+                <div class="proof-img">
+                    <img src="blog/images/chatgpt-response.PNG" alt="ChatGPT response showing volume summary per muscle group" loading="lazy">
+                </div>
+                <a href="blog/chatgpt-hypertrophy-program.html" class="proof-tutorial-link">
+                    Full tutorial: 12-week hypertrophy with ChatGPT
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+
+            <!-- Card 2: Volume breakdown + import stat -->
+            <div class="proof-card">
+                <span class="proof-card-label">Volume Verified</span>
+                <h3>Muscle group balance, checked before you train</h3>
+                <p>ChatGPT's output includes a per-muscle volume summary so you can verify the program is properly balanced. Here's what a real advanced hypertrophy week looks like.</p>
+
+                <div class="proof-volume">
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Chest</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:93%"></div></div>
+                        <span class="proof-vol-sets">13 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Quads</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:100%"></div></div>
+                        <span class="proof-vol-sets">14 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Hamstrings</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:93%"></div></div>
+                        <span class="proof-vol-sets">13 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Glutes</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:100%"></div></div>
+                        <span class="proof-vol-sets">14 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Lats</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div>
+                        <span class="proof-vol-sets">12 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Upper Back</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div>
+                        <span class="proof-vol-sets">12 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Triceps</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:79%"></div></div>
+                        <span class="proof-vol-sets">11 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Calves</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div>
+                        <span class="proof-vol-sets">12 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Side Delts</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:71%"></div></div>
+                        <span class="proof-vol-sets">10 sets</span>
+                    </div>
+                    <div class="proof-vol-row">
+                        <span class="proof-vol-name">Biceps</span>
+                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:71%"></div></div>
+                        <span class="proof-vol-sets">10 sets</span>
+                    </div>
+                </div>
+
+                <div style="margin-top:0.5rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+                    <div class="proof-stat">
+                        <span class="proof-stat-num">0.82s</span>
+                        <span class="proof-stat-label">Import time — 33 movements, 4 weeks</span>
+                    </div>
+                    <div class="proof-stat">
+                        <span class="proof-stat-num">48wk</span>
+                        <span class="proof-stat-label">Max program length supported</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom row: 3 columns -->
+        <div class="proof-grid-bottom reveal">
+
+            <!-- Card 3: 3-step pipeline -->
+            <div class="proof-card">
+                <span class="proof-card-label">The Prompt Pipeline</span>
+                <h3>3 prompts. One perfect program.</h3>
+                <div class="proof-pipeline">
+                    <div class="proof-pipe-step">
+                        <span class="proof-pipe-num">01</span>
+                        <span class="proof-pipe-text">Generate — personalised program from your setup</span>
+                    </div>
+                    <div class="proof-pipe-step">
+                        <span class="proof-pipe-num">02</span>
+                        <span class="proof-pipe-text">Review — AI self-checks volume & exercise logic</span>
+                    </div>
+                    <div class="proof-pipe-step">
+                        <span class="proof-pipe-num">03</span>
+                        <span class="proof-pipe-text">Format — converts to JSON, ready to import</span>
+                    </div>
+                </div>
+                <div class="proof-img" style="margin-top:0.5rem;">
+                    <img src="blog/images/prompt-step-1.PNG" alt="Step 1 prompt ready to copy" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Card 4: Program imported -->
+            <div class="proof-card">
+                <span class="proof-card-label">Program Ready</span>
+                <h3>Every set, rep, and week — loaded instantly.</h3>
+                <div class="proof-img">
+                    <img src="blog/images/workout-ready.PNG" alt="Workout ready screen showing import in 0.82 seconds" loading="lazy">
+                </div>
+                <p>4-week advanced hypertrophy program. 33 movements. Imported in 0.82 seconds.</p>
+            </div>
+
+            <!-- Card 5: Nutrition proof -->
+            <div class="proof-card">
+                <span class="proof-card-label">Nutrition Too</span>
+                <h3>Meal plans that know your fridge.</h3>
+                <div class="proof-img">
+                    <img src="blog/images/meal-plan-ready.PNG" alt="Meal plan imported and ready to track" loading="lazy">
+                </div>
+                <p>Same pipeline for nutrition — macros, grocery lists, meal prep. Generated with Claude, imported in seconds.</p>
+                <a href="blog/meal-plan-claude.html" class="proof-tutorial-link">
+                    Meal plan tutorial with Claude
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+
+        </div>
     </div>
 </section>
 
@@ -906,6 +1239,13 @@
     </div>
 </section>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <p class="lightbox-hint">tap anywhere to close</p>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="androidToast"><span class="toast-icon">✓</span> Noted — Android is coming!</div>
 
@@ -982,7 +1322,45 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
 
-    // Smooth scroll
+    // Lightbox
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightboxImg');
+    var lightboxClose = document.getElementById('lightboxClose');
+
+    function openLightbox(src, alt) {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || '';
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Attach click to all proof-img containers
+    document.querySelectorAll('.proof-img').forEach(function(wrap) {
+        wrap.addEventListener('click', function() {
+            var img = wrap.querySelector('img');
+            if (img) openLightbox(img.src, img.alt);
+        });
+    });
+
+    lightboxClose.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeLightbox();
+    });
+
+    lightbox.addEventListener('click', function(e) {
+        if (e.target !== lightboxImg) closeLightbox();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+    });
+
+
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
         a.addEventListener('click', function(e) {
             var href = a.getAttribute('href');
