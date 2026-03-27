@@ -34,6 +34,9 @@
         .screenshot img{width:100%;height:auto;display:block}
         .screenshot-caption{padding:0.75rem 1rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text-3);letter-spacing:0.02em;border-top:1px solid var(--border)}
         .placeholder{padding:3rem 1.5rem;text-align:center;color:var(--text-3);font-family:'DM Mono',monospace;font-size:0.8rem;background:var(--surface);letter-spacing:0.02em}
+        .screenshot-scroll{display:flex;gap:0.75rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding:0.5rem 0;margin:1.75rem 0 0}
+        .screenshot-scroll .ss-item{flex:0 0 auto;width:220px;border-radius:12px;overflow:hidden;border:1px solid var(--border);scroll-snap-align:start}
+        .screenshot-scroll .ss-item img{width:100%;height:auto;display:block}
         .cta-box{border:1px solid rgba(34,211,238,0.12);border-radius:12px;padding:1.75rem;margin:2rem 0;background:rgba(34,211,238,0.03);text-align:center}
         .cta-box p{color:var(--text);margin-bottom:0.75rem;font-weight:500}
         .cta-box a{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.25rem;border-radius:8px;background:var(--cyan);color:#000;font-weight:600;font-size:0.88rem;text-decoration:none}
@@ -70,90 +73,113 @@
 <article>
     <a href="../blog.html" class="back">← Back to blog</a>
     <span class="post-date">March 2026</span>
-    <h1>How to Generate a 12-Week Hypertrophy Program with <span class="cyan">ChatGPT</span></h1>
+    <h1>How to Generate a Hypertrophy Program with <span class="cyan">ChatGPT</span></h1>
 
-    <p>Most AI workout plan generators charge you $15–20/month for the privilege of using AI that you already have access to. If you're paying for ChatGPT Plus — or even using the free tier — you can generate a fully personalised hypertrophy program in about two minutes.</p>
+    <p>Most AI workout plan generators charge you $15–20/month for the privilege of using AI that you already have access to. If you're paying for ChatGPT Plus — or even using the free tier — you can generate a fully personalised hypertrophy program and have it ready to track in the app.</p>
 
-    <p>This tutorial walks through the entire process: setting up your profile, generating the prompt, sending it to ChatGPT, and importing the finished program so every set, rep, and weight is ready to track.</p>
+    <p>This tutorial walks through the entire process: setting up your profile, running the 3-step prompt pipeline, and importing the finished program so every set, rep, and weight is ready to track.</p>
 
     <h2>What you'll need</h2>
 
     <ul>
         <li><strong>JSON.fit</strong> — free on the <a href="https://apps.apple.com/au/app/json-fit/id6758357834">App Store</a> (workout imports are completely free, no ads)</li>
         <li><strong>ChatGPT</strong> — free tier works fine, Plus is slightly better for longer programs</li>
-        <li>About 2–3 minutes</li>
     </ul>
 
     <h2>Step 1: Set up your profile</h2>
 
-    <p>Open JSON.fit and head to the workout setup screen. The app asks you a series of questions about your training — nothing complicated, just the basics that any good program needs:</p>
+    <p>Open JSON.fit and head to the workout setup. The app asks you a series of questions about your training — nothing complicated, just the basics that any good program needs:</p>
 
     <ul>
         <li>Your training goal (hypertrophy, strength, general fitness)</li>
         <li>How many days per week you can train</li>
-        <li>Your experience level</li>
-        <li>Equipment access (full gym, home gym, minimal equipment)</li>
-        <li>Any preferences (training split, exercise preferences, injuries to work around)</li>
+        <li>Your experience level and gender (for volume recommendations)</li>
+        <li>Equipment access (commercial gym, home gym, minimal equipment)</li>
+        <li>Rest style, core work preferences, and favourite exercises</li>
     </ul>
 
+    <div class="screenshot-scroll">
+        <div class="ss-item"><img src="images/workout-setup.png" alt="Workout Setup screen with Fitness Goals, Equipment & Preferences, and Favorite Exercises"></div>
+        <div class="ss-item"><img src="images/workout-goals.png" alt="Build Muscle goal summary showing 5 days per week, Male, Advanced experience"></div>
+        <div class="ss-item"><img src="images/workout-equipment.png" alt="Equipment & Preferences showing Commercial Gym, Optimal Rest, Core Work included"></div>
+    </div>
     <div class="screenshot">
-        <div class="placeholder">[SCREENSHOT: The JSON.fit workout setup screen showing the goal/schedule/preferences questionnaire]</div>
-        <div class="screenshot-caption">The setup screen asks targeted questions to build a precise prompt.</div>
+        <div class="screenshot-caption">Swipe through: setup menu → goal & schedule summary → equipment & preferences.</div>
     </div>
 
-    <p>The app takes your answers and constructs a detailed, structured prompt behind the scenes. This is the key — you don't need to know how to write a good AI prompt. The app handles that for you.</p>
+    <p>The app takes your answers and constructs a detailed, structured prompt behind the scenes. You don't need to know how to write a good AI prompt — the app handles that for you.</p>
 
-    <h2>Step 2: Copy the prompt</h2>
+    <h2>Step 2: The 3-step prompt system</h2>
 
-    <p>Once setup is complete, JSON.fit generates a prompt that's specifically designed to produce a structured JSON output. Tap "Copy Prompt" and the entire thing goes to your clipboard.</p>
+    <p>Just like the nutrition side, JSON.fit uses a <strong>3-step prompt pipeline</strong> for workouts to make sure the program is properly structured before you import it:</p>
 
+    <p><strong>Prompt 1 — Generate the program.</strong> The app builds a detailed prompt from your setup answers. You copy it and paste it into ChatGPT. The AI generates a full workout program with exercises, sets, reps, rest times, and progressive overload.</p>
+
+    <p><strong>Prompt 2 — Quality check.</strong> A second prompt asks the AI to review its own program — checking volume distribution per muscle group, exercise selection, progressive overload logic, and whether the program matches your stated preferences.</p>
+
+    <p><strong>Prompt 3 — Format for import.</strong> A third prompt converts the reviewed program into JSON format that JSON.fit can parse. Every exercise, set, and rep is structured into a clean file ready for import.</p>
+
+    <div class="screenshot-scroll">
+        <div class="ss-item"><img src="images/prompt-step-1.PNG" alt="Step 1: Your Prompt is Ready - then paste and send to any AI"></div>
+        <div class="ss-item"><img src="images/prompt-step-2.PNG" alt="Step 2: Quality Check Review - ask AI to review and improve"></div>
+        <div class="ss-item"><img src="images/prompt-step-3.PNG" alt="Step 3: Get Your Final Plan - ask AI to format it for the app"></div>
+    </div>
     <div class="screenshot">
-        <div class="placeholder">[SCREENSHOT: The generated prompt screen with the "Copy Prompt" button highlighted]</div>
-        <div class="screenshot-caption">The prompt is optimised to produce consistent, importable JSON output.</div>
+        <div class="screenshot-caption">Three prompts, three steps: generate → review → format. Each one copies to your clipboard with a single tap.</div>
     </div>
 
-    <p>If you're curious, the prompt includes things like volume targets per muscle group, progressive overload instructions, rest period guidelines, exercise selection criteria, and the exact JSON format the app expects. It's essentially a very detailed brief for the AI — the kind of prompt that would take 15–20 minutes to write from scratch.</p>
+    <p>Each step is just a tap to copy and a paste into ChatGPT. The app walks you through the entire process.</p>
 
-    <h2>Step 3: Paste into ChatGPT</h2>
+    <h2>Step 3: ChatGPT does the work</h2>
 
-    <p>Open ChatGPT (or any AI — Claude, Gemini, DeepSeek all work too), paste the prompt, and hit send. ChatGPT will generate a complete 12-week hypertrophy program in JSON format.</p>
+    <p>After the third prompt, ChatGPT produces a complete workout program in JSON format. It also gives you a volume summary showing weekly sets per muscle group — so you can verify the program is properly balanced before importing.</p>
 
     <div class="screenshot">
-        <div class="placeholder">[SCREENSHOT: ChatGPT with the prompt pasted in and the JSON response being generated]</div>
-        <div class="screenshot-caption">ChatGPT generating a 12-week program. The free tier handles this fine.</div>
+        <img src="images/chatgpt-response.PNG" alt="ChatGPT response showing volume summary per muscle group and download link for workout program JSON">
+        <div class="screenshot-caption">ChatGPT's finished output with per-muscle volume breakdown: Chest 13 sets, Quads 14 sets, Hamstrings 13 sets — all verified.</div>
     </div>
 
-    <p>The output will look like structured data — exercises, sets, reps, rest times, all organised by week and day. Don't worry about reading it; the app parses it automatically.</p>
+    <p><strong>A note on AI quality:</strong> ChatGPT-4o tends to produce the most detailed programs with better exercise selection. The free tier works perfectly well for standard programs. Claude is excellent at following the JSON structure precisely. Gemini is fast. They all produce usable programs.</p>
 
-    <p><strong>A note on AI quality:</strong> ChatGPT-4o tends to produce the most detailed programs with better exercise selection. The free tier (GPT-4o mini) works perfectly well for standard programs. Claude is excellent at following the JSON structure precisely. Gemini is fast. They all produce usable programs.</p>
+    <h2>Step 4: Import in under a second</h2>
 
-    <h2>Step 4: Import into JSON.fit</h2>
-
-    <p>Copy the entire JSON output from ChatGPT. Go back to JSON.fit, tap "Import", and paste. The app validates the JSON, parses every exercise, set, and rep, and builds your program.</p>
+    <p>Copy the JSON file from ChatGPT, go back to JSON.fit, and paste. The app validates everything and builds your program instantly. In this example, a 4-week advanced hypertrophy program with 33 unique movements imported in 0.82 seconds.</p>
 
     <div class="screenshot">
-        <div class="placeholder">[SCREENSHOT: The import screen with the JSON pasted and the "Import" button ready]</div>
-        <div class="screenshot-caption">Paste the JSON output and tap Import. The app handles the rest.</div>
+        <img src="images/workout-ready.PNG" alt="Workout Ready screen showing 4-Week Advanced Hypertrophy Program generated in 0.82 seconds">
+        <div class="screenshot-caption">Generated in 0.82s. 4 weeks, 7 training days, 33 movements, ready to go.</div>
     </div>
 
-    <p>Within a second or two, your entire 12-week program is loaded. You can see every workout for every day, with exercises, target sets, target reps, and rest periods all laid out.</p>
+    <h2>Step 5: Your program, ready to train</h2>
 
-    <h2>Step 5: Train and track</h2>
-
-    <p>Now you just follow the program. Each workout day shows you exactly what to do. Log your actual weights and reps as you go. The app tracks everything across the full 12 weeks.</p>
+    <p>Your entire program is loaded with every block, week, and training day laid out. You can see the training split, browse each week, and drill into individual workouts to see every exercise with target sets and reps.</p>
 
     <div class="screenshot">
-        <div class="placeholder">[SCREENSHOT: A workout day view showing exercises with sets/reps and the logging interface]</div>
-        <div class="screenshot-caption">Every set and rep is trackable. Log your actual performance as you train.</div>
+        <img src="images/workout-program.PNG" alt="Program overview showing Hypertrophy Block, Weeks 1-4, 33 exercises, Upper Lower Pull Upper Lower split">
+        <div class="screenshot-caption">Program overview: Hypertrophy Block, Week 1 of 4, with your full training split visible.</div>
+    </div>
+
+    <div class="screenshot">
+        <img src="images/workout-week.PNG" alt="Week view showing Upper Push and Lower Quads days with exercises and sets/reps listed">
+        <div class="screenshot-caption">Each training day shows exercises, estimated duration, and compound/isolation balance.</div>
+    </div>
+
+    <h2>Step 6: Train and track</h2>
+
+    <p>Tap into any workout day and you're in the logging view. Every exercise has target sets and reps pre-filled. Enter your weight, hit the checkmark, and move on. The app tracks everything across the full program.</p>
+
+    <div class="screenshot">
+        <img src="images/workout-day.PNG" alt="Logging view showing Barbell Bench Press 4x12 and Incline Dumbbell Press with weight and rep inputs">
+        <div class="screenshot-caption">Barbell Bench Press, 4×12. Log your weight, tick each set, move to the next exercise.</div>
     </div>
 
     <h2>Why this approach works</h2>
 
-    <p>The program ChatGPT generates isn't a generic template. Because the prompt includes your specific training days, experience level, equipment access, and goals, the output is genuinely personalised. It handles things like:</p>
+    <p>The program ChatGPT generates isn't a generic template. Because the prompt includes your specific training days, experience level, equipment access, and goals, the output is genuinely personalised. And the 3-step pipeline means the AI reviews its own work before you ever see the final result. It handles things like:</p>
 
     <ul>
         <li><strong>Volume distribution</strong> — appropriate sets per muscle group per week based on your experience level</li>
-        <li><strong>Progressive overload</strong> — planned rep/weight increases across the 12-week mesocycle</li>
+        <li><strong>Progressive overload</strong> — planned rep/weight increases across the mesocycle</li>
         <li><strong>Exercise selection</strong> — compound and isolation movements matched to your equipment and preferences</li>
         <li><strong>Deload weeks</strong> — programmed recovery phases at appropriate intervals</li>
         <li><strong>Training split</strong> — push/pull/legs, upper/lower, full body, or whatever fits your schedule</li>
