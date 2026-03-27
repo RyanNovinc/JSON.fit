@@ -55,20 +55,24 @@
 
         .nav-logo span { color: var(--cyan); }
 
-        .nav-back {
-            color: var(--cyan);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: opacity 0.3s;
-        }
-
-        .nav-back:hover { opacity: 0.7; }
-
         .container {
             max-width: 720px;
             margin: 0 auto;
             padding: 7rem 2rem 4rem;
+        }
+
+        .back {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: inline-block;
+            padding-bottom: 1.5rem;
+            text-decoration: none;
+            letter-spacing: 0.03em;
+        }
+
+        .back:hover {
+            color: var(--cyan);
         }
 
         .page-header {
@@ -202,10 +206,10 @@
             </svg>
             JSON<span>.fit</span>
         </a>
-        <a href="index.html" class="nav-back">← Back to Home</a>
     </nav>
 
     <div class="container">
+        <a href="index.html" class="back" onclick="if(history.length>1){history.back();return false;}">← Back</a>
         <div class="page-header">
             <h1>Terms of Service</h1>
             <div class="updated">Last Updated: March 2026</div>
