@@ -41,35 +41,10 @@
       "url": "https://json.fit/",
       "downloadUrl": "https://apps.apple.com/au/app/json-fit/id6758357834",
       "softwareVersion": "1.8",
-      "author": {
-        "@type": "Person",
-        "name": "Ryan Novinc"
-      },
+      "author": { "@type": "Person", "name": "Ryan Novinc" },
       "offers": [
-        {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "description": "Free: Unlimited AI workout program imports and full set/rep tracking"
-        },
-        {
-          "@type": "Offer",
-          "price": "9.99",
-          "priceCurrency": "USD",
-          "description": "One-time purchase: AI meal plan generation, macro tracking, smart grocery lists, meal prep blueprints, pantry intelligence, sleep-synced meal timing"
-        }
-      ],
-      "featureList": [
-        "Import AI-generated workout programs via JSON from any AI",
-        "Track every exercise, set, rep, and weight",
-        "Multi-mesocycle programs up to 48 weeks",
-        "AI meal plan generation with full macro breakdowns",
-        "Smart grocery lists with exact items to buy",
-        "Meal prep blueprints with step-by-step instructions",
-        "Pantry intelligence — uses ingredients you already have",
-        "Sleep-synced meal timing for circadian rhythm",
-        "Works with ChatGPT, Claude, Gemini, DeepSeek, and any AI",
-        "No subscription — one-time purchase for nutrition, workouts free forever"
+        { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free: Unlimited AI workout program imports and full set/rep tracking" },
+        { "@type": "Offer", "price": "9.99", "priceCurrency": "USD", "description": "One-time purchase: AI meal plan generation, macro tracking, smart grocery lists, meal prep blueprints, pantry intelligence, sleep-synced meal timing" }
       ]
     }
     </script>
@@ -78,62 +53,9 @@
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Is there a fitness app that works with ChatGPT?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. JSON.fit works with ChatGPT, Claude, Gemini, DeepSeek, and any AI. The app generates a structured prompt based on your goals, you paste it into your preferred AI, and import the personalised workout program or meal plan back into the app as JSON."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's the best app for AI-generated workout plans?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "JSON.fit is designed specifically for AI-generated workout plans. It supports multi-week programs with progressive overload up to 48 weeks, and workout imports are completely free forever. Unlike other fitness apps, it works with any AI — you're not locked into one provider."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What app lets me import AI meal plans?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "JSON.fit lets you import AI-generated meal plans from any AI chatbot. Generate a plan with ChatGPT, Claude, or Gemini, paste the JSON output into the app, and get full macro tracking, smart grocery lists, meal prep instructions, and sleep-synced meal timing. Nutrition features are a one-time $9.99 USD purchase."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How much does JSON.fit cost?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Workout imports and tracking are free forever — no paywall, no limits. Nutrition features (meal plans, macro tracking, grocery lists, meal prep, pantry intelligence) are a one-time $9.99 USD purchase. There is no subscription. You pay once and own it forever."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Why is JSON.fit cheaper than other fitness apps?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Most fitness apps charge $10-20/month because they run AI on their own servers. JSON.fit uses the AI you already have — ChatGPT, Claude, Gemini — so there are no server costs to pass on to you. That's why workouts are free and nutrition is a one-time $9.99 purchase instead of a monthly subscription."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does JSON.fit work with Claude?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. JSON.fit is AI-agnostic and works with Claude, ChatGPT, Gemini, DeepSeek, and any other AI that can generate structured JSON output. You choose which AI to use — the app is not locked to any provider."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is JSON.fit available on Android?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "JSON.fit is currently iOS only, available on the App Store. Android is in development. You can express interest on the website to help prioritise the Android release."
-          }
-        }
+        { "@type": "Question", "name": "Is there a fitness app that works with ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. JSON.fit works with ChatGPT, Claude, Gemini, DeepSeek, and any AI. The app generates a structured prompt based on your goals, you paste it into your preferred AI, and import the personalised workout program or meal plan back into the app as JSON." } },
+        { "@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": { "@type": "Answer", "text": "Workout imports and tracking are free forever. Nutrition features are a one-time $9.99 USD purchase. No subscription." } },
+        { "@type": "Question", "name": "Is JSON.fit available on Android?", "acceptedAnswer": { "@type": "Answer", "text": "JSON.fit is currently iOS only. Android is in development." } }
       ]
     }
     </script>
@@ -174,15 +96,6 @@
             font-size: 16px;
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 10000;
-        }
-
         .cyan { color: var(--cyan); }
         .green { color: var(--green); }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
@@ -196,21 +109,17 @@
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
-
         .nav-logo {
             font-family: 'DM Mono', monospace; font-weight: 500; font-size: 1rem;
             color: var(--text); text-decoration: none;
             display: flex; align-items: center; gap: 0.4rem;
         }
-
         .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
-
         .nav-links a {
             color: var(--text-3); text-decoration: none; font-size: 0.8rem;
             font-weight: 500; transition: color 0.2s; letter-spacing: 0.01em;
         }
         .nav-links a:hover { color: var(--text); }
-
         .nav-cta {
             background: var(--cyan); color: #000 !important;
             padding: 0.4rem 1rem; border-radius: 8px;
@@ -218,8 +127,7 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--cyan-glow); }
-
-        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; position: relative; }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
         .hamburger span { display: block; width: 20px; height: 2px; background: var(--text); margin: 4px 0; transition: all 0.3s; }
 
         /* ── Hero ── */
@@ -229,49 +137,38 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; padding: 7rem 1.5rem 4rem; overflow: hidden;
         }
-
         .hero::before {
             content: ''; position: absolute; top: -30%; left: 50%; transform: translateX(-50%);
             width: 600px; height: 600px; border-radius: 50%;
             background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 60%);
             opacity: 0.1; filter: blur(80px); pointer-events: none;
         }
-
         .hero-inner { position: relative; z-index: 2; max-width: 640px; }
-
         .badge {
             display: inline-flex; align-items: center; gap: 0.5rem;
             padding: 0.3rem 0.8rem; border: 1px solid var(--border-cyan);
             border-radius: 100px; font-family: 'DM Mono', monospace;
             font-size: 0.68rem; font-weight: 500; color: var(--cyan);
-            background: var(--cyan-soft); margin-bottom: 2rem;
-            letter-spacing: 0.03em;
+            background: var(--cyan-soft); margin-bottom: 2rem; letter-spacing: 0.03em;
             animation: fadeUp 0.6s ease both;
         }
-
-        .badge .dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: var(--cyan); animation: blink 2s infinite;
-        }
-
+        .badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); animation: blink 2s infinite; }
         @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.3} }
-
         .hero h1 {
             font-size: clamp(2.8rem, 8vw, 5rem); font-weight: 800;
-            line-height: 1.05; letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
+            line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem;
             animation: fadeUp 0.6s ease 0.05s both;
         }
-
-        .hero h1 .dim { color: var(--text-2); font-weight: 600; }
-
         .hero-sub {
             font-size: clamp(0.95rem, 2vw, 1.1rem); color: var(--text-2);
-            max-width: 480px; margin: 0 auto 2rem; font-weight: 400;
-            line-height: 1.7;
+            max-width: 480px; margin: 0 auto 2rem; font-weight: 400; line-height: 1.7;
             animation: fadeUp 0.6s ease 0.1s both;
         }
-
+        .hero-cta-group {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.75rem; flex-wrap: wrap;
+            animation: fadeUp 0.6s ease 0.15s both;
+        }
         .hero-cta {
             display: inline-flex; align-items: center; gap: 0.5rem;
             padding: 0.9rem 2rem; border-radius: 12px; font-size: 1rem;
@@ -280,54 +177,20 @@
             background: var(--cyan); color: #000;
         }
         .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px var(--cyan-glow); }
-
-        .hero-cta-group {
-            display: flex; align-items: center; justify-content: center;
-            gap: 0.75rem; flex-wrap: wrap;
-            animation: fadeUp 0.6s ease 0.15s both;
-        }
-
         .hero-cta-ghost {
             display: inline-flex; align-items: center; gap: 0.5rem;
             padding: 0.9rem 1.75rem; border-radius: 12px; font-size: 1rem;
             font-weight: 600; text-decoration: none;
             font-family: 'Outfit', sans-serif; transition: all 0.25s;
-            background: transparent; color: var(--text-2);
-            border: 1px solid var(--border);
+            background: transparent; color: var(--text-2); border: 1px solid var(--border);
         }
-        .hero-cta-ghost:hover {
-            border-color: var(--cyan); color: var(--cyan);
-            background: var(--cyan-soft);
-        }
-
-        .hero-nudge {
-            margin-top: 0.9rem; font-size: 0.75rem;
-            color: var(--text-3); font-family: 'DM Mono', monospace;
-            letter-spacing: 0.01em;
-            animation: fadeUp 0.6s ease 0.18s both;
-        }
-        .hero-nudge a {
-            color: var(--text-2); text-decoration: none;
-            border-bottom: 1px solid var(--border);
-            transition: color 0.2s, border-color 0.2s;
-            padding-bottom: 1px;
-        }
-        .hero-nudge a:hover { color: var(--cyan); border-color: var(--cyan); }
-
+        .hero-cta-ghost:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-soft); }
         .hero-meta {
             margin-top: 1.25rem; font-size: 0.75rem; color: var(--text-3);
             font-family: 'DM Mono', monospace; letter-spacing: 0.02em;
-            animation: fadeUp 0.6s ease 0.22s both;
+            animation: fadeUp 0.6s ease 0.2s both;
         }
         .hero-meta strong { color: var(--cyan); font-weight: 500; }
-
-        .hero-phone {
-            margin-top: 3rem; animation: fadeUp 0.8s ease 0.25s both;
-        }
-        .hero-phone img {
-            width: 220px; height: auto; border-radius: 20px;
-            border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
 
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(16px); }
@@ -340,507 +203,198 @@
             text-transform: uppercase; letter-spacing: 0.18em;
             color: var(--cyan); margin-bottom: 1rem; display: block;
         }
-
         .section { padding: 5rem 0; }
-
-        .reveal {
-            opacity: 0; transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
         .reveal.vis { opacity: 1; transform: translateY(0); }
 
         /* ── AI Strip ── */
         .ai-strip {
             border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
             padding: 1rem 1.5rem;
-            display: flex; justify-content: center; align-items: center;
-            gap: 2rem; flex-wrap: wrap;
+            display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;
         }
-        .ai-strip span {
-            font-family: 'DM Mono', monospace; font-size: 0.72rem;
-            color: var(--text-3); letter-spacing: 0.04em;
-        }
+        .ai-strip span { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text-3); letter-spacing: 0.04em; }
         .ai-strip .ai-label { color: var(--text-2); font-weight: 500; }
 
         /* ── Blurb ── */
         .blurb { text-align: center; max-width: 580px; margin: 0 auto; }
-
-        .blurb h2 {
-            font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800;
-            letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.25rem;
-        }
-
-        .blurb-q {
-            color: var(--text-2); font-size: 0.95rem; line-height: 2; margin-bottom: 1.25rem;
-        }
-
-        .blurb-a {
-            font-size: 1.05rem; font-weight: 600; line-height: 1.6;
-        }
-
-        .blurb-tag {
-            display: inline-block; margin-top: 1rem;
-            font-family: 'DM Mono', monospace; font-size: 0.72rem;
-            font-weight: 500; letter-spacing: 0.04em;
-        }
+        .blurb h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.25rem; }
+        .blurb-q { color: var(--text-2); font-size: 0.95rem; line-height: 2; margin-bottom: 1.25rem; }
+        .blurb-a { font-size: 1.05rem; font-weight: 600; line-height: 1.6; }
+        .blurb-tag { display: inline-block; margin-top: 1rem; font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.04em; }
 
         /* ── Steps ── */
-        .steps {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 1px; background: var(--border); border-radius: 14px; overflow: hidden;
-        }
-
-        .step {
-            background: var(--surface); padding: 2rem 1.75rem;
-            transition: background 0.3s;
-        }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-radius: 14px; overflow: hidden; }
+        .step { background: var(--surface); padding: 2rem 1.75rem; transition: background 0.3s; }
         .step:hover { background: var(--surface-2); }
-
-        .step-num {
-            font-family: 'DM Mono', monospace; font-size: 0.65rem;
-            color: var(--cyan); letter-spacing: 0.12em;
-            text-transform: uppercase; margin-bottom: 1rem; display: block;
-        }
-
+        .step-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem; display: block; }
         .step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
         .step p { color: var(--text-2); font-size: 0.88rem; line-height: 1.7; }
 
-        /* ── Screenshots ── */
-        .screenshots { padding: 4rem 0; overflow: hidden; }
-
-        .screenshots-scroll {
-            display: flex; gap: 1.25rem; justify-content: center;
-            flex-wrap: wrap; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;
-        }
-
-        .ss-item {
-            flex: 0 0 auto; width: 200px; border-radius: 14px; overflow: hidden;
-            border: 1px solid var(--border); transition: transform 0.3s, border-color 0.3s;
-        }
-        .ss-item:hover { transform: translateY(-3px); border-color: var(--border-cyan); }
-        .ss-item img { width: 100%; height: auto; display: block; }
-
-        /* ── See It Working (social proof) ── */
+        /* ── See It Working ── */
         .proof-section { padding: 5rem 0; }
-
-        .proof-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--border);
-            border-radius: 14px;
-            overflow: hidden;
-            margin-bottom: 1px;
-        }
-
-        .proof-grid-bottom {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1px;
-            background: var(--border);
-            border-radius: 0 0 14px 14px;
-            overflow: hidden;
-        }
-
-        .proof-card {
-            background: var(--surface);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            transition: background 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
+        .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: 14px 14px 0 0; overflow: hidden; }
+        .proof-grid-bottom { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 0 0 14px 14px; overflow: hidden; }
+        .proof-card { background: var(--surface); padding: 2rem; display: flex; flex-direction: column; gap: 1rem; transition: background 0.3s; }
         .proof-card:hover { background: var(--surface-2); }
-
-        .proof-card-label {
-            font-family: 'DM Mono', monospace; font-size: 0.6rem;
-            text-transform: uppercase; letter-spacing: 0.18em;
-            color: var(--text-3);
+        .proof-card-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-3); }
+        .proof-card h3 { font-size: 0.95rem; font-weight: 700; line-height: 1.4; }
+        .proof-card p { color: var(--text-2); font-size: 0.82rem; line-height: 1.65; }
+        .proof-img { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; cursor: zoom-in; }
+        .proof-img img { width: 100%; height: auto; display: block; max-height: 260px; object-fit: contain; background: #000; }
+        .proof-stat { display: flex; flex-direction: column; gap: 0.25rem; }
+        .proof-stat-num { font-family: 'DM Mono', monospace; font-size: 2.8rem; font-weight: 500; color: var(--cyan); line-height: 1; letter-spacing: -0.02em; }
+        .proof-stat-label { font-size: 0.8rem; color: var(--text-2); font-weight: 500; }
+        .proof-profile {
+            display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.25rem;
         }
-
-        .proof-card h3 {
-            font-size: 0.95rem; font-weight: 700; line-height: 1.4;
-        }
-
-        .proof-card p {
-            color: var(--text-2); font-size: 0.82rem; line-height: 1.65;
-        }
-
-        .proof-img {
-            border-radius: 10px; overflow: hidden;
-            border: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-        .proof-img img {
-            width: 100%; height: auto; display: block;
-            max-height: 320px; object-fit: cover; object-position: top;
-        }
-
-        .proof-stat {
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: flex-start; gap: 0.25rem;
-        }
-
-        .proof-stat-num {
-            font-family: 'DM Mono', monospace;
-            font-size: 2.8rem; font-weight: 500;
-            color: var(--cyan); line-height: 1;
-            letter-spacing: -0.02em;
-        }
-
-        .proof-stat-label {
-            font-size: 0.8rem; color: var(--text-2); font-weight: 500;
-        }
-
-        .proof-volume {
-            display: flex; flex-direction: column; gap: 0.5rem; width: 100%;
-        }
-
-        .proof-vol-row {
-            display: flex; align-items: center; gap: 0.75rem;
-        }
-
-        .proof-vol-name {
-            font-family: 'DM Mono', monospace; font-size: 0.68rem;
-            color: var(--text-2); width: 90px; flex-shrink: 0;
-        }
-
-        .proof-vol-bar-wrap {
-            flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
-        }
-
-        .proof-vol-bar {
-            height: 100%; background: var(--cyan); border-radius: 2px;
-            transition: width 1s ease;
-        }
-
-        .proof-vol-sets {
-            font-family: 'DM Mono', monospace; font-size: 0.65rem;
-            color: var(--cyan); width: 40px; text-align: right; flex-shrink: 0;
-        }
-
-        .proof-tutorial-link {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            color: var(--cyan); text-decoration: none; font-size: 0.82rem;
-            font-weight: 600; transition: gap 0.2s;
-            font-family: 'DM Mono', monospace; letter-spacing: 0.01em;
-        }
-        .proof-tutorial-link:hover { gap: 0.6rem; }
-        .proof-tutorial-link svg { flex-shrink: 0; }
-
-        .proof-pipeline {
-            display: flex; flex-direction: column; gap: 0.5rem; width: 100%;
-        }
-
-        .proof-pipe-step {
-            display: flex; align-items: center; gap: 0.6rem;
-            padding: 0.5rem 0.6rem; border-radius: 6px;
+        .proof-profile-tag {
+            font-family: 'DM Mono', monospace; font-size: 0.62rem;
+            color: var(--text-3); letter-spacing: 0.04em;
+            padding: 0.2rem 0.55rem; border-radius: 4px;
             border: 1px solid var(--border); background: rgba(255,255,255,0.02);
         }
+        .proof-volume { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; }
+        .proof-vol-row { display: flex; align-items: center; gap: 0.75rem; }
+        .proof-vol-name { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--text-2); width: 90px; flex-shrink: 0; }
+        .proof-vol-bar-wrap { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .proof-vol-bar { height: 100%; background: var(--cyan); border-radius: 2px; }
+        .proof-vol-sets { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--cyan); width: 40px; text-align: right; flex-shrink: 0; }
+        .proof-tutorial-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--cyan); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: gap 0.2s; font-family: 'DM Mono', monospace; }
+        .proof-tutorial-link:hover { gap: 0.6rem; }
+        .proof-pipeline { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; }
+        .proof-pipe-step { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.6rem; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+        .proof-pipe-num { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--cyan); width: 18px; flex-shrink: 0; font-weight: 500; }
+        .proof-pipe-text { font-size: 0.75rem; color: var(--text-2); line-height: 1.3; }
 
-        .proof-pipe-num {
-            font-family: 'DM Mono', monospace; font-size: 0.6rem;
-            color: var(--cyan); width: 18px; flex-shrink: 0; font-weight: 500;
+        /* ── Lightbox ── */
+        .lightbox {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(5,5,8,0.96);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: center; padding: 2rem;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
         }
-
-        .proof-pipe-text {
-            font-size: 0.75rem; color: var(--text-2); line-height: 1.3;
+        .lightbox.open { opacity: 1; pointer-events: all; }
+        .lightbox-img {
+            max-width: min(480px, 90vw); max-height: 90vh; height: auto; width: auto;
+            border-radius: 16px; border: 1px solid var(--border-cyan);
+            box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+            transform: scale(0.94); transition: transform 0.25s ease; display: block;
         }
+        .lightbox.open .lightbox-img { transform: scale(1); }
+        .lightbox-close {
+            position: absolute; top: 1.25rem; right: 1.25rem;
+            background: var(--surface-2); border: 1px solid var(--border);
+            color: var(--text-2); width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; transition: border-color 0.2s, color 0.2s; font-family: 'DM Mono', monospace;
+        }
+        .lightbox-close:hover { border-color: var(--cyan); color: var(--cyan); }
+        .lightbox-hint { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
 
         /* ── Free Banner ── */
-        .free-banner {
-            border: 1px solid var(--border); border-radius: 14px;
-            padding: 2.5rem; display: flex; align-items: center;
-            justify-content: space-between; gap: 2.5rem; background: var(--surface);
-        }
-
-        .free-banner h3 {
-            font-size: 1.5rem; font-weight: 800;
-            letter-spacing: -0.02em; margin-bottom: 0.5rem;
-        }
-
+        .free-banner { border: 1px solid var(--border); border-radius: 14px; padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 2.5rem; background: var(--surface); }
+        .free-banner h3 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
         .free-banner p { color: var(--text-2); font-size: 0.92rem; line-height: 1.7; max-width: 400px; }
-
-        .free-tag {
-            font-family: 'DM Mono', monospace; font-size: 2.2rem; font-weight: 500;
-            color: var(--green); white-space: nowrap; padding: 0.75rem 1.5rem;
-            border: 1px solid rgba(34,197,94,0.2); border-radius: 10px;
-            background: rgba(34,197,94,0.05);
-        }
-
-        .free-cta {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            margin-top: 1rem; padding: 0.6rem 1.25rem; border-radius: 8px;
-            font-size: 0.85rem; font-weight: 600; text-decoration: none;
-            background: var(--green); color: #000; transition: all 0.2s;
-        }
+        .free-tag { font-family: 'DM Mono', monospace; font-size: 2.2rem; font-weight: 500; color: var(--green); white-space: nowrap; padding: 0.75rem 1.5rem; border: 1px solid rgba(34,197,94,0.2); border-radius: 10px; background: rgba(34,197,94,0.05); }
+        .free-cta { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1rem; padding: 0.6rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; background: var(--green); color: #000; transition: all 0.2s; }
         .free-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
 
         /* ── Feature Grid ── */
-        .feat-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 1px; background: var(--border); border-radius: 14px; overflow: hidden;
-        }
-
-        .feat {
-            background: var(--surface); padding: 2rem 1.5rem;
-            transition: background 0.3s;
-        }
+        .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-radius: 14px; overflow: hidden; }
+        .feat { background: var(--surface); padding: 2rem 1.5rem; transition: background 0.3s; }
         .feat:hover { background: var(--surface-2); }
         .feat-icon { font-size: 1.3rem; margin-bottom: 0.75rem; display: block; }
         .feat h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
         .feat p { color: var(--text-2); font-size: 0.85rem; line-height: 1.7; }
 
         /* ── Comparison ── */
-        .comp {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 14px; overflow: hidden;
-        }
-
-        .comp-head, .comp-row {
-            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
-        }
-
+        .comp { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+        .comp-head, .comp-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; }
         .comp-head { border-bottom: 1px solid var(--border); }
         .comp-head div { padding: 1rem; font-size: 0.8rem; font-weight: 600; color: var(--text-3); }
-        .comp-head div:nth-child(2) {
-            color: var(--cyan); font-family: 'DM Mono', monospace;
-            background: var(--cyan-soft);
-            border-left: 1px solid var(--border); border-right: 1px solid var(--border);
-        }
+        .comp-head div:nth-child(2) { color: var(--cyan); font-family: 'DM Mono', monospace; background: var(--cyan-soft); border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
         .comp-head div:nth-child(4) { border-left: 1px solid var(--border); }
-
         .comp-row { border-bottom: 1px solid var(--border); }
         .comp-row:last-child { border-bottom: none; }
-        .comp-row div {
-            padding: 0.75rem 1rem; font-size: 0.85rem;
-            color: var(--text-2); display: flex; align-items: center;
-        }
+        .comp-row div { padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-2); display: flex; align-items: center; }
         .comp-row div:first-child { font-weight: 500; }
-        .comp-row div:nth-child(2) {
-            color: var(--cyan); font-weight: 600;
-            border-left: 1px solid var(--border); border-right: 1px solid var(--border);
-            background: rgba(34,211,238,0.02);
-        }
+        .comp-row div:nth-child(2) { color: var(--cyan); font-weight: 600; border-left: 1px solid var(--border); border-right: 1px solid var(--border); background: rgba(34,211,238,0.02); }
         .comp-row div:nth-child(4) { border-left: 1px solid var(--border); }
         .comp-x { color: var(--red) !important; }
 
         /* ── CTA Card ── */
         .cta-section { padding: 3rem 0 5rem; display: flex; justify-content: center; }
-
-        .cta-card {
-            max-width: 480px; width: 100%; background: var(--surface);
-            border: 1px solid var(--border); border-radius: 18px;
-            padding: 2.5rem 2rem; position: relative; overflow: hidden; text-align: center;
-        }
-
-        .cta-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-        }
-
+        .cta-card { max-width: 480px; width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 2.5rem 2rem; position: relative; overflow: hidden; text-align: center; }
+        .cta-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
         .cta-card > * { position: relative; z-index: 1; }
-
-        .cta-badge {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500;
-            color: var(--red); letter-spacing: 0.05em; text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
+        .cta-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--red); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem; }
         .cta-card h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
-
         .cta-price { display: flex; align-items: baseline; justify-content: center; gap: 0.4rem; margin-bottom: 0.25rem; }
         .cta-price .big { font-family: 'DM Mono', monospace; font-size: 2.5rem; font-weight: 500; color: var(--cyan); }
         .cta-price .unit { font-size: 0.85rem; color: var(--text-2); }
-
         .cta-sub { font-size: 0.78rem; color: var(--text-3); margin-bottom: 1.5rem; }
-
         .cta-checks { text-align: left; margin-bottom: 1.5rem; }
-        .cta-check {
-            display: flex; align-items: center; gap: 0.5rem;
-            padding: 0.35rem 0; font-size: 0.88rem; color: var(--text-2);
-        }
+        .cta-check { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0; font-size: 0.88rem; color: var(--text-2); }
         .cta-check .ic { font-size: 0.8rem; flex-shrink: 0; font-weight: 700; }
         .cta-check .ic-green { color: var(--green); }
         .cta-check .ic-cyan { color: var(--cyan); }
         .cta-divider { border: none; border-top: 1px solid var(--border); margin: 0.75rem 0; }
-
-        .cta-btn {
-            display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.5rem;
-            padding: 0.9rem; border-radius: 10px; font-size: 0.95rem;
-            font-weight: 700; text-decoration: none; border: none;
-            font-family: 'Outfit', sans-serif; transition: all 0.25s;
-            background: var(--cyan); color: #000;
-        }
+        .cta-btn { display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.9rem; border-radius: 10px; font-size: 0.95rem; font-weight: 700; text-decoration: none; border: none; font-family: 'Outfit', sans-serif; transition: all 0.25s; background: var(--cyan); color: #000; }
         .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--cyan-glow); }
-
-        .cta-footer {
-            font-family: 'DM Mono', monospace; font-size: 0.68rem;
-            color: var(--text-3); letter-spacing: 0.03em; margin-top: 1rem;
-        }
+        .cta-footer { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--text-3); letter-spacing: 0.03em; margin-top: 1rem; }
 
         /* ── FAQ ── */
         .faq { max-width: 640px; margin: 0 auto; }
-
-        .faq-item {
-            border-bottom: 1px solid var(--border); padding: 1.25rem 0;
-        }
+        .faq-item { border-bottom: 1px solid var(--border); padding: 1.25rem 0; }
         .faq-item:last-child { border-bottom: none; }
-
-        .faq-q {
-            font-size: 0.95rem; font-weight: 600; color: var(--text);
-            cursor: pointer; display: flex; justify-content: space-between;
-            align-items: center; gap: 1rem;
-        }
-
-        .faq-q::after {
-            content: '+'; font-family: 'DM Mono', monospace; font-size: 1.1rem;
-            color: var(--cyan); flex-shrink: 0; transition: transform 0.2s;
-        }
-
+        .faq-q { font-size: 0.95rem; font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .faq-q::after { content: '+'; font-family: 'DM Mono', monospace; font-size: 1.1rem; color: var(--cyan); flex-shrink: 0; }
         .faq-item.open .faq-q::after { content: '−'; }
-
-        .faq-a {
-            max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
-            color: var(--text-2); font-size: 0.88rem; line-height: 1.7;
-        }
-
-        .faq-item.open .faq-a {
-            max-height: 300px; padding-top: 0.75rem;
-        }
-
-        /* ── Lightbox ── */
-        .proof-img { cursor: zoom-in; }
-
-        .lightbox {
-            position: fixed; inset: 0; z-index: 99999;
-            background: rgba(5,5,8,0.96);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            display: flex; align-items: center; justify-content: center;
-            padding: 2rem;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-        .lightbox.open { opacity: 1; pointer-events: all; }
-
-        .lightbox-img {
-            max-width: min(480px, 90vw);
-            max-height: 90vh;
-            height: auto; width: auto;
-            border-radius: 16px;
-            border: 1px solid var(--border-cyan);
-            box-shadow: 0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px var(--border);
-            transform: scale(0.94);
-            transition: transform 0.25s ease;
-            display: block;
-        }
-        .lightbox.open .lightbox-img { transform: scale(1); }
-
-        .lightbox-close {
-            position: absolute; top: 1.25rem; right: 1.25rem;
-            background: var(--surface-2); border: 1px solid var(--border);
-            color: var(--text-2); width: 36px; height: 36px;
-            border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; line-height: 1;
-            transition: border-color 0.2s, color 0.2s;
-            font-family: 'DM Mono', monospace;
-        }
-        .lightbox-close:hover { border-color: var(--cyan); color: var(--cyan); }
-
-        .lightbox-hint {
-            position: absolute; bottom: 1.5rem; left: 50%;
-            transform: translateX(-50%);
-            font-family: 'DM Mono', monospace; font-size: 0.65rem;
-            color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase;
-            white-space: nowrap;
-        }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text-2); font-size: 0.88rem; line-height: 1.7; }
+        .faq-item.open .faq-a { max-height: 300px; padding-top: 0.75rem; }
 
         /* ── Android + Toast ── */
-        .android-interest-link {
-            color: var(--cyan); text-decoration: none; font-weight: 500;
-            transition: opacity 0.2s; cursor: pointer;
-        }
+        .android-interest-link { color: var(--cyan); text-decoration: none; font-weight: 500; transition: opacity 0.2s; cursor: pointer; }
         .android-interest-link:hover { opacity: 0.8; text-decoration: underline; }
-        .android-interest-link.android-clicked {
-            color: var(--green); pointer-events: none; text-decoration: none;
-        }
-
-        .toast {
-            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: var(--surface-2); color: var(--text); border: 1px solid rgba(34,197,94,0.25);
-            padding: 0.8rem 1.25rem; border-radius: 10px; font-size: 0.85rem; font-weight: 500;
-            z-index: 10001; opacity: 0; transition: all 0.35s ease;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5); pointer-events: none;
-            white-space: nowrap; max-width: 90vw;
-        }
+        .android-interest-link.android-clicked { color: var(--green); pointer-events: none; text-decoration: none; }
+        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface-2); color: var(--text); border: 1px solid rgba(34,197,94,0.25); padding: 0.8rem 1.25rem; border-radius: 10px; font-size: 0.85rem; font-weight: 500; z-index: 10001; opacity: 0; transition: all 0.35s ease; box-shadow: 0 8px 32px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; max-width: 90vw; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast .toast-icon { color: var(--green); margin-right: 0.4rem; }
 
         /* ── Footer ── */
-        footer {
-            border-top: 1px solid var(--border); padding: 2rem 1.5rem;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .footer-left {
-            font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--text-3);
-        }
-        .footer-left a {
-            color: var(--text-3); text-decoration: none; margin-left: 1.25rem; transition: color 0.2s;
-        }
+        footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .footer-left { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--text-3); }
+        .footer-left a { color: var(--text-3); text-decoration: none; margin-left: 1.25rem; transition: color 0.2s; }
         .footer-left a:hover { color: var(--cyan); }
         .footer-right { font-size: 0.7rem; color: var(--text-3); }
 
         /* ── Responsive ── */
         @media (max-width: 860px) {
             .steps, .feat-grid { grid-template-columns: 1fr; }
-
-            .proof-grid { grid-template-columns: 1fr; }
-            .proof-grid-bottom { grid-template-columns: 1fr; border-radius: 14px; margin-top: 1px; }
-
-            .free-banner {
-                flex-direction: column; text-align: center; padding: 2rem 1.25rem; gap: 1.25rem;
-            }
+            .proof-grid { grid-template-columns: 1fr; border-radius: 14px 14px 0 0; }
+            .proof-grid-bottom { grid-template-columns: 1fr; border-radius: 0 0 14px 14px; }
+            .hero-cta-group { flex-direction: column; width: 100%; }
+            .hero-cta, .hero-cta-ghost { width: 100%; justify-content: center; }
+            .free-banner { flex-direction: column; text-align: center; padding: 2rem 1.25rem; gap: 1.25rem; }
             .free-banner p { max-width: 100%; }
-
             .comp-head, .comp-row { grid-template-columns: 1.3fr 0.75fr 0.75fr 0.75fr; }
             .comp-head div, .comp-row div { padding: 0.6rem 0.4rem; font-size: 0.7rem; }
-
             footer { flex-direction: column; gap: 0.75rem; text-align: center; }
             .footer-left a { margin-left: 0; margin: 0 0.6rem; }
-
             .hero { padding: 6rem 1.25rem 3rem; }
-            .hero-phone img { width: 180px; }
-
-            .nav-links {
-                display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-                width: 100%; height: 100vh; height: 100dvh;
-                background: #050508;
-                flex-direction: column; justify-content: center; align-items: center;
-                gap: 2rem; z-index: 9998;
-            }
+            .nav-links { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100vh; height: 100dvh; background: #050508; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; z-index: 9998; }
             .nav-links.open { display: flex; }
             .nav-links a { font-size: 1.1rem; color: var(--text-2); }
             .hamburger { display: block; position: fixed; top: 16px; right: 16px; z-index: 9999; }
             .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
             .hamburger.open span:nth-child(2) { opacity: 0; }
             .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
-
-            .screenshots-scroll {
-                flex-wrap: nowrap; justify-content: flex-start;
-                overflow-x: auto; -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x mandatory; padding: 0 1rem; gap: 0.75rem;
-            }
-            .ss-item { width: 170px; flex-shrink: 0; scroll-snap-align: start; }
         }
 
         @media (max-width: 480px) {
             .hero h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
-            .hero-cta { width: 100%; justify-content: center; }
-            .hero-phone img { width: 160px; }
             .comp { overflow-x: auto; -webkit-overflow-scrolling: touch; }
             .comp-head, .comp-row { min-width: 440px; }
             .ai-strip { gap: 1rem; padding: 0.8rem 1rem; }
@@ -887,7 +441,6 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </a>
         </div>
-        <p class="hero-nudge">Not sure yet? <a href="blog/chatgpt-hypertrophy-program.html">See how to build a 12-week program with ChatGPT →</a></p>
         <p class="hero-meta">Free workouts forever · Nutrition unlock <strong>$9.99 USD</strong> one-time · <span style="color:var(--red);">⚡ Launch pricing</span></p>
     </div>
 </section>
@@ -924,40 +477,16 @@
             <p style="color:var(--text-2);font-size:1rem;margin-bottom:2.5rem;">We build the prompt. You choose the AI. It's that simple.</p>
         </div>
         <div class="steps reveal">
-            <div class="step">
-                <span class="step-num">01 — Quick Setup</span>
-                <h3>Answer a few questions</h3>
-                <p>Goals, schedule, experience, preferences. We build a perfect prompt customised for you.</p>
-            </div>
-            <div class="step">
-                <span class="step-num">02 — Send to Any AI</span>
-                <h3>ChatGPT, Claude, Gemini</h3>
-                <p>Paste the prompt, get a structured plan back in seconds. Whatever AI you like.</p>
-            </div>
-            <div class="step">
-                <span class="step-num">03 — Import & Train</span>
-                <h3>Paste or upload the result</h3>
-                <p>Your program loads instantly — every set, rep, meal, and macro ready to track.</p>
-            </div>
+            <div class="step"><span class="step-num">01 — Quick Setup</span><h3>Answer a few questions</h3><p>Goals, schedule, experience, preferences. We build a perfect prompt customised for you.</p></div>
+            <div class="step"><span class="step-num">02 — Send to Any AI</span><h3>ChatGPT, Claude, Gemini</h3><p>Paste the prompt, get a structured plan back in seconds. Whatever AI you like.</p></div>
+            <div class="step"><span class="step-num">03 — Import & Train</span><h3>Paste or upload the result</h3><p>Your program loads instantly — every set, rep, meal, and macro ready to track.</p></div>
         </div>
     </div>
 </section>
 
-<!-- SCREENSHOTS -->
-<section class="screenshots reveal">
-    <div class="container" style="text-align:center;margin-bottom:1.5rem;">
-        <span class="label">The App</span>
-    </div>
-    <div class="screenshots-scroll">
-        <div class="ss-item"><img src="images/screenshot-1.jpg" alt="JSON.fit splash screen" loading="lazy"></div>
-        <div class="ss-item"><img src="images/screenshot-2.jpg" alt="Import AI workout program" loading="lazy"></div>
-        <div class="ss-item"><img src="images/screenshot-3.jpg" alt="Track every set and rep" loading="lazy"></div>
-        <div class="ss-item"><img src="images/screenshot-4.jpg" alt="Import AI meal plan" loading="lazy"></div>
-        <div class="ss-item"><img src="images/screenshot-5.jpg" alt="Track every meal and macro" loading="lazy"></div>
-    </div>
-</section>
 
-<!-- SEE IT WORKING — social proof -->
+
+<!-- SEE IT WORKING -->
 <section class="proof-section" id="proof">
     <div class="container">
         <div class="reveal" style="margin-bottom:2.5rem;">
@@ -965,11 +494,7 @@
             <h2 style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem;">Real AI output.<br><span class="cyan">Real programs.</span></h2>
             <p style="color:var(--text-2);font-size:1rem;max-width:480px;">Not a demo. Not a mockup. This is what ChatGPT generates from the app's prompt pipeline — and what gets imported in under a second.</p>
         </div>
-
-        <!-- Top row: 2 columns -->
         <div class="proof-grid reveal">
-
-            <!-- Card 1: ChatGPT response screenshot -->
             <div class="proof-card">
                 <span class="proof-card-label">ChatGPT Output</span>
                 <h3>AI verifies its own work before you import</h3>
@@ -982,106 +507,49 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
             </div>
-
-            <!-- Card 2: Volume breakdown + import stat -->
             <div class="proof-card">
                 <span class="proof-card-label">Volume Verified</span>
                 <h3>Muscle group balance, checked before you train</h3>
                 <p>ChatGPT's output includes a per-muscle volume summary so you can verify the program is properly balanced. Here's what a real advanced hypertrophy week looks like.</p>
-
-                <div class="proof-volume">
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Chest</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:93%"></div></div>
-                        <span class="proof-vol-sets">13 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Quads</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:100%"></div></div>
-                        <span class="proof-vol-sets">14 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Hamstrings</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:93%"></div></div>
-                        <span class="proof-vol-sets">13 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Glutes</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:100%"></div></div>
-                        <span class="proof-vol-sets">14 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Lats</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div>
-                        <span class="proof-vol-sets">12 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Upper Back</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div>
-                        <span class="proof-vol-sets">12 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Triceps</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:79%"></div></div>
-                        <span class="proof-vol-sets">11 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Calves</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div>
-                        <span class="proof-vol-sets">12 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Side Delts</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:71%"></div></div>
-                        <span class="proof-vol-sets">10 sets</span>
-                    </div>
-                    <div class="proof-vol-row">
-                        <span class="proof-vol-name">Biceps</span>
-                        <div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:71%"></div></div>
-                        <span class="proof-vol-sets">10 sets</span>
-                    </div>
+                <div class="proof-profile">
+                    <span class="proof-profile-tag">Build Muscle</span>
+                    <span class="proof-profile-tag">5 days/week</span>
+                    <span class="proof-profile-tag">Advanced</span>
+                    <span class="proof-profile-tag">12–16 sets · Moderate</span>
+                    <span class="proof-profile-tag">Commercial Gym</span>
                 </div>
 
+                <div class="proof-volume">
+                    <div class="proof-vol-row"><span class="proof-vol-name">Chest</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:93%"></div></div><span class="proof-vol-sets">13 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Quads</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:100%"></div></div><span class="proof-vol-sets">14 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Hamstrings</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:93%"></div></div><span class="proof-vol-sets">13 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Glutes</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:100%"></div></div><span class="proof-vol-sets">14 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Lats</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div><span class="proof-vol-sets">12 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Upper Back</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div><span class="proof-vol-sets">12 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Triceps</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:79%"></div></div><span class="proof-vol-sets">11 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Calves</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:86%"></div></div><span class="proof-vol-sets">12 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Side Delts</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:71%"></div></div><span class="proof-vol-sets">10 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Biceps</span><div class="proof-vol-bar-wrap"><div class="proof-vol-bar" style="width:71%"></div></div><span class="proof-vol-sets">10 sets</span></div>
+                </div>
                 <div style="margin-top:0.5rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
-                    <div class="proof-stat">
-                        <span class="proof-stat-num">0.82s</span>
-                        <span class="proof-stat-label">Import time — 33 movements, 4 weeks</span>
-                    </div>
-                    <div class="proof-stat">
-                        <span class="proof-stat-num">48wk</span>
-                        <span class="proof-stat-label">Max program length supported</span>
-                    </div>
+                    <div class="proof-stat"><span class="proof-stat-num">0.82s</span><span class="proof-stat-label">Import time — 33 movements, 4 weeks</span></div>
+                    <div class="proof-stat"><span class="proof-stat-num">48wk</span><span class="proof-stat-label">Max program length supported</span></div>
                 </div>
             </div>
         </div>
-
-        <!-- Bottom row: 3 columns -->
         <div class="proof-grid-bottom reveal">
-
-            <!-- Card 3: 3-step pipeline -->
             <div class="proof-card">
                 <span class="proof-card-label">The Prompt Pipeline</span>
                 <h3>3 prompts. One perfect program.</h3>
                 <div class="proof-pipeline">
-                    <div class="proof-pipe-step">
-                        <span class="proof-pipe-num">01</span>
-                        <span class="proof-pipe-text">Generate — personalised program from your setup</span>
-                    </div>
-                    <div class="proof-pipe-step">
-                        <span class="proof-pipe-num">02</span>
-                        <span class="proof-pipe-text">Review — AI self-checks volume & exercise logic</span>
-                    </div>
-                    <div class="proof-pipe-step">
-                        <span class="proof-pipe-num">03</span>
-                        <span class="proof-pipe-text">Format — converts to JSON, ready to import</span>
-                    </div>
+                    <div class="proof-pipe-step"><span class="proof-pipe-num">01</span><span class="proof-pipe-text">Generate — personalised program from your setup</span></div>
+                    <div class="proof-pipe-step"><span class="proof-pipe-num">02</span><span class="proof-pipe-text">Review — AI self-checks volume & exercise logic</span></div>
+                    <div class="proof-pipe-step"><span class="proof-pipe-num">03</span><span class="proof-pipe-text">Format — converts to JSON, ready to import</span></div>
                 </div>
                 <div class="proof-img" style="margin-top:0.5rem;">
                     <img src="blog/images/prompt-step-1.PNG" alt="Step 1 prompt ready to copy" loading="lazy">
                 </div>
             </div>
-
-            <!-- Card 4: Program imported -->
             <div class="proof-card">
                 <span class="proof-card-label">Program Ready</span>
                 <h3>Every set, rep, and week — loaded instantly.</h3>
@@ -1090,8 +558,6 @@
                 </div>
                 <p>4-week advanced hypertrophy program. 33 movements. Imported in 0.82 seconds.</p>
             </div>
-
-            <!-- Card 5: Nutrition proof -->
             <div class="proof-card">
                 <span class="proof-card-label">Nutrition Too</span>
                 <h3>Meal plans that know your fridge.</h3>
@@ -1104,7 +570,6 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
             </div>
-
         </div>
     </div>
 </section>
@@ -1147,36 +612,12 @@
             <p style="color:var(--text-2);font-size:1rem;">Effortless eating, engineered for you.</p>
         </div>
         <div class="feat-grid reveal">
-            <div class="feat">
-                <span class="feat-icon">🧬</span>
-                <h3>AI Macro Engine</h3>
-                <p>Precision protein, carbs, fat & fibre targets calibrated to your body and goals.</p>
-            </div>
-            <div class="feat">
-                <span class="feat-icon">🛒</span>
-                <h3>Smart Grocery Lists</h3>
-                <p>Exact shopping lists. No confusion at the shops.</p>
-            </div>
-            <div class="feat">
-                <span class="feat-icon">📋</span>
-                <h3>Meal Prep Blueprints</h3>
-                <p>Step-by-step meal prep instructions for the week ahead.</p>
-            </div>
-            <div class="feat">
-                <span class="feat-icon">🌙</span>
-                <h3>Sleep-Synced Timing</h3>
-                <p>Meal times optimised around your sleep for better recovery and energy.</p>
-            </div>
-            <div class="feat">
-                <span class="feat-icon">🥡</span>
-                <h3>Pantry Intelligence</h3>
-                <p>Tell it what's in your fridge. Get plans that use what you already have.</p>
-            </div>
-            <div class="feat">
-                <span class="feat-icon">💰</span>
-                <h3>Nutrition For Everyone</h3>
-                <p>Dietitian-level personalisation. Unlimited plan changes. No appointments.</p>
-            </div>
+            <div class="feat"><span class="feat-icon">🧬</span><h3>AI Macro Engine</h3><p>Precision protein, carbs, fat & fibre targets calibrated to your body and goals.</p></div>
+            <div class="feat"><span class="feat-icon">🛒</span><h3>Smart Grocery Lists</h3><p>Exact shopping lists. No confusion at the shops.</p></div>
+            <div class="feat"><span class="feat-icon">📋</span><h3>Meal Prep Blueprints</h3><p>Step-by-step meal prep instructions for the week ahead.</p></div>
+            <div class="feat"><span class="feat-icon">🌙</span><h3>Sleep-Synced Timing</h3><p>Meal times optimised around your sleep for better recovery and energy.</p></div>
+            <div class="feat"><span class="feat-icon">🥡</span><h3>Pantry Intelligence</h3><p>Tell it what's in your fridge. Get plans that use what you already have.</p></div>
+            <div class="feat"><span class="feat-icon">💰</span><h3>Nutrition For Everyone</h3><p>Dietitian-level personalisation. Unlimited plan changes. No appointments.</p></div>
         </div>
     </div>
 </section>
@@ -1190,12 +631,7 @@
             <p style="color:var(--text-2);font-size:1rem;max-width:480px;">Personalisation that used to require a professional — now available to everyone.</p>
         </div>
         <div class="comp reveal">
-            <div class="comp-head">
-                <div></div>
-                <div>JSON.fit</div>
-                <div>Dietitian</div>
-                <div>Other Apps</div>
-            </div>
+            <div class="comp-head"><div></div><div>JSON.fit</div><div>Dietitian</div><div>Other Apps</div></div>
             <div class="comp-row"><div>Typical cost</div><div>$9.99 once</div><div>$150–300/session</div><div>$20–60/mo</div></div>
             <div class="comp-row"><div>Expert-level personalisation</div><div>✓</div><div>✓</div><div class="comp-x">Basic</div></div>
             <div class="comp-row"><div>Instant access</div><div>✓</div><div class="comp-x">Weeks wait</div><div>✓</div></div>
@@ -1213,10 +649,7 @@
     <div class="cta-card reveal">
         <div class="cta-badge">⚡ Limited Time — Launch Pricing</div>
         <h2>Workouts free.<br>Unlock nutrition.</h2>
-        <div class="cta-price">
-            <span class="big">$9.99</span>
-            <span class="unit">USD · one time</span>
-        </div>
+        <div class="cta-price"><span class="big">$9.99</span><span class="unit">USD · one time</span></div>
         <p class="cta-sub">Own forever · No subscription</p>
         <div class="cta-checks">
             <div class="cta-check"><span class="ic ic-green">✓</span> Free: Unlimited AI workout imports</div>
@@ -1246,40 +679,19 @@
             <h2 style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.02em;">Common questions.</h2>
         </div>
         <div class="faq reveal">
-            <div class="faq-item">
-                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does it actually work?</div>
-                <div class="faq-a">The app builds a structured prompt based on your goals, schedule, and preferences. You copy it into any AI you already use — ChatGPT, Claude, Gemini, whatever. The AI generates a personalised plan. You paste the result back into JSON.fit and it loads instantly, ready to track.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need to pay for AI separately?</div>
-                <div class="faq-a">Most AI chatbots have a free tier that works perfectly — ChatGPT, Gemini, and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much does JSON.fit cost?</div>
-                <div class="faq-a">Workouts are free forever — no paywall, no limits. Nutrition features (meal plans, macro tracking, grocery lists, meal prep, pantry intelligence) are a one-time $9.99 USD purchase. No subscription. You pay once and own it forever.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why is it so much cheaper than other apps?</div>
-                <div class="faq-a">Most fitness apps charge $10–20/month because they run AI on their servers. JSON.fit uses the AI you already have, so there are no server costs to pass on to you. That's why workouts are free and nutrition is a one-time purchase.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What AI does it work with?</div>
-                <div class="faq-a">Any AI that can generate structured text — ChatGPT, Claude, Gemini, DeepSeek, and more. You're not locked into one provider. Use whatever you prefer.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data private?</div>
-                <div class="faq-a">Yes. Your data stays on your device. JSON.fit doesn't have accounts, doesn't collect personal information, and doesn't send your workout or nutrition data anywhere.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is it available on Android?</div>
-                <div class="faq-a">Not yet — it's currently iOS only. Android is in development. You can tap "I want it on Android" on this site to let us know there's demand.</div>
-            </div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does it actually work?</div><div class="faq-a">The app builds a structured prompt based on your goals, schedule, and preferences. You copy it into any AI you already use — ChatGPT, Claude, Gemini, whatever. The AI generates a personalised plan. You paste the result back into JSON.fit and it loads instantly, ready to track.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need to pay for AI separately?</div><div class="faq-a">Most AI chatbots have a free tier that works perfectly — ChatGPT, Gemini, and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much does JSON.fit cost?</div><div class="faq-a">Workouts are free forever — no paywall, no limits. Nutrition features (meal plans, macro tracking, grocery lists, meal prep, pantry intelligence) are a one-time $9.99 USD purchase. No subscription. You pay once and own it forever.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why is it so much cheaper than other apps?</div><div class="faq-a">Most fitness apps charge $10–20/month because they run AI on their servers. JSON.fit uses the AI you already have, so there are no server costs to pass on to you. That's why workouts are free and nutrition is a one-time purchase.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What AI does it work with?</div><div class="faq-a">Any AI that can generate structured text — ChatGPT, Claude, Gemini, DeepSeek, and more. You're not locked into one provider. Use whatever you prefer.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data private?</div><div class="faq-a">Yes. Your data stays on your device. JSON.fit doesn't have accounts, doesn't collect personal information, and doesn't send your workout or nutrition data anywhere.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is it available on Android?</div><div class="faq-a">Not yet — it's currently iOS only. Android is in development. You can tap "I want it on Android" on this site to let us know there's demand.</div></div>
         </div>
     </div>
 </section>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
     <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
     <img class="lightbox-img" id="lightboxImg" src="" alt="">
     <p class="lightbox-hint">tap anywhere to close</p>
@@ -1292,7 +704,7 @@
 <footer>
     <div class="footer-left">
         JSON<span class="cyan">.fit</span>
-        <a href="/cdn-cgi/l/email-protection#d381aab2bdfd9dbca5babdb093b4beb2babffdb0bcbe">Support</a>
+        <a href="/cdn-cgi/l/email-protection#bbe9c2dad595f5d4cdd2d5d8fbdcd6dad2d795d8d4d6">Support</a>
         <a href="privacy-policy.html">Privacy</a>
         <a href="terms-of-service.html">Terms</a>
     </div>
@@ -1307,7 +719,7 @@
         setTimeout(function() { t.classList.remove('show'); }, 3000);
     }
 
-    // Android interest — once per user ever
+    // Android interest
     function handleAndroidClick(e, el, loc) {
         e.preventDefault();
         document.querySelectorAll('.android-interest-link').forEach(function(l) {
@@ -1328,7 +740,7 @@
         }
     }
 
-    // Restore android state on load
+    // Restore android state
     try {
         if (localStorage.getItem('android_interest_logged')) {
             document.querySelectorAll('.android-interest-link').forEach(function(l) {
@@ -1346,20 +758,12 @@
         burger.classList.toggle('open');
         navLinks.classList.toggle('open');
     });
-
-    // Close menu when any nav link is tapped
     navLinks.querySelectorAll('a').forEach(function(a) {
         a.addEventListener('click', function() {
             burger.classList.remove('open');
             navLinks.classList.remove('open');
         });
     });
-
-    // Reveal on scroll
-    var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('vis'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
 
     // Lightbox
     var lightbox = document.getElementById('lightbox');
@@ -1372,34 +776,38 @@
         lightbox.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
-
     function closeLightbox() {
         lightbox.classList.remove('open');
         document.body.style.overflow = '';
     }
-
-    // Attach click to all proof-img containers
     document.querySelectorAll('.proof-img').forEach(function(wrap) {
         wrap.addEventListener('click', function() {
             var img = wrap.querySelector('img');
             if (img) openLightbox(img.src, img.alt);
         });
     });
+    lightboxClose.addEventListener('click', function(e) { e.stopPropagation(); closeLightbox(); });
+    lightbox.addEventListener('click', function(e) { if (e.target !== lightboxImg) closeLightbox(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
 
-    lightboxClose.addEventListener('click', function(e) {
-        e.stopPropagation();
-        closeLightbox();
-    });
+    // Reveal on scroll — with immediate fallback for local/static viewing
+    var revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('vis'); });
+        }, { threshold: 0.05 });
+        revealEls.forEach(function(el) { io.observe(el); });
+        // Fallback: if nothing has become visible after 500ms, reveal everything
+        setTimeout(function() {
+            var anyVisible = false;
+            revealEls.forEach(function(el) { if (el.classList.contains('vis')) anyVisible = true; });
+            if (!anyVisible) revealEls.forEach(function(el) { el.classList.add('vis'); });
+        }, 500);
+    } else {
+        revealEls.forEach(function(el) { el.classList.add('vis'); });
+    }
 
-    lightbox.addEventListener('click', function(e) {
-        if (e.target !== lightboxImg) closeLightbox();
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeLightbox();
-    });
-
-
+    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
         a.addEventListener('click', function(e) {
             var href = a.getAttribute('href');
@@ -1407,3 +815,10 @@
             e.preventDefault();
             setTimeout(function() {
                 var target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        });
+    });
+</script>
+</body>
+</html>
