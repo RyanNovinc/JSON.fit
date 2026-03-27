@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why You Don't Need Another AI Subscription for Fitness — JSON.fit</title>
+    <meta name="description" content="You're already paying for ChatGPT or Claude. Why are fitness apps charging you $20/month for the same AI? The BYO AI model explained.">
+    <link rel="canonical" href="https://ryannovinc.github.io/JSON.fit/blog/why-no-ai-subscription.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--cyan:#22d3ee;--bg:#050508;--surface:#0a0a0f;--border:rgba(255,255,255,0.06);--text:#f0f0f2;--text-2:#9898a4;--text-3:#55555f}
+        *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px}
+        body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:10000}
+        .cyan{color:var(--cyan)}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+        .nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:0.4rem}.nav-logo:hover{text-decoration:none}
+        .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}.nav-links a{color:var(--text-3);font-size:0.8rem;font-weight:500;text-decoration:none}.nav-links a:hover{color:var(--text);text-decoration:none}
+        .nav-cta{background:var(--cyan);color:#000!important;padding:0.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:0.78rem!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;position:relative}.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all 0.3s}
+        article{max-width:680px;margin:0 auto;padding:6rem 1.5rem 4rem}
+        .back{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-3);display:inline-block;margin-bottom:2.5rem;text-decoration:none;letter-spacing:0.03em}.back:hover{color:var(--cyan);text-decoration:none}
+        .post-date{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em;margin-bottom:0.75rem;display:block}
+        article h1{font-size:clamp(1.8rem,5vw,2.5rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:1.5rem}
+        article h2{font-size:1.3rem;font-weight:700;margin:2.5rem 0 1rem}
+        article p{color:var(--text-2);margin-bottom:1.25rem;font-size:0.95rem}article strong{color:var(--text);font-weight:600}
+        article ul{color:var(--text-2);margin:0 0 1.25rem 1.25rem;font-size:0.95rem}article li{margin-bottom:0.4rem}
+        blockquote{border-left:2px solid var(--cyan);padding:0.5rem 0 0.5rem 1.25rem;margin:1.5rem 0;color:var(--text);font-weight:500;font-size:1.05rem}
+        .cta-box{border:1px solid rgba(34,211,238,0.12);border-radius:12px;padding:1.75rem;margin:2rem 0;background:rgba(34,211,238,0.03);text-align:center}
+        .cta-box p{color:var(--text);margin-bottom:0.75rem;font-weight:500}.cta-box a{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.25rem;border-radius:8px;background:var(--cyan);color:#000;font-weight:600;font-size:0.88rem;text-decoration:none}.cta-box a:hover{text-decoration:none}
+        footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;max-width:1000px;margin:0 auto}
+        .footer-left{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--text-3)}.footer-left a{color:var(--text-3);text-decoration:none;margin-left:1.25rem}.footer-left a:hover{color:var(--cyan);text-decoration:none}.footer-right{font-size:0.7rem;color:var(--text-3)}
+        @media(max-width:860px){.nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}.nav-links.open{display:flex}.nav-links a{font-size:1.1rem;color:var(--text-2)}.hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}footer{flex-direction:column;gap:0.75rem;text-align:center}.footer-left a{margin-left:0;margin:0 0.6rem}}
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="../" class="nav-logo"><svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg> JSON<span class="cyan">.fit</span></a>
+    <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks"><li><a href="../#how">How It Works</a></li><li><a href="../#nutrition">Nutrition</a></li><li><a href="../#compare">Compare</a></li><li><a href="../blog.html">Blog</a></li><li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta">Download</a></li></ul>
+</nav>
+
+<article>
+    <a href="../blog.html" class="back">← Back to blog</a>
+    <span class="post-date">March 2026</span>
+    <h1>Why You Don't Need Another AI Subscription for <span class="cyan">Fitness</span></h1>
+
+    <p>Open the App Store and search for "AI fitness." You'll find dozens of apps, most charging somewhere between $10 and $20 per month. They all promise the same thing: AI-powered personalised workout plans and meal plans.</p>
+
+    <p>Here's what none of them tell you: the AI they're running is the same AI you already have access to.</p>
+
+    <h2>The subscription model is broken</h2>
+
+    <p>The typical AI fitness app works like this: you enter your goals, the app sends your data to OpenAI's API (or Google's, or Anthropic's), gets a response, and shows it to you. That's it. The "AI" part of these apps is a wrapper around the same language models that power ChatGPT, Gemini, and Claude.</p>
+
+    <p>The API calls cost the developer maybe $0.01–0.10 per generation. They charge you $15–20/month. The margin is enormous — and you're the one paying for it.</p>
+
+    <p>If you already have a ChatGPT account (even the free tier), you have access to the same underlying AI. The only thing you're missing is the right prompt and a way to track the result.</p>
+
+    <h2>What you're actually paying for</h2>
+
+    <p>When you pay $20/month for an AI fitness app, you're paying for three things:</p>
+
+    <ul>
+        <li><strong>The prompt engineering</strong> — the carefully crafted instructions that turn "give me a workout plan" into a structured, periodised program with appropriate volume, progressive overload, and exercise selection</li>
+        <li><strong>The tracking interface</strong> — a clean way to see your program, log your workouts, and track your nutrition</li>
+        <li><strong>The AI compute</strong> — the cost of running the API call on their servers</li>
+    </ul>
+
+    <p>The first two are genuine value. The third one is what makes the subscription model exploitative — because you already have that compute. You're paying for it twice.</p>
+
+    <h2>The BYO AI alternative</h2>
+
+    <p>There's a simpler model: the app handles the prompt engineering and tracking. You handle the AI.</p>
+
+    <blockquote>You already have the AI. Let the app do the rest.</blockquote>
+
+    <p>This is how <a href="https://ryannovinc.github.io/JSON.fit/">JSON.fit</a> works. The app builds a detailed, structured prompt based on your goals, schedule, and preferences. You copy that prompt into whichever AI you already use — ChatGPT, Claude, Gemini, DeepSeek, whatever. The AI generates a structured plan. You paste it back into the app, and everything is ready to track.</p>
+
+    <p>Because the app never touches an AI API, there's no recurring cost to pass on to you. Workout imports are free forever. Nutrition features are a one-time $9.99 purchase. That's it.</p>
+
+    <h2>But isn't the prompt the hard part?</h2>
+
+    <p>Yes — and that's exactly where the app adds value. Writing a prompt that produces a properly periodised 12-week hypertrophy program with correct volume distribution, progressive overload, and exercise variety is genuinely hard. Most people who try to do it from scratch end up with a generic, poorly structured plan.</p>
+
+    <p>JSON.fit solves this by turning your answers to simple questions into a deeply technical prompt. You don't need to know what "weekly sets per muscle group" means or how to structure a mesocycle. The app knows. You just answer questions about your goals and schedule.</p>
+
+    <h2>The math</h2>
+
+    <p>A typical AI fitness app subscription over one year: <strong>$180–240.</strong></p>
+
+    <p>JSON.fit with nutrition unlocked: <strong>$9.99, once, forever.</strong></p>
+
+    <p>And if you only care about workout tracking — which many people do — it's <strong>$0. Free. No paywall, no trial period, no ads, no "premium" upsell on core features.</strong></p>
+
+    <p>The only reason this works economically is that JSON.fit doesn't pay for AI compute. You do, through the AI subscription (or free tier) you already have. It's a genuinely different model, not a marketing gimmick.</p>
+
+    <h2>What about quality?</h2>
+
+    <p>A fair question. If you're using the same AI, is the output actually as good as what the subscription apps produce?</p>
+
+    <p>In most cases, yes — because the output quality is determined by the prompt, not the app. A well-crafted prompt sent to GPT-4o will produce the same quality response whether it comes from a $20/month fitness app or from you pasting it into ChatGPT directly. The model doesn't know or care which app called it.</p>
+
+    <p>Where subscription apps might have an edge is in post-processing: some apps tweak the AI output or apply proprietary algorithms on top. But for the vast majority of users, the raw AI output with a good prompt is more than sufficient. You're getting personalised programming that's better than what most personal trainers provide — because the AI has been trained on more exercise science literature than any individual human could read in a lifetime.</p>
+
+    <h2>The future is BYO</h2>
+
+    <p>AI is becoming a utility, like electricity. You don't pay your electricity provider and then pay each appliance a monthly fee to use electricity. You just pay for the power and use whichever devices you want.</p>
+
+    <p>The same shift is coming for AI-powered apps. You'll pay for your AI provider (or use a free tier), and apps will compete on their interface, their prompt quality, and their tracking capabilities — not on their ability to resell you AI compute at a markup.</p>
+
+    <p>JSON.fit is built for that future. But you can use it right now.</p>
+
+    <div class="cta-box">
+        <p>Try the BYO AI approach.</p>
+        <a href="https://apps.apple.com/au/app/json-fit/id6758357834">Download JSON.fit — free on the App Store</a>
+    </div>
+</article>
+
+<footer>
+    <div class="footer-left">JSON<span class="cyan">.fit</span> <a href="/cdn-cgi/l/email-protection#3f6d465e511171504956515c7f58525e5653115c5052">Support</a> <a href="../privacy-policy.html">Privacy</a> <a href="../terms-of-service.html">Terms</a></div>
+    <div class="footer-right">© 2026 JSON.fit</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>var burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');burger.addEventListener('click',function(e){e.stopPropagation();burger.classList.toggle('open');navLinks.classList.toggle('open')});navLinks.querySelectorAll('a').
