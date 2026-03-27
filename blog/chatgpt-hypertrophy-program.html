@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Generate a 12-Week Hypertrophy Program with ChatGPT — JSON.fit</title>
+    <meta name="description" content="Step-by-step guide to generating a personalised 12-week hypertrophy workout program using ChatGPT and importing it into JSON.fit for full tracking.">
+    <link rel="canonical" href="https://ryannovinc.github.io/JSON.fit/blog/chatgpt-hypertrophy-program.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--cyan:#22d3ee;--bg:#050508;--surface:#0a0a0f;--border:rgba(255,255,255,0.06);--text:#f0f0f2;--text-2:#9898a4;--text-3:#55555f}
+        *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px}
+        body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:10000}
+        .cyan{color:var(--cyan)}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+        .nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:0.4rem}.nav-logo:hover{text-decoration:none}
+        .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}.nav-links a{color:var(--text-3);font-size:0.8rem;font-weight:500;text-decoration:none}.nav-links a:hover{color:var(--text);text-decoration:none}
+        .nav-cta{background:var(--cyan);color:#000!important;padding:0.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:0.78rem!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;position:relative}.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all 0.3s}
+        article{max-width:680px;margin:0 auto;padding:6rem 1.5rem 4rem}
+        .back{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-3);display:inline-block;margin-bottom:2.5rem;text-decoration:none;letter-spacing:0.03em}.back:hover{color:var(--cyan);text-decoration:none}
+        .post-date{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em;margin-bottom:0.75rem;display:block}
+        article h1{font-size:clamp(1.8rem,5vw,2.5rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:1.5rem}
+        article h2{font-size:1.3rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-0.01em}
+        article h3{font-size:1.05rem;font-weight:600;margin:2rem 0 0.75rem}
+        article p{color:var(--text-2);margin-bottom:1.25rem;font-size:0.95rem}
+        article strong{color:var(--text);font-weight:600}
+        article ul,article ol{color:var(--text-2);margin:0 0 1.25rem 1.25rem;font-size:0.95rem}
+        article li{margin-bottom:0.4rem}
+        .screenshot{margin:1.75rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
+        .screenshot img{width:100%;height:auto;display:block}
+        .screenshot-caption{padding:0.75rem 1rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text-3);letter-spacing:0.02em;border-top:1px solid var(--border)}
+        .placeholder{padding:3rem 1.5rem;text-align:center;color:var(--text-3);font-family:'DM Mono',monospace;font-size:0.8rem;background:var(--surface);letter-spacing:0.02em}
+        .cta-box{border:1px solid rgba(34,211,238,0.12);border-radius:12px;padding:1.75rem;margin:2rem 0;background:rgba(34,211,238,0.03);text-align:center}
+        .cta-box p{color:var(--text);margin-bottom:0.75rem;font-weight:500}
+        .cta-box a{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.25rem;border-radius:8px;background:var(--cyan);color:#000;font-weight:600;font-size:0.88rem;text-decoration:none}
+        .cta-box a:hover{text-decoration:none;transform:translateY(-1px)}
+        footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;max-width:1000px;margin:0 auto}
+        .footer-left{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--text-3)}.footer-left a{color:var(--text-3);text-decoration:none;margin-left:1.25rem}.footer-left a:hover{color:var(--cyan);text-decoration:none}
+        .footer-right{font-size:0.7rem;color:var(--text-3)}
+        @media(max-width:860px){
+            .nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}
+            .nav-links.open{display:flex}.nav-links a{font-size:1.1rem;color:var(--text-2)}
+            .hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}
+            .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+            footer{flex-direction:column;gap:0.75rem;text-align:center}.footer-left a{margin-left:0;margin:0 0.6rem}
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="../" class="nav-logo">
+        <svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
+        JSON<span class="cyan">.fit</span>
+    </a>
+    <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="../#how">How It Works</a></li>
+        <li><a href="../#nutrition">Nutrition</a></li>
+        <li><a href="../#compare">Compare</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta">Download</a></li>
+    </ul>
+</nav>
+
+<article>
+    <a href="../blog.html" class="back">← Back to blog</a>
+    <span class="post-date">March 2026</span>
+    <h1>How to Generate a 12-Week Hypertrophy Program with <span class="cyan">ChatGPT</span></h1>
+
+    <p>Most AI workout plan generators charge you $15–20/month for the privilege of using AI that you already have access to. If you're paying for ChatGPT Plus — or even using the free tier — you can generate a fully personalised hypertrophy program in about two minutes.</p>
+
+    <p>This tutorial walks through the entire process: setting up your profile, generating the prompt, sending it to ChatGPT, and importing the finished program so every set, rep, and weight is ready to track.</p>
+
+    <h2>What you'll need</h2>
+
+    <ul>
+        <li><strong>JSON.fit</strong> — free on the <a href="https://apps.apple.com/au/app/json-fit/id6758357834">App Store</a> (workout imports are completely free, no ads)</li>
+        <li><strong>ChatGPT</strong> — free tier works fine, Plus is slightly better for longer programs</li>
+        <li>About 2–3 minutes</li>
+    </ul>
+
+    <h2>Step 1: Set up your profile</h2>
+
+    <p>Open JSON.fit and head to the workout setup screen. The app asks you a series of questions about your training — nothing complicated, just the basics that any good program needs:</p>
+
+    <ul>
+        <li>Your training goal (hypertrophy, strength, general fitness)</li>
+        <li>How many days per week you can train</li>
+        <li>Your experience level</li>
+        <li>Equipment access (full gym, home gym, minimal equipment)</li>
+        <li>Any preferences (training split, exercise preferences, injuries to work around)</li>
+    </ul>
+
+    <div class="screenshot">
+        <div class="placeholder">[SCREENSHOT: The JSON.fit workout setup screen showing the goal/schedule/preferences questionnaire]</div>
+        <div class="screenshot-caption">The setup screen asks targeted questions to build a precise prompt.</div>
+    </div>
+
+    <p>The app takes your answers and constructs a detailed, structured prompt behind the scenes. This is the key — you don't need to know how to write a good AI prompt. The app handles that for you.</p>
+
+    <h2>Step 2: Copy the prompt</h2>
+
+    <p>Once setup is complete, JSON.fit generates a prompt that's specifically designed to produce a structured JSON output. Tap "Copy Prompt" and the entire thing goes to your clipboard.</p>
+
+    <div class="screenshot">
+        <div class="placeholder">[SCREENSHOT: The generated prompt screen with the "Copy Prompt" button highlighted]</div>
+        <div class="screenshot-caption">The prompt is optimised to produce consistent, importable JSON output.</div>
+    </div>
+
+    <p>If you're curious, the prompt includes things like volume targets per muscle group, progressive overload instructions, rest period guidelines, exercise selection criteria, and the exact JSON format the app expects. It's essentially a very detailed brief for the AI — the kind of prompt that would take 15–20 minutes to write from scratch.</p>
+
+    <h2>Step 3: Paste into ChatGPT</h2>
+
+    <p>Open ChatGPT (or any AI — Claude, Gemini, DeepSeek all work too), paste the prompt, and hit send. ChatGPT will generate a complete 12-week hypertrophy program in JSON format.</p>
+
+    <div class="screenshot">
+        <div class="placeholder">[SCREENSHOT: ChatGPT with the prompt pasted in and the JSON response being generated]</div>
+        <div class="screenshot-caption">ChatGPT generating a 12-week program. The free tier handles this fine.</div>
+    </div>
+
+    <p>The output will look like structured data — exercises, sets, reps, rest times, all organised by week and day. Don't worry about reading it; the app parses it automatically.</p>
+
+    <p><strong>A note on AI quality:</strong> ChatGPT-4o tends to produce the most detailed programs with better exercise selection. The free tier (GPT-4o mini) works perfectly well for standard programs. Claude is excellent at following the JSON structure precisely. Gemini is fast. They all produce usable programs.</p>
+
+    <h2>Step 4: Import into JSON.fit</h2>
+
+    <p>Copy the entire JSON output from ChatGPT. Go back to JSON.fit, tap "Import", and paste. The app validates the JSON, parses every exercise, set, and rep, and builds your program.</p>
+
+    <div class="screenshot">
+        <div class="placeholder">[SCREENSHOT: The import screen with the JSON pasted and the "Import" button ready]</div>
+        <div class="screenshot-caption">Paste the JSON output and tap Import. The app handles the rest.</div>
+    </div>
+
+    <p>Within a second or two, your entire 12-week program is loaded. You can see every workout for every day, with exercises, target sets, target reps, and rest periods all laid out.</p>
+
+    <h2>Step 5: Train and track</h2>
+
+    <p>Now you just follow the program. Each workout day shows you exactly what to do. Log your actual weights and reps as you go. The app tracks everything across the full 12 weeks.</p>
+
+    <div class="screenshot">
+        <div class="placeholder">[SCREENSHOT: A workout day view showing exercises with sets/reps and the logging interface]</div>
+        <div class="screenshot-caption">Every set and rep is trackable. Log your actual performance as you train.</div>
+    </div>
+
+    <h2>Why this approach works</h2>
+
+    <p>The program ChatGPT generates isn't a generic template. Because the prompt includes your specific training days, experience level, equipment access, and goals, the output is genuinely personalised. It handles things like:</p>
+
+    <ul>
+        <li><strong>Volume distribution</strong> — appropriate sets per muscle group per week based on your experience level</li>
+        <li><strong>Progressive overload</strong> — planned rep/weight increases across the 12-week mesocycle</li>
+        <li><strong>Exercise selection</strong> — compound and isolation movements matched to your equipment and preferences</li>
+        <li><strong>Deload weeks</strong> — programmed recovery phases at appropriate intervals</li>
+        <li><strong>Training split</strong> — push/pull/legs, upper/lower, full body, or whatever fits your schedule</li>
+    </ul>
+
+    <p>Is it as good as a program from a world-class coach who's been working with you for months? Probably not. Is it better than what 95% of people in the gym are doing — following random workouts from Instagram or running the same routine for years? Absolutely.</p>
+
+    <h2>Not happy with the result? Regenerate for free.</h2>
+
+    <p>One of the advantages of this approach: if you don't like the program, just go back to ChatGPT and ask it to adjust. Want more hamstring volume? Ask. Prefer barbell movements over dumbbells? Ask. Want to switch from a 4-day to a 5-day split? Ask. Then re-import.</p>
+
+    <p>With a traditional fitness app, you're stuck with whatever their algorithm gives you — or you pay extra for "custom" adjustments. Here, you just talk to the AI in plain English and try again. No extra cost.</p>
+
+    <div class="cta-box">
+        <p>Ready to build your program?</p>
+        <a href="https://apps.apple.com/au/app/json-fit/id6758357834">Download JSON.fit — free on the App Store</a>
+    </div>
+</article>
+
+<footer>
+    <div class="footer-left">JSON<span class="cyan">.fit</span> <a href="/cdn-cgi/l/email-protection#cc9eb5ada2e282a3baa5a2af8caba1ada5a0e2afa3a1">Support</a> <a href="../privacy-policy.html">Privacy</a> <a href="../terms-of-service.html">Terms</a></div>
+    <div class="footer-right">© 2026 JSON.fit</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    var burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');
+    burger.addEventListener('click',function(e){e.stopPropagation();burger.classList.toggle('open');navLinks.classList.toggle('open')});
+    navLinks.querySelectorAll('a').fo
