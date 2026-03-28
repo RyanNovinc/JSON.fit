@@ -585,11 +585,12 @@
         .hero-video-mobile { display:none; margin-top:2rem; border-radius:14px; overflow:hidden; border:1px solid var(--border-cyan); background:var(--surface); max-width:320px; margin-left:auto; margin-right:auto; }
         @media (max-width:860px) { .hero-video-mobile { display:block; } }
         /* ── Proof-card carousel ── */
-        .proof-carousel { display:flex; flex-direction:column; gap:0.75rem; }
-        .pc-track-outer { overflow:hidden; border-radius:12px; border:1px solid var(--border); background:var(--bg); height:420px; }
-        .pc-slide img { width:100%; height:420px; object-fit:cover; object-position:top; display:block; cursor:zoom-in; }
+        .proof-carousel { display:flex; flex-direction:column; align-items:center; gap:0.85rem; padding:0.5rem 0; }
+        .pc-phone { width:185px; border-radius:20px; border:1px solid var(--border-cyan); overflow:hidden; box-shadow:0 8px 32px rgba(34,211,238,0.08); background:var(--bg); }
+        .pc-track-outer { overflow:hidden; width:185px; }
         .pc-track { display:flex; transition:transform 0.38s cubic-bezier(0.22,1,0.36,1); will-change:transform; }
-        .pc-slide { min-width:100%; display:flex; flex-direction:column; flex-shrink:0; }
+        .pc-slide { min-width:185px; width:185px; flex-shrink:0; }
+        .pc-slide img { width:185px; height:auto; display:block; cursor:zoom-in; }
 
         .pc-caption { padding:0.55rem 0.85rem 0.65rem; font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--cyan); letter-spacing:0.07em; text-transform:uppercase; background:var(--surface-2); border-top:1px solid var(--border); }
         .pc-controls { display:flex; align-items:center; justify-content:space-between; gap:0.75rem; padding:0 0.25rem; }
@@ -811,12 +812,18 @@
                 <h3>AI verifies its own work before you import</h3>
                 <p>The 3-step prompt pipeline asks the AI to review its own volume distribution, exercise selection, and progressive overload — then format for import. A checked program, not a first draft.</p>
                 <div class="proof-carousel">
-                    <div class="pc-track-outer">
-                        <div class="pc-track" id="pcTrack">
-                            <div class="pc-slide">
-                                <img src="images/Success_import.png" alt="Workout imported in 0.80s" loading="lazy">
-                                <div class="pc-caption">Imported in 0.80s</div>
+                    <div class="pc-phone">
+                        <div class="pc-track-outer">
+                            <div class="pc-track" id="pcTrack">
+                                <div class="pc-slide"><img src="images/Success_import.png" alt="Workout imported in 0.80s" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/workout_split.png" alt="Full training split with exercises" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/actual_workout.png" alt="Tracking sets and reps in a workout" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/Alternative_machines_if_yours_is_taken.png" alt="Swap exercises if machine is taken" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/Rep_schema.png" alt="Progressive overload rep scheme by week" loading="lazy"></div>
                             </div>
+                        </div>
+                        <div class="pc-caption" id="pcCaption1">Imported in 0.80s</div>
+                    </div>
                             <div class="pc-slide">
                                 <img src="images/workout_split.png" alt="Full training split with exercises" loading="lazy">
                                 <div class="pc-caption">Your full split, every week</div>
@@ -971,12 +978,18 @@
                 <h3>Your macros, calculated for your body and goal</h3>
                 <p>The nutrition prompt pipeline takes your weight, goal, activity level, cooking style, and sleep schedule — and builds a complete 7-day plan with every macro accounted for.</p>
                 <div class="proof-carousel">
-                    <div class="pc-track-outer">
-                        <div class="pc-track" id="pcTrack2">
-                            <div class="pc-slide">
-                                <img src="images/Success_import2.png" alt="Meal plan imported in 0.81s" loading="lazy">
-                                <div class="pc-caption">Imported in 0.81s</div>
+                    <div class="pc-phone">
+                        <div class="pc-track-outer">
+                            <div class="pc-track" id="pcTrack2">
+                                <div class="pc-slide"><img src="images/Success_import2.png" alt="Meal plan imported in 0.81s" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/Day_Plan.png" alt="Daily meal timeline with macros" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/Summary.png" alt="Grocery list and meal prep schedule" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/Grocery_List.png" alt="Itemised grocery list with prices" loading="lazy"></div>
+                                <div class="pc-slide"><img src="images/Meal_Prep.png" alt="Step by step meal prep session" loading="lazy"></div>
                             </div>
+                        </div>
+                        <div class="pc-caption" id="pcCaption2">Imported in 0.81s</div>
+                    </div>
                             <div class="pc-slide">
                                 <img src="images/Day_Plan.png" alt="Daily meal timeline with macros" loading="lazy">
                                 <div class="pc-caption">Every meal, every macro, timed</div>
