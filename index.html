@@ -561,6 +561,7 @@
             .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
             .ai-strip { gap:1rem; padding:0.8rem 1rem; }
             .section-head p { max-width:100%; }
+            .hero-video { margin:2rem auto 0 !important; }
         }
         @media (max-width: 480px) {
             .hero h1 { font-size:clamp(2.2rem,10vw,3rem); }
@@ -630,6 +631,19 @@
                     <span class="hsm-label">Import & track</span>
                 </div>
             </div>
+
+            <!-- VIDEO EMBED -->
+            <div class="hero-video sa sa-up" style="margin-top:2rem; border-radius:14px; overflow:hidden; border:1px solid var(--border-cyan); background:var(--surface); max-width:320px;">
+                <iframe
+                    src="https://www.youtube.com/embed/luuxyPwx-Yo"
+                    title="JSON.fit — how it works"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    style="display:block; width:100%; aspect-ratio:9/16;">
+                </iframe>
+            </div>
+
         </div>
 
         <!-- HERO GRAPHIC -->
