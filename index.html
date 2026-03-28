@@ -1045,25 +1045,12 @@
 
             io.unobserve(el);
         });
-    }, { threshold: 0.05, rootMargin: '0px 0px -60px 0px' });
+    }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
 
     document.querySelectorAll('.sa, .sa-stagger').forEach(function(el) { io.observe(el); });
 
     // Also observe proof cards individually for bar animations
     document.querySelectorAll('.proof-card').forEach(function(el) { io.observe(el); });
-
-    // Fallback: reveal everything after 1500ms if observer hasn't fired
-    setTimeout(function() {
-        var any = false;
-        document.querySelectorAll('.sa, .sa-stagger').forEach(function(el) { if (el.classList.contains('vis')) any = true; });
-        if (!any) {
-            document.querySelectorAll('.sa, .sa-stagger').forEach(function(el) { el.classList.add('vis'); });
-            document.querySelectorAll('.section-line').forEach(function(l) { l.classList.add('vis'); });
-            document.querySelectorAll('.proof-vol-bar').forEach(function(bar) {
-                bar.style.width = bar.getAttribute('data-w') || '0%';
-            });
-        }
-    }, 800);
 
     /* ── Smooth scroll ── */
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
