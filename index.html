@@ -891,14 +891,14 @@
 <footer>
     <div class="foot-l">
         JSON<span class="cyan">.fit</span>
-        <a href="mailto:Ryan.Novinc@gmail.com">Support</a>
+        <a href="/cdn-cgi/l/email-protection#eebc978f80c0a0819887808dae89838f8782c08d8183">Support</a>
         <a href="privacy-policy.html">Privacy</a>
         <a href="terms-of-service.html">Terms</a>
     </div>
     <div class="foot-r">© 2026 JSON.fit</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function() {
 
     /* ── Hero graphic tab switcher ── */
@@ -1005,52 +1005,61 @@
     lb.addEventListener('click', function(e) { if (e.target !== lbImg) closeLb(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
 
-    /* ── Intersection Observer: scroll animations ── */
-    var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (!entry.isIntersecting) return;
-            var el = entry.target;
-            el.classList.add('vis');
+    /* ── Scroll animations: getBoundingClientRect engine ── */
+    // Collect all animatable elements
+    var animEls = Array.prototype.slice.call(document.querySelectorAll('.sa, .sa-stagger, .proof-card'));
+    var animated = [];
 
-            // Section line draw
-            var line = el.querySelector('.section-line');
-            if (line) setTimeout(function() { line.classList.add('vis'); }, 50);
+    function runAnims() {
+        var wh = window.innerHeight;
+        // Trigger point: element animates when its top edge crosses 88% down the viewport
+        var trigger = wh * 0.88;
 
-            // Animated bars in proof cards
-            el.querySelectorAll('.proof-vol-bar').forEach(function(bar, i) {
-                setTimeout(function() {
-                    bar.style.transition = 'width 0.8s ease';
-                    bar.style.width = bar.getAttribute('data-w') || '0%';
-                }, 200 + i * 80);
-            });
+        animEls.forEach(function(el) {
+            if (animated.indexOf(el) !== -1) return; // already fired
+            var top = el.getBoundingClientRect().top;
+            if (top < trigger) {
+                animated.push(el);
+                el.classList.add('vis');
 
-            // Count-up numbers
-            el.querySelectorAll('.count-up').forEach(function(numEl) {
-                var target = parseFloat(numEl.getAttribute('data-target'));
-                var suffix = numEl.getAttribute('data-suffix') || '';
-                var prefix = numEl.getAttribute('data-prefix') || '';
-                var decimals = parseInt(numEl.getAttribute('data-decimals') || '0');
-                var duration = 1200;
-                var start = null;
-                function step(ts) {
-                    if (!start) start = ts;
-                    var progress = Math.min((ts - start) / duration, 1);
-                    var ease = 1 - Math.pow(1 - progress, 3);
-                    var val = target * ease;
-                    numEl.textContent = prefix + (decimals > 0 ? val.toFixed(decimals) : Math.round(val).toLocaleString()) + suffix;
-                    if (progress < 1) requestAnimationFrame(step);
-                }
-                requestAnimationFrame(step);
-            });
+                // Section line draw
+                var line = el.querySelector('.section-line');
+                if (line) setTimeout(function() { line.classList.add('vis'); }, 80);
 
-            io.unobserve(el);
+                // Animated bars — staggered
+                el.querySelectorAll('.proof-vol-bar').forEach(function(bar, i) {
+                    setTimeout(function() {
+                        bar.style.transition = 'width 0.9s cubic-bezier(0.22,1,0.36,1)';
+                        bar.style.width = bar.getAttribute('data-w') || '0%';
+                    }, 150 + i * 90);
+                });
+
+                // Count-up numbers
+                el.querySelectorAll('.count-up').forEach(function(numEl) {
+                    var target = parseFloat(numEl.getAttribute('data-target'));
+                    var suffix = numEl.getAttribute('data-suffix') || '';
+                    var prefix = numEl.getAttribute('data-prefix') || '';
+                    var decimals = parseInt(numEl.getAttribute('data-decimals') || '0');
+                    var duration = 1400;
+                    var start = null;
+                    function step(ts) {
+                        if (!start) start = ts;
+                        var progress = Math.min((ts - start) / duration, 1);
+                        var ease = 1 - Math.pow(1 - progress, 3);
+                        var val = target * ease;
+                        numEl.textContent = prefix + (decimals > 0 ? val.toFixed(decimals) : Math.round(val).toLocaleString()) + suffix;
+                        if (progress < 1) requestAnimationFrame(step);
+                    }
+                    requestAnimationFrame(step);
+                });
+            }
         });
-    }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
+    }
 
-    document.querySelectorAll('.sa, .sa-stagger').forEach(function(el) { io.observe(el); });
-
-    // Also observe proof cards individually for bar animations
-    document.querySelectorAll('.proof-card').forEach(function(el) { io.observe(el); });
+    // Run on scroll (passive for performance)
+    window.addEventListener('scroll', runAnims, { passive: true });
+    // Run once on load to catch anything already in view
+    runAnims();
 
     /* ── Smooth scroll ── */
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
