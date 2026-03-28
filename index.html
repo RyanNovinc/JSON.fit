@@ -1013,7 +1013,7 @@
     function runAnims() {
         var wh = window.innerHeight;
         // Trigger point: element animates when its top edge crosses 88% down the viewport
-        var trigger = wh * 0.88;
+        var trigger = wh * 0.80;
 
         animEls.forEach(function(el) {
             if (animated.indexOf(el) !== -1) return; // already fired
