@@ -1229,4 +1229,12 @@
             e.preventDefault();
             setTimeout(function() {
                 var target = document.querySelector(href);
-                i
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        });
+    });
+
+})();
+</script>
+</body>
+</html>
