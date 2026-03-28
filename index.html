@@ -574,6 +574,35 @@
             .proof-card { padding:1.5rem; }
             .proof-stat-num { font-size:2rem; }
         }
+
+        /* ── Hero watch link — desktop only ── */
+        .hero-watch-link { margin-top:0.6rem; font-family:'DM Mono',monospace; font-size:0.72rem; animation:heroFadeUp 0.7s ease 0.32s both; }
+        .hero-watch-link a { color:var(--text-3); text-decoration:none; transition:color 0.2s; letter-spacing:0.02em; }
+        .hero-watch-link a:hover { color:var(--cyan); }
+        @media (max-width:860px) { .hero-watch-link { display:none; } }
+
+        /* ── Hero video — mobile only ── */
+        .hero-video-mobile { display:none; margin-top:2rem; border-radius:14px; overflow:hidden; border:1px solid var(--border-cyan); background:var(--surface); max-width:320px; margin-left:auto; margin-right:auto; }
+        @media (max-width:860px) { .hero-video-mobile { display:block; } }
+
+        /* ── Screenshot Carousel ── */
+        .carousel-section { padding:4rem 0 2rem; }
+        .carousel-head { text-align:center; margin-bottom:2rem; }
+        .carousel-head h3 { font-size:1.1rem; font-weight:700; letter-spacing:-0.01em; margin-bottom:0.3rem; }
+        .carousel-head p { font-size:0.82rem; color:var(--text-3); font-family:'DM Mono',monospace; letter-spacing:0.04em; }
+        .carousel-wrap { position:relative; display:flex; align-items:center; justify-content:center; gap:1rem; }
+        .carousel-track-outer { overflow:hidden; width:100%; max-width:260px; border-radius:24px; border:1px solid var(--border-cyan); background:var(--bg); box-shadow:0 8px 40px rgba(34,211,238,0.07); }
+        .carousel-track { display:flex; transition:transform 0.38s cubic-bezier(0.22,1,0.36,1); will-change:transform; }
+        .carousel-slide { min-width:100%; display:flex; flex-direction:column; align-items:center; }
+        .carousel-slide img { width:100%; height:auto; display:block; cursor:zoom-in; }
+        .carousel-caption { width:100%; padding:0.7rem 1rem 0.85rem; text-align:center; font-family:'DM Mono',monospace; font-size:0.63rem; color:var(--cyan); letter-spacing:0.06em; text-transform:uppercase; background:var(--surface); border-top:1px solid var(--border); }
+        .carousel-btn { flex-shrink:0; width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text-2); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s,color 0.2s,transform 0.15s; font-size:1rem; }
+        .carousel-btn:hover { border-color:var(--cyan); color:var(--cyan); transform:scale(1.08); }
+        .carousel-btn:disabled { opacity:0.2; cursor:default; transform:none; }
+        .carousel-dots { display:flex; justify-content:center; gap:0.5rem; margin-top:1.25rem; }
+        .carousel-dot { width:5px; height:5px; border-radius:50%; background:var(--border); border:none; cursor:pointer; padding:0; transition:background 0.2s,transform 0.2s; }
+        .carousel-dot.active { background:var(--cyan); transform:scale(1.3); }
+        @media (max-width:600px) { .carousel-track-outer { max-width:220px; } .carousel-btn { width:30px; height:30px; font-size:0.85rem; } }
     </style>
 </head>
 <body>
@@ -606,9 +635,9 @@
                 <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
                     <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
                 </a>
-
             </div>
             <p class="hero-meta">Free workouts forever · Nutrition unlock <span style="color:var(--cyan)">⚡ Early adopter pricing</span></p>
+            <p class="hero-watch-link"><a href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.3em;vertical-align:middle;position:relative;top:-1px"><polygon points="5,3 19,12 5,21"/></svg>Watch how it works (44s)</a></p>
 
             <div class="hero-steps-mobile">
                 <div class="hsm-step">
@@ -630,8 +659,8 @@
                 </div>
             </div>
 
-            <!-- VIDEO EMBED -->
-            <div class="hero-video sa sa-up" style="margin-top:2rem; border-radius:14px; overflow:hidden; border:1px solid var(--border-cyan); background:var(--surface); max-width:320px; margin-left:auto; margin-right:auto;">
+            <!-- VIDEO EMBED — mobile only -->
+            <div class="hero-video-mobile sa sa-up">
                 <iframe
                     src="https://www.youtube.com/embed/luuxyPwx-Yo"
                     title="JSON.fit — how it works"
@@ -826,6 +855,51 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- SCREENSHOT CAROUSEL -->
+<section class="carousel-section sa sa-up">
+    <div class="container">
+        <div class="carousel-head">
+            <h3>Inside the app</h3>
+            <p>Swipe to explore</p>
+        </div>
+        <div class="carousel-wrap">
+            <button class="carousel-btn" id="carPrev" aria-label="Previous">&#8592;</button>
+            <div class="carousel-track-outer">
+                <div class="carousel-track" id="carTrack">
+                    <div class="carousel-slide">
+                        <img src="images/Success_import.png" alt="Workout imported in 0.80s" loading="lazy">
+                        <div class="carousel-caption">Imported in 0.80s</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/workout_split.png" alt="Full training split with exercises" loading="lazy">
+                        <div class="carousel-caption">Your full split, every week</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/actual_workout.png" alt="Tracking sets and reps in a workout" loading="lazy">
+                        <div class="carousel-caption">Track every set</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/Alternative_machines_if_yours_is_taken.png" alt="Swap exercises if machine is taken" loading="lazy">
+                        <div class="carousel-caption">Machine taken? Swap it instantly</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/Rep_schema.png" alt="Progressive overload rep scheme by week" loading="lazy">
+                        <div class="carousel-caption">Progressive overload, built in</div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-btn" id="carNext" aria-label="Next">&#8594;</button>
+        </div>
+        <div class="carousel-dots" id="carDots">
+            <button class="carousel-dot active" aria-label="Slide 1"></button>
+            <button class="carousel-dot" aria-label="Slide 2"></button>
+            <button class="carousel-dot" aria-label="Slide 3"></button>
+            <button class="carousel-dot" aria-label="Slide 4"></button>
+            <button class="carousel-dot" aria-label="Slide 5"></button>
         </div>
     </div>
 </section>
@@ -1052,17 +1126,18 @@
 <div class="toast" id="toast"><span class="toast-icon">✓</span> Noted — Android is coming!</div>
 
 <!-- FOOTER -->
+<!-- CHANGE: support link updated from Cloudflare email obfuscation to mailto:support@json.fit -->
 <footer>
     <div class="foot-l">
         JSON<span class="cyan">.fit</span>
-        <a href="/cdn-cgi/l/email-protection#25565055554a5751654f564a4b0b434c51">Support</a>
+        <a href="mailto:support@json.fit">Support</a>
         <a href="privacy-policy.html">Privacy</a>
         <a href="terms-of-service.html">Terms</a>
     </div>
     <div class="foot-r">© 2026 JSON.fit</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function() {
 
     /* ── Hero graphic tab switcher ── */
@@ -1226,10 +1301,41 @@
             e.preventDefault();
             setTimeout(function() {
                 var target = document.querySelector(href);
-                                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 50);
         });
     });
+
+    /* ── Carousel ── */
+    (function() {
+        var track = document.getElementById('carTrack');
+        var prevBtn = document.getElementById('carPrev');
+        var nextBtn = document.getElementById('carNext');
+        var dots = document.querySelectorAll('#carDots .carousel-dot');
+        if (!track) return;
+        var total = track.children.length;
+        var current = 0;
+        function goTo(n) {
+            current = Math.max(0, Math.min(n, total - 1));
+            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === total - 1;
+        }
+        prevBtn.addEventListener('click', function() { goTo(current - 1); });
+        nextBtn.addEventListener('click', function() { goTo(current + 1); });
+        dots.forEach(function(d, i) { d.addEventListener('click', function() { goTo(i); }); });
+        var touchStartX = 0;
+        track.parentElement.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive:true });
+        track.parentElement.addEventListener('touchend', function(e) {
+            var dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+        }, { passive:true });
+        Array.from(track.querySelectorAll('img')).forEach(function(img) {
+            img.addEventListener('click', function() { openLb(img.src, img.alt); });
+        });
+        goTo(0);
+    })();
 
 })();
 </script>
