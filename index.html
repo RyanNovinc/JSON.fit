@@ -92,25 +92,25 @@
 
         /* ── Scroll Animations ── */
         .sa {
-            opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease;
+            opacity: 0; transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
         }
-        .sa-up { transform: translateY(28px); }
-        .sa-left { transform: translateX(-28px); }
-        .sa-right { transform: translateX(28px); }
-        .sa-scale { transform: scale(0.95); }
+        .sa-up { transform: translateY(60px); }
+        .sa-left { transform: translateX(-60px); }
+        .sa-right { transform: translateX(60px); }
+        .sa-scale { transform: scale(0.9) translateY(30px); }
         .sa.vis { opacity: 1; transform: none; }
 
-        /* stagger children */
+        /* stagger children — each child falls in separately */
         .sa-stagger > * {
-            opacity: 0; transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0; transform: translateY(50px) scale(0.97);
+            transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
         }
         .sa-stagger.vis > *:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
-        .sa-stagger.vis > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.1s; }
-        .sa-stagger.vis > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.2s; }
-        .sa-stagger.vis > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.3s; }
-        .sa-stagger.vis > *:nth-child(5) { opacity:1; transform:none; transition-delay:0.4s; }
-        .sa-stagger.vis > *:nth-child(6) { opacity:1; transform:none; transition-delay:0.5s; }
+        .sa-stagger.vis > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.15s; }
+        .sa-stagger.vis > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.3s; }
+        .sa-stagger.vis > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.45s; }
+        .sa-stagger.vis > *:nth-child(5) { opacity:1; transform:none; transition-delay:0.6s; }
+        .sa-stagger.vis > *:nth-child(6) { opacity:1; transform:none; transition-delay:0.75s; }
 
         /* section line draw */
         .section-line {
@@ -1045,14 +1045,14 @@
 
             io.unobserve(el);
         });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.05, rootMargin: '0px 0px -60px 0px' });
 
     document.querySelectorAll('.sa, .sa-stagger').forEach(function(el) { io.observe(el); });
 
     // Also observe proof cards individually for bar animations
     document.querySelectorAll('.proof-card').forEach(function(el) { io.observe(el); });
 
-    // Fallback: reveal everything after 800ms if observer hasn't fired
+    // Fallback: reveal everything after 1500ms if observer hasn't fired
     setTimeout(function() {
         var any = false;
         document.querySelectorAll('.sa, .sa-stagger').forEach(function(el) { if (el.classList.contains('vis')) any = true; });
