@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How to Create a Personalised Meal Plan with Claude — JSON.fit</title>
     <meta name="description" content="Generate a personalised meal plan using Claude AI and import it into JSON.fit for macro tracking, grocery lists, and meal prep instructions. One-time $9.99.">
-    <link rel="canonical" href="https://ryannovinc.github.io/JSON.fit/blog/meal-plan-claude.html">
+    <link rel="canonical" href="https://json.fit/blog/meal-plan-claude.html">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,10 @@
         .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;position:relative}.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all 0.3s}
         article{max-width:680px;margin:0 auto;padding:6rem 1.5rem 4rem}
         .back{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-3);display:inline-block;margin-bottom:2.5rem;text-decoration:none;letter-spacing:0.03em}.back:hover{color:var(--cyan);text-decoration:none}
-        .post-date{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em;margin-bottom:0.75rem;display:block}
+        .post-meta{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem}
+        .post-date{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
+        .post-meta-sep{font-size:0.65rem;color:var(--text-3)}
+        .post-read{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
         article h1{font-size:clamp(1.8rem,5vw,2.5rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:1.5rem}
         article h2{font-size:1.3rem;font-weight:700;margin:2.5rem 0 1rem}article h3{font-size:1.05rem;font-weight:600;margin:2rem 0 0.75rem}
         article p{color:var(--text-2);margin-bottom:1.25rem;font-size:0.95rem}article strong{color:var(--text);font-weight:600}
@@ -30,7 +33,6 @@
         .screenshot{margin:1.75rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
         .screenshot img{width:100%;height:auto;display:block}
         .screenshot-caption{padding:0.75rem 1rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text-3);border-top:1px solid var(--border)}
-        .placeholder{padding:3rem 1.5rem;text-align:center;color:var(--text-3);font-family:'DM Mono',monospace;font-size:0.8rem;background:var(--surface)}
         .screenshot-scroll{display:flex;gap:0.75rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding:0.5rem 0;margin:1.75rem 0 0}
         .screenshot-scroll .ss-item{flex:0 0 auto;width:220px;border-radius:12px;overflow:hidden;border:1px solid var(--border);scroll-snap-align:start}
         .screenshot-scroll .ss-item img{width:100%;height:auto;display:block}
@@ -51,7 +53,11 @@
 
 <article>
     <a href="../blog.html" class="back">← Back to blog</a>
-    <span class="post-date">March 2026</span>
+    <div class="post-meta">
+        <span class="post-date">March 14, 2026</span>
+        <span class="post-meta-sep">·</span>
+        <span class="post-read">5 min read</span>
+    </div>
     <h1>How to Create a Personalised Meal Plan with <span class="cyan">Claude</span></h1>
 
     <p>Getting personalised nutrition advice used to mean paying a dietitian $150–300 per session. Now you can generate a meal plan that's calibrated to your exact macros, uses ingredients you actually buy, and comes with a grocery list and meal prep instructions.</p>
@@ -171,6 +177,8 @@
     <p>For a single one-time payment, you get unlimited meal plan generation with a 3-step quality-checked prompt system, macro tracking, grocery lists, meal prep instructions, pantry-aware planning, and sleep-synced meal timing. No subscription, no ads. There's no monthly fee because JSON.fit doesn't run the AI — you do, with the AI you already have.</p>
 
     <p>That's the entire model. You're already paying for Claude or ChatGPT (or using the free tier). JSON.fit just gives you the structured prompts and the tracking interface. There's nothing to charge monthly for.</p>
+
+    <p>Want to understand why the BYO AI model makes sense? <a href="../blog/why-no-ai-subscription.html">Read: Why you don't need another AI subscription →</a></p>
 
     <div class="cta-box">
         <p>Ready to build your meal plan?</p>
