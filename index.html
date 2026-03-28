@@ -1229,4 +1229,1158 @@
 })();
 </script>
 </body>
+</html>          "name": "Why is JSON.fit so much cheaper than other fitness apps?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most fitness apps charge $10–20 per month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on to you. That's why workouts are free and nutrition is a one-time purchase."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What AI does JSON.fit work with?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any AI that can generate structured text — ChatGPT, Claude, Gemini, DeepSeek, and more. You're not locked into one provider. Use whatever you prefer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data private with JSON.fit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Your data stays on your device. JSON.fit doesn't have accounts, doesn't collect personal information, and doesn't send your workout or nutrition data anywhere."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is JSON.fit available on Android?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not yet — it's currently iOS only. Android is in development."
+          }
+        }
+      ]
+    }
+    </script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ── Variables ── */
+        :root {
+            --cyan: #22d3ee;
+            --cyan-soft: rgba(34,211,238,0.08);
+            --cyan-glow: rgba(34,211,238,0.35);
+            --green: #22c55e;
+            --red: #ef4444;
+            --bg: #050508;
+            --surface: #0a0a0f;
+            --surface-2: #111116;
+            --border: rgba(255,255,255,0.06);
+            --border-cyan: rgba(34,211,238,0.14);
+            --text: #f0f0f2;
+            --text-2: #9898a4;
+            --text-3: #55555f;
+        }
+
+        /* ── Reset ── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; line-height: 1.7; font-size: 16px;
+        }
+
+        /* ── Utilities ── */
+        .cyan { color: var(--cyan); }
+        .green { color: var(--green); }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+        .section { padding: 6rem 0; }
+        .label {
+            font-family: 'DM Mono', monospace; font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.2em;
+            color: var(--cyan); display: block; margin-bottom: 1rem;
+        }
+
+        /* ── Scroll Animations ── */
+        .sa {
+            opacity: 0; transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+        }
+        .sa-up { transform: translateY(60px); }
+        .sa-left { transform: translateX(-60px); }
+        .sa-right { transform: translateX(60px); }
+        .sa-scale { transform: scale(0.9) translateY(30px); }
+        .sa.vis { opacity: 1; transform: none; }
+
+        /* stagger children — each child falls in separately */
+        .sa-stagger > * {
+            opacity: 0; transform: translateY(50px) scale(0.97);
+            transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+        }
+        .sa-stagger.vis > *:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
+        .sa-stagger.vis > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.15s; }
+        .sa-stagger.vis > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.3s; }
+        .sa-stagger.vis > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.45s; }
+        .sa-stagger.vis > *:nth-child(5) { opacity:1; transform:none; transition-delay:0.6s; }
+        .sa-stagger.vis > *:nth-child(6) { opacity:1; transform:none; transition-delay:0.75s; }
+
+        /* section line draw */
+        .section-line {
+            width: 0; height: 1px; background: var(--border-cyan);
+            margin-bottom: 1rem; transition: width 0.7s ease;
+        }
+        .section-line.vis { width: 48px; }
+
+        /* count-up numbers */
+        .count-up { display: inline-block; }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 0 1.5rem; height: 56px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(5,5,8,0.85);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-family: 'DM Mono', monospace; font-weight: 500; font-size: 1rem;
+            color: var(--text); text-decoration: none;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-3); text-decoration: none; font-size: 0.8rem;
+            font-weight: 500; transition: color 0.2s; letter-spacing: 0.01em;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta {
+            background: var(--cyan) !important; color: #000 !important;
+            padding: 0.4rem 1rem; border-radius: 8px;
+            font-weight: 600 !important; font-size: 0.78rem !important;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--cyan-glow); }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+        .hamburger span { display: block; width: 20px; height: 2px; background: var(--text); margin: 4px 0; transition: all 0.3s; }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh; min-height: 100dvh;
+            display: flex; align-items: center;
+            padding: 7rem 1.5rem 4rem;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -10%; left: 35%;
+            width: 700px; height: 700px; border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 65%);
+            opacity: 0.07; filter: blur(80px); pointer-events: none;
+        }
+        .hero-split {
+            max-width: 1000px; margin: 0 auto; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 4rem; align-items: center;
+        }
+        .hero-text { position: relative; z-index: 2; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.3rem 0.9rem; border: 1px solid var(--border-cyan);
+            border-radius: 100px; font-family: 'DM Mono', monospace;
+            font-size: 0.68rem; color: var(--cyan); background: var(--cyan-soft);
+            margin-bottom: 2rem; letter-spacing: 0.03em;
+            animation: heroFadeUp 0.7s ease both;
+        }
+        .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)} }
+        .hero h1 {
+            font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 800;
+            line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem;
+            animation: heroFadeUp 0.7s ease 0.07s both;
+        }
+        .hero-sub {
+            font-size: 1rem; color: var(--text-2); max-width: 440px;
+            font-weight: 400; line-height: 1.75; margin-bottom: 2rem;
+            animation: heroFadeUp 0.7s ease 0.14s both;
+        }
+        .hero-btns {
+            display: flex; gap: 0.75rem; flex-wrap: wrap;
+            animation: heroFadeUp 0.7s ease 0.21s both;
+        }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.9rem 2rem; border-radius: 12px; font-size: 1rem;
+            font-weight: 700; text-decoration: none; font-family: 'Outfit', sans-serif;
+            background: var(--cyan); color: #000; border: none;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px var(--cyan-glow); }
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.9rem 1.75rem; border-radius: 12px; font-size: 1rem;
+            font-weight: 600; text-decoration: none; font-family: 'Outfit', sans-serif;
+            background: transparent; color: var(--text-2); border: 1px solid var(--border);
+            transition: all 0.25s;
+        }
+        .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-soft); }
+        .hero-meta {
+            margin-top: 1.25rem; font-size: 0.73rem; color: var(--text-3);
+            font-family: 'DM Mono', monospace; letter-spacing: 0.02em;
+            animation: heroFadeUp 0.7s ease 0.28s both;
+        }
+        .hero-meta strong { color: var(--cyan); }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Hero Graphic ── */
+        .hero-graphic {
+            position: relative; z-index: 2;
+            animation: heroFadeUp 0.9s ease 0.35s both;
+        }
+        .hg-tabs {
+            display: flex; gap: 0.4rem; margin-bottom: 0.75rem;
+        }
+        .hg-tab {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.35rem 0.85rem; border-radius: 8px;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem;
+            font-weight: 500; letter-spacing: 0.04em;
+            border: 1px solid var(--border); background: transparent;
+            color: var(--text-3); cursor: pointer; transition: all 0.2s;
+        }
+        .hg-tab:hover { color: var(--text-2); border-color: rgba(255,255,255,0.12); }
+        .hg-tab-active { background: var(--cyan-soft); border-color: var(--border-cyan); color: var(--cyan); }
+        .hg-panel { display: flex; flex-direction: column; gap: 0; }
+        .hg-panel-hidden { display: none; }
+        .hg-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.25rem 1.5rem; position: relative;
+        }
+        .hg-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-cyan), transparent);
+        }
+        .hg-card-1 { animation: cardSlide 0.5s ease 0.5s both; }
+        .hg-card-2 { animation: cardSlide 0.5s ease 0.9s both; }
+        .hg-card-3 { animation: cardSlide 0.5s ease 1.3s both; }
+        @keyframes cardSlide { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:none} }
+        .hg-arrow {
+            display: flex; justify-content: center; padding: 0.25rem 0;
+            color: var(--text-3);
+        }
+        .hg-arrow:nth-of-type(1) { animation: fadeIn 0.3s ease 0.85s both; }
+        .hg-arrow:nth-of-type(2) { animation: fadeIn 0.3s ease 1.25s both; }
+        @keyframes fadeIn { from{opacity:0}to{opacity:1} }
+        .hg-lbl { font-family:'DM Mono',monospace; font-size:0.58rem; text-transform:uppercase; letter-spacing:0.16em; color:var(--cyan); margin-bottom:0.5rem; }
+        .hg-title { font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:0.2rem; }
+        .hg-sub { font-size:0.72rem; color:var(--text-3); font-family:'DM Mono',monospace; margin-bottom:0.75rem; }
+        .hg-prog { height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
+        .hg-prog-fill { height:100%; border-radius:2px; animation:progFill 1s ease 0.7s both; }
+        .hg-prog-fill-w { background:linear-gradient(90deg,var(--cyan),rgba(34,211,238,0.3)); }
+        .hg-prog-fill-n { background:linear-gradient(90deg,var(--green),rgba(34,197,94,0.3)); }
+        @keyframes progFill { from{width:0} to{width:100%} }
+        .hg-rows { display:flex; flex-direction:column; gap:0.45rem; }
+        .hg-row { display:flex; align-items:center; gap:0.6rem; }
+        .hg-row-name { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); width:72px; flex-shrink:0; }
+        .hg-bar-wrap { flex:1; height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
+        .hg-bar { height:100%; border-radius:2px; width:0; }
+        .hg-bar-w { background:var(--cyan); }
+        .hg-bar-n { background:var(--green); }
+        .hg-row-val { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--cyan); width:40px; text-align:right; flex-shrink:0; }
+        .hg-row-val-n { color:var(--green); }
+        .hg-stats { display:flex; gap:1.25rem; margin-bottom:0.75rem; }
+        .hg-stat { display:flex; flex-direction:column; gap:0.1rem; }
+        .hg-stat-num { font-family:'DM Mono',monospace; font-size:1.3rem; font-weight:500; color:var(--cyan); line-height:1; }
+        .hg-stat-num-n { color:var(--green); }
+        .hg-stat-sub { font-size:0.65rem; color:var(--text-3); font-family:'DM Mono',monospace; }
+        .hg-ready { display:inline-flex; align-items:center; gap:0.4rem; font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--green); letter-spacing:0.06em; }
+        .hg-ready-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 1.5s infinite; }
+
+        /* ── AI Strip ── */
+        .ai-strip {
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;
+        }
+        .ai-strip span { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); letter-spacing:0.04em; }
+        .ai-strip .ai-lbl { color:var(--text-2); font-weight:500; }
+
+        /* ── Section Header ── */
+        .section-head { margin-bottom: 3rem; }
+        .section-head h2 {
+            font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 800;
+            letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 0.75rem;
+        }
+        .section-head p { color:var(--text-2); font-size:1rem; max-width:500px; }
+
+        /* ── Blurb ── */
+        .blurb { text-align:center; max-width:580px; margin:0 auto; }
+        .blurb h2 { font-size:clamp(1.6rem,4vw,2.2rem); font-weight:800; letter-spacing:-0.02em; line-height:1.2; margin-bottom:1.25rem; }
+        .blurb-q { color:var(--text-2); font-size:0.95rem; line-height:2; margin-bottom:1.25rem; }
+        .blurb-a { font-size:1.05rem; font-weight:600; line-height:1.6; }
+        .blurb-tag { display:inline-block; margin-top:1rem; font-family:'DM Mono',monospace; font-size:0.72rem; font-weight:500; letter-spacing:0.04em; }
+
+        /* ── Steps ── */
+        .steps {
+            display:grid; grid-template-columns:repeat(3,1fr);
+            gap:1px; background:var(--border); border-radius:14px; overflow:hidden;
+        }
+        .step { background:var(--surface); padding:2rem 1.75rem; transition:background 0.3s; }
+        .step:hover { background:var(--surface-2); }
+        .step-num { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--cyan); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem; display:block; }
+        .step h3 { font-size:1.05rem; font-weight:700; margin-bottom:0.5rem; }
+        .step p { color:var(--text-2); font-size:0.88rem; line-height:1.7; }
+
+        /* ── Proof Section ── */
+        .proof-grid {
+            display:grid; grid-template-columns:1fr 1fr;
+            gap:1px; background:var(--border); border-radius:14px; overflow:hidden;
+        }
+        .proof-card { background:var(--surface); padding:2rem; display:flex; flex-direction:column; gap:1rem; transition:background 0.3s; }
+        .proof-card:hover { background:var(--surface-2); }
+        .proof-lbl { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--text-3); }
+        .proof-card h3 { font-size:0.95rem; font-weight:700; line-height:1.4; }
+        .proof-card p { color:var(--text-2); font-size:0.82rem; line-height:1.65; }
+        .proof-img { border-radius:10px; overflow:hidden; border:1px solid var(--border); cursor:zoom-in; }
+        .proof-img img { width:100%; height:auto; display:block; }
+        .proof-profile { display:flex; flex-wrap:wrap; gap:0.4rem; }
+        .proof-tag {
+            font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3);
+            padding:0.2rem 0.55rem; border-radius:4px; border:1px solid var(--border);
+            background:rgba(255,255,255,0.02); letter-spacing:0.03em;
+        }
+        .proof-vol { display:flex; flex-direction:column; gap:0.5rem; width:100%; }
+        .proof-vol-row { display:flex; align-items:center; gap:0.75rem; }
+        .proof-vol-name { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-2); width:90px; flex-shrink:0; }
+        .proof-vol-wrap { flex:1; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+        .proof-vol-bar { height:100%; border-radius:2px; width:0; transition:width 1s ease; }
+        .proof-vol-bar-w { background:var(--cyan); }
+        .proof-vol-bar-n { background:var(--green); }
+        .proof-vol-sets { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--cyan); width:42px; text-align:right; flex-shrink:0; }
+        .proof-vol-sets-n { color:var(--green); }
+        .proof-stats { padding-top:1rem; border-top:1px solid var(--border); display:flex; gap:1.5rem; flex-wrap:wrap; }
+        .proof-stat { display:flex; flex-direction:column; gap:0.2rem; }
+        .proof-stat-num { font-family:'DM Mono',monospace; font-size:2.6rem; font-weight:500; color:var(--cyan); line-height:1; letter-spacing:-0.02em; }
+        .proof-stat-num-n { color:var(--green); }
+        .proof-stat-lbl { font-size:0.78rem; color:var(--text-2); }
+        .proof-link { display:inline-flex; align-items:center; gap:0.4rem; color:var(--cyan); text-decoration:none; font-size:0.82rem; font-weight:600; transition:gap 0.2s; font-family:'DM Mono',monospace; }
+        .proof-link:hover { gap:0.65rem; }
+
+        /* ── Free Banner ── */
+        .free-banner {
+            border:1px solid var(--border); border-radius:14px;
+            padding:2.5rem; display:flex; align-items:center;
+            justify-content:space-between; gap:2.5rem; background:var(--surface);
+        }
+        .free-banner h3 { font-size:1.5rem; font-weight:800; letter-spacing:-0.02em; margin-bottom:0.5rem; }
+        .free-banner p { color:var(--text-2); font-size:0.92rem; line-height:1.7; max-width:400px; }
+        .free-tag { font-family:'DM Mono',monospace; font-size:2.2rem; font-weight:500; color:var(--green); white-space:nowrap; padding:0.75rem 1.5rem; border:1px solid rgba(34,197,94,0.2); border-radius:10px; background:rgba(34,197,94,0.05); }
+        .free-cta { display:inline-flex; align-items:center; gap:0.4rem; margin-top:1rem; padding:0.6rem 1.25rem; border-radius:8px; font-size:0.85rem; font-weight:600; text-decoration:none; background:var(--green); color:#000; transition:all 0.2s; }
+        .free-cta:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(34,197,94,0.3); }
+
+        /* ── Feature Grid ── */
+        .feat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:14px; overflow:hidden; }
+        .feat { background:var(--surface); padding:2rem 1.5rem; transition:background 0.3s; }
+        .feat:hover { background:var(--surface-2); }
+        .feat-icon { font-size:1.3rem; margin-bottom:0.75rem; display:block; }
+        .feat h3 { font-size:0.95rem; font-weight:700; margin-bottom:0.4rem; }
+        .feat p { color:var(--text-2); font-size:0.85rem; line-height:1.7; }
+
+        /* ── Comparison ── */
+        .comp { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+        .comp-head, .comp-row { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; }
+        .comp-head { border-bottom:1px solid var(--border); }
+        .comp-head div { padding:1rem; font-size:0.8rem; font-weight:600; color:var(--text-3); }
+        .comp-head div:nth-child(2) { color:var(--cyan); font-family:'DM Mono',monospace; background:var(--cyan-soft); border-left:1px solid var(--border); border-right:1px solid var(--border); }
+        .comp-head div:nth-child(4) { border-left:1px solid var(--border); }
+        .comp-row { border-bottom:1px solid var(--border); }
+        .comp-row:last-child { border-bottom:none; }
+        .comp-row div { padding:0.75rem 1rem; font-size:0.85rem; color:var(--text-2); display:flex; align-items:center; }
+        .comp-row div:first-child { font-weight:500; }
+        .comp-row div:nth-child(2) { color:var(--cyan); font-weight:600; border-left:1px solid var(--border); border-right:1px solid var(--border); background:rgba(34,211,238,0.02); }
+        .comp-row div:nth-child(4) { border-left:1px solid var(--border); }
+        .comp-x { color:var(--red) !important; }
+
+        /* ── CTA Card ── */
+        .cta-wrap { padding:3rem 0 5rem; display:flex; justify-content:center; }
+        .cta-card { max-width:480px; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem 2rem; position:relative; overflow:hidden; text-align:center; }
+        .cta-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
+        .cta-card > * { position:relative; z-index:1; }
+        .cta-badge { display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--red); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
+        .cta-card h2 { font-size:1.5rem; font-weight:800; letter-spacing:-0.02em; margin-bottom:0.75rem; }
+        .cta-price { display:flex; align-items:baseline; justify-content:center; gap:0.4rem; margin-bottom:0.25rem; }
+        .cta-price .big { font-family:'DM Mono',monospace; font-size:2.5rem; font-weight:500; color:var(--cyan); }
+        .cta-price .unit { font-size:0.85rem; color:var(--text-2); }
+        .cta-sub { font-size:0.78rem; color:var(--text-3); margin-bottom:1.5rem; }
+        .cta-checks { text-align:left; margin-bottom:1.5rem; }
+        .cta-check { display:flex; align-items:center; gap:0.5rem; padding:0.35rem 0; font-size:0.88rem; color:var(--text-2); }
+        .cta-check .ic { font-size:0.8rem; flex-shrink:0; font-weight:700; }
+        .ic-g { color:var(--green); }
+        .ic-c { color:var(--cyan); }
+        .cta-div { border:none; border-top:1px solid var(--border); margin:0.75rem 0; }
+        .cta-btn { display:flex; width:100%; align-items:center; justify-content:center; gap:0.5rem; padding:0.9rem; border-radius:10px; font-size:0.95rem; font-weight:700; text-decoration:none; border:none; font-family:'Outfit',sans-serif; transition:all 0.25s; background:var(--cyan); color:#000; }
+        .cta-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px var(--cyan-glow); }
+        .cta-foot { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-3); letter-spacing:0.03em; margin-top:1rem; }
+
+        /* ── FAQ ── */
+        .faq { max-width:640px; margin:0 auto; }
+        .faq-item { border-bottom:1px solid var(--border); padding:1.25rem 0; }
+        .faq-item:last-child { border-bottom:none; }
+        .faq-q { font-size:0.95rem; font-weight:600; color:var(--text); cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:1rem; user-select:none; }
+        .faq-q::after { content:'+'; font-family:'DM Mono',monospace; font-size:1.1rem; color:var(--cyan); flex-shrink:0; transition:transform 0.2s; }
+        .faq-item.open .faq-q::after { content:'−'; }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.35s ease; color:var(--text-2); font-size:0.88rem; line-height:1.7; }
+        .faq-item.open .faq-a { max-height:400px; padding-top:0.75rem; }
+
+        /* ── Android / Toast ── */
+        .android-link { color:var(--cyan); text-decoration:none; font-weight:500; transition:opacity 0.2s; cursor:pointer; }
+        .android-link:hover { opacity:0.8; text-decoration:underline; }
+        .android-link.clicked { color:var(--green); pointer-events:none; text-decoration:none; }
+        .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(100px); background:var(--surface-2); color:var(--text); border:1px solid rgba(34,197,94,0.25); padding:0.8rem 1.25rem; border-radius:10px; font-size:0.85rem; font-weight:500; z-index:10001; opacity:0; transition:all 0.35s ease; box-shadow:0 8px 32px rgba(0,0,0,0.5); pointer-events:none; white-space:nowrap; max-width:90vw; }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast-icon { color:var(--green); margin-right:0.4rem; }
+
+        /* ── Lightbox ── */
+        .lightbox { position:fixed; inset:0; z-index:9999; background:rgba(5,5,8,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
+        .lightbox.open { opacity:1; pointer-events:all; }
+        .lightbox-img { max-width:min(480px,90vw); max-height:90vh; height:auto; width:auto; border-radius:16px; border:1px solid var(--border-cyan); box-shadow:0 32px 80px rgba(0,0,0,0.8); transform:scale(0.94); transition:transform 0.25s ease; display:block; }
+        .lightbox.open .lightbox-img { transform:scale(1); }
+        .lightbox-close { position:absolute; top:1.25rem; right:1.25rem; background:var(--surface-2); border:1px solid var(--border); color:var(--text-2); width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:border-color 0.2s,color 0.2s; font-family:'DM Mono',monospace; }
+        .lightbox-close:hover { border-color:var(--cyan); color:var(--cyan); }
+        .lightbox-hint { position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%); font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--text-3); letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
+
+        /* ── Still Not Sure block ── */
+        .sns-wrap { padding:0 0 5rem; display:flex; justify-content:center; }
+        .sns-card { max-width:580px; width:100%; border:1px solid var(--border); border-radius:14px; padding:2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; background:var(--surface); }
+        .sns-text { flex:1; }
+        .sns-lbl { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--text-3); display:block; margin-bottom:0.5rem; }
+        .sns-text h3 { font-size:1rem; font-weight:700; letter-spacing:-0.01em; margin-bottom:0.4rem; }
+        .sns-text p { color:var(--text-2); font-size:0.85rem; line-height:1.65; }
+        .sns-actions { display:flex; flex-direction:column; gap:0.6rem; flex-shrink:0; }
+        .sns-btn-primary { display:inline-flex; align-items:center; gap:0.4rem; padding:0.6rem 1.25rem; border-radius:8px; font-size:0.85rem; font-weight:700; text-decoration:none; background:var(--cyan); color:#000; transition:all 0.2s; white-space:nowrap; font-family:'Outfit',sans-serif; }
+        .sns-btn-primary:hover { transform:translateY(-1px); box-shadow:0 4px 16px var(--cyan-glow); }
+        .sns-btn-ghost { display:inline-flex; align-items:center; gap:0.4rem; padding:0.6rem 1.25rem; border-radius:8px; font-size:0.85rem; font-weight:600; text-decoration:none; background:transparent; color:var(--text-2); border:1px solid var(--border); transition:all 0.2s; white-space:nowrap; font-family:'Outfit',sans-serif; }
+        .sns-btn-ghost:hover { border-color:var(--cyan); color:var(--cyan); background:var(--cyan-soft); }
+        @media (max-width:600px) { .sns-card { flex-direction:column; padding:1.5rem; } .sns-actions { flex-direction:row; flex-wrap:wrap; width:100%; } .sns-btn-primary, .sns-btn-ghost { flex:1; justify-content:center; } }
+
+        /* ── Feat SVG icons ── */
+        .feat-icon-svg { display:block; margin-bottom:0.75rem; opacity:0.9; }
+
+        /* ── Hero 3-step mobile strip ── */
+        .hero-steps-mobile { display:none; margin-top:1.5rem; gap:0; align-items:center; justify-content:center; animation:heroFadeUp 0.7s ease 0.35s both; }
+        @media (max-width:860px) { .hero-steps-mobile { display:flex; } }
+        .hsm-step { display:flex; flex-direction:column; align-items:center; gap:0.3rem; flex:1; }
+        .hsm-num { font-family:'DM Mono',monospace; font-size:0.55rem; color:var(--cyan); letter-spacing:0.14em; text-transform:uppercase; }
+        .hsm-label { font-size:0.72rem; font-weight:600; color:var(--text); text-align:center; line-height:1.3; }
+        .hsm-arrow { color:var(--text-3); font-family:'DM Mono',monospace; font-size:0.85rem; padding-top:0.85rem; flex-shrink:0; padding-left:0.25rem; padding-right:0.25rem; }
+
+        /* ── Footer ── */
+        footer { border-top:1px solid var(--border); padding:2rem 1.5rem; display:flex; justify-content:space-between; align-items:center; }
+        .foot-l { font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); }
+        .foot-l a { color:var(--text-3); text-decoration:none; margin-left:1.25rem; transition:color 0.2s; }
+        .foot-l a:hover { color:var(--cyan); }
+        .foot-r { font-size:0.7rem; color:var(--text-3); }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+            .hero-split { grid-template-columns:1fr; gap:0; }
+            .hero-graphic { display:none; }
+            .hero-text { text-align:center; }
+            .hero-sub { margin:0 auto 2rem; }
+            .hero-btns { justify-content:center; flex-direction:column; width:100%; }
+            .btn-primary, .btn-ghost { width:100%; justify-content:center; }
+            .hero-meta { text-align:center; }
+            .steps, .feat-grid { grid-template-columns:1fr; }
+            .proof-grid { grid-template-columns:1fr; }
+            .free-banner { flex-direction:column; text-align:center; padding:2rem 1.25rem; gap:1.25rem; }
+            .free-banner p { max-width:100%; }
+            .comp-head, .comp-row { grid-template-columns:1.3fr 0.75fr 0.75fr 0.75fr; }
+            .comp-head div, .comp-row div { padding:0.6rem 0.4rem; font-size:0.7rem; }
+            footer { flex-direction:column; gap:0.75rem; text-align:center; }
+            .foot-l a { margin-left:0; margin:0 0.6rem; }
+            .nav-links { display:none; position:fixed; top:0; left:0; right:0; bottom:0; width:100%; height:100vh; height:100dvh; background:#050508; flex-direction:column; justify-content:center; align-items:center; gap:2rem; z-index:9998; }
+            .nav-links.open { display:flex; }
+            .nav-links a { font-size:1.1rem; color:var(--text-2); }
+            .hamburger { display:block; position:fixed; top:16px; right:16px; z-index:9999; }
+            .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+            .hamburger.open span:nth-child(2) { opacity:0; }
+            .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+            .ai-strip { gap:1rem; padding:0.8rem 1rem; }
+            .section-head p { max-width:100%; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size:clamp(2.2rem,10vw,3rem); }
+            .comp { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+            .comp-head, .comp-row { min-width:440px; }
+            .ai-strip span { font-size:0.62rem; }
+            .cta-card { padding:2rem 1.25rem; }
+            .free-banner { padding:1.5rem 1rem; }
+            .proof-card { padding:1.5rem; }
+            .proof-stat-num { font-size:2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <a href="#" class="nav-logo">
+        <svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
+        JSON<span class="cyan">.fit</span>
+    </a>
+    <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#nutrition">Nutrition</a></li>
+        <li><a href="#compare">Compare</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="#" class="android-link" onclick="handleAndroid(event,this,'nav')">I want it on Android</a></li>
+        <li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'nav'})">Download</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-split">
+        <div class="hero-text">
+            <div class="badge"><span class="badge-dot"></span> Bring your own AI — ChatGPT, Claude, Gemini</div>
+            <h1>You already have the AI.<br><span class="cyan">We do the rest.</span></h1>
+            <p class="hero-sub">Use the AI you're already paying for. Paste the prompt, get a personalised workout program or meal plan back in seconds, import it, and track everything.</p>
+            <div class="hero-btns">
+                <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:inline-block;">
+                    <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:block;border-radius:8px;">
+                </a>
+                <a href="#proof" class="btn-ghost">
+                    See it in action
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </a>
+            </div>
+            <p class="hero-meta">Free workouts forever · Nutrition unlock <strong>$9.99 USD</strong> one-time · <span style="color:var(--red)">⚡ Launch pricing</span></p>
+
+            <div class="hero-steps-mobile">
+                <div class="hsm-step">
+                    <span class="hsm-num">01</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span class="hsm-label">Answer questions</span>
+                </div>
+                <span class="hsm-arrow">→</span>
+                <div class="hsm-step">
+                    <span class="hsm-num">02</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <span class="hsm-label">Send to any AI</span>
+                </div>
+                <span class="hsm-arrow">→</span>
+                <div class="hsm-step">
+                    <span class="hsm-num">03</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span class="hsm-label">Import & track</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- HERO GRAPHIC -->
+        <div class="hero-graphic" aria-hidden="true">
+            <div class="hg-tabs">
+                <button class="hg-tab hg-tab-active" id="tab-w" onclick="hgSwitch('w')">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M2 9h20M2 15h20"/></svg>
+                    Workout
+                </button>
+                <button class="hg-tab" id="tab-n" onclick="hgSwitch('n')">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    Nutrition
+                </button>
+            </div>
+
+            <!-- WORKOUT PANEL -->
+            <div class="hg-panel" id="panel-w">
+                <div class="hg-card hg-card-1">
+                    <div class="hg-lbl">01 — Setup</div>
+                    <div class="hg-title">Build Muscle · 5 days/week</div>
+                    <div class="hg-sub">Advanced · Commercial Gym</div>
+                    <div class="hg-prog"><div class="hg-prog-fill hg-prog-fill-w"></div></div>
+                </div>
+                <div class="hg-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+                <div class="hg-card hg-card-2">
+                    <div class="hg-lbl">02 — AI Output</div>
+                    <div class="hg-rows">
+                        <div class="hg-row"><span class="hg-row-name">Chest</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-w" data-w="93%"></div></div><span class="hg-row-val">13 sets</span></div>
+                        <div class="hg-row"><span class="hg-row-name">Quads</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-w" data-w="100%"></div></div><span class="hg-row-val">14 sets</span></div>
+                        <div class="hg-row"><span class="hg-row-name">Hamstrings</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-w" data-w="93%"></div></div><span class="hg-row-val">13 sets</span></div>
+                        <div class="hg-row"><span class="hg-row-name">Back</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-w" data-w="86%"></div></div><span class="hg-row-val">12 sets</span></div>
+                        <div class="hg-row"><span class="hg-row-name">Side Delts</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-w" data-w="71%"></div></div><span class="hg-row-val">10 sets</span></div>
+                    </div>
+                </div>
+                <div class="hg-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+                <div class="hg-card hg-card-3">
+                    <div class="hg-lbl">03 — Imported</div>
+                    <div class="hg-stats">
+                        <div class="hg-stat"><span class="hg-stat-num">0.82s</span><span class="hg-stat-sub">import time</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num">33</span><span class="hg-stat-sub">movements</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num">4wk</span><span class="hg-stat-sub">program</span></div>
+                    </div>
+                    <div class="hg-ready"><span class="hg-ready-dot"></span> Ready to train</div>
+                </div>
+            </div>
+
+            <!-- NUTRITION PANEL -->
+            <div class="hg-panel hg-panel-hidden" id="panel-n">
+                <div class="hg-card hg-card-1">
+                    <div class="hg-lbl">01 — Setup</div>
+                    <div class="hg-title">Weight Gain · 90kg · Male</div>
+                    <div class="hg-sub">High Protein · Assembly-only · Aldi</div>
+                    <div class="hg-prog"><div class="hg-prog-fill hg-prog-fill-n"></div></div>
+                </div>
+                <div class="hg-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+                <div class="hg-card hg-card-2">
+                    <div class="hg-lbl">02 — AI Output</div>
+                    <div class="hg-rows">
+                        <div class="hg-row"><span class="hg-row-name">Protein</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-n" data-w="62%"></div></div><span class="hg-row-val hg-row-val-n">229g</span></div>
+                        <div class="hg-row"><span class="hg-row-name">Carbs</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-n" data-w="100%"></div></div><span class="hg-row-val hg-row-val-n">368g</span></div>
+                        <div class="hg-row"><span class="hg-row-name">Fat</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-n" data-w="38%"></div></div><span class="hg-row-val hg-row-val-n">139g</span></div>
+                        <div class="hg-row"><span class="hg-row-name">Fibre</span><div class="hg-bar-wrap"><div class="hg-bar hg-bar-n" data-w="12%"></div></div><span class="hg-row-val hg-row-val-n">42g</span></div>
+                    </div>
+                </div>
+                <div class="hg-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+                <div class="hg-card hg-card-3">
+                    <div class="hg-lbl">03 — Imported</div>
+                    <div class="hg-stats">
+                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n">3,629</span><span class="hg-stat-sub">kcal/day</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n">7</span><span class="hg-stat-sub">day plan</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n">$230</span><span class="hg-stat-sub">groceries</span></div>
+                    </div>
+                    <div class="hg-ready" style="color:var(--green)"><span class="hg-ready-dot"></span> Ready to eat</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI STRIP -->
+<div class="ai-strip sa sa-up">
+    <span class="ai-lbl">Works with</span>
+    <span>ChatGPT</span><span>Claude</span><span>Gemini</span><span>DeepSeek</span>
+    <span class="ai-lbl">+ any AI</span>
+</div>
+
+<!-- WORKOUT BLURB -->
+<section class="section">
+    <div class="container">
+        <div class="blurb sa sa-up">
+            <div class="section-line"></div>
+            <span class="label">Your training, handled</span>
+            <h2>Stop second-guessing<br><span class="cyan">every decision.</span></h2>
+            <p class="blurb-q">How many sets per muscle group? What training split fits my schedule? How many reps for progressive overload? How long do I rest between sets? When do I take rest days?</p>
+            <p class="blurb-a"><span class="cyan">Every answer, personalised to you.</span><br>Every detail handled. Just train.</p>
+            <span class="blurb-tag green">And it's completely free.</span>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+    <div class="container">
+        <div class="section-head sa sa-up">
+            <div class="section-line"></div>
+            <span class="label">How It Works</span>
+            <h2>Three steps.<br>Infinite plans.</h2>
+            <p>We build the prompt. You choose the AI. It's that simple.</p>
+        </div>
+        <div class="steps sa-stagger">
+            <div class="step">
+                <span class="step-num">01 — Quick Setup</span>
+                <h3>Answer a few questions</h3>
+                <p>Goals, schedule, experience, preferences. We build a perfect prompt customised for you.</p>
+            </div>
+            <div class="step">
+                <span class="step-num">02 — Send to Any AI</span>
+                <h3>ChatGPT, Claude, Gemini</h3>
+                <p>Paste the prompt, get a structured plan back in seconds. Whatever AI you like.</p>
+            </div>
+            <div class="step">
+                <span class="step-num">03 — Import & Train</span>
+                <h3>Paste or upload the result</h3>
+                <p>Your program loads instantly — every set, rep, meal, and macro ready to track.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEE IT WORKING -->
+<section class="section" id="proof">
+    <div class="container">
+        <div class="section-head sa sa-up">
+            <div class="section-line"></div>
+            <span class="label">See It Working</span>
+            <h2>Real AI output.<br><span class="cyan">Real programs.</span></h2>
+            <p>Not a demo. Not a mockup. This is what ChatGPT generates from the app's prompt pipeline — imported in under a second.</p>
+        </div>
+        <div class="proof-grid">
+            <div class="proof-card sa sa-left">
+                <span class="proof-lbl">ChatGPT Output</span>
+                <h3>AI verifies its own work before you import</h3>
+                <p>The 3-step prompt pipeline asks the AI to review its own volume distribution, exercise selection, and progressive overload — then format for import. A checked program, not a first draft.</p>
+                <div class="proof-img">
+                    <img src="blog/images/workout-program.PNG" alt="Imported workout program showing full training split" loading="lazy">
+                </div>
+                <a href="blog/chatgpt-hypertrophy-program.html" class="proof-link">
+                    Full tutorial: 12-week hypertrophy with ChatGPT
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+            <div class="proof-card sa sa-right">
+                <span class="proof-lbl">Volume Verified</span>
+                <h3>Muscle group balance, checked before you train</h3>
+                <p>ChatGPT's output includes a per-muscle volume summary so you can verify the program is properly balanced.</p>
+                <div class="proof-profile">
+                    <span class="proof-tag">Build Muscle</span>
+                    <span class="proof-tag">5 days/week</span>
+                    <span class="proof-tag">Advanced</span>
+                    <span class="proof-tag">12–16 sets · Moderate</span>
+                    <span class="proof-tag">Commercial Gym</span>
+                </div>
+                <div class="proof-vol" id="proof-vol-w">
+                    <div class="proof-vol-row"><span class="proof-vol-name">Chest</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="93%"></div></div><span class="proof-vol-sets">13 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Quads</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="100%"></div></div><span class="proof-vol-sets">14 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Hamstrings</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="93%"></div></div><span class="proof-vol-sets">13 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Glutes</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="100%"></div></div><span class="proof-vol-sets">14 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Lats</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="86%"></div></div><span class="proof-vol-sets">12 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Upper Back</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="86%"></div></div><span class="proof-vol-sets">12 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Triceps</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="79%"></div></div><span class="proof-vol-sets">11 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Side Delts</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="71%"></div></div><span class="proof-vol-sets">10 sets</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Biceps</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-w" data-w="71%"></div></div><span class="proof-vol-sets">10 sets</span></div>
+                </div>
+                <div class="proof-stats">
+                    <div class="proof-stat">
+                        <span class="proof-stat-num count-up" data-target="0.82" data-suffix="s" data-decimals="2">0.82s</span>
+                        <span class="proof-stat-lbl">Import time — 33 movements, 4 weeks</span>
+                    </div>
+                    <div class="proof-stat">
+                        <span class="proof-stat-num count-up" data-target="48" data-suffix="wk">48wk</span>
+                        <span class="proof-stat-lbl">Max program length supported</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FREE BANNER -->
+<section class="section">
+    <div class="container">
+        <div class="free-banner sa sa-scale">
+            <div>
+                <h3>Workout imports are <span class="green">free</span>. Forever.</h3>
+                <p>Import unlimited AI-generated workout programs. Track every exercise, set, rep, and weight. Multi-mesocycle programs up to 48 weeks. No paywall, no limits.</p>
+                <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="free-cta" onclick="gtag('event','download_click',{'button_location':'free_banner'})">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download Free
+                </a>
+            </div>
+            <div class="free-tag">$0</div>
+        </div>
+    </div>
+</section>
+
+<!-- NUTRITION BLURB -->
+<section class="section" id="nutrition" style="padding-bottom:2rem;">
+    <div class="container">
+        <div class="blurb sa sa-up">
+            <div class="section-line"></div>
+            <span class="label">Your nutrition, sorted</span>
+            <h2>Stop overthinking<br><span class="cyan">every meal.</span></h2>
+            <p class="blurb-q">What macros should I hit for my weight and goals? What exactly do I buy at the shops? What do I meal prep on Sunday? I've got leftover chicken and rice — how do I use it? What time should I eat each meal?</p>
+            <p class="blurb-a"><span class="cyan">Your perfect macros every day.</span> Exactly what to buy. Exactly what to cook. Pay once, never think about it again.</p>
+        </div>
+    </div>
+</section>
+
+<!-- NUTRITION FEATURES -->
+<section class="section" style="padding-top:2rem;">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <span class="label">Unlock for $9.99 USD</span>
+            <h2>Your AI Nutritionist <span class="cyan">Is Ready.</span></h2>
+            <p style="margin:0 auto;">Effortless eating, engineered for you.</p>
+        </div>
+        <div class="feat-grid sa-stagger">
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>
+                <h3>AI Macro Engine</h3>
+                <p>Precision protein, carbs, fat & fibre targets calibrated to your body and goals.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+                <h3>Smart Grocery Lists</h3>
+                <p>Exact shopping lists. No confusion at the shops.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span>
+                <h3>Meal Prep Blueprints</h3>
+                <p>Step-by-step meal prep instructions for the week ahead.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><path d="M18 2v4h4"/><path d="M22 2 18 6"/></svg></span>
+                <h3>Sleep-Synced Timing</h3>
+                <p>Meal times optimised around your sleep for better recovery and energy.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                <h3>Pantry Intelligence</h3>
+                <p>Tell it what's in your fridge. Get plans that use what you already have.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                <h3>Nutrition For Everyone</h3>
+                <p>Dietitian-level personalisation. Unlimited plan changes. No appointments.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NUTRITION PROOF -->
+<section class="section" style="padding-top:0;">
+    <div class="container">
+        <div class="proof-grid">
+            <div class="proof-card sa sa-left">
+                <span class="proof-lbl">Claude Output</span>
+                <h3>Your macros, calculated for your body and goal</h3>
+                <p>The nutrition prompt pipeline takes your weight, goal, activity level, cooking style, and sleep schedule — and builds a complete 7-day plan with every macro accounted for.</p>
+                <div class="proof-img">
+                    <img src="blog/images/meal-plan-ready.PNG" alt="Meal plan imported and ready to track" loading="lazy">
+                </div>
+                <a href="blog/meal-plan-claude.html" class="proof-link">
+                    Full tutorial: meal plan with Claude
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+            <div class="proof-card sa sa-right">
+                <span class="proof-lbl">Macros Verified</span>
+                <h3>Every gram tracked. Every day covered.</h3>
+                <p>Real output from a 7-day bulk plan generated with Claude. Macros calibrated to bodyweight, training volume, and assembly-only cooking preference.</p>
+                <div class="proof-profile">
+                    <span class="proof-tag">Weight Gain</span>
+                    <span class="proof-tag">90kg · Male</span>
+                    <span class="proof-tag">High Protein</span>
+                    <span class="proof-tag">6 meals/day</span>
+                    <span class="proof-tag">Aldi · Canberra</span>
+                </div>
+                <div class="proof-vol" id="proof-vol-n">
+                    <div class="proof-vol-row"><span class="proof-vol-name">Protein</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="62%"></div></div><span class="proof-vol-sets proof-vol-sets-n">229g</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Carbs</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="100%"></div></div><span class="proof-vol-sets proof-vol-sets-n">368g</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Fat</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="38%"></div></div><span class="proof-vol-sets proof-vol-sets-n">139g</span></div>
+                    <div class="proof-vol-row"><span class="proof-vol-name">Fibre</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="12%"></div></div><span class="proof-vol-sets proof-vol-sets-n">42g</span></div>
+                </div>
+                <div class="proof-stats">
+                    <div class="proof-stat">
+                        <span class="proof-stat-num proof-stat-num-n count-up" data-target="3629" data-suffix="" data-prefix="">3,629</span>
+                        <span class="proof-stat-lbl">kcal · Saturday</span>
+                    </div>
+                    <div class="proof-stat">
+                        <span class="proof-stat-num proof-stat-num-n count-up" data-target="230" data-suffix="" data-prefix="$">$230</span>
+                        <span class="proof-stat-lbl">weekly groceries · Aldi Canberra</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section" id="compare">
+    <div class="container">
+        <div class="section-head sa sa-up">
+            <div class="section-line"></div>
+            <span class="label">Compare</span>
+            <h2>Premium nutrition.<br>Accessible pricing.</h2>
+            <p>Personalisation that used to require a professional — now available to everyone.</p>
+        </div>
+        <div class="comp sa sa-up">
+            <div class="comp-head"><div></div><div>JSON.fit</div><div>Dietitian</div><div>Other Apps</div></div>
+            <div class="comp-row"><div>Typical cost</div><div>$9.99 once</div><div>$150–300/session</div><div>$20–60/mo</div></div>
+            <div class="comp-row"><div>Expert-level personalisation</div><div>✓</div><div>✓</div><div class="comp-x">Basic</div></div>
+            <div class="comp-row"><div>Instant access</div><div>✓</div><div class="comp-x">Weeks wait</div><div>✓</div></div>
+            <div class="comp-row"><div>Unlimited plan changes</div><div>✓</div><div class="comp-x">✗</div><div class="comp-x">✗</div></div>
+            <div class="comp-row"><div>Grocery lists</div><div>✓</div><div class="comp-x">✗</div><div class="comp-x">✗</div></div>
+            <div class="comp-row"><div>Meal prep guidance</div><div>✓</div><div class="comp-x">✗</div><div class="comp-x">✗</div></div>
+            <div class="comp-row"><div>No ongoing fees</div><div>✓</div><div class="comp-x">✗</div><div class="comp-x">✗</div></div>
+            <div class="comp-row"><div>AI provider choice</div><div>Yours</div><div>N/A</div><div class="comp-x">Locked in</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-wrap" id="download">
+    <div class="cta-card sa sa-scale">
+        <div class="cta-badge">⚡ Limited Time — Launch Pricing</div>
+        <h2>Workouts free.<br>Unlock nutrition.</h2>
+        <div class="cta-price"><span class="big">$9.99</span><span class="unit">USD · one time</span></div>
+        <p class="cta-sub">Own forever · No subscription</p>
+        <div class="cta-checks">
+            <div class="cta-check"><span class="ic ic-g">✓</span> Free: Unlimited AI workout imports</div>
+            <div class="cta-check"><span class="ic ic-g">✓</span> Free: Full program & set tracking</div>
+            <div class="cta-check"><span class="ic ic-g">✓</span> Free: No ads. Ever.</div>
+            <hr class="cta-div">
+            <div class="cta-check"><span class="ic ic-c">✓</span> AI meal plan generation & import</div>
+            <div class="cta-check"><span class="ic ic-c">✓</span> Macro tracking & daily timeline</div>
+            <div class="cta-check"><span class="ic ic-c">✓</span> Smart grocery lists & pantry intelligence</div>
+            <div class="cta-check"><span class="ic ic-c">✓</span> Sleep-synced meal timing</div>
+            <div class="cta-check"><span class="ic ic-c">✓</span> Works with ChatGPT, Claude, Gemini & more</div>
+        </div>
+        <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'cta'})">
+            <svg width="15" height="18" viewBox="0 0 18 22" fill="none"><path d="M14.94 11.58c-.02-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.78-1.39-.14-2.72.82-3.43.82-.71 0-1.81-.8-2.98-.78-1.53.02-2.95.89-3.74 2.27-1.59 2.77-.41 6.87 1.15 9.11.76 1.1 1.66 2.34 2.85 2.29 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.27 1.23-2.51 1.25-2.57-.03-.01-2.4-.92-2.42-3.66zm-2.27-6.73C13.32 4.09 13.78 3 13.65 1.9c-.93.04-2.06.62-2.73 1.4-.6.7-1.12 1.81-.98 2.87 1.04.08 2.1-.53 2.73-1.32z" fill="currentColor"/></svg>
+            Download on the App Store
+        </a>
+        <p class="cta-foot">🔒 Your data stays on your device. Always.</p>
+        <p class="cta-foot" style="margin-top:0.4rem;">📱 iOS only · <a href="#" class="android-link" onclick="handleAndroid(event,this,'cta')">I want Android →</a></p>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;margin-bottom:2.5rem;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">FAQ</span>
+            <h2>Common questions.</h2>
+        </div>
+        <div class="faq sa sa-up">
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does it actually work?</div><div class="faq-a">The app builds a structured prompt based on your goals, schedule, and preferences. You copy it into any AI you already use — ChatGPT, Claude, Gemini, whatever. The AI generates a personalised plan. You paste the result back into JSON.fit and it loads instantly, ready to track.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need to pay for AI separately?</div><div class="faq-a">Most AI chatbots have a free tier that works perfectly — ChatGPT, Gemini, and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much does JSON.fit cost?</div><div class="faq-a">Workouts are free forever — no paywall, no limits. Nutrition features (meal plans, macro tracking, grocery lists, meal prep, pantry intelligence) are a one-time $9.99 USD purchase. No subscription. You pay once and own it forever.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why is it so much cheaper than other apps?</div><div class="faq-a">Most fitness apps charge $10–20/month because they run AI on their servers. JSON.fit uses the AI you already have, so there are no server costs to pass on to you. That's why workouts are free and nutrition is a one-time purchase.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What AI does it work with?</div><div class="faq-a">Any AI that can generate structured text — ChatGPT, Claude, Gemini, DeepSeek, and more. You're not locked into one provider. Use whatever you prefer.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data private?</div><div class="faq-a">Yes. Your data stays on your device. JSON.fit doesn't have accounts, doesn't collect personal information, and doesn't send your workout or nutrition data anywhere.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is it available on Android?</div><div class="faq-a">Not yet — it's currently iOS only. Android is in development. You can tap "I want it on Android" on this site to let us know there's demand.</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- STILL NOT SURE -->
+<div class="sns-wrap">
+    <div class="sns-card sa sa-up">
+        <div class="sns-text">
+            <span class="sns-lbl">Still not sure?</span>
+            <h3>See a real program before you commit.</h3>
+            <p>A step-by-step walkthrough — from app prompt to full 12-week hypertrophy program imported and ready to track.</p>
+        </div>
+        <div class="sns-actions">
+            <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="sns-btn-primary" onclick="gtag('event','download_click',{'button_location':'sns'})">
+                Download Free
+            </a>
+            <a href="blog/chatgpt-hypertrophy-program.html" class="sns-btn-ghost">
+                Read the tutorial
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lbClose" aria-label="Close">✕</button>
+    <img class="lightbox-img" id="lbImg" src="" alt="">
+    <p class="lightbox-hint">tap anywhere to close</p>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon">✓</span> Noted — Android is coming!</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="foot-l">
+        JSON<span class="cyan">.fit</span>
+        <a href="/cdn-cgi/l/email-protection#eebc978f80c0a0819887808dae89838f8782c08d8183">Support</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-of-service.html">Terms</a>
+    </div>
+    <div class="foot-r">© 2026 JSON.fit</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function() {
+
+    /* ── Hero graphic tab switcher ── */
+    function hgSwitch(tab) {
+        ['w','n'].forEach(function(t) {
+            var panel = document.getElementById('panel-' + t);
+            var tabEl = document.getElementById('tab-' + t);
+            if (t === tab) {
+                panel.classList.remove('hg-panel-hidden');
+                tabEl.classList.add('hg-tab-active');
+                // re-trigger bar animations
+                panel.querySelectorAll('.hg-bar').forEach(function(b) {
+                    b.style.transition = 'none';
+                    b.style.width = '0';
+                    requestAnimationFrame(function() {
+                        requestAnimationFrame(function() {
+                            b.style.transition = 'width 0.7s ease';
+                            b.style.width = b.getAttribute('data-w') || '0%';
+                        });
+                    });
+                });
+                panel.querySelectorAll('.hg-prog-fill').forEach(function(p) {
+                    p.style.animation = 'none';
+                    p.offsetHeight;
+                    p.style.animation = '';
+                });
+            } else {
+                panel.classList.add('hg-panel-hidden');
+                tabEl.classList.remove('hg-tab-active');
+            }
+        });
+    }
+    window.hgSwitch = hgSwitch;
+
+    // Trigger initial hero bars on load
+    setTimeout(function() {
+        document.querySelectorAll('#panel-w .hg-bar').forEach(function(b, i) {
+            setTimeout(function() {
+                b.style.transition = 'width 0.7s ease';
+                b.style.width = b.getAttribute('data-w') || '0%';
+            }, 950 + i * 80);
+        });
+    }, 100);
+
+    /* ── Toast / Android ── */
+    function showToast() {
+        var t = document.getElementById('toast');
+        t.classList.add('show');
+        setTimeout(function() { t.classList.remove('show'); }, 3000);
+    }
+    function handleAndroid(e, el, loc) {
+        e.preventDefault();
+        document.querySelectorAll('.android-link').forEach(function(l) {
+            l.textContent = '✓ Noted!';
+            l.classList.add('clicked');
+        });
+        showToast();
+        try {
+            if (!localStorage.getItem('android_logged')) {
+                gtag('event', 'android_interest', { button_location: loc });
+                localStorage.setItem('android_logged', '1');
+            }
+        } catch(e) {
+            if (!window._androidLogged) {
+                gtag('event', 'android_interest', { button_location: loc });
+                window._androidLogged = true;
+            }
+        }
+    }
+    window.handleAndroid = handleAndroid;
+    try {
+        if (localStorage.getItem('android_logged')) {
+            document.querySelectorAll('.android-link').forEach(function(l) {
+                l.textContent = '✓ Noted!'; l.classList.add('clicked');
+            });
+        }
+    } catch(e) {}
+
+    /* ── Mobile menu ── */
+    var burger = document.getElementById('burger');
+    var navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        burger.classList.toggle('open');
+        navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+        });
+    });
+
+    /* ── Lightbox ── */
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lbImg');
+    var lbClose = document.getElementById('lbClose');
+    function openLb(src, alt) { lbImg.src = src; lbImg.alt = alt || ''; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+    document.querySelectorAll('.proof-img').forEach(function(w) {
+        w.addEventListener('click', function() { var img = w.querySelector('img'); if (img) openLb(img.src, img.alt); });
+    });
+    lbClose.addEventListener('click', function(e) { e.stopPropagation(); closeLb(); });
+    lb.addEventListener('click', function(e) { if (e.target !== lbImg) closeLb(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+
+    /* ── Scroll animations: getBoundingClientRect engine ── */
+    // Collect all animatable elements
+    var animEls = Array.prototype.slice.call(document.querySelectorAll('.sa, .sa-stagger, .proof-card'));
+    var animated = [];
+
+    function runAnims() {
+        var wh = window.innerHeight;
+        // Trigger point: element animates when its top edge crosses 88% down the viewport
+        var trigger = wh * 0.80;
+
+        animEls.forEach(function(el) {
+            if (animated.indexOf(el) !== -1) return; // already fired
+            var top = el.getBoundingClientRect().top;
+            if (top < trigger) {
+                animated.push(el);
+                el.classList.add('vis');
+
+                // Section line draw
+                var line = el.querySelector('.section-line');
+                if (line) setTimeout(function() { line.classList.add('vis'); }, 80);
+
+                // Animated bars — staggered
+                el.querySelectorAll('.proof-vol-bar').forEach(function(bar, i) {
+                    setTimeout(function() {
+                        bar.style.transition = 'width 0.9s cubic-bezier(0.22,1,0.36,1)';
+                        bar.style.width = bar.getAttribute('data-w') || '0%';
+                    }, 150 + i * 90);
+                });
+
+                // Count-up numbers
+                el.querySelectorAll('.count-up').forEach(function(numEl) {
+                    var target = parseFloat(numEl.getAttribute('data-target'));
+                    var suffix = numEl.getAttribute('data-suffix') || '';
+                    var prefix = numEl.getAttribute('data-prefix') || '';
+                    var decimals = parseInt(numEl.getAttribute('data-decimals') || '0');
+                    var duration = 1400;
+                    var start = null;
+                    function step(ts) {
+                        if (!start) start = ts;
+                        var progress = Math.min((ts - start) / duration, 1);
+                        var ease = 1 - Math.pow(1 - progress, 3);
+                        var val = target * ease;
+                        numEl.textContent = prefix + (decimals > 0 ? val.toFixed(decimals) : Math.round(val).toLocaleString()) + suffix;
+                        if (progress < 1) requestAnimationFrame(step);
+                    }
+                    requestAnimationFrame(step);
+                });
+            }
+        });
+    }
+
+    // Run on scroll (passive for performance)
+    window.addEventListener('scroll', runAnims, { passive: true });
+    // Run once on load to catch anything already in view
+    runAnims();
+
+    /* ── Smooth scroll ── */
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            var href = a.getAttribute('href');
+            if (href === '#') return;
+            e.preventDefault();
+            setTimeout(function() {
+                var target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        });
+    });
+
+})();
+</script>
+</body>
 </html>
