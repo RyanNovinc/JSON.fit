@@ -1331,6 +1331,8 @@
         var prevBtn = document.getElementById('pcPrev');
         var nextBtn = document.getElementById('pcNext');
         var dots = document.querySelectorAll('#pcDots .pc-dot');
+        var caption = document.getElementById('pcCaption1');
+        var captions = ["Imported in 0.80s", "Your full split, every week", "Track every set", "Machine taken? Swap it instantly", "Progressive overload, built in"];
         if (!track) return;
         var total = track.children.length;
         var current = 0;
@@ -1338,6 +1340,7 @@
             current = Math.max(0, Math.min(n, total - 1));
             track.style.transform = 'translateX(-' + (current * 100) + '%)';
             dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+            if (caption) caption.textContent = captions[current];
             prevBtn.disabled = current === 0;
             nextBtn.disabled = current === total - 1;
         }
@@ -1362,6 +1365,8 @@
         var prevBtn = document.getElementById('pcPrev2');
         var nextBtn = document.getElementById('pcNext2');
         var dots = document.querySelectorAll('#pcDots2 .pc-dot');
+        var caption = document.getElementById('pcCaption2');
+        var captions = ["Imported in 0.81s", "Every meal, every macro, timed", "Grocery list + prep schedule", "Exact items, exact costs", "Step-by-step meal prep"];
         if (!track) return;
         var total = track.children.length;
         var current = 0;
@@ -1369,6 +1374,7 @@
             current = Math.max(0, Math.min(n, total - 1));
             track.style.transform = 'translateX(-' + (current * 100) + '%)';
             dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+            if (caption) caption.textContent = captions[current];
             prevBtn.disabled = current === 0;
             nextBtn.disabled = current === total - 1;
         }
