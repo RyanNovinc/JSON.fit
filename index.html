@@ -256,7 +256,7 @@
             animation: heroFadeUp 0.7s ease 0.14s both;
         }
         .hero-btns {
-            display: flex; gap: 0.75rem; flex-wrap: wrap;
+            display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;
             animation: heroFadeUp 0.7s ease 0.21s both;
         }
         .btn-primary {
@@ -603,8 +603,8 @@
             <h1>You already have the AI.<br><span class="cyan">We do the rest.</span></h1>
             <p class="hero-sub">Use the AI you're already paying for. Paste the prompt, get a personalised workout program or meal plan back in seconds, import it, and track everything.</p>
             <div class="hero-btns">
-                <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:inline-block;">
-                    <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:block;border-radius:8px;">
+                <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
+                    <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
                 </a>
 
             </div>
@@ -1026,14 +1026,14 @@
     <div class="sns-card sa sa-up">
         <div class="sns-text">
             <span class="sns-lbl">Still not sure?</span>
-            <h3>See a real program before you commit.</h3>
-            <p>A step-by-step walkthrough — from app prompt to full 12-week hypertrophy program imported and ready to track.</p>
+            <h3>See a real meal plan before you commit.</h3>
+            <p>A full walkthrough — from setup to Claude generating your macros, grocery list, and meal prep instructions. Imported in under a second.</p>
         </div>
         <div class="sns-actions">
             <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="sns-btn-primary" onclick="gtag('event','download_click',{'button_location':'sns'})">
                 Download Free
             </a>
-            <a href="blog/chatgpt-hypertrophy-program.html" class="sns-btn-ghost">
+            <a href="blog/meal-plan-claude.html" class="sns-btn-ghost">
                 Read the tutorial
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
@@ -1055,14 +1055,14 @@
 <footer>
     <div class="foot-l">
         JSON<span class="cyan">.fit</span>
-        <a href="mailto:support@json.fit">Support</a>
+        <a href="/cdn-cgi/l/email-protection#25565055554a5751654f564a4b0b434c51">Support</a>
         <a href="privacy-policy.html">Privacy</a>
         <a href="terms-of-service.html">Terms</a>
     </div>
     <div class="foot-r">© 2026 JSON.fit</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function() {
 
     /* ── Hero graphic tab switcher ── */
@@ -1226,7 +1226,7 @@
             e.preventDefault();
             setTimeout(function() {
                 var target = document.querySelector(href);
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 50);
         });
     });
