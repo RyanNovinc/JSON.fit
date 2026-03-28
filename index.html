@@ -585,25 +585,7 @@
         .hero-video-mobile { display:none; margin-top:2rem; border-radius:14px; overflow:hidden; border:1px solid var(--border-cyan); background:var(--surface); max-width:320px; margin-left:auto; margin-right:auto; }
         @media (max-width:860px) { .hero-video-mobile { display:block; } }
 
-        /* ── Screenshot Carousel ── */
-        .carousel-section { padding:4rem 0 2rem; }
-        .carousel-head { text-align:center; margin-bottom:2rem; }
-        .carousel-head h3 { font-size:1.1rem; font-weight:700; letter-spacing:-0.01em; margin-bottom:0.3rem; }
-        .carousel-head p { font-size:0.82rem; color:var(--text-3); font-family:'DM Mono',monospace; letter-spacing:0.04em; }
-        .carousel-wrap { position:relative; display:flex; align-items:center; justify-content:center; gap:1rem; }
-        .carousel-track-outer { overflow:hidden; width:100%; max-width:260px; border-radius:24px; border:1px solid var(--border-cyan); background:var(--bg); box-shadow:0 8px 40px rgba(34,211,238,0.07); }
-        .carousel-track { display:flex; transition:transform 0.38s cubic-bezier(0.22,1,0.36,1); will-change:transform; }
-        .carousel-slide { min-width:100%; display:flex; flex-direction:column; align-items:center; }
-        .carousel-slide img { width:100%; height:auto; display:block; cursor:zoom-in; }
-        .carousel-caption { width:100%; padding:0.7rem 1rem 0.85rem; text-align:center; font-family:'DM Mono',monospace; font-size:0.63rem; color:var(--cyan); letter-spacing:0.06em; text-transform:uppercase; background:var(--surface); border-top:1px solid var(--border); }
-        .carousel-btn { flex-shrink:0; width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text-2); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s,color 0.2s,transform 0.15s; font-size:1rem; }
-        .carousel-btn:hover { border-color:var(--cyan); color:var(--cyan); transform:scale(1.08); }
-        .carousel-btn:disabled { opacity:0.2; cursor:default; transform:none; }
-        .carousel-dots { display:flex; justify-content:center; gap:0.5rem; margin-top:1.25rem; }
-        .carousel-dot { width:5px; height:5px; border-radius:50%; background:var(--border); border:none; cursor:pointer; padding:0; transition:background 0.2s,transform 0.2s; }
-        .carousel-dot.active { background:var(--cyan); transform:scale(1.3); }
-        @media (max-width:600px) { .carousel-track-outer { max-width:220px; } .carousel-btn { width:30px; height:30px; font-size:0.85rem; } }
-    </style>
+            </style>
 </head>
 <body>
 
@@ -814,8 +796,42 @@
                 <span class="proof-lbl">ChatGPT Output</span>
                 <h3>AI verifies its own work before you import</h3>
                 <p>The 3-step prompt pipeline asks the AI to review its own volume distribution, exercise selection, and progressive overload — then format for import. A checked program, not a first draft.</p>
-                <div class="proof-img">
-                    <img src="blog/images/workout-program.PNG" alt="Imported workout program showing full training split" loading="lazy">
+                <div class="proof-carousel">
+                    <div class="pc-track-outer">
+                        <div class="pc-track" id="pcTrack">
+                            <div class="pc-slide">
+                                <img src="images/Success_import.png" alt="Workout imported in 0.80s" loading="lazy">
+                                <div class="pc-caption">Imported in 0.80s</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/workout_split.png" alt="Full training split with exercises" loading="lazy">
+                                <div class="pc-caption">Your full split, every week</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/actual_workout.png" alt="Tracking sets and reps in a workout" loading="lazy">
+                                <div class="pc-caption">Track every set</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/Alternative_machines_if_yours_is_taken.png" alt="Swap exercises if machine is taken" loading="lazy">
+                                <div class="pc-caption">Machine taken? Swap it instantly</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/Rep_schema.png" alt="Progressive overload rep scheme by week" loading="lazy">
+                                <div class="pc-caption">Progressive overload, built in</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pc-controls">
+                        <button class="pc-btn" id="pcPrev" aria-label="Previous">&#8592;</button>
+                        <div class="pc-dots" id="pcDots">
+                            <button class="pc-dot active" aria-label="Slide 1"></button>
+                            <button class="pc-dot" aria-label="Slide 2"></button>
+                            <button class="pc-dot" aria-label="Slide 3"></button>
+                            <button class="pc-dot" aria-label="Slide 4"></button>
+                            <button class="pc-dot" aria-label="Slide 5"></button>
+                        </div>
+                        <button class="pc-btn" id="pcNext" aria-label="Next">&#8594;</button>
+                    </div>
                 </div>
                 <a href="blog/chatgpt-hypertrophy-program.html" class="proof-link">
                     Full tutorial: 12-week hypertrophy with ChatGPT
@@ -855,51 +871,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- SCREENSHOT CAROUSEL -->
-<section class="carousel-section sa sa-up">
-    <div class="container">
-        <div class="carousel-head">
-            <h3>Inside the app</h3>
-            <p>Swipe to explore</p>
-        </div>
-        <div class="carousel-wrap">
-            <button class="carousel-btn" id="carPrev" aria-label="Previous">&#8592;</button>
-            <div class="carousel-track-outer">
-                <div class="carousel-track" id="carTrack">
-                    <div class="carousel-slide">
-                        <img src="images/Success_import.png" alt="Workout imported in 0.80s" loading="lazy">
-                        <div class="carousel-caption">Imported in 0.80s</div>
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="images/workout_split.png" alt="Full training split with exercises" loading="lazy">
-                        <div class="carousel-caption">Your full split, every week</div>
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="images/actual_workout.png" alt="Tracking sets and reps in a workout" loading="lazy">
-                        <div class="carousel-caption">Track every set</div>
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="images/Alternative_machines_if_yours_is_taken.png" alt="Swap exercises if machine is taken" loading="lazy">
-                        <div class="carousel-caption">Machine taken? Swap it instantly</div>
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="images/Rep_schema.png" alt="Progressive overload rep scheme by week" loading="lazy">
-                        <div class="carousel-caption">Progressive overload, built in</div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-btn" id="carNext" aria-label="Next">&#8594;</button>
-        </div>
-        <div class="carousel-dots" id="carDots">
-            <button class="carousel-dot active" aria-label="Slide 1"></button>
-            <button class="carousel-dot" aria-label="Slide 2"></button>
-            <button class="carousel-dot" aria-label="Slide 3"></button>
-            <button class="carousel-dot" aria-label="Slide 4"></button>
-            <button class="carousel-dot" aria-label="Slide 5"></button>
         </div>
     </div>
 </section>
@@ -985,8 +956,42 @@
                 <span class="proof-lbl">Claude Output</span>
                 <h3>Your macros, calculated for your body and goal</h3>
                 <p>The nutrition prompt pipeline takes your weight, goal, activity level, cooking style, and sleep schedule — and builds a complete 7-day plan with every macro accounted for.</p>
-                <div class="proof-img">
-                    <img src="blog/images/meal-plan-ready.PNG" alt="Meal plan imported and ready to track" loading="lazy">
+                <div class="proof-carousel">
+                    <div class="pc-track-outer">
+                        <div class="pc-track" id="pcTrack2">
+                            <div class="pc-slide">
+                                <img src="images/Success_import2.png" alt="Meal plan imported in 0.81s" loading="lazy">
+                                <div class="pc-caption">Imported in 0.81s</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/Day_Plan.png" alt="Daily meal timeline with macros" loading="lazy">
+                                <div class="pc-caption">Every meal, every macro, timed</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/Summary.png" alt="Grocery list and meal prep schedule" loading="lazy">
+                                <div class="pc-caption">Grocery list + prep schedule</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/Grocery_List.png" alt="Itemised grocery list with prices" loading="lazy">
+                                <div class="pc-caption">Exact items, exact costs</div>
+                            </div>
+                            <div class="pc-slide">
+                                <img src="images/Meal_Prep.png" alt="Step by step meal prep session" loading="lazy">
+                                <div class="pc-caption">Step-by-step meal prep</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pc-controls">
+                        <button class="pc-btn" id="pcPrev2" aria-label="Previous">&#8592;</button>
+                        <div class="pc-dots" id="pcDots2">
+                            <button class="pc-dot active" aria-label="Slide 1"></button>
+                            <button class="pc-dot" aria-label="Slide 2"></button>
+                            <button class="pc-dot" aria-label="Slide 3"></button>
+                            <button class="pc-dot" aria-label="Slide 4"></button>
+                            <button class="pc-dot" aria-label="Slide 5"></button>
+                        </div>
+                        <button class="pc-btn" id="pcNext2" aria-label="Next">&#8594;</button>
+                    </div>
                 </div>
                 <a href="blog/meal-plan-claude.html" class="proof-link">
                     Full tutorial: meal plan with Claude
@@ -1306,12 +1311,43 @@
         });
     });
 
-    /* ── Carousel ── */
+        /* ── Workout proof-card carousel ── */
     (function() {
-        var track = document.getElementById('carTrack');
-        var prevBtn = document.getElementById('carPrev');
-        var nextBtn = document.getElementById('carNext');
-        var dots = document.querySelectorAll('#carDots .carousel-dot');
+        var track = document.getElementById('pcTrack');
+        var prevBtn = document.getElementById('pcPrev');
+        var nextBtn = document.getElementById('pcNext');
+        var dots = document.querySelectorAll('#pcDots .pc-dot');
+        if (!track) return;
+        var total = track.children.length;
+        var current = 0;
+        function goTo(n) {
+            current = Math.max(0, Math.min(n, total - 1));
+            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === total - 1;
+        }
+        prevBtn.addEventListener('click', function() { goTo(current - 1); });
+        nextBtn.addEventListener('click', function() { goTo(current + 1); });
+        dots.forEach(function(d, i) { d.addEventListener('click', function() { goTo(i); }); });
+        var touchStartX = 0;
+        track.parentElement.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive:true });
+        track.parentElement.addEventListener('touchend', function(e) {
+            var dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+        }, { passive:true });
+        Array.from(track.querySelectorAll('img')).forEach(function(img) {
+            img.addEventListener('click', function() { openLb(img.src, img.alt); });
+        });
+        goTo(0);
+    })();
+
+    /* ── Nutrition proof-card carousel ── */
+    (function() {
+        var track = document.getElementById('pcTrack2');
+        var prevBtn = document.getElementById('pcPrev2');
+        var nextBtn = document.getElementById('pcNext2');
+        var dots = document.querySelectorAll('#pcDots2 .pc-dot');
         if (!track) return;
         var total = track.children.length;
         var current = 0;
