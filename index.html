@@ -460,7 +460,7 @@
         .cta-card { max-width:480px; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem 2rem; position:relative; overflow:hidden; text-align:center; }
         .cta-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
         .cta-card > * { position:relative; z-index:1; }
-        .cta-badge { display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--red); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
+        .cta-badge { display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--cyan); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
         .cta-card h2 { font-size:1.5rem; font-weight:800; letter-spacing:-0.02em; margin-bottom:0.75rem; }
         .cta-price { display:flex; align-items:baseline; justify-content:center; gap:0.4rem; margin-bottom:0.25rem; }
         .cta-price .big { font-family:'DM Mono',monospace; font-size:2.5rem; font-weight:500; color:var(--cyan); }
@@ -589,7 +589,7 @@
             display: none;
             margin-top:2rem; border-radius:14px; overflow:hidden;
             border:1px solid var(--border-cyan); background:var(--surface);
-            max-width:320px; margin-left:auto; margin-right:auto;
+            max-width:360px; margin-left:auto; margin-right:auto;
         }
         @media (max-width:860px) { .hero-video-mobile { display:block; } }
 
@@ -620,14 +620,6 @@
             .carousel-track-outer { max-width:220px; }
             .carousel-btn { width:30px; height:30px; font-size:0.85rem; }
         }
-
-        /* ── Hero watch link — desktop only ── */
-        .hero-watch-link { margin-top:0.6rem; font-family:'DM Mono',monospace; font-size:0.72rem; animation:heroFadeUp 0.7s ease 0.32s both; }
-        .hero-watch-link a { color:var(--text-3); text-decoration:none; transition:color 0.2s; letter-spacing:0.02em; }
-        .hero-watch-link a:hover { color:var(--cyan); }
-        @media (max-width:860px) { .hero-watch-link { display:none; } }
-        .hero-video-mobile { display:none; margin-top:2rem; border-radius:14px; overflow:hidden; border:1px solid var(--border-cyan); background:var(--surface); max-width:320px; margin-left:auto; margin-right:auto; }
-        @media (max-width:860px) { .hero-video-mobile { display:block; } }
 
         /* ── Proof-card carousel ── */
         .pc-wrap { display:flex; flex-direction:column; align-items:center; gap:0.75rem; padding:0.5rem 0; }
@@ -675,9 +667,9 @@
                     <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
                 </a>
             </div>
-            <p class="hero-meta">Free workouts forever · Nutrition unlock <span style="color:var(--cyan)">⚡ Early adopter pricing</span></p>
+            <!-- CHANGE 2a: removed "early adopter pricing", replaced with "No subscription. Ever." -->
+            <p class="hero-meta">Free workouts forever · Nutrition unlock <span style="color:var(--cyan)">· No subscription. Ever.</span></p>
             <p class="hero-watch-link"><a href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.3em;vertical-align:middle;position:relative;top:-1px"><polygon points="5,3 19,12 5,21"/></svg>Watch how it works (44s)</a></p>
-            
 
             <div class="hero-steps-mobile">
                 <div class="hsm-step">
@@ -829,7 +821,8 @@
             <div class="step">
                 <span class="step-num">02 — Send to Any AI</span>
                 <h3>ChatGPT, Claude, Gemini</h3>
-                <p>Paste the prompt, get a structured plan back in seconds. Whatever AI you like.</p>
+                <!-- CHANGE 1: workflow friction reframe appended -->
+                <p>Paste the prompt, get a structured plan back in seconds. Whatever AI you like. Yes, it's a copy-paste step. It's also the reason you're not paying $20/month.</p>
             </div>
             <div class="step">
                 <span class="step-num">03 — Import & Train</span>
@@ -1090,7 +1083,8 @@
 <!-- CTA -->
 <section class="cta-wrap" id="download">
     <div class="cta-card sa sa-scale">
-        <div class="cta-badge">⚡ Early adopter pricing</div>
+        <!-- CHANGE 2b: removed "early adopter pricing" badge, replaced with "No subscription. Ever." in cyan -->
+        <div class="cta-badge" style="color:var(--cyan)">· No subscription. Ever.</div>
         <h2>Workouts free.<br>Unlock nutrition.</h2>
         <div class="cta-price"><span class="big">$9.99</span><span class="unit">USD · one time</span></div>
         <p class="cta-sub">Own forever · No subscription</p>
@@ -1165,7 +1159,6 @@
 <div class="toast" id="toast"><span class="toast-icon">✓</span> Noted — Android is coming!</div>
 
 <!-- FOOTER -->
-<!-- CHANGE: support link updated from Cloudflare email obfuscation to mailto:support@json.fit -->
 <footer>
     <div class="foot-l">
         JSON<span class="cyan">.fit</span>
