@@ -586,18 +586,18 @@
         @media (max-width:860px) { .hero-video-mobile { display:block; } }
         /* ── Proof-card carousel ── */
         .proof-carousel { display:flex; flex-direction:column; align-items:center; gap:0.85rem; padding:0.5rem 0; }
-        .pc-phone { width:185px; border-radius:20px; border:1px solid var(--border-cyan); overflow:hidden; box-shadow:0 8px 32px rgba(34,211,238,0.08); background:var(--bg); }
-        .pc-track-outer { overflow:hidden; width:185px; height:329px; }
-        .pc-track { display:flex; flex-wrap:nowrap; flex-direction:row; transition:transform 0.38s cubic-bezier(0.22,1,0.36,1); will-change:transform; }
-        .pc-slide { min-width:185px; max-width:185px; flex:0 0 185px; }
+        .pc-phone { width:185px; border-radius:20px; border:1px solid var(--border-cyan); box-shadow:0 8px 32px rgba(34,211,238,0.08); background:var(--bg); overflow:hidden; }
+        .pc-track-outer { position:relative; width:185px; }
+        .pc-track { display:block; width:185px; }
+        .pc-slide { display:none; width:185px; }
+        .pc-slide.active { display:block; }
         .pc-slide img { width:185px; height:auto; display:block; cursor:zoom-in; }
-
-        .pc-caption { padding:0.55rem 0.85rem 0.65rem; font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--cyan); letter-spacing:0.07em; text-transform:uppercase; background:var(--surface-2); border-top:1px solid var(--border); }
-        .pc-controls { display:flex; align-items:center; justify-content:space-between; gap:0.75rem; padding:0 0.25rem; }
+        .pc-caption { padding:0.5rem 0.75rem 0.6rem; text-align:center; font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--cyan); letter-spacing:0.07em; text-transform:uppercase; background:var(--surface-2); border-top:1px solid var(--border); }
+        .pc-controls { display:flex; align-items:center; gap:0.75rem; }
         .pc-btn { width:28px; height:28px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text-2); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.85rem; transition:border-color 0.2s,color 0.2s; flex-shrink:0; }
         .pc-btn:hover { border-color:var(--cyan); color:var(--cyan); }
         .pc-btn:disabled { opacity:0.2; cursor:default; }
-        .pc-dots { display:flex; gap:0.4rem; justify-content:center; flex:1; }
+        .pc-dots { display:flex; gap:0.4rem; }
         .pc-dot { width:5px; height:5px; border-radius:50%; background:var(--border); border:none; cursor:pointer; padding:0; transition:background 0.2s,transform 0.2s; }
         .pc-dot.active { background:var(--cyan); transform:scale(1.3); }
     </style>
@@ -815,7 +815,7 @@
                     <div class="pc-phone">
                         <div class="pc-track-outer">
                             <div class="pc-track" id="pcTrack">
-                                <div class="pc-slide"><img src="images/Success_import.png" alt="Workout imported in 0.80s" loading="lazy"></div>
+                                <div class="pc-slide active"><img src="images/Success_import.png" alt="Workout imported in 0.80s" loading="lazy"></div>
                                 <div class="pc-slide"><img src="images/workout_split.png" alt="Full training split with exercises" loading="lazy"></div>
                                 <div class="pc-slide"><img src="images/actual_workout.png" alt="Tracking sets and reps in a workout" loading="lazy"></div>
                                 <div class="pc-slide"><img src="images/Alternative_machines_if_yours_is_taken.png" alt="Swap exercises if machine is taken" loading="lazy"></div>
@@ -981,7 +981,7 @@
                     <div class="pc-phone">
                         <div class="pc-track-outer">
                             <div class="pc-track" id="pcTrack2">
-                                <div class="pc-slide"><img src="images/Success_import2.png" alt="Meal plan imported in 0.81s" loading="lazy"></div>
+                                <div class="pc-slide active"><img src="images/Success_import2.png" alt="Meal plan imported in 0.81s" loading="lazy"></div>
                                 <div class="pc-slide"><img src="images/Day_Plan.png" alt="Daily meal timeline with macros" loading="lazy"></div>
                                 <div class="pc-slide"><img src="images/Summary.png" alt="Grocery list and meal prep schedule" loading="lazy"></div>
                                 <div class="pc-slide"><img src="images/Grocery_List.png" alt="Itemised grocery list with prices" loading="lazy"></div>
@@ -1350,8 +1350,10 @@
         var total = track.children.length;
         var current = 0;
         function goTo(n) {
+            var slides = track.querySelectorAll('.pc-slide');
+            slides[current].classList.remove('active');
             current = Math.max(0, Math.min(n, total - 1));
-            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            slides[current].classList.add('active');
             dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
             if (caption) caption.textContent = captions[current];
             prevBtn.disabled = current === 0;
@@ -1384,8 +1386,10 @@
         var total = track.children.length;
         var current = 0;
         function goTo(n) {
+            var slides = track.querySelectorAll('.pc-slide');
+            slides[current].classList.remove('active');
             current = Math.max(0, Math.min(n, total - 1));
-            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            slides[current].classList.add('active');
             dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
             if (caption) caption.textContent = captions[current];
             prevBtn.disabled = current === 0;
