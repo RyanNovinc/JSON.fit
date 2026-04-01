@@ -305,8 +305,9 @@
         }
         .hg-tab:hover { color: var(--text-2); border-color: rgba(255,255,255,0.12); }
         .hg-tab-active { background: var(--cyan-soft); border-color: var(--border-cyan); color: var(--cyan); }
-        .hg-panel { display: flex; flex-direction: column; gap: 0; }
-        .hg-panel-hidden { display: none; }
+        .hg-panel { display:flex; flex-direction:column; gap:0; animation: panelFadeIn 0.3s ease both; }
+        .hg-panel-hidden { display:none; }
+        @keyframes panelFadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
         .hg-card {
             background: var(--surface); border: 1px solid var(--border);
             border-radius: 12px; padding: 1.25rem 1.5rem; position: relative;
@@ -705,17 +706,17 @@
         <div class="hero-text">
             <div class="badge"><span class="badge-dot"></span> Bring your own AI — ChatGPT, Claude, Gemini</div>
             <h1>You already have the AI.<br><span class="cyan">We do the rest.</span></h1>
-            <p class="hero-sub">Use the AI you're already paying for. Paste the prompt, get a personalised workout program or meal plan back in seconds, import it, and track everything.</p>
+            <p class="hero-sub">Paste the prompt, get a personalised workout program or meal plan back in seconds, import it, and track everything.</p>
             <div class="hero-btns">
                 <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
                     <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
                 </a>
             </div>
             <!-- CHANGE 2a: removed "early adopter pricing", replaced with "No subscription. Ever." -->
-            <p class="hero-meta">Free workouts forever · Nutrition unlock<br><span style="color:var(--cyan); white-space:nowrap;">· No subscription. Ever.</span></p>
+            <p class="hero-meta">Free workouts forever · Nutrition unlock $9.99 USD<br><span style="color:var(--cyan); white-space:nowrap;">· No subscription. Ever.</span></p>
             <div class="hero-review">
                 <p class="hero-review-quote">"Every other AI fitness app is literally just ChatGPT with a massive markup. Found this app with a one time payment, handles all the tracking. Awesome."</p>
-                <div class="hero-review-meta"><span class="hero-review-stars">★★★★★</span> christophol1337 · Australia · App Store</div>
+                <div class="hero-review-meta"><span class="hero-review-stars">★★★★★</span> christophol1337 · Australia</div>
             </div>
             <p class="hero-watch-link"><a href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.3em;vertical-align:middle;position:relative;top:-1px"><polygon points="5,3 19,12 5,21"/></svg>Watch how it works (44s)</a></p>
 
@@ -757,11 +758,11 @@
         <div class="hero-graphic" aria-hidden="true">
             <div class="hg-tabs">
                 <button class="hg-tab hg-tab-active" id="tab-w" onclick="hgSwitch('w')">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M2 9h20M2 15h20"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14"/><path d="M2 8h4M18 8h4M2 16h4M18 16h4"/><path d="M6 9h12M6 15h12"/></svg>
                     Workout
                 </button>
                 <button class="hg-tab" id="tab-n" onclick="hgSwitch('n')">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
                     Nutrition
                 </button>
             </div>
@@ -789,9 +790,9 @@
                 <div class="hg-card hg-card-3">
                     <div class="hg-lbl">03 — Imported</div>
                     <div class="hg-stats">
-                        <div class="hg-stat"><span class="hg-stat-num">0.82s</span><span class="hg-stat-sub">import time</span></div>
-                        <div class="hg-stat"><span class="hg-stat-num">33</span><span class="hg-stat-sub">movements</span></div>
-                        <div class="hg-stat"><span class="hg-stat-num">4wk</span><span class="hg-stat-sub">program</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-count" data-target="0.82" data-suffix="s" data-decimals="2">0.82s</span><span class="hg-stat-sub">import time</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-count" data-target="33" data-suffix="" data-decimals="0">33</span><span class="hg-stat-sub">movements</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-count" data-target="4" data-suffix="wk" data-decimals="0">4wk</span><span class="hg-stat-sub">program</span></div>
                     </div>
                     <div class="hg-ready"><span class="hg-ready-dot"></span> Ready to train</div>
                 </div>
@@ -819,9 +820,9 @@
                 <div class="hg-card hg-card-3">
                     <div class="hg-lbl">03 — Imported</div>
                     <div class="hg-stats">
-                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n">3,629</span><span class="hg-stat-sub">kcal/day</span></div>
-                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n">7</span><span class="hg-stat-sub">day plan</span></div>
-                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n">$230</span><span class="hg-stat-sub">groceries</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n hg-count" data-target="3629" data-suffix="" data-decimals="0">3,629</span><span class="hg-stat-sub">kcal/day</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n hg-count" data-target="7" data-suffix="" data-decimals="0">7</span><span class="hg-stat-sub">day plan</span></div>
+                        <div class="hg-stat"><span class="hg-stat-num hg-stat-num-n hg-count" data-target="230" data-prefix="$" data-suffix="" data-decimals="0">$230</span><span class="hg-stat-sub">groceries</span></div>
                     </div>
                     <div class="hg-ready" style="color:var(--green)"><span class="hg-ready-dot"></span> Ready to eat</div>
                 </div>
@@ -838,44 +839,50 @@
 </div>
 
 <!-- WORKOUT BLURB -->
-<section class="section">
+<section class="section" style="padding-bottom:2rem;">
     <div class="container">
         <div class="blurb sa sa-up">
             <div class="section-line"></div>
-            <span class="label">Your training, handled</span>
-            <h2>Stop second-guessing<br><span class="cyan">every decision.</span></h2>
-            <p class="blurb-q">How many sets per muscle group? What training split fits my schedule? How many reps for progressive overload? How long do I rest between sets? When do I take rest days?</p>
-            <p class="blurb-a"><span class="cyan">Every answer, personalised to you.</span><br>Every detail handled. Just train.</p>
-            <span class="blurb-tag green">And it's completely free.</span>
+            <span class="label">Free Workout Programs</span>
+            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Your AI Workout Program<br><span class="cyan">Is Ready.</span></h2>
+            <p style="margin:0 auto;color:var(--text-2);">Every aspect, optimised.</p>
         </div>
     </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="section" id="how">
+<!-- WORKOUT FEATURES -->
+<section class="section" style="padding-top:2rem;">
     <div class="container">
-        <div class="section-head sa sa-up">
-            <div class="section-line"></div>
-            <span class="label">How It Works</span>
-            <h2>Three steps.<br>Infinite plans.</h2>
-            <p>We build the prompt. You choose the AI. It's that simple.</p>
-        </div>
-        <div class="steps sa-stagger">
-            <div class="step">
-                <span class="step-num">01 — Quick Setup</span>
-                <h3>Answer a few questions</h3>
-                <p>Goals, schedule, experience, preferences. We build a perfect prompt customised for you.</p>
+        <div class="feat-grid sa-stagger">
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></span>
+                <h3>Full Year of Training</h3>
+                <p>Up to 48 weeks. Mesocycles, training blocks, and deload weeks all built in.</p>
             </div>
-            <div class="step">
-                <span class="step-num">02 — Send to Any AI</span>
-                <h3>ChatGPT, Claude, Gemini</h3>
-                <!-- CHANGE 1: workflow friction reframe appended -->
-                <p>Paste the prompt, get a structured plan back in seconds. Whatever AI you like. Yes, it's a copy-paste step. It's also the reason you're not paying $20/month.</p>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                <h3>Rest Times, Sorted</h3>
+                <p>Rest periods assigned per exercise based on your goals and time available.</p>
             </div>
-            <div class="step">
-                <span class="step-num">03 — Import & Train</span>
-                <h3>Paste or upload the result</h3>
-                <p>Your program loads instantly — every set, rep, meal, and macro ready to track.</p>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+                <h3>Any Training Split</h3>
+                <p>Push/pull/legs, upper/lower, full body. Configured to your schedule.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+                <h3>Exercise Swaps</h3>
+                <p>Machine taken? Every exercise has alternatives built in.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                <h3>Volume Per Muscle Group</h3>
+                <p>Every muscle group tracked and balanced across the week.</p>
+            </div>
+            <div class="feat">
+                <span class="feat-icon-svg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+                <h3>Any Goal, Any Level</h3>
+                <p>Build muscle, lose fat, improve strength. Beginner to advanced.</p>
             </div>
         </div>
     </div>
@@ -962,6 +969,35 @@
     </div>
 </section>
 
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+    <div class="container">
+        <div class="section-head sa sa-up">
+            <div class="section-line"></div>
+            <span class="label">How It Works</span>
+            <h2>Three steps.<br>Infinite plans.</h2>
+            <p>We build the prompt. You choose the AI. It's that simple.</p>
+        </div>
+        <div class="steps sa-stagger">
+            <div class="step">
+                <span class="step-num">01 — Quick Setup</span>
+                <h3>Answer a few questions</h3>
+                <p>Goals, schedule, experience, preferences. We build a perfect prompt customised for you.</p>
+            </div>
+            <div class="step">
+                <span class="step-num">02 — Send to Any AI</span>
+                <h3>ChatGPT, Claude, Gemini</h3>
+                <p>Paste the prompt, get a structured plan back in seconds. Whatever AI you like. Yes, it's a copy-paste step. It's also the reason you're not paying $20/month.</p>
+            </div>
+            <div class="step">
+                <span class="step-num">03 — Import & Train</span>
+                <h3>Paste or upload the result</h3>
+                <p>Your program loads instantly — every set, rep, meal, and macro ready to track.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- FREE BANNER -->
 <section class="section">
     <div class="container">
@@ -985,7 +1021,7 @@
         <div class="section-head sa sa-up" style="text-align:center;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Unlock for $9.99 USD</span>
-            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Your AI Nutritionist <span class="cyan">Is Ready.</span></h2>
+            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Your AI Nutritionist<br><span class="cyan">Is Ready.</span></h2>
             <p style="margin:0 auto;">Effortless eating, engineered for you.</p>
         </div>
     </div>
@@ -1138,7 +1174,7 @@
         <div class="review-single sa sa-up">
             <div class="review-stars">★★★★★</div>
             <p class="review-body">"Every other AI fitness app is literally just ChatGPT with a massive markup. Found this app with a one time payment, handles all the tracking. Awesome."</p>
-            <div class="review-meta">christophol1337 · Australia · App Store</div>
+            <div class="review-meta">christophol1337 · Australia</div>
         </div>
     </div>
 </section>
@@ -1242,22 +1278,46 @@
             var tabEl = document.getElementById('tab-' + t);
             if (t === tab) {
                 panel.classList.remove('hg-panel-hidden');
+                panel.style.animation = 'none';
+                panel.offsetHeight;
+                panel.style.animation = '';
                 tabEl.classList.add('hg-tab-active');
-                // re-trigger bar animations
                 panel.querySelectorAll('.hg-bar').forEach(function(b) {
                     b.style.transition = 'none';
                     b.style.width = '0';
-                    requestAnimationFrame(function() {
-                        requestAnimationFrame(function() {
+                });
+                setTimeout(function() {
+                    panel.querySelectorAll('.hg-bar').forEach(function(b, i) {
+                        setTimeout(function() {
                             b.style.transition = 'width 0.7s ease';
                             b.style.width = b.getAttribute('data-w') || '0%';
-                        });
+                        }, i * 80);
                     });
-                });
+                }, 950);
                 panel.querySelectorAll('.hg-prog-fill').forEach(function(p) {
                     p.style.animation = 'none';
                     p.offsetHeight;
                     p.style.animation = '';
+                });
+                panel.querySelectorAll('.hg-count').forEach(function(el) {
+                    var target = parseFloat(el.getAttribute('data-target'));
+                    var suffix = el.getAttribute('data-suffix') || '';
+                    var prefix = el.getAttribute('data-prefix') || '';
+                    var decimals = parseInt(el.getAttribute('data-decimals') || '0');
+                    var duration = 900;
+                    el.textContent = prefix + (decimals > 0 ? (0).toFixed(decimals) : '0') + suffix;
+                    setTimeout(function() {
+                        var start = null;
+                        function step(ts) {
+                            if (!start) start = ts;
+                            var progress = Math.min((ts - start) / duration, 1);
+                            var ease = 1 - Math.pow(1 - progress, 3);
+                            var val = target * ease;
+                            el.textContent = prefix + (decimals > 0 ? val.toFixed(decimals) : Math.round(val).toLocaleString()) + suffix;
+                            if (progress < 1) requestAnimationFrame(step);
+                        }
+                        requestAnimationFrame(step);
+                    }, 1800);
                 });
             } else {
                 panel.classList.add('hg-panel-hidden');
@@ -1267,15 +1327,49 @@
     }
     window.hgSwitch = hgSwitch;
 
-    // Trigger initial hero bars on load
-    setTimeout(function() {
-        document.querySelectorAll('#panel-w .hg-bar').forEach(function(b, i) {
-            setTimeout(function() {
-                b.style.transition = 'width 0.7s ease';
-                b.style.width = b.getAttribute('data-w') || '0%';
-            }, 950 + i * 80);
+    // Trigger hero graphic animations when scrolled into view
+    var heroGraphicFired = false;
+    var heroObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting && !heroGraphicFired) {
+                heroGraphicFired = true;
+                document.querySelectorAll('#panel-w .hg-bar').forEach(function(b) {
+                    b.style.transition = 'none';
+                    b.style.width = '0';
+                });
+                setTimeout(function() {
+                    document.querySelectorAll('#panel-w .hg-bar').forEach(function(b, i) {
+                        setTimeout(function() {
+                            b.style.transition = 'width 0.7s ease';
+                            b.style.width = b.getAttribute('data-w') || '0%';
+                        }, i * 80);
+                    });
+                }, 950);
+                document.querySelectorAll('#panel-w .hg-count').forEach(function(el) {
+                    var target = parseFloat(el.getAttribute('data-target'));
+                    var suffix = el.getAttribute('data-suffix') || '';
+                    var prefix = el.getAttribute('data-prefix') || '';
+                    var decimals = parseInt(el.getAttribute('data-decimals') || '0');
+                    var duration = 900;
+                    var start = null;
+                    setTimeout(function() {
+                        function step(ts) {
+                            if (!start) start = ts;
+                            var progress = Math.min((ts - start) / duration, 1);
+                            var ease = 1 - Math.pow(1 - progress, 3);
+                            var val = target * ease;
+                            el.textContent = prefix + (decimals > 0 ? val.toFixed(decimals) : Math.round(val).toLocaleString()) + suffix;
+                            if (progress < 1) requestAnimationFrame(step);
+                        }
+                        requestAnimationFrame(step);
+                    }, 1800);
+                });
+                heroObserver.disconnect();
+            }
         });
-    }, 100);
+    }, { threshold: 0.3 });
+    var heroGraphic = document.querySelector('.hero-graphic');
+    if (heroGraphic) heroObserver.observe(heroGraphic);
 
     /* ── Toast / Android ── */
     function showToast() {
