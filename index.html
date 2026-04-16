@@ -41,7 +41,13 @@
       "offers": [
         { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free: Unlimited AI workout imports" },
         { "@type": "Offer", "price": "9.99", "priceCurrency": "USD", "description": "One-time: Nutrition features" }
-      ]
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "6",
+        "bestRating": "5"
+      }
     }
     </script>
     <script type="application/ld+json">
@@ -506,14 +512,28 @@
         .lightbox-hint { position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%); font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--text-3); letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
 
         /* ── Reviews ── */
-        .review-single { max-width:540px; margin:0 auto; text-align:center; display:flex; flex-direction:column; gap:0.75rem; }
+        .review-rating-bar {
+            display: flex; align-items: center; gap: 1.25rem;
+            justify-content: center; margin-bottom: 2.5rem;
+        }
+        .review-rating-score {
+            display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+        }
+        .review-rating-num {
+            font-family: 'DM Mono', monospace; font-size: 3rem; font-weight: 500;
+            color: var(--text); line-height: 1; letter-spacing: -0.02em;
+        }
+        .review-rating-stars { color: #f59e0b; font-size: 1rem; letter-spacing: 0.08em; }
+        .review-rating-count {
+            font-family: 'DM Mono', monospace; font-size: 0.65rem;
+            color: var(--text-3); letter-spacing: 0.08em; text-transform: uppercase;
+        }
         .review-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:14px; overflow:hidden; }
         .review-card { background:var(--surface); padding:1.75rem; display:flex; flex-direction:column; gap:0.75rem; transition:background 0.3s; }
         .review-card:hover { background:var(--surface-2); }
-        .review-card-empty { opacity:0.45; }
         .review-stars { color:#f59e0b; font-size:1rem; letter-spacing:0.05em; }
         .review-title { font-size:0.92rem; font-weight:700; color:var(--text); line-height:1.3; }
-        .review-body { color:var(--text-2); font-size:0.95rem; line-height:1.75; font-style:italic; }
+        .review-body { color:var(--text-2); font-size:0.85rem; line-height:1.75; }
         .review-meta { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); letter-spacing:0.04em; }
         @media (max-width:860px) { .review-grid { grid-template-columns:1fr; } }
 
@@ -712,11 +732,10 @@
                     <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
                 </a>
             </div>
-            <!-- CHANGE 2a: removed "early adopter pricing", replaced with "No subscription. Ever." -->
             <p class="hero-meta">Free workouts forever · Nutrition unlock $9.99 USD<br><span style="color:var(--cyan); white-space:nowrap;">· No subscription. Ever.</span></p>
             <div class="hero-review">
-                <p class="hero-review-quote">"Every other AI fitness app is literally just ChatGPT with a massive markup. Found this app with a one time payment, handles all the tracking. Awesome."</p>
-                <div class="hero-review-meta"><span class="hero-review-stars">★★★★★</span> christophol1337 · Australia</div>
+                <p class="hero-review-quote">"Was paying for an AI trainer that was just GPT under the hood anyway. This app lets me use ChatGPT myself to build my program and just handles the tracking. Workouts are completely free too which I wasn't expecting."</p>
+                <div class="hero-review-meta"><span class="hero-review-stars">★★★★★</span> ReeceAdam · App Store</div>
             </div>
             <p class="hero-watch-link"><a href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.3em;vertical-align:middle;position:relative;top:-1px"><polygon points="5,3 19,12 5,21"/></svg>Watch how it works (44s)</a></p>
 
@@ -1171,10 +1190,40 @@
 <!-- REVIEWS -->
 <section class="section" style="padding-bottom:0;">
     <div class="container">
-        <div class="review-single sa sa-up">
-            <div class="review-stars">★★★★★</div>
-            <p class="review-body">"Every other AI fitness app is literally just ChatGPT with a massive markup. Found this app with a one time payment, handles all the tracking. Awesome."</p>
-            <div class="review-meta">christophol1337 · Australia</div>
+        <div class="section-head sa sa-up" style="text-align:center; margin-bottom:2rem;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">App Store Reviews</span>
+            <h2>What people are saying.</h2>
+        </div>
+
+        <!-- Rating bar -->
+        <div class="review-rating-bar sa sa-up">
+            <div class="review-rating-score">
+                <span class="review-rating-num">5.0</span>
+                <span class="review-rating-stars">★★★★★</span>
+                <span class="review-rating-count">6 ratings · App Store</span>
+            </div>
+        </div>
+
+        <div class="review-grid sa-stagger">
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-title">Replaced my $30/month PT app</div>
+                <p class="review-body">Was paying for an AI trainer that was just GPT under the hood anyway. This app lets me use ChatGPT myself to build my program and just handles the tracking. Workouts are completely free too which I wasn't expecting.</p>
+                <div class="review-meta">ReeceAdam · 31 Mar · Australia</div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-title">Used Claude to generate my bulk meal plan</div>
+                <p class="review-body">Pasted the prompt into Claude, got a full 7-day high protein meal plan with grocery list and meal prep schedule. It was an affordable one time payment, no subscription, which has changed my entire meal prep routine.</p>
+                <div class="review-meta">Nick_Firt · 31 Mar · App Store</div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-title">Finally an AI fitness app that doesn't charge you for the AI</div>
+                <p class="review-body">Already pay for ChatGPT Plus so I was sick of other apps charging me again for the same thing. JSON.fit lets me use my own AI and just handles the tracking. Workout imports are completely free.</p>
+                <div class="review-meta">Zac ishiyama · 4 Apr · App Store</div>
+            </div>
         </div>
     </div>
 </section>
@@ -1182,7 +1231,6 @@
 <!-- CTA -->
 <section class="cta-wrap" id="download">
     <div class="cta-card sa sa-scale">
-        <!-- CHANGE 2b: removed "early adopter pricing" badge, replaced with "No subscription. Ever." in cyan -->
         <div class="cta-badge" style="color:var(--cyan)">· No subscription. Ever.</div>
         <h2>Workouts free.<br>Unlock nutrition.</h2>
         <div class="cta-price"><span class="big">$9.99</span><span class="unit">USD · one time</span></div>
