@@ -20,10 +20,13 @@ Chest, Front Delts, Side Delts, Rear Delts, Lats, Upper Back, Traps, Biceps, Tri
 
 ## Tagging Philosophy
 
-Primary = main driver through meaningful range of motion under load.
+Primary = the single main driver of the exercise — the muscle doing the most work through the greatest range of motion under load. Almost all exercises have ONE primary muscle. Very few true compound exercises warrant dual-primary tagging, and only when both muscles contribute roughly equally as prime movers.
+
 Secondary = assists through meaningful ROM under load but is not the main driver.
 
-Muscles that only stabilize or isometrically contract are NOT tagged as secondary. This is why squats don't tag Core, pulls don't tag Forearms, and overhead presses don't tag Core despite all three muscles contracting during those lifts.
+Muscles that only stabilize or isometrically contract are NOT tagged as secondary. This is why squats don't tag Core, pulls don't tag Forearms (unless grip-limited), and overhead presses don't tag Core despite all three muscles contracting during those lifts.
+
+Tagging decisions follow ExRx.net biomechanical classification where applicable, cross-referenced with modern evidence-based fitness app conventions (Hevy, Stronger by Science).
 
 ---
 
@@ -36,8 +39,8 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Compound
 
 ### Incline Barbell Bench Press
-- Primary: Chest, Front Delts
-- Secondary: Triceps
+- Primary: Chest
+- Secondary: Front Delts, Triceps
 - Equipment: Barbell, Incline Bench
 - Category: Compound
 
@@ -54,8 +57,8 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Compound
 
 ### Incline Dumbbell Bench Press
-- Primary: Chest, Front Delts
-- Secondary: Triceps
+- Primary: Chest
+- Secondary: Front Delts, Triceps
 - Equipment: Dumbbells, Incline Bench
 - Category: Compound
 
@@ -72,8 +75,8 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Compound
 
 ### Dips (Chest Focus)
-- Primary: Chest, Triceps
-- Secondary: Front Delts
+- Primary: Chest
+- Secondary: Triceps, Front Delts
 - Equipment: Parallel Bars or Dip Station
 - Category: Compound
 
@@ -107,109 +110,109 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 
 ### Pull-up
 - Primary: Lats
-- Secondary: Biceps, Upper Back
+- Secondary: Biceps, Upper Back, Rear Delts
 - Equipment: Pull-up Bar
 - Category: Compound
 
 ### Weighted Pull-up
 - Primary: Lats
-- Secondary: Biceps, Upper Back
+- Secondary: Biceps, Upper Back, Rear Delts
 - Equipment: Pull-up Bar, Weight Belt
 - Category: Compound
 
 ### Assisted Pull-up
 - Primary: Lats
-- Secondary: Biceps, Upper Back
+- Secondary: Biceps, Upper Back, Rear Delts
 - Equipment: Assisted Pull-up Machine
 - Category: Compound
 
 ### Chin-up
 - Primary: Lats
-- Secondary: Biceps
+- Secondary: Biceps, Rear Delts
 - Equipment: Pull-up Bar
 - Category: Compound
 
 ### Neutral-Grip Pull-up
 - Primary: Lats
-- Secondary: Biceps, Upper Back
+- Secondary: Biceps, Upper Back, Rear Delts
 - Equipment: Pull-up Bar (neutral handles)
 - Category: Compound
 
 ### Lat Pulldown
 - Primary: Lats
-- Secondary: Biceps, Upper Back
+- Secondary: Biceps, Upper Back, Rear Delts
 - Equipment: Cable Machine, Lat Pulldown Attachment
 - Category: Compound
 
 ### Neutral-Grip Lat Pulldown
 - Primary: Lats
-- Secondary: Biceps, Upper Back
+- Secondary: Biceps, Upper Back, Rear Delts
 - Equipment: Cable Machine, V-Handle
 - Category: Compound
 
 ### Close-Grip Lat Pulldown
 - Primary: Lats
-- Secondary: Biceps
+- Secondary: Biceps, Rear Delts
 - Equipment: Cable Machine, Close-Grip Handle
 - Category: Compound
 
 ### Barbell Row
-- Primary: Upper Back, Lats
-- Secondary: Biceps, Rear Delts
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
 - Equipment: Barbell
 - Category: Compound
 
 ### Pendlay Row
-- Primary: Upper Back, Lats
-- Secondary: Biceps, Rear Delts
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
 - Equipment: Barbell
 - Category: Compound
 
 ### T-Bar Row
-- Primary: Upper Back, Lats
-- Secondary: Biceps, Rear Delts
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
 - Equipment: T-Bar or Landmine
 - Category: Compound
 
 ### Chest-Supported T-Bar Row
-- Primary: Upper Back, Lats
-- Secondary: Biceps, Rear Delts
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
 - Equipment: Chest-Supported T-Bar Machine
 - Category: Compound
 
 ### Chest-Supported Dumbbell Row
-- Primary: Upper Back, Lats
-- Secondary: Biceps, Rear Delts
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
 - Equipment: Dumbbells, Incline Bench
 - Category: Compound
 
 ### Seated Cable Row
-- Primary: Upper Back, Lats
-- Secondary: Biceps, Rear Delts
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
 - Equipment: Cable Machine, Row Attachment
 - Category: Compound
 
 ### Single-Arm Dumbbell Row
-- Primary: Lats, Upper Back
-- Secondary: Biceps
+- Primary: Lats
+- Secondary: Upper Back, Biceps, Rear Delts
 - Equipment: Dumbbell, Bench
 - Category: Compound
 
 ### Meadows Row
-- Primary: Lats, Upper Back
-- Secondary: Biceps, Rear Delts
+- Primary: Lats
+- Secondary: Upper Back, Biceps, Rear Delts
 - Equipment: Landmine, Barbell
 - Category: Compound
 
 ### Seal Row
-- Primary: Upper Back, Lats
-- Secondary: Biceps, Rear Delts
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
 - Equipment: Seal Row Bench, Barbell
 - Category: Compound
 
 ### Straight-Arm Pulldown
 - Primary: Lats
-- Secondary: (none)
+- Secondary: Triceps
 - Equipment: Cable Machine, Straight Bar
 - Category: Isolation
 
@@ -248,8 +251,8 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Compound
 
 ### Arnold Press
-- Primary: Front Delts, Side Delts
-- Secondary: Triceps
+- Primary: Front Delts
+- Secondary: Side Delts, Triceps
 - Equipment: Dumbbells, Bench
 - Category: Compound
 
@@ -428,14 +431,14 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Isolation
 
 ### Close-Grip Bench Press
-- Primary: Triceps, Chest
-- Secondary: Front Delts
+- Primary: Triceps
+- Secondary: Chest, Front Delts
 - Equipment: Barbell, Flat Bench
 - Category: Compound
 
 ### Dips (Triceps Focus)
-- Primary: Triceps, Chest
-- Secondary: Front Delts
+- Primary: Triceps
+- Secondary: Chest, Front Delts
 - Equipment: Parallel Bars
 - Category: Compound
 
@@ -450,8 +453,8 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 ## QUADS
 
 ### Barbell Back Squat
-- Primary: Quads, Glutes
-- Secondary: (none)
+- Primary: Quads
+- Secondary: Glutes
 - Equipment: Barbell, Squat Rack
 - Category: Compound
 
@@ -462,14 +465,14 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Compound
 
 ### Safety Bar Squat
-- Primary: Quads, Glutes
-- Secondary: (none)
+- Primary: Quads
+- Secondary: Glutes
 - Equipment: Safety Squat Bar, Squat Rack
 - Category: Compound
 
 ### Smith Machine Squat
-- Primary: Quads, Glutes
-- Secondary: (none)
+- Primary: Quads
+- Secondary: Glutes
 - Equipment: Smith Machine
 - Category: Compound
 
@@ -492,26 +495,26 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Compound
 
 ### Bulgarian Split Squat
-- Primary: Quads, Glutes
-- Secondary: (none)
+- Primary: Quads
+- Secondary: Glutes
 - Equipment: Dumbbells or Barbell, Bench
 - Category: Compound
 
 ### Walking Lunge
-- Primary: Quads, Glutes
-- Secondary: (none)
+- Primary: Quads
+- Secondary: Glutes
 - Equipment: Dumbbells or Barbell
 - Category: Compound
 
 ### Reverse Lunge
-- Primary: Quads, Glutes
-- Secondary: (none)
+- Primary: Quads
+- Secondary: Glutes
 - Equipment: Dumbbells or Barbell
 - Category: Compound
 
 ### Step-Up
-- Primary: Quads, Glutes
-- Secondary: (none)
+- Primary: Quads
+- Secondary: Glutes
 - Equipment: Dumbbells, Box or Bench
 - Category: Compound
 
@@ -550,20 +553,20 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Compound
 
 ### Conventional Deadlift
-- Primary: Hamstrings, Upper Back
-- Secondary: Glutes, Lower Back, Forearms
+- Primary: Glutes
+- Secondary: Hamstrings, Lower Back, Quads, Upper Back, Forearms
 - Equipment: Barbell
 - Category: Compound
 
 ### Sumo Deadlift
-- Primary: Quads, Glutes
-- Secondary: Hamstrings, Lower Back, Forearms
+- Primary: Glutes
+- Secondary: Quads, Hamstrings, Lower Back, Forearms
 - Equipment: Barbell
 - Category: Compound
 
 ### Trap Bar Deadlift
-- Primary: Quads, Glutes
-- Secondary: Hamstrings, Upper Back, Forearms
+- Primary: Glutes
+- Secondary: Quads, Hamstrings, Lower Back, Upper Back, Forearms
 - Equipment: Trap Bar
 - Category: Compound
 
@@ -590,6 +593,12 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Secondary: (none)
 - Equipment: Leg Curl Machine
 - Category: Isolation
+
+### Good Morning
+- Primary: Hamstrings
+- Secondary: Glutes
+- Equipment: Barbell
+- Category: Compound
 
 ---
 
@@ -641,6 +650,12 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Primary: Hip Adductors
 - Secondary: (none)
 - Equipment: Hip Adduction Machine
+- Category: Isolation
+
+### Reverse Hyperextension
+- Primary: Glutes
+- Secondary: Hamstrings
+- Equipment: Reverse Hyper Machine or GHD
 - Category: Isolation
 
 ---
@@ -733,18 +748,6 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Equipment: 45-Degree Hyperextension Bench
 - Category: Isolation
 
-### Reverse Hyperextension
-- Primary: Lower Back
-- Secondary: Glutes
-- Equipment: Reverse Hyper Machine or GHD
-- Category: Isolation
-
-### Good Morning
-- Primary: Hamstrings, Lower Back
-- Secondary: Glutes
-- Equipment: Barbell
-- Category: Compound
-
 ---
 
 ## NECK
@@ -796,8 +799,8 @@ Muscles that only stabilize or isometrically contract are NOT tagged as secondar
 - Category: Isolation
 
 ### Farmer's Walk
-- Primary: Forearms, Traps
-- Secondary: Core
+- Primary: Forearms
+- Secondary: Traps, Core
 - Equipment: Heavy Dumbbells or Farmer's Handles
 - Category: Compound
 
