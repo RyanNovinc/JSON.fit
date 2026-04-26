@@ -47,49 +47,68 @@ When generating workout programs, you MUST:
 
 ## Tier Mapping (Volume Preference × Experience)
 
-The user's Volume Preference (from questionnaire) and Training Experience together determine target ranges within each muscle's MAV.
+The user's Volume Preference (from questionnaire) and Training Experience together determine the target position within each muscle's MAV.
+
+**IMPORTANT:** When no priority muscles are specified, target a single position (not a range) so non-priority muscles land at SIMILAR effective set counts within their respective MAV ranges. This produces balanced programs. Treat the position as a target, not a license to use the full range.
 
 ### Conservative tier
 For users who want lower-end productive volume.
 
-| Experience | Position within MAV |
-|------------|---------------------|
-| Complete Beginner | MEV to MAV-low |
+| Experience | Target Position |
+|------------|-----------------|
+| Complete Beginner | MEV |
 | Beginner | MAV-low |
 | Intermediate | MAV-low |
-| Advanced | MAV-low to MAV-mid |
+| Advanced | MAV-low |
 
 ### Moderate tier (recommended default)
 For users who want sweet-spot productive volume.
 
-| Experience | Position within MAV |
-|------------|---------------------|
-| Complete Beginner | MEV to MAV-low |
-| Beginner | MAV-low to MAV-mid |
-| Intermediate | MAV-mid (full MAV range) |
-| Advanced | MAV-mid to MAV-high |
+| Experience | Target Position |
+|------------|-----------------|
+| Complete Beginner | MEV |
+| Beginner | MAV-low |
+| Intermediate | MAV-mid |
+| Advanced | MAV-mid |
 
 ### High Volume tier
 For users with high recovery capacity who want to push volume.
 
-| Experience | Position within MAV |
-|------------|---------------------|
-| Complete Beginner | MAV-low to MAV-mid |
-| Beginner | MAV-mid to MAV-high |
-| Intermediate | MAV-high to MRV-1 |
+| Experience | Target Position |
+|------------|-----------------|
+| Complete Beginner | MAV-low |
+| Beginner | MAV-mid |
+| Intermediate | MAV-high |
 | Advanced | MAV-high to MRV |
+
+## How Target Positions Translate to Numbers
+
+The "Target Position" defines where in the muscle's MAV range to land. Compute the target as a tight range around that position (±1-2 sets to allow exercise selection flexibility):
+
+- **MEV** = the muscle's MEV value, ±1 set
+- **MAV-low** = lower third of MAV (e.g., for Chest MAV 12–20, MAV-low ≈ 12–14)
+- **MAV-mid** = middle third of MAV (e.g., for Chest MAV 12–20, MAV-mid ≈ 14–17)
+- **MAV-high** = upper third of MAV (e.g., for Chest MAV 12–20, MAV-high ≈ 17–20)
+- **MAV-high to MRV** = upper third of MAV through MRV (e.g., for Chest MAV 12–20, MRV 22, this ≈ 17–22)
+
+When building the per-muscle target table, output each muscle's target as a tight range around the appropriate position.
 
 ## How to Compute Target Range for a Muscle
 
-Example: An Intermediate user picks "Moderate" volume tier. Looking at Chest:
-- Chest MAV: 12–20
-- Intermediate + Moderate = "MAV-mid (full MAV range)" → target 12–20
+Example: An Intermediate user picks "Moderate" volume tier.
+Tier × Experience = MAV-mid
 
-For a different muscle, same user, Hamstrings:
-- Hamstrings MAV: 10–16
-- Intermediate + Moderate = "MAV-mid (full MAV range)" → target 10–16
+For Chest (MAV 12–20):
+- MAV range = 12–20, span = 8
+- MAV-mid = middle third ≈ 14–17
+- Target: 14–17
 
-So the SAME user gets DIFFERENT ranges per muscle, calibrated to that muscle's actual recovery capacity.
+For Hamstrings (MAV 10–16):
+- MAV range = 10–16, span = 6
+- MAV-mid = middle third ≈ 12–14
+- Target: 12–14
+
+So the SAME user gets DIFFERENT, tightly-targeted ranges per muscle — calibrated to that muscle's recovery capacity AND positioned consistently across muscles for balance.
 
 ## Auxiliary Muscles (Opt-In)
 
