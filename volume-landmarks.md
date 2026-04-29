@@ -22,28 +22,35 @@ When generating workout programs, you MUST:
 
 | Muscle | MV | MEV | MAV (low–high) | MRV |
 |--------|----|----|----------------|----|
-| Chest | 6 | 8 | 12–20 | 22 |
-| Lats | 6 | 10 | 14–22 | 25 |
-| Upper Back | 6 | 10 | 14–22 | 25 |
-| Front Delts | 0 | 6 | 6–12 | 16 |
-| Side Delts | 6 | 8 | 12–20 | 26 |
-| Rear Delts | 4 | 6 | 10–16 | 20 |
+| Chest | 4 | 8 | 12–20 | 22 |
+| Back (Lats + Upper Back combined) | 8 | 10 | 14–22 | 25 |
+| Front Delts | 0 | 0 | 4–8 | 12 |
+| Side Delts | 6 | 8 | 16–22 | 26 |
+| Rear Delts | 0 | 4 | 6–12 | 18 |
 | Traps | 0 | 4 | 6–10 | 14 |
-| Biceps | 6 | 8 | 12–20 | 24 |
-| Triceps | 6 | 6 | 10–18 | 22 |
+| Biceps | 5 | 8 | 14–20 | 26 |
+| Triceps | 4 | 6 | 10–14 | 18 |
 | Forearms | 0 | 4 | 4–10 | 14 |
-| Quads | 6 | 8 | 12–18 | 22 |
+| Quads | 6 | 8 | 12–18 | 20 |
 | Hamstrings | 4 | 6 | 10–16 | 20 |
-| Glutes | 0 | 6 | 8–16 | 22 |
-| Calves | 6 | 8 | 12–20 | 25 |
-| Core | 0 | 0 | 4–10 | 16 |
+| Glutes | 0 | 6 | 8–18 | 22 |
+| Calves | 6 | 8 | 12–18 | 22 |
+| Core | 0 | 0 | 8–16 | 20 |
 | Lower Back | 0 | 4 | 4–8 | 12 |
-| Neck | 0 | 0 | 4–8 | 12 |
+| Neck | 0 | 0 | 4–8 | 14 |
 | Obliques | 0 | 0 | 4–8 | 12 |
 | Hip Abductors | 0 | 0 | 4–8 | 12 |
 | Hip Adductors | 0 | 0 | 4–8 | 12 |
 | Serratus Anterior | 0 | 0 | 2–6 | 10 |
-| Shins (Tibialis) | 0 | 0 | 4–8 | 12 |
+| Shins (Tibialis) | 0 | 0 | 4–10 | 14 |
+
+### Note on Back
+
+Treat Back as a single muscle group (lats, mid-back, upper back combined). Splitting into separate "Lats" and "Upper Back" with full back-volume ranges each would double-count work from rows, pulldowns, and pull-ups. Lat vs. mid-back emphasis is handled through exercise selection within the combined back volume budget.
+
+### Note on Traps
+
+The Traps numbers above assume effective-set (fractional) counting, where heavy rows and deadlifts contribute 0.5 effective sets to traps. Stay consistent with the fractional convention across the program.
 
 ## Tier Mapping (Volume Preference × Experience)
 
@@ -57,7 +64,7 @@ For users who want lower-end productive volume.
 | Experience | Target Position |
 |------------|-----------------|
 | Complete Beginner | MEV |
-| Beginner | MAV-low |
+| Beginner | MEV to MAV-low |
 | Intermediate | MAV-low |
 | Advanced | MAV-low |
 
@@ -129,14 +136,3 @@ Some muscles get sufficient volume from compounds and don't need direct work to 
 - Forearms (indirect from grip-loaded pulling)
 
 These can show 0 direct sets if compound contributions cover MEV. They are NOT exempt from MRV — going over the ceiling still causes problems.
-
-## Research Basis
-
-These landmarks are synthesized from:
-- Pelland 2024 meta-regression (fractional set counting)
-- Schoenfeld 2017 dose-response meta-analysis
-- RP Strength volume guides (Israetel)
-- Hevy app guidelines
-- Krieger 2010 multi-set meta-analysis
-
-All numbers represent EFFECTIVE sets (Primary × 1.0 + Secondary × 0.5).
