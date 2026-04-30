@@ -1,4 +1,4 @@
-# JSON.fit Volume Landmarks
+# JSON.fit Volume Landmarks 
 
 This file is the canonical reference for weekly volume targets per muscle group on JSON.fit.
 
