@@ -8,6 +8,7 @@ Canonical reference for RIR (Reps In Reserve) prescription. AI MUST apply this w
 2. Output RIR in exercise notes only. Never as a per-set logged field.
 3. Apply exercise category × mesocycle week × set count × goal.
 4. Tier-appropriate language (see Output Format section).
+5. Output RIR for EVERY exercise — compounds, machines, isolation, and accessories. No exceptions.
 
 ## Exercise Categories
 
