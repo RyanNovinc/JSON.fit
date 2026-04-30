@@ -9,7 +9,7 @@ Canonical reference for RIR (Reps In Reserve) prescription. AI MUST apply this w
 3. Apply exercise category × mesocycle week × set count × goal.
 4. Tier-appropriate language (see Output Format section).
 5. Output RIR for EVERY exercise — compounds, machines, isolation, and accessories. No exceptions.
-6. RIR notes appear per-exercise, never grouped. Each exercise gets its own line with its own RIR guidance, even if multiple exercises share the same values. Never group exercises like "Bench Press, T-Bar Row: RIR 3 W1...".
+6. RIR notes appear per-exercise, never grouped. Each exercise gets its own line, even if multiple exercises share the same values. Never write "Bench Press, T-Bar Row: RIR 3 W1...".
 
 ## Standardised Language
 
@@ -20,8 +20,6 @@ Use these exact phrases. Do not paraphrase or substitute.
 - For drop set permission: write "Drop set optional" — never "AMRAP" or "burnout set"
 - For compound technique reminder: write "Stay technical" — keep this exact phrase
 - For mesocycle progression: write "RIR X W1 → Y W2 → Z W3 → W W4" using the arrow symbol →
-
-Consistent language across exercises lets users learn the system once and apply it everywhere.
 
 ## Exercise Categories
 
@@ -101,18 +99,7 @@ Pure numerical, set-aware:
 
 ## Accuracy Calibration
 
-Users underestimate RIR by ~1-2 reps on average (Halperin 2021). Accuracy is worse at:
-- Lighter loads (high-rep isolation)
-- Further from failure (RIR 3+)
-
-This is why isolation targets are aggressive (0-1 RIR) — actual RIR will be ~2-3.
-
-## Evidence Base
-
-- Robinson et al. 2024 (Sports Med meta-regression): hypertrophy improves linearly as RIR decreases
-- Refalo et al. 2024 (J Sports Sci): 1-2 RIR matches failure for hypertrophy with less fatigue
-- Halperin et al. 2021 (Sports Med meta-analysis): RIR underestimation patterns
-- RP / Israetel mesocycle model: 4-week progression validated by Refalo 2025
+Users underestimate RIR by ~1-2 reps on average. Accuracy is worse at lighter loads (high-rep isolation) and further from failure (RIR 3+). This is why isolation targets are aggressive (0-1 RIR) — actual RIR will be ~2-3.
 
 ## Worked Example
 
