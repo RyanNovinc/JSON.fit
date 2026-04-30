@@ -26,10 +26,12 @@ Use these exact phrases. Do not paraphrase or substitute.
 Classify every exercise as one of:
 
 - `barbell_compound` — back squat, deadlift, bench press, OHP, barbell row, front squat
-- `machine_compound` — leg press, hack squat, chest press machine, lat pulldown, cable row, smith machine
+- `machine_compound` — leg press, hack squat, chest press machine, lat pulldown, cable row, smith machine, hip thrust, glute bridge, chest-supported t-bar row, hex bar deadlift
 - `isolation` — curls, lateral raises, tricep extensions, leg curls, leg extensions, flyes, calf raises
 - `unilateral_compound` — Bulgarian split squat, single-leg RDL, single-arm DB row, lunges, step-ups
 - `high_skill` — power clean, snatch, conventional deadlift, complex Olympic-derivative
+
+**Classification rule:** Classification is based on stability and skill demand, not equipment. A barbell movement that is supported (chest-supported, fixed-path, or pad-stabilised) or has minimal balance/technique demand classifies as `machine_compound`, not `barbell_compound`. When in doubt: high stability + low skill = `machine_compound`. Free-standing + high skill = `barbell_compound` or `high_skill`.
 
 ## Base Matrix (Hypertrophy, 4-Week Mesocycle)
 
