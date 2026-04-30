@@ -90,32 +90,54 @@ For users with high recovery capacity who want to push volume.
 
 ## How Target Positions Translate to Numbers
 
-The "Target Position" defines where in the muscle's MAV range to land. Compute the target as a tight range around that position (±1-2 sets to allow exercise selection flexibility):
+Use these EXACT formulas. Do not approximate. Both Prompt 1 and Prompt 2 must produce identical numbers from the same input.
 
-- **MEV** = the muscle's MEV value, ±1 set
-- **MAV-low** = lower third of MAV (e.g., for Chest MAV 12–20, MAV-low ≈ 12–14)
-- **MAV-mid** = middle third of MAV (e.g., for Chest MAV 12–20, MAV-mid ≈ 14–17)
-- **MAV-high** = upper third of MAV (e.g., for Chest MAV 12–20, MAV-high ≈ 17–20)
-- **MAV-high to MRV** = upper third of MAV through MRV (e.g., for Chest MAV 12–20, MRV 22, this ≈ 17–22)
+For a muscle with MAV range [low, high]:
+- span = high − low
+- third_offset = round(span / 3)
+- two_thirds_offset = round(2 × span / 3)
 
-When building the per-muscle target table, output each muscle's target as a tight range around the appropriate position.
+Where round() uses standard rounding (0.5 rounds up).
 
-## How to Compute Target Range for a Muscle
+Then compute the target ranges (both bounds inclusive, all integers):
 
-Example: An Intermediate user picks "Moderate" volume tier.
-Tier × Experience = MAV-mid
+- **MEV** = [muscle's MEV value, muscle's MEV value + 1]
+- **MAV-low** = [low, low + third_offset]
+- **MAV-mid** = [low + third_offset, low + two_thirds_offset]
+- **MAV-high** = [low + two_thirds_offset, high]
+- **MAV-high to MRV** = [low + two_thirds_offset, MRV]
 
-For Chest (MAV 12–20):
-- MAV range = 12–20, span = 8
-- MAV-mid = middle third ≈ 14–17
-- Target: 14–17
+### Worked Examples
 
-For Hamstrings (MAV 10–16):
-- MAV range = 10–16, span = 6
-- MAV-mid = middle third ≈ 12–14
-- Target: 12–14
+**Chest (MAV 12–20, MRV 22):**
+- span = 8, third_offset = round(8/3) = 3, two_thirds_offset = round(16/3) = 5
+- MAV-low: 12–15
+- MAV-mid: 15–17
+- MAV-high: 17–20
+- MAV-high to MRV: 17–22
 
-So the SAME user gets DIFFERENT, tightly-targeted ranges per muscle — calibrated to that muscle's recovery capacity AND positioned consistently across muscles for balance.
+**Hamstrings (MAV 10–16, MRV 20):**
+- span = 6, third_offset = 2, two_thirds_offset = 4
+- MAV-low: 10–12
+- MAV-mid: 12–14
+- MAV-high: 14–16
+- MAV-high to MRV: 14–20
+
+**Side Delts (MAV 16–22, MRV 26):**
+- span = 6, third_offset = 2, two_thirds_offset = 4
+- MAV-low: 16–18
+- MAV-mid: 18–20
+- MAV-high: 20–22
+- MAV-high to MRV: 20–26
+
+**Triceps (MAV 10–14, MRV 18):**
+- span = 4, third_offset = round(4/3) = 1, two_thirds_offset = round(8/3) = 3
+- MAV-low: 10–11
+- MAV-mid: 11–13
+- MAV-high: 13–14
+- MAV-high to MRV: 13–18
+
+The SAME user gets DIFFERENT, deterministically-calculated ranges per muscle — calibrated to that muscle's recovery capacity AND positioned consistently across muscles for balance. The deterministic formulas guarantee that any two AI runs with the same inputs produce the same numbers.
 
 ## Auxiliary Muscles (Opt-In)
 
