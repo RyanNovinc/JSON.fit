@@ -1,211 +1,119 @@
-# JSON.fit Volume Landmarks 
+# JSON.fit RIR Guidance
 
-This file is the canonical reference for weekly volume targets per muscle group on JSON.fit.
+Canonical reference for RIR (Reps In Reserve) prescription. AI MUST apply this when generating workouts.
 
-## Instructions for AI
+## Core Rules
 
-When generating workout programs, you MUST:
+1. RIR = reps left before momentary muscular failure. RIR 0 = the point at which one more rep with good form is impossible.
+2. Output RIR in exercise notes only. Never as a per-set logged field.
+3. Apply exercise category × mesocycle week × set count × goal.
+4. Tier-appropriate language (see Output Format section).
+5. Output RIR for EVERY exercise — compounds, machines, isolation, and accessories. No exceptions.
+6. RIR notes appear per-exercise, never grouped. Each exercise gets its own line, even if multiple exercises share the same values. Never write "Bench Press, T-Bar Row: RIR 3 W1...".
 
-1. Use these per-muscle volume ranges as targets, NOT a single major/medium classification.
-2. Each muscle has its own MEV/MAV/MRV — respect them individually.
-3. The user's selected volume tier (Conservative/Moderate/High) and training experience map to specific positions within each muscle's MAV range.
-4. Volume is measured in EFFECTIVE sets (Primary × 1.0 + Secondary × 0.5), consistent with the rest of the JSON.fit system.
+## Standardised Language
 
-## Volume Landmark Definitions
+Use these exact phrases. Do not paraphrase or substitute.
 
-- **MV** (Maintenance Volume): Minimum to retain current muscle. Below this, muscle is lost.
-- **MEV** (Minimum Effective Volume): Minimum to grow. Below this, training maintains but doesn't add muscle.
-- **MAV** (Maximum Adaptive Volume): The productive sweet spot. Best gains-per-fatigue ratio.
-- **MRV** (Maximum Recoverable Volume): Upper ceiling. Above this, recovery fails and gains stop.
+- For RIR 0 prescription: write "RIR 0" — never "true failure", "to failure", or "go to failure"
+- For RIR 0-1 prescription: write "RIR 0-1" — never "near failure" or similar
+- For drop set permission: write "Drop set optional" — never "AMRAP" or "burnout set"
+- For compound technique reminder: write "Stay technical" — keep this exact phrase
+- For mesocycle progression: write "RIR X W1 → Y W2 → Z W3 → W W4" using the arrow symbol →
 
-## Per-Muscle Volume Landmarks (effective sets per week)
+## Exercise Categories
 
-| Muscle | MV | MEV | MAV (low–high) | MRV |
-|--------|----|----|----------------|----|
-| Chest | 4 | 8 | 12–20 | 22 |
-| Back (Lats + Upper Back combined) | 8 | 10 | 14–22 | 25 |
-| Front Delts | 0 | 0 | 4–8 | 12 |
-| Side Delts | 6 | 8 | 16–22 | 26 |
-| Rear Delts | 0 | 4 | 6–12 | 18 |
-| Traps | 0 | 4 | 6–10 | 14 |
-| Biceps | 5 | 8 | 14–20 | 26 |
-| Triceps | 4 | 6 | 10–14 | 18 |
-| Forearms | 0 | 4 | 4–10 | 14 |
-| Quads | 6 | 8 | 12–18 | 20 |
-| Hamstrings | 4 | 6 | 10–16 | 20 |
-| Glutes | 0 | 6 | 8–18 | 22 |
-| Calves | 6 | 8 | 12–18 | 22 |
-| Core | 0 | 0 | 8–16 | 20 |
-| Lower Back | 0 | 4 | 4–8 | 12 |
-| Neck | 0 | 0 | 4–8 | 14 |
-| Obliques | 0 | 0 | 4–8 | 12 |
-| Hip Abductors | 0 | 0 | 4–8 | 12 |
-| Hip Adductors | 0 | 0 | 4–8 | 12 |
-| Serratus Anterior | 0 | 0 | 2–6 | 10 |
-| Shins (Tibialis) | 0 | 0 | 4–10 | 14 |
+Classify every exercise as one of:
 
-### Note on Back
+- `barbell_compound` — back squat, deadlift, bench press, OHP, barbell row, front squat
+- `machine_compound` — leg press, hack squat, chest press machine, lat pulldown, cable row, smith machine, hip thrust, glute bridge, chest-supported t-bar row, hex bar deadlift
+- `isolation` — curls, lateral raises, tricep extensions, leg curls, leg extensions, flyes, calf raises
+- `unilateral_compound` — Bulgarian split squat, single-leg RDL, single-arm DB row, lunges, step-ups
+- `high_skill` — power clean, snatch, conventional deadlift, complex Olympic-derivative
 
-Treat Back as a single muscle group (lats, mid-back, upper back combined). Splitting into separate "Lats" and "Upper Back" with full back-volume ranges each would double-count work from rows, pulldowns, and pull-ups. Lat vs. mid-back emphasis is handled through exercise selection within the combined back volume budget.
+**Classification rule:** Classification is based on stability and skill demand, not equipment. A barbell movement that is supported (chest-supported, fixed-path, or pad-stabilised) or has minimal balance/technique demand classifies as `machine_compound`, not `barbell_compound`. When in doubt: high stability + low skill = `machine_compound`. Free-standing + high skill = `barbell_compound` or `high_skill`.
 
-### Note on Traps
+## Base Matrix (Hypertrophy, 4-Week Mesocycle)
 
-The Traps numbers above assume effective-set (fractional) counting, where heavy rows and deadlifts contribute 0.5 effective sets to traps. Stay consistent with the fractional convention across the program.
+Target RIR for middle sets:
 
-## Tier Mapping (Volume Preference × Experience)
+| Category | W1 | W2 | W3 | W4 |
+|----------|----|----|----|----|
+| barbell_compound | 3 | 2 | 1 | 0-1 |
+| machine_compound | 2 | 1-2 | 1 | 0-1 |
+| isolation | 2 | 1 | 0-1 | 0 |
+| unilateral_compound | 3 | 2 | 1-2 | 1 |
+| high_skill | 3-4 | 3 | 2 | 2 |
 
-The user's Volume Preference (from questionnaire) and Training Experience together determine the target position within each muscle's MAV.
+**3-week mesocycle:** use W1, W2, W4 columns (skip W3).
+**5-6 week mesocycle:** add an extra week at W1 value before progressing.
 
-**IMPORTANT:** When no priority muscles are specified, target a single position (not a range) so non-priority muscles land at SIMILAR effective set counts within their respective MAV ranges. This produces balanced programs. Treat the position as a target, not a license to use the full range.
+## Goal Modifiers
 
-### Conservative tier
-For users who want lower-end productive volume.
+Apply to base matrix:
 
-| Experience | Target Position |
-|------------|-----------------|
-| Complete Beginner | MEV |
-| Beginner | MEV to MAV-low |
-| Intermediate | MAV-low |
-| Advanced | MAV-low |
+- `hypertrophy` → use base
+- `strength` → +1 RIR for compound categories only; isolation unchanged
+- `powerlifting` → +1 RIR for barbell_compound and high_skill; others unchanged
+- `general_fitness` → +1 RIR all categories
 
-### Moderate tier (recommended default)
-For users who want sweet-spot productive volume.
+## Within-Exercise RIR (by Set Count)
 
-| Experience | Target Position |
-|------------|-----------------|
-| Complete Beginner | MEV |
-| Beginner | MAV-low |
-| Intermediate | MAV-mid |
-| Advanced | MAV-mid |
+Target RIR from matrix = middle sets. Adjust set-by-set:
 
-### High Volume tier
-For users with high recovery capacity who want to push volume.
+| Sets | Set 1 | Middle | Last Set |
+|------|-------|--------|----------|
+| 1 | — | — | RIR 0 (regardless of week) |
+| 2 | target+1 | — | target-1 |
+| 3 | target+1 | target | target-1 |
+| 4 | target+1 | target | target-1 |
+| 5+ | target+2 (cap 4 on compounds) | target | target-1 |
 
-| Experience | Target Position |
-|------------|-----------------|
-| Complete Beginner | MAV-low |
-| Beginner | MAV-mid |
-| Intermediate | MAV-high |
-| Advanced | MAV-high to MRV |
+**Hard floors:**
+- `barbell_compound` and `high_skill`: never below RIR 0
+- `machine_compound`: RIR 0 allowed on last set only
+- `isolation`: RIR 0 encouraged on last set; drop set optional in W4
 
-## How Target Positions Translate to Numbers
+## Output Format (by User Tier)
 
-Use these EXACT formulas. Do not approximate. Both Prompt 1 and Prompt 2 must produce identical numbers from the same input.
+### Beginner / "Take It Easy"
+Behavioural cues, no numbers. Single line per exercise:
 
-For a muscle with MAV range [low, high]:
-- span = high − low
-- third_offset = round(span / 3)
-- two_thirds_offset = round(2 × span / 3)
+`"First sets: stop when reps slow down. Last set: push hard, last 1-2 reps should grind."`
 
-Where round() uses standard rounding (0.5 rounds up).
+### Intermediate / "Build Steady"
+Hybrid format:
 
-Then compute the target ranges (both bounds inclusive, all integers):
+`"RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4. First set easier, last set hardest."`
 
-- **MEV** = [muscle's MEV value, muscle's MEV value + 1]
-- **MAV-low** = [low, low + third_offset]
-- **MAV-mid** = [low + third_offset, low + two_thirds_offset]
-- **MAV-high** = [low + two_thirds_offset, high]
-- **MAV-high to MRV** = [low + two_thirds_offset, MRV]
+### Advanced / "Push Hard"
+Pure numerical, set-aware:
 
-### Worked Examples
+`"RIR target W1:3, W2:2, W3:1, W4:0-1. Set 1: target+1. Last set: target-1."`
 
-**Chest (MAV 12–20, MRV 22):**
-- span = 8, third_offset = round(8/3) = 3, two_thirds_offset = round(16/3) = 5
-- MAV-low: 12–15
-- MAV-mid: 15–17
-- MAV-high: 17–20
-- MAV-high to MRV: 17–22
+## Standard Notes (Append When Applicable)
 
-**Hamstrings (MAV 10–16, MRV 20):**
-- span = 6, third_offset = 2, two_thirds_offset = 4
-- MAV-low: 10–12
-- MAV-mid: 12–14
-- MAV-high: 14–16
-- MAV-high to MRV: 14–20
+- `barbell_compound` (any week): `"Stay technical. Never sacrifice form for RIR target."`
+- `isolation` W4: `"Last set: RIR 0. Drop set optional."`
+- First exercise of session: `"Don't burn out. Save energy for later movements."`
+- `high_skill`: `"Form first. Stop set if technique breaks, regardless of RIR."`
+- 1-set exercises: `"Single set = single chance. RIR 0."`
 
-**Side Delts (MAV 16–22, MRV 26):**
-- span = 6, third_offset = 2, two_thirds_offset = 4
-- MAV-low: 16–18
-- MAV-mid: 18–20
-- MAV-high: 20–22
-- MAV-high to MRV: 20–26
+## Accuracy Calibration
 
-**Triceps (MAV 10–14, MRV 18):**
-- span = 4, third_offset = round(4/3) = 1, two_thirds_offset = round(8/3) = 3
-- MAV-low: 10–11
-- MAV-mid: 11–13
-- MAV-high: 13–14
-- MAV-high to MRV: 13–18
+Users underestimate RIR by ~1-2 reps on average. Accuracy is worse at lighter loads (high-rep isolation) and further from failure (RIR 3+). This is why isolation targets are aggressive (0-1 RIR) — actual RIR will be ~2-3.
 
-The SAME user gets DIFFERENT, deterministically-calculated ranges per muscle — calibrated to that muscle's recovery capacity AND positioned consistently across muscles for balance. The deterministic formulas guarantee that any two AI runs with the same inputs produce the same numbers.
+## Worked Example
 
-## Auxiliary Muscles (Opt-In)
+User: intermediate, hypertrophy goal, "Build Steady" tier, W2 of mesocycle, chest day.
 
-If the user has selected an auxiliary muscle (Neck, Obliques, Lower Back, Hip Abductors, Hip Adductors, Serratus Anterior, Shins, Forearms direct work), use that muscle's MAV-low range as the floor — typically 4–6 effective sets.
+**Bench Press (barbell_compound), 3 sets:**
+Target W2 = 2 RIR.
+Notes: `"RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4. Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR. Stay technical."`
 
-## Priority Muscles (User-Specified)
+**Cable Flye (isolation), 4 sets:**
+Target W2 = 1 RIR.
+Notes: `"RIR 2 W1 → 1 W2 → 0-1 W3 → 0 W4. Set 1: 2 RIR. Sets 2-3: 1 RIR. Set 4: RIR 0."`
 
-If a muscle is flagged as priority, target MAV-high to MRV (top of the muscle's productive range). Reduce non-priority muscles toward their MEV to keep total stress recoverable.
-
-## Exempt-from-Floor Muscles
-
-Some muscles get sufficient volume from compounds and don't need direct work to clear MEV:
-- Front Delts (heavy indirect from pressing)
-- Traps (indirect from rows, deadlifts)
-- Rear Delts (indirect from rows, face pulls)
-- Lower Back (indirect from squats, deadlifts)
-- Glutes (heavy indirect from squats and hinges)
-- Forearms (indirect from grip-loaded pulling)
-
-These can show 0 direct sets if compound contributions cover MEV. They are NOT exempt from MRV — going over the ceiling still causes problems.
-
-## Volume Violation Handling
-
-When a muscle's effective volume falls outside its target range, apply these rules. This section is the canonical answer for what to do with volume violations and supersedes any HIGH/LOW handling guidance in the prompts.
-
-### Decision order
-For each muscle, evaluate in this order:
-1. Priority muscle (user-selected)? → Priority rules
-2. Auxiliary muscle (user-selected)? → Auxiliary rules
-3. Exempt-from-floor muscle (Front Delts, Traps, Rear Delts, Lower Back, Glutes, Forearms) AND not selected as priority/auxiliary? → Exempt rules
-4. Otherwise → Non-Priority Non-Exempt rules
-
-### Non-Priority, Non-Exempt Muscle
-
-| Status | Action |
-|--------|--------|
-| Below target floor | Must fix — add sets to reach floor |
-| Above target ceiling | Must fix — reduce sets to within range |
-| At or above MRV | Must fix immediately — hard fail |
-
-### Exempt-from-Floor Muscle
-
-| Status | Action |
-|--------|--------|
-| Below target floor | Acceptable IF compound contributions cover MEV. No action needed. |
-| Above target ceiling, below MRV | Attempt fix first. Reduce a press only if doing so doesn't drop Chest, Front Delts (if direct), Triceps, Back, or any other affected muscle below their target floors. If reduction is impossible without violating another target, document the cascade and accept the overshoot. |
-| At or above MRV | Must fix — overtraining risk is real, even from indirect volume. Reduce pressing or split exercises across more days. |
-
-### Priority Muscle (User-Selected)
-
-| Status | Action |
-|--------|--------|
-| Below MAV-high | Must fix — add sets toward MAV-high to MRV range |
-| Above MRV | Must fix — reduce to within MAV-high to MRV range |
-| Within MAV-high to MRV | In target range, no action |
-
-### Auxiliary Muscle (User-Selected)
-
-| Status | Action |
-|--------|--------|
-| Below MAV-low | Must fix — add sets to reach floor (typically 4-6 effective sets) |
-| Above MRV | Must fix — reduce sets |
-| Between MAV-low and MRV | In target range, no action |
-
-### What "Must Fix" Means
-
-When a violation requires fixing:
-1. Attempt the fix (add or remove sets, swap exercises)
-2. Recount affected muscles to verify the fix doesn't create a new violation
-3. If the fix creates a worse violation elsewhere, document specifically which muscle and why no fix is possible
-4. "Acceptable trade-off," "appropriate for this user," or "exempt-from-floor muscle so it's fine" are NOT valid justifications
+**Pec Deck (isolation), 1 finishing set:**
+Notes: `"Single set = single chance. RIR 0."`
