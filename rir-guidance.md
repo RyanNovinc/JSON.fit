@@ -4,11 +4,24 @@ Canonical reference for RIR (Reps In Reserve) prescription. AI MUST apply this w
 
 ## Core Rules
 
-1. RIR = reps left before momentary failure. RIR 0 = true failure.
+1. RIR = reps left before momentary muscular failure. RIR 0 = the point at which one more rep with good form is impossible.
 2. Output RIR in exercise notes only. Never as a per-set logged field.
 3. Apply exercise category × mesocycle week × set count × goal.
 4. Tier-appropriate language (see Output Format section).
 5. Output RIR for EVERY exercise — compounds, machines, isolation, and accessories. No exceptions.
+6. RIR notes appear per-exercise, never grouped. Each exercise gets its own line with its own RIR guidance, even if multiple exercises share the same values. Never group exercises like "Bench Press, T-Bar Row: RIR 3 W1...".
+
+## Standardised Language
+
+Use these exact phrases. Do not paraphrase or substitute.
+
+- For RIR 0 prescription: write "RIR 0" — never "true failure", "to failure", or "go to failure"
+- For RIR 0-1 prescription: write "RIR 0-1" — never "near failure" or similar
+- For drop set permission: write "Drop set optional" — never "AMRAP" or "burnout set"
+- For compound technique reminder: write "Stay technical" — keep this exact phrase
+- For mesocycle progression: write "RIR X W1 → Y W2 → Z W3 → W W4" using the arrow symbol →
+
+Consistent language across exercises lets users learn the system once and apply it everywhere.
 
 ## Exercise Categories
 
@@ -50,16 +63,16 @@ Target RIR from matrix = middle sets. Adjust set-by-set:
 
 | Sets | Set 1 | Middle | Last Set |
 |------|-------|--------|----------|
-| 1 | — | — | 0 (true failure, regardless of week) |
+| 1 | — | — | RIR 0 (regardless of week) |
 | 2 | target+1 | — | target-1 |
 | 3 | target+1 | target | target-1 |
 | 4 | target+1 | target | target-1 |
 | 5+ | target+2 (cap 4 on compounds) | target | target-1 |
 
 **Hard floors:**
-- `barbell_compound` and `high_skill`: never below 0 RIR (no true failure)
-- `machine_compound`: 0 RIR allowed on last set only
-- `isolation`: 0 RIR encouraged on last set; drop set optional in W4
+- `barbell_compound` and `high_skill`: never below RIR 0
+- `machine_compound`: RIR 0 allowed on last set only
+- `isolation`: RIR 0 encouraged on last set; drop set optional in W4
 
 ## Output Format (by User Tier)
 
@@ -81,10 +94,10 @@ Pure numerical, set-aware:
 ## Standard Notes (Append When Applicable)
 
 - `barbell_compound` (any week): `"Stay technical. Never sacrifice form for RIR target."`
-- `isolation` W4: `"Last set: true failure. Drop set optional."`
+- `isolation` W4: `"Last set: RIR 0. Drop set optional."`
 - First exercise of session: `"Don't burn out. Save energy for later movements."`
 - `high_skill`: `"Form first. Stop set if technique breaks, regardless of RIR."`
-- 1-set exercises: `"Single set = single chance. Take to true failure."`
+- 1-set exercises: `"Single set = single chance. RIR 0."`
 
 ## Accuracy Calibration
 
@@ -111,7 +124,7 @@ Notes: `"RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4. Set 1: 3 RIR. Set 2: 2 RIR. Set 
 
 **Cable Flye (isolation), 4 sets:**
 Target W2 = 1 RIR.
-Notes: `"RIR 2 W1 → 1 W2 → 0-1 W3 → 0 W4. Set 1: 2 RIR. Sets 2-3: 1 RIR. Set 4: 0 RIR."`
+Notes: `"RIR 2 W1 → 1 W2 → 0-1 W3 → 0 W4. Set 1: 2 RIR. Sets 2-3: 1 RIR. Set 4: RIR 0."`
 
 **Pec Deck (isolation), 1 finishing set:**
-Notes: `"Single set = single chance. Take to true failure (0 RIR)."`
+Notes: `"Single set = single chance. RIR 0."`
