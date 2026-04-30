@@ -136,3 +136,54 @@ Some muscles get sufficient volume from compounds and don't need direct work to 
 - Forearms (indirect from grip-loaded pulling)
 
 These can show 0 direct sets if compound contributions cover MEV. They are NOT exempt from MRV — going over the ceiling still causes problems.
+
+## Volume Violation Handling
+
+When a muscle's effective volume falls outside its target range, apply these rules. This section is the canonical answer for what to do with volume violations and supersedes any HIGH/LOW handling guidance in the prompts.
+
+### Decision order
+For each muscle, evaluate in this order:
+1. Priority muscle (user-selected)? → Priority rules
+2. Auxiliary muscle (user-selected)? → Auxiliary rules
+3. Exempt-from-floor muscle (Front Delts, Traps, Rear Delts, Lower Back, Glutes, Forearms) AND not selected as priority/auxiliary? → Exempt rules
+4. Otherwise → Non-Priority Non-Exempt rules
+
+### Non-Priority, Non-Exempt Muscle
+
+| Status | Action |
+|--------|--------|
+| Below target floor | Must fix — add sets to reach floor |
+| Above target ceiling | Must fix — reduce sets to within range |
+| At or above MRV | Must fix immediately — hard fail |
+
+### Exempt-from-Floor Muscle
+
+| Status | Action |
+|--------|--------|
+| Below target floor | Acceptable IF compound contributions cover MEV. No action needed. |
+| Above target ceiling, below MRV | Attempt fix first. Reduce a press only if doing so doesn't drop Chest, Front Delts (if direct), Triceps, Back, or any other affected muscle below their target floors. If reduction is impossible without violating another target, document the cascade and accept the overshoot. |
+| At or above MRV | Must fix — overtraining risk is real, even from indirect volume. Reduce pressing or split exercises across more days. |
+
+### Priority Muscle (User-Selected)
+
+| Status | Action |
+|--------|--------|
+| Below MAV-high | Must fix — add sets toward MAV-high to MRV range |
+| Above MRV | Must fix — reduce to within MAV-high to MRV range |
+| Within MAV-high to MRV | In target range, no action |
+
+### Auxiliary Muscle (User-Selected)
+
+| Status | Action |
+|--------|--------|
+| Below MAV-low | Must fix — add sets to reach floor (typically 4-6 effective sets) |
+| Above MRV | Must fix — reduce sets |
+| Between MAV-low and MRV | In target range, no action |
+
+### What "Must Fix" Means
+
+When a violation requires fixing:
+1. Attempt the fix (add or remove sets, swap exercises)
+2. Recount affected muscles to verify the fix doesn't create a new violation
+3. If the fix creates a worse violation elsewhere, document specifically which muscle and why no fix is possible
+4. "Acceptable trade-off," "appropriate for this user," or "exempt-from-floor muscle so it's fine" are NOT valid justifications
