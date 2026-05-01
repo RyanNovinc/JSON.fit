@@ -209,3 +209,26 @@ When a violation requires fixing:
 2. Recount affected muscles to verify the fix doesn't create a new violation
 3. If the fix creates a worse violation elsewhere, document specifically which muscle and why no fix is possible
 4. "Acceptable trade-off," "appropriate for this user," or "exempt-from-floor muscle so it's fine" are NOT valid justifications
+
+### Forbidden Rationalisation Language (Applies Everywhere)
+
+The forbidden phrases below MUST NOT appear ANYWHERE in the output — not in violation handling, not in recommendations to the user, not in notes, not in advisory text, not in suggested swaps or future modifications. This rule applies to the entire program document, not just the violation handling section.
+
+Forbidden phrases:
+- "Acceptable trade-off"
+- "Appropriate for this user"
+- "Exempt-from-floor muscle so it's fine"
+- "Accept being [N] set(s) over the ceiling"
+- "Accept being over the ceiling"
+- "Acceptable overflow"
+- "Slightly over but within MRV"
+- "Worth flagging but no action needed"
+- Any variation that suggests the user should accept a target violation as OK
+
+If the program has a target violation, the AI's job is to FIX IT, not to explain why it's acceptable or recommend accepting it. The user can make their own modifications later — but the AI must not pre-approve violations through advisory language.
+
+If the AI is tempted to write something like "if X feels excessive, drop Y to Z (would land at A, just B below target — acceptable trade-off)," the correct alternative is:
+- Either: don't include the recommendation at all (the program is already correct)
+- Or: rewrite it as "if X feels excessive, drop Y to Z, then add equivalent volume elsewhere to stay in target range"
+
+Recommendations should never instruct the user to violate volume targets.
