@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Your Volume Tracking Is Lying to You — JSON.fit</title>
+    <meta name="description" content="Most fitness apps either ignore secondary muscle work or count it the same as direct work. Both are wrong. Here's the evidence-based middle ground.">
+    <link rel="canonical" href="https://json.fit/blog/why-volume-counting-matters.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="JSON.fit">
+    <meta property="og:title" content="Why Your Volume Tracking Is Lying to You">
+    <meta property="og:description" content="Most fitness apps either ignore secondary muscle work or count it the same as direct work. Both are wrong. Here's the evidence-based middle ground.">
+    <meta property="og:url" content="https://json.fit/blog/why-volume-counting-matters.html">
+    <meta property="og:image" content="https://json.fit/images/og-image.png">
+    <meta property="article:published_time" content="2026-04-08">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Why Your Volume Tracking Is Lying to You">
+    <meta name="twitter:description" content="Most fitness apps either ignore secondary muscle work or count it the same as direct work. Both are wrong.">
+    <meta name="twitter:image" content="https://json.fit/images/og-image.png">
+
+    <!-- Schema: BlogPosting -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Why Your Volume Tracking Is Lying to You",
+        "description": "Most fitness apps either ignore secondary muscle work or count it the same as direct work. Both are wrong. Here's the evidence-based middle ground.",
+        "url": "https://json.fit/blog/why-volume-counting-matters.html",
+        "datePublished": "2026-04-08",
+        "author": {"@type": "Organization", "name": "JSON.fit", "url": "https://json.fit"},
+        "publisher": {"@type": "Organization", "name": "JSON.fit", "url": "https://json.fit"},
+        "mainEntityOfPage": {"@type": "WebPage", "@id": "https://json.fit/blog/why-volume-counting-matters.html"}
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--cyan:#22d3ee;--bg:#050508;--surface:#0a0a0f;--border:rgba(255,255,255,0.06);--text:#f0f0f2;--text-2:#9898a4;--text-3:#55555f}
+        *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px}
+        body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:10000}
+        .cyan{color:var(--cyan)}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+        .nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:0.4rem}.nav-logo:hover{text-decoration:none}
+        .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}.nav-links a{color:var(--text-3);font-size:0.8rem;font-weight:500;text-decoration:none}.nav-links a:hover{color:var(--text);text-decoration:none}
+        .nav-cta{background:var(--cyan);color:#000!important;padding:0.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:0.78rem!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;position:relative}.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all 0.3s}
+        article{max-width:680px;margin:0 auto;padding:6rem 1.5rem 4rem}
+        .back{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-3);display:inline-block;margin-bottom:2.5rem;text-decoration:none;letter-spacing:0.03em}.back:hover{color:var(--cyan);text-decoration:none}
+        .post-meta{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem}
+        .post-date{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
+        .post-meta-sep{font-size:0.65rem;color:var(--text-3)}
+        .post-read{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
+        article h1{font-size:clamp(1.8rem,5vw,2.5rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:1.5rem}
+        article h2{font-size:1.3rem;font-weight:700;margin:2.5rem 0 1rem}
+        article p{color:var(--text-2);margin-bottom:1.25rem;font-size:0.95rem}article strong{color:var(--text);font-weight:600}
+        article ul{color:var(--text-2);margin:0 0 1.25rem 1.25rem;font-size:0.95rem}article li{margin-bottom:0.4rem}
+        blockquote{border-left:2px solid var(--cyan);padding:0.5rem 0 0.5rem 1.25rem;margin:1.5rem 0;color:var(--text);font-weight:500;font-size:1.05rem}
+        sup a{color:var(--cyan);font-size:0.7em;text-decoration:none;font-family:'DM Mono',monospace;font-weight:500}
+        sup a:hover{text-decoration:underline}
+        .references{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}
+        .references h2{margin-top:0;font-size:1.1rem;color:var(--text-3);font-family:'DM Mono',monospace;font-weight:500;letter-spacing:0.04em;text-transform:uppercase}
+        .references ol{color:var(--text-3);font-size:0.82rem;line-height:1.6;margin-left:1.25rem}
+        .references li{margin-bottom:0.75rem}
+        .references li em{color:var(--text-2);font-style:italic}
+        .references li a{color:var(--text-2);word-break:break-word}
+        .cta-box{border:1px solid rgba(34,211,238,0.12);border-radius:12px;padding:1.75rem;margin:2rem 0;background:rgba(34,211,238,0.03);text-align:center}
+        .cta-box p{color:var(--text);margin-bottom:0.75rem;font-weight:500}.cta-box a{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.25rem;border-radius:8px;background:var(--cyan);color:#000;font-weight:600;font-size:0.88rem;text-decoration:none}.cta-box a:hover{text-decoration:none}
+        footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;max-width:1000px;margin:0 auto}
+        .footer-left{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--text-3)}.footer-left a{color:var(--text-3);text-decoration:none;margin-left:1.25rem}.footer-left a:hover{color:var(--cyan);text-decoration:none}.footer-right{font-size:0.7rem;color:var(--text-3)}
+        @media(max-width:860px){.nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}.nav-links.open{display:flex}.nav-links a{font-size:1.1rem;color:var(--text-2)}.hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}footer{flex-direction:column;gap:0.75rem;text-align:center}.footer-left a{margin-left:0;margin:0 0.6rem}}
+    </style>
+</head>
+<body>
+<nav>
+    <a href="../" class="nav-logo"><svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg> JSON<span class="cyan">.fit</span></a>
+    <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks"><li><a href="../#how">How It Works</a></li><li><a href="../#nutrition">Nutrition</a></li><li><a href="../#compare">Compare</a></li><li><a href="../blog.html">Blog</a></li><li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta">Download</a></li></ul>
+</nav>
+<article>
+    <a href="../blog.html" class="back">← Back to blog</a>
+    <div class="post-meta">
+        <span class="post-date">April 8, 2026</span>
+        <span class="post-meta-sep">·</span>
+        <span class="post-read">6 min read</span>
+    </div>
+    <h1>Why Your Volume Tracking Is <span class="cyan">Lying</span> to You</h1>
+    <p>If you train for hypertrophy, you've probably heard about weekly sets per muscle group. The research suggests around 10 to 20 sets per muscle per week is the productive zone for most lifters.</p>
+    <p>So you open your tracking app, check the volume display, and see something like "Triceps: 6 sets." You think you're undertrained. You add more triceps work.</p>
+    <p>You shouldn't have. Your app was lying to you — by accident, but lying nonetheless.</p>
+    <h2>The bench press problem</h2>
+    <p>Here's the question that breaks most volume tracking. You do 4 sets of bench press. The bench press primarily works the chest, but it also clearly works the triceps and front delts. Hard.</p>
+    <p>How should those 4 sets show up in your weekly volume?</p>
+    <p>There are three options:</p>
+    <ul>
+        <li><strong>Don't count them at all.</strong> Triceps gets 0 sets from bench press, only direct triceps work counts.</li>
+        <li><strong>Count them fully.</strong> Triceps gets 4 sets from bench press, same as it would from 4 sets of triceps pushdowns.</li>
+        <li><strong>Count them at a discount.</strong> Triceps gets some fractional credit — half a set per bench press set, say.</li>
+    </ul>
+    <p>Most apps pick option 1 (count nothing) or option 2 (count everything). Both are wrong, and they're wrong in opposite directions.</p>
+    <h2>Why "count nothing" is wrong</h2>
+    <p>If your app only counts direct work, you'll think your triceps are getting 6 sets per week when they're actually getting much more. You'll add unnecessary direct triceps volume, accumulate fatigue, and potentially under-recover from the compound work.</p>
+    <p>This is the failure mode of apps that show simple "sets logged per primary muscle" without any compound contribution. It systematically undercounts secondary muscle stimulus, which leads to over-programming.</p>
+    <p>A meta-regression in <em>Sports Medicine</em> by Pelland, Remmert, Robinson, Hinson and Zourdos (2025)<sup><a href="#ref1">[1]</a></sup> — analysing 67 studies and 2,058 participants — explicitly used <em>fractional</em> weekly sets as the unit of analysis. The researchers tested three different weightings for indirect sets: counting them at 1.0 ("total"), 0.5 ("fractional"), and 0 ("direct only"). They didn't pretend secondary contribution is zero. They counted it.</p>
+    <h2>Why "count everything" is wrong</h2>
+    <p>The opposite mistake is treating one bench press set as equivalent to one triceps extension set for tricep volume. This sounds reasonable until you do the math.</p>
+    <p>If 10 sets of bench press counted fully for triceps, that would imply doing 10 sets of bench press grows your triceps as effectively as 10 sets of dedicated triceps work. It doesn't. The triceps is being used as a synergist with limited range of motion at the elbow, not isolated through its full stretch and contraction.</p>
+    <p>Hypertrophy researcher Chris Beardsley<sup><a href="#ref2">[2]</a></sup> explains the underlying physiology: secondary muscles in compound lifts experience identical per-fibre stimulus to primary muscles, but they recruit far fewer fibres because the load isn't structured around them. The set produces real growth — just not as much as a movement that targets the muscle directly.</p>
+    <p>Counting bench press sets at full value for triceps overstates volume. You'd think you're well-trained when you're under-stimulated, and you'd skip the direct triceps work that would actually fill the gap.</p>
+    <h2>The middle ground: fractional weighting</h2>
+    <blockquote>Primary muscles count fully. Secondary muscles count for half.</blockquote>
+    <p>The convention that's emerged across the evidence-based fitness community is fractional weighting: <strong>primary muscle = 1.0 set, secondary muscle = 0.5 set.</strong></p>
+    <p>So one set of bench press counts as:</p>
+    <ul>
+        <li>1.0 set for chest (primary)</li>
+        <li>0.5 set for triceps (secondary)</li>
+        <li>0.5 set for front delts (secondary)</li>
+    </ul>
+    <p>This isn't arbitrary. It's the method used by Hevy<sup><a href="#ref3">[3]</a></sup>, one of the largest workout tracking apps, and by Arvo<sup><a href="#ref4">[4]</a></sup> and other evidence-based platforms. Greg Nuckols at Stronger by Science<sup><a href="#ref5">[5]</a></sup> refers to "fractional sets" throughout his volume guides. Most importantly, the Pelland 2025 meta-regression<sup><a href="#ref1">[1]</a></sup> formally tested the 0.5× weighting as one of three methodological approaches in the largest analysis of resistance training volume to date — making it the most rigorously evaluated convention in the field.</p>
+    <p>The 0.5 weighting is itself an approximation, but it has two things going for it: it's the consensus across major training apps and researchers, and it's defensibly closer to reality than either 0 or 1.</p>
+    <h2>Why this calibration matters</h2>
+    <p>The volume landmarks people quote — Maintenance Volume around 6 sets, Minimum Effective Volume around 8 to 10, optimal range 10 to 20, Maximum Recoverable Volume in the 20 to 25+ range<sup><a href="#ref6">[6]</a></sup><sup><a href="#ref7">[7]</a></sup> — were derived assuming you're counting volume in a particular way.</p>
+    <p>Most of those numbers come from Renaissance Periodisation's published volume landmarks<sup><a href="#ref8">[8]</a></sup> and meta-analyses by Schoenfeld, Baz-Valle and others<sup><a href="#ref9">[9]</a></sup><sup><a href="#ref10">[10]</a></sup>. These analyses already include secondary muscle contributions in their volume counts. So if your app is only counting direct work, the targets don't apply — you're measuring something different from what the research measured.</p>
+    <p>You can hit "10 sets of triceps" by direct work alone, or by 4 sets of direct work plus 12 sets of compound pressing. Both reach the same total fractional volume (10), but only the second reflects how trained lifters actually distribute work across a week. An app that doesn't count fractional contribution can't tell you whether you're hitting the landmark or not.</p>
+    <h2>The Beardsley caveat</h2>
+    <p>One honest caveat. Beardsley's analysis<sup><a href="#ref2">[2]</a></sup> suggests the 0.5× rule is most accurate for beginners and intermediates. As lifters advance, more high-threshold motor units in primary muscles plateau, while secondary muscles get progressively less recruitment from the same compound. So 0.5× might slightly overstate secondary contribution for advanced lifters.</p>
+    <p>Practically, this means very advanced lifters should rely less on compounds for direct stimulus to lagging muscles and lean more heavily on isolation work. But for the vast majority of users — beginners through intermediate-advanced — 0.5× is genuinely close to reality.</p>
+    <p>It's also tunable. As research refines the picture, the weighting can be updated. What's not tunable is the basic decision to count secondary work at all. Apps that ignore it are systematically misleading their users about how trained their muscles actually are.</p>
+    <h2>How JSON.fit handles this</h2>
+    <p>Every program JSON.fit generates uses fractional set counting throughout:</p>
+    <ul>
+        <li>Each exercise is tagged with primary and secondary muscles</li>
+        <li>Volume is computed as (primary sets × 1.0) + (secondary sets × 0.5)</li>
+        <li>Volume targets — Maintenance, Minimum Effective, Maximum Adaptive, Maximum Recoverable — are calibrated to match this counting method</li>
+        <li>Programs are audited against fractional totals during generation, not raw set counts</li>
+    </ul>
+    <p>This is why a JSON.fit program for someone who wants 14 sets of triceps per week might prescribe only 6 sets of direct triceps work — because the fractional contribution from compound pressing brings the total to where it needs to be. The app accounts for what your bench press is actually doing.</p>
+    <h2>The honest summary</h2>
+    <p>Volume tracking is one of those problems that looks simple until you actually try to do it well. "How many sets did I do for X this week" is a question with a real answer — but only if you're counting the right way.</p>
+    <p>Most apps either don't count secondary work (undercounting) or count it the same as direct work (overcounting). Both produce volume numbers that don't match the targets the research community uses, which means users following those numbers are aiming at the wrong thing.</p>
+    <p>The fractional method — 1.0 for primary, 0.5 for secondary — is imperfect but defensible. It matches how the major evidence-based apps and researchers count. It's calibrated to the published volume landmarks. And it actually tells you something useful about whether your week of training was enough.</p>
+    <div class="cta-box">
+        <p>Volume tracking that matches how the research counts.</p>
+        <a href="https://apps.apple.com/au/app/json-fit/id6758357834">Download JSON.fit — free on the App Store</a>
+    </div>
+    <div class="references">
+        <h2>References</h2>
+        <ol>
+            <li id="ref1">Pelland, J.C., Remmert, J.F., Robinson, Z.P., Hinson, S.R., &amp; Zourdos, M.C. (2025). The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains. <em>Sports Medicine</em>, 56(2), 481–505. doi:10.1007/s40279-025-02344-w</li>
+            <li id="ref2">Beardsley, C. <em>Hypertrophy: Muscle fiber growth caused by mechanical tension</em>. (Independent hypertrophy science publication; argues that secondary muscles in compound lifts receive identical per-fibre stimulus but with fewer recruited fibres, complicating simple set-counting heuristics.)</li>
+            <li id="ref3">Hevy. <em>How muscle group volume is calculated</em>. Hevy support documentation. (Documents the convention of counting primary muscles at 1.0 sets and secondary muscles at 0.5 sets per working set — e.g., one lat pulldown counts as 1 set for lats and 0.5 sets for biceps.)</li>
+            <li id="ref4">Arvo. <em>Training volume tracking methodology</em>. (Independent fitness app that explicitly uses 0.5× weighting for secondary muscles, citing reduced range of motion and recruitment compared to direct isolation work.)</li>
+            <li id="ref5">Nuckols, G. (2024). <em>More Training, More Gaining: Everything You Need to Know About Training Volume</em>. Stronger By Science. <a href="https://www.strongerbyscience.com/volume/">strongerbyscience.com/volume</a></li>
+            <li id="ref6">Schoenfeld, B.J., Ogborn, D., &amp; Krieger, J.W. (2017). Dose-response relationship between weekly resistance training volume and increases in muscle mass: A systematic review and meta-analysis. <em>Journal of Sports Sciences</em>, 35(11), 1073–1082. doi:10.1080/02640414.2016.1210197</li>
+            <li id="ref7">Schoenfeld, B.J., Grgic, J., &amp; Krieger, J. (2019). How many times per week should a muscle be trained to maximize muscle hypertrophy? A systematic review and meta-analysis of studies examining the effects of resistance training frequency. <em>Journal of Sports Sciences</em>, 37(11), 1286–1295. doi:10.1080/02640414.2018.1555906</li>
+            <li id="ref8">Israetel, M., Hoffmann, J., Davis, M., &amp; Feather, J. (2021). <em>Scientific Principles of Hypertrophy Training</em>. Renaissance Periodization. (Source for the volume landmark framework: Maintenance Volume, Minimum Effective Volume, Maximum Adaptive Volume, and Maximum Recoverable Volume per muscle group.)</li>
+            <li id="ref9">Baz-Valle, E., Fontes-Villalba, M., &amp; Santos-Concejero, J. (2021). Total Number of Sets as a Training Volume Quantification Method for Muscle Hypertrophy: A Systematic Review. <em>Journal of Strength and Conditioning Research</em>, 35(3), 870–878. doi:10.1519/JSC.0000000000002776</li>
+            <li id="ref10">Schoenfeld, B., Fisher, J., Grgic, J., Haun, C., Helms, E., Phillips, S., et al. (2021). Resistance Training Recommendations to Maximize Muscle Hypertrophy in an Athletic Population: Position Stand of the IUSCA. <em>International Journal of Strength and Conditioning</em>, 1(1). <a href="https://journal.iusca.org/index.php/Journal/article/view/81">journal.iusca.org</a></li>
+        </ol>
+    </div>
+</article>
+<footer>
+    <div class="footer-left">JSON<span class="cyan">.fit</span> <a href="mailto:Ryan.Novinc@gmail.com">Support</a> <a href="../privacy-policy.html">Privacy</a> <a href="../terms-of-service.html">Terms</a></div>
+    <div class="footer-right">© 2026 JSON.fit</div>
+</footer>
+<script>
+    var burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');
+    burger.addEventListener('click',function(e){e.stopPropagation();burger.classList.toggle('open');navLinks.classList.toggle('open')});
+    navLinks.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){burger.classList.remove('open');navLinks.classList.remove('open')})});
+</script>
+</body>
+</html>
