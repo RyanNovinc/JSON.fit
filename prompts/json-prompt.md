@@ -1,0 +1,259 @@
+# Generate Workout Program as JSON
+
+You are given a training plan above that has been reviewed and approved for quality. Generate the complete program as JSON files matching the schema below. Focus on accurate technical implementation rather than plan validation. Build directly to JSON — do not create markdown, documents, or any intermediate format.
+
+## Constraint Reference Block
+
+Before generating, note from the plan:
+- Recommended split and session focus per day
+- Any re-entry protocol requirements
+
+Use these when applying rest style parameters and validating day structure.
+
+## Output Instructions
+
+**Generate complete JSON files following the output instructions below.**
+
+**DO NOT output JSON to chat** — it will hit token limits for large programs.
+
+**You MUST:**
+1. Create a file (use Code Interpreter on ChatGPT, or computer tool on Claude)
+2. Write the complete JSON structure to the file
+3. If you reach output limits, STOP at the end of a complete block, then continue appending to the same file
+4. Never stop mid-block or mid-day
+5. When finished, provide the download link
+
+**Multi-block programs:**
+Generate one block at a time. After each block:
+1. Provide the download link for that block's JSON file
+2. Output a brief **volume summary** showing total primary-tagged sets per muscle group for that block (training weeks, not deload). This gives the reviewer something to check against.
+3. Say: "Block 1 complete. Say 'review' to validate this block before continuing, or 'next' to generate Block 2 directly."
+4. **STOP and wait for user input.** Do not proceed to the next block until the user responds.
+
+**When user says "next" for subsequent blocks:**
+1. Generate the next block directly as JSON format (do not create text version first)
+2. Apply the same JSON schema and structure established above
+3. Write the JSON to a file and provide download link
+4. Output volume summary for the new block
+5. Say: "Block [X] complete. Say 'review' to validate this block before continuing, or 'next' to generate Block [X+1] directly."
+6. **STOP and wait for user input.** Do not proceed to the next block until the user responds.
+
+**When user says "review" for any block:**
+1. Read the workout program document from earlier in the conversation
+2. Apply the embedded review checklist below to the specified block  
+3. Generate the corrected JSON version with all fixes applied
+4. Write corrected JSON to file and provide download link
+5. Say: "Block [X] reviewed and updated. Say 'next' to continue to Block [X+1]."
+
+### Embedded Review Checklist
+
+Re-read the workout plan document from earlier in the conversation. Compare your JSON output against the plan and fix any discrepancies in exercise names, set counts, muscle tags, superset pairings, or day structure.
+
+Each block should be a complete, standalone JSON file with routine_name, description, days_per_week, and a single block in the blocks array. Keep routine_name and description consistent across all files.
+
+**Long programs (5+ blocks):** Continue generating blocks in this same conversation. Do not suggest starting a fresh chat.
+
+**Mesocycle-based programs:** If the plan states this is Mesocycle [X] of [N], after generating and delivering the FINAL block of this mesocycle:
+
+If X < N:
+1. Output a Mesocycle [X] Summary:
+   - Phase name and training emphasis
+   - Split structure used
+   - Rep range focus
+   - Volume per muscle group (sets/week from your volume summaries)
+   - Key exercises used across all blocks
+2. Then say: "Mesocycle [X] complete. When you're ready to continue, just ask me to generate Mesocycle [X+1] — I'll use the roadmap and summary above to design the next phase in this same conversation."
+
+If X equals N, say: "That completes your full program — all [N] mesocycles are done. Enjoy your training!"
+
+The plan is fully self-contained: it lists all exercise pools, block structures, and periodization details. You do not need conversation history from prior blocks to generate any block correctly. Always reference the plan — never rely on memory of prior blocks in the conversation.
+
+---
+
+## Translation Principles
+
+1. **The plan is authoritative for structure; the exercise library is authoritative for tags** — use the exercise names, sets, superset pairings, and day structure exactly as specified from the plan. However, before finalizing any JSON, verify every exercise's primaryMuscles and secondaryMuscles tags against the canonical exercise library at https://json.fit/exercises.md. If the plan's tags differ from the library, use the library's tags (the library is authoritative). Do not add, remove, or rename exercises. If the plan declares a mesocycle structure, append the mesocycle name to routine_name in every JSON file. The reviewed plan's set counts are final — do not adjust them based on your own volume recalculation.
+2. **Treat exercise names as identifiers** — use the exact same string for the same exercise across all blocks, days, notes, and superset references. Never vary naming.
+3. **Design what the plan doesn't specify** — you are responsible for rest periods, alternative exercises, and technique notes. For rep progressions: follow the plan's scheme if stated, otherwise use the defaults below.
+4. **Only program working sets** — do not include warm-up sets.
+
+---
+
+## Exercise Programming Details
+
+### Rep Progressions
+
+For each exercise, design a weekly rep progression across the block. Since the app doesn't track weight, progressions are expressed entirely through rep targets — the user manages their own load increases.
+
+**Starting point rule:**
+Start at the TOP of the prescribed range in Week 1, reduce across the block. The rep ceiling is Week 1; the floor is the final training week before deload. This signals increasing load week over week.
+
+**Linear progression (default for all exercises):**
+Maintain rep targets in early weeks. Slight rep reduction in later weeks signals that the lifter should be using heavier loads.
+Example (5-week block, 4 sets): Week 1: "10, 10, 10, 8" → Week 2: "10, 10, 8, 8" → Week 3: "8, 8, 8, 8" → Week 4: "8, 8, 6, 6" → Week 5 (deload): "12, 12"
+
+`reps_weekly` values must be comma-separated rep targets per set (e.g., "10, 10, 10, 8"), not shorthand like "4x10".
+
+**rir_weekly field — REQUIRED whenever the exercise has reps_weekly populated.** 
+
+If an exercise prescribes weekly reps, it must also prescribe weekly RIR. This applies to all resistance training exercises (compound lifts, machines, isolation work). It does NOT apply to cardio, flexibility, or mobility work — those don't have RIR.
+
+Structure: identical to reps_weekly. An object with week numbers as keys ("1", "2", "3", "4") and a comma-separated string of per-set RIR values for each week.
+
+Translation rules:
+1. The number of comma-separated values per week must match the exercise's set count for that week (matches reps_weekly)
+2. Source the values from the exercise's notes field, which contains the RIR progression (e.g., "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4")
+3. The week-level target from the notes is the middle-set value. Apply within-exercise progression:
+   - Set 1: target + 1 (one rep further from failure)
+   - Middle sets: target
+   - Last set: target - 1 (one rep closer to failure, never below 0)
+4. Values can be single integers ("3", "2", "1", "0") or ranges ("0-1", "1-2")
+5. If the plan notes specify exact per-set values (e.g., "Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR."), use those exact values rather than re-deriving
+
+Example: For an exercise with 3 sets per week and notes "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4":
+
+```
+"rir_weekly": {
+  "1": "4, 3, 2",
+  "2": "3, 2, 1",
+  "3": "2, 1, 0",
+  "4": "1-2, 0-1, 0"
+}
+```
+
+Floor: never go below RIR 0. If within-exercise math produces a negative value, clamp to 0.
+
+Do not regenerate RIR guidance from scratch — translate from the plan notes that already include the RIR progression.
+
+**Match progressions to the plan's rep range focus.** If the plan says "Block B: Strength — 5-8 reps," your compound progressions should work within that range. Isolation exercises can run 2-4 reps higher than the block's stated range (e.g., 8-12 isolation reps in a "5-8" strength block is fine).
+
+### Rest Periods
+
+Use rest periods from the plan if specified, otherwise apply evidence-based defaults appropriate for exercise type and training goal. Calculate restQuick as approximately 65% of the main rest period.
+
+**Superset rest encoding:** For superset pairs, the first exercise (SS[n]a) gets a brief transition rest to move to the second exercise. The second exercise (SS[n]b) gets the full rest appropriate to the exercise type before repeating the pair.
+
+### Alternative Exercises
+
+Each exercise must include 2 alternatives (1 for bodyweight-only programs). Alternatives should target the same primary muscles, use different equipment or movement variations, and include their own primaryMuscles and secondaryMuscles tags.
+
+### Notes
+
+Only include non-obvious technique tips or specific setup instructions. Do not add notes for standard exercises performed in standard ways. If the plan includes notes for an exercise, carry them through.
+
+### Supersets
+
+Place superset exercises adjacent in the exercises array. Include "Superset with [exact exercise name]" in both exercises' notes field. Add "superset_group": "ss1" (or "ss2", "ss3" etc.) to both exercises in the pair — use the same string value for both. The plan marks supersets with SS[n]a/SS[n]b notation — translate these to adjacent array entries with matching superset_group values.
+
+---
+
+## Muscle Taxonomy
+
+Before generating JSON, read the canonical exercise library at https://json.fit/exercises.md to get authoritative muscle tags. Every exercise in your JSON must use primaryMuscles and secondaryMuscles tags that exactly match what's in that library. Do not use generic terms like "Shoulders", "Back", "Arms", or "Legs". If an exercise is not found in the library, do not include it in the JSON — flag it as an error requiring replacement.
+
+---
+
+## JSON Schema
+
+```json
+{
+  "routine_name": "string",
+  "description": "string",
+  "days_per_week": 7,
+  "blocks": [
+    {
+      "block_name": "string",
+      "weeks": "string (e.g. '1-6')",
+      "structure": "string (e.g. 'Push Pull Legs Upper Lower')",
+      "weekly_schedule": [
+        {
+          "day_number": "number",
+          "type": "training | rest",
+          "day_name": "string (e.g. 'Push', 'Pull', 'REST DAY')"
+        }
+      ],
+      "deload_weeks": "[number] (optional — include only if block has deloads)",
+      "days": [
+        {
+          "day_name": "string",
+          "estimated_duration": "number (minutes)",
+          "exercises": "[Exercise]"
+        },
+        {
+          "day_name": "REST DAY",
+          "estimated_duration": 0,
+          "exercises": []
+        }
+      ]
+    }
+  ],
+  "_metadata": {
+    "isSamplePlan": "true (for sample plans only — prevents contaminating user exercise preferences)"
+  }
+}
+```
+
+**For sample plan generation only:** Include `"_metadata": {"isSamplePlan": true}` at the root level to prevent the plan from overwriting users' saved exercise preferences when imported.
+
+### Strength Exercise
+
+```json
+{
+  "type": "strength",
+  "exercise": "string",
+  "sets": "number",
+  "reps": "string",
+  "rest": "number (seconds)",
+  "restQuick": "number (seconds — ~65% of rest, rounded)",
+  "primaryMuscles": ["from taxonomy"],
+  "secondaryMuscles": ["from taxonomy, or empty array"],
+  "superset_group": "string (optional — e.g. 'ss1'; same value on two exercises links them as a superset)",
+  "reps_weekly": { "1": "string", "2": "string" },
+  "rir_weekly": { "1": "string", "2": "string" },
+  "sets_weekly": { "1": "number", "2": "number" },
+  "notes": "string (form cues, RIR guidance, or other coaching notes — multiple notes allowed)",
+  "alternatives": [
+    { "exercise": "string", "primaryMuscles": ["..."], "secondaryMuscles": ["..."] }
+  ]
+}
+```
+
+---
+
+## Schema Rules
+
+1. **Block-relative keys** — weekly progression keys always start from "1" within each block. Block B (weeks 7-12) uses "1", "2", "3"... not "7", "8", "9".
+2. **Deload tagging** — if a block has deload weeks, include a `deload_weeks` array with the block-relative week numbers (e.g., [5] for a 5-week block with deload on week 5).
+3. **Empty arrays** — if an exercise has no secondary muscles, use `[]`. Do not omit the field.
+4. **restQuick** — calculate as ~65% of the `rest` value, rounded to a clean number.
+5. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: `Straight sets: (sets × 45s) + (sets × rest_seconds) | Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s) | Total: exercise_count × 150s + 300s warmup`. Duration has been pre-approved in the review stage.
+6. **Superset rest encoding** — for superset exercises, SS[n]a's `rest` field represents the inter-exercise transition rest (60-90s). SS[n]b's `rest` field represents the full rest before repeating the pair (compound or isolation default for that exercise type). `restQuick` is calculated from each exercise's own `rest` value.
+7. **sets vs sets_weekly** — `sets` is the default set count for training weeks (used for display). `sets_weekly` must be specified for every week in the block: training weeks should match `sets`, and deload weeks should show reduced values. Both fields are required for every strength exercise.
+8. **deload_weeks optionality** — omit `deload_weeks` entirely for blocks without deloads. Do not include an empty array.
+9. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. Example for 5-day program:
+   - Day 1: {"day_number": 1, "type": "training", "day_name": "Push"}
+   - Day 2: {"day_number": 2, "type": "training", "day_name": "Pull"}
+   - Day 3: {"day_number": 3, "type": "rest", "day_name": "REST DAY"}
+   - Days 4,5: training, Day 6: rest, Day 7: training
+10. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
+11. **RIR** — carry RIR guidance from the approved plan into each exercise's notes field. Do not regenerate or modify RIR values — the plan is authoritative.
+
+---
+
+## Pre-Delivery Self-Check
+
+Before presenting each block, silently verify:
+
+- [ ] Every exercise from the plan appears in JSON with correct set counts
+- [ ] Exercise names are identical everywhere (across days, notes, superset references)
+- [ ] Superset exercises are adjacent with matching superset_group values and cross-referenced in notes
+- [ ] Rep progressions trend flat-to-decreasing across weeks (not identical every week)
+- [ ] RIR guidance from the plan carried through to every exercise's notes
+- [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
+- [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps
+- [ ] restQuick ≈ 65% of rest for every exercise
+- [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
+- [ ] Block-relative week keys start from "1"
+- [ ] Session durations are recalculated using the duration formula
+
+Fix any issues before presenting.
