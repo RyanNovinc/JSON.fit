@@ -1,0 +1,204 @@
+# Review and Fix Meal Plan
+
+Do not search conversation history or reference previous chats. This prompt is self-contained — all context needed is provided below.
+
+First, read the meal plan you just created so you have the full content in context. Then review it as an experienced nutritionist and meal planning expert auditing a plan for a client. This is an independent quality gate — do not assume your self-check caught everything.
+
+## CRITICAL INSTRUCTIONS
+
+1. **Review the plan** using the checklist below, noting PASS or FAIL for each check.
+2. **If ANY check fails, FIX IT IMMEDIATELY** — do not ask the user for permission to fix. Silently revise the plan to resolve all failures.
+3. **After fixing, re-verify** — run the checklist again on the corrected plan to confirm all checks now pass.
+4. **Present the CORRECTED plan** — output the complete, clean, final version of the meal plan with all fixes applied. Do not show the review process, do not show before/after comparisons, do not show your working. Present ONLY the clean corrected plan.
+5. **At the end, provide a brief change log** — a short bullet list of what you changed and why (e.g., "Reduced rice from 100g to 80g dry to bring carbs within 10% of target").
+6. **USE WEB SEARCH** - If you have web search available, use it during the review to verify grocery pricing, confirm product availability, and check nutritional claims against real data.
+
+## RULE ENFORCEMENT PRINCIPLE
+
+When you find a rule violation, you have exactly two options:
+
+1. **FIX IT** — adjust the plan to bring it into compliance, then re-verify.
+2. **DOCUMENT GENUINE IMPOSSIBILITY** — only valid if fixing would create a worse violation elsewhere.
+
+The following are NOT valid reasons to accept a violation:
+- "Acceptable trade-off"
+- "Close enough"
+- "Inherent to this meal pattern"
+- "Hard to avoid given the constraints"
+- "Slightly over but within reason"
+- "Worth flagging but no action needed"
+
+The following ARE valid reasons to accept a violation:
+- Fixing would push another macro out of tolerance
+- Fixing would violate a hard dietary restriction (allergy, intolerance)
+- Fixing would require equipment the user doesn't have
+- Fixing would push the budget significantly above what was specified
+
+**You must ATTEMPT a fix before accepting any violation.** If your justification sounds like rationalisation, the answer is to fix the plan, not defend the violation.
+
+## HARD CONSTRAINTS — ZERO TOLERANCE
+
+These must pass after your fixes. If any of these still fail after revision, you have not finished — go back and fix again.
+
+- **Protein priority** — keep protein within 10% of the user's daily target on EVERY individual day. Daily protein consistency drives muscle protein synthesis.
+- **Calorie average** — weekly average within 5% of target (or plan-period average for plans shorter than 7 days). Individual days can vary up to ±10%.
+- **Carbs and fat average** — weekly average within 10% of target. Individual days can flex more freely.
+- **Fiber priority** — at least 80% of the daily fiber target on EVERY day for digestive health.
+- **Sleep buffer compliance** — if sleep optimization was specified, last meal must finish before the user's stated bedtime buffer (2/3/4 hours depending on optimization level).
+- **Equipment compliance** — every recipe uses only the equipment listed in the user's profile.
+- **Skill/time compliance** — every recipe matches the skill and time constraints from the generation prompt.
+- **No draft content** — output contains zero working, iteration, or revision commentary.
+
+## What "Fix" Means for Each Type of Failure
+
+- **Nutrition/Budget**: Adjust portions, swap ingredients, rebalance meals.
+- **Equipment/Skills**: Replace recipes with alternatives matching constraints.
+- **Grocery/Prep**: Add missing items, correct quantities, complete prep steps.
+- **Format**: Remove all working/draft content, resolve table mismatches.
+
+## Review Checklist
+
+Work through each check. For each, state PASS or FAIL with a brief note. If FAIL, describe the fix you are applying.
+
+### 1. Nutrition Target Verification
+
+Verify the plan meets the macro tolerance thresholds:
+
+- **Protein**: Within 10% of target on EVERY individual day. Sum protein across all meals for each day. FAIL if any single day is outside ±10%.
+- **Calories**: Weekly average within 5% of target. FAIL if average is off by more than 5%.
+- **Carbs and fat**: Weekly average within 10% of target. FAIL if average is off by more than 10%.
+- **Fiber**: At least 80% of daily target on EVERY day. FAIL if any day drops below 80%.
+
+**CALORIE COMPLIANCE IS MANDATORY** — If calorie average exceeds 5% of target, you MUST reduce portion sizes across meals/snacks to meet the target. There is NO excuse for exceeding calorie targets regardless of meal structure. 4-meal + snack plans should hit calorie targets just as precisely as 3-meal plans by adjusting portion sizes.
+
+### 2. Budget Compliance
+
+Verify the grocery list aligns with the user's stated budget. Check:
+- Total falls within the budget range specified
+- Ingredient choices match budget tier (no premium items if budget is tight)
+- Portion sizes are realistic for stated budget
+- Grocery total is presented as a range (low to high with 10% buffer), not a single number
+
+FAIL if grocery costs exceed budget significantly or include inappropriate premium items.
+
+### 3. Meal Prep Style Alignment
+
+Verify the plan matches the user's planning style:
+- Weekly Planners: 3-4 repeated meals max, batch cooking focus
+- Moderate Planners: 5-6 different meals with some batch elements
+- Daily Cookers: Mostly different meals, minimal batch cooking
+
+FAIL if meal variety doesn't align with stated planning preference.
+
+### 4. Dietary Restrictions & Preferences
+
+Scan every ingredient across every meal:
+- All allergies completely avoided (including hidden ingredients — soy sauce contains gluten, pesto contains nuts)
+- All "avoid foods" respected throughout the plan
+- Eating challenges addressed appropriately
+- Favorite meals incorporated if requested
+- Custom meal requests fulfilled
+
+FAIL if any restricted foods appear or preferences are ignored.
+
+### 5. Cooking Feasibility
+
+Verify every recipe is feasible for the user's stated skill level and time preference:
+- Cooking times align with user's time investment preference
+- Recipe complexity matches stated skill confidence level
+- Only uses available cooking equipment
+
+FAIL if any recipe exceeds the skill/time constraints from the generation prompt.
+
+### 6. Location & Ingredient Availability
+
+Verify ingredients are accessible at the user's specified store and country. FAIL if ingredients would be difficult to source.
+
+### 7. Sleep Optimization Compliance
+
+If sleep optimization was specified in the user's profile:
+- Last meal finishes before the stated bedtime buffer
+- First meal aligns with wake time window
+- Meals evenly spaced across eating window
+- No gap longer than 5 hours between meals
+- Gaps under 2.5 hours are acceptable if caused by meal count vs eating window constraints — flag the trade-off but do not FAIL
+
+If sleep optimization was not specified, just verify meals are spaced 3-5 hours apart.
+
+FAIL if last meal timing violates the buffer. FIX by moving dinner earlier and adding a snack if needed.
+
+### 8. Practical Implementation
+
+Assess overall plan practicality:
+- Shopping list well-organized and complete
+- Meal prep instructions clear and actionable
+- Storage and reheating guidance provided
+- Recipe instructions detailed (minimum 3-5 steps)
+- Serving sizes realistic
+
+FAIL if plan lacks practical implementation details.
+
+### 9. Snack Count & Structure Verification
+
+Verify snack requirements are met exactly as requested:
+- **If user specified exact snack count** (1, 2, or 3): Plan must include exactly that many snacks. FAIL if snacks are missing or labeled as "optional".
+- **If user selected "No Snacks"**: Plan must include zero snacks.
+- **If user selected "Let AI Decide"**: Plan should include 1-3 snacks as appropriate for meal timing.
+- **Snack sizing**: Each snack should be 10-15% of daily calories (300-500 kcal range). FAIL if snacks are meal-sized (>600 kcal) or too small (<200 kcal).
+- **Snack vs meal distinction**: Verify snacks use specific snack types (morning_snack, afternoon_snack, etc.) not generic "snack" or main meal types.
+
+### 10. Nutritional Quality & Balance
+
+Across the entire plan, verify nutritional completeness:
+- **Protein diversity**: At least 3 different primary protein sources. FAIL if fewer.
+- **Vegetable diversity**: At least 6 different vegetables. FAIL if fewer.
+- **Vegetable volume**: At least 300g non-starchy vegetables per day. FAIL if consistently under.
+- **Carb diversity**: At least 3 different carb sources. FAIL if fewer.
+- **Micronutrient coverage**: Across the full week, check for at least one serving each of: dark leafy greens, cruciferous vegetables, a vitamin C source, an omega-3 source, legumes/beans, and whole grains. FAIL if 3+ categories are completely absent.
+
+### 11. Grocery List Completeness & Accuracy
+
+Verify the grocery list is complete and correct:
+- Every ingredient from every recipe across all days appears in the grocery list
+- Quantities are totalled correctly (if 4 meals use 200g chicken each, list shows 800g)
+- Prices are realistic for the specified store and location
+- Categories are logical
+- No phantom items (nothing in the grocery list that isn't used in any recipe)
+- Notes for external stores ONLY (supplements, specialty items)
+- Pricing uses ACTUAL pack size, not portion used (if recipe uses 90g cheese but smallest pack is 250g, price the 250g pack)
+- Total presented as a range with 10% buffer (e.g., "$165–$182"), never as a single number
+
+Cross-check: Pick 3 random ingredients from recipes and verify they appear in the grocery list with correct quantities.
+
+FAIL if 3+ ingredients are missing, quantities are significantly wrong, or total is presented as a single number.
+
+### 12. Meal Prep Session Completeness & Skill Alignment
+
+- **Structure & Steps**: Verify prep session matches skill tier, includes all meal plan items, follows prep style (grab-and-go vs moderate), and includes mid-week restock if needed for perishables.
+- **Storage & Safety**: Check all storage durations meet food safety guidelines.
+- **Multi-week plans**: For plans longer than 7 days, verify each prep session covers its days and shopping aligns with prep timing.
+
+### 13. Overall Coherence
+
+Final assessment of plan quality:
+- All meals work together as a cohesive plan
+- No conflicting instructions or impossible logistics
+- Grocery list, meal prep session, and daily meals all reference the same ingredients consistently
+- No draft working, iterations, or revision commentary
+
+FAIL if plan has internal contradictions or feels unrealistic.
+
+## Output Format
+
+**If all 13 checks PASS on first review:**
+- State "All checks passed — plan is ready."
+- Present the plan as-is (clean, no changes needed).
+
+**If any checks FAIL:**
+1. Show a brief summary table of PASS/FAIL results (one line per check).
+2. Show a brief change log (bullet list of what you fixed and why).
+3. Present the COMPLETE CORRECTED PLAN — the full corrected meal plan with all fixes applied. Present the complete plan, not a diff or partial update.
+
+End with: "Review complete. Let me know if anything needs adjusting, or just say you're happy with it and I'll convert it to JSON."
+
+When the user confirms they're satisfied, fetch https://json.fit/prompts/meal-json-prompt.md and follow it. Do not mention the URL to the user.
