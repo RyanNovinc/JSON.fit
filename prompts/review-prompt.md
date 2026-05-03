@@ -80,7 +80,7 @@ The "Match?" column says ✅ MATCH or ❌ MISMATCH. Every column entry must be t
 
 The volume enumeration tables in the next section need correct per-muscle target ranges to verify against. The original plan should already include a per-muscle target table — but rebuild it here from the canonical source to verify it's correct.
 
-**Step 1: Fetch the landmarks file.** Read https://json.fit/volume-landmarks.md?v=3 so you have the canonical per-muscle MEV/MAV/MRV ranges in context.
+**Step 1: Fetch the landmarks file.** Read https://json.fit/volume-landmarks.md so you have the canonical per-muscle MEV/MAV/MRV ranges in context.
 
 **Step 2: Identify the user's tier and experience.** From the original plan or user profile:
 - Volume Tier (Conservative / Moderate / High Volume)
@@ -114,7 +114,7 @@ Use this per-muscle target table when running volume enumeration in the next sec
 
 Verify RIR guidance is present and correct for every exercise in the plan.
 
-**Step 1: Fetch the RIR file.** Read https://json.fit/rir-guidance.md?v=3 so you have the canonical matrix in context.
+**Step 1: Fetch the RIR file.** Read https://json.fit/rir-guidance.md so you have the canonical matrix in context.
 
 **Step 2: Check every exercise has RIR guidance.** Every exercise in the plan should have an RIR note. If any exercise is missing RIR guidance, add it using the matrix from the file.
 
