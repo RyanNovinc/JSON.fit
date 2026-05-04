@@ -1,3 +1,14 @@
+**FETCH REQUIRED:** This prompt requires fetching files from json.fit. Try to fetch them. If fetch fails for ANY reason (no fetch tool, network blocked, allowlist denied, 404, etc.):
+
+Stop immediately. Respond ONLY with this exact text:
+
+"This prompt needs to fetch files from json.fit, but fetching isn't working in your AI. To use JSON.fit:
+- Use Claude.ai with web search enabled in the message composer
+- Or ChatGPT with browsing enabled
+Then paste this prompt again."
+
+Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
+
 # Critical Training Plan Review
 
 Do not search conversation history or reference previous chats. This prompt is self-contained — all context needed is provided below.
@@ -126,6 +137,37 @@ Verify RIR guidance is present and correct for every exercise in the plan.
 
 **Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan.
 
+### Rep Range Audit
+
+Verify rep ranges are correct for every exercise in the plan based on its category and the user's primary goal.
+
+**Step 1: Fetch the rep range file.** Read https://json.fit/rep-range-guidance.md so you have the canonical per-category × goal table in context.
+
+**Step 2: Check every exercise has a rep range that matches its category.** For each exercise in the plan, confirm:
+- The exercise's category is correctly identified (heavy compound, moderate compound, unilateral compound, large isolation, small isolation, power)
+- The prescribed rep range falls within the file's per-category range for the user's primary goal
+- Goal-specific adjustments are applied (e.g., strength programs use lower rep ranges per the file's Goal-Specific Rules section)
+
+**Step 3: Fix any mismatches** silently. If a heavy compound is prescribed at 12-15 reps but the user's goal is strength (where heavy compounds should be 1-6), correct the rep range and re-verify.
+
+**Note:** The single-joint arm exercise exception (all curl variations and triceps isolation always use 10-15 reps regardless of program rep focus) is enforced in the Output Format and applies on top of the per-category guidance.
+
+### Rest Period Audit
+
+Verify rest periods are correct for every exercise in the plan based on its category and the user's selected rest tier.
+
+**Step 1: Fetch the rest guidance file.** Read https://json.fit/rest-guidance.md so you have the canonical per-tier × exercise category matrix in context.
+
+**Step 2: Identify the user's rest tier.** From the original plan or user profile: Optimal / Moderate / Minimal.
+
+**Step 3: Check every exercise has a rest period that matches its category and the user's tier.** For each exercise, confirm:
+- The exercise's category is correctly identified (heavy compound, moderate compound, unilateral compound, large isolation, small isolation)
+- The prescribed rest period falls within the file's matrix cell for that category × tier combination
+- Goal-specific overrides are applied (especially: strength programs use 3-5 minutes on heavy compounds regardless of tier)
+- Edge cases are handled correctly (antagonist supersets, drop sets, sets to failure, deload weeks)
+
+**Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan.
+
 ### Effective Volume Distribution Check
 
 For EVERY non-exempt muscle in the program, you MUST produce an enumeration table. Do not narrate or estimate volume — enumerate exercise by exercise. **Use the tag values from the tag audit above (which match the library), not whatever was in the original plan.**
@@ -184,7 +226,6 @@ Do not claim a fix works without showing the recount tables for every affected m
 
 - **Weekly structure**: Logical distribution of training stress across the week; no two consecutive days hitting the same muscle group heavily
 - **Exercise order**: Compound before isolation, higher skill before lower skill
-- **Rep ranges**: Appropriate for stated goals (hypertrophy: 6-12 for compounds, 10-15 for isolation; isolation arm exercises always 10-15 regardless of block focus)
 - **Auxiliary placement**: If user selected auxiliary muscles, those exercises should appear as finishers at the end of sessions, not as dedicated sessions
 
 ### Practical Implementation Check
