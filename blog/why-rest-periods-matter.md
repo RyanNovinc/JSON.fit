@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Rest Timer Is Probably Wrong — JSON.fit</title>
+    <meta name="description" content="Most fitness apps default to 60-90 seconds between sets. The research says that's too short for trained lifters. Here's what the evidence actually shows.">
+    <link rel="canonical" href="https://json.fit/blog/why-rest-periods-matter.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="JSON.fit">
+    <meta property="og:title" content="Your Rest Timer Is Probably Wrong">
+    <meta property="og:description" content="Most fitness apps default to 60-90 seconds between sets. The research says that's too short for trained lifters. Here's what the evidence actually shows.">
+    <meta property="og:url" content="https://json.fit/blog/why-rest-periods-matter.html">
+    <meta property="og:image" content="https://json.fit/images/og-image.png">
+    <meta property="article:published_time" content="2026-04-15">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Your Rest Timer Is Probably Wrong">
+    <meta name="twitter:description" content="Most fitness apps default to 60-90 seconds between sets. The research says that's too short for trained lifters.">
+    <meta name="twitter:image" content="https://json.fit/images/og-image.png">
+
+    <!-- Schema: BlogPosting -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Your Rest Timer Is Probably Wrong",
+        "description": "Most fitness apps default to 60-90 seconds between sets. The research says that's too short for trained lifters. Here's what the evidence actually shows.",
+        "url": "https://json.fit/blog/why-rest-periods-matter.html",
+        "datePublished": "2026-04-15",
+        "author": {"@type": "Organization", "name": "JSON.fit", "url": "https://json.fit"},
+        "publisher": {"@type": "Organization", "name": "JSON.fit", "url": "https://json.fit"},
+        "mainEntityOfPage": {"@type": "WebPage", "@id": "https://json.fit/blog/why-rest-periods-matter.html"}
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--cyan:#22d3ee;--bg:#050508;--surface:#0a0a0f;--border:rgba(255,255,255,0.06);--text:#f0f0f2;--text-2:#9898a4;--text-3:#55555f}
+        *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px}
+        body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:10000}
+        .cyan{color:var(--cyan)}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+        .nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:0.4rem}.nav-logo:hover{text-decoration:none}
+        .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}.nav-links a{color:var(--text-3);font-size:0.8rem;font-weight:500;text-decoration:none}.nav-links a:hover{color:var(--text);text-decoration:none}
+        .nav-cta{background:var(--cyan);color:#000!important;padding:0.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:0.78rem!important}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;position:relative}.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all 0.3s}
+        article{max-width:680px;margin:0 auto;padding:6rem 1.5rem 4rem}
+        .back{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-3);display:inline-block;margin-bottom:2.5rem;text-decoration:none;letter-spacing:0.03em}.back:hover{color:var(--cyan);text-decoration:none}
+        .post-meta{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem}
+        .post-date{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
+        .post-meta-sep{font-size:0.65rem;color:var(--text-3)}
+        .post-read{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
+        article h1{font-size:clamp(1.8rem,5vw,2.5rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:1.5rem}
+        article h2{font-size:1.3rem;font-weight:700;margin:2.5rem 0 1rem}
+        article p{color:var(--text-2);margin-bottom:1.25rem;font-size:0.95rem}article strong{color:var(--text);font-weight:600}
+        article ul{color:var(--text-2);margin:0 0 1.25rem 1.25rem;font-size:0.95rem}article li{margin-bottom:0.4rem}
+        blockquote{border-left:2px solid var(--cyan);padding:0.5rem 0 0.5rem 1.25rem;margin:1.5rem 0;color:var(--text);font-weight:500;font-size:1.05rem}
+        sup a{color:var(--cyan);font-size:0.7em;text-decoration:none;font-family:'DM Mono',monospace;font-weight:500}
+        sup a:hover{text-decoration:underline}
+        .references{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}
+        .references h2{margin-top:0;font-size:1.1rem;color:var(--text-3);font-family:'DM Mono',monospace;font-weight:500;letter-spacing:0.04em;text-transform:uppercase}
+        .references ol{color:var(--text-3);font-size:0.82rem;line-height:1.6;margin-left:1.25rem}
+        .references li{margin-bottom:0.75rem}
+        .references li em{color:var(--text-2);font-style:italic}
+        .references li a{color:var(--text-2);word-break:break-word}
+        .cta-box{border:1px solid rgba(34,211,238,0.12);border-radius:12px;padding:1.75rem;margin:2rem 0;background:rgba(34,211,238,0.03);text-align:center}
+        .cta-box p{color:var(--text);margin-bottom:0.75rem;font-weight:500}.cta-box a{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.25rem;border-radius:8px;background:var(--cyan);color:#000;font-weight:600;font-size:0.88rem;text-decoration:none}.cta-box a:hover{text-decoration:none}
+        footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;max-width:1000px;margin:0 auto}
+        .footer-left{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--text-3)}.footer-left a{color:var(--text-3);text-decoration:none;margin-left:1.25rem}.footer-left a:hover{color:var(--cyan);text-decoration:none}.footer-right{font-size:0.7rem;color:var(--text-3)}
+        @media(max-width:860px){.nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}.nav-links.open{display:flex}.nav-links a{font-size:1.1rem;color:var(--text-2)}.hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}footer{flex-direction:column;gap:0.75rem;text-align:center}.footer-left a{margin-left:0;margin:0 0.6rem}}
+    </style>
+</head>
+<body>
+<nav>
+    <a href="../" class="nav-logo"><svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg> JSON<span class="cyan">.fit</span></a>
+    <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks"><li><a href="../#how">How It Works</a></li><li><a href="../#nutrition">Nutrition</a></li><li><a href="../#compare">Compare</a></li><li><a href="../blog.html">Blog</a></li><li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta">Download</a></li></ul>
+</nav>
+<article>
+    <a href="../blog.html" class="back">← Back to blog</a>
+    <div class="post-meta">
+        <span class="post-date">April 15, 2026</span>
+        <span class="post-meta-sep">·</span>
+        <span class="post-read">7 min read</span>
+    </div>
+    <h1>Your Rest Timer Is <span class="cyan">Probably</span> Wrong</h1>
+    <p>Open most fitness apps and start a workout. The default rest timer pops up — usually 60 seconds, sometimes 90. You hit start, take a quick breather, and head into the next set.</p>
+    <p>For decades, this short-rest convention was justified by a specific theory: shorter rest produces a bigger spike in growth hormone and testosterone, which drives more muscle growth. The textbooks said 30 to 90 seconds for hypertrophy and 2 to 5 minutes for strength.</p>
+    <p>That theory is wrong. The research overturned it years ago. But most apps haven't updated their defaults.</p>
+    <h2>The study that changed everything</h2>
+    <p>In 2016, Brad Schoenfeld and his team published the trial that broke the short-rest assumption.<sup><a href="#ref1">[1]</a></sup> Twenty-one resistance-trained men were randomised into two groups: one rested 1 minute between sets, the other rested 3 minutes. Everything else was identical — same exercises, same sets, same reps, three sessions per week for eight weeks.</p>
+    <p>The 3-minute group gained significantly more in their bench press and squat one-rep maxes. They also gained more muscle thickness in their elbow flexors and quadriceps. The 1-minute group worked just as hard, with the same prescribed reps. They just couldn't sustain the same loads across the workout because they hadn't recovered.</p>
+    <p>The mechanism turned out to be embarrassingly simple. Rest period doesn't directly cause muscle growth. <strong>Volume load does.</strong> When you cut rest too short, your reps and weight drop on later sets, which drops total volume load, which drops the stimulus for hypertrophy.</p>
+    <p>Cut your rest, cut your gains. Not because hormones, but because you can't lift as much.</p>
+    <h2>What the hormonal theory got wrong</h2>
+    <p>The old theory said short rest produced a bigger acute hormonal response, and that response drove growth. The acute hormonal response part is actually true — short rest does spike growth hormone more.</p>
+    <p>But it turns out those acute hormonal spikes don't drive hypertrophy. Multiple studies tracking actual muscle protein synthesis after training found that short-rest sessions, despite higher growth hormone, produced <em>blunted</em> protein synthesis compared to longer-rest sessions. The hormonal signal was a red herring. The mechanical work was what mattered.</p>
+    <p>This was confirmed by Longo and colleagues in 2022.<sup><a href="#ref2">[2]</a></sup> They equated volume load between short-rest and long-rest groups. When the volume was matched, the muscle growth was the same. Rest periods weren't a direct cause of anything — they were just a control variable for how much work you could do.</p>
+    <h2>How long should you actually rest?</h2>
+    <p>This is where it gets less clean. The 2016 Schoenfeld trial established that 1 minute is too short. But how much rest do you actually need? The answer depends on the exercise.</p>
+    <p>The most current synthesis is a 2024 Bayesian meta-analysis from Singer and colleagues<sup><a href="#ref3">[3]</a></sup>, which looked at every quality study on rest periods and hypertrophy. Their finding was nuanced: hypertrophy benefits clearly require resting more than 60 seconds, but the gains plateau around 90 seconds. Resting longer than that doesn't add much for direct hypertrophy outcomes — except for one important case.</p>
+    <blockquote>For heavy compound lifts, you genuinely need 3 to 5 minutes. For everything else, 90 seconds to 2 minutes is enough.</blockquote>
+    <p>The strength case is different. Grgic and colleagues' 2018 systematic review<sup><a href="#ref4">[4]</a></sup> found that for trained lifters working with heavy loads on multi-joint exercises like the squat, deadlift, and bench press, less than 2 minutes of rest significantly compromises strength gains. Three to five minutes is genuinely necessary if you want to keep getting stronger.</p>
+    <p>So the real picture is exercise-dependent:</p>
+    <ul>
+        <li><strong>Heavy compounds (squat, deadlift, bench, OHP):</strong> 3 to 5 minutes</li>
+        <li><strong>Moderate compounds (rows, lat pulldowns, machine presses):</strong> 2 to 3 minutes</li>
+        <li><strong>Large isolation (curls, leg curls, leg extensions):</strong> 90 seconds to 2 minutes</li>
+        <li><strong>Small isolation (lateral raises, calves, face pulls):</strong> 60 to 90 seconds</li>
+    </ul>
+    <p>Most apps' default of 60 to 90 seconds is roughly right for small isolation work. It's badly wrong for everything else.</p>
+    <h2>Why apps haven't fixed this</h2>
+    <p>The honest answer is that short rest periods make for better-feeling workouts, especially for beginners. Sessions are shorter. The pump feels stronger because lactate accumulation creates that engorged sensation. You leave the gym feeling like you crushed it.</p>
+    <p>Longer rest produces flatter-feeling workouts. You're standing around between sets. The pump fades. You don't feel destroyed afterward. But your bench press goes up faster, and you build more muscle.</p>
+    <p>Apps optimise for engagement, not outcomes. A workout that feels harder gets reopened more often. So defaults stay short.</p>
+    <h2>The honest caveats</h2>
+    <p>The research has limits worth being upfront about. The Singer 2024 meta-analysis<sup><a href="#ref3">[3]</a></sup> only included 9 studies — that's a thin evidence base. The Schoenfeld 2016 trial had 21 men. Most rest period research uses bench press and squat; almost nothing directly tests deadlift or unilateral lower body work. Recommendations for those exercises are extrapolations.</p>
+    <p>There's also the older adult counter-finding. Villanueva, Lane and Schroeder<sup><a href="#ref5">[5]</a></sup> ran an 8-week strength training trial in older men and found 60-second rest produced <em>better</em> outcomes than 4-minute rest. The trained-young-male recommendations don't directly transfer to other populations.</p>
+    <p>Within ±30 seconds of the recommended values, no published trial demonstrates a meaningful difference. The exact numbers aren't magic — they're central tendencies of plausible ranges. The principle that matters is: <strong>rest long enough to maintain your reps and load across sets.</strong> If you lose more than 2 reps from set 1 to set 2 at the same load, you're under-recovered.</p>
+    <h2>How JSON.fit handles this</h2>
+    <p>JSON.fit lets you choose between three rest tiers based on how you want to balance recovery against session duration:</p>
+    <ul>
+        <li><strong>Optimal Rest:</strong> Full recovery between every set. Heavy compounds get 3 to 5 minutes, moderate compounds 2.5 to 3, isolation 60 to 90 seconds. Longer sessions, but the strongest evidence base for both hypertrophy and strength gains.</li>
+        <li><strong>Moderate Rest:</strong> Balanced recovery. Heavy compounds 2.5 to 3 minutes, moderate compounds 2 minutes, isolation 60 to 90 seconds. Standard session length. The best fit for most lifters.</li>
+        <li><strong>Minimal Rest:</strong> Time-efficient. Compounds stay at 2 minutes (the minimum supported by research for heavy work), isolation drops to 60 seconds. Programs in this tier often pair antagonist exercises into supersets to save time without compromising volume load.</li>
+    </ul>
+    <p>Whichever tier you pick, the rest periods adapt per exercise — your bench press isn't given the same rest as your lateral raises. That's the actual research-backed approach. Most apps just give you one number and apply it everywhere.</p>
+    <p>If you want to verify the methodology, the per-exercise breakdown and citations are at <a href="https://json.fit/rest-guidance.md">json.fit/rest-guidance.md</a> with the full reference list at <a href="https://json.fit/rest-references.md">json.fit/rest-references.md</a>.</p>
+    <h2>The honest summary</h2>
+    <p>The 60-second rest timer is a holdover from a theory that turned out to be wrong. Acute hormonal spikes don't drive muscle growth — total volume load does. And the only way to maintain volume load across multiple sets is to rest long enough to actually recover.</p>
+    <p>For trained lifters, that means 2 to 3 minutes between most sets, and 3 to 5 minutes for heavy compounds. For lateral raises and calf work, 60 to 90 seconds is fine. The "one-size-fits-all" 60-second default isn't optimised for your gains. It's optimised for keeping you in the app.</p>
+    <p>Rest is a secondary lever — total volume, proximity to failure, and progressive overload matter more. But it's a real lever, and most apps have it wrong by default. Your reps shouldn't be dropping by 30% from set 1 to set 2. If they are, your timer is too short.</p>
+    <div class="cta-box">
+        <p>Rest periods that adapt to the exercise, not arbitrary defaults.</p>
+        <a href="https://apps.apple.com/au/app/json-fit/id6758357834">Download JSON.fit — free on the App Store</a>
+    </div>
+    <div class="references">
+        <h2>References</h2>
+        <ol>
+            <li id="ref1">Schoenfeld, B.J., Pope, Z.K., Benik, F.M., Hester, G.M., Sellers, J., Nooner, J.L., et al. (2016). Longer interset rest periods enhance muscle strength and hypertrophy in resistance-trained men. <em>Journal of Strength and Conditioning Research</em>, 30(7), 1805–1812. <a href="https://pubmed.ncbi.nlm.nih.gov/26605807/">pubmed.ncbi.nlm.nih.gov/26605807</a></li>
+            <li id="ref2">Longo, A.R., Silva-Batista, C., Pedroso, K., de Salles Painelli, V., Lasevicius, T., Schoenfeld, B.J., et al. (2022). Volume Load Rather Than Resting Interval Influences Muscle Hypertrophy During High-Intensity Resistance Training. <em>Journal of Strength and Conditioning Research</em>, 36(6), 1554–1559. <a href="https://pubmed.ncbi.nlm.nih.gov/35622106/">pubmed.ncbi.nlm.nih.gov/35622106</a></li>
+            <li id="ref3">Singer, A., Wolf, M., Generoso, L., Arias, E., Delcastillo, K., Echevarria, E., et al. (2024). Give it a rest: a systematic review with Bayesian meta-analysis on the effect of inter-set rest interval duration on muscle hypertrophy. <em>Frontiers in Sports and Active Living</em>, 6, 1429789. <a href="https://pubmed.ncbi.nlm.nih.gov/39205815/">pubmed.ncbi.nlm.nih.gov/39205815</a></li>
+            <li id="ref4">Grgic, J., Schoenfeld, B.J., Skrepnik, M., Davies, T.B., &amp; Mikulic, P. (2018). Effects of Rest Interval Duration in Resistance Training on Measures of Muscular Strength: A Systematic Review. <em>Sports Medicine</em>, 48(1), 137–151. <a href="https://pubmed.ncbi.nlm.nih.gov/28933024/">pubmed.ncbi.nlm.nih.gov/28933024</a></li>
+            <li id="ref5">Villanueva, M.G., Lane, C.J., &amp; Schroeder, E.T. (2015). Short rest interval lengths between sets optimally enhance body composition and performance with 8 weeks of strength resistance training in older men. <em>European Journal of Applied Physiology</em>, 115(2), 295–308. <a href="https://pubmed.ncbi.nlm.nih.gov/25346240/">pubmed.ncbi.nlm.nih.gov/25346240</a></li>
+            <li id="ref6">Iversen, V.M., Norum, M., Schoenfeld, B.J., &amp; Fimland, M.S. (2021). No Time to Lift? Designing Time-Efficient Training Programs for Strength and Hypertrophy: A Narrative Review. <em>Sports Medicine</em>, 51(10), 2079–2095. <a href="https://pubmed.ncbi.nlm.nih.gov/34125411/">pubmed.ncbi.nlm.nih.gov/34125411</a></li>
+            <li id="ref7">Senna, G., Willardson, J.M., de Salles, B.F., Scudese, E., Carneiro, F., Palma, A., &amp; Simão, R. (2011). The effect of rest interval length on multi and single-joint exercise performance and perceived exertion. <em>Journal of Strength and Conditioning Research</em>, 25(11), 3157–3162. <a href="https://pubmed.ncbi.nlm.nih.gov/21993029/">pubmed.ncbi.nlm.nih.gov/21993029</a></li>
+            <li id="ref8">Zhang, X., Weakley, J., Li, H., Li, Z., &amp; García-Ramos, A. (2025). Superset Versus Traditional Resistance Training Prescriptions: A Systematic Review and Meta-analysis Exploring Acute and Chronic Effects on Mechanical, Metabolic, and Perceptual Variables. <em>Sports Medicine</em>, 55(4), 953–975. <a href="https://pubmed.ncbi.nlm.nih.gov/39903375/">pubmed.ncbi.nlm.nih.gov/39903375</a></li>
+        </ol>
+    </div>
+</article>
+<footer>
+    <div class="footer-left">JSON<span class="cyan">.fit</span> <a href="mailto:Ryan.Novinc@gmail.com">Support</a> <a href="../privacy-policy.html">Privacy</a> <a href="../terms-of-service.html">Terms</a></div>
+    <div class="footer-right">© 2026 JSON.fit</div>
+</footer>
+<script>
+    var burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');
+    burger.addEventListener('click',function(e){e.stopPropagation();burger.classList.toggle('open');navLinks.classList.toggle('open')});
+    navLinks.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){burger.classList.remove('open');navLinks.classList.remove('open')})});
+</script>
+</body>
+</html>
