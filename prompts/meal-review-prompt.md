@@ -1,3 +1,14 @@
+**FETCH REQUIRED:** This prompt requires fetching files from json.fit. Try to fetch them. If fetch fails for ANY reason (no fetch tool, network blocked, allowlist denied, 404, etc.):
+
+Stop immediately. Respond ONLY with this exact text:
+
+"This prompt needs to fetch files from json.fit, but fetching isn't working in your AI. To use JSON.fit:
+- Use Claude.ai with web search enabled in the message composer
+- Or ChatGPT with browsing enabled
+Then paste this prompt again."
+
+Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
+
 # Review and Fix Meal Plan
 
 Do not search conversation history or reference previous chats. This prompt is self-contained — all context needed is provided below.
@@ -127,7 +138,64 @@ If sleep optimization was not specified, just verify meals are spaced 3-5 hours 
 
 FAIL if last meal timing violates the buffer. FIX by moving dinner earlier and adding a snack if needed.
 
-### 8. Practical Implementation
+### 8. Meal Timing Audit
+
+Verify meal timing aligns with the canonical meal timing guidance file.
+
+**Step 1: Fetch the meal timing file.** Read https://json.fit/meal-timing-guidance.md so you have the canonical per-tier matrix and override triggers in context.
+
+**Step 2: Identify the user's optimization tier.** From the user's profile or generation prompt: Minimal / Moderate / Maximum (or no sleep optimization).
+
+**Step 3: Verify the plan against the file.** Check:
+- First meal and last meal timing match the user's tier from the file's per-tier matrix
+- Eating window length matches the tier specification
+- Override triggers are correctly applied if relevant (T2D/prediabetes, nocturnal reflux, shift work, eating disorders, athletes with evening training)
+- Pre-sleep casein, if used, follows the file's exception rule (≤500 kcal liquid, 30 min before bed)
+- Composition × timing rules respected (smaller, leaner evening meals are acceptable closer to bed than fatty meals)
+
+**Step 4: Fix any mismatches** silently. If the user has T2D and the plan didn't apply the early-TRE override (10 h window ending by 6 PM), correct it. If the plan narrows the window for a user with eating disorder history, expand to Minimal tier framing only.
+
+### 9. Protein Distribution Audit
+
+Verify protein distribution aligns with the canonical protein distribution guidance file.
+
+**Step 1: Fetch the protein distribution file.** Read https://json.fit/protein-distribution-guidance.md so you have the canonical per-meal floors and per-frequency tables in context.
+
+**Step 2: Identify the user's parameters.** From the profile: daily protein target, meals per day, primary goal, bodyweight (if available).
+
+**Step 3: Verify the plan against the file.** Check:
+- Each main meal hits the per-meal floor (0.4 g/kg bodyweight, or appropriate per-frequency target from the file)
+- Daily total matches the goal-specific range from the file (hypertrophy 1.6-2.2 g/kg, fat loss 2.2-3.1 g/kg, etc.)
+- Per-meal targets match the meal-frequency row in the file (e.g., 4 meals → 0.4-0.55 g/kg, 5 meals → 0.32-0.44 g/kg)
+- Source quality hierarchy is respected — plant-dominant meals scale up ~25% or combine sources for leucine adequacy
+- Pre-sleep casein, if used, matches the file's recommendations (30-40 g, 30 min before bed)
+- Post-workout protein within 1-3 hours of training, tightened to <1 hour for fasted/early/older/endurance cases
+
+**Step 4: Fix any mismatches** silently. If a meal falls below the per-meal floor, increase its protein. If the daily total is below the goal-specific range, redistribute. If a plant-dominant meal doesn't scale up for leucine, swap or supplement the source.
+
+### 10. Fiber Audit
+
+Verify fiber targeting aligns with the canonical fiber guidance file.
+
+**Step 1: Fetch the fiber guidance file.** Read https://json.fit/fiber-guidance.md so you have the canonical formula, goal-specific overrides, and adjustment triggers in context.
+
+**Step 2: Identify the user's parameters.** From the profile: daily calories, primary goal, training context.
+
+**Step 3: Verify the plan against the file.** Check:
+- Daily fiber meets the file's target for the user's goal:
+  - Bulker (≥3,500 kcal): cap at 35-45 g/day, NOT scaled linearly with calories
+  - Cutter / fat loss: preserve 30-38 g/day, NOT scaled down with calories
+  - Body recomp: 30-35 g baseline, 35-40 g on training days
+  - General health: 30-38 g/day
+- Pre-training meal fiber ≤5 g (within 2-3 hours of resistance training)
+- Source priority: whole foods first, supplements as adjuncts
+- For bulkers, refined carbs (white rice, white potato, juice, bread) used to fill calories without GI volume penalty
+- For cutters, viscous fibers biased (psyllium, β-glucan, glucomannan, legumes) for satiety
+- Adjustment triggers correctly applied if relevant (constipation, bloating, LDL, FODMAP sensitivity, carb loading)
+
+**Step 4: Fix any mismatches** silently. If a bulker's plan has 56 g fiber from raw calorie scaling, cap at 35-45 g and shift to refined carbs. If a cutter's plan dropped fiber to match low calories, restore to 30-38 g with viscous fiber sources.
+
+### 11. Practical Implementation
 
 Assess overall plan practicality:
 - Shopping list well-organized and complete
@@ -138,7 +206,7 @@ Assess overall plan practicality:
 
 FAIL if plan lacks practical implementation details.
 
-### 9. Snack Count & Structure Verification
+### 12. Snack Count & Structure Verification
 
 Verify snack requirements are met exactly as requested:
 - **If user specified exact snack count** (1, 2, or 3): Plan must include exactly that many snacks. FAIL if snacks are missing or labeled as "optional".
@@ -147,7 +215,7 @@ Verify snack requirements are met exactly as requested:
 - **Snack sizing**: Each snack should be 10-15% of daily calories (300-500 kcal range). FAIL if snacks are meal-sized (>600 kcal) or too small (<200 kcal).
 - **Snack vs meal distinction**: Verify snacks use specific snack types (morning_snack, afternoon_snack, etc.) not generic "snack" or main meal types.
 
-### 10. Nutritional Quality & Balance
+### 13. Nutritional Quality & Balance
 
 Across the entire plan, verify nutritional completeness:
 - **Protein diversity**: At least 3 different primary protein sources. FAIL if fewer.
@@ -156,7 +224,7 @@ Across the entire plan, verify nutritional completeness:
 - **Carb diversity**: At least 3 different carb sources. FAIL if fewer.
 - **Micronutrient coverage**: Across the full week, check for at least one serving each of: dark leafy greens, cruciferous vegetables, a vitamin C source, an omega-3 source, legumes/beans, and whole grains. FAIL if 3+ categories are completely absent.
 
-### 11. Grocery List Completeness & Accuracy
+### 14. Grocery List Completeness & Accuracy
 
 Verify the grocery list is complete and correct:
 - Every ingredient from every recipe across all days appears in the grocery list
@@ -172,13 +240,13 @@ Cross-check: Pick 3 random ingredients from recipes and verify they appear in th
 
 FAIL if 3+ ingredients are missing, quantities are significantly wrong, or total is presented as a single number.
 
-### 12. Meal Prep Session Completeness & Skill Alignment
+### 15. Meal Prep Session Completeness & Skill Alignment
 
 - **Structure & Steps**: Verify prep session matches skill tier, includes all meal plan items, follows prep style (grab-and-go vs moderate), and includes mid-week restock if needed for perishables.
 - **Storage & Safety**: Check all storage durations meet food safety guidelines.
 - **Multi-week plans**: For plans longer than 7 days, verify each prep session covers its days and shopping aligns with prep timing.
 
-### 13. Overall Coherence
+### 16. Overall Coherence
 
 Final assessment of plan quality:
 - All meals work together as a cohesive plan
@@ -190,7 +258,7 @@ FAIL if plan has internal contradictions or feels unrealistic.
 
 ## Output Format
 
-**If all 13 checks PASS on first review:**
+**If all 16 checks PASS on first review:**
 - State "All checks passed — plan is ready."
 - Present the plan as-is (clean, no changes needed).
 
