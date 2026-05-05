@@ -370,6 +370,23 @@
             const btn = document.getElementById('openAppBtn');
             if (btn) {
                 btn.href = window.location.href; // Use current URL so universal link works
+                
+                // Add App Store fallback functionality
+                const APP_STORE_URL = 'https://apps.apple.com/app/json-fit/id0000000000';
+                const FALLBACK_DELAY_MS = 2000;
+                
+                btn.addEventListener('click', (e) => {
+                    const startTime = Date.now();
+                    const wasHidden = document.hidden;
+                    
+                    // Set up fallback timer
+                    setTimeout(() => {
+                        // If page is still visible and we haven't navigated away, redirect to App Store
+                        if (Date.now() - startTime < FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden) {
+                            window.location.href = APP_STORE_URL;
+                        }
+                    }, FALLBACK_DELAY_MS);
+                });
             }
         }
 
