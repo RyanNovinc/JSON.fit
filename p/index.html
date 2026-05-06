@@ -194,6 +194,9 @@ main {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 1px; background: var(--border);
 }
+.preview-stats + .preview-stats {
+  border-top: 1px solid var(--border);
+}
 .stat {
   background: var(--surface);
   padding: 1.25rem 0.75rem;
@@ -270,6 +273,162 @@ main {
   font-size: 0.72rem; color: var(--text-3);
   text-align: center; padding: 0.75rem 0;
   letter-spacing: 0.06em;
+}
+
+/* ── Block tabs ── */
+.block-tabs {
+  display: flex; gap: 0.4rem;
+  padding: 1rem 1rem 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.block-tabs::-webkit-scrollbar { display: none; }
+.block-tab {
+  flex-shrink: 0;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.block-tab:hover { color: var(--text); border-color: var(--border-cyan); }
+.block-tab.active {
+  background: var(--cyan-soft);
+  border-color: var(--border-cyan);
+  color: var(--cyan);
+}
+.type-meal .block-tab.active {
+  background: rgba(34,197,94,0.08);
+  border-color: rgba(34,197,94,0.2);
+  color: var(--green);
+}
+
+/* ── Day blocks ── */
+.day-group {
+  margin-bottom: 1.5rem;
+}
+.day-group:last-child { margin-bottom: 0; }
+.day-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem; color: var(--cyan);
+  letter-spacing: 0.16em; text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.type-meal .day-header { color: var(--green); }
+.day-header .day-meta {
+  color: var(--text-3);
+  margin-left: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Expandable rows ── */
+.preview-list li.expandable {
+  cursor: pointer;
+  transition: background 0.15s;
+  padding: 0.65rem 0.5rem;
+  margin: 0 -0.5rem;
+  border-radius: 6px;
+  flex-wrap: wrap;
+}
+.preview-list li.expandable:hover {
+  background: var(--surface-2);
+}
+.preview-list li.expandable .chevron {
+  width: 14px; height: 14px;
+  color: var(--text-3);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.preview-list li.expanded .chevron {
+  transform: rotate(90deg);
+  color: var(--cyan);
+}
+.type-meal .preview-list li.expanded .chevron {
+  color: var(--green);
+}
+
+.exercise-detail {
+  display: none;
+  width: 100%;
+  flex-basis: 100%;
+  padding: 0.75rem 0 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px dashed var(--border);
+  font-size: 0.8rem;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+.preview-list li.expanded .exercise-detail {
+  display: block;
+  animation: slideDown 0.22s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.detail-row {
+  display: flex; gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  align-items: flex-start;
+}
+.detail-row:last-child { margin-bottom: 0; }
+.detail-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  width: 56px;
+  padding-top: 0.1rem;
+}
+.detail-value {
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--text-2);
+}
+.detail-value.muted {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-3);
+}
+
+/* ── Toggle button (for "+ N more" expand) ── */
+.toggle-more {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.85rem 0 0.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.toggle-more:hover {
+  color: var(--cyan);
+}
+.type-meal .toggle-more:hover {
+  color: var(--green);
+}
+.toggle-more .chev {
+  display: inline-block;
+  margin-left: 0.3rem;
+  transition: transform 0.2s;
+  font-size: 0.85em;
+}
+.toggle-more.expanded .chev {
+  transform: rotate(180deg);
 }
 
 /* ── CTA ── */
@@ -469,52 +628,153 @@ function renderWorkout(data) {
   const daysPerWeek = data.days_per_week || data.training_days || (data.blocks && data.blocks[0]?.weekly_schedule?.length) || 0;
   const blocks = data.blocks || [];
 
-  // Count total weeks from first block (if it has weeks like "1-4")
+  // Total weeks across all blocks (sum of each block's week range)
   let totalWeeks = 0;
-  if (blocks[0]?.weeks) {
-    const match = String(blocks[0].weeks).match(/(\d+)\s*-\s*(\d+)/);
-    if (match) totalWeeks = parseInt(match[2]);
-    else totalWeeks = parseInt(blocks[0].weeks) || 0;
-  }
-
-  // Get first block's first non-rest day for preview
-  const firstBlock = blocks[0];
-  let previewDay = null;
-  let previewDayName = '';
-  if (firstBlock?.days) {
-    for (const day of firstBlock.days) {
-      if (day.exercises && day.exercises.length > 0) {
-        previewDay = day;
-        previewDayName = day.day_name || 'Day 1';
-        break;
-      }
+  for (const b of blocks) {
+    if (!b.weeks) continue;
+    const m = String(b.weeks).match(/(\d+)\s*-\s*(\d+)/);
+    if (m) totalWeeks += (parseInt(m[2]) - parseInt(m[1]) + 1);
+    else {
+      const single = parseInt(b.weeks);
+      if (!isNaN(single)) totalWeeks += single;
     }
   }
-
-  let exercisesHtml = '';
-  if (previewDay) {
-    const exercises = previewDay.exercises.slice(0, 4);
-    const more = previewDay.exercises.length - exercises.length;
-    exercisesHtml = `
-      <div class="preview-section">
-        <div class="preview-section-lbl">Preview · ${escapeHtml(previewDayName)}</div>
-        <ul class="preview-list">
-          ${exercises.map(ex => `
-            <li>
-              <span class="item-name">${escapeHtml(ex.exercise || ex.name || 'Exercise')}</span>
-              <span class="item-meta">${escapeHtml(String(ex.sets || ''))}${ex.sets ? ' × ' : ''}${escapeHtml(String(ex.reps || ''))}</span>
-            </li>
-          `).join('')}
-        </ul>
-        ${more > 0 ? `<div class="preview-more">+ ${more} more exercise${more === 1 ? '' : 's'}</div>` : ''}
-      </div>
-    `;
+  // Fallback if no week ranges given
+  if (totalWeeks === 0 && blocks[0]?.weeks) {
+    const m = String(blocks[0].weeks).match(/(\d+)\s*-\s*(\d+)/);
+    if (m) totalWeeks = parseInt(m[2]);
   }
 
   const stats = [];
   if (daysPerWeek) stats.push({ num: daysPerWeek, lbl: 'days/week' });
   if (totalWeeks) stats.push({ num: totalWeeks + 'wk', lbl: 'program' });
   if (blocks.length) stats.push({ num: blocks.length, lbl: blocks.length === 1 ? 'block' : 'blocks' });
+
+  // Build block tabs (only if multiple blocks)
+  const showTabs = blocks.length > 1;
+  const tabsHtml = showTabs ? `
+    <div class="block-tabs" role="tablist">
+      ${blocks.map((b, i) => `
+        <button class="block-tab ${i === 0 ? 'active' : ''}"
+                data-block-index="${i}"
+                role="tab">
+          ${escapeHtml(b.block_name || ('Block ' + (i + 1)))}
+        </button>
+      `).join('')}
+    </div>
+  ` : '';
+
+  // For each block, render all days fully (with expandable exercises)
+  const blocksHtml = blocks.map((block, blockIdx) => {
+    const days = (block.days || []).filter(d => d.exercises && d.exercises.length > 0);
+
+    const daysHtml = days.map((day, dayIdx) => {
+      const dayName = day.day_name || ('Day ' + (dayIdx + 1));
+      const duration = day.estimated_duration ? `~${day.estimated_duration} min` : '';
+      const exercises = day.exercises || [];
+
+      // Show first 4 by default, rest collapsed
+      const visible = exercises.slice(0, 4);
+      const hidden = exercises.slice(4);
+
+      const renderExercise = (ex, exIdx) => {
+        const exName = ex.exercise || ex.name || 'Exercise';
+        const sets = ex.sets;
+        const reps = ex.reps;
+        const meta = sets && reps ? `${sets} × ${reps}` : (sets || reps || '');
+
+        // Detail content (visible when expanded)
+        const notes = ex.notes;
+        const repsWeekly = ex.reps_weekly;
+        const rirWeekly = ex.rir_weekly;
+        const rest = ex.rest;
+        const muscles = [...(ex.primaryMuscles || []), ...(ex.secondaryMuscles || [])];
+
+        // Format weekly data (e.g. {1: "8, 7, 6", 2: "7, 6, 5"})
+        const formatWeekly = (obj) => {
+          if (!obj || typeof obj !== 'object') return '';
+          return Object.entries(obj)
+            .map(([w, v]) => `W${w}: ${v}`)
+            .join(' · ');
+        };
+
+        const hasDetail = notes || repsWeekly || rirWeekly || rest || muscles.length;
+
+        return `
+          <li class="${hasDetail ? 'expandable' : ''}" data-exercise-row>
+            <span class="item-name">${escapeHtml(exName)}</span>
+            <span class="item-meta">${escapeHtml(meta)}</span>
+            ${hasDetail ? `
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+              <div class="exercise-detail" data-exercise-detail>
+                ${rest ? `
+                  <div class="detail-row">
+                    <span class="detail-label">Rest</span>
+                    <span class="detail-value muted">${escapeHtml(String(rest))}s</span>
+                  </div>
+                ` : ''}
+                ${muscles.length ? `
+                  <div class="detail-row">
+                    <span class="detail-label">Targets</span>
+                    <span class="detail-value">${escapeHtml(muscles.join(', '))}</span>
+                  </div>
+                ` : ''}
+                ${repsWeekly ? `
+                  <div class="detail-row">
+                    <span class="detail-label">Reps</span>
+                    <span class="detail-value muted">${escapeHtml(formatWeekly(repsWeekly))}</span>
+                  </div>
+                ` : ''}
+                ${rirWeekly ? `
+                  <div class="detail-row">
+                    <span class="detail-label">RIR</span>
+                    <span class="detail-value muted">${escapeHtml(formatWeekly(rirWeekly))}</span>
+                  </div>
+                ` : ''}
+                ${notes ? `
+                  <div class="detail-row">
+                    <span class="detail-label">Notes</span>
+                    <span class="detail-value">${escapeHtml(notes)}</span>
+                  </div>
+                ` : ''}
+              </div>
+            ` : ''}
+          </li>
+        `;
+      };
+
+      const visibleHtml = visible.map(renderExercise).join('');
+      const hiddenHtml = hidden.map(renderExercise).join('');
+
+      return `
+        <div class="day-group">
+          <div class="day-header">
+            ${escapeHtml(dayName)}${duration ? `<span class="day-meta">${escapeHtml(duration)}</span>` : ''}
+          </div>
+          <ul class="preview-list" data-day-list>
+            ${visibleHtml}
+            ${hidden.length ? `
+              <div data-hidden-rows style="display:none;">
+                ${hiddenHtml}
+              </div>
+              <button class="toggle-more" data-toggle-more>
+                + ${hidden.length} more exercise${hidden.length === 1 ? '' : 's'}
+                <span class="chev">▾</span>
+              </button>
+            ` : ''}
+          </ul>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="block-panel" data-block-panel="${blockIdx}" ${blockIdx === 0 ? '' : 'style="display:none;"'}>
+        ${daysHtml || '<p style="color:var(--text-3);font-size:0.85rem;">No exercises in this block.</p>'}
+      </div>
+    `;
+  }).join('');
 
   return `
     <div class="share-header">
@@ -537,6 +797,7 @@ function renderWorkout(data) {
           `).join('')}
         </div>
       ` : ''}
+      ${tabsHtml}
       <div class="preview-body">
         ${description ? `
           <div class="preview-section">
@@ -544,7 +805,7 @@ function renderWorkout(data) {
             <p>${escapeHtml(description)}</p>
           </div>
         ` : ''}
-        ${exercisesHtml}
+        ${blocksHtml}
       </div>
     </div>
 
@@ -558,43 +819,167 @@ function renderMealPlan(data) {
   const days = Object.keys(dailyMeals).sort();
   const dayCount = days.length;
 
-  // Compute average daily macros from the first day
-  let avgKcal = 0, avgProtein = 0;
+  // Compute average daily macros across all days (more representative than just day 1)
+  let avgKcal = 0, avgProtein = 0, avgCarbs = 0, avgFat = 0;
   if (days.length > 0) {
-    const firstDay = dailyMeals[days[0]];
-    const meals = firstDay?.meals || [];
-    avgKcal = meals.reduce((sum, m) => sum + (m.calories || 0), 0);
-    avgProtein = meals.reduce((sum, m) => sum + (m.macros?.protein || 0), 0);
-  }
-
-  // Preview meals from the first day
-  let mealsHtml = '';
-  if (days.length > 0) {
-    const firstDay = dailyMeals[days[0]];
-    const meals = (firstDay?.meals || []).slice(0, 4);
-    const more = (firstDay?.meals || []).length - meals.length;
-    if (meals.length > 0) {
-      mealsHtml = `
-        <div class="preview-section">
-          <div class="preview-section-lbl">Preview · ${escapeHtml(firstDay.dayName || 'Day 1')}</div>
-          <ul class="preview-list">
-            ${meals.map(m => `
-              <li>
-                <span class="item-name">${escapeHtml(m.name || m.type || 'Meal')}</span>
-                <span class="item-meta">${m.calories ? Math.round(m.calories) + ' kcal' : ''}</span>
-              </li>
-            `).join('')}
-          </ul>
-          ${more > 0 ? `<div class="preview-more">+ ${more} more meal${more === 1 ? '' : 's'}</div>` : ''}
-        </div>
-      `;
+    let totalKcal = 0, totalProtein = 0, totalCarbs = 0, totalFat = 0;
+    let daysCounted = 0;
+    for (const dateKey of days) {
+      const day = dailyMeals[dateKey];
+      const meals = day?.meals || [];
+      if (meals.length === 0) continue;
+      totalKcal += meals.reduce((s, m) => s + (m.calories || 0), 0);
+      totalProtein += meals.reduce((s, m) => s + (m.macros?.protein || 0), 0);
+      totalCarbs += meals.reduce((s, m) => s + (m.macros?.carbs || 0), 0);
+      totalFat += meals.reduce((s, m) => s + (m.macros?.fat || 0), 0);
+      daysCounted++;
+    }
+    if (daysCounted > 0) {
+      avgKcal = totalKcal / daysCounted;
+      avgProtein = totalProtein / daysCounted;
+      avgCarbs = totalCarbs / daysCounted;
+      avgFat = totalFat / daysCounted;
     }
   }
 
-  const stats = [];
-  if (dayCount) stats.push({ num: dayCount, lbl: dayCount === 1 ? 'day' : 'days' });
-  if (avgKcal) stats.push({ num: Math.round(avgKcal).toLocaleString(), lbl: 'kcal/day' });
-  if (avgProtein) stats.push({ num: Math.round(avgProtein) + 'g', lbl: 'protein' });
+  // Compute total grocery cost — handles low/high range, single value, or string format
+  let totalCost = null;
+  let costCurrency = '$';
+  const grocery = data.grocery_list;
+  if (grocery) {
+    if (grocery.currency) {
+      // Strip "AU$" -> "$", "USD" -> "$", etc; keep first non-letter symbol or default to $
+      const c = String(grocery.currency).match(/[$€£¥]/);
+      if (c) costCurrency = c[0];
+    }
+    if (typeof grocery.total_estimated_cost_low === 'number' && typeof grocery.total_estimated_cost_high === 'number') {
+      totalCost = Math.round((grocery.total_estimated_cost_low + grocery.total_estimated_cost_high) / 2);
+    } else if (typeof grocery.total_estimated_cost === 'number') {
+      totalCost = Math.round(grocery.total_estimated_cost);
+    } else if (typeof grocery.total_estimated_cost_low === 'number') {
+      totalCost = Math.round(grocery.total_estimated_cost_low);
+    }
+  }
+
+  // Build day tabs (only if multiple days)
+  const showDayTabs = days.length > 1;
+  const dayTabsHtml = showDayTabs ? `
+    <div class="block-tabs" role="tablist">
+      ${days.map((dateKey, i) => {
+        const day = dailyMeals[dateKey];
+        const label = day?.dayName || ('Day ' + (i + 1));
+        return `
+          <button class="block-tab ${i === 0 ? 'active' : ''}"
+                  data-block-index="${i}"
+                  role="tab">
+            ${escapeHtml(label)}
+          </button>
+        `;
+      }).join('')}
+    </div>
+  ` : '';
+
+  // Render each day as a panel (only first visible by default)
+  const renderMeal = (m) => {
+    const mealName = m.name || m.type || 'Meal';
+    const cals = m.calories ? Math.round(m.calories) + ' kcal' : '';
+    const macros = m.macros || {};
+    const ingredients = m.ingredients || [];
+
+    const hasDetail = (macros.protein != null) || (macros.carbs != null) || (macros.fat != null) || ingredients.length > 0;
+
+    const macroLine = [
+      macros.protein != null ? `${Math.round(macros.protein)}g P` : null,
+      macros.carbs != null ? `${Math.round(macros.carbs)}g C` : null,
+      macros.fat != null ? `${Math.round(macros.fat)}g F` : null,
+    ].filter(Boolean).join(' · ');
+
+    return `
+      <li class="${hasDetail ? 'expandable' : ''}" data-exercise-row>
+        <span class="item-name">${escapeHtml(mealName)}</span>
+        <span class="item-meta">${escapeHtml(cals)}</span>
+        ${hasDetail ? `
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+          <div class="exercise-detail" data-exercise-detail>
+            ${macroLine ? `
+              <div class="detail-row">
+                <span class="detail-label">Macros</span>
+                <span class="detail-value muted">${escapeHtml(macroLine)}</span>
+              </div>
+            ` : ''}
+            ${ingredients.length ? `
+              <div class="detail-row">
+                <span class="detail-label">Includes</span>
+                <span class="detail-value">${escapeHtml(ingredients.slice(0, 6).map(i => i.item || i.name || '').filter(Boolean).join(', '))}${ingredients.length > 6 ? ` + ${ingredients.length - 6} more` : ''}</span>
+              </div>
+            ` : ''}
+          </div>
+        ` : ''}
+      </li>
+    `;
+  };
+
+  const daysHtml = days.map((dateKey, i) => {
+    const day = dailyMeals[dateKey];
+    const meals = day?.meals || [];
+    const dayName = day?.dayName || ('Day ' + (i + 1));
+
+    // Day-level totals
+    const dayKcal = meals.reduce((s, m) => s + (m.calories || 0), 0);
+    const dayProtein = meals.reduce((s, m) => s + (m.macros?.protein || 0), 0);
+    const dayMeta = dayKcal ? `${Math.round(dayKcal).toLocaleString()} kcal · ${Math.round(dayProtein)}g P` : '';
+
+    const visible = meals.slice(0, 4);
+    const hidden = meals.slice(4);
+
+    return `
+      <div class="block-panel" data-block-panel="${i}" ${i === 0 ? '' : 'style="display:none;"'}>
+        <div class="day-group">
+          <div class="day-header">
+            ${escapeHtml(dayName)}${dayMeta ? `<span class="day-meta">${escapeHtml(dayMeta)}</span>` : ''}
+          </div>
+          <ul class="preview-list" data-day-list>
+            ${visible.map(renderMeal).join('')}
+            ${hidden.length ? `
+              <div data-hidden-rows style="display:none;">
+                ${hidden.map(renderMeal).join('')}
+              </div>
+              <button class="toggle-more" data-toggle-more>
+                + ${hidden.length} more meal${hidden.length === 1 ? '' : 's'}
+                <span class="chev">▾</span>
+              </button>
+            ` : ''}
+          </ul>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Build stat rows: row 1 (practical) + row 2 (macros)
+  // Row 1: days, kcal/day, total cost
+  const row1 = [];
+  if (dayCount) row1.push({ num: dayCount, lbl: dayCount === 1 ? 'day' : 'days' });
+  if (avgKcal) row1.push({ num: Math.round(avgKcal).toLocaleString(), lbl: 'kcal/day' });
+  if (totalCost != null) row1.push({ num: costCurrency + totalCost.toLocaleString(), lbl: 'grocery cost' });
+
+  // Row 2: protein, carbs, fat
+  const row2 = [];
+  if (avgProtein) row2.push({ num: Math.round(avgProtein) + 'g', lbl: 'protein' });
+  if (avgCarbs) row2.push({ num: Math.round(avgCarbs) + 'g', lbl: 'carbs' });
+  if (avgFat) row2.push({ num: Math.round(avgFat) + 'g', lbl: 'fat' });
+
+  const renderStatRow = (row) => row.length ? `
+    <div class="preview-stats">
+      ${row.map(s => `
+        <div class="stat green">
+          <div class="stat-num">${escapeHtml(String(s.num))}</div>
+          <div class="stat-lbl">${escapeHtml(s.lbl)}</div>
+        </div>
+      `).join('')}
+    </div>
+  ` : '';
 
   return `
     <div class="share-header">
@@ -607,18 +992,11 @@ function renderMealPlan(data) {
     </div>
 
     <div class="preview-card">
-      ${stats.length ? `
-        <div class="preview-stats">
-          ${stats.map(s => `
-            <div class="stat green">
-              <div class="stat-num">${escapeHtml(String(s.num))}</div>
-              <div class="stat-lbl">${escapeHtml(s.lbl)}</div>
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
+      ${renderStatRow(row1)}
+      ${renderStatRow(row2)}
+      ${dayTabsHtml}
       <div class="preview-body">
-        ${mealsHtml}
+        ${daysHtml}
       </div>
     </div>
 
@@ -684,6 +1062,83 @@ function setupOpenInAppButton() {
   });
 }
 
+function setupInteractions() {
+  // Block / day tabs
+  const tabs = document.querySelectorAll('.block-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const idx = tab.getAttribute('data-block-index');
+      // Toggle active tab
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      // Show matching panel, hide others
+      document.querySelectorAll('[data-block-panel]').forEach(panel => {
+        panel.style.display = panel.getAttribute('data-block-panel') === idx ? '' : 'none';
+      });
+      // Smooth-scroll the panel into view (subtle — only if we're far away)
+      const activePanel = document.querySelector(`[data-block-panel="${idx}"]`);
+      if (activePanel) {
+        const rect = activePanel.getBoundingClientRect();
+        if (rect.top < 0 || rect.top > window.innerHeight) {
+          activePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+
+  // Expandable rows (exercises / meals) — click row to toggle detail
+  document.querySelectorAll('[data-exercise-row]').forEach(row => {
+    if (!row.classList.contains('expandable')) return;
+    row.addEventListener('click', (e) => {
+      // Don't toggle if clicking inside the detail itself (e.g. selecting text)
+      if (e.target.closest('[data-exercise-detail]')) return;
+      row.classList.toggle('expanded');
+    });
+  });
+
+  // "+ N more" toggle — show/hide hidden rows
+  document.querySelectorAll('[data-toggle-more]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const list = btn.closest('[data-day-list]');
+      if (!list) return;
+      const hiddenContainer = list.querySelector('[data-hidden-rows]');
+      if (!hiddenContainer) return;
+
+      const isExpanded = btn.classList.contains('expanded');
+      if (isExpanded) {
+        // Move hidden rows back into the hidden container
+        const detached = Array.from(list.querySelectorAll('[data-detached-row]'));
+        detached.forEach(el => {
+          el.removeAttribute('data-detached-row');
+          hiddenContainer.appendChild(el);
+        });
+        hiddenContainer.style.display = 'none';
+        btn.classList.remove('expanded');
+        const count = hiddenContainer.children.length;
+        const noun = btn.textContent.includes('meal') ? 'meal' : 'exercise';
+        btn.innerHTML = `+ ${count} more ${noun}${count === 1 ? '' : 's'} <span class="chev">▾</span>`;
+      } else {
+        // Move hidden rows into the main list (just before the toggle button)
+        const rowsToMove = Array.from(hiddenContainer.children);
+        rowsToMove.forEach(el => {
+          el.setAttribute('data-detached-row', 'true');
+          list.insertBefore(el, btn);
+          // Re-attach expand listener
+          if (el.classList && el.classList.contains('expandable')) {
+            el.addEventListener('click', (e) => {
+              if (e.target.closest('[data-exercise-detail]')) return;
+              el.classList.toggle('expanded');
+            });
+          }
+        });
+        btn.classList.add('expanded');
+        const noun = btn.textContent.includes('meal') ? 'meal' : 'exercise';
+        btn.innerHTML = `Show less <span class="chev">▾</span>`;
+      }
+    });
+  });
+}
+
 async function fetchShare(shareId) {
   const url = `${API_BASE}/shares/${encodeURIComponent(shareId)}`;
   const controller = new AbortController();
@@ -741,6 +1196,7 @@ async function init() {
     }
 
     setupOpenInAppButton();
+    setupInteractions();
     showState('state-content');
 
     if (typeof gtag === 'function') {
