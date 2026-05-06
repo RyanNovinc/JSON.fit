@@ -566,6 +566,103 @@ footer {
 .type-meal .preview-card::before {
   background: linear-gradient(90deg, transparent, rgba(34,197,94,0.2), transparent);
 }
+
+/* ── Debug Panel ── */
+.debug-toggle {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-3);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.debug-toggle:hover {
+  color: var(--cyan);
+  border-color: var(--border-cyan);
+}
+.debug-panel {
+  display: none;
+  margin: 1rem auto 0;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.55;
+  color: var(--text-2);
+  word-break: break-word;
+  max-width: 100%;
+}
+.debug-panel.visible { display: block; }
+.debug-panel h4 {
+  font-size: 0.7rem;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+}
+.debug-panel .debug-row {
+  margin-bottom: 0.35rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.debug-panel .debug-key {
+  color: var(--text-3);
+  flex-shrink: 0;
+  min-width: 90px;
+}
+.debug-panel .debug-val {
+  color: var(--text);
+  word-break: break-all;
+  flex: 1;
+}
+.debug-panel .debug-val.ok { color: var(--green); }
+.debug-panel .debug-val.warn { color: #f59e0b; }
+.debug-panel .debug-val.bad { color: var(--red); }
+.debug-log {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  max-height: 280px;
+  overflow-y: auto;
+}
+.debug-log-entry {
+  font-size: 0.68rem;
+  margin-bottom: 0.3rem;
+  color: var(--text-2);
+}
+.debug-log-entry .ts {
+  color: var(--text-3);
+  margin-right: 0.4rem;
+}
+.debug-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.debug-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-2);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.debug-btn:hover { color: var(--cyan); border-color: var(--border-cyan); }
+.debug-btn.copied { color: var(--green); border-color: rgba(34,197,94,0.3); }
 </style>
 </head>
 <body>
@@ -1083,8 +1180,109 @@ function renderCTA(type) {
       <div class="android-text">Android coming soon</div>
 
       <div class="cta-foot">Free workouts forever · No subscription</div>
+
+      <button class="debug-toggle" id="debug-toggle">show debug ▾</button>
+      <div class="debug-panel" id="debug-panel">
+        <h4>Diagnostic Info</h4>
+        <div id="debug-static"></div>
+        <div class="debug-log" id="debug-log">
+          <div class="debug-log-entry"><span class="ts">--</span>tap "Open in JSON.fit" — log fills here</div>
+        </div>
+        <div class="debug-actions">
+          <button class="debug-btn" id="debug-copy">Copy log</button>
+          <button class="debug-btn" id="debug-clear">Clear</button>
+        </div>
+      </div>
     </div>
   `;
+}
+
+// ── Debug logger ──
+const debugLog = [];
+function dlog(msg, val) {
+  const ts = new Date().toISOString().split('T')[1].slice(0, -1);
+  const entry = { ts, msg, val };
+  debugLog.push(entry);
+  const el = document.getElementById('debug-log');
+  if (el) {
+    const valStr = val !== undefined ? ` → ${typeof val === 'object' ? JSON.stringify(val) : val}` : '';
+    const line = document.createElement('div');
+    line.className = 'debug-log-entry';
+    line.innerHTML = `<span class="ts">${ts}</span>${escapeHtml(msg + valStr)}`;
+    // Remove placeholder if first real entry
+    if (el.children.length === 1 && el.children[0].textContent.includes('tap')) el.innerHTML = '';
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
+  }
+}
+
+function setupDebugPanel() {
+  const toggle = document.getElementById('debug-toggle');
+  const panel = document.getElementById('debug-panel');
+  const staticEl = document.getElementById('debug-static');
+  const copyBtn = document.getElementById('debug-copy');
+  const clearBtn = document.getElementById('debug-clear');
+  if (!toggle || !panel) return;
+
+  // Static info populated once
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+  const standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  const referrer = document.referrer || '(none)';
+  const visState = document.visibilityState;
+
+  staticEl.innerHTML = `
+    <div class="debug-row"><span class="debug-key">URL</span><span class="debug-val">${escapeHtml(window.location.href)}</span></div>
+    <div class="debug-row"><span class="debug-key">Pathname</span><span class="debug-val">${escapeHtml(window.location.pathname)}</span></div>
+    <div class="debug-row"><span class="debug-key">ShareID</span><span class="debug-val ${getShareId() ? 'ok' : 'bad'}">${escapeHtml(getShareId() || '(none extracted)')}</span></div>
+    <div class="debug-row"><span class="debug-key">Platform</span><span class="debug-val ${isIOS ? 'ok' : 'warn'}">${isIOS ? 'iOS' : 'Other'} · ${isSafari ? 'Safari' : 'Other browser'}</span></div>
+    <div class="debug-row"><span class="debug-key">Standalone</span><span class="debug-val">${standalone ? 'YES (PWA)' : 'No (in-browser)'}</span></div>
+    <div class="debug-row"><span class="debug-key">Referrer</span><span class="debug-val">${escapeHtml(referrer)}</span></div>
+    <div class="debug-row"><span class="debug-key">Visibility</span><span class="debug-val">${visState}</span></div>
+    <div class="debug-row"><span class="debug-key">UA</span><span class="debug-val">${escapeHtml(ua.slice(0, 100))}</span></div>
+  `;
+
+  toggle.addEventListener('click', () => {
+    panel.classList.toggle('visible');
+    toggle.textContent = panel.classList.contains('visible') ? 'hide debug ▴' : 'show debug ▾';
+  });
+
+  copyBtn?.addEventListener('click', async () => {
+    const allLogs = debugLog.map(e => `[${e.ts}] ${e.msg}${e.val !== undefined ? ' → ' + (typeof e.val === 'object' ? JSON.stringify(e.val) : e.val) : ''}`).join('\n');
+    const fullText = `=== JSON.fit Share Page Debug ===\nURL: ${window.location.href}\nUA: ${ua}\nReferrer: ${referrer}\n\n--- Log ---\n${allLogs}`;
+    try {
+      await navigator.clipboard.writeText(fullText);
+      copyBtn.classList.add('copied');
+      copyBtn.textContent = '✓ Copied';
+      setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        copyBtn.textContent = 'Copy log';
+      }, 2000);
+    } catch (err) {
+      // Fallback for browsers without clipboard API
+      const ta = document.createElement('textarea');
+      ta.value = fullText;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); copyBtn.textContent = '✓ Copied'; } catch {}
+      document.body.removeChild(ta);
+    }
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    debugLog.length = 0;
+    document.getElementById('debug-log').innerHTML = '<div class="debug-log-entry"><span class="ts">--</span>cleared</div>';
+  });
+
+  // Visibility change tracking — tells us if the page was hidden (i.e., app took over)
+  document.addEventListener('visibilitychange', () => {
+    dlog('visibilitychange', document.visibilityState);
+  });
+
+  // Page unload tracking
+  window.addEventListener('pagehide', () => dlog('pagehide event'));
+  window.addEventListener('beforeunload', () => dlog('beforeunload event'));
 }
 
 function setupOpenInAppButton() {
@@ -1096,30 +1294,60 @@ function setupOpenInAppButton() {
     const startTime = Date.now();
     const wasHidden = document.hidden;
 
+    dlog('button clicked');
+    dlog('  start time', startTime);
+    dlog('  was hidden', wasHidden);
+    dlog('  current url', window.location.href);
+
     if (typeof gtag === 'function') {
       gtag('event', 'share_page_open_in_app_click');
     }
 
-    // Trick: setting window.location.href to the CURRENT url is a no-op for iOS,
-    // so it never re-evaluates the universal link. Instead, we programmatically
-    // click a fresh anchor element pointing to the same URL — this counts as
-    // a "user-initiated navigation" and triggers iOS's universal link check.
     const universalLink = window.location.href;
-    const a = document.createElement('a');
-    a.href = universalLink;
-    a.rel = 'noopener';
-    // Don't set target=_blank — that opens Safari in a new tab, defeating the purpose.
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+    // Try multiple methods to trigger the universal link, each as a fallback for the next.
+    // iOS will only intercept the first navigation that successfully matches an associated domain.
+
+    dlog('attempting method 1: anchor click');
+    try {
+      const a = document.createElement('a');
+      a.href = universalLink;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      dlog('  method 1 dispatched');
+    } catch (err) {
+      dlog('  method 1 ERROR', err.message);
+    }
+
+    // Method 2: after a short delay, try direct location assignment
+    // (some iOS versions need this trick instead)
+    setTimeout(() => {
+      dlog('500ms check', { hidden: document.hidden, visible: document.visibilityState });
+      if (!document.hidden) {
+        dlog('attempting method 2: location.assign');
+        try {
+          window.location.assign(universalLink);
+        } catch (err) {
+          dlog('  method 2 ERROR', err.message);
+        }
+      } else {
+        dlog('app took over (page hidden) — skip method 2');
+      }
+    }, 500);
 
     // Fallback to App Store after delay if app didn't intercept
     setTimeout(() => {
+      dlog('2000ms check', { hidden: document.hidden, visible: document.visibilityState, elapsed: Date.now() - startTime });
       if (Date.now() - startTime < FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden) {
+        dlog('FALLBACK: redirecting to App Store');
         if (typeof gtag === 'function') {
           gtag('event', 'share_page_fallback_to_app_store');
         }
         window.location.href = APP_STORE_URL;
+      } else {
+        dlog('NO fallback — page hidden or elapsed exceeded');
       }
     }, FALLBACK_DELAY_MS);
   });
@@ -1268,6 +1496,7 @@ async function init() {
 
     setupOpenInAppButton();
     setupInteractions();
+    setupDebugPanel();
     showState('state-content');
 
     if (typeof gtag === 'function') {
