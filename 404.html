@@ -312,20 +312,72 @@ main {
 
 /* ── Day blocks ── */
 .day-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 .day-group:last-child { margin-bottom: 0; }
 .day-header {
   font-family: 'DM Mono', monospace;
-  font-size: 0.6rem; color: var(--cyan);
+  font-size: 0.65rem; color: var(--cyan);
   letter-spacing: 0.16em; text-transform: uppercase;
-  margin-bottom: 0.75rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
 }
+.day-group:first-child .day-header {
+  border-top: none;
+  padding-top: 0;
+}
+.day-header:hover { color: var(--text); }
 .type-meal .day-header { color: var(--green); }
+.type-meal .day-header:hover { color: var(--text); }
 .day-header .day-meta {
   color: var(--text-3);
-  margin-left: 0.5rem;
+  margin-left: auto;
   letter-spacing: 0.1em;
+  font-weight: 400;
+  text-transform: none;
+  font-size: 0.7rem;
+}
+.day-chev {
+  width: 12px; height: 12px;
+  color: var(--text-3);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.day-group.open .day-chev {
+  transform: rotate(90deg);
+  color: var(--cyan);
+}
+.type-meal .day-group.open .day-chev {
+  color: var(--green);
+}
+.day-content {
+  display: none;
+  padding-bottom: 0.85rem;
+}
+.day-group.open .day-content {
+  display: block;
+  animation: slideDown 0.22s ease;
+}
+
+/* Meal plan day label — non-accordion, just a header */
+.day-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem; color: var(--green);
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0 0 0.85rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.day-label .day-meta {
+  color: var(--text-3);
+  margin-left: auto;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  text-transform: none;
+  font-size: 0.7rem;
 }
 
 /* ── Expandable rows ── */
@@ -749,22 +801,27 @@ function renderWorkout(data) {
       const hiddenHtml = hidden.map(renderExercise).join('');
 
       return `
-        <div class="day-group">
-          <div class="day-header">
+        <div class="day-group ${dayIdx === 0 ? 'open' : ''}" data-day-group>
+          <div class="day-header" data-day-toggle>
+            <svg class="day-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
             ${escapeHtml(dayName)}${duration ? `<span class="day-meta">${escapeHtml(duration)}</span>` : ''}
           </div>
-          <ul class="preview-list" data-day-list>
-            ${visibleHtml}
-            ${hidden.length ? `
-              <div data-hidden-rows style="display:none;">
-                ${hiddenHtml}
-              </div>
-              <button class="toggle-more" data-toggle-more>
-                + ${hidden.length} more exercise${hidden.length === 1 ? '' : 's'}
-                <span class="chev">▾</span>
-              </button>
-            ` : ''}
-          </ul>
+          <div class="day-content">
+            <ul class="preview-list" data-day-list>
+              ${visibleHtml}
+              ${hidden.length ? `
+                <div data-hidden-rows style="display:none;">
+                  ${hiddenHtml}
+                </div>
+                <button class="toggle-more" data-toggle-more>
+                  + ${hidden.length} more exercise${hidden.length === 1 ? '' : 's'}
+                  <span class="chev">▾</span>
+                </button>
+              ` : ''}
+            </ul>
+          </div>
         </div>
       `;
     }).join('');
@@ -936,8 +993,8 @@ function renderMealPlan(data) {
 
     return `
       <div class="block-panel" data-block-panel="${i}" ${i === 0 ? '' : 'style="display:none;"'}>
-        <div class="day-group">
-          <div class="day-header">
+        <div class="day-group open" data-meal-day>
+          <div class="day-label">
             ${escapeHtml(dayName)}${dayMeta ? `<span class="day-meta">${escapeHtml(dayMeta)}</span>` : ''}
           </div>
           <ul class="preview-list" data-day-list>
@@ -1063,6 +1120,14 @@ function setupOpenInAppButton() {
 }
 
 function setupInteractions() {
+  // Day accordion (workout days within a block panel)
+  document.querySelectorAll('[data-day-toggle]').forEach(header => {
+    header.addEventListener('click', () => {
+      const group = header.closest('[data-day-group]');
+      if (group) group.classList.toggle('open');
+    });
+  });
+
   // Block / day tabs
   const tabs = document.querySelectorAll('.block-tab');
   tabs.forEach(tab => {
