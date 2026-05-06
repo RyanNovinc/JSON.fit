@@ -1096,15 +1096,24 @@ function setupOpenInAppButton() {
     const startTime = Date.now();
     const wasHidden = document.hidden;
 
-    // Track click
     if (typeof gtag === 'function') {
       gtag('event', 'share_page_open_in_app_click');
     }
 
-    // Try to open the universal link (current URL is the universal link)
+    // Trick: setting window.location.href to the CURRENT url is a no-op for iOS,
+    // so it never re-evaluates the universal link. Instead, we programmatically
+    // click a fresh anchor element pointing to the same URL — this counts as
+    // a "user-initiated navigation" and triggers iOS's universal link check.
     const universalLink = window.location.href;
+    const a = document.createElement('a');
+    a.href = universalLink;
+    a.rel = 'noopener';
+    // Don't set target=_blank — that opens Safari in a new tab, defeating the purpose.
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-    // Set up fallback to App Store
+    // Fallback to App Store after delay if app didn't intercept
     setTimeout(() => {
       if (Date.now() - startTime < FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden) {
         if (typeof gtag === 'function') {
@@ -1113,9 +1122,6 @@ function setupOpenInAppButton() {
         window.location.href = APP_STORE_URL;
       }
     }, FALLBACK_DELAY_MS);
-
-    // Trigger the universal link
-    window.location.href = universalLink;
   });
 }
 
