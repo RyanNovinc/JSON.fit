@@ -73,8 +73,8 @@ The plan is fully self-contained: it lists all exercise pools, block structures,
 ## Translation Principles
 
 1. **The plan is authoritative for structure; the exercise library is authoritative for tags** — use the exercise names, sets, superset pairings, and day structure exactly as specified from the plan. However, before finalizing any JSON, verify every exercise's primaryMuscles and secondaryMuscles tags against the canonical exercise library at https://json.fit/exercises.md. If the plan's tags differ from the library, use the library's tags (the library is authoritative). Do not add, remove, or rename exercises. If the plan declares a mesocycle structure, append the mesocycle name to routine_name in every JSON file. The reviewed plan's set counts are final — do not adjust them based on your own volume recalculation.
-2. **Treat exercise names as identifiers** — use the exact same string for the same exercise across all blocks, days, notes, and superset references. Never vary naming.
-3. **Design what the plan doesn't specify** — you are responsible for rest periods, alternative exercises, and technique notes. For rep progressions: follow the plan's scheme if stated, otherwise use the defaults below.
+2. **Treat exercise names as identifiers** — use the exact same string for the same exercise across all blocks, days, and superset references. Never vary naming.
+3. **Design what the plan doesn't specify** — you are responsible for rest periods and alternative exercises. For rep progressions: follow the plan's scheme if stated, otherwise use the defaults below.
 4. **Only program working sets** — do not include warm-up sets.
 
 ---
@@ -102,15 +102,15 @@ Structure: identical to reps_weekly. An object with week numbers as keys ("1", "
 
 Translation rules:
 1. The number of comma-separated values per week must match the exercise's set count for that week (matches reps_weekly)
-2. Source the values from the exercise's notes field, which contains the RIR progression (e.g., "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4")
-3. The week-level target from the notes is the middle-set value. Apply within-exercise progression:
+2. Source the values from the RIR progression specified in the plan (e.g., "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4")
+3. The week-level target from the plan is the middle-set value. Apply within-exercise progression:
    - Set 1: target + 1 (one rep further from failure)
    - Middle sets: target
    - Last set: target - 1 (one rep closer to failure, never below 0)
 4. Values can be single integers ("3", "2", "1", "0") or ranges ("0-1", "1-2")
-5. If the plan notes specify exact per-set values (e.g., "Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR."), use those exact values rather than re-deriving
+5. If the plan specifies exact per-set values (e.g., "Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR."), use those exact values rather than re-deriving
 
-Example: For an exercise with 3 sets per week and notes "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4":
+Example: For an exercise with 3 sets per week and a plan RIR progression of "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4":
 
 ```
 "rir_weekly": {
@@ -123,7 +123,7 @@ Example: For an exercise with 3 sets per week and notes "RIR 3 W1 → 2 W2 → 1
 
 Floor: never go below RIR 0. If within-exercise math produces a negative value, clamp to 0.
 
-Do not regenerate RIR guidance from scratch — translate from the plan notes that already include the RIR progression.
+Do not regenerate RIR guidance from scratch — translate from the plan's RIR progression directly into rir_weekly.
 
 **Match progressions to the plan's rep range focus.** If the plan says "Block B: Strength — 5-8 reps," your compound progressions should work within that range. Isolation exercises can run 2-4 reps higher than the block's stated range (e.g., 8-12 isolation reps in a "5-8" strength block is fine).
 
@@ -139,11 +139,11 @@ Each exercise must include 2 alternatives (1 for bodyweight-only programs). Alte
 
 ### Notes
 
-Only include non-obvious technique tips or specific setup instructions. Do not add notes for standard exercises performed in standard ways. If the plan includes notes for an exercise, carry them through.
+The `notes` field is reserved for the user to fill in during training. Leave it empty (`""`) for every exercise.
 
 ### Supersets
 
-Place superset exercises adjacent in the exercises array. Include "Superset with [exact exercise name]" in both exercises' notes field. Add "superset_group": "ss1" (or "ss2", "ss3" etc.) to both exercises in the pair — use the same string value for both. The plan marks supersets with SS[n]a/SS[n]b notation — translate these to adjacent array entries with matching superset_group values.
+Place superset exercises adjacent in the exercises array. Add "superset_group": "ss1" (or "ss2", "ss3" etc.) to both exercises in the pair — use the same string value for both. The plan marks supersets with SS[n]a/SS[n]b notation — translate these to adjacent array entries with matching superset_group values.
 
 ---
 
@@ -211,7 +211,7 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
   "reps_weekly": { "1": "string", "2": "string" },
   "rir_weekly": { "1": "string", "2": "string" },
   "sets_weekly": { "1": "number", "2": "number" },
-  "notes": "string (form cues, RIR guidance, or other coaching notes — multiple notes allowed)",
+  "notes": "string (leave empty — user fills this in during training)",
   "alternatives": [
     { "exercise": "string", "primaryMuscles": ["..."], "secondaryMuscles": ["..."] }
   ]
@@ -236,7 +236,8 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
    - Day 3: {"day_number": 3, "type": "rest", "day_name": "REST DAY"}
    - Days 4,5: training, Day 6: rest, Day 7: training
 10. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
-11. **RIR** — carry RIR guidance from the approved plan into each exercise's notes field. Do not regenerate or modify RIR values — the plan is authoritative.
+11. **RIR** — carry RIR guidance from the approved plan into each exercise's rir_weekly field. Do not regenerate or modify RIR values — the plan is authoritative. Do not put RIR in the notes field.
+12. **Notes field** — leave the `notes` field as an empty string (`""`) for every exercise. This field is reserved for user input during training.
 
 ---
 
@@ -245,11 +246,12 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
 Before presenting each block, silently verify:
 
 - [ ] Every exercise from the plan appears in JSON with correct set counts
-- [ ] Exercise names are identical everywhere (across days, notes, superset references)
-- [ ] Superset exercises are adjacent with matching superset_group values and cross-referenced in notes
+- [ ] Exercise names are identical everywhere (across days and superset references)
+- [ ] Superset exercises are adjacent with matching superset_group values
 - [ ] Rep progressions trend flat-to-decreasing across weeks (not identical every week)
-- [ ] RIR guidance from the plan carried through to every exercise's notes
+- [ ] RIR guidance from the plan carried through to every exercise's rir_weekly field
 - [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
+- [ ] notes field is empty (`""`) for every exercise
 - [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps
 - [ ] restQuick ≈ 65% of rest for every exercise
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
