@@ -127,7 +127,7 @@ Verify RIR guidance is present and correct for every exercise in the plan.
 
 **Step 1: Fetch the RIR file.** Read https://json.fit/rir-guidance.md so you have the canonical matrix in context.
 
-**Step 2: Check every exercise has RIR guidance.** Every exercise in the plan should have an RIR note. If any exercise is missing RIR guidance, add it using the matrix from the file.
+**Step 2: Check every exercise has RIR guidance.** Every exercise in the plan should have an RIR specification. If any exercise is missing RIR guidance, add it using the matrix from the file.
 
 **Step 3: Verify RIR matches the matrix.** For each exercise, confirm:
 - Exercise category is correctly identified (compound vs isolation vs machine vs unilateral)
