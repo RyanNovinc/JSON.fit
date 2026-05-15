@@ -114,6 +114,32 @@ This JSON format is designed to work directly with the app's simplified meal pla
 }
 ```
 
+# Curated Meal Output Format
+
+If the reviewed meal plan contains meals referenced by `curated_meal_slug`, those meals use a shorter output format. The app fills in ingredients, instructions, and other recipe details from its internal database using the slug as a lookup key — so this prompt should NOT include ingredients, instructions, or tags for curated meals.
+
+Curated meal entry format:
+
+```json
+{
+  "id": "meal_20260518_dinner",
+  "name": "BBQ Pulled Pork Burger",
+  "type": "dinner",
+  "time": "6:30 PM",
+  "calories": 1210,
+  "macros": { "protein": 61, "carbs": 76, "fat": 72, "fiber": 4 },
+  "curated_meal_slug": "pulled_pork",
+  "plate_id": "sandwich",
+  "scale_factor": 1.0,
+  "isOriginal": true,
+  "addedAt": "2026-05-18T18:30:00Z"
+}
+```
+
+Fields used for curated meals: `id`, `name`, `type`, `time`, `calories`, `macros`, `curated_meal_slug`, `plate_id`, `scale_factor`, `isOriginal`, `addedAt`. Omit `ingredients`, `instructions`, and `tags`.
+
+Both formats (full invented meals and curated meal references) coexist in the same `meals` array. The app detects the format based on the presence of `curated_meal_slug`.
+
 # Field Requirements
 
 ## Core Meal Data
@@ -147,9 +173,12 @@ This JSON format is designed to work directly with the app's simplified meal pla
 | **macros.carbs** | Yes | Number | Carbohydrates in grams |
 | **macros.fat** | Yes | Number | Fat in grams |
 | **macros.fiber** | Yes | Number | Fiber in grams |
-| **ingredients** | Yes | Array | All ingredients with amounts |
-| **instructions** | Yes | Array | Step-by-step cooking instructions |
-| **tags** | No | Array | Tags like ["high_protein", "meal_prep"] |
+| **ingredients** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
+| **instructions** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
+| **tags** | No | Array | Tags like ["high_protein", "meal_prep"]. Omitted for curated meals. |
+| **curated_meal_slug** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
+| **plate_id** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
+| **scale_factor** | Conditional | Number | Required for curated meals only. Decimal (e.g. 1.0, 0.8). |
 | **isOriginal** | Yes | Boolean | Always true for generated meals |
 | **addedAt** | Yes | String | ISO timestamp when meal was created |
 
@@ -226,6 +255,13 @@ This JSON format is designed to work directly with the app's simplified meal pla
 - If ingredients seem inconsistent with macros, DO NOT "fix" them - use the reviewed macro values
 - If portion sizes seem "wrong", DO NOT adjust them - use the reviewed portions
 - When in doubt, preserve the reviewed plan data exactly as written
+
+## Curated Meal Slug Preservation
+
+- Copy `curated_meal_slug` and `plate_id` values **verbatim** from the reviewed meal plan
+- These are exact-match lookup keys for the app's internal database — do not modify, abbreviate, rephrase, or normalize them
+- Invalid slugs cause import failures
+- `scale_factor` is also copied verbatim as a decimal number
 
 ## Date Handling
 
