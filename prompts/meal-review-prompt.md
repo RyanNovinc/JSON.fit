@@ -15,6 +15,10 @@ Do not search conversation history or reference previous chats. This prompt is s
 
 First, read the meal plan you just created so you have the full content in context. Then review it as an experienced nutritionist and meal planning expert auditing a plan for a client. This is an independent quality gate — do not assume your self-check caught everything.
 
+## Curated meals in the plan
+
+The plan may contain curated meal references (`curated_meal_slug` + `plate_id` + `scale_factor`) alongside invented meals. Curated meal references are canonical — the app fills in ingredients and instructions from its database when the JSON is imported, so they don't appear in the plan output. Macros come from `plate_macros × scale_factor`. If a curated meal doesn't fit (allergen, equipment, macros, etc.), swap it for a different meal — never modify the recipe. Slugs and plate_ids are exact-match lookup keys; preserve them verbatim. Curated meal ingredients still appear in the grocery list (the user needs to buy them).
+
 ## CRITICAL INSTRUCTIONS
 
 1. **Review the plan** using the checklist below, noting PASS or FAIL for each check.
@@ -256,9 +260,23 @@ Final assessment of plan quality:
 
 FAIL if plan has internal contradictions or feels unrealistic.
 
+### 17. Curated Meals Compliance
+
+For meals referenced by `curated_meal_slug`, verify against the equipment files fetched during plan generation:
+
+- Slug and plate_id exactly match entries in the equipment files (FAIL — invalid slugs break import)
+- Scale_factor is within the meal's min_scale/max_scale bounds
+- User has all equipment required by the chosen method AND the chosen plate
+- Reported macros equal `plate_macros × scale_factor` (FAIL on math errors)
+- Meal's `contains_allergens` doesn't include any of the user's allergens
+- meal_type is in the meal's `eligible_slots` list
+- Multi-serving meals (`produces_servings > 1`) are scheduled enough times to consume the batch — a meal producing 8 servings used once with no plan for the other 7 is a FAIL
+- For multi-plate meals used multiple times, plates rotate rather than repeat
+- Maximum 1 stunt plate per week. Skip stunt plates for users under 2500 kcal/day.
+
 ## Output Format
 
-**If all 16 checks PASS on first review:**
+**If all 17 checks PASS on first review:**
 - State "All checks passed — plan is ready."
 - Present the plan as-is (clean, no changes needed).
 
