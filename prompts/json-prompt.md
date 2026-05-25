@@ -159,7 +159,7 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
 {
   "routine_name": "string",
   "description": "string",
-  "days_per_week": 7,
+  "days_per_week": 4,
   "blocks": [
     {
       "block_name": "string",
@@ -193,6 +193,8 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
 }
 ```
 
+> **Note on `days_per_week` in the example above:** the value `4` is illustrative — it is the number of TRAINING days for an upper/lower program. Set it to the actual training-day count for the program you are generating (see Schema Rule #1). It is NOT always 7.
+
 **For sample plan generation only:** Include `"_metadata": {"isSamplePlan": true}` at the root level to prevent the plan from overwriting users' saved exercise preferences when imported.
 
 ### Strength Exercise
@@ -222,22 +224,25 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
 
 ## Schema Rules
 
-1. **Block-relative keys** — weekly progression keys always start from "1" within each block. Block B (weeks 7-12) uses "1", "2", "3"... not "7", "8", "9".
-2. **Deload tagging** — if a block has deload weeks, include a `deload_weeks` array with the block-relative week numbers (e.g., [5] for a 5-week block with deload on week 5).
-3. **Empty arrays** — if an exercise has no secondary muscles, use `[]`. Do not omit the field.
-4. **restQuick** — calculate as ~65% of the `rest` value, rounded to a clean number.
-5. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: `Straight sets: (sets × 45s) + (sets × rest_seconds) | Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s) | Total: exercise_count × 150s + 300s warmup`. Duration has been pre-approved in the review stage.
-6. **Superset rest encoding** — for superset exercises, SS[n]a's `rest` field represents the inter-exercise transition rest (60-90s). SS[n]b's `rest` field represents the full rest before repeating the pair (compound or isolation default for that exercise type). `restQuick` is calculated from each exercise's own `rest` value.
-7. **sets vs sets_weekly** — `sets` is the default set count for training weeks (used for display). `sets_weekly` must be specified for every week in the block: training weeks should match `sets`, and deload weeks should show reduced values. Both fields are required for every strength exercise.
-8. **deload_weeks optionality** — omit `deload_weeks` entirely for blocks without deloads. Do not include an empty array.
-9. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. Example for 5-day program:
-   - Day 1: {"day_number": 1, "type": "training", "day_name": "Push"}
-   - Day 2: {"day_number": 2, "type": "training", "day_name": "Pull"}
-   - Day 3: {"day_number": 3, "type": "rest", "day_name": "REST DAY"}
-   - Days 4,5: training, Day 6: rest, Day 7: training
-10. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
-11. **RIR** — carry RIR guidance from the approved plan into each exercise's rir_weekly field. Do not regenerate or modify RIR values — the plan is authoritative. Do not put RIR in the notes field.
-12. **Notes field** — leave the `notes` field as an empty string (`""`) for every exercise. This field is reserved for user input during training.
+1. **`days_per_week` is the TRAINING-day count** — `days_per_week` is the number of training days per week (3 for a full-body program, 4 for upper/lower, 6 for push/pull/legs, etc.). It is NOT the number of calendar days and is NOT always 7. The `weekly_schedule` and `days` arrays still represent the full 7-day week (training days plus REST DAY entries); only `days_per_week` reflects how many of those are training days. Example: a 3-day full-body program has `days_per_week: 3`, with a 7-entry `weekly_schedule` / `days` array containing 3 training days and 4 REST DAY entries.
+2. **`days` array always totals 7 entries** — the `days` array must contain exactly 7 day objects representing the full calendar week: the training days plus REST DAY objects padded so the total is 7. Each REST DAY object is `{"day_name": "REST DAY", "estimated_duration": 0, "exercises": []}`. The `days` array and the `weekly_schedule` array must agree: the same 7 days, in the same order, with rest days in the same positions. Never emit a `days` array with only the training days and no rest padding.
+3. **Block-relative keys** — weekly progression keys always start from "1" within each block. Block B (weeks 7-12) uses "1", "2", "3"... not "7", "8", "9".
+4. **Deload tagging** — if a block has deload weeks, include a `deload_weeks` array with the block-relative week numbers (e.g., [5] for a 5-week block with deload on week 5). This block-level flag marks which week(s) are deloads; the reduced training values for those weeks are carried in each exercise's `sets_weekly` / `reps_weekly` / `rir_weekly`. Emit BOTH — the flag marks the week, the per-week values carry the prescription.
+5. **Empty arrays** — if an exercise has no secondary muscles, use `[]`. Do not omit the field.
+6. **restQuick** — calculate as ~65% of the `rest` value, rounded to a clean number.
+7. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: `Straight sets: (sets × 45s) + (sets × rest_seconds) | Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s) | Total: exercise_count × 150s + 300s warmup`. Duration has been pre-approved in the review stage.
+8. **Superset rest encoding** — for superset exercises, SS[n]a's `rest` field represents the inter-exercise transition rest (60-90s). SS[n]b's `rest` field represents the full rest before repeating the pair (compound or isolation default for that exercise type). `restQuick` is calculated from each exercise's own `rest` value.
+9. **sets vs sets_weekly** — `sets` is the default set count for training weeks (used for display). `sets_weekly` must be specified for every week in the block: training weeks should match `sets`, and deload weeks should show reduced values. Both fields are required for every strength exercise.
+10. **deload_weeks optionality** — omit `deload_weeks` entirely for blocks without deloads. Do not include an empty array.
+11. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. The number of `type: "training"` entries must equal `days_per_week`. Example for a 5-training-day program:
+    - Day 1: {"day_number": 1, "type": "training", "day_name": "Push"}
+    - Day 2: {"day_number": 2, "type": "training", "day_name": "Pull"}
+    - Day 3: {"day_number": 3, "type": "rest", "day_name": "REST DAY"}
+    - Days 4,5: training, Day 6: rest, Day 7: training
+    (5 training entries → days_per_week: 5; 7 entries total.)
+12. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
+13. **RIR** — carry RIR guidance from the approved plan into each exercise's rir_weekly field. Do not regenerate or modify RIR values — the plan is authoritative. Do not put RIR in the notes field.
+14. **Notes field** — leave the `notes` field as an empty string (`""`) for every exercise. This field is reserved for user input during training.
 
 ---
 
@@ -245,6 +250,9 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
 
 Before presenting each block, silently verify:
 
+- [ ] `days_per_week` equals the number of TRAINING days (not 7, unless the program genuinely trains 7 days)
+- [ ] `days` array contains exactly 7 entries (training days + REST DAY padding), matching `weekly_schedule` day-for-day
+- [ ] Number of training entries in `weekly_schedule` equals `days_per_week`
 - [ ] Every exercise from the plan appears in JSON with correct set counts
 - [ ] Exercise names are identical everywhere (across days and superset references)
 - [ ] Superset exercises are adjacent with matching superset_group values
@@ -252,7 +260,7 @@ Before presenting each block, silently verify:
 - [ ] RIR guidance from the plan carried through to every exercise's rir_weekly field
 - [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
 - [ ] notes field is empty (`""`) for every exercise
-- [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps
+- [ ] If the block has a deload: `deload_weeks` flag is set AND those weeks show reduced sets_weekly (~40-50%) and increased RIR
 - [ ] restQuick ≈ 65% of rest for every exercise
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
 - [ ] Block-relative week keys start from "1"
