@@ -168,6 +168,28 @@ Verify rest periods are correct for every exercise in the plan based on its cate
 
 **Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan.
 
+### Deload Audit
+
+Verify the plan's deload programming — whether a deload is required, and if so whether it is correctly placed and structured — against the canonical deload guidance.
+
+**Step 1: Fetch the deload file.** Read https://json.fit/deload-guidance.md so you have the canonical frequency matrix and structure rules in context.
+
+**Step 2: Identify the user's experience and each block's length.** From the original plan or user profile: Training Experience (Complete Beginner / Beginner / Intermediate / Advanced) and the week-length of each block in the program.
+
+**Step 3: Check deload PRESENCE against the matrix.** For each block, use the file's experience × block-length matrix to determine whether that block should contain a deload:
+- If the matrix says a deload is required for that block and the plan has none → FAIL. Add the deload per the file.
+- If the matrix says no deload is needed (e.g. a short beginner block) and the plan added one → FAIL. Remove it (an unearned deload throws away stimulus per the file).
+- If presence matches the matrix → PASS.
+
+**Step 4: Check deload STRUCTURE for every block that has one.** Confirm against the file:
+- The deload is the final week WITHIN the block's week range (not an appended extra week).
+- The deload week reduces effective volume by roughly the file's prescribed amount (~40–50%) versus the block's peak training week — verify by comparing the deload week's set counts to the peak week's, not by trusting a label.
+- RIR is raised (per the file, typically +2–3) relative to the peak week.
+- Load is held (no progression increment written into the deload week); the deload is expressed through reduced sets and raised RIR, not load references (the app does not track weight).
+- A "fake deload" (a week that only trims one or two sets, or keeps RIR near failure) is a FAIL — it does not reduce fatigue. Fix it to a real reduction.
+
+**Step 5: Fix any failures** silently and re-verify before presenting the corrected plan. Do not invent your own deload frequency or structure — the deload-guidance.md file is the canonical source.
+
 ### Effective Volume Distribution Check
 
 For EVERY non-exempt muscle in the program, you MUST produce an enumeration table. Do not narrate or estimate volume — enumerate exercise by exercise. **Use the tag values from the tag audit above (which match the library), not whatever was in the original plan.**
@@ -225,6 +247,7 @@ Do not claim a fix works without showing the recount tables for every affected m
 ### Programming Logic Review
 
 - **Weekly structure**: Logical distribution of training stress across the week; no two consecutive days hitting the same muscle group heavily
+- **Weekly layout totals 7 days**: The plan's weekly layout accounts for all 7 days — training days (matching the user's training days per week) plus rest days. The number of training days must equal the user's training days per week from the profile, with the remaining days as rest. Fix any layout that omits rest days or has the wrong number of training days.
 - **Exercise order**: Compound before isolation, higher skill before lower skill
 - **Auxiliary placement**: If user selected auxiliary muscles, those exercises should appear as finishers at the end of sessions, not as dedicated sessions
 
