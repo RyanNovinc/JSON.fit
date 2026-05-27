@@ -28,6 +28,10 @@ The plan may contain curated meal references (`curated_meal_slug` + `plate_id` +
 5. **At the end, provide a brief change log** — a short bullet list of what you changed and why (e.g., "Reduced rice from 100g to 80g dry to bring carbs within 10% of target").
 6. **USE WEB SEARCH** - If you have web search available, use it during the review to verify grocery pricing, confirm product availability, and check nutritional claims against real data.
 
+## ARITHMETIC IS COMPUTED, NOT ESTIMATED
+
+You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct — the totals get glanced at, marked PASS, and the real sum was off by hundreds of calories. To prevent this: never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (`meal1 + meal2 + ... = total`) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
+
 ## RULE ENFORCEMENT PRINCIPLE
 
 When you find a rule violation, you have exactly two options:
@@ -77,10 +81,12 @@ Work through each check. For each, state PASS or FAIL with a brief note. If FAIL
 
 ### 1. Nutrition Target Verification
 
-Verify the plan meets the macro tolerance thresholds:
+Re-derive each day's totals yourself — do not trust the totals stated in the plan. For every day, write out the addition (`meal1 + meal2 + ... = total`) for calories and for protein, using a code/Python tool if available. If your re-derived total differs from the plan's stated total, the plan is wrong: fix the portions and re-derive.
 
-- **Protein**: Within 10% of target on EVERY individual day. Sum protein across all meals for each day. FAIL if any single day is outside ±10%.
-- **Calories**: Weekly average within 5% of target. FAIL if average is off by more than 5%.
+Then verify against the macro tolerance thresholds, using YOUR re-derived totals:
+
+- **Protein**: Within 10% of target on EVERY individual day. FAIL if any single day is outside ±10%.
+- **Calories**: Weekly average within 5% of target (sum your re-derived daily totals and divide). FAIL if average is off by more than 5%.
 - **Carbs and fat**: Weekly average within 10% of target. FAIL if average is off by more than 10%.
 - **Fiber**: At least 80% of daily target on EVERY day. FAIL if any day drops below 80%.
 
@@ -267,7 +273,7 @@ For meals referenced by `curated_meal_slug`, verify against the equipment files 
 - Slug and plate_id exactly match entries in the equipment files (FAIL — invalid slugs break import)
 - Scale_factor is within the meal's min_scale/max_scale bounds
 - User has all equipment required by the chosen method AND the chosen plate
-- Reported macros equal `plate_macros × scale_factor` (FAIL on math errors)
+- Reported macros equal `plate_macros × scale_factor` — compute this multiplication to confirm, using a code tool if available (FAIL on math errors)
 - Meal's `contains_allergens` doesn't include any of the user's allergens
 - meal_type is in the meal's `eligible_slots` list
 - Multi-serving meals (`produces_servings > 1`) are scheduled enough times to consume the batch — a meal producing 8 servings used once with no plan for the other 7 is a FAIL
