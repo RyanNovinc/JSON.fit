@@ -22,4 +22,6 @@ Method equipment requirements are listed per method. The user must have ALL list
 ### Plates
 - `standard` — Butter Chicken with Basmati Rice
   - Macros: 720 kcal / 48g P / 65g C / 28g F / 4g fiber
-  - Assembly: 0 min, equipment: stovetop (for rice)
+  - Assembly: 0 min
+  - Plate equipment: stovetop (for rice)
+  - Base servings consumed: 1.0
