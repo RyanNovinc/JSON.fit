@@ -1,9 +1,5 @@
 # bolognese — Slow-Simmered Bolognese
 
-This file is the planning AI's source of truth for the bolognese meal. The AI fetches it during meal planning, reads the ingredients, and produces a localised shopping list using the user's store and location (from earlier in the prompt). The app's recipe screen reads the same meal from `CURATED_MEALS` in code with the full cooking instructions and human-facing notes — those are deliberately not duplicated here, because the AI is not cooking.
-
----
-
 ## Identity
 
 - **slug:** bolognese
@@ -20,15 +16,11 @@ This file is the planning AI's source of truth for the bolognese meal. The AI fe
 
 ## Methods
 
-Two ways to make the base sauce. The user picks one. Ingredients differ slightly because stovetop reduces during cooking and uses less liquid.
-
 ### `slow_cooker` — Slow Cooker
 
 - **Equipment:** slow_cooker, stovetop
 - **Active time:** 20 min
 - **Total time:** 380 min
-
-Ingredients (full 8-serving base cook):
 
 | Ingredient | Amount | Unit | Scaling |
 |---|---|---|---|
@@ -57,8 +49,6 @@ Ingredients (full 8-serving base cook):
 - **Active time:** 20 min
 - **Total time:** 140 min
 
-Ingredients (full 8-serving base cook):
-
 | Ingredient | Amount | Unit | Scaling |
 |---|---|---|---|
 | olive_oil | 30 | g | scales |
@@ -83,8 +73,6 @@ Ingredients (full 8-serving base cook):
 ---
 
 ## Plates
-
-Each plate is what one base serving becomes on the user's plate. Plate ingredients are *per serving* and are added on top of the base ingredients.
 
 ### `bolognese` — Bolognese (plain base)
 
@@ -135,9 +123,9 @@ Each plate is what one base serving becomes on the user's plate. Plate ingredien
 
 - **Macros:** 1130 kcal / 62g P / 76g C / 63g F / 7g fiber
 - **Plate equipment:** oven, stovetop
-- **Base servings consumed:** 6.0 (one bake consumes 6 base servings of sauce and yields 6 plate portions)
+- **Base servings consumed:** 6.0
 
-Per-portion quantities (multiply by 6 for full bake):
+Per-portion quantities (one bake yields 6 portions; multiply by 6 for the full bake):
 
 | Ingredient | Amount | Unit | Scaling |
 |---|---|---|---|
@@ -150,15 +138,3 @@ Per-portion quantities (multiply by 6 for full bake):
 | flour_plain | 5 | g | fixed |
 | full_cream_milk | 67 | ml | fixed |
 | nutmeg_ground | 0.05 | tsp | fixed |
-
----
-
-## How to use this file (instructions for the planning AI)
-
-1. **Base ingredients:** Start with the ingredients under the method the user picked (slow_cooker or stovetop).
-2. **Scale `scales` ingredients** by `scale_factor` × (servings being eaten / 8). Round sensibly — don't ask the user to buy 187g of mince when a 500g pack is the only option.
-3. **Keep `fixed` ingredients fixed** — herbs and seasonings stay the same regardless of portion count.
-4. **`flex` ingredients** are absorbed into `scale_factor` at the plan level; treat as `scales`.
-5. **Add plate ingredients** for each plate the user eats. If they eat the spaghetti plate 3 times, add 3× the spaghetti plate ingredients on top of the base.
-6. **Lasagne is one bake at a time.** If `lasagne` is scheduled, the schedule must group the 6 portions together — one bake commits 6 base servings and produces 6 plate portions. The user can't eat a fractional lasagne.
-7. **Localise.** Take the generic ingredient names (e.g. `beef_mince_regular`, `crushed_tomatoes_canned`) and produce specific brand/product names available at the user's grocery store and location (e.g. for a Canberra user shopping at Coles: "Coles 3-Star Beef Mince 500g" and "Ardmona Crushed Tomatoes 800g"). Keep the quantities; only the names and pack-size guidance change.
