@@ -2,15 +2,13 @@
 ## Identity
 - **slug:** chicken_schnitzel
 - **display_name:** Chicken Schnitzel
-- **cuisine:** australian (comfort/everyday bucket; grouped with mains)
 - **primary_protein:** chicken
 - **eligible_slots:** lunch, dinner
 - **produces_servings:** 4
 - **min_scale:** 0.5
 - **max_scale:** 2.0
 - **flex_ingredient_id:** chicken_breast
-- **contains_allergens:** Gluten/Wheat, Eggs (plate add-ons add Dairy)
-- **image_filename:** chicken_schnitzel.png
+- **contains_allergens:** Dairy, Eggs, Gluten/Wheat
 ---
 ## Methods
 ### `stovetop` — Crumb & Pan-Fry
@@ -32,18 +30,30 @@
 ## Plates
 ### `plate` — Schnitzel Plate
 - **Macros:** 621 kcal / 54g P / 53g C / 20g F / 5g fiber
-- **Adds:** potato 600g (or salad), lemon 1. Lean, simple option — sits a bit under target kcal by nature.
-
+- **Plate equipment:** none beyond base
+- **Base servings consumed:** 1.0
+| Ingredient | Amount | Unit | Scaling |
+|---|---|---|---|
+| potato | 600 | g | scales |
+| lemon | 1 | count | scales |
 ### `roll` — Schnitzel Roll
 - **Macros:** 881 kcal / 63g P / 70g C / 38g F / 4g fiber
-- **Adds:** bread_roll 4, butter 40g, cheese 80g, lettuce 60g, sweet chilli 60ml. The nostalgic calorie hero.
-
+- **Plate equipment:** none beyond base
+- **Base servings consumed:** 1.0
+| Ingredient | Amount | Unit | Scaling |
+|---|---|---|---|
+| bread_roll | 4 | count | scales |
+| butter_salted | 40 | g | scales |
+| cheese | 80 | g | scales |
+| lettuce | 60 | g | scales |
+| sweet_chilli_sauce | 60 | ml | scales |
 ### `parma` — Chicken Parma
 - **Macros:** 747 kcal / 62g P / 54g C / 30g F / 6g fiber
-- **Adds:** tomato_paste 120g, cheese 120g, jalapenos 40g, potato 500g base. Grill/bake to melt the cheese.
----
-## Notes
-- **First and only crumbed/breaded main** — the standout multi-plate meal: make a batch, eat it three ways across the week.
-- **COMPUTED at realistic ~12g absorbed oil/serve** (most of the 60ml pan oil drains). Shallow-fry absorption is the big fat variable. **Oven-baked with oil spray cuts ~10g fat/serve** — the leaner option.
-- 200g chicken/serve — protein high across all plates. Rest the crumbed cutlets 15-20 min so the coating sets; fry to 73°C/165°F.
-- Outstanding meal-prepper: great cold, reheated, or repurposed (crumb softens on reheat but still good).
+- **Plate equipment:** oven
+- **Base servings consumed:** 1.0
+| Ingredient | Amount | Unit | Scaling |
+|---|---|---|---|
+| tomato_paste | 120 | g | scales |
+| cheese | 120 | g | scales |
+| jalapenos | 40 | g | scales |
+| potato | 500 | g | scales |
