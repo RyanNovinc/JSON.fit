@@ -1,6 +1,6 @@
 # Curated Meals — Instructions
 
-The app maintains a verified internal meal database. Each meal lives in its own file at `https://json.fit/curated-meals/{slug}.md`. Reference these meals by slug instead of inventing recipes when one fits. The app fills in recipe details on import; you only pick the meal, plate, and scale.
+The app maintains a verified internal meal database. Each meal lives in its own file at `https://json.fit/curated-meals/ingredients/{slug}.md`. Reference these meals by slug instead of inventing recipes when one fits. The app fills in recipe details on import; you only pick the meal, plate, and scale.
 
 ## Fetching meals
 
@@ -11,7 +11,7 @@ Fetch only the meals the user selected. There is no master catalogue to browse a
 If you need a meal's file and only have its slug, the URL is always:
 
 ```
-https://json.fit/curated-meals/{slug}.md
+https://json.fit/curated-meals/ingredients/{slug}.md
 ```
 
 A pick may be written as `slug:plate_id` (the user wants that specific plate). The plate lives inside the parent meal's file, so the file to fetch is always `{slug}.md` — strip the `:plate_id` suffix before building the URL.
