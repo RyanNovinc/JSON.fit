@@ -1,50 +1,45 @@
-# thai_basil_chicken — Thai Basil Chicken (Pad Krapow Gai)
+# thai_basil_chicken — Thai Basil Chicken
 ## Identity
 - **slug:** thai_basil_chicken
-- **display_name:** Thai Basil Chicken (Pad Krapow Gai)
-- **cuisine:** thai
+- **display_name:** Thai Basil Chicken
 - **primary_protein:** chicken
 - **eligible_slots:** lunch, dinner
 - **produces_servings:** 4
 - **min_scale:** 0.5
 - **max_scale:** 2.0
 - **flex_ingredient_id:** chicken_mince
-- **contains_allergens:** Soy, Gluten/Wheat, Shellfish, Fish, Eggs
-- **image_filename:** thai_basil_chicken.png
+- **contains_allergens:** Shellfish, Fish, Soy, Eggs
 ---
 ## Methods
-### `stovetop` — One-Pan Stovetop
+### `stovetop` — Stir-Fry
 - **Equipment:** stovetop
 - **Active time:** 15 min
 - **Total time:** 25 min
 | Ingredient | Amount | Unit | Scaling |
 |---|---|---|---|
 | chicken_mince | 800 | g | flex |
-| jasmine_rice | 370 | g | scales |
-| neutral_oil | 2 | tbsp | scales |
-| garlic_clove | 5 | count | scales |
-| red_chilli | 2 | count | scales |
-| shallot | 2 | count | scales |
-| soy_sauce | 2 | tbsp | scales |
-| oyster_sauce | 2 | tbsp | scales |
-| fish_sauce | 1 | tbsp | scales |
-| sugar | 2 | tsp | scales |
-| water | 60 | ml | scales |
-| basil_fresh | 50 | g | scales |
+| jasmine_rice | 360 | g | scales |
+| thai_basil_fresh | 40 | g | scales |
+| garlic_clove | 6 | count | scales |
+| red_chilli_fresh | 20 | g | scales |
+| oyster_sauce | 60 | ml | scales |
+| soy_sauce | 40 | ml | scales |
+| fish_sauce | 20 | ml | scales |
+| sugar_white | 12 | g | scales |
+| oil_vegetable | 30 | ml | scales |
+| green_beans | 200 | g | scales |
 ---
 ## Plates
-### `standard` — Basil Chicken over Jasmine Rice
-- **Macros:** 700 kcal / 42g P / 92g C / 16g F / 3g fiber
+### `standard` — Thai Basil Chicken over Rice
+- **Macros:** 736 kcal / 44g P / 84g C / 25g F / 3g fiber
+- **Plate equipment:** none beyond base
 - **Base servings consumed:** 1.0
 - **Additional ingredients:** none
-
-### `fried_egg` — Basil Chicken over Jasmine Rice + Fried Egg
-- **Macros:** 790 kcal / 49g P / 92g C / 23g F / 3g fiber
+### `fried_egg` — Thai Basil Chicken with Fried Egg
+- **Macros:** 807 kcal / 50g P / 84g C / 29g F / 3g fiber
+- **Plate equipment:** stovetop
 - **Base servings consumed:** 1.0
-- **Additional ingredients:** egg_whole 1 count (scales), neutral_oil 1 tsp (scales)
-- **Extra step:** fry one egg per serving (crispy edges, runny yolk), set on top
-- **Note:** The classic street-food presentation; egg cooked fresh per serving.
----
-## Notes
-- Generic fresh basil (not holy/Thai basil) and generic red chilli (bird's eye if available, else jalapeño or chilli flakes) for Western availability.
-- 200g chicken mince/portion for protein; jasmine rice base for bulking carbs. Store chicken mixture separate from rice; keeps 3-4 days. Egg cooked fresh.
+| Ingredient | Amount | Unit | Scaling |
+|---|---|---|---|
+| egg_whole | 4 | count | scales |
+| oil_vegetable | 1 | tbsp | scales |
