@@ -89,22 +89,6 @@ This JSON format is designed to work directly with the app's simplified meal pla
       }
     ]
   },
-  "meal_prep_sessions": [
-    {
-      "session_name": "string",
-      "prep_time": "number",
-      "cook_time": "number",
-      "total_time": "number",
-      "covers": "string",
-      "recommended_timing": "string",
-      "recommended_date": "YYYY-MM-DD",
-      "equipment_needed": ["string array"],
-      "instructions": ["string array"],
-      "storage_guidelines": {
-        "key": "string value"
-      }
-    }
-  ],
   "metadata": {
     "generatedAt": "string (ISO date format)",
     "totalCost_low": "number",
@@ -219,21 +203,6 @@ Both formats (full invented meals and curated meal references) coexist in the sa
 | **estimated_price** | Yes | Number | Price in local currency |
 | **notes** | No | String | Conversion tips, cooking adjustments for alternatives |
 
-## Meal Prep Sessions Structure
-
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **session_name** | Yes | String | e.g., "Sunday Meal Prep" |
-| **prep_time** | Yes | Number | Active prep time in minutes |
-| **cook_time** | Yes | Number | Passive cooking time in minutes |
-| **total_time** | Yes | Number | prep_time + cook_time |
-| **covers** | Yes | String | Concise description (max 6 words): "21 meals across 7 days" format |
-| **recommended_timing** | Yes | String | When to do the prep |
-| **recommended_date** | Yes | String | Calendar date in YYYY-MM-DD format |
-| **equipment_needed** | Yes | Array | Required equipment |
-| **instructions** | Yes | Array | Step-by-step prep instructions |
-| **storage_guidelines** | Yes | Object | How long items last |
-
 ## Metadata Structure
 
 | Field | Required | Format | Notes |
@@ -293,7 +262,6 @@ Both formats (full invented meals and curated meal references) coexist in the sa
 - ingredients: array of objects
 - instructions: array of strings
 - tags: array of strings
-- equipment_needed: array of strings
 
 # EXAMPLE CONVERSION
 
