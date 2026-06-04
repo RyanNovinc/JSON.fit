@@ -250,13 +250,7 @@ Cross-check: Pick 3 random ingredients from recipes and verify they appear in th
 
 FAIL if 3+ ingredients are missing, quantities are significantly wrong, or total is presented as a single number.
 
-### 15. Meal Prep Session Completeness & Skill Alignment
-
-- **Structure & Steps**: Verify prep session matches skill tier, includes all meal plan items, follows prep style (grab-and-go vs moderate), and includes mid-week restock if needed for perishables.
-- **Storage & Safety**: Check all storage durations meet food safety guidelines.
-- **Multi-week plans**: For plans longer than 7 days, verify each prep session covers its days and shopping aligns with prep timing.
-
-### 16. Overall Coherence
+### 15. Overall Coherence
 
 Final assessment of plan quality:
 - All meals work together as a cohesive plan
@@ -266,7 +260,7 @@ Final assessment of plan quality:
 
 FAIL if plan has internal contradictions or feels unrealistic.
 
-### 17. Curated Meals Compliance
+### 16. Curated Meals Compliance
 
 For meals referenced by `curated_meal_slug`, verify against the equipment files fetched during plan generation:
 
@@ -282,7 +276,7 @@ For meals referenced by `curated_meal_slug`, verify against the equipment files 
 
 ## Output Format
 
-**If all 17 checks PASS on first review:**
+**If all 16 checks PASS on first review:**
 - State "All checks passed — plan is ready."
 - Present the plan as-is (clean, no changes needed).
 
