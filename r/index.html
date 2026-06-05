@@ -94,6 +94,103 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .foot-l{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3)}
 .foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem;transition:color .2s}
 .foot-l a:hover{color:var(--green)}
+
+/* ── Debug Panel ── */
+.debug-toggle {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-3);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.debug-toggle:hover {
+  color: var(--green);
+  border-color: rgba(34,197,94,0.3);
+}
+.debug-panel {
+  display: none;
+  margin: 1rem auto 0;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.55;
+  color: var(--text-2);
+  word-break: break-word;
+  max-width: 100%;
+}
+.debug-panel.visible { display: block; }
+.debug-panel h4 {
+  font-size: 0.7rem;
+  color: var(--green);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+}
+.debug-panel .debug-row {
+  margin-bottom: 0.35rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.debug-panel .debug-key {
+  color: var(--text-3);
+  flex-shrink: 0;
+  min-width: 90px;
+}
+.debug-panel .debug-val {
+  color: var(--text);
+  word-break: break-all;
+  flex: 1;
+}
+.debug-panel .debug-val.ok { color: var(--green); }
+.debug-panel .debug-val.warn { color: #f59e0b; }
+.debug-panel .debug-val.bad { color: var(--red); }
+.debug-log {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  max-height: 280px;
+  overflow-y: auto;
+}
+.debug-log-entry {
+  font-size: 0.68rem;
+  margin-bottom: 0.3rem;
+  color: var(--text-2);
+}
+.debug-log-entry .ts {
+  color: var(--text-3);
+  margin-right: 0.4rem;
+}
+.debug-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.debug-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-2);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.debug-btn:hover { color: var(--green); border-color: rgba(34,197,94,0.3); }
+.debug-btn.copied { color: var(--green); border-color: rgba(34,197,94,0.3); }
 </style>
 </head>
 <body>
@@ -277,12 +374,25 @@ function renderMeal(meal){
     '<p class="cta-sub">Get the free app to '+verb+' <strong>live timers</strong> and hands-free, step-by-step cook mode.</p>'+
     '<a href="'+CONFIG.APP_STORE_URL+'" class="store-link">Download on the App Store</a>'+
     '<div class="cta-foot">Free forever · No subscription · Android coming soon</div>'+
+    '<button class="debug-toggle" id="debug-toggle">show debug ▾</button>'+
+    '<div class="debug-panel" id="debug-panel">'+
+      '<h4>Diagnostic Info</h4>'+
+      '<div id="debug-static"></div>'+
+      '<div class="debug-log" id="debug-log">'+
+        '<div class="debug-log-entry"><span class="ts">--</span>tap "Open in JSON.fit" — log fills here</div>'+
+      '</div>'+
+      '<div class="debug-actions">'+
+        '<button class="debug-btn" id="debug-copy">Copy log</button>'+
+        '<button class="debug-btn" id="debug-clear">Clear</button>'+
+      '</div>'+
+    '</div>'+
   '</section>';
 
   document.getElementById('content-inner').innerHTML=html;
   showState('state-content');
   wireTabs();
-  wireOpenInApp();
+  setupOpenInAppButton();
+  setupDebugPanel();
 }
 
 // ============================================================================
@@ -301,17 +411,171 @@ function wireTabs(){
     });
   });
 }
-// Open-in-app button: try the universal link, fall back to App Store.
-// (With Universal Links configured, an installed user is intercepted by iOS
-//  before this page even loads — they never see the button.)
-function wireOpenInApp(){
-  var btn=document.getElementById('open-in-app-btn');
-  if(!btn) return;
-  btn.addEventListener('click',function(e){
+// ── Debug logger ──
+var debugLog = [];
+function dlog(msg, val) {
+  var ts = new Date().toISOString().split('T')[1].slice(0, -1);
+  var entry = { ts: ts, msg: msg, val: val };
+  debugLog.push(entry);
+  var el = document.getElementById('debug-log');
+  if (el) {
+    var valStr = val !== undefined ? ' → ' + (typeof val === 'object' ? JSON.stringify(val) : val) : '';
+    var line = document.createElement('div');
+    line.className = 'debug-log-entry';
+    line.innerHTML = '<span class="ts">' + esc(ts) + '</span>' + esc(msg + valStr);
+    // Remove placeholder if first real entry
+    if (el.children.length === 1 && el.children[0].textContent.indexOf('tap') !== -1) el.innerHTML = '';
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
+  }
+}
+
+function setupDebugPanel() {
+  var toggle = document.getElementById('debug-toggle');
+  var panel = document.getElementById('debug-panel');
+  var staticEl = document.getElementById('debug-static');
+  var copyBtn = document.getElementById('debug-copy');
+  var clearBtn = document.getElementById('debug-clear');
+  if (!toggle || !panel) return;
+
+  // Static info populated once
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+  var standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  var referrer = document.referrer || '(none)';
+  var visState = document.visibilityState;
+  var slug = getSlug();
+  var plateId = getPlateId();
+
+  staticEl.innerHTML = 
+    '<div class="debug-row"><span class="debug-key">URL</span><span class="debug-val">' + esc(window.location.href) + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">Pathname</span><span class="debug-val">' + esc(window.location.pathname) + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">Meal slug</span><span class="debug-val ' + (slug ? 'ok' : 'bad') + '">' + esc(slug || '(none extracted)') + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">Plate ID</span><span class="debug-val">' + esc(plateId || '(none)') + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">Platform</span><span class="debug-val ' + (isIOS ? 'ok' : 'warn') + '">' + (isIOS ? 'iOS' : 'Other') + ' · ' + (isSafari ? 'Safari' : 'Other browser') + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">Standalone</span><span class="debug-val">' + (standalone ? 'YES (PWA)' : 'No (in-browser)') + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">Referrer</span><span class="debug-val">' + esc(referrer) + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">Visibility</span><span class="debug-val">' + visState + '</span></div>' +
+    '<div class="debug-row"><span class="debug-key">UA</span><span class="debug-val">' + esc(ua.slice(0, 100)) + '</span></div>';
+
+  toggle.addEventListener('click', function() {
+    panel.classList.toggle('visible');
+    toggle.textContent = panel.classList.contains('visible') ? 'hide debug ▴' : 'show debug ▾';
+  });
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      var allLogs = debugLog.map(function(e) {
+        return '[' + e.ts + '] ' + e.msg + (e.val !== undefined ? ' → ' + (typeof e.val === 'object' ? JSON.stringify(e.val) : e.val) : '');
+      }).join('\n');
+      var fullText = '=== JSON.fit Meal Page Debug ===\nURL: ' + window.location.href + '\nUA: ' + ua + '\nReferrer: ' + referrer + '\n\n--- Log ---\n' + allLogs;
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullText).then(function() {
+          copyBtn.classList.add('copied');
+          copyBtn.textContent = '✓ Copied';
+          setTimeout(function() {
+            copyBtn.classList.remove('copied');
+            copyBtn.textContent = 'Copy log';
+          }, 2000);
+        }).catch(function() {
+          fallbackCopy(fullText, copyBtn);
+        });
+      } else {
+        fallbackCopy(fullText, copyBtn);
+      }
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+      debugLog.length = 0;
+      document.getElementById('debug-log').innerHTML = '<div class="debug-log-entry"><span class="ts">--</span>cleared</div>';
+    });
+  }
+
+  // Visibility change tracking — tells us if the page was hidden (i.e., app took over)
+  document.addEventListener('visibilitychange', function() {
+    dlog('visibilitychange', document.visibilityState);
+  });
+
+  // Page unload tracking
+  window.addEventListener('pagehide', function() { dlog('pagehide event'); });
+  window.addEventListener('beforeunload', function() { dlog('beforeunload event'); });
+
+  function fallbackCopy(text, btn) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { 
+      document.execCommand('copy'); 
+      btn.textContent = '✓ Copied';
+      setTimeout(function() { btn.textContent = 'Copy log'; }, 2000);
+    } catch (e) {}
+    document.body.removeChild(ta);
+  }
+}
+
+function setupOpenInAppButton() {
+  var btn = document.getElementById('open-in-app-btn');
+  if (!btn) return;
+
+  btn.addEventListener('click', function(e) {
     e.preventDefault();
-    var t=Date.now();
-    window.location.href=btn.getAttribute('href');
-    setTimeout(function(){ if(Date.now()-t<CONFIG.FALLBACK_DELAY_MS+200 && !document.hidden) window.location.href=CONFIG.APP_STORE_URL; }, CONFIG.FALLBACK_DELAY_MS);
+    var startTime = Date.now();
+    var wasHidden = document.hidden;
+
+    dlog('button clicked');
+    dlog('  start time', startTime);
+    dlog('  was hidden', wasHidden);
+    dlog('  current url', window.location.href);
+
+    var universalLink = window.location.href;
+
+    // Try multiple methods to trigger the universal link, each as a fallback for the next.
+    // iOS will only intercept the first navigation that successfully matches an associated domain.
+
+    dlog('attempting method 1: anchor click');
+    try {
+      var a = document.createElement('a');
+      a.href = universalLink;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      dlog('  method 1 dispatched');
+    } catch (err) {
+      dlog('  method 1 ERROR', err.message);
+    }
+
+    // Method 2: after a short delay, try direct location assignment
+    // (some iOS versions need this trick instead)
+    setTimeout(function() {
+      dlog('500ms check', { hidden: document.hidden, visible: document.visibilityState });
+      if (!document.hidden) {
+        dlog('attempting method 2: location.assign');
+        try {
+          window.location.assign(universalLink);
+        } catch (err) {
+          dlog('  method 2 ERROR', err.message);
+        }
+      } else {
+        dlog('app took over (page hidden) — skip method 2');
+      }
+    }, 500);
+
+    // Fallback to App Store after delay if app didn't intercept
+    setTimeout(function() {
+      dlog('2000ms check', { hidden: document.hidden, visible: document.visibilityState, elapsed: Date.now() - startTime });
+      if (Date.now() - startTime < CONFIG.FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden) {
+        dlog('FALLBACK: redirecting to App Store');
+        window.location.href = CONFIG.APP_STORE_URL;
+      } else {
+        dlog('NO fallback — page hidden or elapsed exceeded');
+      }
+    }, CONFIG.FALLBACK_DELAY_MS);
   });
 }
 function showState(id){ document.querySelectorAll('.state').forEach(function(el){el.classList.remove('active');}); document.getElementById(id).classList.add('active'); }
