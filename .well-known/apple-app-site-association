@@ -1,10 +1,12 @@
 {
   "applinks": {
-    "apps": [],
     "details": [
       {
-        "appID": "RJL5VQK2DK.com.RyanNovinc.JSON",
-        "paths": ["/p/*"]
+        "appIDs": ["RJL5VQK2DK.com.RyanNovinc.JSON"],
+        "components": [
+          { "/": "/r/*", "comment": "Meal share pages" },
+          { "/": "/r",   "comment": "Meal share root" }
+        ]
       }
     ]
   }
