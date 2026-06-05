@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON.fit — Recipe</title>
+<meta name="description" content="A meal shared with you on JSON.fit. View the recipe, or open it in the app for live timers and step-by-step cook mode.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A recipe shared with you — JSON.fit">
+<meta property="og:description" content="View the full recipe, or open it in the JSON.fit app for live timers and cook mode.">
+<meta property="og:image" content="https://json.fit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#22c55e; --green-soft:rgba(34,197,94,0.08); --green-glow:rgba(34,197,94,0.32);
+  --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
+  --border:rgba(255,255,255,0.06); --border-green:rgba(34,197,94,0.18);
+  --text:#f0f0f2; --text-2:#9898a4; --text-3:#55555f; --red:#ef4444;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px;min-height:100vh;display:flex;flex-direction:column}
+.green{color:var(--green)}
+nav{position:sticky;top:0;z-index:100;padding:0 1.5rem;height:56px;display:flex;align-items:center;background:rgba(5,5,8,0.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.4rem}
+main{flex:1;padding:2.5rem 1.5rem 4rem;max-width:760px;margin:0 auto;width:100%}
+@media(max-width:600px){main{padding:1.75rem 1.25rem 3rem}}
+.state{display:none}.state.active{display:block}
+.loading{display:flex;flex-direction:column;align-items:center;gap:1.25rem;padding:4rem 1rem}
+.spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase}
+.error{text-align:center;padding:3rem 1rem}
+.error h2{font-size:1.4rem;font-weight:700;margin-bottom:.5rem}
+.error p{color:var(--text-2);font-size:.95rem;max-width:360px;margin:0 auto 1.75rem}
+.error a{display:inline-flex;align-items:center;gap:.4rem;padding:.75rem 1.5rem;border-radius:10px;font-size:.9rem;font-weight:600;text-decoration:none;background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.error a:hover{border-color:var(--green);color:var(--green)}
+.content{animation:fadeUp .6s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .9rem;border:1px solid var(--border-green);border-radius:100px;font-family:'DM Mono',monospace;font-size:.66rem;color:var(--green);background:var(--green-soft);letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.25rem}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+h1.title{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:.5rem}
+.subtitle{color:var(--text-2);font-size:.92rem;margin-bottom:1.75rem}
+.hero{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:16px;border:1px solid var(--border);margin-bottom:1.5rem;display:block}
+.hero-fallback{width:100%;aspect-ratio:16/10;border-radius:16px;border:1px solid var(--border);background:linear-gradient(135deg,rgba(34,197,94,0.12),#0a0a0f 70%);margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;color:var(--text-3);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:1rem}
+.preview-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.75rem}
+.stat{background:var(--surface);padding:1.1rem .5rem;text-align:center}
+.stat-num{font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--green);line-height:1;letter-spacing:-.02em;margin-bottom:.35rem}
+.stat-lbl{font-size:.68rem;color:var(--text-3);font-family:'DM Mono',monospace;letter-spacing:.04em}
+.recipe-section{margin-bottom:2rem}
+.section-title{font-size:1.05rem;font-weight:700;margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
+.tabs{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;margin-bottom:1.1rem;padding-bottom:.2rem}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:.45rem .9rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.03em;cursor:pointer;transition:all .18s;white-space:nowrap}
+.tab:hover{color:var(--text);border-color:var(--border-green)}
+.tab.active{background:rgba(34,197,94,0.08);border-color:var(--border-green);color:var(--green)}
+.method-meta{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-3);letter-spacing:.03em;margin-bottom:1rem}
+.block-label{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--green);letter-spacing:.16em;text-transform:uppercase;margin:1.4rem 0 .7rem}
+.ing-list{list-style:none}
+.ing-list li{display:flex;gap:.85rem;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.9rem;align-items:baseline}
+.ing-list li:last-child{border-bottom:none}
+.ing-qty{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--green);min-width:74px;flex-shrink:0}
+.ing-name{color:var(--text);flex:1}
+.ing-note{color:var(--text-3);font-size:.82rem}
+.step-list{list-style:none;counter-reset:step}
+.step-list li{position:relative;padding:0 0 1.1rem 2.4rem;counter-increment:step}
+.step-list li::before{content:counter(step);position:absolute;left:0;top:0;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--green-soft);border:1px solid var(--border-green);color:var(--green);font-family:'DM Mono',monospace;font-size:.78rem;display:flex;align-items:center;justify-content:center}
+.step-summary{color:var(--text);font-size:.92rem;line-height:1.6}
+.plate-desc{color:var(--text-2);font-size:.92rem;margin-bottom:1rem}
+.stunt-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.66rem;color:#fbbf24;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:.3rem .7rem;margin-bottom:.9rem;letter-spacing:.04em}
+.reserve-note{display:flex;gap:.6rem;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:.9rem 1rem;color:#fbbf24;font-size:.85rem;line-height:1.5;margin:1rem 0}
+.reserve-note::before{content:'!';flex-shrink:0;width:1.1rem;height:1.1rem;border-radius:50%;background:#f59e0b;color:#000;font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center}
+.cta-section{margin-top:2.5rem;text-align:center;padding-top:2rem;border-top:1px solid var(--border)}
+.cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;max-width:360px;padding:1rem 2rem;border-radius:12px;font-size:1rem;font-weight:700;text-decoration:none;background:var(--green);color:#001b08;border:none;cursor:pointer;transition:transform .25s,box-shadow .25s;margin-bottom:1rem}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--green-glow)}
+.cta-sub{color:var(--text-2);font-size:.9rem;max-width:420px;margin:.5rem auto 1.25rem}
+.cta-sub strong{color:var(--text)}
+.store-link{display:inline-block;font-family:'DM Mono',monospace;font-size:.8rem;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:.7rem 1.4rem;text-decoration:none;transition:all .2s}
+.store-link:hover{border-color:var(--border-green);color:var(--green)}
+.cta-foot{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em;margin-top:1.25rem}
+footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
+.foot-l{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3)}
+.foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem;transition:color .2s}
+.foot-l a:hover{color:var(--green)}
+</style>
+</head>
+<body>
+<nav>
+  <a href="https://json.fit" class="nav-logo">
+    <svg width="18" height="12" viewBox="0 0 22 14" fill="none">
+      <rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
+      <rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
+      <rect x="4" y="5" width="14" height="4" rx="2" fill="#22c55e"/>
+    </svg>
+    JSON<span class="green">.fit</span>
+  </a>
+</nav>
+<main>
+  <div class="state active" id="state-loading">
+    <div class="loading"><div class="spinner"></div><div class="loading-text">Loading recipe</div></div>
+  </div>
+  <div class="state" id="state-error">
+    <div class="error">
+      <h2 id="error-title">Recipe not found</h2>
+      <p id="error-msg">This link doesn't match a meal. Get JSON.fit to browse the full recipe library.</p>
+      <a href="https://json.fit">Visit JSON.fit</a>
+    </div>
+  </div>
+  <div class="state" id="state-content"><div class="content" id="content-inner"></div></div>
+</main>
+<footer>
+  <div class="foot-l">
+    <a href="https://json.fit">json.fit</a>
+    <a href="https://json.fit/privacy-policy.html">Privacy</a>
+    <a href="https://json.fit/terms-of-service.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ============================================================================
+// CONFIG
+// ============================================================================
+var CONFIG = {
+  APP_STORE_URL: 'https://apps.apple.com/au/app/json-fit/id6758357834',
+  IMAGE_BASE: 'https://json.fit/images/meals/',
+  FALLBACK_DELAY_MS: 1400,
+};
+
+// ============================================================================
+// DATA LOADING
+//   Production: the page fetches ./meals.json (your CURATED_MEALS exported to
+//   JSON, keyed by slug, sitting next to this file in /r/).
+//   To export it once in your repo:
+//     fs.writeFileSync('meals.json', JSON.stringify(CURATED_MEALS));
+//   (window.MEALS_DATA is only used by the standalone preview build.)
+// ============================================================================
+async function loadMeals() {
+  if (window.MEALS_DATA) return window.MEALS_DATA;
+  var res = await fetch('./meals.json');
+  if (!res.ok) throw new Error('meals.json not found');
+  return res.json();
+}
+
+function getSlug() {
+  var m = location.pathname.match(/\/r\/([a-z0-9_]+)/i);   // /r/butter_chicken
+  if (m && m[1] && m[1] !== 'index') return m[1];
+  return new URLSearchParams(location.search).get('meal');  // /r/?meal=butter_chicken
+}
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function tidy(n){ return (typeof n==='number') ? (Number.isInteger(n)?String(n):String(parseFloat(n.toFixed(2)))) : String(n); }
+function titleCase(s){ return String(s).replace(/(^|[\s_-])(\w)/g,function(_,sep,ch){return sep.replace('_',' ')+ch.toUpperCase();}); }
+function prettify(id){ return String(id).replace(/_/g,' ').replace(/\s+/g,' ').trim(); }
+function ingName(id){ return (window.INGREDIENT_NAMES && window.INGREDIENT_NAMES[id]) || prettify(id); }
+function slugifyImage(f){
+  if(!f) return '';
+  var ext=(f.match(/\.(png|jpe?g|webp)$/i)||['','png'])[1].toLowerCase();
+  var base=f.replace(/\.(png|jpe?g|webp)$/i,'');
+  var slug=base.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/[\s_]+/g,'-').replace(/-+/g,'-').toLowerCase();
+  return slug+'.'+ext;
+}
+function imageUrl(meal,plate){
+  var hosted=(plate&&plate.photo_url)||meal.photo_url;
+  if(hosted) return hosted;
+  var file=(plate&&plate.image_filename)||meal.image_filename;
+  return file ? CONFIG.IMAGE_BASE+slugifyImage(file) : '';
+}
+function canonicalPlate(meal){
+  var byName=meal.plates.filter(function(p){return p.display_name===meal.display_name;})[0];
+  if(byName) return byName;
+  var nonStunt=meal.plates.filter(function(p){return !p.is_stunt_plate;})[0];
+  return nonStunt||meal.plates[0];
+}
+function ingItem(ing){
+  var unit=ing.unit==='count'?'':ing.unit;
+  var qty=unit?(tidy(ing.base_amount)+' '+unit):tidy(ing.base_amount);
+  return '<li><span class="ing-qty">'+esc(qty)+'</span><span class="ing-name">'+esc(ingName(ing.ingredient_id))+(ing.notes?'<span class="ing-note"> — '+esc(ing.notes)+'</span>':'')+'</span></li>';
+}
+function macroStrip(m, totalMin){
+  var stats=[{n:m.kcal,l:'kcal'},{n:m.protein_g+'g',l:'protein'},{n:m.carbs_g+'g',l:'carbs'},{n:m.fat_g+'g',l:'fat'}];
+  if(totalMin) stats.push({n:totalMin+'m',l:'time'});
+  return '<div class="preview-stats">'+stats.map(function(s){return '<div class="stat"><div class="stat-num">'+esc(String(s.n))+'</div><div class="stat-lbl">'+esc(s.l)+'</div></div>';}).join('')+'</div>';
+}
+function stepList(steps,start){
+  if(!steps||!steps.length) return '';
+  return '<ol class="step-list" style="counter-reset:step '+((start||1)-1)+'">'+steps.map(function(s){return '<li><div class="step-summary">'+esc(s.summary)+'</div></li>';}).join('')+'</ol>';
+}
+
+// ============================================================================
+// RENDER
+// ============================================================================
+function renderMeal(meal){
+  var canon=canonicalPlate(meal);
+  var hero=imageUrl(meal,canon);
+  var desc=(canon.description||meal.display_name);
+  var eyebrow=titleCase(meal.cuisine)+' · '+titleCase(meal.primary_protein);
+  var firstMethod=meal.methods[0]||{};
+  var totalMin=(firstMethod.time_total_minutes||0)+(canon.assembly_time_minutes||0);
+
+  document.title=meal.display_name+' — JSON.fit';
+
+  var html='';
+  html+='<div class="eyebrow"><span class="eyebrow-dot"></span>'+esc(eyebrow)+'</div>';
+  html+='<h1 class="title">'+esc(meal.display_name)+'</h1>';
+  html+='<p class="subtitle">'+esc(desc)+'</p>';
+  html+= hero
+    ? '<img class="hero" src="'+esc(hero)+'" alt="'+esc(meal.display_name)+'" onerror="this.outerHTML=\'<div class=&quot;hero-fallback&quot;>'+esc(meal.display_name)+'</div>\'">'
+    : '<div class="hero-fallback">'+esc(meal.display_name)+'</div>';
+  html+=macroStrip(canon.plate_macros,totalMin);
+
+  // Recipe: method tabs + base ingredients + steps
+  var methods=meal.methods||[];
+  var multiM=methods.length>1;
+  html+='<section class="recipe-section"><h2 class="section-title">Recipe</h2>';
+  if(multiM){
+    html+='<div class="tabs" role="tablist">'+methods.map(function(mt,i){return '<button class="tab '+(i===0?'active':'')+'" data-method-tab="'+i+'">'+esc(mt.display_name)+'</button>';}).join('')+'</div>';
+  }
+  html+=methods.map(function(mt,i){
+    var meta=[mt.time_total_minutes?mt.time_total_minutes+' min total':'',mt.time_active_minutes?mt.time_active_minutes+' min active':'',(mt.equipment_required||[]).map(titleCase).join(', ')].filter(Boolean).join('  ·  ');
+    return '<div class="method-panel" data-method-panel="'+i+'" '+(i===0?'':'hidden')+'>'+
+      (meta?'<p class="method-meta">'+esc(meta)+'</p>':'')+
+      '<div class="block-label">Ingredients</div><ul class="ing-list">'+(mt.ingredients||[]).map(ingItem).join('')+'</ul>'+
+      '<div class="block-label">Method</div>'+stepList(mt.instructions)+
+    '</div>';
+  }).join('');
+  html+='</section>';
+
+  // Plates: tabs (if >1) with macros + serving ingredients + assembly
+  var plates=meal.plates||[];
+  var multiP=plates.length>1;
+  var baseLen=(firstMethod.instructions||[]).length;
+  if(multiP || (plates[0] && (plates[0].additional_ingredients.length || plates[0].additional_instructions.length))){
+    html+='<section class="recipe-section"><h2 class="section-title">'+(multiP?'Ways to serve it':'Serve it')+'</h2>';
+    if(multiP){
+      html+='<div class="tabs" role="tablist">'+plates.map(function(p,i){return '<button class="tab '+(i===0?'active':'')+'" data-plate-tab="'+i+'">'+esc(p.display_name)+(p.is_stunt_plate?' ⚡':'')+'</button>';}).join('')+'</div>';
+    }
+    html+=plates.map(function(p,i){
+      return '<div class="plate-panel" data-plate-panel="'+i+'" '+(i===0?'':'hidden')+'>'+
+        (p.is_stunt_plate?'<div class="stunt-badge">⚡ Stunt plate — high-cal, use sparingly</div>':'')+
+        '<p class="plate-desc">'+esc(p.description)+'</p>'+
+        macroStrip(p.plate_macros,(firstMethod.time_total_minutes||0)+(p.assembly_time_minutes||0))+
+        (p.reserve_before_finishing_note?'<div class="reserve-note">'+esc(p.reserve_before_finishing_note)+'</div>':'')+
+        (p.additional_ingredients&&p.additional_ingredients.length?'<div class="block-label">To serve, add</div><ul class="ing-list">'+p.additional_ingredients.map(ingItem).join('')+'</ul>':'')+
+        (p.additional_instructions&&p.additional_instructions.length?'<div class="block-label">Plate it up</div>'+stepList(p.additional_instructions,baseLen+1):'')+
+      '</div>';
+    }).join('');
+    html+='</section>';
+  }
+
+  // CTA
+  var verb=meal.cuisine==='smoothie'?'blend it with':'cook it with';
+  html+='<section class="cta-section">'+
+    '<a class="cta-btn" id="open-in-app-btn" href="'+location.href+'">Open in JSON.fit</a>'+
+    '<p class="cta-sub">Get the free app to '+verb+' <strong>live timers</strong> and hands-free, step-by-step cook mode.</p>'+
+    '<a href="'+CONFIG.APP_STORE_URL+'" class="store-link">Download on the App Store</a>'+
+    '<div class="cta-foot">Free forever · No subscription · Android coming soon</div>'+
+  '</section>';
+
+  document.getElementById('content-inner').innerHTML=html;
+  showState('state-content');
+  wireTabs();
+  wireOpenInApp();
+}
+
+// ============================================================================
+// INTERACTIONS
+// ============================================================================
+function wireTabs(){
+  ['data-method-tab|data-method-panel','data-plate-tab|data-plate-panel'].forEach(function(pair){
+    var parts=pair.split('|'), tabAttr=parts[0], panelAttr=parts[1];
+    document.querySelectorAll('['+tabAttr+']').forEach(function(tab){
+      tab.addEventListener('click',function(){
+        var idx=tab.getAttribute(tabAttr), group=tab.parentElement, section=tab.closest('.recipe-section');
+        group.querySelectorAll('['+tabAttr+']').forEach(function(t){t.classList.remove('active');});
+        tab.classList.add('active');
+        section.querySelectorAll('['+panelAttr+']').forEach(function(p){p.hidden=p.getAttribute(panelAttr)!==idx;});
+      });
+    });
+  });
+}
+// Open-in-app button: try the universal link, fall back to App Store.
+// (With Universal Links configured, an installed user is intercepted by iOS
+//  before this page even loads — they never see the button.)
+function wireOpenInApp(){
+  var btn=document.getElementById('open-in-app-btn');
+  if(!btn) return;
+  btn.addEventListener('click',function(e){
+    e.preventDefault();
+    var t=Date.now();
+    window.location.href=btn.getAttribute('href');
+    setTimeout(function(){ if(Date.now()-t<CONFIG.FALLBACK_DELAY_MS+200 && !document.hidden) window.location.href=CONFIG.APP_STORE_URL; }, CONFIG.FALLBACK_DELAY_MS);
+  });
+}
+function showState(id){ document.querySelectorAll('.state').forEach(function(el){el.classList.remove('active');}); document.getElementById(id).classList.add('active'); }
+function showError(){ showState('state-error'); }
+
+// ============================================================================
+// INIT
+// ============================================================================
+(async function(){
+  var slug=getSlug();
+  if(!slug){ showError(); return; }
+  try{
+    var meals=await loadMeals();
+    var meal=meals[slug];
+    if(!meal){ showError(); return; }
+    renderMeal(meal);
+  }catch(err){ showError(); }
+})();
+</script>
+</body>
+</html>
