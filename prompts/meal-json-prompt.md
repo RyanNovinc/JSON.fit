@@ -131,7 +131,7 @@ Both formats (full invented meals and curated meal references) coexist in the sa
 | Field | Required | Format | Notes |
 |-------|----------|--------|-------|
 | **id** | Yes | String | Unique identifier for the meal plan |
-| **name** | Yes | String | Descriptive name (e.g., "7-Day Weight Gain Plan") |
+| **name** | Yes | String | Concise plan name from duration + goal only (e.g., "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance"). Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. See the "Plan Name" rule below. |
 | **startDate** | Yes | YYYY-MM-DD | Must match first day in dailyMeals |
 | **endDate** | Yes | YYYY-MM-DD | Must match last day in dailyMeals |
 | **dailyMeals** | Yes | Object | Date-keyed meals (see below) |
@@ -213,6 +213,13 @@ Both formats (full invented meals and curated meal references) coexist in the sa
 | **duration** | Yes | Number | Total days in the meal plan |
 
 # CRITICAL CONVERSION RULES
+
+## Plan Name
+
+Name the plan from duration and goal only — e.g. "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance". Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. The app displays the calorie figure separately on the plan screen, so it must not be baked into the name.
+
+- Correct: `"7-Day Lean Bulk"`
+- Wrong: `"7-Day Lean Bulk Plan (3042 kcal)"`, `"7-Day Lean Bulk — 3042 kcal"`, `"7-Day Lean Bulk 26P/39C/35F"`
 
 ## Nutrition Value Preservation (MOST IMPORTANT)
 
