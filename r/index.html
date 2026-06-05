@@ -11,6 +11,13 @@
 <meta property="og:image" content="https://json.fit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta name="apple-itunes-app" id="aab" content="app-id=6758357834">
+<script>
+  document.getElementById('aab').setAttribute(
+    'content',
+    'app-id=6758357834, app-argument=' + encodeURIComponent(location.href)
+  );
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -152,6 +159,10 @@ function getSlug() {
   return new URLSearchParams(location.search).get('meal');  // /r/?meal=butter_chicken
 }
 
+function getPlateId() {
+  return new URLSearchParams(location.search).get('plate');  // /r/?meal=butter_chicken&plate=standard
+}
+
 // ============================================================================
 // HELPERS
 // ============================================================================
@@ -198,7 +209,9 @@ function stepList(steps,start){
 // RENDER
 // ============================================================================
 function renderMeal(meal){
-  var canon=canonicalPlate(meal);
+  var plateId=getPlateId();
+  var targetPlate=plateId ? meal.plates.find(function(p){return p.id===plateId;}) : null;
+  var canon=targetPlate || canonicalPlate(meal);
   var hero=imageUrl(meal,canon);
   var desc=(canon.description||meal.display_name);
   var eyebrow=titleCase(meal.cuisine)+' · '+titleCase(meal.primary_protein);
@@ -237,13 +250,15 @@ function renderMeal(meal){
   var plates=meal.plates||[];
   var multiP=plates.length>1;
   var baseLen=(firstMethod.instructions||[]).length;
+  var defaultPlateIdx=targetPlate ? plates.findIndex(function(p){return p===targetPlate;}) : 0;
+  if(defaultPlateIdx===-1) defaultPlateIdx=0;
   if(multiP || (plates[0] && (plates[0].additional_ingredients.length || plates[0].additional_instructions.length))){
     html+='<section class="recipe-section"><h2 class="section-title">'+(multiP?'Ways to serve it':'Serve it')+'</h2>';
     if(multiP){
-      html+='<div class="tabs" role="tablist">'+plates.map(function(p,i){return '<button class="tab '+(i===0?'active':'')+'" data-plate-tab="'+i+'">'+esc(p.display_name)+(p.is_stunt_plate?' ⚡':'')+'</button>';}).join('')+'</div>';
+      html+='<div class="tabs" role="tablist">'+plates.map(function(p,i){return '<button class="tab '+(i===defaultPlateIdx?'active':'')+'" data-plate-tab="'+i+'">'+esc(p.display_name)+(p.is_stunt_plate?' ⚡':'')+'</button>';}).join('')+'</div>';
     }
     html+=plates.map(function(p,i){
-      return '<div class="plate-panel" data-plate-panel="'+i+'" '+(i===0?'':'hidden')+'>'+
+      return '<div class="plate-panel" data-plate-panel="'+i+'" '+(i===defaultPlateIdx?'':'hidden')+'>'+
         (p.is_stunt_plate?'<div class="stunt-badge">⚡ Stunt plate — high-cal, use sparingly</div>':'')+
         '<p class="plate-desc">'+esc(p.description)+'</p>'+
         macroStrip(p.plate_macros,(firstMethod.time_total_minutes||0)+(p.assembly_time_minutes||0))+
