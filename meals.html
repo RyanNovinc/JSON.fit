@@ -152,9 +152,9 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 <!-- Offline/preview fallback (3 sample meals). Live page reads /r/meals.json as the source of truth. -->
 <script>
 window.MEALS_DATA = {
- "king_kong_chocolate":{"slug":"king_kong_chocolate","display_name":"King Kong Chocolate","cuisine":"smoothie","primary_protein":"dairy","image_filename":"king_kong_chocolate.png","plates":[{"display_name":"King Kong Chocolate","plate_macros":{"kcal":1418,"protein_g":85,"carbs_g":93,"fat_g":79}}]},
- "butter_chicken":{"slug":"butter_chicken","display_name":"Butter Chicken with Basmati Rice","cuisine":"indian","primary_protein":"chicken","image_filename":"butter_chicken_with_rice.png","plates":[{"display_name":"Butter Chicken","plate_macros":{"kcal":490,"protein_g":48,"carbs_g":14,"fat_g":28}},{"display_name":"Butter Chicken with Basmati Rice","image_filename":"Butter Chicken with Basmati Rice.png","plate_macros":{"kcal":720,"protein_g":52,"carbs_g":68,"fat_g":24}}]},
- "pulled_pork":{"slug":"pulled_pork","display_name":"Slow-Cooked BBQ Pulled Pork","cuisine":"australian","primary_protein":"pork","image_filename":"pulled_pork.png","plates":[{"display_name":"BBQ Pulled Pork","plate_macros":{"kcal":610,"protein_g":48,"carbs_g":28,"fat_g":32}},{"display_name":"BBQ Pulled Pork Burger","plate_macros":{"kcal":1210,"protein_g":61,"carbs_g":76,"fat_g":72}},{"display_name":"Pulled Pork Rice Bowl","plate_macros":{"kcal":1330,"protein_g":61,"carbs_g":118,"fat_g":66}},{"display_name":"Pulled Pork Tacos","plate_macros":{"kcal":1155,"protein_g":61,"carbs_g":55,"fat_g":74}},{"display_name":"Loaded Pulled Pork Baked Potato","plate_macros":{"kcal":1177,"protein_g":60,"carbs_g":90,"fat_g":63}},{"display_name":"Pulled Pork Mac & Cheese Stack","is_stunt_plate":true,"plate_macros":{"kcal":1907,"protein_g":102,"carbs_g":124,"fat_g":109}}]}
+ "king_kong_chocolate":{"slug":"king_kong_chocolate","display_name":"King Kong Chocolate","cuisine":"smoothie","primary_protein":"dairy","eligible_slots":["breakfast","post_workout"],"image_filename":"king_kong_chocolate.png","plates":[{"display_name":"King Kong Chocolate","plate_macros":{"kcal":1418,"protein_g":85,"carbs_g":93,"fat_g":79}}]},
+ "butter_chicken":{"slug":"butter_chicken","display_name":"Butter Chicken with Basmati Rice","cuisine":"indian","primary_protein":"chicken","eligible_slots":["lunch","dinner"],"image_filename":"butter_chicken_with_rice.png","plates":[{"display_name":"Butter Chicken","plate_macros":{"kcal":490,"protein_g":48,"carbs_g":14,"fat_g":28}},{"display_name":"Butter Chicken with Basmati Rice","image_filename":"Butter Chicken with Basmati Rice.png","plate_macros":{"kcal":720,"protein_g":52,"carbs_g":68,"fat_g":24}}]},
+ "pulled_pork":{"slug":"pulled_pork","display_name":"Slow-Cooked BBQ Pulled Pork","cuisine":"australian","primary_protein":"pork","eligible_slots":["lunch","dinner"],"image_filename":"pulled_pork.png","plates":[{"display_name":"BBQ Pulled Pork","plate_macros":{"kcal":610,"protein_g":48,"carbs_g":28,"fat_g":32}},{"display_name":"BBQ Pulled Pork Burger","plate_macros":{"kcal":1210,"protein_g":61,"carbs_g":76,"fat_g":72}},{"display_name":"Pulled Pork Rice Bowl","plate_macros":{"kcal":1330,"protein_g":61,"carbs_g":118,"fat_g":66}},{"display_name":"Pulled Pork Tacos","plate_macros":{"kcal":1155,"protein_g":61,"carbs_g":55,"fat_g":74}},{"display_name":"Loaded Pulled Pork Baked Potato","plate_macros":{"kcal":1177,"protein_g":60,"carbs_g":90,"fat_g":63}},{"display_name":"Pulled Pork Mac & Cheese Stack","is_stunt_plate":true,"plate_macros":{"kcal":1907,"protein_g":102,"carbs_g":124,"fat_g":109}}]}
 };
 
 var CONFIG = {
@@ -207,7 +207,14 @@ var emptyEl=document.getElementById('empty');
 var countEl=document.getElementById('count');
 var chipsEl=document.getElementById('chips');
 var searchEl=document.getElementById('search');
-var activeCuisine='all';
+var activeCat='all';
+var SLOT_TO_CAT={breakfast:'Breakfast',brunch:'Breakfast',lunch:'Mains',dinner:'Mains',main:'Mains',mains:'Mains',side:'Sides',sides:'Sides',snack:'Snacks',snacks:'Snacks',dessert:'Desserts',desserts:'Desserts',pre_workout:'Pre-Workout',post_workout:'Post-Workout'};
+var CAT_ORDER=['Breakfast','Mains','Sides','Snacks','Desserts','Pre-Workout','Post-Workout'];
+function mealCategories(meal){
+  var set={};
+  (meal.eligible_slots||[]).forEach(function(s){ var key=String(s).toLowerCase(); set[SLOT_TO_CAT[key]||titleCase(key)]=true; });
+  return Object.keys(set);
+}
 
 function cardHTML(meal){
   var canon=canonicalPlate(meal);
@@ -218,7 +225,7 @@ function cardHTML(meal){
   var imgTag = img ? '<img class="mc-img" src="'+esc(img)+'" alt="'+esc(meal.display_name)+'" loading="lazy" onerror="this.style.display=\'none\'">' : '';
   var waysBadge = ways>1 ? '<span class="mc-ways">'+ways+' ways to serve</span>' : '';
   var sub = titleCase(meal.cuisine||'Meal') + (meal.primary_protein?' · '+titleCase(meal.primary_protein):'');
-  return '<a class="meal-card" href="'+esc(recipe)+'" data-name="'+esc(String(meal.display_name).toLowerCase())+'" data-cuisine="'+esc(meal.cuisine||'')+'">'
+  return '<a class="meal-card" href="'+esc(recipe)+'" data-name="'+esc(String(meal.display_name).toLowerCase())+'" data-categories="'+esc(mealCategories(meal).join('|'))+'">'
     +'<div class="mc-imgwrap">'+imgTag+waysBadge+'</div>'
     +'<div class="mc-body">'
       +'<div class="mc-cuisine">'+esc(sub)+'</div>'
@@ -234,17 +241,21 @@ function cardHTML(meal){
 }
 
 function buildChips(meals){
-  var cuisines=[];
-  meals.forEach(function(m){ if(m.cuisine && cuisines.indexOf(m.cuisine)===-1) cuisines.push(m.cuisine); });
-  cuisines.sort();
-  var html='<button class="chip active" data-cuisine="all">All</button>';
-  cuisines.forEach(function(c){ html+='<button class="chip" data-cuisine="'+esc(c)+'">'+esc(titleCase(c))+'</button>'; });
+  var present={};
+  meals.forEach(function(m){ mealCategories(m).forEach(function(c){present[c]=true;}); });
+  var cats=Object.keys(present).sort(function(a,b){
+    var ia=CAT_ORDER.indexOf(a),ib=CAT_ORDER.indexOf(b);
+    if(ia===-1)ia=99; if(ib===-1)ib=99;
+    return ia!==ib?ia-ib:a.localeCompare(b);
+  });
+  var html='<button class="chip active" data-cat="all">All</button>';
+  cats.forEach(function(c){ html+='<button class="chip" data-cat="'+esc(c)+'">'+esc(c)+'</button>'; });
   chipsEl.innerHTML=html;
   chipsEl.querySelectorAll('.chip').forEach(function(chip){
     chip.addEventListener('click',function(){
       chipsEl.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});
       chip.classList.add('active');
-      activeCuisine=chip.getAttribute('data-cuisine');
+      activeCat=chip.getAttribute('data-cat');
       applyFilter();
     });
   });
@@ -256,8 +267,9 @@ function applyFilter(){
   var shown=0;
   cards.forEach(function(c){
     var okName=!term || c.getAttribute('data-name').indexOf(term)!==-1;
-    var okCuisine=activeCuisine==='all' || c.getAttribute('data-cuisine')===activeCuisine;
-    var show=okName && okCuisine;
+    var cats=(c.getAttribute('data-categories')||'').split('|');
+    var okCat=activeCat==='all' || cats.indexOf(activeCat)!==-1;
+    var show=okName && okCat;
     c.style.display=show?'':'none';
     if(show) shown++;
   });
