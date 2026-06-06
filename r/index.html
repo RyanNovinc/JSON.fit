@@ -1,80 +1,678 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-3C38HP30JG');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON.fit — You already have the AI. We do the rest.</title>
-    <meta name="description" content="You're already paying for AI — why pay twice? Use ChatGPT, Claude, or Gemini to build personalised muscle-building programs and bulking meal plans. Import in seconds. 100% free — no subscription, no paywall.">
-    <meta property="og:title" content="JSON.fit — You already have the AI. We do the rest.">
-    <meta property="og:description" content="Stop paying for another AI fitness app. Use the AI you already have to build your training program and meal plan. 100% free. No subscription, ever.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://json.fit/">
-    <meta property="og:image" content="https://json.fit/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="JSON.fit">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="JSON.fit — You already have the AI. We do the rest.">
-    <meta name="twitter:description" content="Stop paying for another AI fitness app. Use the AI you already have to build your training program and meal plan. 100% free. No subscription, ever.">
-    <meta name="twitter:image" content="https://json.fit/og-image.png">
-    <link rel="canonical" href="https://json.fit/">
-    <link rel="alternate" type="text/plain" href="https://json.fit/llms.txt" title="LLM-readable site summary">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "JSON.fit",
-      "operatingSystem": "iOS",
-      "applicationCategory": "HealthApplication",
-      "description": "AI-agnostic fitness app. Generate workout programs and meal plans using any AI, import as JSON, track everything. Completely free.",
-      "url": "https://json.fit/",
-      "downloadUrl": "https://apps.apple.com/au/app/json-fit/id6758357834",
-      "softwareVersion": "1.8",
-      "author": { "@type": "Person", "name": "Ryan Novinc" },
-      "offers": {
-        "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free: unlimited AI workout programs and meal plans"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "8",
-        "bestRating": "5"
-      }
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- These get overwritten by JS once the meal loads; sensible defaults for crawlers that don't run JS -->
+<title>Recipe — JSON.fit</title>
+<meta name="description" content="A high-protein meal built for eating big — exact ingredients, step-by-step. Free in the JSON.fit app.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Recipe — JSON.fit">
+<meta property="og:description" content="A high-protein meal built for eating big — exact ingredients, step-by-step.">
+<meta property="og:image" content="https://json.fit/og-image.png">
+<meta property="og:site_name" content="JSON.fit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://json.fit/og-image.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#22c55e; --green-soft:rgba(34,197,94,0.08); --green-glow:rgba(34,197,94,0.32);
+  --green-border:rgba(34,197,94,0.18);
+  --cyan:#22d3ee;
+  --amber:#f59e0b;
+  --red:#ef4444;
+  --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
+  --border:rgba(255,255,255,0.06);
+  --text:#f0f0f2; --text-2:#9898a4; --text-3:#55555f;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;min-height:100vh;display:flex;flex-direction:column}
+.green{color:var(--green)}
+
+/* ── Nav ── */
+nav{position:sticky;top:0;z-index:100;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,0.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.4rem}
+.nav-cta{background:var(--green);color:#001b08;padding:.4rem 1rem;border-radius:8px;font-weight:600;font-size:.78rem;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--green-glow)}
+
+main{flex:1;width:100%;max-width:760px;margin:0 auto;padding-bottom:6rem}
+
+/* ── States ── */
+.state{display:none}
+.state.active{display:block}
+.loading{display:flex;flex-direction:column;align-items:center;gap:1.25rem;padding:5rem 1rem}
+.spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase}
+.error{text-align:center;padding:4rem 1.5rem}
+.error-icon{width:48px;height:48px;margin:0 auto 1.25rem;border-radius:50%;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;color:var(--red)}
+.error h2{font-size:1.4rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem}
+.error p{color:var(--text-2);font-size:.95rem;max-width:380px;margin:0 auto 1.75rem}
+.error-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.75rem 1.5rem;border-radius:10px;font-size:.9rem;font-weight:600;text-decoration:none;background:transparent;color:var(--text-2);border:1px solid var(--border);transition:all .2s}
+.error-btn:hover{border-color:var(--green-border);color:var(--green);background:var(--green-soft)}
+
+/* ── Content ── */
+.content{animation:fadeUp .5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* Hero */
+.hero{position:relative;width:100%}
+.hero-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:linear-gradient(135deg,rgba(34,197,94,0.14),var(--surface-2) 72%)}
+.hero-placeholder{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,rgba(34,197,94,0.14),var(--surface-2) 72%);display:flex;align-items:center;justify-content:center;color:var(--text-3)}
+.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(to top,var(--bg),transparent);pointer-events:none}
+.hero-back{position:absolute;top:1rem;left:1rem;width:38px;height:38px;border-radius:50%;background:rgba(5,5,8,0.6);border:1px solid var(--border);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:var(--text);text-decoration:none;transition:all .2s;z-index:2}
+.hero-back:hover{border-color:var(--green-border);color:var(--green)}
+
+.wrap{padding:0 1.5rem;max-width:680px;margin:0 auto}
+@media(max-width:600px){.wrap{padding:0 1.25rem}}
+
+.title-block{padding-top:1.5rem;margin-bottom:1.5rem}
+.cuisine{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem}
+.title{font-size:clamp(1.7rem,5vw,2.3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1}
+
+/* Section primitives */
+.section{margin-bottom:2rem}
+.eyebrow{font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-bottom:.85rem;display:block}
+.sub-eyebrow{font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.6rem}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem;gap:1rem}
+.section-head .eyebrow{margin-bottom:0}
+.section-meta{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text-3);letter-spacing:.03em;display:flex;align-items:center;gap:.6rem}
+
+/* Plate switcher */
+.pills{display:flex;gap:.5rem;flex-wrap:wrap}
+.pill{padding:.5rem 1rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:.35rem}
+.pill:hover{color:var(--text);border-color:var(--green-border)}
+.pill.active{background:var(--green);border-color:var(--green);color:#001b08;font-weight:700}
+.pill.stunt{border-color:rgba(245,158,11,0.3);color:var(--amber)}
+.pill.stunt:hover{border-color:var(--amber)}
+.pill.stunt.active{background:rgba(245,158,11,0.15);border-color:var(--amber);color:var(--amber)}
+.pill .bolt{font-size:.75rem}
+
+/* Macro grid */
+.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.macro-cell{padding:1.1rem .5rem;text-align:center;border-right:1px solid var(--border)}
+.macro-cell:last-child{border-right:none}
+.macro-val{font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;line-height:1;letter-spacing:-.02em;color:var(--text)}
+.macro-val.hl{color:var(--green)}
+.macro-lbl{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-3);letter-spacing:.08em;margin-top:.45rem;text-transform:uppercase}
+@media(max-width:480px){.macro-val{font-size:1.1rem}.macro-cell{padding:.9rem .35rem}}
+
+.description{color:var(--text-2);font-size:.95rem;line-height:1.7}
+
+/* Method rows */
+.method-list{display:flex;flex-direction:column;gap:.5rem}
+.method-row{display:flex;align-items:center;gap:.85rem;padding:.85rem 1rem;border-radius:12px;border:1px solid var(--border);background:transparent;cursor:pointer;transition:all .18s;text-align:left;width:100%;font-family:'Outfit',sans-serif}
+.method-row:hover{border-color:var(--green-border)}
+.method-row.active{border-color:var(--green-border);background:var(--green-soft)}
+.method-mid{flex:1;min-width:0}
+.method-name{font-size:.9rem;font-weight:600;color:var(--text-2)}
+.method-row.active .method-name{color:var(--text)}
+.method-desc{font-size:.72rem;color:var(--text-3);margin-top:.15rem}
+.method-time{font-family:'DM Mono',monospace;font-size:.85rem;color:var(--text-3)}
+.method-row.active .method-time{color:var(--green);font-weight:500}
+.single-time{font-size:.92rem;color:var(--text-2)}
+
+/* Servings stepper */
+.servings{display:flex;align-items:center;gap:.5rem}
+.servings-lbl{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-3);letter-spacing:.04em}
+.step-btn{width:26px;height:26px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;line-height:1;transition:all .15s;font-family:'Outfit',sans-serif}
+.step-btn:hover{border-color:var(--green-border);color:var(--green)}
+.servings-val{font-family:'DM Mono',monospace;font-size:.95rem;color:var(--text);min-width:18px;text-align:center;font-weight:500}
+
+/* Ingredient rows */
+.ing-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.ing-row:last-child{border-bottom:none}
+.ing-name{font-size:.9rem;color:var(--text)}
+.ing-amt{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text-3);flex-shrink:0}
+
+/* Steps */
+.step-row{display:flex;gap:.9rem;margin-bottom:1.1rem;align-items:flex-start}
+.step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--green-border);background:var(--green-soft);color:var(--green);font-family:'DM Mono',monospace;font-size:.72rem;font-weight:500;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.step-text{font-size:.92rem;color:var(--text-2);line-height:1.65;flex:1}
+
+/* Reserve note */
+.reserve{display:flex;gap:.7rem;align-items:flex-start;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:.85rem 1rem;margin-bottom:1.25rem}
+.reserve svg{color:var(--amber);flex-shrink:0;margin-top:2px}
+.reserve p{color:#fbbf24;font-size:.85rem;line-height:1.6}
+
+/* Accordion toggle */
+.acc-toggle{cursor:pointer;user-select:none}
+.acc-chev{transition:transform .2s;color:var(--text-3)}
+.acc-open .acc-chev{transform:rotate(180deg);color:var(--green)}
+.acc-body{display:none}
+.acc-open .acc-body{display:block}
+
+/* App teaser card */
+.teaser{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.75rem;position:relative;overflow:hidden;margin-bottom:2rem}
+.teaser::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-border),transparent)}
+.teaser h3{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem}
+.teaser p{color:var(--text-2);font-size:.88rem;line-height:1.6;margin-bottom:1.25rem}
+.teaser-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
+.teaser-list li{display:flex;align-items:center;gap:.6rem;font-size:.88rem;color:var(--text-2)}
+.teaser-list .ic{color:var(--green);flex-shrink:0}
+.store-link{display:inline-block;transition:transform .2s,opacity .2s}
+.store-link:hover{transform:translateY(-1px);opacity:.92}
+.store-link img{height:46px;display:block;border-radius:8px}
+.teaser-foot{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-3);letter-spacing:.03em;margin-top:1rem}
+
+/* Sticky bottom CTA */
+.cta-bar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:rgba(5,5,8,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:.85rem 1.25rem calc(.85rem + env(safe-area-inset-bottom))}
+.cta-bar-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:1rem}
+.cta-bar-text{flex:1;min-width:0}
+.cta-bar-text strong{display:block;font-size:.9rem;font-weight:700;color:var(--text);line-height:1.2}
+.cta-bar-text span{font-size:.72rem;color:var(--text-3);font-family:'DM Mono',monospace}
+.cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.5rem;border-radius:12px;font-size:.92rem;font-weight:700;text-decoration:none;background:var(--green);color:#001b08;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;white-space:nowrap;font-family:'Outfit',sans-serif}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--green-glow)}
+@media(max-width:480px){.cta-bar-text span{display:none}}
+
+footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
+.foot-l{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3)}
+.foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem;transition:color .2s}
+.foot-l a:hover{color:var(--green)}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;z-index:9999;background:rgba(5,5,8,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.lightbox.open{opacity:1;pointer-events:all}
+.lightbox img{max-width:min(560px,92vw);max-height:88vh;border-radius:16px;border:1px solid var(--green-border);box-shadow:0 32px 80px rgba(0,0,0,0.8)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://json.fit" class="nav-logo">
+    <svg width="18" height="12" viewBox="0 0 22 14" fill="none">
+      <rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
+      <rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
+      <rect x="4" y="5" width="14" height="4" rx="2" fill="#22c55e"/>
+    </svg>
+    JSON<span class="green">.fit</span>
+  </a>
+  <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'recipe_nav'})">Get the app</a>
+</nav>
+
+<main>
+  <!-- LOADING -->
+  <div class="state active" id="state-loading">
+    <div class="loading"><div class="spinner"></div><div class="loading-text">Loading recipe</div></div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="state" id="state-error">
+    <div class="error">
+      <div class="error-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <h2 id="error-title">Recipe not found</h2>
+      <p id="error-msg">We couldn't find that meal. Browse the full library, or get JSON.fit to see every recipe.</p>
+      <a href="https://json.fit/meals.html" class="error-btn">Browse all meals
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="state" id="state-content"><div class="content" id="content-inner"></div></div>
+</main>
+
+<footer>
+  <div class="foot-l">
+    <a href="https://json.fit">json.fit</a>
+    <a href="https://json.fit/meals.html">Meals</a>
+    <a href="https://json.fit/privacy-policy.html">Privacy</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox"><img id="lbImg" src="" alt=""></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CONFIG = {
+    APP_STORE_URL: 'https://apps.apple.com/au/app/json-fit/id6758357834',
+    IMAGE_BASE: 'https://json.fit/images/meals/',
+    MEALS_JSON: '/r/meals.json',
+    MAX_PORTIONS: 12
+  };
+
+  // ── State ──
+  var meal = null, plateIdx = 0, methodIdx = 0, servings = 1;
+
+  // ── Helpers ──
+  function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+  function titleCase(s){ return String(s||'').replace(/(^|[\s_-])(\w)/g,function(_,sep,ch){return sep.replace(/[_-]/,' ')+ch.toUpperCase();}); }
+  function clampPortions(n){ n=parseInt(n,10); if(isNaN(n)||n<1) return 1; return Math.min(n,CONFIG.MAX_PORTIONS); }
+
+  function slugifyImage(f){
+    if(!f) return '';
+    var ext=(f.match(/\.(png|jpe?g|webp)$/i)||['','png'])[1].toLowerCase();
+    var base=f.replace(/\.(png|jpe?g|webp)$/i,'');
+    var slug=base.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/[\s_]+/g,'-').replace(/-+/g,'-').toLowerCase();
+    return slug+'.'+ext;
+  }
+
+  function formatTime(min){
+    min=parseInt(min,10);
+    if(!min||min<=0) return '';
+    if(min<60) return min+'m';
+    var h=Math.floor(min/60), r=min%60;
+    return r===0 ? h+'h' : h+'h '+r+'m';
+  }
+
+  function getMealSlug(){
+    var m=window.location.search.match(/[?&]meal=([^&]+)/);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  // Image URL for a given plate (falls back to meal-level image), mirrors meals.html logic
+  function imageUrl(plate){
+    var hosted=(plate&&plate.photo_url)||meal.photo_url;
+    if(hosted) return hosted;
+    var file=(plate&&plate.image_filename)||meal.image_filename;
+    return file ? CONFIG.IMAGE_BASE+slugifyImage(file) : '';
+  }
+
+  // Ingredient display name — prefer explicit names, fall back to title-cased id
+  function ingName(ing){
+    return ing.display_name || ing.name || titleCase(ing.ingredient_id || ing.id || 'Ingredient');
+  }
+  function formatAmount(amt, unit){
+    if(unit==='unit'||unit==='count'||!unit) return String(Math.round(amt));
+    var rounded=Math.round(amt*10)/10;
+    return rounded+unit;
+  }
+
+  // A step may be a string, {summary,...}, or {text,...}
+  function stepText(step){
+    if(typeof step==='string') return step;
+    return (step && (step.summary||step.text)) || '';
+  }
+
+  function methodDescriptor(m){
+    var id=String(m.id||'').toLowerCase();
+    var sc=m.shortcut_level;
+    if(id.indexOf('slow_cooker')>-1) return 'Hands-off · set & forget';
+    if(id.indexOf('pressure')>-1||id.indexOf('instant_pot')>-1) return 'Fast pressure cook';
+    if(id.indexOf('oven')>-1) return 'Hands-off · oven roasted';
+    if(sc==='authentic'||sc==='scratch'||sc==='from_scratch') return 'Best flavour · more effort';
+    if(sc==='shortcut'||sc==='jar') return 'Quickest · weeknight';
+    if(sc==='balanced') return 'Balanced · everyday';
+    return '';
+  }
+
+  function canonicalPlate(){
+    var p=meal.plates||[];
+    var byName=p.filter(function(x){return x.display_name===meal.display_name;})[0];
+    if(byName) return byName;
+    var nonStunt=p.filter(function(x){return !x.is_stunt_plate;})[0];
+    return nonStunt||p[0]||{};
+  }
+
+  // ── Fetch ──
+  function fetchMeals(){
+    return new Promise(function(resolve,reject){
+      var ctrl=new AbortController();
+      var t=setTimeout(function(){ctrl.abort();},8000);
+      fetch(CONFIG.MEALS_JSON,{signal:ctrl.signal}).then(function(res){
+        clearTimeout(t);
+        if(!res.ok) throw new Error('http_'+res.status);
+        return res.json();
+      }).then(function(d){
+        if(d && Object.keys(d).length) resolve(d);
+        else reject(new Error('empty'));
+      }).catch(function(e){ clearTimeout(t); reject(e); });
+    });
+  }
+
+  // ── State helpers ──
+  function currentPlate(){ return (meal.plates&&meal.plates[plateIdx])||{}; }
+  function currentMethod(){ return (meal.methods&&meal.methods[methodIdx])||null; }
+
+  // ── Render: dynamic sections that depend on selected plate/method/servings ──
+  function renderDynamic(){
+    var plate=currentPlate();
+    var method=currentMethod();
+    var m=plate.plate_macros||{};
+
+    // Hero image
+    var img=imageUrl(plate);
+    var heroEl=document.getElementById('hero-slot');
+    if(heroEl){
+      heroEl.innerHTML = img
+        ? '<img class="hero-img" src="'+esc(img)+'" alt="'+esc(plate.display_name||meal.display_name)+'" id="hero-photo" onerror="this.parentElement.innerHTML=document.getElementById(\'hero-fallback\').innerHTML">'
+        : '<div class="hero-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M6 11v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8"/></svg></div>';
+      var photo=document.getElementById('hero-photo');
+      if(photo) photo.addEventListener('click',function(){openLb(photo.src,photo.alt);});
     }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How does JSON.fit actually work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The app builds a structured prompt based on your goals, schedule, and preferences. You copy it into any AI you already use — ChatGPT, Claude, Gemini, whatever. The AI generates a personalised plan. You paste the result back into JSON.fit and it loads instantly, ready to track."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do I need to pay for AI separately?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Most AI chatbots have a free tier that works perfectly — ChatGPT, Gemini, and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How much does JSON.fit cost?",
-          "acceptedAnswer": {
-            "@type": "Answer",
+
+    // Title (plate name) + cuisine line
+    document.getElementById('title').textContent = plate.display_name || meal.display_name;
+    var cuisineLine = titleCase(meal.cuisine||'Meal');
+    if((meal.plates||[]).length>1) cuisineLine += ' · '+meal.plates.length+' ways to serve';
+    document.getElementById('cuisine').textContent = cuisineLine;
+
+    // Macros
+    var macroSlot=document.getElementById('macro-slot');
+    macroSlot.innerHTML =
+      cell(m.protein_g, 'Protein', true) + cell(m.carbs_g,'Carbs') + cell(m.fat_g,'Fat') + cell(m.kcal,'kcal');
+
+    // Description
+    var descSlot=document.getElementById('desc-slot');
+    if(plate.description){ descSlot.style.display=''; descSlot.querySelector('p').textContent=plate.description; }
+    else descSlot.style.display='none';
+
+    // Ingredients (base from method, plate extras) — only if present
+    renderIngredients(plate, method);
+
+    // Steps — only if present
+    renderSteps(plate, method);
+
+    // Reserve note
+    var res=document.getElementById('reserve-slot');
+    if(plate.reserve_before_finishing_note){ res.style.display=''; res.querySelector('p').textContent=plate.reserve_before_finishing_note; }
+    else res.style.display='none';
+
+    // Sticky CTA wording
+    var verb = meal.cuisine==='smoothie' ? 'blend' : 'cook';
+    document.getElementById('cta-bar-sub').textContent = 'Free · cook mode, timers & tracking';
+    document.getElementById('cta-bar-title').textContent = 'Make this in JSON.fit';
+
+    updateSchema(plate, method);
+    document.title = (plate.display_name||meal.display_name) + ' — JSON.fit';
+  }
+
+  function cell(val, label, hl){
+    var v = (val==null) ? '—' : (label==='kcal' ? Math.round(val) : Math.round(val)+'g');
+    return '<div class="macro-cell"><div class="macro-val'+(hl?' hl':'')+'">'+esc(String(v))+'</div><div class="macro-lbl">'+esc(label)+'</div></div>';
+  }
+
+  function renderIngredients(plate, method){
+    var sec=document.getElementById('ing-section');
+    var baseIngs=(method&&method.ingredients)||meal.ingredients||[];
+    var plateIngs=plate.additional_ingredients||[];
+    if(!baseIngs.length && !plateIngs.length){ sec.style.display='none'; return; }
+    sec.style.display='';
+
+    var baseServings = meal.produces_servings || 1;
+    var html='';
+    function rows(list, perServing){
+      return list.map(function(ing){
+        var raw=(ing.base_amount!=null)?ing.base_amount:null;
+        var amtStr;
+        if(raw!=null){
+          var scaled = raw * servings / Math.max(1, perServing);
+          amtStr=formatAmount(scaled, ing.unit);
+        } else {
+          amtStr = ing.amount!=null ? formatAmount(ing.amount*servings, ing.unit) : '';
+        }
+        return '<div class="ing-row"><span class="ing-name">'+esc(ingName(ing))+'</span>'+(amtStr?'<span class="ing-amt">'+esc(amtStr)+'</span>':'')+'</div>';
+      }).join('');
+    }
+    if(baseIngs.length){
+      if(plateIngs.length) html+='<div class="sub-eyebrow">For the base</div>';
+      html+=rows(baseIngs, baseServings);
+    }
+    if(plateIngs.length){
+      html+='<div class="sub-eyebrow" style="margin-top:1.25rem">To plate it up</div>';
+      html+=rows(plateIngs, 1);
+    }
+    document.getElementById('ing-list').innerHTML=html;
+
+    // Show/hide servings stepper depending on whether amounts are scalable
+    var scalable = baseIngs.concat(plateIngs).some(function(i){return i.base_amount!=null||i.amount!=null;});
+    document.getElementById('servings-ctrl').style.display = scalable ? '' : 'none';
+    document.getElementById('servings-val').textContent = servings;
+  }
+
+  function renderSteps(plate, method){
+    var sec=document.getElementById('step-section');
+    var baseSteps=(method&&method.instructions)||meal.instructions||[];
+    var plateSteps=plate.additional_instructions||[];
+    if(!baseSteps.length && !plateSteps.length){ sec.style.display='none'; return; }
+    sec.style.display='';
+
+    var total=baseSteps.length+plateSteps.length;
+    var t = method ? (method.time_total_minutes||0) : 0;
+    t += (plate.assembly_time_minutes||0);
+    var metaTxt = total+' step'+(total===1?'':'s')+(formatTime(t)?' · ~'+formatTime(t):'');
+    document.getElementById('step-meta').textContent = metaTxt;
+
+    var html='', n=0;
+    function block(list,label){
+      var s='';
+      if(label && (baseSteps.length&&plateSteps.length)) s+='<div class="sub-eyebrow" style="margin-top:1rem">'+esc(label)+'</div>';
+      list.forEach(function(st){
+        n++;
+        s+='<div class="step-row"><div class="step-num">'+n+'</div><div class="step-text">'+esc(stepText(st))+'</div></div>';
+      });
+      return s;
+    }
+    html+=block(baseSteps,'Cook the base');
+    html+=block(plateSteps,'Plate it up');
+    document.getElementById('step-list').innerHTML=html;
+  }
+
+  // ── Render: static shell (built once) ──
+  function renderShell(){
+    var plates=meal.plates||[];
+    var methods=meal.methods||[];
+    var multiPlate=plates.length>1;
+    var multiMethod=methods.length>1;
+
+    var plateSwitcher = multiPlate ? (
+      '<div class="section"><span class="eyebrow">Serve as</span><div class="pills" id="plate-pills">'+
+      plates.map(function(p,i){
+        var stunt=p.is_stunt_plate;
+        return '<button class="pill'+(stunt?' stunt':'')+(i===0?' active':'')+'" data-plate="'+i+'">'+(stunt?'<span class="bolt">\u26a1</span>':'')+esc(p.display_name)+'</button>';
+      }).join('')+
+      '</div></div>'
+    ) : '';
+
+    var methodBlock='';
+    if(multiMethod){
+      methodBlock = '<div class="section"><div class="section-head"><span class="eyebrow">Method</span><div class="servings" id="servings-ctrl-top"></div></div><div class="method-list" id="method-list">'+
+        methods.map(function(mm,i){
+          var d=methodDescriptor(mm);
+          return '<button class="method-row'+(i===0?' active':'')+'" data-method="'+i+'"><div class="method-mid"><div class="method-name">'+esc(mm.display_name||('Method '+(i+1)))+'</div>'+(d?'<div class="method-desc">'+esc(d)+'</div>':'')+'</div><div class="method-time">'+esc(formatTime(mm.time_total_minutes))+'</div></button>';
+        }).join('')+
+      '</div></div>';
+    } else if(methods.length===1 && methods[0].time_total_minutes){
+      methodBlock = '<div class="section"><span class="eyebrow">Time</span><div class="single-time">'+esc(methods[0].display_name||'Cook')+' · '+esc(formatTime(methods[0].time_total_minutes))+'</div></div>';
+    }
+
+    var html =
+    '<div class="hero">'+
+      '<a class="hero-back" href="https://json.fit/meals.html" aria-label="Back to meals"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></a>'+
+      '<div id="hero-slot"></div>'+
+    '</div>'+
+    '<template id="hero-fallback"><div class="hero-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M6 11v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8"/></svg></div></template>'+
+
+    '<div class="wrap">'+
+      '<div class="title-block"><div class="cuisine" id="cuisine"></div><h1 class="title" id="title"></h1></div>'+
+
+      plateSwitcher+
+
+      '<div class="section"><span class="eyebrow">Per portion</span><div class="macro-grid" id="macro-slot"></div></div>'+
+
+      '<div class="section" id="desc-slot"><p class="description"></p></div>'+
+
+      methodBlock+
+
+      // Ingredients
+      '<div class="section" id="ing-section" style="display:none">'+
+        '<div class="section-head"><span class="eyebrow">Ingredients</span>'+
+          '<div class="servings" id="servings-ctrl">'+
+            '<span class="servings-lbl">Portions</span>'+
+            '<button class="step-btn" id="serv-minus">\u2212</button>'+
+            '<span class="servings-val" id="servings-val">1</span>'+
+            '<button class="step-btn" id="serv-plus">+</button>'+
+          '</div>'+
+        '</div>'+
+        '<div id="ing-list"></div>'+
+      '</div>'+
+
+      // Reserve note (sits above steps as a before-you-start warning)
+      '<div class="reserve" id="reserve-slot" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><p></p></div>'+
+
+      // Steps (accordion — closed by default; cook mode in app owns the real execution)
+      '<div class="section acc-toggle acc-open" id="step-section" style="display:none">'+
+        '<div class="section-head" id="step-header"><span class="eyebrow">Method</span><div class="section-meta"><span id="step-meta"></span><svg class="acc-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'+
+        '<div class="acc-body" id="step-list"></div>'+
+      '</div>'+
+
+      // App teaser
+      '<div class="teaser">'+
+        '<h3>Cook it hands-free.</h3>'+
+        '<p>This recipe is free in the app \u2014 plus a full cook mode that walks you through every step, with timers that fire as you go.</p>'+
+        '<ul class="teaser-list">'+
+          '<li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Step-by-step cook mode with built-in timers</li>'+
+          '<li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Build it into a plan that hits your macros</li>'+
+          '<li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Auto grocery list & meal-prep schedule</li>'+
+          '<li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Scale portions \u2014 every ingredient recalculates</li>'+
+        '</ul>'+
+        '<a href="'+CONFIG.APP_STORE_URL+'" class="store-link" onclick="gtag(\'event\',\'download_click\',{\'button_location\':\'recipe_teaser\'})"><img src="https://json.fit/images/App_Store.svg" alt="Download on the App Store" onerror="this.outerHTML=\'<span class=&quot;cta-btn&quot; style=&quot;display:inline-flex&quot;>Download on the App Store</span>\'"></a>'+
+        '<div class="teaser-foot">$0 forever \u00b7 no subscription \u00b7 no accounts</div>'+
+      '</div>'+
+    '</div>';
+
+    document.getElementById('content-inner').innerHTML = html +
+      // sticky CTA bar appended outside .wrap so it spans full width
+      '';
+
+    // Sticky CTA bar (added to body once)
+    if(!document.getElementById('cta-bar')){
+      var bar=document.createElement('div');
+      bar.className='cta-bar'; bar.id='cta-bar';
+      bar.innerHTML='<div class="cta-bar-inner"><div class="cta-bar-text"><strong id="cta-bar-title">Make this in JSON.fit</strong><span id="cta-bar-sub"></span></div><a class="cta-btn" href="'+CONFIG.APP_STORE_URL+'" onclick="gtag(\'event\',\'download_click\',{\'button_location\':\'recipe_sticky\'})">Get the app free</a></div>';
+      document.body.appendChild(bar);
+    }
+
+    wireInteractions();
+  }
+
+  function wireInteractions(){
+    // Plate pills
+    var pills=document.querySelectorAll('#plate-pills .pill');
+    pills.forEach(function(p){
+      p.addEventListener('click',function(){
+        plateIdx=parseInt(p.getAttribute('data-plate'),10);
+        pills.forEach(function(x){x.classList.remove('active');});
+        p.classList.add('active');
+        renderDynamic();
+        if(typeof gtag==='function') gtag('event','recipe_plate_switch',{plate:plateIdx});
+      });
+    });
+
+    // Method rows
+    var rows=document.querySelectorAll('#method-list .method-row');
+    rows.forEach(function(r){
+      r.addEventListener('click',function(){
+        methodIdx=parseInt(r.getAttribute('data-method'),10);
+        rows.forEach(function(x){x.classList.remove('active');});
+        r.classList.add('active');
+        renderDynamic();
+      });
+    });
+
+    // Servings stepper
+    var minus=document.getElementById('serv-minus'), plus=document.getElementById('serv-plus');
+    if(minus) minus.addEventListener('click',function(){ servings=clampPortions(servings-1); renderDynamic(); });
+    if(plus) plus.addEventListener('click',function(){ servings=clampPortions(servings+1); renderDynamic(); });
+
+    // Steps accordion
+    var stepHeader=document.getElementById('step-header');
+    if(stepHeader) stepHeader.addEventListener('click',function(){
+      document.getElementById('step-section').classList.toggle('acc-open');
+    });
+  }
+
+  // ── Recipe schema for SEO / AI crawlers ──
+  function updateSchema(plate, method){
+    var old=document.getElementById('recipe-schema'); if(old) old.remove();
+    var m=plate.plate_macros||{};
+    var img=imageUrl(plate);
+    var ingredients=[];
+    var baseI=(method&&method.ingredients)||meal.ingredients||[];
+    var plateI=plate.additional_ingredients||[];
+    baseI.concat(plateI).forEach(function(i){ ingredients.push(ingName(i)); });
+    var steps=[];
+    var baseS=(method&&method.instructions)||meal.instructions||[];
+    (baseS).concat(plate.additional_instructions||[]).forEach(function(s){ var t=stepText(s); if(t) steps.push({"@type":"HowToStep","text":t}); });
+
+    var data={
+      "@context":"https://schema.org","@type":"Recipe",
+      "name":plate.display_name||meal.display_name,
+      "url":window.location.href,
+      "recipeCuisine":titleCase(meal.cuisine||''),
+      "author":{"@type":"Organization","name":"JSON.fit"}
+    };
+    if(img) data.image=[img];
+    if(plate.description) data.description=plate.description;
+    if(method && method.time_total_minutes) data.totalTime='PT'+method.time_total_minutes+'M';
+    if(ingredients.length) data.recipeIngredient=ingredients;
+    if(steps.length) data.recipeInstructions=steps;
+    var nut={"@type":"NutritionInformation"};
+    if(m.kcal!=null) nut.calories=Math.round(m.kcal)+' kcal';
+    if(m.protein_g!=null) nut.proteinContent=Math.round(m.protein_g)+' g';
+    if(m.carbs_g!=null) nut.carbohydrateContent=Math.round(m.carbs_g)+' g';
+    if(m.fat_g!=null) nut.fatContent=Math.round(m.fat_g)+' g';
+    if(Object.keys(nut).length>1) data.nutrition=nut;
+
+    var s=document.createElement('script');
+    s.type='application/ld+json'; s.id='recipe-schema';
+    s.textContent=JSON.stringify(data);
+    document.head.appendChild(s);
+
+    // og/meta
+    setMeta('description', (plate.description || ('High-protein '+titleCase(meal.cuisine||'meal')+' — '+Math.round(m.protein_g||0)+'g protein, '+Math.round(m.kcal||0)+' kcal. Free in JSON.fit.')));
+    setMeta('og:title', (plate.display_name||meal.display_name)+' — JSON.fit', true);
+    if(img) setMeta('og:image', img, true);
+  }
+  function setMeta(name, val, isProp){
+    var sel = isProp ? 'meta[property="'+name+'"]' : 'meta[name="'+name+'"]';
+    var el=document.querySelector(sel);
+    if(!el){ el=document.createElement('meta'); el.setAttribute(isProp?'property':'name',name); document.head.appendChild(el); }
+    el.setAttribute('content',val);
+  }
+
+  // ── Lightbox ──
+  function openLb(src,alt){ var lb=document.getElementById('lightbox'); document.getElementById('lbImg').src=src; document.getElementById('lbImg').alt=alt||''; lb.classList.add('open'); document.body.style.overflow='hidden'; }
+  document.getElementById('lightbox').addEventListener('click',function(){ this.classList.remove('open'); document.body.style.overflow=''; });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; } });
+
+  // ── State switching ──
+  function showState(id){ document.querySelectorAll('.state').forEach(function(el){el.classList.remove('active');}); document.getElementById(id).classList.add('active'); }
+  function showError(title,msg){ if(title)document.getElementById('error-title').textContent=title; if(msg)document.getElementById('error-msg').textContent=msg; showState('state-error'); }
+
+  // ── Init ──
+  function init(){
+    var slug=getMealSlug();
+    if(!slug){ showError('No recipe selected','Pick a meal from the library to see its recipe.'); return; }
+    fetchMeals().then(function(data){
+      meal=data[slug];
+      if(!meal){ showError(); return; }
+      plateIdx=0; methodIdx=0; servings=1;
+      renderShell();
+      renderDynamic();
+      showState('state-content');
+      if(typeof gtag==='function') gtag('event','recipe_view',{meal:slug});
+    }).catch(function(){
+      showError("Couldn't load this recipe","Check your connection and try again, or browse the full library.");
+    });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>            "@type": "Answer",
             "text": "JSON.fit is completely free. Workouts and nutrition — meal plans, macro tracking, grocery lists, meal prep, and pantry intelligence — are all free, with no subscription, no paywall, and no in-app purchases."
           }
         },
