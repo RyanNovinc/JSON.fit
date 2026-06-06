@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meal Library — JSON.fit</title>
+<meta name="description" content="Browse every high-protein meal in JSON.fit — exact ingredients, step-by-step, built for eating big. Tap any meal for the full recipe.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The JSON.fit Meal Library">
+<meta property="og:description" content="High-protein meals built for eating big — exact ingredients, step-by-step. Tap any meal for the full recipe.">
+<meta property="og:image" content="https://json.fit/og-image.png">
+<meta property="og:url" content="https://json.fit/meals.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The JSON.fit Meal Library">
+<meta name="twitter:description" content="High-protein meals built for eating big. Tap any meal for the full recipe.">
+<meta name="twitter:image" content="https://json.fit/og-image.png">
+<link rel="canonical" href="https://json.fit/meals.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#22c55e; --green-soft:rgba(34,197,94,0.08); --green-glow:rgba(34,197,94,0.32);
+  --cyan:#22d3ee;
+  --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
+  --border:rgba(255,255,255,0.06); --border-green:rgba(34,197,94,0.18);
+  --text:#f0f0f2; --text-2:#9898a4; --text-3:#55555f;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px;min-height:100vh;display:flex;flex-direction:column}
+.green{color:var(--green)}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:100;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,0.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.4rem}
+.nav-cta{background:var(--green);color:#001b08;padding:.4rem 1rem;border-radius:8px;font-weight:600;font-size:.78rem;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--green-glow)}
+
+/* Header */
+header{max-width:1080px;margin:0 auto;width:100%;padding:3rem 1.5rem 1.5rem;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .9rem;border:1px solid var(--border-green);border-radius:100px;font-family:'DM Mono',monospace;font-size:.66rem;color:var(--green);background:var(--green-soft);letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.25rem}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:.6rem}
+.sub{color:var(--text-2);font-size:1rem;max-width:520px;margin:0 auto}
+
+/* Controls */
+.controls{max-width:1080px;margin:0 auto;width:100%;padding:1.5rem 1.5rem 0;display:flex;flex-direction:column;gap:1rem}
+.search-wrap{position:relative;max-width:420px;width:100%;margin:0 auto}
+.search-wrap svg{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-3)}
+.search{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem 1rem .8rem 2.6rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.95rem;transition:border-color .2s}
+.search::placeholder{color:var(--text-3)}
+.search:focus{outline:none;border-color:var(--border-green)}
+.chips{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
+.chip{padding:.45rem .95rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.03em;cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:var(--border-green)}
+.chip.active{background:var(--green-soft);border-color:var(--border-green);color:var(--green)}
+.count{text-align:center;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text-3);letter-spacing:.06em}
+
+/* Main / grid */
+main{flex:1;max-width:1080px;margin:0 auto;width:100%;padding:1.75rem 1.5rem 4rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.1rem}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:.75rem}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
+
+.meal-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;cursor:pointer;transition:border-color .2s,transform .2s}
+.meal-card:hover{border-color:var(--border-green);transform:translateY(-3px)}
+.meal-card:hover .mc-name{color:var(--green)}
+.mc-imgwrap{position:relative;width:100%;aspect-ratio:16/11;background:linear-gradient(135deg,rgba(34,197,94,0.14),var(--surface-2) 72%);overflow:hidden}
+.mc-img{width:100%;height:100%;object-fit:cover;display:block}
+.mc-ways{position:absolute;left:.6rem;bottom:.6rem;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.04em;color:var(--text);background:rgba(5,5,8,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:6px;padding:.22rem .5rem}
+.mc-body{padding:.95rem 1rem 1.1rem;display:flex;flex-direction:column;gap:.45rem;flex:1}
+.mc-cuisine{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.mc-name{font-size:.98rem;font-weight:700;line-height:1.25;color:var(--text);transition:color .2s}
+.mc-macros{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:auto;padding-top:.35rem}
+.mc-macro{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-2);padding:.18rem .45rem;border:1px solid var(--border);border-radius:4px;letter-spacing:.02em}
+.mc-kcal{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--green);padding:.18rem .45rem;border:1px solid var(--border-green);border-radius:4px;background:var(--green-soft);letter-spacing:.02em}
+
+/* States */
+.loading{display:flex;flex-direction:column;align-items:center;gap:1.25rem;padding:4rem 1rem}
+.spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase}
+.empty{display:none;text-align:center;padding:3rem 1rem;color:var(--text-2);font-size:.95rem}
+.empty strong{color:var(--text);display:block;font-size:1.1rem;font-weight:700;margin-bottom:.4rem}
+
+/* Bottom CTA */
+.foot-cta{max-width:560px;margin:1rem auto 0;text-align:center;padding:2.25rem 1.5rem;border-top:1px solid var(--border)}
+.foot-cta h2{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+.foot-cta p{color:var(--text-2);font-size:.92rem;margin-bottom:1.25rem}
+.cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem 2rem;border-radius:12px;font-size:1rem;font-weight:700;text-decoration:none;background:var(--green);color:#001b08;transition:transform .25s,box-shadow .25s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--green-glow)}
+
+footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
+.foot-l{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3)}
+.foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem;transition:color .2s}
+.foot-l a:hover{color:var(--green)}
+</style>
+</head>
+<body>
+<nav>
+  <a href="https://json.fit" class="nav-logo">
+    <svg width="18" height="12" viewBox="0 0 22 14" fill="none">
+      <rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
+      <rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
+      <rect x="4" y="5" width="14" height="4" rx="2" fill="#22c55e"/>
+    </svg>
+    JSON<span class="green">.fit</span>
+  </a>
+  <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'meals_nav'})">Get the app</a>
+</nav>
+
+<header>
+  <div class="eyebrow"><span class="eyebrow-dot"></span> The Meal Library</div>
+  <h1>Every meal,<br><span class="green">step-by-step.</span></h1>
+  <p class="sub">High-protein meals built for eating big — exact ingredients and steps. Tap any meal for the full recipe.</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="search" id="search" placeholder="Search meals…" autocomplete="off">
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="count" id="count"></div>
+</div>
+
+<main>
+  <div class="loading" id="loading"><div class="spinner"></div><div class="loading-text">Loading meals</div></div>
+  <div class="grid" id="grid" style="display:none"></div>
+  <div class="empty" id="empty"><strong>No meals match that.</strong>Try a different search or filter.</div>
+</main>
+
+<div class="foot-cta">
+  <h2>Cook these in the app.</h2>
+  <p>Get JSON.fit for live timers, hands-free cook mode, and a plan that builds these meals around your macros.</p>
+  <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'meals_footer'})">Download on the App Store</a>
+</div>
+
+<footer>
+  <div class="foot-l">
+    <a href="https://json.fit">json.fit</a>
+    <a href="https://json.fit/privacy-policy.html">Privacy</a>
+    <a href="https://json.fit/terms-of-service.html">Terms</a>
+  </div>
+</footer>
+
+<!-- Offline/preview fallback (3 sample meals). Live page reads /r/meals.json as the source of truth. -->
+<script>
+window.MEALS_DATA = {
+ "king_kong_chocolate":{"slug":"king_kong_chocolate","display_name":"King Kong Chocolate","cuisine":"smoothie","primary_protein":"dairy","image_filename":"king_kong_chocolate.png","plates":[{"display_name":"King Kong Chocolate","plate_macros":{"kcal":1418,"protein_g":85,"carbs_g":93,"fat_g":79}}]},
+ "butter_chicken":{"slug":"butter_chicken","display_name":"Butter Chicken with Basmati Rice","cuisine":"indian","primary_protein":"chicken","image_filename":"butter_chicken_with_rice.png","plates":[{"display_name":"Butter Chicken","plate_macros":{"kcal":490,"protein_g":48,"carbs_g":14,"fat_g":28}},{"display_name":"Butter Chicken with Basmati Rice","image_filename":"Butter Chicken with Basmati Rice.png","plate_macros":{"kcal":720,"protein_g":52,"carbs_g":68,"fat_g":24}}]},
+ "pulled_pork":{"slug":"pulled_pork","display_name":"Slow-Cooked BBQ Pulled Pork","cuisine":"australian","primary_protein":"pork","image_filename":"pulled_pork.png","plates":[{"display_name":"BBQ Pulled Pork","plate_macros":{"kcal":610,"protein_g":48,"carbs_g":28,"fat_g":32}},{"display_name":"BBQ Pulled Pork Burger","plate_macros":{"kcal":1210,"protein_g":61,"carbs_g":76,"fat_g":72}},{"display_name":"Pulled Pork Rice Bowl","plate_macros":{"kcal":1330,"protein_g":61,"carbs_g":118,"fat_g":66}},{"display_name":"Pulled Pork Tacos","plate_macros":{"kcal":1155,"protein_g":61,"carbs_g":55,"fat_g":74}},{"display_name":"Loaded Pulled Pork Baked Potato","plate_macros":{"kcal":1177,"protein_g":60,"carbs_g":90,"fat_g":63}},{"display_name":"Pulled Pork Mac & Cheese Stack","is_stunt_plate":true,"plate_macros":{"kcal":1907,"protein_g":102,"carbs_g":124,"fat_g":109}}]}
+};
+
+var CONFIG = {
+  APP_STORE_URL: 'https://apps.apple.com/au/app/json-fit/id6758357834',
+  IMAGE_BASE: 'https://json.fit/images/meals/',
+  RECIPE_BASE: 'https://json.fit/r/?meal=',
+  MEALS_JSON: '/r/meals.json'
+};
+
+// ── helpers (mirrors the recipe page logic so images resolve identically) ──
+function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function titleCase(s){ return String(s).replace(/(^|[\s_-])(\w)/g,function(_,sep,ch){return sep.replace('_',' ')+ch.toUpperCase();}); }
+function slugifyImage(f){
+  if(!f) return '';
+  var ext=(f.match(/\.(png|jpe?g|webp)$/i)||['','png'])[1].toLowerCase();
+  var base=f.replace(/\.(png|jpe?g|webp)$/i,'');
+  var slug=base.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/[\s_]+/g,'-').replace(/-+/g,'-').toLowerCase();
+  return slug+'.'+ext;
+}
+function canonicalPlate(meal){
+  var p=meal.plates||[];
+  var byName=p.filter(function(x){return x.display_name===meal.display_name;})[0];
+  if(byName) return byName;
+  var nonStunt=p.filter(function(x){return !x.is_stunt_plate;})[0];
+  return nonStunt||p[0]||{};
+}
+function imageUrl(meal){
+  var canon=canonicalPlate(meal);
+  var hosted=(canon&&canon.photo_url)||meal.photo_url;
+  if(hosted) return hosted;
+  var file=(canon&&canon.image_filename)||meal.image_filename;
+  return file ? CONFIG.IMAGE_BASE+slugifyImage(file) : '';
+}
+
+async function loadMeals(){
+  try{
+    var ctrl=new AbortController();
+    var t=setTimeout(function(){ctrl.abort();},3000);
+    var res=await fetch(CONFIG.MEALS_JSON,{signal:ctrl.signal});
+    clearTimeout(t);
+    if(res.ok){ var d=await res.json(); if(d && Object.keys(d).length) return d; }
+  }catch(e){}
+  return window.MEALS_DATA || {};
+}
+
+// ── render ──
+var grid=document.getElementById('grid');
+var loadingEl=document.getElementById('loading');
+var emptyEl=document.getElementById('empty');
+var countEl=document.getElementById('count');
+var chipsEl=document.getElementById('chips');
+var searchEl=document.getElementById('search');
+var activeCuisine='all';
+
+function cardHTML(meal){
+  var canon=canonicalPlate(meal);
+  var m=canon.plate_macros||{};
+  var img=imageUrl(meal);
+  var ways=(meal.plates||[]).length;
+  var recipe=CONFIG.RECIPE_BASE+encodeURIComponent(meal.slug);
+  var imgTag = img ? '<img class="mc-img" src="'+esc(img)+'" alt="'+esc(meal.display_name)+'" loading="lazy" onerror="this.style.display=\'none\'">' : '';
+  var waysBadge = ways>1 ? '<span class="mc-ways">'+ways+' ways to serve</span>' : '';
+  var sub = titleCase(meal.cuisine||'Meal') + (meal.primary_protein?' · '+titleCase(meal.primary_protein):'');
+  return '<a class="meal-card" href="'+esc(recipe)+'" data-name="'+esc(String(meal.display_name).toLowerCase())+'" data-cuisine="'+esc(meal.cuisine||'')+'">'
+    +'<div class="mc-imgwrap">'+imgTag+waysBadge+'</div>'
+    +'<div class="mc-body">'
+      +'<div class="mc-cuisine">'+esc(sub)+'</div>'
+      +'<div class="mc-name">'+esc(meal.display_name)+'</div>'
+      +'<div class="mc-macros">'
+        +'<span class="mc-macro">'+esc(String(m.protein_g||0))+'g P</span>'
+        +'<span class="mc-macro">'+esc(String(m.carbs_g||0))+'g C</span>'
+        +'<span class="mc-macro">'+esc(String(m.fat_g||0))+'g F</span>'
+        +'<span class="mc-kcal">'+esc(String(m.kcal||0))+' kcal</span>'
+      +'</div>'
+    +'</div>'
+  +'</a>';
+}
+
+function buildChips(meals){
+  var cuisines=[];
+  meals.forEach(function(m){ if(m.cuisine && cuisines.indexOf(m.cuisine)===-1) cuisines.push(m.cuisine); });
+  cuisines.sort();
+  var html='<button class="chip active" data-cuisine="all">All</button>';
+  cuisines.forEach(function(c){ html+='<button class="chip" data-cuisine="'+esc(c)+'">'+esc(titleCase(c))+'</button>'; });
+  chipsEl.innerHTML=html;
+  chipsEl.querySelectorAll('.chip').forEach(function(chip){
+    chip.addEventListener('click',function(){
+      chipsEl.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});
+      chip.classList.add('active');
+      activeCuisine=chip.getAttribute('data-cuisine');
+      applyFilter();
+    });
+  });
+}
+
+function applyFilter(){
+  var term=(searchEl.value||'').trim().toLowerCase();
+  var cards=grid.querySelectorAll('.meal-card');
+  var shown=0;
+  cards.forEach(function(c){
+    var okName=!term || c.getAttribute('data-name').indexOf(term)!==-1;
+    var okCuisine=activeCuisine==='all' || c.getAttribute('data-cuisine')===activeCuisine;
+    var show=okName && okCuisine;
+    c.style.display=show?'':'none';
+    if(show) shown++;
+  });
+  countEl.textContent=shown+(shown===1?' meal':' meals');
+  emptyEl.style.display=shown===0?'block':'none';
+}
+
+(async function(){
+  var data=await loadMeals();
+  var meals=Object.keys(data).map(function(k){ return data[k]; }).filter(function(m){ return m && m.display_name; });
+  loadingEl.style.display='none';
+  if(!meals.length){ emptyEl.querySelector('strong').textContent='No meals to show yet.'; emptyEl.style.display='block'; return; }
+  grid.innerHTML=meals.map(cardHTML).join('');
+  grid.style.display='';
+  buildChips(meals);
+  countEl.textContent=meals.length+(meals.length===1?' meal':' meals');
+  searchEl.addEventListener('input',applyFilter);
+})();
+</script>
+</body>
+</html>
