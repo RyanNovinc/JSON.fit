@@ -700,12 +700,16 @@
         .pc-dot.on { background:var(--cyan); transform:scale(1.3); }
     
         /* ── Meal Library ── */
-        .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:14px; overflow:hidden; }
-        .meal-card { background:var(--surface); padding:1.5rem; display:flex; flex-direction:column; gap:0.6rem; transition:background 0.3s; min-height:150px; }
-        .meal-card:hover { background:var(--surface-2); }
+        .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+        .meal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; text-decoration:none; color:inherit; transition:border-color 0.2s, transform 0.2s; }
+        .meal-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
+        .meal-card picture { display:block; }
+        .meal-card img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--surface-2); }
+        .meal-body { padding:1rem 1.15rem 1.2rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:auto; }
+        .meal-cuisine { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.13em; color:var(--cyan); }
         .meal-name { font-size:1rem; font-weight:700; color:var(--text); line-height:1.3; }
         .meal-desc { font-size:0.8rem; color:var(--text-3); line-height:1.6; }
-        .meal-macros { display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:auto; padding-top:0.5rem; }
+        .meal-macros { display:flex; gap:0.4rem; flex-wrap:wrap; }
         .meal-macro { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); padding:0.2rem 0.5rem; border:1px solid var(--border-cyan); border-radius:4px; background:var(--cyan-soft); letter-spacing:0.02em; }
         .meal-kcal { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--green); padding:0.2rem 0.5rem; border:1px solid rgba(34,197,94,0.2); border-radius:4px; background:rgba(34,197,94,0.05); letter-spacing:0.02em; }
         .meals-cta { display:inline-flex; align-items:center; gap:0.4rem; margin-top:1.75rem; padding:0.7rem 1.5rem; border-radius:10px; font-size:0.9rem; font-weight:700; text-decoration:none; background:var(--cyan); color:#000; transition:all 0.25s; font-family:'Outfit',sans-serif; }
@@ -878,41 +882,78 @@
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Real meals,<br><span class="cyan">step-by-step.</span></h2>
             <p style="margin:0 auto;">Browse a whole library of high-protein meals — exact ingredients, exact steps, built for eating big. Free to use, no AI needed.</p>
         </div>
-        <!-- SAMPLE MEALS — replace these six cards with your real meal database (name, short description, macros, kcal) -->
+        <!-- FEATURED MEALS — six real meals from the library. Each links to meals.html. -->
+        <!-- Images: optimised WebP (~640px) with PNG fallback. WebP files live at images/meals/<slug>.webp -->
         <div class="meal-grid sa-stagger">
-            <div class="meal-card">
-                <div class="meal-name">Chicken &amp; Rice Power Bowl</div>
-                <div class="meal-desc">Grilled chicken, jasmine rice, roast veg, teriyaki.</div>
-                <div class="meal-macros"><span class="meal-macro">58g P</span><span class="meal-macro">82g C</span><span class="meal-macro">14g F</span><span class="meal-kcal">720 kcal</span></div>
-            </div>
-            <div class="meal-card">
-                <div class="meal-name">Beef Mince Pasta Bake</div>
-                <div class="meal-desc">Lean beef, penne, napoli sauce, mozzarella.</div>
-                <div class="meal-macros"><span class="meal-macro">48g P</span><span class="meal-macro">76g C</span><span class="meal-macro">22g F</span><span class="meal-kcal">740 kcal</span></div>
-            </div>
-            <div class="meal-card">
-                <div class="meal-name">Overnight Oats &amp; Whey</div>
-                <div class="meal-desc">Rolled oats, whey, banana, peanut butter, milk.</div>
-                <div class="meal-macros"><span class="meal-macro">42g P</span><span class="meal-macro">68g C</span><span class="meal-macro">16g F</span><span class="meal-kcal">580 kcal</span></div>
-            </div>
-            <div class="meal-card">
-                <div class="meal-name">Steak Burrito Bowl</div>
-                <div class="meal-desc">Rump steak, rice, black beans, corn, salsa.</div>
-                <div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">70g C</span><span class="meal-macro">20g F</span><span class="meal-kcal">700 kcal</span></div>
-            </div>
-            <div class="meal-card">
-                <div class="meal-name">Salmon, Potato &amp; Greens</div>
-                <div class="meal-desc">Baked salmon, roast potato, broccoli, olive oil.</div>
-                <div class="meal-macros"><span class="meal-macro">46g P</span><span class="meal-macro">54g C</span><span class="meal-macro">28g F</span><span class="meal-kcal">660 kcal</span></div>
-            </div>
-            <div class="meal-card">
-                <div class="meal-name">Greek Yoghurt Protein Bowl</div>
-                <div class="meal-desc">Greek yoghurt, granola, berries, honey, almonds.</div>
-                <div class="meal-macros"><span class="meal-macro">38g P</span><span class="meal-macro">48g C</span><span class="meal-macro">12g F</span><span class="meal-kcal">460 kcal</span></div>
-            </div>
+            <a class="meal-card" href="meals.html">
+                <picture>
+                    <source srcset="images/meals/pulled-pork.webp" type="image/webp">
+                    <img src="images/meals/pulled-pork.png" alt="Slow-Cooked BBQ Pulled Pork" loading="lazy" width="640" height="360">
+                </picture>
+                <div class="meal-body">
+                    <div class="meal-cuisine">Australian &middot; Pork</div>
+                    <div class="meal-name">Slow-Cooked BBQ Pulled Pork</div>
+                    <div class="meal-macros"><span class="meal-macro">48g P</span><span class="meal-macro">28g C</span><span class="meal-macro">32g F</span><span class="meal-kcal">610 kcal</span></div>
+                </div>
+            </a>
+            <a class="meal-card" href="meals.html">
+                <picture>
+                    <source srcset="images/meals/lamb-shanks.webp" type="image/webp">
+                    <img src="images/meals/lamb-shanks.png" alt="Red Wine-Braised Lamb Shanks" loading="lazy" width="640" height="360">
+                </picture>
+                <div class="meal-body">
+                    <div class="meal-cuisine">Australian &middot; Lamb</div>
+                    <div class="meal-name">Red Wine&ndash;Braised Lamb Shanks</div>
+                    <div class="meal-macros"><span class="meal-macro">54g P</span><span class="meal-macro">14g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">825 kcal</span></div>
+                </div>
+            </a>
+            <a class="meal-card" href="meals.html">
+                <picture>
+                    <source srcset="images/meals/massaman.webp" type="image/webp">
+                    <img src="images/meals/massaman.png" alt="Slow-Cooked Massaman Beef Curry" loading="lazy" width="640" height="360">
+                </picture>
+                <div class="meal-body">
+                    <div class="meal-cuisine">Thai &middot; Beef</div>
+                    <div class="meal-name">Slow-Cooked Massaman Beef Curry</div>
+                    <div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">42g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">890 kcal</span></div>
+                </div>
+            </a>
+            <a class="meal-card" href="meals.html">
+                <picture>
+                    <source srcset="images/meals/steak-and-eggs.webp" type="image/webp">
+                    <img src="images/meals/steak-and-eggs.png" alt="Steak and Eggs" loading="lazy" width="640" height="360">
+                </picture>
+                <div class="meal-body">
+                    <div class="meal-cuisine">Breakfast &middot; Beef</div>
+                    <div class="meal-name">Steak &amp; Eggs</div>
+                    <div class="meal-macros"><span class="meal-macro">65g P</span><span class="meal-macro">37g C</span><span class="meal-macro">44g F</span><span class="meal-kcal">820 kcal</span></div>
+                </div>
+            </a>
+            <a class="meal-card" href="meals.html">
+                <picture>
+                    <source srcset="images/meals/protein-pancakes.webp" type="image/webp">
+                    <img src="images/meals/protein-pancakes.png" alt="Protein Pancakes" loading="lazy" width="640" height="360">
+                </picture>
+                <div class="meal-body">
+                    <div class="meal-cuisine">Breakfast &middot; Dairy</div>
+                    <div class="meal-name">Protein Pancakes</div>
+                    <div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">74g C</span><span class="meal-macro">27g F</span><span class="meal-kcal">760 kcal</span></div>
+                </div>
+            </a>
+            <a class="meal-card" href="meals.html">
+                <picture>
+                    <source srcset="images/meals/king-kong-chocolate.webp" type="image/webp">
+                    <img src="images/meals/king-kong-chocolate.png" alt="King Kong Chocolate protein smoothie" loading="lazy" width="640" height="360">
+                </picture>
+                <div class="meal-body">
+                    <div class="meal-cuisine">Smoothie &middot; Dairy</div>
+                    <div class="meal-name">King Kong Chocolate</div>
+                    <div class="meal-macros"><span class="meal-macro">85g P</span><span class="meal-macro">93g C</span><span class="meal-macro">79g F</span><span class="meal-kcal">1418 kcal</span></div>
+                </div>
+            </a>
         </div>
         <div style="text-align:center;">
-            <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="meals-cta" onclick="gtag('event','download_click',{'button_location':'meals'})">Browse all meals free &#8594;</a>
+            <a href="meals.html" class="meals-cta" onclick="gtag('event','view_meals',{'button_location':'meals'})">Browse all meals free &#8594;</a>
         </div>
     </div>
 </section>
