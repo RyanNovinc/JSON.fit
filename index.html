@@ -537,6 +537,7 @@
 
         /* ── Meal Library ── */
         .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+        @media (max-width:600px) { .meal-card.meal-extra { display:none; } }
         .meal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; text-decoration:none; color:inherit; transition:border-color 0.2s, transform 0.2s; }
         .meal-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
         .meal-card picture { display:block; }
@@ -654,6 +655,22 @@
             .qual { padding:2rem 1.25rem; }
             .engine-result { padding:1.5rem; }
         }
+        /* ── Workout Programs (homepage section) ── */
+        .prog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+        .prog-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.4rem; text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:0.6rem; transition:border-color 0.2s, transform 0.2s; }
+        .prog-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
+        .prog-card:hover .prog-open { gap:0.55rem; }
+        .prog-split { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--cyan); }
+        .prog-card h3 { font-size:1.1rem; font-weight:700; line-height:1.25; }
+        .wd-block { display:flex; flex-direction:column; gap:0.4rem; }
+        .week-dots { display:flex; gap:5px; align-items:center; }
+        .wd { width:13px; height:13px; border-radius:4px; background:var(--surface-2); border:1px solid rgba(255,255,255,0.1); }
+        .wd.on { background:var(--cyan); border-color:var(--cyan); }
+        .wd-cap { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--text-3); letter-spacing:0.04em; }
+        .prog-meta { display:flex; flex-wrap:wrap; gap:0.35rem; }
+        .prog-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-2); padding:0.18rem 0.45rem; border:1px solid var(--border); border-radius:4px; }
+        .prog-open { margin-top:auto; font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); display:flex; align-items:center; gap:0.3rem; transition:gap 0.2s; }
+        @media (max-width:860px) { .prog-grid { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
@@ -667,6 +684,7 @@
     <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     <ul class="nav-links" id="navLinks">
         <li><a href="#meals">Meals</a></li>
+        <li><a href="#programs">Programs</a></li>
         <li><a href="#how">How It Works</a></li>
         <li><a href="#compare">Compare</a></li>
         <li><a href="blog.html">Blog</a></li>
@@ -680,7 +698,7 @@
 <section class="hero">
     <div class="hero-inner">
         <div class="badge"><span class="badge-dot"></span> For skinny guys who can't eat enough</div>
-        <h1>Bulking meals built to<br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
+        <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
         <p class="hero-sub">Big, high-protein meals broken down to the exact ingredient and step, so hitting a surplus stops being a chore. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
         <div class="hero-btns">
             <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
@@ -721,7 +739,7 @@
                     <div class="meal-macros"><span class="meal-macro">48g P</span><span class="meal-macro">28g C</span><span class="meal-macro">32g F</span><span class="meal-kcal">610 kcal</span></div>
                 </div>
             </a>
-            <a class="meal-card" href="meals.html">
+            <a class="meal-card meal-extra" href="meals.html">
                 <img src="images/meals/lamb-shanks.webp" data-fallback="images/meals/lamb-shanks.png" alt="Red Wine-Braised Lamb Shanks" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                 <div class="meal-body">
                     <div class="meal-cuisine">Australian &middot; Lamb</div>
@@ -729,7 +747,7 @@
                     <div class="meal-macros"><span class="meal-macro">54g P</span><span class="meal-macro">14g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">825 kcal</span></div>
                 </div>
             </a>
-            <a class="meal-card" href="meals.html">
+            <a class="meal-card meal-extra" href="meals.html">
                 <img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="Slow-Cooked Massaman Beef Curry" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                 <div class="meal-body">
                     <div class="meal-cuisine">Thai &middot; Beef</div>
@@ -737,7 +755,7 @@
                     <div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">42g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">890 kcal</span></div>
                 </div>
             </a>
-            <a class="meal-card" href="meals.html">
+            <a class="meal-card meal-extra" href="meals.html">
                 <img src="images/meals/steak-and-eggs.webp" data-fallback="images/meals/steak-and-eggs.png" alt="Steak and Eggs" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                 <div class="meal-body">
                     <div class="meal-cuisine">Breakfast &middot; Beef</div>
@@ -802,18 +820,6 @@
             </div>
         </div>
 
-        <div class="engine-result sa sa-up">
-            <div class="er-stats">
-                <div class="er-stat"><div class="n count-up" data-target="3629" data-suffix="" data-prefix="">3,629</div><div class="s">kcal · Saturday</div></div>
-                <div class="er-stat"><div class="n count-up" data-target="230" data-suffix="" data-prefix="$">$230</div><div class="s">weekly groceries · Aldi</div></div>
-            </div>
-            <div class="er-macros">
-                <div class="er-row"><span class="er-name">Protein</span><div class="er-wrap"><div class="er-bar" data-w="62%"></div></div><span class="er-val">229g</span></div>
-                <div class="er-row"><span class="er-name">Carbs</span><div class="er-wrap"><div class="er-bar" data-w="100%"></div></div><span class="er-val">368g</span></div>
-                <div class="er-row"><span class="er-name">Fat</span><div class="er-wrap"><div class="er-bar" data-w="38%"></div></div><span class="er-val">139g</span></div>
-                <div class="er-row"><span class="er-name">Fibre</span><div class="er-wrap"><div class="er-bar" data-w="18%"></div></div><span class="er-val">42g</span></div>
-            </div>
-        </div>
         <p class="engine-foot sa sa-up">Same system builds your <strong>training program</strong> too: splits, volume per muscle, deloads, progressive overload, up to 48 weeks. <span class="cyan">Also free.</span></p>
     </div>
 </section>
@@ -926,6 +932,50 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- WORKOUT PROGRAMS -->
+<section class="section" id="programs" style="padding-top:2rem;">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">Free Workout Programs</span>
+            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Or import a full<br><span class="cyan">year of training.</span></h2>
+            <p style="margin:0 auto;">Don't want to build your own? Import a complete, periodised program, up to 48 weeks, straight into the app. Free, no AI step needed.</p>
+        </div>
+        <div class="prog-grid sa-stagger">
+            <a class="prog-card" href="p/?program=ppl-hypertrophy" onclick="gtag('event','view_program',{'program':'ppl-hypertrophy'})">
+                <span class="prog-split">Push / Pull / Legs</span>
+                <h3>PPL Hypertrophy</h3>
+                <div class="wd-block">
+                    <div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div>
+                    <div class="wd-cap">6 training days · 1 rest</div>
+                </div>
+                <div class="prog-meta"><span class="prog-chip">48 weeks</span><span class="prog-chip">Intermediate+</span></div>
+                <span class="prog-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+            <a class="prog-card" href="p/?program=upper-lower-lean-bulk" onclick="gtag('event','view_program',{'program':'upper-lower-lean-bulk'})">
+                <span class="prog-split">Upper / Lower</span>
+                <h3>Lean Bulk U/L</h3>
+                <div class="wd-block">
+                    <div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd"></span></div>
+                    <div class="wd-cap">4 training days · 3 rest</div>
+                </div>
+                <div class="prog-meta"><span class="prog-chip">48 weeks</span><span class="prog-chip">Beginner+</span></div>
+                <span class="prog-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+            <a class="prog-card" href="p/?program=full-body-beginner" onclick="gtag('event','view_program',{'program':'full-body-beginner'})">
+                <span class="prog-split">Full Body</span>
+                <h3>Beginner Bulk</h3>
+                <div class="wd-block">
+                    <div class="week-dots"><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span><span class="wd"></span></div>
+                    <div class="wd-cap">3 training days · 4 rest</div>
+                </div>
+                <div class="prog-meta"><span class="prog-chip">48 weeks</span><span class="prog-chip">Beginner</span></div>
+                <span class="prog-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
         </div>
     </div>
 </section>
