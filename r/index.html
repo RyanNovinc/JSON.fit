@@ -279,6 +279,14 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     return file ? CONFIG.IMAGE_BASE+slugifyImage(file) : '';
   }
 
+  function webpUrl(plate){
+    var hosted=(plate&&plate.photo_url)||meal.photo_url;
+    if(hosted) return '';
+    var file=(plate&&plate.image_filename)||meal.image_filename;
+    if(!file) return '';
+    return CONFIG.IMAGE_BASE+slugifyImage(file).replace(/\.(png|jpe?g)$/i,'.webp');
+  }
+
   // Ingredient display name — prefer explicit names, fall back to title-cased id
   function ingName(ing){
     return ing.display_name || ing.name || titleCase(ing.ingredient_id || ing.id || 'Ingredient');
@@ -343,10 +351,11 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
     // Hero image
     var img=imageUrl(plate);
+    var webp=webpUrl(plate);
     var heroEl=document.getElementById('hero-slot');
     if(heroEl){
       heroEl.innerHTML = img
-        ? '<img class="hero-img" src="'+esc(img)+'" alt="'+esc(plate.display_name||meal.display_name)+'" id="hero-photo" onerror="this.parentElement.innerHTML=document.getElementById(\'hero-fallback\').innerHTML">'
+        ? '<img class="hero-img" src="'+esc(webp||img)+'" data-fallback="'+esc(img)+'" alt="'+esc(plate.display_name||meal.display_name)+'" id="hero-photo" fetchpriority="high" decoding="async" onerror="if(this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}else{this.parentElement.innerHTML=document.getElementById(\'hero-fallback\').innerHTML;}">'
         : '<div class="hero-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M6 11v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8"/></svg></div>';
       var photo=document.getElementById('hero-photo');
       if(photo) photo.addEventListener('click',function(){openLb(photo.src,photo.alt);});
