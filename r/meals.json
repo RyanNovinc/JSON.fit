@@ -1,7 +1,7 @@
 {
   "butter_chicken": {
     "slug": "butter_chicken",
-    "display_name": "Butter Chicken with Basmati Rice",
+    "display_name": "Butter Chicken",
     "cuisine": "indian",
     "primary_protein": "chicken",
     "produces_servings": 1,
@@ -17,7 +17,7 @@
     "contains_allergens": [
       "Dairy"
     ],
-    "image_filename": "butter_chicken_with_rice.png",
+    "image_filename": "butter-chicken-curry.png",
     "meal_prep": {
       "strategy": "full",
       "prep_note": "Cook the curry ahead; it reheats well and improves overnight. Rice is grab-and-go / done day-of. Note: this recipe is written as a single serve (produces_servings: 1) rather than a batch — scale it up to prep multiple portions.",
@@ -41,13 +41,14 @@
         "assembly_time_minutes": 0,
         "additional_instructions": [],
         "additional_ingredients": [],
-        "base_serving_multiplier": 1
+        "base_serving_multiplier": 1,
+        "image_filename": "butter-chicken-curry.png"
       },
       {
         "id": "standard",
         "display_name": "Butter Chicken with Basmati Rice",
         "description": "Slow-simmered chicken thigh in spiced tomato-cream sauce, served over basmati rice",
-        "image_filename": "Butter Chicken with Basmati Rice.png",
+        "image_filename": "butter-chicken-with-rice.png",
         "base_serving_multiplier": 1,
         "additional_ingredients": [],
         "additional_instructions": [],
@@ -13589,7 +13590,7 @@
       "Gluten/Wheat"
     ],
     "flex_ingredient_id": "lamb_mince",
-    "image_filename": "lamb_kofta.png",
+    "image_filename": "lamb-kofta.png",
     "meal_prep": {
       "strategy": "partial",
       "prep_note": "Grill the koftas ahead; make the salad and garlic-yoghurt sauce and warm the rice or wrap day-of.",
@@ -13632,7 +13633,7 @@
           "fat_g": 32,
           "fiber_g": 4
         },
-        "image_filename": "Lamb Kofta Rice Bowl (rice_bowl).png"
+        "image_filename": "lamb-kofta-rice-bowl.png"
       },
       {
         "id": "wrap",
@@ -13666,7 +13667,7 @@
           "fat_g": 39,
           "fiber_g": 6
         },
-        "image_filename": "Lamb Kofta Wrap (wrap).png"
+        "image_filename": "lamb-kofta-wrap-wrap.png"
       }
     ],
     "methods": [
@@ -15040,6 +15041,7 @@
       "Dairy"
     ],
     "flex_ingredient_id": "beef_mince_regular",
+    "image_filename": "cevapi-flatbread.png",
     "meal_prep": {
       "strategy": "partial",
       "prep_note": "Grill the cevapi ahead; warm the flatbread or rice and add raw onion, ajvar and salad day-of. Carb check: the flatbread (flatbread) and rice (rice_plate) are plate ingredients done fresh per serve; the salad comes from the method, also day-of.",
@@ -15081,7 +15083,7 @@
           "fat_g": 35,
           "fiber_g": 7
         },
-        "image_filename": "Ćevapi with Flatbread (flatbread).png"
+        "image_filename": "cevapi-flatbread.png"
       },
       {
         "id": "rice_plate",
@@ -15114,7 +15116,7 @@
           "fat_g": 26,
           "fiber_g": 4
         },
-        "image_filename": "Ćevapi Rice Plate (rice_plate).png"
+        "image_filename": "cevapi-rice-plate.png"
       }
     ],
     "methods": [
