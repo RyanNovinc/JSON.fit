@@ -263,22 +263,36 @@ function mealCategories(meal){
 
 // ── ordering ──
 var FEATURED_RANK={}; FEATURED_ORDER.forEach(function(s,i){FEATURED_RANK[s]=i;});
-// Tail grouping precedence: a meal sorts into the first bucket it matches.
-var TAIL_BUCKET=['Mains','Breakfast','Smoothies','Desserts','Snacks'];
+// Each meal gets ONE bucket for distribution. Smoothies are checked before
+// Breakfast so every smoothie is treated as one stream and spread together.
+var TAIL_BUCKET=['Mains','Smoothies','Breakfast','Desserts','Snacks'];
 function tailBucket(meal){
   var cats=mealCategories(meal);
   for(var i=0;i<TAIL_BUCKET.length;i++){ if(cats.indexOf(TAIL_BUCKET[i])>-1) return i; }
   return TAIL_BUCKET.length; // sides / pre / post / anything else last
 }
 function sortMeals(meals){
-  return meals.slice().sort(function(a,b){
-    var fa=(a.slug in FEATURED_RANK)?FEATURED_RANK[a.slug]:Infinity;
-    var fb=(b.slug in FEATURED_RANK)?FEATURED_RANK[b.slug]:Infinity;
-    if(fa!==fb) return fa-fb;                 // featured first, in curated order
-    var ba=tailBucket(a), bb=tailBucket(b);
-    if(ba!==bb) return ba-bb;                 // then by category bucket
-    return String(a.display_name||'').localeCompare(String(b.display_name||'')); // then A–Z
+  // 1) Featured meals first, in the curated FEATURED_ORDER sequence.
+  var featured=[], rest=[];
+  meals.forEach(function(m){ (m.slug in FEATURED_RANK ? featured : rest).push(m); });
+  featured.sort(function(a,b){ return FEATURED_RANK[a.slug]-FEATURED_RANK[b.slug]; });
+
+  // 2) For the rest, do NOT group by category (that clumps all the smoothies/
+  //    desserts together). Bucket each meal, A–Z within bucket, then give it a
+  //    position = (index + 0.5) / bucketSize so every category is spread evenly
+  //    across the whole tail. A small 8-item bucket lands ~every Nth card
+  //    instead of in one block, so the range holds top to bottom.
+  var buckets={};
+  rest.forEach(function(m){ var b=tailBucket(m); (buckets[b]=buckets[b]||[]).push(m); });
+  var spread=[];
+  Object.keys(buckets).forEach(function(b){
+    var arr=buckets[b].sort(function(a,c){ return String(a.display_name||'').localeCompare(String(c.display_name||'')); });
+    var n=arr.length;
+    arr.forEach(function(m,i){ spread.push({ meal:m, score:(i+0.5)/n, bucket:parseInt(b,10) }); });
   });
+  spread.sort(function(a,c){ return a.score!==c.score ? a.score-c.score : a.bucket-c.bucket; });
+
+  return featured.concat(spread.map(function(x){ return x.meal; }));
 }
 
 function cardHTML(meal){
