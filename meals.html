@@ -15,7 +15,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The JSON.fit Meal Library">
 <meta name="twitter:description" content="High-protein meals built for eating big. Tap any meal for the full recipe.">
-<meta name="twitter:image" content="https://json.fit/og-image.png">
 <link rel="canonical" href="https://json.fit/meals.html">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -173,6 +172,32 @@ var CONFIG = {
   MEALS_JSON: '/r/meals.json'
 };
 
+// ── Featured order ──────────────────────────────────────────────────────
+// These meals appear first, in this exact sequence. Everything else falls in
+// after, grouped by category (Mains → Breakfast → Smoothies → Desserts →
+// Snacks), alphabetical within each group. To reshuffle the front page just
+// reorder this list. NOTE: each entry must match a meal slug (key) in
+// /r/meals.json exactly — if one doesn't match, that meal just drops into the
+// normal ordering instead of being featured.
+var FEATURED_ORDER = [
+  'pulled_pork',
+  'strawberry_stack',
+  'teriyaki_chicken_rice_bowl',
+  'king_kong_chocolate',
+  'chicken_schnitzel',
+  'fudgy_protein_brownies',
+  'spaghetti_carbonara',
+  'maple_muscle_toast',
+  'lamb_kofta',
+  'mango_mass',
+  'big_breakfast_plate',
+  'cookies_gains',
+  'honey_chicken',
+  'protein_pancakes',
+  'palacinke',
+  'protein_chocolate_chip_cookies'
+];
+
 // ── helpers (mirrors the recipe page logic so images resolve identically) ──
 function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function titleCase(s){ return String(s).replace(/(^|[\s_-])(\w)/g,function(_,sep,ch){return sep.replace('_',' ')+ch.toUpperCase();}); }
@@ -227,11 +252,33 @@ var chipsEl=document.getElementById('chips');
 var searchEl=document.getElementById('search');
 var activeCat='all';
 var SLOT_TO_CAT={breakfast:'Breakfast',brunch:'Breakfast',lunch:'Mains',dinner:'Mains',second_lunch:'Mains',early_dinner:'Mains',main:'Mains',mains:'Mains',side:'Sides',sides:'Sides',snack:'Snacks',snacks:'Snacks',morning_snack:'Snacks',afternoon_snack:'Snacks',dessert:'Desserts',desserts:'Desserts',pre_workout:'Pre-Workout',post_workout:'Post-Workout'};
-var CAT_ORDER=['Breakfast','Mains','Sides','Snacks','Desserts','Pre-Workout','Post-Workout'];
+var CAT_ORDER=['Breakfast','Smoothies','Mains','Sides','Snacks','Desserts','Pre-Workout','Post-Workout'];
 function mealCategories(meal){
   var set={};
   (meal.eligible_slots||[]).forEach(function(s){ var key=String(s).toLowerCase(); set[SLOT_TO_CAT[key]||titleCase(key)]=true; });
+  // Smoothies are a cuisine, not a slot — surface them as their own filter too.
+  if(meal.cuisine && String(meal.cuisine).toLowerCase()==='smoothie') set['Smoothies']=true;
   return Object.keys(set);
+}
+
+// ── ordering ──
+var FEATURED_RANK={}; FEATURED_ORDER.forEach(function(s,i){FEATURED_RANK[s]=i;});
+// Tail grouping precedence: a meal sorts into the first bucket it matches.
+var TAIL_BUCKET=['Mains','Breakfast','Smoothies','Desserts','Snacks'];
+function tailBucket(meal){
+  var cats=mealCategories(meal);
+  for(var i=0;i<TAIL_BUCKET.length;i++){ if(cats.indexOf(TAIL_BUCKET[i])>-1) return i; }
+  return TAIL_BUCKET.length; // sides / pre / post / anything else last
+}
+function sortMeals(meals){
+  return meals.slice().sort(function(a,b){
+    var fa=(a.slug in FEATURED_RANK)?FEATURED_RANK[a.slug]:Infinity;
+    var fb=(b.slug in FEATURED_RANK)?FEATURED_RANK[b.slug]:Infinity;
+    if(fa!==fb) return fa-fb;                 // featured first, in curated order
+    var ba=tailBucket(a), bb=tailBucket(b);
+    if(ba!==bb) return ba-bb;                 // then by category bucket
+    return String(a.display_name||'').localeCompare(String(b.display_name||'')); // then A–Z
+  });
 }
 
 function cardHTML(meal){
@@ -299,7 +346,8 @@ function applyFilter(){
 
 (async function(){
   var data=await loadMeals();
-  var meals=Object.keys(data).map(function(k){ return data[k]; }).filter(function(m){ return m && m.display_name; });
+  var meals=Object.keys(data).map(function(k){ var m=data[k]; if(m && !m.slug) m.slug=k; return m; }).filter(function(m){ return m && m.display_name; });
+  meals=sortMeals(meals);
   loadingEl.style.display='none';
   if(!meals.length){ emptyEl.querySelector('strong').textContent='No meals to show yet.'; emptyEl.style.display='block'; return; }
   grid.innerHTML=meals.map(cardHTML).join('');
