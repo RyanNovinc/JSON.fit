@@ -612,6 +612,14 @@
 
         /* ── Responsive ── */
         @media (max-width: 860px) {
+            .nav-links { display:none; position:fixed; top:0; left:0; right:0; bottom:0; width:100%; height:100vh; height:100dvh; background:#050508; flex-direction:column; justify-content:center; align-items:center; gap:2rem; z-index:9998; }
+            .nav-links.open { display:flex; }
+            .nav-links a { font-size:1.1rem; color:var(--text-2); }
+            .nav-links .nav-cta { font-size:1rem !important; padding:0.6rem 1.5rem; }
+            .hamburger { display:block; position:fixed; top:16px; right:16px; z-index:9999; }
+            .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+            .hamburger.open span:nth-child(2) { opacity:0; }
+            .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
             .hero-inner { text-align:center; }
             .hero-btns { justify-content:center; align-items:center; flex-direction:column; width:100%; }
             .hero-btns a:first-child { display:flex !important; justify-content:center; }
@@ -634,7 +642,8 @@
             .section-head p { max-width:100%; }
         }
         @media (max-width: 480px) {
-            .hero h1 { font-size:clamp(2.2rem,10vw,3rem); }
+            .hero h1 { font-size:clamp(1.9rem,8.5vw,2.6rem); line-height:1.08; text-wrap:balance; }
+            .hero-br { display:none; }
             .comp { overflow-x:auto; -webkit-overflow-scrolling:touch; }
             .comp-head, .comp-row { min-width:440px; }
             .ai-strip span { font-size:0.62rem; }
@@ -671,7 +680,7 @@
 <section class="hero">
     <div class="hero-inner">
         <div class="badge"><span class="badge-dot"></span> For skinny guys who can't eat enough</div>
-        <h1>Bulking meals built to<br>make eating big <span class="cyan">easy.</span></h1>
+        <h1>Bulking meals built to<br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
         <p class="hero-sub">Big, high-protein meals broken down to the exact ingredient and step, so hitting a surplus stops being a chore. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
         <div class="hero-btns">
             <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
