@@ -1,7 +1,7 @@
 {
   "butter_chicken": {
     "slug": "butter_chicken",
-    "display_name": "Butter Chicken",
+    "display_name": "Butter Chicken with Basmati Rice",
     "cuisine": "indian",
     "primary_protein": "chicken",
     "produces_servings": 1,
