@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lab — JSON.fit</title>
+<meta name="description" content="An open n=1 experiment: the founder of JSON.fit bulking on his own app, publishing every number. Body composition, scans, strength markers and progress photos, updated monthly. Trust data, not opinions.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Lab — JSON.fit">
+<meta property="og:description" content="One subject, every number, updated monthly. Bulking on my own app and publishing the raw data — body composition, scans, strength and progress photos.">
+<meta property="og:image" content="https://json.fit/og-image.png">
+<meta property="og:url" content="https://json.fit/lab/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Lab — JSON.fit">
+<meta name="twitter:description" content="One subject, every number, updated monthly. Trust data, not opinions.">
+<link rel="canonical" href="https://json.fit/lab/">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* The Lab runs on violet — distinct from home (cyan) and nutrition (green) */
+  --violet:#a855f7;
+  --violet-bright:#c084fc;
+  --violet-soft:rgba(168,85,247,0.08);
+  --violet-glow:rgba(168,85,247,0.35);
+  --violet-border:rgba(168,85,247,0.16);
+  /* semantic deltas (direction, not brand) */
+  --up:#22c55e;
+  --down:#ef4444;
+  --flat:#9898a4;
+  --amber:#f59e0b;
+  /* shared shell — identical to the rest of the site */
+  --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
+  --border:rgba(255,255,255,0.06);
+  --text:#f0f0f2; --text-2:#9898a4; --text-3:#55555f;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px;overflow-x:hidden;
+  /* faint lab grid texture in the background for atmosphere */
+  background-image:linear-gradient(rgba(168,85,247,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.025) 1px,transparent 1px);
+  background-size:48px 48px;background-position:center top;
+}
+.violet{color:var(--violet)}
+.mono{font-family:'DM Mono',monospace}
+.container{max-width:1000px;margin:0 auto;padding:0 1.5rem}
+.section{padding:5rem 0}
+.label{font-family:'DM Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--violet);display:block;margin-bottom:1rem}
+
+/* scroll animations — same engine as index.html */
+.sa{opacity:0;transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.sa-up{transform:translateY(50px)}
+.sa.vis{opacity:1;transform:none}
+.sa-stagger>*{opacity:0;transform:translateY(40px) scale(.98);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+.sa-stagger.vis>*:nth-child(1){opacity:1;transform:none;transition-delay:0s}
+.sa-stagger.vis>*:nth-child(2){opacity:1;transform:none;transition-delay:.1s}
+.sa-stagger.vis>*:nth-child(3){opacity:1;transform:none;transition-delay:.2s}
+.sa-stagger.vis>*:nth-child(4){opacity:1;transform:none;transition-delay:.3s}
+.sa-stagger.vis>*:nth-child(5){opacity:1;transform:none;transition-delay:.4s}
+.sa-stagger.vis>*:nth-child(6){opacity:1;transform:none;transition-delay:.5s}
+.section-line{width:0;height:1px;background:var(--violet-border);margin-bottom:1rem;transition:width .7s ease}
+.section-line.vis{width:48px}
+.count-up{display:inline-block}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.4rem}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-3);text-decoration:none;font-size:.8rem;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a.active{color:var(--violet)}
+.nav-cta{background:var(--violet)!important;color:#0a0010!important;padding:.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:.78rem!important;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--violet-glow)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all .3s}
+
+/* ── Hero ── */
+.hero{position:relative;padding:8.5rem 1.5rem 3.5rem;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;top:-20%;left:50%;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,var(--violet-glow) 0%,transparent 65%);opacity:.1;filter:blur(80px);transform:translateX(-50%);pointer-events:none}
+.hero-inner{max-width:680px;margin:0 auto;position:relative;z-index:2}
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .9rem;border:1px solid var(--violet-border);border-radius:100px;font-family:'DM Mono',monospace;font-size:.66rem;color:var(--violet);background:var(--violet-soft);margin-bottom:1.75rem;letter-spacing:.08em;text-transform:uppercase}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hero h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;margin-bottom:1.25rem}
+.hero-sub{font-size:1rem;color:var(--text-2);max-width:540px;margin:0 auto 1.25rem;line-height:1.75}
+.hero-creed{font-family:'DM Mono',monospace;font-size:.74rem;color:var(--violet);letter-spacing:.04em;margin-bottom:2.25rem}
+
+/* ── Live vitals strip ── */
+.vitals{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--violet-border);border-radius:16px;overflow:hidden;max-width:680px;margin:0 auto}
+.vital{background:var(--surface);padding:1.4rem 1rem;text-align:center;position:relative}
+.vital-lbl{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:.55rem}
+.vital-val{font-family:'DM Mono',monospace;font-size:1.7rem;font-weight:500;line-height:1;letter-spacing:-.02em;color:var(--text)}
+.vital-val.hl{color:var(--violet)}
+.vital-unit{font-size:.7rem;color:var(--text-3);margin-left:.15rem}
+.vital-delta{font-family:'DM Mono',monospace;font-size:.62rem;margin-top:.5rem;display:inline-flex;align-items:center;gap:.2rem}
+.delta-up{color:var(--up)}.delta-down{color:var(--down)}.delta-flat{color:var(--flat)}
+.live-tag{position:absolute;top:.7rem;right:.7rem;display:flex;align-items:center;gap:.3rem;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;color:var(--up)}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--up);animation:pulse 1.6s infinite}
+@media(max-width:600px){.vitals{grid-template-columns:1fr 1fr}.hero{padding-top:7rem}}
+.hero-updated{margin-top:1.25rem;font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em}
+
+/* ── Section heads ── */
+.section-head{margin-bottom:2.5rem}
+.section-head.center{text-align:center}
+.section-head.center .section-line{margin:0 auto 1rem}
+.section-head h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:.65rem}
+.section-head p{color:var(--text-2);font-size:.98rem;max-width:560px}
+.section-head.center p{margin-left:auto;margin-right:auto}
+
+/* ── Protocol / hypothesis ── */
+.protocol{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem}
+.protocol-hyp{font-size:1.05rem;line-height:1.7;color:var(--text);margin-bottom:1.75rem}
+.protocol-hyp .h{color:var(--violet);font-weight:600}
+.protocol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden}
+.proto-cell{background:var(--surface-2);padding:1.1rem 1rem}
+.proto-k{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.4rem}
+.proto-v{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.35}
+@media(max-width:700px){.protocol-grid{grid-template-columns:1fr 1fr}}
+
+/* ── Photo rig ── */
+.rig{background:#000;border:1px solid var(--violet-border);border-radius:18px;overflow:hidden}
+.rig-stage{position:relative;aspect-ratio:4/5;max-height:560px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,rgba(168,85,247,0.06),#000 70%);overflow:hidden}
+.rig-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s ease}
+.rig-frame.show{opacity:1}
+.rig-frame img{height:100%;width:auto;object-fit:contain}
+.rig-ph{display:flex;flex-direction:column;align-items:center;gap:1rem;color:var(--text-3)}
+.rig-ph svg{opacity:.35}
+.rig-ph-txt{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase}
+.rig-corner{position:absolute;top:1rem;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--text-2)}
+.rig-corner.tl{left:1rem}
+.rig-corner.tr{right:1rem;color:var(--violet)}
+.rig-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;opacity:.5}
+.rig-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;flex-wrap:wrap}
+.angle-tabs{display:flex;gap:.4rem}
+.angle-tab{padding:.4rem .85rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.06em;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.angle-tab:hover{border-color:var(--violet-border);color:var(--text)}
+.angle-tab.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
+.spin-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .85rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.06em;cursor:pointer;transition:all .15s}
+.spin-btn:hover,.spin-btn.on{border-color:var(--violet-border);color:var(--violet)}
+.timepoints{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1rem;justify-content:center}
+.tp{padding:.4rem .9rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;cursor:pointer;transition:all .15s}
+.tp:hover{border-color:var(--violet-border);color:var(--text)}
+.tp.active{background:var(--violet);border-color:var(--violet);color:#0a0010;font-weight:500}
+.rig-note{margin-top:1.25rem;font-size:.82rem;color:var(--text-3);line-height:1.6;text-align:center;max-width:560px;margin-left:auto;margin-right:auto}
+.rig-note strong{color:var(--text-2);font-weight:600}
+
+/* ── Charts ── */
+.chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+@media(max-width:760px){.chart-grid{grid-template-columns:1fr}}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.4rem 1rem}
+.chart-card h3{font-size:.92rem;font-weight:700;margin-bottom:.2rem}
+.chart-card .ch-sub{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);letter-spacing:.04em;margin-bottom:1rem}
+.chart-svg{width:100%;height:auto;display:block;overflow:visible}
+.ch-legend{display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap}
+.ch-leg{display:flex;align-items:center;gap:.4rem;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-2)}
+.ch-swatch{width:10px;height:3px;border-radius:2px}
+
+/* ── Data tables ── */
+.datatable{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.dt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.dt{width:100%;border-collapse:collapse;min-width:520px}
+.dt th,.dt td{padding:.7rem 1rem;text-align:right;font-family:'DM Mono',monospace;font-size:.78rem;border-bottom:1px solid var(--border)}
+.dt th{color:var(--text-3);font-weight:500;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2)}
+.dt th:first-child,.dt td:first-child{text-align:left;color:var(--text);font-family:'Outfit',sans-serif;font-weight:500;font-size:.86rem}
+.dt tr:last-child td{border-bottom:none}
+.dt td{color:var(--text-2)}
+.dt td.delta-up{color:var(--up)}
+.dt td.delta-down{color:var(--down)}
+.dt td.now{color:var(--violet);font-weight:500}
+
+/* ── Scan breakdown ── */
+.scan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.scan-cell{background:var(--surface);padding:1.3rem 1rem;text-align:center}
+.scan-val{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;color:var(--text);line-height:1}
+.scan-val.hl{color:var(--violet)}
+.scan-lbl{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.5rem}
+@media(max-width:600px){.scan-grid{grid-template-columns:1fr 1fr}}
+
+/* ── Lab notebook / check-in log ── */
+.log{position:relative;padding-left:1.75rem}
+.log::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--border)}
+.log-entry{position:relative;padding-bottom:2rem}
+.log-entry:last-child{padding-bottom:0}
+.log-dot{position:absolute;left:-1.75rem;top:4px;width:13px;height:13px;border-radius:50%;border:2px solid var(--violet);background:var(--bg);box-shadow:0 0 0 4px var(--bg)}
+.log-entry:first-child .log-dot{background:var(--violet)}
+.log-meta{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.6rem}
+.log-mo{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+.log-date{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em}
+.log-stats{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}
+.log-stat{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--text-2);padding:.2rem .55rem;border:1px solid var(--border);border-radius:5px}
+.log-stat .d-up{color:var(--up)}.log-stat .d-down{color:var(--down)}
+.log-notes{color:var(--text-2);font-size:.9rem;line-height:1.7}
+.log-vid{display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--violet);text-decoration:none}
+.log-vid:hover{text-decoration:underline}
+
+/* ── Methodology ── */
+.method-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+@media(max-width:700px){.method-grid{grid-template-columns:1fr}}
+.method-cell{background:var(--surface);padding:1.5rem}
+.method-cell h4{font-size:.88rem;font-weight:700;margin-bottom:.45rem;display:flex;align-items:center;gap:.5rem}
+.method-cell h4 .ic{color:var(--violet)}
+.method-cell p{color:var(--text-2);font-size:.84rem;line-height:1.65}
+.disclaimer{margin-top:1.25rem;padding:1.1rem 1.25rem;border-left:2px solid var(--violet-border);background:var(--violet-soft);border-radius:0 8px 8px 0}
+.disclaimer p{font-size:.82rem;color:var(--text-2);line-height:1.65}
+
+/* ── CTA ── */
+.cta-wrap{padding:4rem 0 5rem;display:flex;justify-content:center}
+.cta-card{max-width:520px;width:100%;background:var(--surface);border:1px solid var(--violet-border);border-radius:18px;padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--violet),transparent)}
+.cta-card h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.6rem}
+.cta-card p{color:var(--text-2);font-size:.92rem;line-height:1.65;margin-bottom:1.5rem}
+.cta-card p .v{color:var(--violet);font-weight:600}
+.cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem 2rem;border-radius:12px;font-size:.95rem;font-weight:700;text-decoration:none;background:var(--violet);color:#0a0010;transition:transform .25s,box-shadow .25s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--violet-glow)}
+.cta-foot{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em;margin-top:1.1rem}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center}
+.foot-l{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--text-3)}
+.foot-l a{color:var(--text-3);text-decoration:none;margin-left:1.25rem;transition:color .2s}
+.foot-l a:hover{color:var(--violet)}
+.foot-r{font-size:.7rem;color:var(--text-3)}
+
+/* ── Lightbox ── */
+.lightbox{position:fixed;inset:0;z-index:9999;background:rgba(5,5,8,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.lightbox.open{opacity:1;pointer-events:all}
+.lightbox img{max-width:min(480px,92vw);max-height:90vh;border-radius:16px;border:1px solid var(--violet-border);box-shadow:0 32px 80px rgba(0,0,0,.8)}
+
+@media(max-width:860px){
+  .nav-links{display:none;position:fixed;inset:0;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:1.1rem;color:var(--text-2)}
+  .nav-links .nav-cta{font-size:1rem!important;padding:.6rem 1.5rem}
+  .hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}
+  .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+  .protocol-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://json.fit" class="nav-logo">
+    <svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#a855f7"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#a855f7"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#a855f7"/></svg>
+    JSON<span class="violet">.fit</span>
+  </a>
+  <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="https://json.fit/#meals">Meals</a></li>
+    <li><a href="https://json.fit/#programs">Programs</a></li>
+    <li><a href="https://json.fit/blog.html">Blog</a></li>
+    <li><a href="/lab/" class="active">The Lab</a></li>
+    <li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'lab_nav'})">Download Free</a></li>
+  </ul>
+</nav>
+
+<!-- HERO + LIVE VITALS -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span> n=1 · open self-experiment</div>
+    <h1>I'm bulking on my own app —<br>and publishing <span class="violet">every number.</span></h1>
+    <p class="hero-sub">One subject. A controlled lean-bulk built and tracked entirely in JSON.fit. Body composition, scans, strength markers and standardised photos — measured the same way every month, posted raw, good months and bad.</p>
+    <p class="hero-creed">// trust data, not opinions</p>
+    <div class="vitals" id="vitals"></div>
+    <p class="hero-updated" id="updated"></p>
+  </div>
+</section>
+
+<!-- PROTOCOL -->
+<section class="section" style="padding-top:2.5rem">
+  <div class="container">
+    <div class="section-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">The Protocol</span>
+      <h2>The hypothesis.</h2>
+    </div>
+    <div class="protocol sa sa-up" id="protocol"></div>
+  </div>
+</section>
+
+<!-- VISUAL RECORD -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head center sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">The Visual Record</span>
+      <h2>Same pose. Same light.<br><span class="violet">Every angle, every month.</span></h2>
+      <p>Standardised photos so the only variable that changes is me. Rotate the angles, scrub through the months.</p>
+    </div>
+    <div class="sa sa-up">
+      <div class="rig">
+        <div class="rig-stage" id="rigStage">
+          <div class="rig-grid"></div>
+          <span class="rig-corner tl" id="rigPose">FRONT</span>
+          <span class="rig-corner tr" id="rigTp">BASELINE</span>
+          <div class="rig-frame" id="rigFrame"></div>
+        </div>
+        <div class="rig-controls">
+          <div class="angle-tabs" id="angleTabs"></div>
+          <button class="spin-btn" id="spinBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg> Spin</button>
+        </div>
+      </div>
+      <div class="timepoints" id="timepoints"></div>
+      <p class="rig-note"><strong>Capture protocol:</strong> phone at 1.2m height, 2m distance, same corner of the same room, same morning light, fasted, first thing AM. Four angles, no flexing on the front shot. <span style="color:var(--text-3)">(Photos pending — first capture is the baseline.)</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- BIOMETRICS -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Body Composition</span>
+      <h2>The numbers over time.</h2>
+      <p>Bodyweight against target, and the split that actually matters on a bulk — lean mass vs fat mass. Trends, not single readings.</p>
+    </div>
+    <div class="chart-grid sa-stagger">
+      <div class="chart-card">
+        <h3>Bodyweight</h3>
+        <div class="ch-sub" id="wtSub"></div>
+        <div id="chartWeight"></div>
+      </div>
+      <div class="chart-card">
+        <h3>Body fat</h3>
+        <div class="ch-sub">bioimpedance · % of total mass</div>
+        <div id="chartBf"></div>
+      </div>
+      <div class="chart-card" style="grid-column:1/-1">
+        <h3>Lean mass vs fat mass</h3>
+        <div class="ch-sub">kg · the gain you actually want to see climb is the violet</div>
+        <div id="chartComp"></div>
+        <div class="ch-legend">
+          <span class="ch-leg"><span class="ch-swatch" style="background:var(--violet)"></span> Lean mass</span>
+          <span class="ch-leg"><span class="ch-swatch" style="background:var(--amber)"></span> Fat mass</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST SCAN -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Latest Body Scan</span>
+      <h2 id="scanTitle">Latest scan.</h2>
+      <p>The deeper markers a bathroom scale can't give you.</p>
+    </div>
+    <div class="scan-grid sa sa-up" id="scanGrid"></div>
+  </div>
+</section>
+
+<!-- MEASUREMENTS -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Tape Measurements</span>
+      <h2>Where the size is going.</h2>
+      <p>Circumference at each site, cold, measured the same way each time. Δ is total change from baseline.</p>
+    </div>
+    <div class="datatable sa sa-up"><div class="dt-scroll"><table class="dt" id="measureTable"></table></div></div>
+  </div>
+</section>
+
+<!-- STRENGTH -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Strength Markers</span>
+      <h2>Is the muscle doing anything?</h2>
+      <p>Top working sets on the main lifts, straight out of the JSON.fit program I'm running. Mass without strength is just calories.</p>
+    </div>
+    <div class="datatable sa sa-up"><div class="dt-scroll"><table class="dt" id="liftTable"></table></div></div>
+  </div>
+</section>
+
+<!-- LAB NOTEBOOK -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Lab Notebook</span>
+      <h2>What the data made me change.</h2>
+      <p>The monthly log. Data without interpretation is noise — so this is where the numbers turn into decisions.</p>
+    </div>
+    <div class="log sa sa-up" id="log"></div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Methodology</span>
+      <h2>How everything here is measured.</h2>
+      <p>Show your work, or the numbers mean nothing. Here's exactly how, when and with what.</p>
+    </div>
+    <div class="method-grid sa sa-up">
+      <div class="method-cell">
+        <h4><span class="ic">◇</span> Bodyweight</h4>
+        <p>Same scale, every Sunday AM, post-bathroom, pre-food, pre-water. The headline figure is a 7-day rolling average — daily weight swings ±1kg on water and food alone, so a single reading is meaningless.</p>
+      </div>
+      <div class="method-cell">
+        <h4><span class="ic">◇</span> Body composition</h4>
+        <p>Monthly multi-frequency bioimpedance (InBody-class), fasted, same time of day, same hydration state. Treated as a <em>trend line</em>, not gospel — bioimpedance can be off by several percent in absolute terms but is consistent enough to track direction.</p>
+      </div>
+      <div class="method-cell">
+        <h4><span class="ic">◇</span> Tape &amp; photos</h4>
+        <p>Circumference measured cold at marked sites, average of two readings. Photos shot to a fixed rig: same height, distance, room, light, pose and time of day. The only thing allowed to change is the body.</p>
+      </div>
+      <div class="method-cell">
+        <h4><span class="ic">◇</span> Strength</h4>
+        <p>Top working sets logged in JSON.fit on the program I'm running. Same lifts, same form standards, same rest. Estimated 1RMs are calculated, not maxed out — I'm here to grow, not to test singles.</p>
+      </div>
+    </div>
+    <div class="disclaimer sa sa-up">
+      <p><strong style="color:var(--text)">This is an n=1 experiment on one person — me.</strong> It's a transparent record of what I'm doing and what's happening, not medical, nutrition or training advice. Consumer body-composition tools carry real measurement error; I publish the unflattering numbers (including fat gained on a bulk) precisely because selectively showing only the good ones is how you lose trust. Read it as a logbook, not a prescription.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-wrap">
+  <div class="cta-card sa sa-up">
+    <h2>Run your own experiment.</h2>
+    <p>Every number on this page was planned and tracked in <span class="v">JSON.fit</span> — the same free app, the same programs and meal plans. Your data, your AI, your n=1.</p>
+    <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'lab_cta'})">
+      <svg width="15" height="18" viewBox="0 0 18 22" fill="none"><path d="M14.94 11.58c-.02-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.78-1.39-.14-2.72.82-3.43.82-.71 0-1.81-.8-2.98-.78-1.53.02-2.95.89-3.74 2.27-1.59 2.77-.41 6.87 1.15 9.11.76 1.1 1.66 2.34 2.85 2.29 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.27 1.23-2.51 1.25-2.57-.03-.01-2.4-.92-2.42-3.66z" fill="currentColor"/></svg>
+      Download on the App Store
+    </a>
+    <p class="cta-foot">$0 forever · no subscription · no accounts</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-l">JSON<span class="violet">.fit</span>
+    <a href="https://json.fit">Home</a>
+    <a href="https://json.fit/meals.html">Meals</a>
+    <a href="https://json.fit/privacy-policy.html">Privacy</a>
+  </div>
+  <div class="foot-r">© 2026 JSON.fit</div>
+</footer>
+
+<div class="lightbox" id="lightbox"><img id="lbImg" src="" alt=""></div>
+
+<script>
+"use strict";
+/* ════════════════════════════════════════════════════════════════════
+   THE LAB — single source of truth.
+   Update this object each month and the whole page re-renders.
+   - Add a new object to `checkins` (keep them in chronological order).
+   - photos: create a subfolder per check-in under /images/lab/ and point to
+     the files with a LEADING SLASH (root-absolute, so paths resolve correctly
+     from inside the /lab/ folder), e.g.
+       front:"/images/lab/2026-06/front.webp"
+     leave "" to show the "awaiting capture" placeholder.
+   - Anything you don't track yet: leave it null and that row/stat hides.
+   All sample numbers below are placeholders — swap them for real ones.
+   ════════════════════════════════════════════════════════════════════ */
+var DATA = {
+  startDate: "2026-06-01",
+  target: { weight_kg: 90, label: "Lean-bulk target" },
+  protocol: {
+    hypothesis: "Starting at <b>82&nbsp;kg</b>, I can add <b>~8&nbsp;kg</b> over the year while keeping the fat-mass share of the gain low — by running a structured JSON.fit program and a calibrated surplus from the JSON.fit meal plans. Every claim gets a number.",
+    cells: [
+      { k: "Subject", v: "1 · me" },
+      { k: "Duration", v: "12 months" },
+      { k: "Training", v: "4×/week · JSON.fit program" },
+      { k: "Nutrition", v: "~+350 kcal surplus" },
+      { k: "Cadence", v: "Weighed weekly · scanned monthly" },
+      { k: "Surplus quality", v: "High-protein · 2g/kg+" },
+      { k: "What's measured", v: "Comp · tape · lifts · photos" },
+      { k: "What's hidden", v: "Nothing" }
+    ]
+  },
+  // angle order used by the photo rig + spin
+  angles: ["front","right","back","left"],
+  checkins: [
+    {
+      label:"Baseline", date:"2026-06-01",
+      weight_kg:82.0, bodyfat_pct:13.8, lean_mass_kg:70.7, fat_mass_kg:11.3,
+      photos:{front:"",right:"",back:"",left:""},
+      measurements_cm:{ "Neck":38.0,"Shoulders":118,"Chest":102,"Arm (L)":36.0,"Arm (R)":36.5,"Waist":79.0,"Hips":96.0,"Thigh (L)":58.0,"Thigh (R)":58.0,"Calf":38.0 },
+      lifts:{ "Squat":120,"Bench":90,"Deadlift":150,"OHP":55,"Weighted pull-up (+kg)":5 },
+      scan:{ type:"InBody 770", visceral_fat:4, bmr_kcal:1820, bone_mass_kg:3.4, body_water_pct:58 },
+      notes:"Day zero. Took the first photos and scan, logged starting lifts. No conclusions yet — just the baseline everything else gets measured against.",
+      video:null
+    },
+    {
+      label:"Month 1", date:"2026-07-01",
+      weight_kg:83.6, bodyfat_pct:14.3, lean_mass_kg:71.6, fat_mass_kg:12.0,
+      photos:{front:"",right:"",back:"",left:""},
+      measurements_cm:{ "Neck":38.2,"Shoulders":119,"Chest":103.5,"Arm (L)":36.7,"Arm (R)":37.1,"Waist":80.0,"Hips":96.5,"Thigh (L)":58.8,"Thigh (R)":58.7,"Calf":38.3 },
+      lifts:{ "Squat":127,"Bench":92,"Deadlift":157,"OHP":57,"Weighted pull-up (+kg)":7 },
+      scan:{ type:"InBody 770", visceral_fat:4, bmr_kcal:1842, bone_mass_kg:3.4, body_water_pct:58 },
+      notes:"+1.6kg, and the scan says roughly +0.9 lean / +0.7 fat. Faster scale weight than planned — a chunk is glycogen and water from upping carbs. Lifts moved on everything, so the surplus is doing its job. Holding intake steady another month before judging.",
+      video:null
+    },
+    {
+      label:"Month 2", date:"2026-08-01",
+      weight_kg:85.0, bodyfat_pct:14.9, lean_mass_kg:72.3, fat_mass_kg:12.7,
+      photos:{front:"",right:"",back:"",left:""},
+      measurements_cm:{ "Neck":38.5,"Shoulders":120,"Chest":104.5,"Arm (L)":37.3,"Arm (R)":37.6,"Waist":80.8,"Hips":97.0,"Thigh (L)":59.4,"Thigh (R)":59.3,"Calf":38.6 },
+      lifts:{ "Squat":132,"Bench":95,"Deadlift":162,"OHP":58,"Weighted pull-up (+kg)":10 },
+      scan:{ type:"InBody 770", visceral_fat:5, bmr_kcal:1858, bone_mass_kg:3.4, body_water_pct:57 },
+      notes:"Body fat creeping up a touch quicker than I'd like and waist is up 1.8cm from baseline. Pulled the surplus back ~150 kcal for month 3 to slow the fat side without killing the lean gains. This is exactly the kind of adjustment the data is here to trigger.",
+      video:null
+    },
+    {
+      label:"Month 3", date:"2026-09-01",
+      weight_kg:86.2, bodyfat_pct:15.2, lean_mass_kg:73.1, fat_mass_kg:13.1,
+      photos:{front:"",right:"",back:"",left:""},
+      measurements_cm:{ "Neck":38.7,"Shoulders":121,"Chest":105.5,"Arm (L)":37.9,"Arm (R)":38.1,"Waist":81.2,"Hips":97.3,"Thigh (L)":60.0,"Thigh (R)":59.9,"Calf":38.9 },
+      lifts:{ "Squat":138,"Bench":97,"Deadlift":168,"OHP":60,"Weighted pull-up (+kg)":12 },
+      scan:{ type:"InBody 770", visceral_fat:5, bmr_kcal:1871, bone_mass_kg:3.5, body_water_pct:57 },
+      notes:"Smaller scale jump after the surplus pullback, and the fat-mass curve flattened while lean mass kept climbing — which is the whole point. Arms +1.9cm, waist held nearly flat this month. On pace for the 90kg target without the bulk getting sloppy.",
+      video:null
+    }
+  ]
+};
+
+(function(){
+  var APP="https://apps.apple.com/au/app/json-fit/id6758357834";
+  var cks=DATA.checkins;
+  var latest=cks[cks.length-1], base=cks[0];
+
+  function fmt(n,d){ if(n==null) return "—"; return (d!=null)?Number(n).toFixed(d):String(n); }
+  function delta(cur,prev,d){ if(cur==null||prev==null) return null; return +(cur-prev).toFixed(d==null?1:d); }
+  function fmtDate(s){ var dt=new Date(s+"T00:00:00"); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); }
+  function monthsBetween(a,b){ var x=new Date(a),y=new Date(b); return (y.getFullYear()-x.getFullYear())*12+(y.getMonth()-x.getMonth()); }
+
+  /* ── Live vitals ── */
+  function vitalCard(lbl,val,unit,d,dUnit,hl,live){
+    var dh="";
+    if(d!=null){
+      var cls=d>0?'delta-up':(d<0?'delta-down':'delta-flat');
+      var arrow=d>0?'▲':(d<0?'▼':'—');
+      dh='<div class="vital-delta '+cls+'">'+arrow+' '+(d>0?'+':'')+fmt(Math.abs(d),1).replace('-','')+' '+(dUnit||'')+'</div>';
+      if(d>0){dh='<div class="vital-delta delta-up">▲ +'+fmt(d,1)+' '+(dUnit||'')+'</div>';}
+      else if(d<0){dh='<div class="vital-delta delta-down">▼ '+fmt(d,1)+' '+(dUnit||'')+'</div>';}
+      else{dh='<div class="vital-delta delta-flat">— '+(dUnit||'')+'</div>';}
+    }
+    return '<div class="vital">'+(live?'<span class="live-tag"><span class="live-dot"></span>LIVE</span>':'')+
+      '<div class="vital-lbl">'+lbl+'</div>'+
+      '<div class="vital-val'+(hl?' hl':'')+'"><span class="count-up" data-target="'+val+'" data-decimals="'+( (val%1!==0)?1:0)+'">'+val+'</span><span class="vital-unit">'+(unit||'')+'</span></div>'+
+      dh+'</div>';
+  }
+  var prev=cks.length>1?cks[cks.length-2]:base;
+  document.getElementById('vitals').innerHTML=
+    vitalCard('Bodyweight',latest.weight_kg,'kg',delta(latest.weight_kg,prev.weight_kg),'kg',true,true)+
+    vitalCard('Body fat',latest.bodyfat_pct,'%',delta(latest.bodyfat_pct,prev.bodyfat_pct),'pt',false)+
+    vitalCard('Lean mass',latest.lean_mass_kg,'kg',delta(latest.lean_mass_kg,prev.lean_mass_kg),'kg',true)+
+    vitalCard('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false);
+
+  document.getElementById('updated').textContent='// updated '+fmtDate(latest.date)+' · day '+(Math.round((new Date(latest.date)-new Date(DATA.startDate))/86400000))+' of the experiment';
+
+  /* ── Protocol ── */
+  document.getElementById('protocol').innerHTML=
+    '<p class="protocol-hyp">'+DATA.protocol.hypothesis.replace(/<b>/g,'<span class="h">').replace(/<\/b>/g,'</span>')+'</p>'+
+    '<div class="protocol-grid">'+DATA.protocol.cells.map(function(c){
+      return '<div class="proto-cell"><div class="proto-k">'+c.k+'</div><div class="proto-v">'+c.v+'</div></div>';
+    }).join('')+'</div>';
+
+  /* ── Photo rig ── */
+  var rigState={ tp:0, angle:0, spin:null };
+  var stage=document.getElementById('rigFrame');
+  var poseEl=document.getElementById('rigPose'), tpEl=document.getElementById('rigTp');
+  function renderRig(){
+    var ck=cks[rigState.tp];
+    var ang=DATA.angles[rigState.angle];
+    var src=(ck.photos&&ck.photos[ang])||"";
+    poseEl.textContent=ang.toUpperCase();
+    tpEl.textContent=ck.label.toUpperCase();
+    if(src){
+      stage.innerHTML='<img src="'+src+'" alt="'+ck.label+' '+ang+'" onclick="window.__lb(this.src,this.alt)">';
+    }else{
+      stage.innerHTML='<div class="rig-ph">'+
+        '<svg width="80" height="150" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>'+
+        '<div class="rig-ph-txt">awaiting capture</div></div>';
+    }
+    stage.classList.add('show');
+  }
+  document.getElementById('angleTabs').innerHTML=DATA.angles.map(function(a,i){
+    return '<button class="angle-tab'+(i===0?' active':'')+'" data-a="'+i+'">'+a+'</button>';
+  }).join('');
+  document.getElementById('timepoints').innerHTML=cks.map(function(c,i){
+    return '<button class="tp'+(i===0?' active':'')+'" data-t="'+i+'">'+c.label+'</button>';
+  }).join('');
+  // default to latest timepoint
+  rigState.tp=cks.length-1;
+  document.querySelectorAll('#timepoints .tp').forEach(function(b,i){ b.classList.toggle('active',i===rigState.tp); });
+  renderRig();
+  document.querySelectorAll('#angleTabs .angle-tab').forEach(function(b){
+    b.addEventListener('click',function(){ stopSpin(); rigState.angle=+b.dataset.a; setActive('#angleTabs .angle-tab',b); renderRig(); });
+  });
+  document.querySelectorAll('#timepoints .tp').forEach(function(b){
+    b.addEventListener('click',function(){ rigState.tp=+b.dataset.t; setActive('#timepoints .tp',b); renderRig(); });
+  });
+  function setActive(sel,el){ document.querySelectorAll(sel).forEach(function(x){x.classList.remove('active');}); el.classList.add('active'); }
+  var spinBtn=document.getElementById('spinBtn');
+  function stopSpin(){ if(rigState.spin){ clearInterval(rigState.spin); rigState.spin=null; spinBtn.classList.remove('on'); } }
+  spinBtn.addEventListener('click',function(){
+    if(rigState.spin){ stopSpin(); return; }
+    spinBtn.classList.add('on');
+    rigState.spin=setInterval(function(){
+      rigState.angle=(rigState.angle+1)%DATA.angles.length;
+      document.querySelectorAll('#angleTabs .angle-tab').forEach(function(x,i){x.classList.toggle('active',i===rigState.angle);});
+      renderRig();
+    },1100);
+  });
+
+  /* ── Charts (hand-built inline SVG line chart) ── */
+  function lineChart(el, series, opts){
+    opts=opts||{};
+    var W=opts.w||440, H=opts.h||170, pad={t:18,r:14,b:26,l:34};
+    var xs=series.map(function(_,i){return i;});
+    var allY=[]; series.forEach(function(p){allY.push(p.y);}); if(opts.target!=null) allY.push(opts.target);
+    var minY=Math.min.apply(null,allY), maxY=Math.max.apply(null,allY);
+    var span=(maxY-minY)||1; minY-=span*0.18; maxY+=span*0.18;
+    function X(i){ return pad.l + (i/(Math.max(1,series.length-1)))*(W-pad.l-pad.r); }
+    function Y(v){ return pad.t + (1-(v-minY)/(maxY-minY))*(H-pad.t-pad.b); }
+    var path=series.map(function(p,i){ return (i?'L':'M')+X(i).toFixed(1)+' '+Y(p.y).toFixed(1); }).join(' ');
+    var area=path+' L'+X(series.length-1).toFixed(1)+' '+(H-pad.b)+' L'+X(0).toFixed(1)+' '+(H-pad.b)+' Z';
+    var g='';
+    // gridlines
+    for(var k=0;k<=3;k++){ var gy=pad.t+k*(H-pad.t-pad.b)/3; g+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.05)"/>'; }
+    // target line
+    var tline='';
+    if(opts.target!=null){ var ty=Y(opts.target); tline='<line x1="'+pad.l+'" y1="'+ty+'" x2="'+(W-pad.r)+'" y2="'+ty+'" stroke="rgba(168,85,247,0.45)" stroke-dasharray="4 4"/><text x="'+(W-pad.r)+'" y="'+(ty-5)+'" text-anchor="end" font-family="DM Mono" font-size="9" fill="#a855f7">target '+opts.target+'</text>'; }
+    var dots=series.map(function(p,i){ return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(p.y).toFixed(1)+'" r="3" fill="#0a0a0f" stroke="'+(opts.color||'#a855f7')+'" stroke-width="2"/>'; }).join('');
+    var lbls=series.map(function(p,i){ return '<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#55555f">'+p.x+'</text>'; }).join('');
+    var vlast='<text x="'+X(series.length-1).toFixed(1)+'" y="'+(Y(series[series.length-1].y)-9)+'" text-anchor="end" font-family="DM Mono" font-size="10" fill="'+(opts.color||'#a855f7')+'">'+series[series.length-1].y+(opts.unit||'')+'</text>';
+    el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+
+      g+
+      '<defs><linearGradient id="'+el.id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+(opts.color||'#a855f7')+'" stop-opacity="0.18"/><stop offset="1" stop-color="'+(opts.color||'#a855f7')+'" stop-opacity="0"/></linearGradient></defs>'+
+      '<path d="'+area+'" fill="url(#'+el.id+'g)"/>'+
+      tline+
+      '<path d="'+path+'" fill="none" stroke="'+(opts.color||'#a855f7')+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
+      dots+lbls+vlast+
+      '</svg>';
+  }
+  function stackChart(el, series, opts){
+    opts=opts||{}; var W=460,H=200,pad={t:16,r:14,b:26,l:34};
+    var max=0; series.forEach(function(p){ max=Math.max(max,p.lean+p.fat); }); max*=1.08;
+    var bw=Math.min(46,(W-pad.l-pad.r)/series.length-14);
+    var gap=((W-pad.l-pad.r)-bw*series.length)/(series.length-1||1);
+    function Y(v){ return pad.t+(1-v/max)*(H-pad.t-pad.b); }
+    var bars=series.map(function(p,i){
+      var x=pad.l+i*(bw+gap);
+      var yLean=Y(p.lean), hLean=(H-pad.b)-yLean;
+      var yFat=Y(p.lean+p.fat), hFat=Y(p.lean)-yFat;
+      return '<rect x="'+x+'" y="'+yLean+'" width="'+bw+'" height="'+hLean+'" rx="2" fill="#a855f7"/>'+
+             '<rect x="'+x+'" y="'+yFat+'" width="'+bw+'" height="'+hFat+'" rx="2" fill="#f59e0b"/>'+
+             '<text x="'+(x+bw/2)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#55555f">'+p.x+'</text>'+
+             '<text x="'+(x+bw/2)+'" y="'+(yLean-5)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#a855f7">'+p.lean.toFixed(0)+'</text>';
+    }).join('');
+    var g='';
+    for(var k=0;k<=3;k++){ var gy=pad.t+k*(H-pad.t-pad.b)/3; g+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.05)"/>'; }
+    el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+g+bars+'</svg>';
+  }
+  function shortMo(s){ var d=new Date(s+"T00:00:00"); return d.toLocaleDateString('en-AU',{month:'short'}); }
+  document.getElementById('wtSub').textContent='kg · 7-day rolling average · target '+DATA.target.weight_kg+'kg';
+  lineChart(makeId('chartWeight'), cks.map(function(c){return {x:shortMo(c.date),y:c.weight_kg};}), {target:DATA.target.weight_kg,unit:'kg',color:'#a855f7'});
+  lineChart(makeId('chartBf'), cks.map(function(c){return {x:shortMo(c.date),y:c.bodyfat_pct};}), {unit:'%',color:'#c084fc'});
+  stackChart(makeId('chartComp'), cks.map(function(c){return {x:shortMo(c.date),lean:c.lean_mass_kg,fat:c.fat_mass_kg};}));
+  function makeId(id){ var el=document.getElementById(id); if(!el.id) el.id=id; return el; }
+
+  /* ── Latest scan ── */
+  document.getElementById('scanTitle').textContent=latest.label+' scan — '+(latest.scan&&latest.scan.type||'');
+  var sc=latest.scan||{};
+  var scanCells=[
+    {v:fmt(sc.visceral_fat,0),l:'Visceral fat'},
+    {v:fmt(sc.bmr_kcal,0),l:'BMR · kcal',hl:true},
+    {v:fmt(sc.body_water_pct,0)+'%',l:'Body water'},
+    {v:fmt(sc.bone_mass_kg,1),l:'Bone mass · kg'}
+  ];
+  document.getElementById('scanGrid').innerHTML=scanCells.map(function(c){
+    return '<div class="scan-cell"><div class="scan-val'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="scan-lbl">'+c.l+'</div></div>';
+  }).join('');
+
+  /* ── Measurement table ── */
+  function buildTable(tableEl, rows, cols, fmtFn){
+    var head='<thead><tr><th>'+cols[0]+'</th>'+cks.map(function(c){return '<th>'+c.label.replace('Month','Mo')+'</th>';}).join('')+'<th>Δ base</th></tr></thead>';
+    var body='<tbody>'+rows.map(function(name){
+      var first=fmtFn(base,name), last=fmtFn(latest,name);
+      var d=(first!=null&&last!=null)?+(last-first).toFixed(1):null;
+      var dcls=d>0?'delta-up':(d<0?'delta-down':'');
+      var tds=cks.map(function(c,i){ var v=fmtFn(c,name); return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(v==null?'—':v)+'</td>'; }).join('');
+      return '<tr><td>'+name+'</td>'+tds+'<td class="'+dcls+'">'+(d==null?'—':(d>0?'+':'')+d)+'</td></tr>';
+    }).join('')+'</tbody>';
+    tableEl.innerHTML=head+body;
+  }
+  buildTable(document.getElementById('measureTable'), Object.keys(base.measurements_cm), ['Site (cm)'], function(c,n){ return c.measurements_cm?c.measurements_cm[n]:null; });
+  buildTable(document.getElementById('liftTable'), Object.keys(base.lifts), ['Lift (kg)'], function(c,n){ return c.lifts?c.lifts[n]:null; });
+
+  /* ── Lab notebook ── */
+  document.getElementById('log').innerHTML=cks.slice().reverse().map(function(c,idx,arr){
+    // previous in chronological terms
+    var chronIdx=cks.indexOf(c);
+    var p=chronIdx>0?cks[chronIdx-1]:null;
+    function chip(lbl,cur,prevv,unit,goodUp){
+      if(cur==null) return '';
+      var d=p?+(cur-prevv).toFixed(1):null;
+      var dh='';
+      if(d!=null&&d!==0){ var good=(d>0)===goodUp; dh=' <span class="'+(good?'d-up':'d-down')+'">'+(d>0?'+':'')+d+'</span>'; }
+      return '<span class="log-stat">'+lbl+' '+cur+unit+dh+'</span>';
+    }
+    var stats=
+      chip('WT',c.weight_kg, p&&p.weight_kg,'kg',true)+
+      chip('BF',c.bodyfat_pct, p&&p.bodyfat_pct,'%',false)+
+      chip('LEAN',c.lean_mass_kg, p&&p.lean_mass_kg,'kg',true)+
+      chip('FAT',c.fat_mass_kg, p&&p.fat_mass_kg,'kg',false);
+    var vid=c.video?'<a class="log-vid" href="'+c.video+'" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>Watch the '+c.label.toLowerCase()+' meal-prep video</a>':'';
+    return '<div class="log-entry"><span class="log-dot"></span>'+
+      '<div class="log-meta"><span class="log-mo">'+c.label+'</span><span class="log-date">'+fmtDate(c.date)+'</span></div>'+
+      '<div class="log-stats">'+stats+'</div>'+
+      '<p class="log-notes">'+c.notes+'</p>'+vid+'</div>';
+  }).join('');
+
+  /* ── Lightbox ── */
+  var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
+  window.__lb=function(src,alt){ lbImg.src=src; lbImg.alt=alt||''; lb.classList.add('open'); document.body.style.overflow='hidden'; };
+  lb.addEventListener('click',function(){ lb.classList.remove('open'); document.body.style.overflow=''; });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ lb.classList.remove('open'); document.body.style.overflow=''; } });
+
+  /* ── Mobile menu ── */
+  var burger=document.getElementById('burger'), navLinks=document.getElementById('navLinks');
+  burger.addEventListener('click',function(e){ e.stopPropagation(); burger.classList.toggle('open'); navLinks.classList.toggle('open'); });
+  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ burger.classList.remove('open'); navLinks.classList.remove('open'); }); });
+
+  /* ── Scroll animations + count-ups ── */
+  function fireEl(el){
+    el.classList.add('vis');
+    var line=el.querySelector('.section-line'); if(line) setTimeout(function(){line.classList.add('vis');},80);
+    el.querySelectorAll('.count-up').forEach(function(n){
+      var target=parseFloat(n.getAttribute('data-target')), dec=parseInt(n.getAttribute('data-decimals')||'0');
+      var dur=1200,start=null;
+      function step(ts){ if(!start)start=ts; var pr=Math.min((ts-start)/dur,1); var e=1-Math.pow(1-pr,3); var val=target*e;
+        n.textContent=dec>0?val.toFixed(dec):Math.round(val).toLocaleString(); if(pr<1)requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    });
+  }
+  var obs=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ fireEl(e.target); obs.unobserve(e.target);} }); },{threshold:0.12,rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.sa, .sa-stagger').forEach(function(el){ obs.observe(el); });
+  // hero vitals fire immediately
+  fireEl(document.querySelector('.hero-inner'));
+})();
+</script>
+</body>
+</html>
