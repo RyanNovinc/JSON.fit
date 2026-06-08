@@ -207,7 +207,11 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       var split = (blocks[0] && blocks[0].structure) || 'Training';
       var weeks = totalWeeks(blocks);
       var level = deriveLevel(data.description);
-      var dpw = data.days_per_week;
+      // days_per_week is the 7-day schedule length, NOT training days.
+      // Training days = weekly_schedule entries with type "training" (block 1 as representative).
+      var ws = (blocks[0] && Array.isArray(blocks[0].weekly_schedule)) ? blocks[0].weekly_schedule : [];
+      var dpw = ws.filter(function(e){ return e && e.type === 'training'; }).length;
+      if(!dpw && data.days_per_week && data.days_per_week < 7) dpw = data.days_per_week;
 
       var html = '';
       // ---- header ----
