@@ -49,6 +49,18 @@ main{flex:1;padding:2.25rem 0 3rem}
 .d-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
 .d-tag{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--cyan);padding:.25rem .6rem;border:1px solid var(--border-cyan);border-radius:5px;background:var(--cyan-soft)}
 #desc{color:var(--text-2);font-size:.92rem;line-height:1.7;margin-bottom:1.5rem}
+
+/* listing (shown when no ?program= is set) */
+.list-head{margin-bottom:1.9rem}
+.list-head #desc{margin-bottom:0;max-width:620px}
+.plist{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.pcard{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem;transition:border-color .2s,transform .2s}
+.pcard:hover{border-color:var(--border-cyan);transform:translateY(-3px)}
+.pc-title{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin:.15rem 0 .9rem;line-height:1.12}
+.pc-bar{display:flex;gap:3px;height:8px;margin-bottom:1rem}
+.pseg{flex:1;border-radius:3px;background:linear-gradient(180deg,#2ee0f5,#0e7490)}
+.pc-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.1rem}
+.pc-open{margin-top:auto;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--cyan);display:inline-flex;align-items:center;gap:.35rem;font-weight:500}
 .import-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
 .import-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.75rem;border-radius:12px;font-size:.98rem;font-weight:700;background:var(--cyan);color:#000;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:transform .2s,box-shadow .2s}
 .import-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--cyan-glow)}
@@ -158,9 +170,25 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   var slug = (params.get('program') || '').replace(/[^a-z0-9-]/gi,'');
   var FILE = '/programs/' + slug + '.json';
 
+  // Manifest for the listing view (shown when no ?program= is set). Small + fast;
+  // the heavy per-program JSON is only fetched on the detail view. Keep names/slugs
+  // in sync with the homepage cards and the /programs/<slug>.json filenames.
+  var PROGRAMS = [
+    { slug:'upper-lower-beginner', name:'Beginner Foundation',  split:'Upper / Lower',    level:'Beginner',     weeks:52, days:4 },
+    { slug:'ppl-upper-lower',      name:'Intermediate Hybrid',  split:'PPL + Upper/Lower', level:'Intermediate', weeks:54, days:5 },
+    { slug:'ppl-advanced',         name:'Advanced High-Volume', split:'Push/Pull/Legs ×2', level:'Advanced',     weeks:52, days:6 },
+  ];
+
   var loadingEl = document.getElementById('loading');
   var errorEl = document.getElementById('error');
   var contentEl = document.getElementById('content');
+
+  // Detail view goes back to the listing; the listing goes back to the homepage.
+  var backEl = document.querySelector('.nav-back');
+  if(backEl){
+    backEl.setAttribute('href', slug ? '/programs' : '/');
+    backEl.setAttribute('aria-label', slug ? 'Back to all programs' : 'Back to JSON.fit');
+  }
 
   function showError(msg){
     loadingEl.style.display='none';
@@ -374,7 +402,33 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     }
   }
 
-  if(!slug){ location.replace('/#programs'); return; }
+  function renderList(){
+    var cards = PROGRAMS.map(function(p){
+      return '<a class="pcard" href="/programs/?program='+p.slug+'">'
+        + '<div class="d-split">'+esc(p.split)+'</div>'
+        + '<h3 class="pc-title">'+esc(p.name)+'</h3>'
+        + '<div class="pc-bar"><span class="pseg"></span><span class="pseg"></span><span class="pseg"></span></div>'
+        + '<div class="pc-tags">'
+          + '<span class="d-tag">'+p.weeks+' weeks</span>'
+          + '<span class="d-tag">'+p.days+' days/week</span>'
+          + '<span class="d-tag">'+esc(p.level)+'</span>'
+        + '</div>'
+        + '<span class="pc-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>'
+        + '</a>';
+    }).join('');
+    contentEl.innerHTML =
+        '<div class="list-head">'
+          + '<div class="d-split">Free training programs</div>'
+          + '<h1 id="title">A full year of training.</h1>'
+          + '<p id="desc">Complete, periodised programs, beginner to advanced. Pick one, import it into JSON.fit, and follow it week by week. Free, no AI step needed.</p>'
+        + '</div>'
+        + '<div class="plist">'+cards+'</div>';
+    loadingEl.style.display='none';
+    contentEl.style.display='block';
+    document.title = 'Training programs — JSON.fit';
+  }
+
+  if(!slug){ renderList(); return; }
   fetch(FILE)
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(render)
