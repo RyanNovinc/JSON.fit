@@ -60,16 +60,18 @@ main{flex:1;padding:2.25rem 0 3rem}
 .block h3 .sub{font-weight:400;color:var(--text-3);font-size:.8rem;font-family:'DM Mono',monospace;margin-left:.4rem}
 
 /* timeline */
-.timeline{display:flex;gap:4px;margin-bottom:.75rem;align-items:stretch}
-.tl-block{display:flex;flex-direction:column;gap:.4rem;min-width:0}
-.tl-bar{height:40px;border-radius:6px;background:linear-gradient(90deg,#0e7490,#22d3ee);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0 .3rem}
-.tl-bar span{font-family:'DM Mono',monospace;font-size:.58rem;color:#001016;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tl-bar .dl{position:absolute;right:0;top:0;bottom:0;width:18%;min-width:10px;background:rgba(5,5,8,0.5);border-left:1px dashed rgba(255,255,255,0.3)}
-.tl-cap{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--text-3);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.timeline{display:flex;gap:10px;margin-bottom:.85rem;align-items:stretch}
+.phase{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.phase-name{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:.4rem;letter-spacing:.01em}
+.phase-no{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:4px;background:var(--cyan-soft);border:1px solid var(--border-cyan);color:var(--cyan);font-size:.56rem;flex-shrink:0}
+.phase-bar{height:42px;border-radius:7px;overflow:hidden;display:flex;gap:2px;background:var(--surface-2)}
+.subblock{flex:1;min-width:5px;background:linear-gradient(180deg,#2ee0f5,#0e7490);position:relative}
+.subblock .dl{position:absolute;right:0;top:0;bottom:0;width:18%;min-width:7px;background:repeating-linear-gradient(45deg,rgba(5,5,8,0.15),rgba(5,5,8,0.15) 2px,rgba(5,5,8,0.5) 2px,rgba(5,5,8,0.5) 4px);border-left:1px solid rgba(5,5,8,0.55)}
+.phase-cap{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tl-legend{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);display:flex;gap:1.25rem;flex-wrap:wrap}
 .tl-legend span{display:inline-flex;align-items:center;gap:.4rem}
-.lg-dot{width:9px;height:9px;border-radius:2px;background:var(--cyan)}
-.lg-dl{width:9px;height:9px;border-radius:2px;background:rgba(5,5,8,0.5);border:1px dashed rgba(255,255,255,0.35)}
+.lg-dot{width:9px;height:9px;border-radius:2px;background:linear-gradient(180deg,#2ee0f5,#0e7490)}
+.lg-dl{width:9px;height:9px;border-radius:2px;background:repeating-linear-gradient(45deg,rgba(5,5,8,0.15),rgba(5,5,8,0.15) 2px,rgba(255,255,255,0.25) 2px,rgba(255,255,255,0.25) 4px);border:1px solid var(--border)}
 
 /* volume */
 .vol{display:flex;flex-direction:column;gap:.55rem}
@@ -112,7 +114,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem}
 .foot-l a:hover{color:var(--cyan)}
 
-@media(max-width:560px){.week{grid-template-columns:1fr}.timeline{flex-direction:column}.tl-bar{height:32px}}
+@media(max-width:560px){.week{grid-template-columns:1fr}.timeline{flex-direction:column;gap:1rem}.phase{width:100%}.phase-bar{height:34px}.phase-name{font-size:.72rem}}
 </style>
 </head>
 <body>
@@ -230,21 +232,47 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
             + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
             + 'Import this program</button><span class="import-note">free · copies to clipboard, paste into the app</span></div>';
 
-      // ---- periodization timeline ----
-      html += '<div class="block"><div class="block-lbl">How it\'s structured</div><h3>Periodised across '+blocks.length+' blocks<span class="sub">'+weeks+' weeks total</span></h3>';
-      html += '<div class="timeline">';
-      var anyDeload = false;
+      // ---- periodization timeline (grouped into mesocycle phases) ----
+      // 9 blocks render as 9 cramped boxes; they're really 3 mesocycles of 3 blocks.
+      // Group consecutive blocks that share a mesocycle number (or, failing that, a theme name).
+      function phaseTheme(name){
+        return String(name||'')
+          .replace(/^Block\s*\d+\s*/i,'')      // drop "Block 4 "
+          .replace(/\([^)]*\)/g,'')             // drop "(Mesocycle 2, Block 1)"
+          .replace(/^[—\-:\s]+/,'').trim() || 'Phase';
+      }
+      function phaseKey(b){
+        var m = String(b.block_name||'').match(/Mesocycle\s*(\d+)/i);
+        return m ? ('M'+m[1]) : phaseTheme(b.block_name);
+      }
+      var phases = [];
       blocks.forEach(function(b){
-        var span = Math.max(1, rangeEnd(b.weeks) - rangeStart(b.weeks) + 1);
-        var hasDeload = Array.isArray(b.deload_weeks) && b.deload_weeks.length > 0;
-        if(hasDeload) anyDeload = true;
-        var label = String(b.block_name||'Block').replace(/^Block\s*\d+\s*/i,'').replace(/\(.*?\)\s*/,'').replace(/^[—-]\s*/,'').trim() || b.block_name || 'Block';
-        html += '<div class="tl-block" style="flex:'+span+'">'
-              + '<div class="tl-bar"><span>'+esc(label)+'</span>'+(hasDeload?'<span class="dl"></span>':'')+'</div>'
-              + '<div class="tl-cap">Wk '+esc(b.weeks)+'</div></div>';
+        var k = phaseKey(b), last = phases[phases.length-1];
+        if(last && last.key === k){ last.blocks.push(b); }
+        else { phases.push({ key:k, theme:phaseTheme(b.block_name), blocks:[b] }); }
+      });
+      var anyDeload = false;
+      html += '<div class="block"><div class="block-lbl">How it\'s structured</div><h3>Periodised over '+weeks+' weeks<span class="sub">'+phases.length+' phases · '+blocks.length+' blocks</span></h3>';
+      html += '<div class="timeline">';
+      phases.forEach(function(p,pi){
+        var pStart = rangeStart(p.blocks[0].weeks);
+        var pEnd = rangeEnd(p.blocks[p.blocks.length-1].weeks);
+        var pSpan = Math.max(1, pEnd - pStart + 1);
+        var subs = '';
+        p.blocks.forEach(function(b){
+          var span = Math.max(1, rangeEnd(b.weeks) - rangeStart(b.weeks) + 1);
+          var hasDeload = Array.isArray(b.deload_weeks) && b.deload_weeks.length > 0;
+          if(hasDeload) anyDeload = true;
+          subs += '<div class="subblock" style="flex:'+span+'" title="'+esc(b.block_name||'')+'">'+(hasDeload?'<span class="dl"></span>':'')+'</div>';
+        });
+        html += '<div class="phase" style="flex:'+pSpan+'">'
+              + '<div class="phase-name"><span class="phase-no">'+(pi+1)+'</span>'+esc(p.theme)+'</div>'
+              + '<div class="phase-bar">'+subs+'</div>'
+              + '<div class="phase-cap">Wk '+pStart+'–'+pEnd+' · '+p.blocks.length+' blocks</div>'
+              + '</div>';
       });
       html += '</div>';
-      html += '<div class="tl-legend"><span><span class="lg-dot"></span> Training block</span>'+(anyDeload?'<span><span class="lg-dl"></span> Deload week</span>':'')+'</div>';
+      html += '<div class="tl-legend"><span><span class="lg-dot"></span> Training</span>'+(anyDeload?'<span><span class="lg-dl"></span> Deload week</span>':'')+'</div>';
       html += '</div>';
 
       // ---- volume bars (effective sets, representative week of block 1) ----
@@ -315,11 +343,13 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       document.title = tp.title + ' — JSON.fit';
 
       // ---- import action ----------------------------------------------------
-      // MVP transport (works today): copy the JSON, user pastes into the app's Import screen.
-      // Upgrade path: the app already intercepts iOS Universal Links for /p/{shareId} share
-      // URLs (see the share page's "Open in JSON.fit" button). Add the same associated-domain
-      // handling for this page's URL, then swap doImport() to navigate to a universal link the
-      // app catches, fetches /programs/<slug>.json itself, and imports. No custom URL scheme.
+      // Today (works on current app): copy the JSON, user pastes into the app's Import screen.
+      // Upgrade (see curated-program-import-app-spec.md): the app already catches /p/{shareId}
+      // universal links. Once it also handles a curated link, flip doImport() to navigate to it:
+      //   Option A (no AASA change):  location.href = '/p/program/' + slug;
+      //   Option B (claims /programs):location.href = location.href;
+      // The app then fetches /programs/<slug>.json itself and imports. No custom URL scheme,
+      // and the payload travels via fetch (not the URL), so the 519KB size is a non-issue.
       function doImport(){
         var text = JSON.stringify(data);
         gtag('event','import_program',{program:slug});
