@@ -451,14 +451,6 @@
         .faq-a { max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.35s ease; color:var(--text-2); font-size:0.88rem; line-height:1.7; }
         .faq-item.open .faq-a { max-height:400px; padding-top:0.75rem; }
 
-        /* ── Android / Toast ── */
-        .android-link { color:var(--cyan); text-decoration:none; font-weight:500; transition:opacity 0.2s; cursor:pointer; }
-        .android-link:hover { opacity:0.8; text-decoration:underline; }
-        .android-link.clicked { color:var(--green); pointer-events:none; text-decoration:none; }
-        .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(100px); background:var(--surface-2); color:var(--text); border:1px solid rgba(34,197,94,0.25); padding:0.8rem 1.25rem; border-radius:10px; font-size:0.85rem; font-weight:500; z-index:10001; opacity:0; transition:all 0.35s ease; box-shadow:0 8px 32px rgba(0,0,0,0.5); pointer-events:none; white-space:nowrap; max-width:90vw; }
-        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-        .toast-icon { color:var(--green); margin-right:0.4rem; }
-
         /* ── Lightbox ── */
         .lightbox { position:fixed; inset:0; z-index:9999; background:rgba(5,5,8,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
         .lightbox.open { opacity:1; pointer-events:all; }
@@ -694,6 +686,124 @@
         .prog-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-2); padding:0.18rem 0.45rem; border:1px solid var(--border); border-radius:4px; }
         .prog-open { margin-top:auto; font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); display:flex; align-items:center; gap:0.3rem; transition:gap 0.2s; }
         @media (max-width:860px) { .prog-grid { grid-template-columns:1fr; } }
+
+        /* ════════════ Interactive phone (hero right column) ════════════ */
+        .hero-visual { display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; gap:1rem; }
+        .hero-visual::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-55%); width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, var(--cyan-glow), transparent 65%); opacity:0.16; filter:blur(55px); transition:background 0.4s ease; pointer-events:none; }
+        .hero-visual.is-green::before { background:radial-gradient(circle, var(--green), transparent 65%); opacity:0.14; }
+        .phone { position:relative; width:clamp(252px,26vw,286px); aspect-ratio:9/19.3; background:#000; border-radius:44px; padding:11px; box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06); animation:phoneFloat 6s ease-in-out infinite; z-index:2; }
+        @keyframes phoneFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+        .phone-notch { position:absolute; top:11px; left:50%; transform:translateX(-50%); width:88px; height:22px; background:#000; border-radius:0 0 14px 14px; z-index:6; }
+        .screen { width:100%; height:100%; border-radius:33px; overflow:hidden; background:#0a0a0b; position:relative; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; }
+        .sb { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 1.1rem 0.2rem; font-size:0.62rem; font-weight:600; color:#fff; position:relative; z-index:3; }
+        .sb-right { display:flex; gap:3px; align-items:center; }
+        .sb-right i { width:4px; height:4px; border-radius:50%; background:#fff; display:block; opacity:0.85; }
+        .scr { position:absolute; inset:0; padding-top:30px; padding-bottom:62px; opacity:0; transform:translateX(8px); pointer-events:none; transition:opacity 0.28s ease, transform 0.28s ease; overflow:hidden; }
+        .scr.on { opacity:1; transform:none; pointer-events:auto; }
+        .scr[data-accent="cyan"] { --ac:#22d3ee; }
+        .scr[data-accent="green"] { --ac:#22c55e; }
+        .pad { padding:0 14px; }
+        .ph-title { font-size:24px; font-weight:700; color:#fff; letter-spacing:-0.4px; margin:2px 0 12px; }
+        .pcard { background:#000; border:1.5px solid var(--ac); border-radius:18px; padding:15px; margin-bottom:12px; box-shadow:0 0 16px -4px var(--ac); }
+        .plc-eyebrow { font-size:9px; font-weight:700; letter-spacing:1.2px; color:var(--ac); margin-bottom:5px; }
+        .plc-title { color:#fff; font-size:17px; font-weight:700; letter-spacing:-0.3px; margin-bottom:3px; line-height:1.2; }
+        .plc-sub { color:#71717a; font-size:11px; margin-bottom:13px; }
+        .plc-btn { height:40px; border-radius:20px; background:var(--ac); display:flex; align-items:center; justify-content:center; gap:6px; color:#0a0a0b; font-size:12px; font-weight:700; }
+        .plc-btn svg { width:11px; height:11px; }
+        .plc-link { display:flex; align-items:center; justify-content:center; gap:3px; color:var(--ac); font-size:11px; font-weight:600; padding-top:11px; }
+        .wk { background:#0a0a0f; border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:13px 14px; margin-top:2px; }
+        .wk-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:13px; }
+        .wk-lbl { color:#a1a1aa; font-size:9.5px; font-weight:700; letter-spacing:1.2px; }
+        .wk-link { color:var(--ac); font-size:10px; font-weight:600; display:flex; align-items:center; gap:1px; }
+        .wk-days { display:flex; justify-content:space-around; align-items:center; }
+        .wk-day { display:flex; flex-direction:column; align-items:center; gap:9px; }
+        .wk-d { color:#71717a; font-size:11px; font-weight:600; }
+        .wk-d.today { color:var(--ac); font-weight:700; }
+        .wk-d.future { color:#52525b; }
+        .wk-dot { width:11px; height:11px; border-radius:6px; border:1px solid #3f3f46; background:transparent; }
+        .wk-dot.done { background:var(--ac); border-color:var(--ac); }
+        .wk-dot.today { border:2px solid var(--ac); background:transparent; }
+        .wk-dot.future { border-color:#27272a; }
+        .blk-head { color:#fff; font-size:15px; font-weight:700; letter-spacing:-0.3px; margin:18px 0 10px; }
+        .blk-row { display:flex; gap:10px; overflow-x:auto; margin:0 -14px; padding:0 14px 4px; scrollbar-width:none; }
+        .blk-row::-webkit-scrollbar { display:none; }
+        .blk-card { width:155px; flex-shrink:0; background:#18181b; border:1px solid #27272a; border-radius:14px; overflow:hidden; }
+        .blk-img { height:84px; position:relative; background:linear-gradient(135deg,#1a1a1a,#4a2820); }
+        .blk-img.b { background:linear-gradient(135deg,#1a1a1a,#2d1410); }
+        .blk-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+        .blk-chip-l { position:absolute; top:7px; left:7px; background:rgba(0,0,0,0.5); border-radius:6px; padding:2px 6px; font-size:8px; font-weight:700; letter-spacing:0.5px; color:var(--ac); z-index:2; }
+        .blk-chip-r { position:absolute; top:7px; right:7px; background:rgba(0,0,0,0.5); border-radius:6px; padding:2px 6px; font-size:8px; font-weight:600; color:#fff; z-index:2; }
+        .blk-body { padding:8px 10px 10px; }
+        .blk-title { color:#fff; font-size:12px; font-weight:700; line-height:1.25; margin-bottom:3px; }
+        .blk-meta { color:#71717a; font-size:9.5px; }
+        .shelf-head { display:flex; justify-content:space-between; align-items:baseline; margin:6px 0 10px; }
+        .shelf-eyebrow { font-size:9px; font-weight:700; letter-spacing:1.2px; color:var(--ac); margin-bottom:2px; }
+        .shelf-title { color:#fff; font-size:16px; font-weight:700; letter-spacing:-0.3px; }
+        .shelf-all { color:var(--ac); font-size:10px; font-weight:500; }
+        .shelf-row { display:flex; gap:10px; overflow-x:auto; margin:0 -14px; padding:0 14px 4px; scrollbar-width:none; }
+        .shelf-row::-webkit-scrollbar { display:none; }
+        .mcard { width:172px; flex-shrink:0; background:#18181b; border:1px solid #27272a; border-radius:14px; overflow:hidden; }
+        .mc-img { height:97px; background:linear-gradient(135deg,#2a1d14,#14100a); position:relative; overflow:hidden; }
+        .mc-img.g { background:linear-gradient(135deg,#3a2418,#1a1410); }
+        .mc-img img { width:100%; height:100%; object-fit:cover; display:block; }
+        .mc-body { padding:10px; }
+        .mc-title { color:#fff; font-size:12.5px; font-weight:600; line-height:1.25; margin-bottom:3px; min-height:31px; }
+        .mc-meta { color:#71717a; font-size:9.5px; margin-bottom:9px; }
+        .mc-macros { display:flex; padding-top:8px; border-top:1px solid #27272a; }
+        .mc-cell { flex:1; text-align:center; }
+        .mc-v { font-size:12px; font-weight:700; color:var(--ac); line-height:1.1; }
+        .mc-v.mut { color:#d4d4d8; font-weight:600; }
+        .mc-l { font-size:7.5px; color:#71717a; margin-top:2px; letter-spacing:0.3px; }
+        .mc-div { width:1px; background:#27272a; margin:1px 0; }
+        .cc-title { color:#fff; font-size:21px; font-weight:700; letter-spacing:-0.5px; line-height:1.12; margin:2px 0 6px; }
+        .cc-sub { color:#a1a1aa; font-size:11px; line-height:1.4; margin-bottom:14px; }
+        .cc-card { position:relative; height:128px; border-radius:18px; overflow:hidden; background:#18181b; margin-bottom:12px; }
+        .cc-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+        .cc-img.cc-workout { background:linear-gradient(135deg,#0e2c33 0%,#11233a 55%,#0a0a0f 100%); }
+        .cc-grad { position:absolute; inset:0; background:linear-gradient(to bottom, transparent 18%, rgba(0,0,0,0.86) 100%); }
+        .cc-overlay { position:absolute; left:0; right:0; bottom:0; padding:14px; }
+        .cc-eyebrow { color:rgba(255,255,255,0.55); font-size:9px; font-weight:700; letter-spacing:1.4px; margin-bottom:5px; }
+        .cc-row { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
+        .cc-name { color:#fff; font-size:17px; font-weight:700; letter-spacing:-0.3px; line-height:1.1; }
+        .cc-arrow { width:34px; height:34px; border-radius:17px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+        .cc-arrow svg { width:16px; height:16px; color:#0a0a0b; }
+        .cc-arrow.cy { background:var(--cyan); box-shadow:0 0 12px rgba(34,211,238,0.5); }
+        .cc-arrow.gr { background:var(--green); box-shadow:0 0 12px rgba(34,197,94,0.5); }
+        .ph-tabs { position:absolute; bottom:0; left:0; right:0; height:62px; background:rgba(10,10,11,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-top:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:space-around; padding:0 18px; z-index:5; }
+        .ph-tab { display:flex; flex-direction:column; align-items:center; gap:3px; color:#52525b; font-size:9px; font-weight:600; cursor:pointer; background:none; border:none; padding:6px 14px; transition:color 0.2s; font-family:inherit; }
+        .ph-tab svg { width:21px; height:21px; }
+        .ph-tab.on-cy { color:var(--cyan); }
+        .ph-tab.on-gr { color:var(--green); }
+        .ph-create { width:50px; height:50px; border-radius:25px; background:var(--cyan); display:flex; align-items:center; justify-content:center; cursor:pointer; border:none; margin-top:-14px; box-shadow:0 6px 20px var(--cyan-glow); transition:transform 0.2s; }
+        .ph-create:hover { transform:translateY(-2px); }
+        .ph-create svg { width:24px; height:24px; color:#0a0a0b; }
+        .ph-create.active { box-shadow:0 6px 28px var(--cyan-glow), 0 0 0 4px rgba(34,211,238,0.18); }
+        .poke { display:flex; flex-direction:column; align-items:center; gap:0.15rem; animation:pokeBob 2.2s ease-in-out infinite; }
+        @keyframes pokeBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        .poke-arrow { color:var(--cyan); }
+        .poke-label { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--cyan); }
+
+        /* Split-hero left column — left-align (override centred defaults) */
+        .hero-split .hero-text { text-align:left; }
+        .hero-split .hero-sub { margin-left:0; margin-right:0; }
+        .hero-split .hero-btns { justify-content:flex-start; }
+        .hero-split .hero-meta { text-align:left; }
+        .hero-split .hero-review { margin-left:0; margin-right:0; }
+
+        @media (max-width:860px) {
+            .hero-split { grid-template-columns:1fr; gap:2.5rem; }
+            .hero-split .hero-text { text-align:center; order:1; }
+            .hero-split .hero-sub { margin-left:auto; margin-right:auto; }
+            .hero-split .hero-btns { justify-content:center; }
+            .hero-split .hero-meta { text-align:center; }
+            .hero-split .hero-review { margin-left:auto; margin-right:auto; }
+            .hero-visual { order:2; }
+            .phone { width:clamp(248px,72vw,280px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .phone { animation:none; }
+            .poke { animation:none; }
+        }
     </style>
 </head>
 <body>
@@ -712,7 +822,6 @@
         <li><a href="#compare">Compare</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><span class="nav-soon" title="Coming soon">The Lab <span class="soon-pill">soon</span></span></li>
-        <li><a href="#" class="android-link" onclick="handleAndroid(event,this,'nav')">I want it on Android</a></li>
         <li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'nav'})">Download Free</a></li>
     </ul>
 </nav>
@@ -720,21 +829,154 @@
 <!-- ═══════════ BEAT 1 · THE HOOK ═══════════ -->
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-inner">
-        <div class="badge"><span class="badge-dot"></span> For skinny guys who can't eat enough</div>
-        <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
-        <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out, so hitting a surplus stops being a chore. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
-        <div class="hero-btns">
-            <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
-                <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
-            </a>
+    <div class="hero-split">
+        <div class="hero-text">
+            <div class="badge"><span class="badge-dot"></span> For skinny guys who can't eat enough</div>
+            <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
+            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out, so hitting a surplus stops being a chore. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
+            <div class="hero-btns">
+                <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
+                    <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
+                </a>
+            </div>
+            <p class="hero-meta">100% free · no subscription · no accounts<br><span class="cyan">free because you bring your own AI</span></p>
+            <div class="hero-review">
+                <p class="hero-review-quote">"Was paying for an AI trainer that was just GPT under the hood anyway. This app lets me use ChatGPT myself to build my program and just handles the tracking. Workouts are completely free too which I wasn't expecting."</p>
+                <div class="hero-review-meta"><span class="hero-review-stars">★★★★★</span> ReeceAdam · App Store</div>
+            </div>
+            <p class="hero-watch-link"><a href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.3em;vertical-align:middle;position:relative;top:-1px"><polygon points="5,3 19,12 5,21"/></svg>Watch how it works (44s)</a></p>
         </div>
-        <p class="hero-meta">100% free · no subscription · no accounts<br><span class="cyan">free because you bring your own AI</span></p>
-        <div class="hero-review">
-            <p class="hero-review-quote">"Was paying for an AI trainer that was just GPT under the hood anyway. This app lets me use ChatGPT myself to build my program and just handles the tracking. Workouts are completely free too which I wasn't expecting."</p>
-            <div class="hero-review-meta"><span class="hero-review-stars">★★★★★</span> ReeceAdam · App Store</div>
+
+        <!-- Interactive phone — faithful HTML/CSS rebuild of the app's real screens -->
+        <div class="hero-visual is-green" id="visual">
+            <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="sb"><span>9:41</span><span class="sb-right"><i></i><i></i><i></i></span></div>
+
+                    <!-- WORKOUTS -->
+                    <div class="scr" data-accent="cyan" id="scr-workouts">
+                        <div class="pad">
+                            <div class="ph-title">Workouts</div>
+                            <div class="pcard">
+                                <div class="plc-eyebrow">CURRENT PLAN</div>
+                                <div class="plc-title">Intermediate PPL + Upper/Lower</div>
+                                <div class="plc-sub">5 days / week · 6 blocks</div>
+                                <div class="plc-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Start today's workout</div>
+                                <div class="plc-link">View full plan ›</div>
+                            </div>
+                            <div class="blk-head">Bulking programs</div>
+                        </div>
+                        <div class="blk-row">
+                            <div class="blk-card">
+                                <div class="blk-img"><span class="blk-chip-l">INTERMEDIATE</span><span class="blk-chip-r">54 weeks</span></div>
+                                <div class="blk-body"><div class="blk-title">Intermediate Hybrid</div><div class="blk-meta">5 days · PPL + UL</div></div>
+                            </div>
+                            <div class="blk-card">
+                                <div class="blk-img b"><span class="blk-chip-l">ADVANCED</span><span class="blk-chip-r">52 weeks</span></div>
+                                <div class="blk-body"><div class="blk-title">High-Volume PPL×2</div><div class="blk-meta">6 days · push/pull/legs</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NUTRITION (default) -->
+                    <div class="scr on" data-accent="green" id="scr-nutrition">
+                        <div class="pad">
+                            <div class="ph-title">Nutrition</div>
+                            <div class="pcard">
+                                <div class="plc-eyebrow">CURRENT PLAN</div>
+                                <div class="plc-title">7-Day Lean Bulk</div>
+                                <div class="plc-sub">7 days • 30P / 45C / 25F</div>
+                                <div class="plc-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3v8a3 3 0 0 0 6 0V3M9 3v18M17 3c-1.5 1-2 3-2 6s0 5 2 6v6"/></svg> Start today's meals</div>
+                            </div>
+                            <div class="shelf-head">
+                                <div><div class="shelf-eyebrow">GOOD EVENING</div><div class="shelf-title">Dinner tonight</div></div>
+                                <div class="shelf-all">See all 14 ›</div>
+                            </div>
+                        </div>
+                        <div class="shelf-row">
+                            <div class="mcard">
+                                <div class="mc-img"><img src="images/meals/massaman.webp" alt="" loading="eager" decoding="async" onerror="this.onerror=null;this.src='images/meals/massaman.png'"></div>
+                                <div class="mc-body">
+                                    <div class="mc-title">Slow-Cooked Massaman Beef Curry</div>
+                                    <div class="mc-meta">8h · 890 kcal</div>
+                                    <div class="mc-macros">
+                                        <div class="mc-cell"><div class="mc-v">52g</div><div class="mc-l">PROTEIN</div></div>
+                                        <div class="mc-div"></div>
+                                        <div class="mc-cell"><div class="mc-v mut">42g</div><div class="mc-l">CARBS</div></div>
+                                        <div class="mc-div"></div>
+                                        <div class="mc-cell"><div class="mc-v mut">58g</div><div class="mc-l">FAT</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mcard">
+                                <div class="mc-img g"><img src="images/meals/pulled-pork.webp" alt="" loading="eager" decoding="async" onerror="this.onerror=null;this.src='images/meals/pulled-pork.png'"></div>
+                                <div class="mc-body">
+                                    <div class="mc-title">Slow-Cooked BBQ Pulled Pork</div>
+                                    <div class="mc-meta">6h · 610 kcal</div>
+                                    <div class="mc-macros">
+                                        <div class="mc-cell"><div class="mc-v">48g</div><div class="mc-l">PROTEIN</div></div>
+                                        <div class="mc-div"></div>
+                                        <div class="mc-cell"><div class="mc-v mut">28g</div><div class="mc-l">CARBS</div></div>
+                                        <div class="mc-div"></div>
+                                        <div class="mc-cell"><div class="mc-v mut">32g</div><div class="mc-l">FAT</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CREATE (BYO-AI chooser — mirrors CreateChooserScreen) -->
+                    <div class="scr" data-accent="cyan" id="scr-create">
+                        <div class="pad">
+                            <div class="cc-title">What do you want to create?</div>
+                            <div class="cc-sub">Custom plans, built with the AI you already use.</div>
+                            <div class="cc-card">
+                                <div class="cc-img cc-workout"></div>
+                                <div class="cc-grad"></div>
+                                <div class="cc-overlay">
+                                    <div class="cc-eyebrow">WORKOUT</div>
+                                    <div class="cc-row">
+                                        <div class="cc-name">Custom workout plan</div>
+                                        <div class="cc-arrow cy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cc-card">
+                                <img class="cc-img" src="images/meals/steak-and-eggs.webp" alt="" loading="eager" decoding="async" onerror="this.onerror=null;this.src='images/meals/steak-and-eggs.png'">
+                                <div class="cc-grad"></div>
+                                <div class="cc-overlay">
+                                    <div class="cc-eyebrow">NUTRITION</div>
+                                    <div class="cc-row">
+                                        <div class="cc-name">Custom meal plan</div>
+                                        <div class="cc-arrow gr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB BAR -->
+                    <div class="ph-tabs">
+                        <button class="ph-tab" id="tab-workouts" onclick="showScreen('workouts')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7v10M18 7v10M3 12h18M3 9.5v5M21 9.5v5"/></svg>
+                            Workouts
+                        </button>
+                        <button class="ph-create" id="tab-create" onclick="showScreen('create')" aria-label="Create">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <button class="ph-tab on-gr" id="tab-nutrition" onclick="showScreen('nutrition')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v8a3 3 0 0 0 6 0V3M9 3v18M17 3c-1.5 1-2 3-2 6s0 5 2 6v6"/></svg>
+                            Nutrition
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="poke">
+                <svg class="poke-arrow" width="32" height="30" viewBox="0 0 32 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 28 C 15 18, 13 9, 16 3"/><path d="M9 9 L16 2 L23 9"/></svg>
+                <span class="poke-label">Interactive!</span>
+            </div>
         </div>
-        <p class="hero-watch-link"><a href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.3em;vertical-align:middle;position:relative;top:-1px"><polygon points="5,3 19,12 5,21"/></svg>Watch how it works (44s)</a></p>
     </div>
 </section>
 
@@ -1089,7 +1331,7 @@
             Download on the App Store
         </a>
         <p class="cta-foot">🔒 Your data stays on your device. Always.</p>
-        <p class="cta-foot" style="margin-top:0.4rem;">📱 iOS only · <a href="#" class="android-link" onclick="handleAndroid(event,this,'cta')">I want Android →</a></p>
+        <p class="cta-foot" style="margin-top:0.4rem;">📱 iOS only · Android in development</p>
     </div>
 </section>
 
@@ -1108,7 +1350,7 @@
             <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">If it's free, what's the catch?</div><div class="faq-a">There isn't one. Most fitness apps charge $10–20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no accounts and no data collection either, so there's nothing to sell. The app is simply free.</div></div>
             <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What AI does it work with?</div><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
             <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data private?</div><div class="faq-a">Yes. Your data stays on your device. JSON.fit doesn't have accounts, doesn't collect personal information, and doesn't send your workout or nutrition data anywhere.</div></div>
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is it available on Android?</div><div class="faq-a">Not yet. It's currently iOS only. Android is in development. You can tap "I want it on Android" on this site to let us know there's demand.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is it available on Android?</div><div class="faq-a">Not yet. It's currently iOS only, but Android is in development.</div></div>
         </div>
     </div>
 </section>
@@ -1119,9 +1361,6 @@
     <img class="lightbox-img" id="lbImg" src="" alt="">
     <p class="lightbox-hint">tap anywhere to close</p>
 </div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"><span class="toast-icon">✓</span> Noted, Android is coming!</div>
 
 <!-- FOOTER -->
 <footer>
@@ -1136,40 +1375,6 @@
 
 <script>
 (function() {
-
-    /* ── Toast / Android ── */
-    function showToast() {
-        var t = document.getElementById('toast');
-        t.classList.add('show');
-        setTimeout(function() { t.classList.remove('show'); }, 3000);
-    }
-    function handleAndroid(e, el, loc) {
-        e.preventDefault();
-        document.querySelectorAll('.android-link').forEach(function(l) {
-            l.textContent = '✓ Noted!';
-            l.classList.add('clicked');
-        });
-        showToast();
-        try {
-            if (!localStorage.getItem('android_logged')) {
-                gtag('event', 'android_interest', { button_location: loc });
-                localStorage.setItem('android_logged', '1');
-            }
-        } catch(e) {
-            if (!window._androidLogged) {
-                gtag('event', 'android_interest', { button_location: loc });
-                window._androidLogged = true;
-            }
-        }
-    }
-    window.handleAndroid = handleAndroid;
-    try {
-        if (localStorage.getItem('android_logged')) {
-            document.querySelectorAll('.android-link').forEach(function(l) {
-                l.textContent = '✓ Noted!'; l.classList.add('clicked');
-            });
-        }
-    } catch(e) {}
 
     /* ── Mobile menu ── */
     var burger = document.getElementById('burger');
@@ -1306,6 +1511,47 @@
         ]);
     })();
 
+})();
+</script>
+
+<!-- Interactive hero phone: default Nutrition, gentle auto-rotate, stops on first tap -->
+<script>
+(function(){
+  var order = ['nutrition','workouts'], idx = 0, timer = null, stopped = false;
+
+  function setScreen(name){
+    var screens = document.querySelectorAll('#visual .scr');
+    if(!screens.length) return;
+    screens.forEach(function(s){ s.classList.remove('on'); });
+    var el = document.getElementById('scr-'+name); if(el) el.classList.add('on');
+
+    var tw = document.getElementById('tab-workouts'),
+        tn = document.getElementById('tab-nutrition'),
+        tc = document.getElementById('tab-create');
+    tw.className = 'ph-tab'; tn.className = 'ph-tab'; tc.className = 'ph-create';
+    if(name === 'workouts') tw.className = 'ph-tab on-cy';
+    if(name === 'nutrition') tn.className = 'ph-tab on-gr';
+    if(name === 'create')   tc.className = 'ph-create active';
+
+    document.getElementById('visual').classList.toggle('is-green', name === 'nutrition');
+  }
+
+  // Any tab tap takes over and stops the rotation for good.
+  window.showScreen = function(name){
+    stopped = true;
+    if(timer){ clearInterval(timer); timer = null; }
+    setScreen(name);
+  };
+
+  // Gentle rotation so visitors who never tap still see both home screens.
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce && document.getElementById('visual')){
+    timer = setInterval(function(){
+      if(stopped){ clearInterval(timer); timer = null; return; }
+      idx = (idx + 1) % order.length;
+      setScreen(order[idx]);
+    }, 3800);
+  }
 })();
 </script>
 </body>
