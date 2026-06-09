@@ -783,6 +783,19 @@
         .poke-arrow { color:var(--cyan); }
         .poke-label { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--cyan); }
 
+        /* Hero rating line + video thumbnail (surfaced social proof) */
+        .hero-rating { display:flex; align-items:center; gap:0.55rem; margin-bottom:1.5rem; font-family:'DM Mono',monospace; font-size:0.74rem; color:var(--text-2); }
+        .hero-rating .stars { color:#f59e0b; font-size:0.85rem; letter-spacing:0.06em; }
+        .hero-rating b { color:var(--text); font-weight:500; }
+        .video-thumb { display:inline-flex; align-items:center; gap:0.7rem; cursor:pointer; text-decoration:none; }
+        .video-thumb .frame { position:relative; width:64px; height:40px; border-radius:8px; overflow:hidden; border:1px solid var(--border); background:linear-gradient(135deg,#0d2a30,#0a0a0f); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+        .video-thumb .play { width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.92); display:flex; align-items:center; justify-content:center; }
+        .video-thumb .play svg { margin-left:2px; color:#050508; }
+        .video-thumb .vt-text { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-2); line-height:1.3; }
+        .video-thumb:hover .vt-text { color:var(--cyan); }
+        .video-thumb .vt-text b { color:var(--text); display:block; font-weight:500; }
+        @media (max-width:860px) { .hero-split .hero-rating { justify-content:center; } }
+
         /* Split-hero left column — left-align (override centred defaults) */
         .hero-split .hero-text { text-align:left; }
         .hero-split .hero-sub { margin-left:0; margin-right:0; }
@@ -834,9 +847,14 @@
             <div class="badge"><span class="badge-dot"></span> For skinny guys who can't eat enough</div>
             <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
             <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out, so hitting a surplus stops being a chore. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
+            <div class="hero-rating"><span class="stars">★★★★★</span> <b>5.0</b> on the App Store</div>
             <div class="hero-btns">
                 <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
                     <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
+                </a>
+                <a class="video-thumb" href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
+                    <span class="frame"><span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span></span>
+                    <span class="vt-text"><b>Watch how it works</b>44 seconds</span>
                 </a>
             </div>
             <p class="hero-meta">100% free · no subscription · no accounts<br><span class="cyan">free because you bring your own AI</span></p>
@@ -844,7 +862,6 @@
                 <p class="hero-review-quote">"Was paying for an AI trainer that was just GPT under the hood anyway. This app lets me use ChatGPT myself to build my program and just handles the tracking. Workouts are completely free too which I wasn't expecting."</p>
                 <div class="hero-review-meta"><span class="hero-review-stars">★★★★★</span> ReeceAdam · App Store</div>
             </div>
-            <p class="hero-watch-link"><a href="https://www.youtube.com/watch?v=luuxyPwx-Yo" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.3em;vertical-align:middle;position:relative;top:-1px"><polygon points="5,3 19,12 5,21"/></svg>Watch how it works (44s)</a></p>
         </div>
 
         <!-- Interactive phone — faithful HTML/CSS rebuild of the app's real screens -->
