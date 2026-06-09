@@ -102,6 +102,40 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .foot-l{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-3)}
 .foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem;transition:color .2s}
 .foot-l a:hover{color:var(--green)}
+
+/* Free cookbook capture */
+.cap{max-width:1080px;margin:0 auto;width:100%;padding:0 1.5rem 1.5rem}
+.cap-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:2.5rem;display:grid;grid-template-columns:0.82fr 1.18fr;gap:2.5rem;align-items:center;max-width:760px;margin:0 auto}
+.cap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.cap-card::after{content:'';position:absolute;top:-30%;left:-10%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,var(--green-glow),transparent 65%);opacity:.12;filter:blur(50px);pointer-events:none}
+.cap-cover{display:flex;justify-content:center;position:relative;z-index:1}
+.book{position:relative;width:172px;aspect-ratio:3/4;border-radius:4px 12px 12px 4px;background:linear-gradient(158deg,#11321f 0%,#0a2114 55%,#06160d 100%);box-shadow:0 24px 50px rgba(0,0,0,.6),0 0 0 1px rgba(34,197,94,.18),inset 1px 0 0 rgba(255,255,255,.05);transform:rotate(-5deg);animation:bookFloat 6s ease-in-out infinite;padding:20px 16px 16px;display:flex;flex-direction:column}
+.book::before{content:'';position:absolute;top:0;bottom:0;left:0;width:9px;border-radius:4px 0 0 4px;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(255,255,255,.04))}
+@keyframes bookFloat{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(-5deg) translateY(-7px)}}
+.book-free{position:absolute;top:11px;right:-7px;background:var(--green);color:#001b08;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.12em;padding:.22rem .5rem;border-radius:4px;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+.book-eyebrow{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem}
+.book-title{font-family:Georgia,'Times New Roman',serif;font-size:1.18rem;line-height:1.12;color:#f4f4f2;font-weight:400}
+.book-rule{width:24px;height:2px;background:var(--green);margin:.6rem 0}
+.book-sub{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.04em;color:#9aa39c;line-height:1.5}
+.book-icon{margin-top:auto;color:rgba(255,255,255,.22)}
+.cap-body{position:relative;z-index:1}
+.cap-label{font-family:'DM Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--green);display:block;margin-bottom:.9rem}
+.cap-body h2{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:.7rem}
+.cap-body h2 em{color:var(--green);font-style:normal}
+.cap-body p{color:var(--text-2);font-size:.92rem;max-width:420px;margin-bottom:1.4rem}
+.cap-form{display:flex;gap:.6rem;max-width:440px}
+.cap-input{flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.92rem;transition:border-color .2s,box-shadow .2s}
+.cap-input::placeholder{color:var(--text-3)}
+.cap-input:focus{outline:none;border-color:var(--border-green);box-shadow:0 0 0 3px var(--green-soft)}
+.cap-btn{flex-shrink:0;background:var(--green);color:#001b08;border:none;border-radius:10px;padding:.85rem 1.3rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:.92rem;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.cap-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--green-glow)}
+.cap-btn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.cap-note{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.02em;margin-top:.9rem}
+.cap-success{display:none;align-items:center;gap:.6rem;max-width:440px;padding:.95rem 1.1rem;border:1px solid var(--border-green);background:var(--green-soft);border-radius:10px;color:var(--text);font-size:.92rem}
+.cap-success.show{display:flex}
+.cap-success .tick{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--green);color:#001b08;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+@media(max-width:700px){.cap{padding:0 1.5rem 1rem}.cap-card{grid-template-columns:1fr;gap:2rem;padding:2rem 1.5rem;text-align:center}.cap-body p{margin-left:auto;margin-right:auto}.cap-label{text-align:center}.cap-form{flex-direction:column;margin:0 auto}.cap-success{margin:0 auto;text-align:left}}
+@media(prefers-reduced-motion:reduce){.book{animation:none}.cap-btn:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -142,6 +176,37 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   <div class="grid" id="grid" style="display:none"></div>
   <div class="empty" id="empty"><strong>No meals match that.</strong>Try a different search or filter.</div>
 </main>
+
+<!-- Free cookbook email capture -->
+<section class="cap">
+  <div class="cap-card">
+    <div class="cap-cover">
+      <div class="book">
+        <div class="book-free">FREE</div>
+        <div class="book-eyebrow">JSON.fit</div>
+        <div class="book-title">The Skinny Guy's Bulking Cookbook</div>
+        <div class="book-rule"></div>
+        <div class="book-sub">81 calorie-dense meals &middot; macros + grocery lists</div>
+        <div class="book-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2M5 2v9M5 11v11"/><path d="M17 2c-1.7 0-3 2-3 5s1.3 4 3 4v11"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="cap-body">
+      <span class="cap-label">Free Cookbook</span>
+      <h2>Get all 81 bulking meals, <em>free.</em></h2>
+      <p>Every meal with its macros, ingredients and a grocery list &mdash; built as a printable cookbook, sent straight to your inbox.</p>
+      <form class="cap-form" id="capForm" novalidate>
+        <!-- Wire to your email tool (Kit / MailerLite / Beehiiv): replace with their embed, or POST to their form action. -->
+        <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+        <input class="cap-input" id="capEmail" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
+        <button class="cap-btn" type="submit">Send me the cookbook</button>
+      </form>
+      <div class="cap-success" id="capSuccess"><span class="tick">&#10003;</span> Check your inbox &mdash; your cookbook's on the way.</div>
+      <p class="cap-note">No spam, unsubscribe anytime.</p>
+    </div>
+  </div>
+</section>
 
 <div class="foot-cta">
   <h2>Cook these in the app.</h2>
@@ -371,5 +436,22 @@ function applyFilter(){
   searchEl.addEventListener('input',applyFilter);
 })();
 </script>
+
+<!-- Free cookbook capture handler (demo success state — replace with your email tool's embed) -->
+<script>
+(function(){
+  var capForm=document.getElementById('capForm');
+  if(!capForm) return;
+  capForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    var email=document.getElementById('capEmail');
+    if(!email.value || email.value.indexOf('@')===-1){ email.focus(); email.style.borderColor='#ef4444'; return; }
+    if(window.gtag) gtag('event','cookbook_signup',{'button_location':'meals_page'});
+    capForm.style.display='none';
+    document.getElementById('capSuccess').classList.add('show');
+  });
+})();
+</script>
 </body>
 </html>
+
