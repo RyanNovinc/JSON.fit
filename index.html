@@ -411,7 +411,9 @@
         .wl-upnext-h { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.6px; color:#55555f; margin:0 0 9px 2px; }
         .wl-mini { position:relative; display:flex; align-items:center; gap:10px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.04); border-radius:11px; padding:9px 10px; margin-bottom:7px; overflow:hidden; }
         .wl-mini.active { border-color:rgba(255,255,255,0.09); background:rgba(255,255,255,0.02); }
-        .wl-mini-icon { width:30px; height:30px; border-radius:8px; background:#111116; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; color:#55555f; }
+        .wl-mini-icon { position:relative; width:30px; height:30px; border-radius:8px; background:#111116; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; color:#55555f; }
+        .wl-mini-icon .cyc { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.25s ease; }
+        .wl-mini-icon .cyc.show { opacity:1; }
         .wl-mini-icon img { width:100%; height:100%; object-fit:cover; }
         .wl-mini-icon svg { width:15px; height:15px; }
         .wl-mini-main { flex:1; min-width:0; }
@@ -540,8 +542,8 @@
                     <div class="scr" data-accent="cyan" id="scr-workout">
                         <div class="wl-scroll">
                             <div class="wl-img">
-                                <img class="frame" id="wl-frame-a" alt="" src="images/exercise/rdl-start.webp" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'">
-                                <img class="frame" id="wl-frame-b" alt="" src="images/exercise/rdl-end.webp" onerror="this.onerror=null;this.src='images/exercise/rdl-end.png'">
+                                <img class="frame" id="wl-frame-a" alt="" src="images/exercise/start.webp" onerror="this.onerror=null;this.src='images/exercise/start.png'">
+                                <img class="frame" id="wl-frame-b" alt="" src="images/exercise/end.webp" onerror="this.onerror=null;this.src='images/exercise/end.png'">
                                 <div class="wl-ph" id="wl-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 7v10M18 7v10M3 12h18M3 9.5v5M21 9.5v5"/></svg><span>exercise demo</span></div>
                                 <div class="wl-overlay"></div>
                                 <div class="wl-head">
@@ -552,21 +554,29 @@
                                 </div>
                             </div>
                             <div class="wl-body">
-                                <div class="wl-titlerow"><div class="wl-title">Romanian Deadlift <span class="cd">&#9662;</span></div></div>
-                                <div class="wl-muscles">Hamstrings &middot; Glutes</div>
-                                <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10</span></div>
+                                <div class="wl-titlerow"><div class="wl-title">Barbell Back Squat <span class="cd">&#9662;</span></div></div>
+                                <div class="wl-muscles">Quads &middot; Glutes</div>
+                                <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10, 10, 8</span></div>
                                 <div class="wl-tbl-head"><span style="width:24px">SET</span><span style="flex:1;text-align:center">KG</span><span style="flex:1;text-align:center">REPS</span><span style="width:28px;text-align:center">&#10003;</span></div>
                                 <div class="wl-row"><div class="col-set">1</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
                                 <div class="wl-row"><div class="col-set">2</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                                <div class="wl-row"><div class="col-set">3</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                <div class="wl-row"><div class="col-set">3</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">8</div></div><div class="col-chk"><div class="ring"></div></div></div>
                                 <div class="wl-add">+ Add set</div>
                             </div>
                             <div class="wl-upnext">
                                 <div class="wl-upnext-h">UP NEXT</div>
                                 <div class="wl-mini active">
-                                    <div class="wl-mini-icon"><img src="images/exercise/rdl-start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"></div>
+                                    <div class="wl-mini-icon"><img src="images/exercise/start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/start.png'"></div>
                                     <div class="wl-mini-main">
-                                        <div class="wl-mini-trow"><span class="wl-mini-title">Romanian Deadlift</span><span class="wl-mini-cur">CURRENT</span></div>
+                                        <div class="wl-mini-trow"><span class="wl-mini-title">Barbell Back Squat</span><span class="wl-mini-cur">CURRENT</span></div>
+                                        <div class="wl-mini-meta">3 &times; 10, 10, 8 &middot; 0/3 done</div>
+                                    </div>
+                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                </div>
+                                <div class="wl-mini">
+                                    <div class="wl-mini-icon"><img class="cyc" id="ul-rdl-a" src="images/exercise/rdl-start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"><img class="cyc" id="ul-rdl-b" src="images/exercise/rdl-end.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-end.png'"></div>
+                                    <div class="wl-mini-main">
+                                        <div class="wl-mini-trow"><span class="wl-mini-title">Romanian Deadlift</span></div>
                                         <div class="wl-mini-meta">3 &times; 10 &middot; 0/3 done</div>
                                     </div>
                                     <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
@@ -1061,15 +1071,19 @@
   var fa = document.getElementById('wl-frame-a'),
       fb = document.getElementById('wl-frame-b'),
       ph = document.getElementById('wl-ph');
+  var ra = document.getElementById('ul-rdl-a'),
+      rb = document.getElementById('ul-rdl-b');
   if(fa && fb && fa.getAttribute('src') && fb.getAttribute('src')){
     if(ph) ph.style.display = 'none';
     fa.classList.add('show');
+    if(ra && rb) ra.classList.add('show');
     if(!reduce){
       var phase = 0;
       setInterval(function(){
         phase ^= 1;
         fa.classList.toggle('show', phase === 0);
         fb.classList.toggle('show', phase === 1);
+        if(ra && rb){ ra.classList.toggle('show', phase === 0); rb.classList.toggle('show', phase === 1); }
       }, 1000);
     }
   }
