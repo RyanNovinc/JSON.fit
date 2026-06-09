@@ -54,7 +54,7 @@
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "How does JSON.fit actually work?", "acceptedAnswer": { "@type": "Answer", "text": "You answer a few questions and the app builds a starter prompt. Paste it into any AI you already use, like ChatGPT, Claude or Gemini. From there the AI guides you: it builds your plan, then offers to review it and check the numbers, and once you're happy it converts everything into a file JSON.fit can read. You just confirm each step, then import the file and your plan loads, ready to track." } },
+        { "@type": "Question", "name": "How does JSON.fit actually work?", "acceptedAnswer": { "@type": "Answer", "text": "You answer a few quick questions and JSON.fit generates a prompt for you. Paste it into any AI like ChatGPT, Claude or Gemini, and it builds your plan on the best muscle-building research available, then reviews its own work to catch mistakes. Import the finished training program or meal plan and you're ready to track." } },
         { "@type": "Question", "name": "Do I need to pay for AI separately?", "acceptedAnswer": { "@type": "Answer", "text": "Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you." } },
         { "@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": { "@type": "Answer", "text": "JSON.fit is completely free. Workouts and nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence, with no subscription, no paywall, and no in-app purchases." } },
         { "@type": "Question", "name": "If JSON.fit is free, what's the catch?", "acceptedAnswer": { "@type": "Answer", "text": "There isn't one. Most fitness apps charge $10-20 per month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are also no accounts and no data collection, so there's nothing to sell. The app is simply free." } },
@@ -245,7 +245,7 @@
         .pc-strip img { width:180px; height:auto; display:block; flex-shrink:0; cursor:zoom-in; }
         .pc-label { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); letter-spacing:0.08em; text-transform:uppercase; }
         .pc-controls { display:flex; align-items:center; gap:0.6rem; }
-        .pc-btn { width:26px; height:26px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text-2); cursor:pointer; font-size:0.9rem; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s,color 0.2s; }
+        .pc-btn { width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text-2); cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s,color 0.2s; }
         .pc-btn:hover { border-color:var(--cyan); color:var(--cyan); }
         .pc-btn:disabled { opacity:0.2; cursor:default; }
         .pc-dots { display:flex; gap:0.35rem; }
@@ -627,7 +627,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">The Meal Library</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Real meals,<br><span class="cyan">step-by-step.</span></h2>
-            <p style="margin:0 auto;">Browse a whole library of calorie-dense meals with exact ingredients and cooking steps, built to make eating big easy. High protein comes standard. Free to use, no AI needed.</p>
+            <p style="margin:0 auto;">Browse a whole library of calorie-dense meals with exact ingredients and cooking steps, built to make eating big easy. High protein comes standard.</p>
         </div>
         <div class="meal-grid sa-stagger">
             <a class="meal-card" href="meals.html">
@@ -665,7 +665,7 @@
     <div class="container">
         <div class="section-head sa sa-up" style="text-align:center;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
-            <span class="label">Your plan, your AI</span>
+            <span class="label">How your plan gets built</span>
             <h2>Then it builds them into <span class="cyan">your</span> week.</h2>
             <p style="margin:0 auto;">The meals are free to browse. The app builds them into a plan around <em>your</em> goal, hitting the exact calories and macros it takes to get there, with a training program to match.</p>
         </div>
@@ -786,7 +786,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Free Training Programs</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan">Training makes it muscle.</span></h2>
-            <p style="margin:0 auto;">Skip the training and that surplus just turns to fat. Import a complete, periodised program, a full year of it, straight into the app. Free, no AI step needed.</p>
+            <p style="margin:0 auto;">Skip the training and that surplus just turns to fat. Don't want to build a custom plan? Import a complete, periodised program &mdash; a full year of it &mdash; directly into the app, instantly.</p>
         </div>
         <div class="prog-grid sa-stagger">
             <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
@@ -887,7 +887,7 @@
             <h2>Common questions.</h2>
         </div>
         <div class="faq sa sa-up">
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does it actually work?</div><div class="faq-a">You answer a few questions and the app builds a starter prompt. Paste it into any AI you already use, like ChatGPT, Claude or Gemini. From there the AI guides you: it builds your plan, then offers to review it and check the numbers, and once you're happy it converts everything into a file JSON.fit can read. You just confirm each step, then import the file and your plan loads, ready to track.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does it actually work?</div><div class="faq-a">You answer a few quick questions and JSON.fit generates a prompt for you. Paste it into any AI &mdash; ChatGPT, Claude or Gemini &mdash; and it builds your plan on the best muscle-building research available, then reviews its own work to catch mistakes. Import the finished training program or meal plan and you're ready to track.</div></div>
             <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need to pay for AI separately?</div><div class="faq-a">Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
             <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much does JSON.fit cost?</div><div class="faq-a">It's completely free. Workouts <em>and</em> nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence. No subscription, no paywall, no in-app purchases.</div></div>
             <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">If it's free, what's the catch?</div><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no accounts and no data collection either, so there's nothing to sell. The app is simply free.</div></div>
@@ -1005,12 +1005,10 @@
             var n = captions.length;
             var i = 0;
             function show(idx) {
-                i = Math.max(0, Math.min(idx, n - 1));
+                i = ((idx % n) + n) % n;
                 strip.style.transform = 'translateX(' + (-W * i) + 'px)';
                 dots.forEach(function(d, j) { d.classList.toggle('on', j === i); });
                 if (lbl) lbl.textContent = captions[i];
-                prev.disabled = i === 0;
-                next.disabled = i === n - 1;
             }
             prev.addEventListener('click', function() { show(i - 1); });
             next.addEventListener('click', function() { show(i + 1); });
