@@ -54,7 +54,7 @@
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "How does JSON.fit actually work?", "acceptedAnswer": { "@type": "Answer", "text": "You answer a few quick questions and JSON.fit generates a prompt for you. Paste it into any AI like ChatGPT, Claude or Gemini, and it builds your plan on the best muscle-building research available, then reviews its own work to catch mistakes. Import the finished training program or meal plan and you're ready to track." } },
+        { "@type": "Question", "name": "How does JSON.fit actually work?", "acceptedAnswer": { "@type": "Answer", "text": "It takes three steps. Answer a few quick questions, paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini, then import the meal plan it builds and start tracking. The same flow builds your training program too." } },
         { "@type": "Question", "name": "Do I need to pay for AI separately?", "acceptedAnswer": { "@type": "Answer", "text": "Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you." } },
         { "@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": { "@type": "Answer", "text": "JSON.fit is completely free. Workouts and nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence, with no subscription, no paywall, and no in-app purchases." } },
         { "@type": "Question", "name": "If JSON.fit is free, what's the catch?", "acceptedAnswer": { "@type": "Answer", "text": "There isn't one. Most fitness apps charge $10-20 per month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are also no ads, no accounts and no data collection, so there's nothing to sell. The app is simply free." } },
@@ -885,13 +885,13 @@
             <h2>Common questions.</h2>
         </div>
         <div class="faq sa sa-up">
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does it actually work?</div><div class="faq-a">You answer a few quick questions and JSON.fit generates a prompt for you. Paste it into any AI like ChatGPT, Claude or Gemini, and it builds your plan on the best muscle-building research available, then reviews its own work to catch mistakes. Import the finished training program or meal plan and you're ready to track.</div></div>
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need to pay for AI separately?</div><div class="faq-a">Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much does JSON.fit cost?</div><div class="faq-a">It's completely free. Workouts <em>and</em> nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence. No subscription, no paywall, no in-app purchases.</div></div>
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">If it's free, what's the catch?</div><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, no accounts and no data collection either, so there's nothing to sell. The app is simply free.</div></div>
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What AI does it work with?</div><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data private?</div><div class="faq-a">Yes. Your data stays on your device. JSON.fit doesn't have accounts, doesn't collect personal information, and doesn't send your workout or nutrition data anywhere.</div></div>
-            <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is it available on Android?</div><div class="faq-a">Not yet. It's currently iOS only, but Android is in development.</div></div>
+            <div class="faq-item"><div class="faq-q">How does it actually work?</div><div class="faq-a">Three steps:<br>1. Answer a few quick questions.<br>2. Paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini.<br>3. Import the meal plan it builds and start tracking.<br><br>The same flow builds your training program too.</div></div>
+            <div class="faq-item"><div class="faq-q">Do I need to pay for AI separately?</div><div class="faq-a">Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
+            <div class="faq-item"><div class="faq-q">How much does JSON.fit cost?</div><div class="faq-a">It's completely free. Workouts <em>and</em> nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence. No subscription, no paywall, no in-app purchases.</div></div>
+            <div class="faq-item"><div class="faq-q">If it's free, what's the catch?</div><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, no accounts and no data collection either, so there's nothing to sell. The app is simply free.</div></div>
+            <div class="faq-item"><div class="faq-q">What AI does it work with?</div><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
+            <div class="faq-item"><div class="faq-q">Is my data private?</div><div class="faq-a">Yes. Your data stays on your device. JSON.fit doesn't have accounts, doesn't collect personal information, and doesn't send your workout or nutrition data anywhere.</div></div>
+            <div class="faq-item"><div class="faq-q">Is it available on Android?</div><div class="faq-a">Not yet. It's currently iOS only, but Android is in development.</div></div>
         </div>
     </div>
 </section>
@@ -925,6 +925,18 @@
         a.addEventListener('click', function() {
             burger.classList.remove('open');
             navLinks.classList.remove('open');
+        });
+    });
+
+    // FAQ accordion: only one panel open at a time
+    document.querySelectorAll('.faq-item .faq-q').forEach(function(q) {
+        q.addEventListener('click', function() {
+            var item = q.parentElement;
+            var isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(function(open) {
+                open.classList.remove('open');
+            });
+            if (!isOpen) item.classList.add('open');
         });
     });
 
