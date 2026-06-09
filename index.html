@@ -329,7 +329,7 @@
         .hero-visual { display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; gap:1rem; }
         .hero-visual::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-55%); width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, var(--cyan-glow), transparent 65%); opacity:0.16; filter:blur(55px); transition:background 0.4s ease; pointer-events:none; }
         .hero-visual.is-green::before { background:radial-gradient(circle, var(--green), transparent 65%); opacity:0.14; }
-        .phone { position:relative; width:clamp(252px,26vw,286px); aspect-ratio:9/19.3; background:#000; border-radius:44px; padding:11px; box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06); animation:phoneFloat 6s ease-in-out infinite; z-index:2; cursor:pointer; }
+        .phone { position:relative; width:clamp(252px,26vw,286px); aspect-ratio:9/19.3; background:linear-gradient(150deg,#202027 0%,#0c0c11 46%,#050507 100%); border-radius:44px; padding:11px; box-shadow:0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.18), inset 0 1px 1px rgba(255,255,255,0.10); animation:phoneFloat 6s ease-in-out infinite; z-index:2; cursor:pointer; }
         @keyframes phoneFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
         .phone-notch { position:absolute; top:11px; left:50%; transform:translateX(-50%); width:88px; height:22px; background:#000; border-radius:0 0 14px 14px; z-index:20; }
         .screen { width:100%; height:100%; border-radius:33px; overflow:hidden; background:#0a0a0b; position:relative; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; }
