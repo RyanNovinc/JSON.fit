@@ -574,7 +574,7 @@
                                     <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
                                 </div>
                                 <div class="wl-mini">
-                                    <div class="wl-mini-icon"><img class="cyc" id="ul-rdl-a" src="images/exercise/rdl-start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"><img class="cyc" id="ul-rdl-b" src="images/exercise/rdl-end.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-end.png'"></div>
+                                    <div class="wl-mini-icon"><img src="images/exercise/rdl-start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"></div>
                                     <div class="wl-mini-main">
                                         <div class="wl-mini-trow"><span class="wl-mini-title">Romanian Deadlift</span></div>
                                         <div class="wl-mini-meta">3 &times; 10 &middot; 0/3 done</div>
@@ -1071,19 +1071,15 @@
   var fa = document.getElementById('wl-frame-a'),
       fb = document.getElementById('wl-frame-b'),
       ph = document.getElementById('wl-ph');
-  var ra = document.getElementById('ul-rdl-a'),
-      rb = document.getElementById('ul-rdl-b');
   if(fa && fb && fa.getAttribute('src') && fb.getAttribute('src')){
     if(ph) ph.style.display = 'none';
     fa.classList.add('show');
-    if(ra && rb) ra.classList.add('show');
     if(!reduce){
       var phase = 0;
       setInterval(function(){
         phase ^= 1;
         fa.classList.toggle('show', phase === 0);
         fb.classList.toggle('show', phase === 1);
-        if(ra && rb){ ra.classList.toggle('show', phase === 0); rb.classList.toggle('show', phase === 1); }
       }, 1000);
     }
   }
