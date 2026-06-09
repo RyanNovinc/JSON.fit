@@ -4,8 +4,10 @@
       {
         "appIDs": ["RJL5VQK2DK.com.RyanNovinc.JSON"],
         "components": [
-          { "/": "/r/*", "comment": "Meal share pages" },
-          { "/": "/r",   "comment": "Meal share root" }
+          { "/": "/r/*",         "comment": "Meal share pages" },
+          { "/": "/r",           "comment": "Meal share root" },
+          { "/": "/p/program/*", "comment": "Curated training programs" },
+          { "/": "/p/*",         "comment": "Workout & meal shares" }
         ]
       }
     ]
