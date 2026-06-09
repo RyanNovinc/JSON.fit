@@ -74,7 +74,7 @@
     <style>
         :root {
             --cyan: #22d3ee; --cyan-soft: rgba(34,211,238,0.08); --cyan-glow: rgba(34,211,238,0.35);
-            --green: #22c55e;
+            --green: #22c55e; --green-soft:rgba(34,197,94,0.07); --green-border:rgba(34,197,94,0.20); --green-glow:rgba(34,197,94,0.30);
             --violet: #a855f7; --violet-soft: rgba(168,85,247,0.08); --violet-border: rgba(168,85,247,0.16);
             --red: #ef4444;
             --bg: #050508; --surface: #0a0a0f; --surface-2: #111116;
@@ -454,6 +454,46 @@
             .phone { width:clamp(248px,72vw,280px); }
         }
         @media (prefers-reduced-motion: reduce) { .phone { animation:none; } .poke { animation:none; } }
+
+        /* Free cookbook capture */
+        .cap { padding:2rem 0 1.5rem; }
+        .cap-card { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; display:grid; grid-template-columns:0.82fr 1.18fr; gap:2.5rem; align-items:center; }
+        .cap-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--green),transparent); }
+        .cap-card::after { content:''; position:absolute; top:-30%; left:-10%; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,var(--green-glow),transparent 65%); opacity:0.12; filter:blur(50px); pointer-events:none; }
+        .cap-cover { display:flex; justify-content:center; position:relative; z-index:1; }
+        .book { position:relative; width:172px; aspect-ratio:3/4; border-radius:4px 12px 12px 4px; background:linear-gradient(158deg,#11321f 0%,#0a2114 55%,#06160d 100%); box-shadow:0 24px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(34,197,94,0.18), inset 1px 0 0 rgba(255,255,255,0.05); transform:rotate(-5deg); animation:bookFloat 6s ease-in-out infinite; padding:20px 16px 16px; display:flex; flex-direction:column; }
+        .book::before { content:''; position:absolute; top:0; bottom:0; left:0; width:9px; border-radius:4px 0 0 4px; background:linear-gradient(90deg,rgba(0,0,0,0.55),rgba(255,255,255,0.04)); }
+        @keyframes bookFloat { 0%,100%{transform:rotate(-5deg) translateY(0)} 50%{transform:rotate(-5deg) translateY(-7px)} }
+        .book-free { position:absolute; top:11px; right:-7px; background:var(--green); color:#041109; font-family:'DM Mono',monospace; font-size:0.6rem; font-weight:500; letter-spacing:0.12em; padding:0.22rem 0.5rem; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.4); }
+        .book-eyebrow { font-family:'DM Mono',monospace; font-size:0.5rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--green); margin-bottom:0.5rem; }
+        .book-title { font-family:Georgia,'Times New Roman',serif; font-size:1.18rem; line-height:1.12; color:#f4f4f2; font-weight:400; }
+        .book-rule { width:24px; height:2px; background:var(--green); margin:0.6rem 0; }
+        .book-sub { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.04em; color:#9aa39c; line-height:1.5; }
+        .book-icon { margin-top:auto; color:rgba(255,255,255,0.22); }
+        .cap-body { position:relative; z-index:1; }
+        .cap-label { font-family:'DM Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--green); display:block; margin-bottom:0.9rem; }
+        .cap-body h2 { font-size:clamp(1.5rem,3.4vw,2rem); font-weight:800; letter-spacing:-0.02em; line-height:1.12; margin-bottom:0.7rem; }
+        .cap-body h2 em { color:var(--green); font-style:normal; }
+        .cap-body p { color:var(--text-2); font-size:0.92rem; max-width:420px; margin-bottom:1.4rem; }
+        .cap-form { display:flex; gap:0.6rem; max-width:440px; }
+        .cap-input { flex:1; min-width:0; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--text); font-family:'Outfit',sans-serif; font-size:0.92rem; transition:border-color 0.2s, box-shadow 0.2s; }
+        .cap-input::placeholder { color:var(--text-3); }
+        .cap-input:focus { outline:none; border-color:var(--green-border); box-shadow:0 0 0 3px var(--green-soft); }
+        .cap-btn { flex-shrink:0; background:var(--green); color:#041109; border:none; border-radius:10px; padding:0.85rem 1.3rem; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.92rem; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
+        .cap-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px var(--green-glow); }
+        .cap-btn:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+        .cap-note { font-family:'DM Mono',monospace; font-size:0.66rem; color:var(--text-3); letter-spacing:0.02em; margin-top:0.9rem; }
+        .cap-success { display:none; align-items:center; gap:0.6rem; max-width:440px; padding:0.95rem 1.1rem; border:1px solid var(--green-border); background:var(--green-soft); border-radius:10px; color:var(--text); font-size:0.92rem; }
+        .cap-success.show { display:flex; }
+        .cap-success .tick { flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--green); color:#041109; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; }
+        @media (max-width:860px) {
+            .cap-card { grid-template-columns:1fr; gap:2rem; padding:2rem 1.5rem; text-align:center; }
+            .cap-body p { margin-left:auto; margin-right:auto; }
+            .cap-label { text-align:center; }
+            .cap-form { flex-direction:column; margin:0 auto; }
+            .cap-success { margin:0 auto; text-align:left; }
+        }
+        @media (prefers-reduced-motion:reduce) { .book { animation:none; } .cap-btn:hover { transform:none; } }
     </style>
 </head>
 <body>
@@ -661,6 +701,39 @@
     </div>
 </section>
 
+<!-- Free cookbook email capture -->
+<section class="cap">
+    <div class="container">
+        <div class="cap-card">
+            <div class="cap-cover">
+                <div class="book">
+                    <div class="book-free">FREE</div>
+                    <div class="book-eyebrow">JSON.fit</div>
+                    <div class="book-title">The Skinny Guy's Bulking Cookbook</div>
+                    <div class="book-rule"></div>
+                    <div class="book-sub">81 calorie-dense meals &middot; macros + grocery lists</div>
+                    <div class="book-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2M5 2v9M5 11v11"/><path d="M17 2c-1.7 0-3 2-3 5s1.3 4 3 4v11"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="cap-body">
+                <span class="cap-label">Free Cookbook</span>
+                <h2>Get all 81 bulking meals, <em>free.</em></h2>
+                <p>Every meal with its macros, ingredients and a grocery list &mdash; built as a printable cookbook, sent straight to your inbox.</p>
+                <form class="cap-form" id="capForm" novalidate>
+                    <!-- Wire to your email tool (Kit / MailerLite / Beehiiv): replace with their embed, or POST to their form action. -->
+                    <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+                    <input class="cap-input" id="capEmail" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
+                    <button class="cap-btn" type="submit">Send me the cookbook</button>
+                </form>
+                <div class="cap-success" id="capSuccess"><span class="tick">&#10003;</span> Check your inbox &mdash; your cookbook's on the way.</div>
+                <p class="cap-note">No spam, unsubscribe anytime.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="section engine" id="how">
     <div class="container">
         <div class="section-head sa sa-up" style="text-align:center;">
@@ -690,7 +763,7 @@
                 <div class="flow-chips"><span class="flow-chip g">0.81s import</span><span class="flow-chip g">7-day plan</span></div>
             </div>
         </div>
-        <p class="engine-foot sa sa-up">Same system builds your <strong>training program</strong> too: splits, volume per muscle, deloads, progressive overload, a full year of it. <span class="cyan">Also free.</span></p>
+        <p class="engine-foot sa sa-up">Same system builds your <strong>training program</strong> too: splits, volume per muscle, deloads, progressive overload &mdash; and you can build one that runs up to a year long. <span class="cyan">Also free.</span></p>
     </div>
 </section>
 
@@ -939,6 +1012,19 @@
             if (!isOpen) item.classList.add('open');
         });
     });
+
+    // Free cookbook capture (demo success state — replace with your email tool's embed)
+    var capForm = document.getElementById('capForm');
+    if (capForm) {
+        capForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = document.getElementById('capEmail');
+            if (!email.value || email.value.indexOf('@') === -1) { email.focus(); email.style.borderColor = '#ef4444'; return; }
+            if (window.gtag) gtag('event', 'cookbook_signup', { 'button_location': 'meals' });
+            capForm.style.display = 'none';
+            document.getElementById('capSuccess').classList.add('show');
+        });
+    }
 
     var lb = document.getElementById('lightbox');
     var lbImg = document.getElementById('lbImg');
