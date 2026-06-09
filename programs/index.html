@@ -153,8 +153,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   <div class="wrap" id="content" style="display:none"></div>
 </main>
 
-<div class="toast" id="toast">✓ Program copied. Open JSON.fit → Import → paste.</div>
-
 <footer>
   <div class="foot-l">
     <a href="https://json.fit">json.fit</a>
@@ -256,9 +254,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       html += '<span class="d-tag">'+blocks.length+' blocks</span>';
       html += '</div>';
       if(data.description) html += '<p id="desc">'+esc(data.description)+'</p>';
+      var importNote = 'free · opens straight in the app';
       html += '<div class="import-row"><button class="import-btn" id="importTop">'
             + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
-            + 'Import this program</button><span class="import-note">free · copies to clipboard, paste into the app</span></div>';
+            + 'Import this program</button><span class="import-note">'+importNote+'</span></div>';
 
       // ---- periodization timeline (grouped into mesocycle phases) ----
       // 9 blocks render as 9 cramped boxes; they're really 3 mesocycles of 3 blocks.
@@ -371,26 +370,38 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       document.title = tp.title + ' — JSON.fit';
 
       // ---- import action ----------------------------------------------------
-      // Today (works on current app): copy the JSON, user pastes into the app's Import screen.
-      // Upgrade (see curated-program-import-app-spec.md): the app already catches /p/{shareId}
-      // universal links. Once it also handles a curated link, flip doImport() to navigate to it:
-      //   Option A (no AASA change):  location.href = '/p/program/' + slug;
-      //   Option B (claims /programs):location.href = location.href;
-      // The app then fetches /programs/<slug>.json itself and imports. No custom URL scheme,
-      // and the payload travels via fetch (not the URL), so the 519KB size is a non-issue.
+      // Same mechanism as the /p/ share page: navigate to the curated program's
+      // universal link (json.fit/p/program/<slug>). On iOS the app intercepts it
+      // (associated domain) and imports directly — it fetches /programs/<slug>.json
+      // itself, so nothing heavy travels in the URL. If the app never takes over
+      // (not installed / desktop), fall back to the App Store after a short delay.
+      var APP_STORE_URL = 'https://apps.apple.com/au/app/json-fit/id6758357834';
+      var FALLBACK_DELAY_MS = 2000;
       function doImport(){
-        var text = JSON.stringify(data);
-        gtag('event','import_program',{program:slug});
-        function ok(){ var t=document.getElementById('toast'); t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},3500); }
-        if(navigator.clipboard && navigator.clipboard.writeText){
-          navigator.clipboard.writeText(text).then(ok).catch(function(){ fallbackCopy(text); ok(); });
-        } else { fallbackCopy(text); ok(); }
-      }
-      function fallbackCopy(text){
-        var ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
-        document.body.appendChild(ta); ta.select();
-        try{ document.execCommand('copy'); }catch(e){}
-        document.body.removeChild(ta);
+        var universalLink = 'https://json.fit/p/program/' + slug;
+        var startTime = Date.now();
+        var wasHidden = document.hidden;
+        if(typeof gtag === 'function') gtag('event','import_program',{program:slug});
+
+        // Method 1: anchor click — iOS catches associated-domain links here.
+        try{
+          var a = document.createElement('a');
+          a.href = universalLink; a.rel = 'noopener';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }catch(e){}
+
+        // Method 2: direct assignment shortly after, if the app hasn't taken over.
+        setTimeout(function(){
+          if(!document.hidden){ try{ window.location.assign(universalLink); }catch(e){} }
+        }, 500);
+
+        // Fallback: App Store, if we're still on the page after the delay.
+        setTimeout(function(){
+          if(Date.now() - startTime < FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden){
+            if(typeof gtag === 'function') gtag('event','import_program_fallback_app_store',{program:slug});
+            window.location.href = APP_STORE_URL;
+          }
+        }, FALLBACK_DELAY_MS);
       }
       var t1=document.getElementById('importTop'), t2=document.getElementById('importBottom');
       if(t1) t1.addEventListener('click',doImport);
