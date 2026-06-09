@@ -375,7 +375,7 @@
         .nd-macro { font-size:10px; color:#8a8a90; margin-top:3px; }
         /* Workout log */
         .wl-img { position:relative; width:100%; aspect-ratio:16/10; border-bottom-left-radius:18px; border-bottom-right-radius:18px; overflow:hidden; background:radial-gradient(circle at 50% 38%,#15151b,#0a0a0b 70%); }
-        .wl-img .frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity 0.25s ease; }
+        .wl-img .frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transform:scale(0.9) translateY(11%); opacity:0; transition:opacity 0.25s ease; }
         .wl-img .frame.show { opacity:1; }
         .wl-ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#2f2f38; }
         .wl-ph svg { width:42px; height:42px; }
@@ -403,7 +403,24 @@
         .wl-row .col-chk { width:28px; display:flex; justify-content:center; }
         .wl-row .col-chk .ring { width:20px; height:20px; border-radius:10px; border:1.5px solid #3a3a44; }
         .wl-add { display:flex; align-items:center; justify-content:center; gap:5px; padding:9px 0 2px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
-        .wl-bottom { display:flex; align-items:center; gap:9px; padding:12px 14px 16px; }
+        .wl-bottom { display:flex; align-items:center; gap:9px; padding:11px 14px 14px; border-top:1px solid rgba(255,255,255,0.04); background:#0a0a0b; flex-shrink:0; }
+        #scr-workout { display:flex; flex-direction:column; overflow:hidden; }
+        .wl-scroll { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+        .wl-scroll::-webkit-scrollbar { display:none; }
+        .wl-upnext { padding:13px 14px 10px; border-top:1px solid rgba(255,255,255,0.05); margin-top:11px; }
+        .wl-upnext-h { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.6px; color:#55555f; margin:0 0 9px 2px; }
+        .wl-mini { position:relative; display:flex; align-items:center; gap:10px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.04); border-radius:11px; padding:9px 10px; margin-bottom:7px; overflow:hidden; }
+        .wl-mini.active { border-color:rgba(255,255,255,0.09); background:rgba(255,255,255,0.02); }
+        .wl-mini-icon { width:30px; height:30px; border-radius:8px; background:#111116; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; color:#55555f; }
+        .wl-mini-icon img { width:100%; height:100%; object-fit:cover; }
+        .wl-mini-icon svg { width:15px; height:15px; }
+        .wl-mini-main { flex:1; min-width:0; }
+        .wl-mini-trow { display:flex; align-items:center; gap:6px; }
+        .wl-mini-title { font-family:'Outfit',sans-serif; font-size:12.5px; font-weight:600; color:#f0f0f2; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .wl-mini-cur { flex-shrink:0; font-family:'DM Mono',monospace; font-size:7px; font-weight:500; letter-spacing:0.6px; color:#000; background:var(--ac); padding:2px 5px; border-radius:5px; }
+        .wl-mini-meta { font-family:'DM Mono',monospace; font-size:9px; color:#55555f; margin-top:3px; }
+        .wl-mini-prog { position:absolute; left:0; right:0; bottom:0; height:2px; background:rgba(255,255,255,0.04); }
+        .wl-mini-progfill { height:100%; background:var(--ac); }
         .wl-timer { display:flex; align-items:center; gap:5px; padding:8px 11px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.06); border-radius:9px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
         .wl-start { flex:1; height:40px; border-radius:11px; background:var(--ac); display:flex; align-items:center; justify-content:center; color:#000; font-weight:700; font-size:13px; }
         .poke { display:flex; flex-direction:column; align-items:center; gap:0.15rem; animation:pokeBob 2.2s ease-in-out infinite; }
@@ -521,28 +538,56 @@
                     </div>
 
                     <div class="scr" data-accent="cyan" id="scr-workout">
-                        <div class="wl-img">
-                            <img class="frame" id="wl-frame-a" alt="" src="images/exercise/start.webp" onerror="this.onerror=null;this.src='images/exercise/start.png'">
-                            <img class="frame" id="wl-frame-b" alt="" src="images/exercise/end.webp" onerror="this.onerror=null;this.src='images/exercise/end.png'">
-                            <div class="wl-ph" id="wl-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 7v10M18 7v10M3 12h18M3 9.5v5M21 9.5v5"/></svg><span>exercise demo</span></div>
-                            <div class="wl-overlay"></div>
-                            <div class="wl-head">
-                                <div class="wl-hbtn">&#8249;</div>
-                                <div class="wl-hright">
-                                    <div class="wl-hbtn hist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div>
-                                    <div class="wl-hbtn">&#8943;</div>
+                        <div class="wl-scroll">
+                            <div class="wl-img">
+                                <img class="frame" id="wl-frame-a" alt="" src="images/exercise/rdl-start.webp" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'">
+                                <img class="frame" id="wl-frame-b" alt="" src="images/exercise/rdl-end.webp" onerror="this.onerror=null;this.src='images/exercise/rdl-end.png'">
+                                <div class="wl-ph" id="wl-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 7v10M18 7v10M3 12h18M3 9.5v5M21 9.5v5"/></svg><span>exercise demo</span></div>
+                                <div class="wl-overlay"></div>
+                                <div class="wl-head">
+                                    <div class="wl-hbtn">&#8249;</div>
+                                    <div class="wl-hright">
+                                        <div class="wl-hbtn">&#8943;</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="wl-body">
-                            <div class="wl-titlerow"><div class="wl-title">Barbell Back Squat <span class="cd">&#9662;</span></div></div>
-                            <div class="wl-muscles">Quads &middot; Glutes</div>
-                            <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10, 10, 8 &middot; RIR 4, 3, 2</span></div>
-                            <div class="wl-tbl-head"><span style="width:24px">SET</span><span style="width:46px">PREV</span><span style="flex:1;text-align:center">KG</span><span style="flex:1;text-align:center">REPS</span><span style="width:28px;text-align:center">&#10003;</span></div>
-                            <div class="wl-row"><div class="col-set">1</div><div class="col-prev">&mdash;</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                            <div class="wl-row"><div class="col-set">2</div><div class="col-prev">&mdash;</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                            <div class="wl-row"><div class="col-set">3</div><div class="col-prev">&mdash;</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">8</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                            <div class="wl-add">+ Add set</div>
+                            <div class="wl-body">
+                                <div class="wl-titlerow"><div class="wl-title">Romanian Deadlift <span class="cd">&#9662;</span></div></div>
+                                <div class="wl-muscles">Hamstrings &middot; Glutes</div>
+                                <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10</span></div>
+                                <div class="wl-tbl-head"><span style="width:24px">SET</span><span style="flex:1;text-align:center">KG</span><span style="flex:1;text-align:center">REPS</span><span style="width:28px;text-align:center">&#10003;</span></div>
+                                <div class="wl-row"><div class="col-set">1</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                <div class="wl-row"><div class="col-set">2</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                <div class="wl-row"><div class="col-set">3</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                <div class="wl-add">+ Add set</div>
+                            </div>
+                            <div class="wl-upnext">
+                                <div class="wl-upnext-h">UP NEXT</div>
+                                <div class="wl-mini active">
+                                    <div class="wl-mini-icon"><img src="images/exercise/rdl-start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"></div>
+                                    <div class="wl-mini-main">
+                                        <div class="wl-mini-trow"><span class="wl-mini-title">Romanian Deadlift</span><span class="wl-mini-cur">CURRENT</span></div>
+                                        <div class="wl-mini-meta">3 &times; 10 &middot; 0/3 done</div>
+                                    </div>
+                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                </div>
+                                <div class="wl-mini">
+                                    <div class="wl-mini-icon"><img src="images/exercise/legpress.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/legpress.png'"></div>
+                                    <div class="wl-mini-main">
+                                        <div class="wl-mini-trow"><span class="wl-mini-title">Leg Press</span></div>
+                                        <div class="wl-mini-meta">3 &times; 12 &middot; 0/3 done</div>
+                                    </div>
+                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                </div>
+                                <div class="wl-mini">
+                                    <div class="wl-mini-icon"><img src="images/exercise/backext.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/backext.png'"></div>
+                                    <div class="wl-mini-main">
+                                        <div class="wl-mini-trow"><span class="wl-mini-title">Back Extension</span></div>
+                                        <div class="wl-mini-meta">3 &times; 12 &middot; 0/3 done</div>
+                                    </div>
+                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="wl-bottom">
                             <div class="wl-timer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>0:00</div>
