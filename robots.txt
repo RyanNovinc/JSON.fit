@@ -1,0 +1,51 @@
+# robots.txt — json.fit
+# Strategy: maximum visibility. Let search engines AND AI assistants read and
+# cite the site. If you ever decide you want to opt OUT of your content being
+# used for model *training* (while still allowing live citation), flip the four
+# training crawlers below — GPTBot, ClaudeBot, CCBot, Google-Extended — to
+# "Disallow: /" and leave the *-User / *-SearchBot / search bots on "Allow: /".
+
+# Default: everyone is welcome
+User-agent: *
+Allow: /
+
+# --- AI assistants: live citation / on-demand fetch (keep allowed) ---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# --- AI training crawlers (allowed = the models learn your brand exists) ---
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# --- Search engines (Bing powers ChatGPT's web search — keep wide open) ---
+User-agent: Bingbot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://json.fit/sitemap.xml
