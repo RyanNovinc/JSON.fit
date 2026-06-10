@@ -17,7 +17,11 @@ First, read the meal plan you just created so you have the full content in conte
 
 ## Curated meals in the plan
 
-The plan may contain curated meal references (`curated_meal_slug` + `plate_id` + `scale_factor`) alongside invented meals. Curated meal references are canonical — the app fills in ingredients and instructions from its database when the JSON is imported, so they don't appear in the plan output. Macros come from `plate_macros × scale_factor`. If a curated meal doesn't fit (allergen, equipment, macros, etc.), swap it for a different meal — never modify the recipe. Slugs and plate_ids are exact-match lookup keys; preserve them verbatim. Curated meal ingredients still appear in the grocery list (the user needs to buy them).
+The plan may contain curated meal references (`curated_meal_slug` + `plate_id` + `scale_factor`) alongside invented meals. Curated meal references are canonical — the app fills in ingredients and instructions from its database when the JSON is imported, so they don't appear in the plan output. Macros come from `plate_macros × scale_factor`. If a curated meal doesn't fit (allergen, macros, etc.), swap it for a different meal — never modify the recipe. Slugs and plate_ids are exact-match lookup keys; preserve them verbatim. Curated meal ingredients still appear in the grocery list (the user needs to buy them).
+
+## Macro-closing dials in the plan
+
+The plan may include single-ingredient "dial" snacks (protein shake, tuna pouch, mixed nuts, banana, Greek yogurt, etc.) used to land the daily macro targets. These are curated meal references like any other (`curated_meal_slug` + `plate_id` + `scale_factor`) and are legitimate — do NOT strip them. They are top-ups: they are NOT counted toward the user's requested main-meal, snack, or dessert counts. When a day misses a macro target, adding a dial or adjusting a dial's scale (within its `min_scale`/`max_scale`) is a valid fix — prefer the smallest dial change that lands the day in tolerance. If even sensible dial amounts can't close a gap, fix the underlying meals instead; never stack absurd dial quantities.
 
 ## CRITICAL INSTRUCTIONS
 
@@ -30,7 +34,7 @@ The plan may contain curated meal references (`curated_meal_slug` + `plate_id` +
 
 ## ARITHMETIC IS COMPUTED, NOT ESTIMATED
 
-You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct — the totals get glanced at, marked PASS, and the real sum was off by hundreds of calories. To prevent this: never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (`meal1 + meal2 + ... = total`) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
+You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct — the totals get glanced at, marked PASS, and the real sum was off by hundreds of calories. To prevent this: never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (`meal1 + meal2 + ... + any dials = total`) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
 
 ## RULE ENFORCEMENT PRINCIPLE
 
@@ -50,7 +54,6 @@ The following are NOT valid reasons to accept a violation:
 The following ARE valid reasons to accept a violation:
 - Fixing would push another macro out of tolerance
 - Fixing would violate a hard dietary restriction (allergy, intolerance)
-- Fixing would require equipment the user doesn't have
 - Fixing would push the budget significantly above what was specified
 
 **You must ATTEMPT a fix before accepting any violation.** If your justification sounds like rationalisation, the answer is to fix the plan, not defend the violation.
@@ -60,18 +63,17 @@ The following ARE valid reasons to accept a violation:
 These must pass after your fixes. If any of these still fail after revision, you have not finished — go back and fix again.
 
 - **Protein priority** — keep protein within 10% of the user's daily target on EVERY individual day. Daily protein consistency drives muscle protein synthesis.
-- **Calorie average** — weekly average within 5% of target (or plan-period average for plans shorter than 7 days). Individual days can vary up to ±10%.
-- **Carbs and fat average** — weekly average within 10% of target. Individual days can flex more freely.
+- **Calorie average** — weekly average within 5% of target (or plan-period average for plans shorter than 7 days), with each individual day kept within ±10%. Adding or scaling a macro-closing dial is a valid way to land a day.
+- **Carbs and fat average** — weekly average within 10% of target (or plan-period average for plans shorter than 7 days). Individual days can flex more freely.
 - **Fiber priority** — at least 80% of the daily fiber target on EVERY day for digestive health.
 - **Sleep buffer compliance** — if sleep optimization was specified, last meal must finish before the user's stated bedtime buffer (2/3/4 hours depending on optimization level).
-- **Equipment compliance** — every recipe uses only the equipment listed in the user's profile.
 - **Skill/time compliance** — every recipe matches the skill and time constraints from the generation prompt.
 - **No draft content** — output contains zero working, iteration, or revision commentary.
 
 ## What "Fix" Means for Each Type of Failure
 
-- **Nutrition/Budget**: Adjust portions, swap ingredients, rebalance meals.
-- **Equipment/Skills**: Replace recipes with alternatives matching constraints.
+- **Nutrition/Budget**: Adjust portions, swap ingredients, rebalance meals, or add/scale a macro-closing dial.
+- **Skill/time**: Replace recipes with simpler alternatives matching the user's skill and time level.
 - **Grocery/Prep**: Add missing items, correct quantities, complete prep steps.
 - **Format**: Remove all working/draft content, resolve table mismatches.
 
@@ -81,16 +83,16 @@ Work through each check. For each, state PASS or FAIL with a brief note. If FAIL
 
 ### 1. Nutrition Target Verification
 
-Re-derive each day's totals yourself — do not trust the totals stated in the plan. For every day, write out the addition (`meal1 + meal2 + ... = total`) for calories and for protein, using a code/Python tool if available. If your re-derived total differs from the plan's stated total, the plan is wrong: fix the portions and re-derive.
+Re-derive each day's totals yourself — do not trust the totals stated in the plan. For every day, write out the addition (`meal1 + meal2 + ... + any dials = total`) for calories and for protein, using a code/Python tool if available. If your re-derived total differs from the plan's stated total, the plan is wrong: fix the portions and re-derive.
 
 Then verify against the macro tolerance thresholds, using YOUR re-derived totals:
 
 - **Protein**: Within 10% of target on EVERY individual day. FAIL if any single day is outside ±10%.
-- **Calories**: Weekly average within 5% of target (sum your re-derived daily totals and divide). FAIL if average is off by more than 5%.
+- **Calories**: Weekly average within 5% of target (sum your re-derived daily totals and divide), with each individual day within ±10%. FAIL if the average is off by more than 5%, or if any single day swings beyond ±10%. To fix a miss, adjust portions or add/scale a macro-closing dial.
 - **Carbs and fat**: Weekly average within 10% of target. FAIL if average is off by more than 10%.
 - **Fiber**: At least 80% of daily target on EVERY day. FAIL if any day drops below 80%.
 
-**CALORIE COMPLIANCE IS MANDATORY** — If calorie average exceeds 5% of target, you MUST reduce portion sizes across meals/snacks to meet the target. There is NO excuse for exceeding calorie targets regardless of meal structure. 4-meal + snack plans should hit calorie targets just as precisely as 3-meal plans by adjusting portion sizes.
+**CALORIE COMPLIANCE IS MANDATORY** — If the weekly average is outside 5% of target, or any single day swings beyond ±10%, you MUST adjust portion sizes (or add/scale a dial) to bring it in. There is NO excuse for missing the calorie target regardless of meal structure. 4-meal + snack plans should hit the target just as precisely as 3-meal plans by adjusting portion sizes.
 
 ### 2. Budget Compliance
 
@@ -125,9 +127,8 @@ FAIL if any restricted foods appear or preferences are ignored.
 ### 5. Cooking Feasibility
 
 Verify every recipe is feasible for the user's stated skill level and time preference:
-- Cooking times align with user's time investment preference
-- Recipe complexity matches stated skill confidence level
-- Only uses available cooking equipment
+- Cooking times align with the user's time investment preference
+- Recipe complexity matches the stated skill confidence level
 
 FAIL if any recipe exceeds the skill/time constraints from the generation prompt.
 
@@ -216,14 +217,15 @@ Assess overall plan practicality:
 
 FAIL if plan lacks practical implementation details.
 
-### 12. Snack Count & Structure Verification
+### 12. Meal, Snack & Dessert Occurrence Verification
 
-Verify snack requirements are met exactly as requested:
-- **If user specified exact snack count** (1, 2, or 3): Plan must include exactly that many snacks. FAIL if snacks are missing or labeled as "optional".
-- **If user selected "No Snacks"**: Plan must include zero snacks.
-- **If user selected "Let AI Decide"**: Plan should include 1-3 snacks as appropriate for meal timing.
-- **Snack sizing**: Each snack should be 10-15% of daily calories (300-500 kcal range). FAIL if snacks are meal-sized (>600 kcal) or too small (<200 kcal).
-- **Snack vs meal distinction**: Verify snacks use specific snack types (morning_snack, afternoon_snack, etc.) not generic "snack" or main meal types.
+The generation prompt states fixed occurrence counts for the week. Verify the plan matches them exactly. **Macro-closing dials do NOT count toward any of these counts** — they are top-ups.
+
+- **Main meals**: the requested number of main meals appears every day.
+- **Snacks**: if the user specified an exact count (1, 2, or 3), exactly that many snacks per day; "No Snacks" → zero snacks; "Let AI Decide" → 1-3 as appropriate for meal timing. FAIL if snacks are missing or labeled "optional".
+- **Desserts**: dessert appears the correct number of times for the week and NOT more. Over-serving dessert — e.g. one per night when the user asked for once a week — is a FAIL, and is a common mistake. Under-serving is also a FAIL.
+- **Snack sizing**: each snack should be 10-15% of daily calories (300-500 kcal range). FAIL if a snack is meal-sized (>600 kcal) or negligible (<200 kcal). Dials are exempt — they're top-ups sized to close macro gaps.
+- **Snack vs meal distinction**: snacks use specific snack types (morning_snack, afternoon_snack, etc.), not generic "snack" or main-meal types.
 
 ### 13. Nutritional Quality & Balance
 
@@ -262,11 +264,10 @@ FAIL if plan has internal contradictions or feels unrealistic.
 
 ### 16. Curated Meals Compliance
 
-For meals referenced by `curated_meal_slug`, verify against the equipment files fetched during plan generation:
+For meals referenced by `curated_meal_slug` (including dial snacks), verify against the curated meal files fetched during plan generation:
 
-- Slug and plate_id exactly match entries in the equipment files (FAIL — invalid slugs break import)
+- Slug and plate_id exactly match entries in the fetched curated meal files (FAIL — invalid slugs break import)
 - Scale_factor is within the meal's min_scale/max_scale bounds
-- User has all equipment required by the chosen method AND the chosen plate
 - Reported macros equal `plate_macros × scale_factor` — compute this multiplication to confirm, using a code tool if available (FAIL on math errors)
 - Meal's `contains_allergens` doesn't include any of the user's allergens
 - meal_type is in the meal's `eligible_slots` list
