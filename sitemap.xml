@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ryannovinc.github.io/JSON.fit/</loc>
-    <lastmod>2026-03-12</lastmod>
-    <priority>1.0</priority>
+    <loc>https://json.fit/</loc>
+    <lastmod>2026-06-10</lastmod>
   </url>
   <url>
-    <loc>https://ryannovinc.github.io/JSON.fit/privacy-policy.html</loc>
-    <lastmod>2026-03-12</lastmod>
-    <priority>0.3</priority>
+    <loc>https://json.fit/meals.html</loc>
+    <lastmod>2026-06-10</lastmod>
   </url>
   <url>
-    <loc>https://ryannovinc.github.io/JSON.fit/terms-of-service.html</loc>
-    <lastmod>2026-03-12</lastmod>
-    <priority>0.3</priority>
+    <loc>https://json.fit/programs/</loc>
+    <lastmod>2026-06-10</lastmod>
+  </url>
+  <url>
+    <loc>https://json.fit/cookbook/</loc>
+    <lastmod>2026-06-10</lastmod>
+  </url>
+  <url>
+    <loc>https://json.fit/blog.html</loc>
+    <lastmod>2026-06-10</lastmod>
+  </url>
+  <url>
+    <loc>https://json.fit/blog/meal-plan-claude.html</loc>
+    <lastmod>2026-06-10</lastmod>
+  </url>
+  <url>
+    <loc>https://json.fit/privacy-policy.html</loc>
+    <lastmod>2026-06-10</lastmod>
+  </url>
+  <url>
+    <loc>https://json.fit/terms-of-service.html</loc>
+    <lastmod>2026-06-10</lastmod>
   </url>
 </urlset>
