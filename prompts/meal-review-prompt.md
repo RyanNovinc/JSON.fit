@@ -266,7 +266,7 @@ FAIL if plan has internal contradictions or feels unrealistic.
 
 For meals referenced by `curated_meal_slug` (including dial snacks), verify against the curated meal files fetched during plan generation:
 
-- Slug and plate_id exactly match entries in the fetched curated meal files (FAIL — invalid slugs break import)
+- Slug and plate_id exactly match entries in the fetched curated meal files (FAIL — invalid slugs break import). EXCEPTION: dial snacks are listed in the generation prompt's macro-closing dials table, not in the fetched files — their slugs are valid by construction (don't fail them for being absent), their `plate_id` is always `standard`, and their per-serving macros come from that table.
 - Scale_factor is within the meal's min_scale/max_scale bounds
 - Reported macros equal `plate_macros × scale_factor` — compute this multiplication to confirm, using a code tool if available (FAIL on math errors)
 - Meal's `contains_allergens` doesn't include any of the user's allergens
