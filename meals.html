@@ -197,9 +197,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       <h2>Get all 81 bulking meals as a printable cookbook, <em>free.</em></h2>
       <p>Macros, ingredients and a grocery list for every meal &mdash; yours to keep and print. Plus new meals as they land, what's working in my own bulk to 90kg, and a say in what I build next.</p>
       <form class="cap-form" id="capForm" novalidate>
-        <!-- Wire to your email tool (Kit / MailerLite / Beehiiv): replace with their embed, or POST to their form action. -->
+        <!-- Live: posts to the JSON.fit subscribe API (AWS). capWebsite is a honeypot for bots. -->
         <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
         <input class="cap-input" id="capEmail" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
+        <input type="text" id="capWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <button class="cap-btn" type="submit">Send me the cookbook</button>
       </form>
       <div class="cap-success" id="capSuccess"><span class="tick">&#10003;</span> Check your inbox &mdash; your cookbook's on the way.</div>
@@ -437,7 +438,7 @@ function applyFilter(){
 })();
 </script>
 
-<!-- Free cookbook capture handler (demo success state — replace with your email tool's embed) -->
+<!-- Free cookbook capture handler — live, posts to the JSON.fit subscribe API (AWS) -->
 <script>
 (function(){
   var capForm=document.getElementById('capForm');
@@ -445,10 +446,31 @@ function applyFilter(){
   capForm.addEventListener('submit',function(e){
     e.preventDefault();
     var email=document.getElementById('capEmail');
-    if(!email.value || email.value.indexOf('@')===-1){ email.focus(); email.style.borderColor='#ef4444'; return; }
+    var hp=document.getElementById('capWebsite');
+    var btn=capForm.querySelector('.cap-btn');
+    var val=(email.value||'').trim();
+    if(!val || val.indexOf('@')===-1){ email.focus(); email.style.borderColor='#ef4444'; return; }
     if(window.gtag) gtag('event','cookbook_signup',{'button_location':'meals_page'});
-    capForm.style.display='none';
-    document.getElementById('capSuccess').classList.add('show');
+    var label=btn.textContent; btn.disabled=true; btn.textContent='Sending\u2026';
+    fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe',{
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({email:val,website:hp?hp.value:'',source:'cookbook-meals'})
+    })
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d && d.ok){
+        var msg=document.getElementById('capSuccess');
+        msg.innerHTML='<span class="tick">&#10003;</span> '+(d.status==='already_subscribed'
+          ? 'You\'re already on the list \u2014 check your inbox for the cookbook.'
+          : 'Almost there \u2014 check your inbox to confirm and unlock your cookbook.');
+        capForm.style.display='none';
+        msg.classList.add('show');
+      }else{
+        email.style.borderColor='#ef4444'; btn.disabled=false; btn.textContent=label;
+      }
+    })
+    .catch(function(){ email.style.borderColor='#ef4444'; btn.disabled=false; btn.textContent=label; });
   });
 })();
 </script>
