@@ -1,4 +1,4 @@
-# Convert Meal Plan to JSON
+# Convert Meal Plan to JSON (v2)
 
 Please convert the meal plan you just created into a specific JSON format that can be imported into JSON.fit.
 
@@ -123,6 +123,14 @@ Curated meal entry format:
 Fields used for curated meals: `id`, `name`, `type`, `time`, `calories`, `macros`, `curated_meal_slug`, `plate_id`, `scale_factor`, `isOriginal`, `addedAt`. Omit `ingredients`, `instructions`, and `tags`.
 
 Both formats (full invented meals and curated meal references) coexist in the same `meals` array. The app detects the format based on the presence of `curated_meal_slug`.
+
+# Adjuster Entries
+
+The reviewed plan may contain standalone adjuster entries (whey scoop, rice side, olive oil, psyllium, etc.) used to land daily targets. They are ordinary meal entries — convert them exactly like everything else, in place, at their stated times. Never strip, merge, or relocate them.
+
+- Adjusters that are curated references (the plan shows a `curated_meal_slug`, plate_id `standard`) use the curated meal entry format above.
+- Adjusters written as invented entries use the full invented format — their one-line ingredients and instructions from the plan become single-element arrays. Copy their macros verbatim from the plan.
+- Adjuster ingredients are included in the grocery list totals like any other ingredient.
 
 # Field Requirements
 
