@@ -19,7 +19,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --green:#22c55e; --green-soft:rgba(34,197,94,0.08); --green-glow:rgba(34,197,94,0.32);
@@ -29,7 +29,7 @@
   --red:#ef4444;
   --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
   --border:rgba(255,255,255,0.06);
-  --text:#f0f0f2; --text-2:#9898a4; --text-3:#55555f;
+  --text:#f0f0f2; --text-2:#9898a4; --text-3:#7a7a86;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{overflow-x:hidden;scroll-behavior:smooth}
@@ -148,6 +148,8 @@ main{flex:1;width:100%;max-width:760px;margin:0 auto;padding-bottom:6rem}
 .acc-open .acc-chev{transform:rotate(180deg);color:var(--green)}
 .acc-body{display:none}
 .acc-open .acc-body{display:block}
+button.section-head{width:100%;background:none;border:none;padding:0;cursor:pointer;font-family:'Outfit',sans-serif;color:inherit;text-align:left}
+button.section-head:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
 
 /* App teaser card */
 .teaser{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.75rem;position:relative;overflow:hidden;margin-bottom:2rem}
@@ -389,7 +391,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     else res.style.display='none';
 
     // Sticky CTA wording
-    var verb = meal.cuisine==='smoothie' ? 'blend' : 'cook';
     document.getElementById('cta-bar-sub').textContent = 'Free · cook mode, timers & tracking';
     document.getElementById('cta-bar-title').textContent = 'Make this in JSON.fit';
 
@@ -530,9 +531,9 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       // Reserve note (sits above steps as a before-you-start warning)
       '<div class="reserve" id="reserve-slot" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><p></p></div>'+
 
-      // Steps (accordion — closed by default; cook mode in app owns the real execution)
+      // Steps (accordion — open by default; real button so it's keyboard accessible)
       '<div class="section acc-toggle acc-open" id="step-section" style="display:none">'+
-        '<div class="section-head" id="step-header"><span class="eyebrow">Method</span><div class="section-meta"><span id="step-meta"></span><svg class="acc-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'+
+        '<button class="section-head" type="button" id="step-header" aria-expanded="true"><span class="eyebrow">Method</span><span class="section-meta"><span id="step-meta"></span><svg class="acc-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></button>'+
         '<div class="acc-body" id="step-list"></div>'+
       '</div>'+
 
@@ -595,10 +596,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     if(minus) minus.addEventListener('click',function(){ servings=clampPortions(servings-1); renderDynamic(); });
     if(plus) plus.addEventListener('click',function(){ servings=clampPortions(servings+1); renderDynamic(); });
 
-    // Steps accordion
+    // Steps accordion (button — toggles aria-expanded for screen readers)
     var stepHeader=document.getElementById('step-header');
     if(stepHeader) stepHeader.addEventListener('click',function(){
-      document.getElementById('step-section').classList.toggle('acc-open');
+      var sec=document.getElementById('step-section');
+      sec.classList.toggle('acc-open');
+      stepHeader.setAttribute('aria-expanded', sec.classList.contains('acc-open') ? 'true' : 'false');
     });
   }
 
@@ -643,6 +646,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     setMeta('description', (plate.description || ('High-protein '+titleCase(meal.cuisine||'meal')+' — '+Math.round(m.protein_g||0)+'g protein, '+Math.round(m.kcal||0)+' kcal. Free in JSON.fit.')));
     setMeta('og:title', (plate.display_name||meal.display_name)+' — JSON.fit', true);
     if(img) setMeta('og:image', img, true);
+
+    // Canonical (self) — consolidates ?meal= URLs. Once the static /r/<slug>/
+    // pages are live and the app shares those, point this at the static URL.
+    var canon=document.querySelector('link[rel="canonical"]');
+    if(!canon){ canon=document.createElement('link'); canon.setAttribute('rel','canonical'); document.head.appendChild(canon); }
+    canon.setAttribute('href','https://json.fit/r/?meal='+encodeURIComponent(getMealSlug()||''));
   }
   function setMeta(name, val, isProp){
     var sel = isProp ? 'meta[property="'+name+'"]' : 'meta[name="'+name+'"]';
