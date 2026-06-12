@@ -117,6 +117,7 @@ For every curated reference in the plan (adjusters included):
 - Multi-serving options (serves > 1): the batch is consumed within the plan **or** the prep notes carry an explicit "freeze N portions" line. FAIL only when neither is true.
 - Multi-plate meals placed several times rotate plates rather than repeating one.
 - Maximum 1 stunt-marked plate in the week; none at all if the daily target is under 2,500 kcal.
+- Fridge-stored batch servings appear within 4 days of the batch's cook (its first appearance in the plan); any serving later than that is covered by an explicit freeze-and-thaw note in the prep notes. FAIL otherwise.
 
 ### 5. Dietary Restrictions
 
