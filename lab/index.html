@@ -20,7 +20,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   /* The Lab runs on violet — distinct from home (cyan) and nutrition (green) */
@@ -37,7 +37,7 @@
   /* shared shell — identical to the rest of the site */
   --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
   --border:rgba(255,255,255,0.06);
-  --text:#f0f0f2; --text-2:#9898a4; --text-3:#55555f;
+  --text:#f0f0f2; --text-2:#9898a4; --text-3:#7a7a86;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{overflow-x:hidden;scroll-behavior:smooth}
@@ -469,7 +469,10 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
        front:"/images/lab/2026-06/front.webp"
      leave "" to show the "awaiting capture" placeholder.
    - Anything you don't track yet: leave it null and that row/stat hides.
-   All sample numbers below are placeholders — swap them for real ones.
+   IMPORTANT: EVERY number below — including the baseline — is placeholder
+   mock data. Before The Lab goes live, replace it all with real measurements
+   and delete any months that haven't happened yet. The page's whole premise
+   is "trust data, not opinions" — never publish a number you didn't measure.
    ════════════════════════════════════════════════════════════════════ */
 var DATA = {
   startDate: "2026-06-01",
@@ -554,7 +557,7 @@ var DATA = {
       else if(d<0){dh='<div class="vital-delta delta-down">▼ '+fmt(d,1)+' '+(dUnit||'')+'</div>';}
       else{dh='<div class="vital-delta delta-flat">— '+(dUnit||'')+'</div>';}
     }
-    return '<div class="vital">'+(live?'<span class="live-tag"><span class="live-dot"></span>LIVE</span>':'')+
+    return '<div class="vital">'+(live?'<span class="live-tag"><span class="live-dot"></span>LATEST</span>':'')+
       '<div class="vital-lbl">'+lbl+'</div>'+
       '<div class="vital-val'+(hl?' hl':'')+'"><span class="count-up" data-target="'+val+'" data-decimals="'+( (val%1!==0)?1:0)+'">'+val+'</span><span class="vital-unit">'+(unit||'')+'</span></div>'+
       dh+'</div>';
@@ -642,7 +645,7 @@ var DATA = {
     var tline='';
     if(opts.target!=null){ var ty=Y(opts.target); tline='<line x1="'+pad.l+'" y1="'+ty+'" x2="'+(W-pad.r)+'" y2="'+ty+'" stroke="rgba(168,85,247,0.45)" stroke-dasharray="4 4"/><text x="'+(W-pad.r)+'" y="'+(ty-5)+'" text-anchor="end" font-family="DM Mono" font-size="9" fill="#a855f7">target '+opts.target+'</text>'; }
     var dots=series.map(function(p,i){ return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(p.y).toFixed(1)+'" r="3" fill="#0a0a0f" stroke="'+(opts.color||'#a855f7')+'" stroke-width="2"/>'; }).join('');
-    var lbls=series.map(function(p,i){ return '<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#55555f">'+p.x+'</text>'; }).join('');
+    var lbls=series.map(function(p,i){ return '<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#7a7a86">'+p.x+'</text>'; }).join('');
     var vlast='<text x="'+X(series.length-1).toFixed(1)+'" y="'+(Y(series[series.length-1].y)-9)+'" text-anchor="end" font-family="DM Mono" font-size="10" fill="'+(opts.color||'#a855f7')+'">'+series[series.length-1].y+(opts.unit||'')+'</text>';
     el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+
       g+
@@ -665,7 +668,7 @@ var DATA = {
       var yFat=Y(p.lean+p.fat), hFat=Y(p.lean)-yFat;
       return '<rect x="'+x+'" y="'+yLean+'" width="'+bw+'" height="'+hLean+'" rx="2" fill="#a855f7"/>'+
              '<rect x="'+x+'" y="'+yFat+'" width="'+bw+'" height="'+hFat+'" rx="2" fill="#f59e0b"/>'+
-             '<text x="'+(x+bw/2)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#55555f">'+p.x+'</text>'+
+             '<text x="'+(x+bw/2)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#7a7a86">'+p.x+'</text>'+
              '<text x="'+(x+bw/2)+'" y="'+(yLean-5)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#a855f7">'+p.lean.toFixed(0)+'</text>';
     }).join('');
     var g='';
