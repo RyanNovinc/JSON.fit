@@ -248,7 +248,7 @@ function renderPage(meal) {
 <meta name="twitter:title" content="${esc(name)} — JSON.fit">
 <meta name="twitter:description" content="${esc(metaDesc)}">
 <meta name="twitter:image" content="${pngUrl(meal)}">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/favicon-3.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
