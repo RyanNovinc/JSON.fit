@@ -1472,6 +1472,16 @@ async function fetchShare(shareId) {
 }
 
 async function init() {
+  // Curated program universal links (/p/program/<slug>) are permanent program
+  // pages, NOT 7-day shares. If the app doesn't intercept the link and it opens
+  // in a browser, route it to the program preview instead of treating "program"
+  // as a share ID — that would 404 and wrongly show "This link has expired".
+  const programMatch = window.location.pathname.match(/^\/p\/program\/([A-Za-z0-9_-]+)/);
+  if (programMatch) {
+    window.location.replace('/programs/?program=' + encodeURIComponent(programMatch[1]));
+    return;
+  }
+
   const shareId = getShareId();
 
   if (!shareId) {
