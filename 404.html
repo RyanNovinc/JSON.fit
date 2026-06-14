@@ -1472,6 +1472,15 @@ async function fetchShare(shareId) {
 }
 
 async function init() {
+  // Curated program links (/p/program/<slug>) are permanent program pages, NOT
+  // 7-day shares. Route them to the program preview instead of treating "program"
+  // as a share ID (which 404s and shows a false "This link has expired").
+  const programMatch = window.location.pathname.match(/^\/p\/program\/([A-Za-z0-9_-]+)/);
+  if (programMatch) {
+    window.location.replace('/programs/?program=' + encodeURIComponent(programMatch[1]));
+    return;
+  }
+
   const shareId = getShareId();
 
   if (!shareId) {
