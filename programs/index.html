@@ -373,34 +373,33 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       document.title = tp.title + ' — JSON.fit';
 
       // ---- import action ----------------------------------------------------
-      // Same mechanism as the /p/ share page: navigate to the curated program's
-      // universal link (json.fit/p/program/<slug>). On iOS the app intercepts it
-      // (associated domain) and imports directly — it fetches /programs/<slug>.json
-      // itself, so nothing heavy travels in the URL. If the app never takes over
-      // (not installed / desktop), fall back to the App Store after a short delay.
+      // IMPORTANT: we open the app with its custom scheme (json-app://), NOT the
+      // universal link. iOS deliberately refuses to hand a universal link to the
+      // app when it targets the SAME domain you are already on (json.fit ->
+      // json.fit), and it also ignores links triggered by script rather than a
+      // real tap. A custom scheme has neither limitation. The app rewrites
+      // json-app://p/program/<slug> back to its https form and runs the curated
+      // import. If the app never takes over (not installed / desktop), fall back
+      // to the App Store.
       var APP_STORE_URL = 'https://apps.apple.com/au/app/json-fit/id6758357834';
       var FALLBACK_DELAY_MS = 2000;
       function doImport(){
-        var universalLink = 'https://json.fit/p/program/' + slug;
-        var startTime = Date.now();
+        var appUrl = 'json-app://p/program/' + slug;
         var wasHidden = document.hidden;
         if(typeof gtag === 'function') gtag('event','import_program',{program:slug});
 
-        // Method 1: anchor click — iOS catches associated-domain links here.
-        try{
-          var a = document.createElement('a');
-          a.href = universalLink; a.rel = 'noopener';
-          document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        }catch(e){}
+        // If the app opens, Safari backgrounds this page -> cancel the App Store jump.
+        var bailed = false;
+        function cancel(){ bailed = true; }
+        document.addEventListener('visibilitychange', function(){ if(document.hidden) cancel(); });
+        window.addEventListener('pagehide', cancel);
 
-        // Method 2: direct assignment shortly after, if the app hasn't taken over.
-        setTimeout(function(){
-          if(!document.hidden){ try{ window.location.assign(universalLink); }catch(e){} }
-        }, 500);
+        // Open the app. If installed, iOS shows a one-time "Open in JSON.fit?" prompt.
+        try{ window.location.href = appUrl; }catch(e){}
 
-        // Fallback: App Store, if we're still on the page after the delay.
+        // Not installed (or dismissed) -> still on the page -> App Store.
         setTimeout(function(){
-          if(Date.now() - startTime < FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden){
+          if(!bailed && !document.hidden && !wasHidden){
             if(typeof gtag === 'function') gtag('event','import_program_fallback_app_store',{program:slug});
             window.location.href = APP_STORE_URL;
           }
