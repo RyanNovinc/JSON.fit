@@ -113,7 +113,8 @@ main{flex:1;padding:2.25rem 0 3rem}
 .shots{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:flex-start}
 .phone{width:160px;flex-shrink:0}
 .phone-frame{aspect-ratio:9/19.5;border-radius:24px;border:2px solid var(--border-cyan);background:linear-gradient(160deg,rgba(34,211,238,0.07),var(--surface-2) 70%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.phone-frame::before{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:42px;height:5px;border-radius:3px;background:rgba(255,255,255,0.12)}
+.phone-frame::before{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:42px;height:5px;border-radius:3px;background:rgba(255,255,255,0.12);z-index:2}
+.phone-img{width:100%;height:100%;object-fit:cover;display:block}
 .phone-slot{border:1px dashed var(--border-cyan);border-radius:10px;padding:1rem;margin:1.4rem .8rem;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--text-3);text-align:center;line-height:1.7}
 .phone-cap{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-top:.6rem}
 .shots-note{flex:1;min-width:200px;color:var(--text-2);font-size:.85rem;line-height:1.7}
@@ -357,8 +358,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
       // ---- in-app screenshots ----
       html += '<div class="block"><div class="block-lbl">How it looks in the app</div><h3>Train it set-by-set</h3><div class="shots">'
-            + '<div class="phone"><div class="phone-frame"><div class="phone-slot">in-app screenshot<br>— exercise screen —<br><br>(form demo + sets)</div></div><div class="phone-cap">Exercise view</div></div>'
-            + '<div class="phone"><div class="phone-frame"><div class="phone-slot">in-app screenshot<br>— your week —</div></div><div class="phone-cap">Your week</div></div>'
+            + '<div class="phone"><div class="phone-frame"><picture><source srcset="images/programs/'+slug+'-exercise.webp" type="image/webp"><img class="phone-img" src="images/programs/'+slug+'-exercise.png" alt="Exercise view in the JSON.fit app" loading="lazy" onerror="this.parentNode.parentNode.parentNode.style.display=\'none\'"></picture></div><div class="phone-cap">Exercise view</div></div>'
+            + '<div class="phone"><div class="phone-frame"><picture><source srcset="images/programs/'+slug+'-week.webp" type="image/webp"><img class="phone-img" src="images/programs/'+slug+'-week.png" alt="Weekly plan in the JSON.fit app" loading="lazy" onerror="this.parentNode.parentNode.parentNode.style.display=\'none\'"></picture></div><div class="phone-cap">Your week</div></div>'
             + '<p class="shots-note">Once imported, every exercise comes with a <strong>form demo</strong>, set/rep/RIR targets, rest timers and swap options. The full '+weeks+' weeks live in the app — this page is the preview.</p>'
             + '</div></div>';
 
