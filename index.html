@@ -209,6 +209,13 @@
         .lightbox-close { position:absolute; top:1.25rem; right:1.25rem; background:var(--surface-2); border:1px solid var(--border); color:var(--text-2); width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:border-color 0.2s,color 0.2s; font-family:'DM Mono',monospace; }
         .lightbox-close:hover { border-color:var(--cyan); color:var(--cyan); }
         .lightbox-hint { position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%); font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--text-3); letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
+        .vmodal { position:fixed; inset:0; z-index:9999; background:rgba(5,5,8,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
+        .vmodal.open { opacity:1; pointer-events:all; }
+        .vmodal-frame { position:relative; aspect-ratio:9/16; height:min(82vh,760px); max-width:92vw; border-radius:16px; overflow:hidden; border:1px solid var(--border-cyan); box-shadow:0 32px 80px rgba(0,0,0,0.8); background:#000; transform:scale(0.96); transition:transform 0.25s ease; }
+        .vmodal.open .vmodal-frame { transform:scale(1); }
+        .vmodal-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+        .vmodal-close { position:absolute; top:1.25rem; right:1.25rem; background:var(--surface-2); border:1px solid var(--border); color:var(--text-2); width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:border-color 0.2s,color 0.2s; font-family:'DM Mono',monospace; z-index:2; }
+        .vmodal-close:hover { border-color:var(--cyan); color:var(--cyan); }
         .review-rating-bar { display: flex; align-items: center; gap: 1.25rem; justify-content: center; margin-bottom: 2.5rem; }
         .review-rating-score { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
         .review-rating-num { font-family: 'DM Mono', monospace; font-size: 3rem; font-weight: 500; color: var(--text); line-height: 1; letter-spacing: -0.02em; }
@@ -434,8 +441,8 @@
         .hero-rating .stars { color:#f59e0b; font-size:0.85rem; letter-spacing:0.06em; }
         .hero-rating b { color:var(--text); font-weight:500; }
         .video-thumb { display:inline-flex; align-items:center; gap:0.7rem; cursor:pointer; text-decoration:none; }
-        .video-thumb .frame { position:relative; width:64px; height:40px; border-radius:8px; overflow:hidden; border:1px solid var(--border); background:linear-gradient(135deg,#0d2a30,#0a0a0f); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-        .video-thumb .play { width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.92); display:flex; align-items:center; justify-content:center; }
+        .video-thumb .frame { position:relative; width:36px; height:58px; border-radius:8px; overflow:hidden; border:1px solid var(--border); background:linear-gradient(135deg,#0d2a30,#0a0a0f); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+        .video-thumb .play { width:20px; height:20px; border-radius:50%; background:rgba(255,255,255,0.92); display:flex; align-items:center; justify-content:center; }
         .video-thumb .play svg { margin-left:2px; color:#050508; }
         .video-thumb .vt-text { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-2); line-height:1.3; }
         .video-thumb:hover .vt-text { color:var(--cyan); }
@@ -532,7 +539,7 @@
                 <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})" style="display:block; text-align:center;">
                     <img src="images/App_Store.svg" alt="Download on the App Store" height="44" style="display:inline-block;border-radius:8px;">
                 </a>
-                <a class="video-thumb" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
+                <a class="video-thumb" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
                     <span class="frame"><span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span></span>
                     <span class="vt-text"><b>Watch how it works</b>28 seconds</span>
                 </a>
@@ -981,6 +988,12 @@
     <p class="lightbox-hint">tap anywhere to close</p>
 </div>
 
+<!-- Demo video modal: plays the hero Short inline instead of leaving for YouTube -->
+<div class="vmodal" id="vmodal" role="dialog" aria-modal="true" aria-label="Demo video">
+    <button class="vmodal-close" id="vmClose" aria-label="Close">&#10005;</button>
+    <div class="vmodal-frame" id="vmFrame"></div>
+</div>
+
 <footer>
     <div class="foot-l">
         JSON<span class="cyan">.fit</span>
@@ -1225,12 +1238,42 @@
 })();
 </script>
 
+<!-- Hero "Watch how it works" — plays the Short inline in a modal (no new tab) -->
+<script>
+(function(){
+  var trigger = document.getElementById('heroVideo');
+  var modal = document.getElementById('vmodal');
+  var frame = document.getElementById('vmFrame');
+  var closeBtn = document.getElementById('vmClose');
+  if(!trigger || !modal || !frame) return;
+  var VIDEO_ID = '3LugQ5uYzFE';
+
+  function openModal(){
+    frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?autoplay=1&rel=0&playsinline=1" title="JSON.fit demo" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if(window.track) window.track('video_opened', {});
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    frame.innerHTML = '';
+  }
+
+  trigger.addEventListener('click', function(e){ e.preventDefault(); openModal(); });
+  if(closeBtn) closeBtn.addEventListener('click', function(e){ e.stopPropagation(); closeModal(); });
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+})();
+</script>
+
 <script>
 (function(){
   document.addEventListener('click',function(e){
     var a=e.target;
     while(a&&a.tagName!=='A')a=a.parentElement;
     if(!a||!a.href)return;
+    if(a.id==='heroVideo')return;
     try{
       var h=new URL(a.href).hostname;
       if(!h||h===location.hostname)return;
