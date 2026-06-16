@@ -1535,5 +1535,24 @@ async function init() {
 init();
 </script>
 
+
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var a=e.target;
+    while(a&&a.tagName!=='A')a=a.parentElement;
+    if(!a||!a.href)return;
+    try{
+      var h=new URL(a.href).hostname;
+      if(!h||h===location.hostname)return;
+      var label;
+      if(h==='apps.apple.com')label='app_store';
+      else if(h==='www.youtube.com'||h==='youtu.be')label='youtube';
+      else{var p=h.replace(/^www\./,'').split('.');var s=p[p.length-2]||p[0];label=s==='nih'?'pubmed':s;}
+      if(window.track)window.track('outbound_click',{url:label});
+    }catch(err){}
+  },true);
+})();
+</script>
 </body>
 </html>

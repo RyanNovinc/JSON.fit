@@ -701,7 +701,7 @@
             </a>
         </div>
         <div style="text-align:center;">
-            <a href="meals.html" class="meals-cta" onclick="gtag('event','view_meals',{'button_location':'meals'})">Browse all meals &#8594;</a>
+            <a href="meals.html" class="meals-cta" onclick="gtag('event','view_meals',{'button_location':'meals'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a>
         </div>
     </div>
 </section>
@@ -1049,6 +1049,7 @@
             .then(function(r) { return r.json(); })
             .then(function(d) {
                 if (d && d.ok) {
+                    if(window.track) window.track('cookbook_email_submitted', {});
                     var msg = document.getElementById('capSuccess');
                     msg.innerHTML = '<span class="tick">&#10003;</span> ' + (d.status === 'already_subscribed'
                         ? 'You\'re already on the list \u2014 check your inbox for the cookbook.'
@@ -1221,6 +1222,25 @@
       }, 1000);
     }
   }
+})();
+</script>
+
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var a=e.target;
+    while(a&&a.tagName!=='A')a=a.parentElement;
+    if(!a||!a.href)return;
+    try{
+      var h=new URL(a.href).hostname;
+      if(!h||h===location.hostname)return;
+      var label;
+      if(h==='apps.apple.com')label='app_store';
+      else if(h==='www.youtube.com'||h==='youtu.be')label='youtube';
+      else{var p=h.replace(/^www\./,'').split('.');var s=p[p.length-2]||p[0];label=s==='nih'?'pubmed':s;}
+      if(window.track)window.track('outbound_click',{url:label});
+    }catch(err){}
+  },true);
 })();
 </script>
 </body>

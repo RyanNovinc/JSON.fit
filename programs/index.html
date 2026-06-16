@@ -389,6 +389,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       var APP_STORE_URL = 'https://apps.apple.com/au/app/json-fit/id6758357834';
       var FALLBACK_DELAY_MS = 2000;
       function doImport(){
+        if(window.track) window.track('cta_clicked', {cta_id: 'import_program'});
         var appUrl = 'json-app://p/program/' + slug;
         var wasHidden = document.hidden;
         if(typeof gtag === 'function') gtag('event','import_program',{program:slug});
@@ -451,6 +452,25 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(render)
     .catch(function(e){ console.error(e); showError('This program isn\'t available yet.'); });
+})();
+</script>
+
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var a=e.target;
+    while(a&&a.tagName!=='A')a=a.parentElement;
+    if(!a||!a.href)return;
+    try{
+      var h=new URL(a.href).hostname;
+      if(!h||h===location.hostname)return;
+      var label;
+      if(h==='apps.apple.com')label='app_store';
+      else if(h==='www.youtube.com'||h==='youtu.be')label='youtube';
+      else{var p=h.replace(/^www\./,'').split('.');var s=p[p.length-2]||p[0];label=s==='nih'?'pubmed':s;}
+      if(window.track)window.track('outbound_click',{url:label});
+    }catch(err){}
+  },true);
 })();
 </script>
 </body>
