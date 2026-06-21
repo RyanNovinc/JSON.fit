@@ -505,13 +505,13 @@
 
         /* Hero action + trust block (redesigned) */
         .hero-text .label { margin-bottom:1.25rem; }
-        .hero-action { display:flex; flex-direction:column; align-items:flex-start; gap:1.75rem; animation:heroFadeUp 0.7s ease 0.21s both; }
-        .hero-cta { display:flex; flex-direction:column; align-items:flex-start; gap:0.9rem; }
+        .hero-action { display:flex; flex-direction:column; align-items:center; gap:1.75rem; animation:heroFadeUp 0.7s ease 0.21s both; }
+        .hero-cta { display:flex; flex-direction:column; align-items:center; gap:0.9rem; }
         .hero-rating { display:flex; align-items:center; gap:0.5rem; margin:0; font-family:'DM Mono',monospace; font-size:0.74rem; color:var(--text-2); }
         .hero-rating .stars { color:#f59e0b; font-size:0.85rem; letter-spacing:0.06em; }
         .hero-rating b { color:var(--text); font-weight:500; }
         .hero-rating .src { text-transform:uppercase; letter-spacing:0.12em; font-size:0.62rem; color:var(--text-3); }
-        .hero-stores { display:flex; gap:0.7rem; flex-wrap:wrap; align-items:center; }
+        .hero-stores { display:flex; gap:0.7rem; flex-wrap:wrap; align-items:center; justify-content:center; }
         .store-badge { display:block; border-radius:9px; }
         .video-thumb { display:inline-flex; align-items:center; gap:0.6rem; padding:0.5rem 0.85rem 0.5rem 0.55rem; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,0.02); cursor:pointer; text-decoration:none; transition:border-color .18s ease, background .18s ease; }
         .video-thumb:hover { border-color:var(--border-cyan); background:var(--cyan-soft); }
@@ -520,8 +520,8 @@
         .video-thumb .vt-text { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--text-2); line-height:1.3; }
         .video-thumb .vt-text b { display:inline; color:var(--text); font-weight:500; }
         .video-thumb:hover .vt-text { color:var(--cyan); }
-        .hero-trust { max-width:500px; }
-        .hero-trust-chips { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.75rem; }
+        .hero-trust { max-width:500px; text-align:center; }
+        .hero-trust-chips { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.75rem; justify-content:center; }
         .hero-trust-chips span { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-2); padding:0.32rem 0.62rem; border:1px solid var(--border); border-radius:6px; letter-spacing:0.03em; background:rgba(255,255,255,0.02); }
         .hero-trust-tag { font-family:'DM Mono',monospace; font-size:0.78rem; color:var(--cyan); letter-spacing:0.02em; display:inline-flex; align-items:center; gap:0.45rem; margin:0; }
         .hero-trust-tag .brk { color:var(--green); opacity:0.7; font-weight:500; }
