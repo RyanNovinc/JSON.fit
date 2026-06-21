@@ -529,20 +529,20 @@
 
         /* Android founding-tester section */
         .at { padding:1rem 0 3rem; }
-        .at-card { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; }
+        .at-card { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; text-align:center; }
         .at-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--violet),transparent); }
         .at-card > * { position:relative; z-index:1; }
         .at-eyebrow { font-family:'DM Mono',monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--violet); display:inline-flex; align-items:center; gap:0.55rem; margin-bottom:1rem; }
         .at-card h2 { font-size:clamp(1.5rem,3.2vw,1.9rem); font-weight:800; letter-spacing:-0.02em; line-height:1.12; margin-bottom:0.6rem; }
         .at-card h2 .vi { color:var(--violet); }
-        .at-sub { color:var(--text-2); font-size:0.92rem; max-width:460px; margin-bottom:1.5rem; }
-        .at-actions { display:flex; gap:0.6rem; flex-wrap:wrap; }
+        .at-sub { color:var(--text-2); font-size:0.92rem; max-width:460px; margin:0 auto 1.5rem; }
+        .at-actions { display:flex; gap:0.6rem; flex-wrap:wrap; justify-content:center; }
         .at-btn { display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; padding:0.7rem 1.2rem; border-radius:9px; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.9rem; text-decoration:none; background:var(--violet); color:#1a0a2e; transition:transform 0.2s, box-shadow 0.2s; }
         .at-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(168,85,247,0.3); }
         .at-btn.ghost { background:transparent; border:1px solid var(--violet-border); color:var(--violet); }
         @media (max-width:860px) {
             .at-card { padding:2rem 1.5rem; }
-            .at-actions { flex-direction:column; align-items:flex-start; }
+            .at-actions { flex-direction:column; align-items:center; }
         }
         @media (max-width:860px) {
             .hero-split .hero-action { align-items:center; }
