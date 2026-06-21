@@ -507,6 +507,9 @@
         .hero-text .label { margin-bottom:1.25rem; }
         .hero-action { display:flex; flex-direction:column; align-items:center; gap:1.75rem; animation:heroFadeUp 0.7s ease 0.21s both; }
         .hero-cta { display:flex; flex-direction:column; align-items:center; gap:0.9rem; }
+        .getapp { display:flex; align-items:center; gap:0.85rem; width:280px; max-width:100%; }
+        .getapp .ga-line { flex:1; height:1px; background:rgba(255,255,255,0.12); }
+        .getapp .ga-lbl { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--text-3); white-space:nowrap; }
         .hero-rating { display:flex; align-items:center; gap:0.5rem; margin:0; font-family:'DM Mono',monospace; font-size:0.74rem; color:var(--text-2); }
         .hero-rating .stars { color:#f59e0b; font-size:0.85rem; letter-spacing:0.06em; }
         .hero-rating b { color:var(--text); font-weight:500; }
@@ -586,6 +589,11 @@
             <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out, so hitting a surplus stops being a chore. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
             <div class="hero-action">
                 <div class="hero-cta">
+                    <a class="video-thumb" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
+                        <span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+                        <span class="vt-text"><b>Watch how it works</b> &middot; 28 seconds</span>
+                    </a>
+                    <div class="getapp"><span class="ga-line"></span><span class="ga-lbl">Get the App</span><span class="ga-line"></span></div>
                     <div class="hero-rating">
                         <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                         <b>5.0</b>
@@ -601,10 +609,6 @@
                         </a>
                         -->
                     </div>
-                    <a class="video-thumb" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
-                        <span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
-                        <span class="vt-text"><b>Watch how it works</b> &middot; 28 seconds</span>
-                    </a>
                 </div>
                 <div class="hero-trust">
                     <p class="hero-trust-tag"><span class="brk">{</span> Free because you bring your own AI <span class="brk">}</span></p>
