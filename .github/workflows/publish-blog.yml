@@ -1,0 +1,39 @@
+name: Publish scheduled blog posts
+
+on:
+  # Runs four times a day (UTC). GitHub's cron can lag under load, so several
+  # runs keep "publish day" tight without needing exact midnight firing.
+  schedule:
+    - cron: '0 1,7,13,19 * * *'
+  # Lets you trigger a build by hand from the Actions tab if you want one now.
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build blog (publish due posts, regenerate list + schema)
+        run: node scripts/build-blog.js
+
+      - name: Commit and push if anything changed
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "blog-bot"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Publish scheduled blog posts ($(TZ=Australia/Canberra date +%Y-%m-%d))"
+            git push
+          else
+            echo "Nothing due. No changes."
+          fi
