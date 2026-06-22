@@ -596,7 +596,29 @@
         .ph-screen img { width:100%; height:100%; object-fit:cover; display:block; }
         .ph-card figcaption { font-family:'Outfit',sans-serif; font-size:0.98rem; line-height:1.5; color:var(--text); font-weight:500; text-align:center; max-width:230px; }
         @media (max-width:900px) { .show-grid { grid-template-columns:repeat(2,1fr); gap:3rem 1.5rem; } }
-        @media (max-width:520px) { .show-grid { grid-template-columns:1fr; gap:3rem; } .ph { max-width:236px; } }
+        .show-hint { display:none; }
+        @media (max-width:520px) {
+            .show-grid {
+                display:flex;
+                grid-template-columns:none;
+                gap:1.25rem;
+                overflow-x:auto;
+                scroll-snap-type:x mandatory;
+                -webkit-overflow-scrolling:touch;
+                scrollbar-width:none;
+                scroll-padding:0 1.5rem;
+                padding:0.5rem 1.5rem 1rem;
+                margin:0 -1.5rem;
+            }
+            .show-grid::-webkit-scrollbar { display:none; }
+            .ph-card { flex:0 0 80%; scroll-snap-align:center; }
+            .ph { max-width:236px; }
+            .show-hint {
+                display:block; text-align:center; margin-top:1rem;
+                font-family:'DM Mono',monospace; font-size:0.65rem;
+                letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3);
+            }
+        }
     </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -1037,6 +1059,7 @@
                 <figcaption>Step-by-step prep that clears the week's cooking in one go.</figcaption>
             </figure>
         </div>
+        <p class="show-hint">Swipe to see more &#8594;</p>
     </div>
 </section>
 
