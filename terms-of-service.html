@@ -118,6 +118,13 @@
             font-weight: 600;
         }
 
+        section a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+
+        section a:hover { text-decoration: underline; }
+
         ul {
             list-style: none;
             padding-left: 0;
@@ -220,77 +227,82 @@
         <a href="index.html" class="back" onclick="if(history.length>1){history.back();return false;}">← Back</a>
         <div class="page-header">
             <h1>Terms of Service</h1>
-            <div class="updated">Last Updated: March 2026</div>
+            <div class="updated">Last Updated: June 2026</div>
         </div>
 
         <section>
-            <h2>1. Application Services</h2>
-            <p>JSON.fit is a comprehensive fitness and nutrition application that helps you import, manage, and track workout routines, create personalised meal plans, and manage nutritional goals. All your data is stored locally on your device.</p>
+            <h2>1. About JSON.fit</h2>
+            <p>JSON.fit is a fitness and nutrition app, built and operated by Ryan Novinc (a sole trader based in Australia), that helps you build and track training programs and meal plans. It works on a "bring your own AI" model: you answer a few questions, the app generates a prompt, you paste that prompt into an AI service of your choice (such as ChatGPT, Claude or Gemini), and you import the result back into the app to track it. The app lets you:</p>
             <ul>
-                <li>Workout routine import, management, and tracking</li>
-                <li>Personalised nutrition planning and meal generation</li>
-                <li>Health-conscious meal planning with dietary restrictions</li>
-                <li>Grocery list generation with local pricing estimates</li>
-                <li>Weight tracking and macro goal management</li>
-                <li>Meal prep guidance and cooking instructions</li>
+                <li>Import, manage and track workout routines and training programs</li>
+                <li>Build personalised meal plans and track macros</li>
+                <li>Plan health-conscious meals around dietary restrictions</li>
+                <li>Generate grocery lists with local pricing estimates</li>
+                <li>Track weight and follow meal-prep and cooking guidance</li>
             </ul>
+            <p>By downloading or using JSON.fit, you agree to these Terms.</p>
         </section>
 
         <section>
-            <h2>2. Data Storage</h2>
-            <p>All your workout routines, meal plans, health information, and personal data are stored locally on your device. We do not collect, store, or transmit your personal fitness, nutrition, or health data to external servers.</p>
-            <p>This includes sensitive information such as dietary restrictions, health conditions, weight tracking, nutritional goals, meal preferences, and grocery shopping data.</p>
+            <h2>2. The app is free</h2>
+            <p>JSON.fit is free to use. There are no subscriptions and no in-app purchases — all features, including the full nutrition and meal-planning tools, are available at no cost. We do not process or store any payment information.</p>
         </section>
 
         <section>
-            <h2>3. Pro Access Purchase</h2>
-            <p>Pro Access is a one-time purchase that unlocks premium nutrition and advanced fitness features. This is not a subscription — you pay once and own the features forever.</p>
-            <ul>
-                <li>Complete nutrition planning and meal generation</li>
-                <li>Personalised meal plans with dietary restrictions</li>
-                <li>Grocery lists with local pricing estimates</li>
-                <li>Meal prep guidance and cooking instructions</li>
-                <li>Advanced health and macro tracking</li>
-                <li>Unlimited workout routines and analytics</li>
-                <li>No recurring charges</li>
-            </ul>
+            <h2>3. Your data</h2>
+            <p>Your workout routines, meal plans, health information and other personal fitness data are stored locally on your device — we do not collect or upload them. To improve the app and website we collect anonymous, non-identifying usage analytics, and we don't show ads or sell your data. Full details are in our <a href="privacy-policy.html">Privacy Policy</a>.</p>
         </section>
 
         <section>
-            <h2>4. Health and Nutrition Disclaimers</h2>
+            <h2>4. Third-party AI services</h2>
+            <p>JSON.fit does not include or run its own AI. To build a custom plan, you choose and use a separate, third-party AI service (for example ChatGPT, Claude, Gemini or DeepSeek). Your use of those services is governed by their own terms and privacy policies, not ours, and any account or fees for them are between you and that provider.</p>
+            <p>AI-generated plans are produced by those third-party services, can contain errors or omissions, and are general information only — not medical, dietary or professional advice. You are responsible for reviewing anything an AI generates before relying on it, and for deciding whether it is appropriate for you.</p>
+        </section>
+
+        <section>
+            <h2>5. Health and nutrition disclaimers</h2>
             <div class="warning-box">
                 <span class="warning-box-icon">⚠️</span>
-                <p><strong style="color: #ef4444;">Important Health Notice:</strong> This app provides general nutrition and fitness information for educational purposes only. It is not intended to replace professional medical advice, diagnosis, or treatment.</p>
+                <p><strong style="color: #ef4444;">Important health notice:</strong> JSON.fit provides general nutrition and fitness information for educational purposes only. It is not intended to replace professional medical advice, diagnosis or treatment.</p>
             </div>
             <ul>
-                <li>Always consult healthcare professionals before making significant dietary changes</li>
-                <li>Meal plans are estimates and may not meet all nutritional needs</li>
+                <li>Always consult a qualified healthcare professional before making significant dietary or training changes</li>
+                <li>Meal plans, calorie figures and macro calculations are estimates and may not meet your individual needs</li>
                 <li>Food allergies and medical conditions require professional supervision</li>
-                <li>Calorie and macro calculations are approximations</li>
-                <li>Not suitable for pregnant/nursing mothers without medical approval</li>
-                <li>Stop use and consult a doctor if adverse reactions occur</li>
+                <li>Not suitable for pregnant or nursing people without medical approval</li>
+                <li>Stop use and consult a doctor if you experience any adverse reaction</li>
             </ul>
         </section>
 
         <section>
-            <h2>5. Acceptable Use</h2>
-            <p>You agree to use the app for personal fitness and nutrition purposes only. Do not attempt to reverse engineer, modify, or distribute the application.</p>
+            <h2>6. Acceptable use</h2>
+            <p>You agree to use the app for your own personal fitness and nutrition purposes. Please don't attempt to reverse engineer, modify, resell or redistribute the app, or use it in any unlawful way.</p>
         </section>
 
         <section>
-            <h2>6. Limitation of Liability</h2>
-            <p>The app is provided "as is" for fitness tracking and nutrition planning purposes. Always consult healthcare professionals before starting new workout routines or making significant dietary changes. We are not liable for any injuries, health issues, allergic reactions, or nutritional deficiencies resulting from use of our recommendations.</p>
-            <p>You acknowledge that nutrition and fitness needs are highly individual and that our recommendations may not be suitable for your specific health conditions, goals, or circumstances.</p>
+            <h2>7. Intellectual property</h2>
+            <p>The JSON.fit app, website, branding and content are owned by us and protected by intellectual property laws. Plans and data you create for yourself remain yours.</p>
         </section>
 
         <section>
-            <h2>7. Updates and Changes</h2>
-            <p>We may update these terms occasionally. Continued use of the app constitutes acceptance of updated terms. Major changes will be communicated through app updates.</p>
+            <h2>8. Limitation of liability</h2>
+            <p>The app is provided "as is", without warranties of any kind, for fitness tracking and nutrition planning. To the maximum extent permitted by law, we are not liable for any injury, health issue, allergic reaction, nutritional deficiency, or loss arising from your use of the app or of any plan it helps generate. You acknowledge that fitness and nutrition needs are highly individual and that our content may not be suitable for your specific circumstances. Nothing in these Terms excludes any rights or guarantees you have under the Australian Consumer Law or other laws that cannot lawfully be excluded.</p>
         </section>
 
         <section>
-            <h2>8. Contact Information</h2>
-            <p>Questions about these terms? Contact us at <a href="mailto:Ryan.Novinc@gmail.com" style="color: var(--cyan); text-decoration: none;">Ryan.Novinc@gmail.com</a> or through the App Store.</p>
+            <h2>9. Governing law</h2>
+            <p>These Terms are governed by the laws of the Australian Capital Territory and the Commonwealth of Australia. Where you use the app in another country, you remain responsible for complying with any local laws that apply to you.</p>
+            <!-- NOTE FROM YOUR DEV PASS: ACT/Australia is set because that's where you're based. Adjust if you'd prefer a different governing-law statement. -->
+        </section>
+
+        <section>
+            <h2>10. Updates and changes</h2>
+            <p>We may update these Terms from time to time. We'll update the "Last Updated" date above, and continued use of the app after changes means you accept the updated Terms.</p>
+        </section>
+
+        <section>
+            <h2>11. Contact</h2>
+            <p>Questions about these Terms? Email us at <a href="mailto:support@json.fit">support@json.fit</a>.</p>
         </section>
     </div>
 
@@ -299,7 +311,7 @@
         <p>
             <a href="index.html">Home</a> ·
             <a href="privacy-policy.html">Privacy Policy</a> ·
-            <a href="mailto:Ryan.Novinc@gmail.com">Support</a>
+            <a href="mailto:support@json.fit">Support</a>
         </p>
         <p style="margin-top: 0.75rem;">© 2026 JSON.fit. All rights reserved.</p>
     </footer>
