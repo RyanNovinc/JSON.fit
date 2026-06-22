@@ -557,6 +557,46 @@
             .hero-split .hero-trust-chips { justify-content:center; }
             .hero-split .hero-trust-tag { justify-content:center; }
         }
+
+        /* Timeline (How your plan gets built) */
+        .tl { position:relative; max-width:920px; margin:0 auto; }
+        .tl-spine { position:absolute; top:6px; bottom:6px; left:50%; transform:translateX(-50%); width:2px; border-radius:2px; background:linear-gradient(to bottom,var(--cyan),var(--violet),var(--green)); opacity:0.15; }
+        .tl-fill { position:absolute; top:6px; left:50%; transform:translateX(-50%); width:2px; height:0; border-radius:2px; background:linear-gradient(to bottom,var(--cyan),var(--violet),var(--green)); background-repeat:no-repeat; background-position:top center; box-shadow:0 0 12px rgba(34,211,238,0.3); }
+        .tl-step { position:relative; display:grid; grid-template-columns:1fr 72px 1fr; align-items:flex-start; margin-bottom:2.25rem; }
+        .tl-step:last-child { margin-bottom:0; }
+        .tl-node { position:relative; grid-column:2; justify-self:center; margin-top:0.5rem; width:46px; height:46px; border-radius:50%; background:var(--surface); border:2px solid rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); z-index:2; transition:border-color 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, background 0.45s ease; }
+        .tl-node.on { border-color:var(--ac); color:var(--ac); box-shadow:0 0 0 4px var(--ac-soft), 0 0 20px var(--ac-glow); }
+        .tl-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; opacity:0; transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+        .tl-step.left .tl-card { grid-column:1; transform:translateX(42px); border-right:2px solid var(--ac); text-align:right; }
+        .tl-step.right .tl-card { grid-column:3; transform:translateX(-42px); border-left:2px solid var(--ac); }
+        .tl-step.in .tl-card { opacity:1; transform:none; }
+        .tl-eyebrow { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ac); margin-bottom:0.5rem; }
+        .tl-card h3 { font-size:1.05rem; font-weight:700; line-height:1.3; margin-bottom:0.5rem; }
+        .tl-card p { font-size:0.85rem; color:var(--text-2); line-height:1.65; margin-bottom:0.9rem; }
+        .tl-chips { display:flex; flex-wrap:wrap; gap:0.35rem; }
+        .tl-step.left .tl-chips { justify-content:flex-end; }
+        .tl-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--ac); border:1px solid var(--ac-border); background:var(--ac-soft); padding:0.2rem 0.5rem; border-radius:4px; letter-spacing:0.02em; }
+        @media (max-width:760px) {
+            .tl { max-width:520px; }
+            .tl-spine, .tl-fill { left:22px; }
+            .tl-step { display:flex; align-items:flex-start; gap:1rem; margin-bottom:2rem; }
+            .tl-node { flex:0 0 46px; }
+            .tl-step.left .tl-card, .tl-step.right .tl-card { flex:1; text-align:left; transform:translateX(24px); border-left:2px solid var(--ac); border-right:1px solid var(--border); }
+            .tl-step.left .tl-chips { justify-content:flex-start; }
+            .tl-step.in .tl-card { transform:none; }
+        }
+        @media (prefers-reduced-motion:reduce) { .tl-card, .tl-node { transition:none; } }
+
+        /* Phone showcase (See It Working) */
+        .show-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2.25rem; max-width:1080px; margin:0 auto; }
+        .ph-card { display:flex; flex-direction:column; align-items:center; gap:1.4rem; }
+        .ph { position:relative; width:100%; max-width:218px; aspect-ratio:9/19.3; background:linear-gradient(150deg,#202027 0%,#0c0c11 46%,#050507 100%); border-radius:34px; padding:7px; box-shadow:0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.16), inset 0 1px 1px rgba(255,255,255,0.10); }
+        .ph-notch { position:absolute; top:7px; left:50%; transform:translateX(-50%); width:62px; height:16px; background:#000; border-radius:0 0 10px 10px; z-index:5; }
+        .ph-screen { position:relative; width:100%; height:100%; border-radius:27px; overflow:hidden; background:#0a0a0b; }
+        .ph-screen img { width:100%; height:100%; object-fit:cover; display:block; }
+        .ph-card figcaption { font-family:'Outfit',sans-serif; font-size:0.98rem; line-height:1.5; color:var(--text); font-weight:500; text-align:center; max-width:230px; }
+        @media (max-width:900px) { .show-grid { grid-template-columns:repeat(2,1fr); gap:3rem 1.5rem; } }
+        @media (max-width:520px) { .show-grid { grid-template-columns:1fr; gap:3rem; } .ph { max-width:236px; } }
     </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -915,26 +955,35 @@
             <span class="label">How your plan gets built</span>
             <h2>Choose your meals, build <span class="cyan">your week.</span></h2>
         </div>
-        <div class="flow sa-stagger">
-            <div class="flow-step">
-                <span class="flow-num">01 &middot; You</span>
-                <h3>Answer a few questions</h3>
-                <p>Your specific goal, height, weight, activity and the meals you actually like. JSON.fit turns your answers into a prompt to copy.</p>
-                <div class="flow-chips"><span class="flow-chip">Weight gain</span><span class="flow-chip">90kg</span><span class="flow-chip">6 meals/day</span></div>
+        <div class="tl" id="tl">
+            <div class="tl-spine"></div>
+            <div class="tl-fill" id="tlFill"></div>
+            <div class="tl-step left" style="--ac:#22d3ee; --ac-soft:rgba(34,211,238,0.08); --ac-border:rgba(34,211,238,0.22); --ac-glow:rgba(34,211,238,0.45);">
+                <div class="tl-node">01</div>
+                <div class="tl-card">
+                    <div class="tl-eyebrow">You</div>
+                    <h3>Answer a few questions</h3>
+                    <p>Your specific goal, height, weight, activity and the meals you actually like. JSON.fit turns your answers into a prompt to copy.</p>
+                    <div class="tl-chips"><span class="tl-chip">Weight gain</span><span class="tl-chip">90kg</span><span class="tl-chip">6 meals/day</span></div>
+                </div>
             </div>
-            <div class="flow-arrow"><svg class="fa-h" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><svg class="fa-v" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 19 19 12"/></svg></div>
-            <div class="flow-step">
-                <span class="flow-num">02 &middot; Any AI</span>
-                <h3>Paste your prompt into any AI</h3>
-                <p>Your prompt is packed with real research, so the AI builds your plan on proven science, not guesswork.</p>
-                <div class="flow-chips"><span class="flow-chip">ChatGPT</span><span class="flow-chip">Claude</span><span class="flow-chip">Gemini</span></div>
+            <div class="tl-step right" style="--ac:#a855f7; --ac-soft:rgba(168,85,247,0.10); --ac-border:rgba(168,85,247,0.26); --ac-glow:rgba(168,85,247,0.45);">
+                <div class="tl-node">02</div>
+                <div class="tl-card">
+                    <div class="tl-eyebrow">Any AI</div>
+                    <h3>Paste your prompt into any AI</h3>
+                    <p>Your prompt is packed with real research, so the AI of your choice builds your plan on proven science, not guesswork.</p>
+                    <div class="tl-chips"><span class="tl-chip">ChatGPT</span><span class="tl-chip">Claude</span><span class="tl-chip">Gemini</span></div>
+                </div>
             </div>
-            <div class="flow-arrow"><svg class="fa-h" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><svg class="fa-v" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 19 19 12"/></svg></div>
-            <div class="flow-step">
-                <span class="flow-num">03 &middot; Back in</span>
-                <h3>Import the file it makes</h3>
-                <p>The AI turns your plan into a file. Import it into JSON.fit for every meal, your exact macros, a grocery list, step-by-step recipes and meal prep guidance.</p>
-                <div class="flow-chips"><span class="flow-chip g">0.81s import</span><span class="flow-chip g">7-day plan</span></div>
+            <div class="tl-step left" style="--ac:#22c55e; --ac-soft:rgba(34,197,94,0.09); --ac-border:rgba(34,197,94,0.24); --ac-glow:rgba(34,197,94,0.45);">
+                <div class="tl-node">03</div>
+                <div class="tl-card">
+                    <div class="tl-eyebrow">Back in</div>
+                    <h3>Import the file it makes</h3>
+                    <p>Import the AI-generated plan into JSON.fit for a meal plan with your exact macros, a grocery list, step-by-step guidance and meal prep guidance.</p>
+                    <div class="tl-chips"><span class="tl-chip">0.81s import</span><span class="tl-chip">7-day plan</span></div>
+                </div>
             </div>
         </div>
         <p class="engine-foot sa sa-up">Same system builds your <strong>training program</strong> too: splits, volume per muscle, deloads, progressive overload. You can even build one that runs up to a year long.</p>
@@ -959,68 +1008,52 @@
     </div>
 </section>
 
-<section class="section" style="padding-bottom:0;">
+<!-- See It Working: real app screens from an imported plan -->
+<section class="section">
     <div class="container">
-        <div class="section-head sa sa-up">
-            <div class="section-line"></div>
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">See It Working</span>
             <h2>Real AI output.<br><span class="cyan">Real meal plans.</span></h2>
-            <p>An actual user's plan, generated and imported with Claude.</p>
+            <p style="margin:0 auto;">An actual user's plan, generated and imported with Claude.</p>
         </div>
-    </div>
-</section>
-<section class="section" style="padding-top:0;">
-    <div class="container">
-        <div class="proof-grid">
-            <div class="proof-card sa sa-left">
-                <span class="proof-lbl">Claude Output</span>
-                <h3>See the actual plan, screen by screen</h3>
-                <p>A user's plan, imported with Claude. Swipe through the app screens.</p>
-                <div class="proof-carousel">
-                <div class="pc-wrap">
-                    <div class="pc-window">
-                        <div class="pc-strip" id="strip2">
-                            <img src="images/Success_import2.webp" data-fallback="images/Success_import2.png" alt="Meal plan imported in 0.81s" decoding="async" width="180" height="390" onerror="if(this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}">
-                            <img src="images/Day_Plan.webp" data-fallback="images/Day_Plan.png" alt="Daily meal timeline with macros" decoding="async" width="180" height="390" onerror="if(this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}">
-                            <img src="images/Summary.webp" data-fallback="images/Summary.png" alt="Grocery list and meal prep schedule" decoding="async" width="180" height="390" onerror="if(this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}">
-                            <img src="images/Grocery_List.webp" data-fallback="images/Grocery_List.png" alt="Itemised grocery list with prices" decoding="async" width="180" height="390" onerror="if(this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}">
-                            <img src="images/Meal_Prep.webp" data-fallback="images/Meal_Prep.png" alt="Step by step meal prep session" decoding="async" width="180" height="390" onerror="if(this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}">
-                        </div>
-                    </div>
-                    <div class="pc-label" id="lbl2"></div>
-                    <div class="pc-controls">
-                        <button class="pc-btn" id="prev2">&#8592;</button>
-                        <div class="pc-dots" id="dots2">
-                            <button class="pc-dot" aria-label="Slide 1"></button>
-                            <button class="pc-dot" aria-label="Slide 2"></button>
-                            <button class="pc-dot" aria-label="Slide 3"></button>
-                            <button class="pc-dot" aria-label="Slide 4"></button>
-                            <button class="pc-dot" aria-label="Slide 5"></button>
-                        </div>
-                        <button class="pc-btn" id="next2">&#8594;</button>
+        <div class="show-grid sa-stagger">
+            <figure class="ph-card">
+                <div class="ph">
+                    <div class="ph-notch"></div>
+                    <div class="ph-screen">
+                        <img src="images/Success_import2.webp" data-fallback="images/Success_import2.png" alt="Meal plan imported in 0.81 seconds" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     </div>
                 </div>
-            </div>
-                <a href="blog/meal-plan-claude.html" class="proof-link">Full tutorial: meal plan with Claude <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-            </div>
-            <div class="proof-card sa sa-right">
-                <span class="proof-lbl">Macros Verified</span>
-                <h3>Every gram tracked. Every day covered.</h3>
-                <p>A 7-day bulk plan, generated with Claude.</p>
-                <div class="proof-profile">
-                    <span class="proof-tag">Weight Gain</span><span class="proof-tag">90kg &middot; Male</span><span class="proof-tag">High Calorie</span><span class="proof-tag">6 meals/day</span><span class="proof-tag">Aldi &middot; Canberra</span>
+                <figcaption>A full week of meals, imported in under a second.</figcaption>
+            </figure>
+            <figure class="ph-card">
+                <div class="ph">
+                    <div class="ph-notch"></div>
+                    <div class="ph-screen">
+                        <img src="images/Day_Plan.webp" data-fallback="images/Day_Plan.png" alt="Daily meal timeline with macros" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                    </div>
                 </div>
-                <div class="proof-vol" id="proof-vol-n">
-                    <div class="proof-vol-row"><span class="proof-vol-name">Protein</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="62%"></div></div><span class="proof-vol-sets proof-vol-sets-n">229g</span></div>
-                    <div class="proof-vol-row"><span class="proof-vol-name">Carbs</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="100%"></div></div><span class="proof-vol-sets proof-vol-sets-n">368g</span></div>
-                    <div class="proof-vol-row"><span class="proof-vol-name">Fat</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="38%"></div></div><span class="proof-vol-sets proof-vol-sets-n">139g</span></div>
-                    <div class="proof-vol-row"><span class="proof-vol-name">Fibre</span><div class="proof-vol-wrap"><div class="proof-vol-bar proof-vol-bar-n" data-w="12%"></div></div><span class="proof-vol-sets proof-vol-sets-n">42g</span></div>
+                <figcaption>Every meal timed for the day, with your macros handled.</figcaption>
+            </figure>
+            <figure class="ph-card">
+                <div class="ph">
+                    <div class="ph-notch"></div>
+                    <div class="ph-screen">
+                        <img src="images/Grocery_List.webp" data-fallback="images/Grocery_List.png" alt="Itemised grocery list with prices" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                    </div>
                 </div>
-                <div class="proof-stats">
-                    <div class="proof-stat"><span class="proof-stat-num proof-stat-num-n count-up" data-target="3629" data-suffix="" data-prefix="">3,629</span><span class="proof-stat-lbl">kcal &middot; Saturday</span></div>
-                    <div class="proof-stat"><span class="proof-stat-num proof-stat-num-n count-up" data-target="230" data-suffix="" data-prefix="$">$230</span><span class="proof-stat-lbl">weekly groceries &middot; Aldi Canberra</span></div>
+                <figcaption>One priced shopping list. A week of food in a single trip.</figcaption>
+            </figure>
+            <figure class="ph-card">
+                <div class="ph">
+                    <div class="ph-notch"></div>
+                    <div class="ph-screen">
+                        <img src="images/Meal_Prep.webp" data-fallback="images/Meal_Prep.png" alt="Step by step meal prep session" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                    </div>
                 </div>
-            </div>
+                <figcaption>Step-by-step prep that clears the week's cooking in one go.</figcaption>
+            </figure>
         </div>
     </div>
 </section>
@@ -1447,6 +1480,55 @@
       if(window.track)window.track('outbound_click',{url:label});
     }catch(err){}
   },true);
+})();
+</script>
+
+<!-- Timeline (#how): scroll-driven spine fill + node activation; cards reveal on enter -->
+<script>
+(function(){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var tl = document.getElementById('tl');
+    if(!tl) return;
+    var fill = document.getElementById('tlFill');
+    var steps = Array.prototype.slice.call(tl.querySelectorAll('.tl-step'));
+    var nodes = steps.map(function(s){ return s.querySelector('.tl-node'); });
+
+    var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+            if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+    }, { threshold:0.2, rootMargin:'0px 0px -8% 0px' });
+    steps.forEach(function(s){ io.observe(s); });
+
+    if(reduce){
+        fill.style.height = '100%';
+        nodes.forEach(function(n){ n.classList.add('on'); });
+        return;
+    }
+
+    function update(){
+        var rect = tl.getBoundingClientRect();
+        var h = rect.height;
+        fill.style.backgroundSize = '100% ' + h + 'px';
+        var marker = window.innerHeight * 0.5;
+        var prog = Math.max(0, Math.min(1, (marker - rect.top) / h));
+        var fillPx = prog * h;
+        fill.style.height = fillPx + 'px';
+        nodes.forEach(function(n){
+            var nr = n.getBoundingClientRect();
+            var nodeCenter = (nr.top + nr.height/2) - rect.top;
+            if(fillPx >= nodeCenter - 2){ n.classList.add('on'); } else { n.classList.remove('on'); }
+        });
+    }
+
+    var ticking = false;
+    function onScroll(){
+        if(!ticking){ ticking = true; requestAnimationFrame(function(){ update(); ticking = false; }); }
+    }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll);
+    update();
+    setTimeout(update, 120);
 })();
 </script>
 </body>
