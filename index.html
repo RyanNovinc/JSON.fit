@@ -283,6 +283,8 @@
         .qual-quote p { font-size:0.88rem; color:var(--text-2); font-style:italic; line-height:1.6; margin-bottom:0.45rem; }
         .qual-quote .meta { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); display:flex; align-items:center; gap:0.4rem; }
         .qual-quote .stars { color:#f59e0b; }
+        .qual-br-m { display:none; }
+        @media (max-width:600px) { .qual-br-m { display:inline; } }
         @media (max-width: 860px) {
             .nav-links { display:none; position:fixed; top:0; left:0; right:0; bottom:0; width:100%; height:100vh; height:100dvh; background:#050508; flex-direction:column; justify-content:center; align-items:center; gap:2rem; z-index:9998; }
             .nav-links.open { display:flex; }
@@ -946,7 +948,7 @@
                     <div class="book-eyebrow">JSON.fit</div>
                     <div class="book-title">The Skinny Guy's Bulking Cookbook</div>
                     <div class="book-rule"></div>
-                    <div class="book-sub">81 calorie-dense meals &middot; macros + grocery lists</div>
+                    <div class="book-sub">81 calorie-dense meals</div>
                     <div class="book-icon">
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2M5 2v9M5 11v11"/><path d="M17 2c-1.7 0-3 2-3 5s1.3 4 3 4v11"/></svg>
                     </div>
@@ -1067,7 +1069,7 @@
     <div class="container">
         <div class="qual sa sa-up">
             <span class="label">Not generic AI</span>
-            <h2 style="font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:2rem;">Built on <span class="cyan">real nutrition science</span>,<br>not a one-line prompt.</h2>
+            <h2 style="font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:2rem;">Built on <br class="qual-br-m"><span class="cyan">real nutrition science</span>,<br>not a one-line prompt.</h2>
             <div class="qual-grid">
                 <div class="qual-cell"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg></span><h4>Structured, not random</h4><p>Real daily meal structure and calorie targets across your whole week, not the same three meals on repeat.</p></div>
                 <div class="qual-cell"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><h4>Calibrated to you</h4><p>Macros dialled to your bodyweight, goal and surplus, so you hit your macro targets every single day.</p></div>
@@ -1114,11 +1116,11 @@
 
 <section class="section" id="compare">
     <div class="container">
-        <div class="section-head sa sa-up">
-            <div class="section-line"></div>
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Compare</span>
             <h2>Premium personalisation.<br><span class="cyan">Zero cost.</span></h2>
-            <p>The kind of programming and nutrition that used to cost a fortune, now completely free.</p>
+            <p style="margin:0 auto;">The kind of programming and nutrition that used to cost a fortune, now completely free.</p>
         </div>
         <div class="comp sa sa-up">
             <div class="comp-head"><div></div><div>JSON.fit</div><div>Dietitian / PT</div><div>Other Apps</div></div>
