@@ -1,0 +1,121 @@
+[
+  {
+    "slug": "why-stretching-matters",
+    "title": "Stretching Won't Save You From Injury",
+    "description": "Static stretching before training is sold as injury insurance. The evidence says it does little for injury risk and can blunt your strength. Here's what the research actually supports.",
+    "date": "2026-06-24",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-training-to-failure-matters",
+    "title": "You Don't Need to Train to Failure",
+    "description": "Going to absolute failure on every set feels hardcore, but the research shows it adds fatigue without adding much growth. Here's where stopping short actually wins.",
+    "date": "2026-06-17",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "ai-answer-key",
+    "title": "We Didn't Make the AI Smarter. We Gave It the Answer Key",
+    "description": "Ask a general-purpose AI about fitness and it confidently repeats the field's oldest myths. Here's how JSON.fit feeds it curated, citation-backed research so it applies the right knowledge instead of guessing.",
+    "date": "2026-06-10",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-cardio-matters",
+    "title": "Cardio Isn't Stealing Your Gains",
+    "description": "The interference effect is real, but \"cardio kills gains\" is a wild overstatement of it. Here's what the research actually says, and the three things that decide whether cardio costs you anything.",
+    "date": "2026-06-03",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-soreness-matters",
+    "title": "If You're Not Sore, It Still Worked",
+    "description": "Delayed-onset muscle soreness feels like proof your workout worked. The research says it's a signal of novelty, not growth, and chasing it can backfire.",
+    "date": "2026-05-27",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-deloads-matter",
+    "title": "Your Deload Is Probably Fake",
+    "description": "Most lifters either never deload or do a \"fake\" one that clears no fatigue. Here's what a real deload is, and the honest truth about how thin the evidence for it actually is.",
+    "date": "2026-05-20",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-rep-ranges-matter",
+    "title": "The 8-12 Rep Range Isn't Magic",
+    "description": "The hypertrophy rep range of 8 to 12 reps is one of the most cited rules in fitness. The research says it isn't biologically privileged. Here's what actually drives muscle growth.",
+    "date": "2026-05-13",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-fiber-matters",
+    "title": "Why Most Bulks Are Wrecked by Too Much Fiber",
+    "description": "The standard fiber recommendation scales with calories. For lifters eating 4,000+ kcal, that math gets ugly fast. Here's why bulking and cutting need different fiber strategies.",
+    "date": "2026-05-06",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-protein-distribution-matters",
+    "title": "The 30g Protein Rule Is Mostly Made Up",
+    "description": "You've heard you can only absorb 30 grams of protein per meal. The number is a practitioner extrapolation, not a proven threshold. Here's what the research actually says.",
+    "date": "2026-04-29",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-meal-timing-matters",
+    "title": "The 8-Hour Eating Window Isn't What You Think",
+    "description": "Time-restricted eating is sold as a magic bullet for fat loss and metabolic health. The longest trial ever run says it's not better than just eating less.",
+    "date": "2026-04-22",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-rest-periods-matter",
+    "title": "Your Rest Timer Is Probably Wrong",
+    "description": "Most fitness apps default to 60-90 seconds between sets. The research says that's too short for trained lifters. Here's what the evidence actually shows.",
+    "date": "2026-04-15",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "why-volume-counting-matters",
+    "title": "Why Your Volume Tracking Is Lying to You",
+    "description": "Most fitness apps either ignore secondary muscle work or count it the same as direct work. Both are wrong. Here's the evidence-based middle ground.",
+    "date": "2026-04-08",
+    "readTime": "6 min read"
+  },
+  {
+    "slug": "why-rir-matters",
+    "title": "Why Your Workout Plan Should Tell You When to Push",
+    "description": "Most fitness apps give you sets and reps but never tell you how hard to actually train. The research is clear: proximity to failure is the variable that drives muscle growth.",
+    "date": "2026-04-01",
+    "readTime": "6 min read"
+  },
+  {
+    "slug": "json-fit-vs-competitors",
+    "title": "JSON.fit vs MyFitnessPal vs MacroFactor vs Hevy",
+    "description": "An honest comparison of what each app does well, where it falls short, and where JSON.fit fits in.",
+    "date": "2026-03-25",
+    "readTime": "5 min read"
+  },
+  {
+    "slug": "why-no-ai-subscription",
+    "title": "Why You Don't Need Another AI Subscription for Fitness",
+    "description": "You're already paying for ChatGPT or Claude. Why are fitness apps charging you again for the same thing?",
+    "date": "2026-03-19",
+    "readTime": "4 min read"
+  },
+  {
+    "slug": "meal-plan-claude",
+    "title": "How to Create a Personalised Meal Plan with Claude",
+    "description": "Generate a macro-perfect meal plan, import it, and get grocery lists and meal prep instructions, all for $9.99 once.",
+    "date": "2026-03-14",
+    "readTime": "5 min read"
+  },
+  {
+    "slug": "chatgpt-hypertrophy-program",
+    "title": "How to Generate a 12-Week Hypertrophy Program with ChatGPT",
+    "description": "A step-by-step tutorial walking through the full workflow, from setup to AI prompt to imported program, ready to track.",
+    "date": "2026-03-08",
+    "readTime": "6 min read"
+  }
+]
