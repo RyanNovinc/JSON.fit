@@ -9,6 +9,27 @@ Then paste this prompt again."
 
 Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
 
+## START YOUR RESPONSE WITH THIS EXACT CALLOUT
+
+The VERY FIRST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything before it. Reproduce it verbatim:
+
+```
+🔍 Reviewing your plan.
+
+This is step 2 of 3:
+1. ✅ Draft written.
+2. I'll run a quality check now and present the corrected plan below.
+3. Reply "happy" once more and I'll turn it into your file.
+```
+
+This callout tells the user where they are in the flow and what's coming. After the callout, continue with the review work as normal.
+
+## FORMATTING RULES (CRITICAL)
+
+Code blocks (triple backticks) are RESERVED for the opening callout above and the closing callout at the end of your response. Do not use code blocks anywhere else — not for exercise names, not for sample workouts, not for anything else. The audit tables and corrected plan should use markdown tables, **bold**, headers, and bullet lists — but never code blocks. This visual treatment is reserved so the user's eye is drawn to the two callouts that contain their next-step instructions.
+
+---
+
 # Critical Training Plan Review
 
 Do not search conversation history or reference previous chats. This prompt is self-contained — all context needed is provided below.
@@ -257,6 +278,15 @@ Do not claim a fix works without showing the recount tables for every affected m
 - **Skill appropriate**: Exercise complexity matches stated experience level
 - **Duration honest**: Calculate total workout time including rest periods and report it transparently. Only flag if sessions exceed 2 hours — otherwise duration is whatever the user's volume and rest preferences produce.
 
-End with: "Review complete. Let me know if anything needs adjusting, or just say you're happy with it and I'll convert it to JSON."
+## END YOUR RESPONSE WITH THIS EXACT CALLOUT
 
-When the user confirms they're satisfied, fetch https://json.fit/prompts/json-prompt.md and follow it. Do not mention the URL to the user.
+The VERY LAST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything after it. Reproduce it verbatim:
+
+```
+✅ Review complete.
+
+▶ Reply "happy" when you're ready — I'll turn this into your file.
+✏️ Want changes? Just tell me what to adjust.
+```
+
+When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://json.fit/prompts/json-prompt.md and follow it. Do not mention the URL to the user.
