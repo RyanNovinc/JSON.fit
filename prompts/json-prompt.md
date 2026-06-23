@@ -2,6 +2,28 @@
 
 You are given a training plan above that has been reviewed and approved for quality. Generate the complete program as JSON files matching the schema below. Focus on accurate technical implementation rather than plan validation. Build directly to JSON — do not create markdown, documents, or any intermediate format.
 
+## START YOUR FIRST RESPONSE WITH THIS EXACT CALLOUT
+
+The VERY FIRST thing in your first response (the response that delivers block 1) must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything before it. Reproduce it verbatim:
+
+```
+📦 Building your file. This is step 3 of 3.
+
+I'll generate your program one block at a time and create a download link after each one.
+
+For multi-block programs, after each block you'll reply "next" to continue or "review" to validate before continuing. After the final block, your program is done.
+```
+
+This callout sets expectations for the entire JSON-generation flow. Only emit it on the FIRST response (when delivering block 1). Subsequent responses (block 2, block 3, etc., or review responses) skip the opener — they only get the closing callout described below.
+
+## FORMATTING RULES (CRITICAL)
+
+Code blocks (triple backticks) are RESERVED for the opening callout above and the closing callout at the end of each response. Do not use code blocks for any other prose content — not for download links, not for inline JSON snippets, not for examples. The user's eye must be drawn to the callouts because they contain the next-step instructions.
+
+Note: the actual JSON content goes into a downloadable file, not into a code block in chat (see Output Instructions). Volume summaries and other supplementary info should use markdown tables and bullet lists, not code blocks.
+
+---
+
 ## Constraint Reference Block
 
 Before generating, note from the plan:
@@ -29,7 +51,7 @@ Generate one block at a time. After each block:
 1. Provide the download link for that block's standalone JSON file.
 2. **Update the cumulative program file** (`<routine_slug>_full.json`, where `<routine_slug>` is a filesystem-safe slug of `routine_name` — stable for the whole program). It has the same root fields (`routine_name`, `description`, `days_per_week`) and a `blocks` array holding **every block generated so far**, in order. Build it by **ASSEMBLY, not regeneration** — place the already-generated block objects into the array; do not re-derive exercises, sets, or progressions. On a new block, append it. On a corrected block (see "review" below), replace the matching block by `block_name`/position, leaving the others untouched. Write to file; **never print the combined JSON to chat** (it will exceed token limits). Present this as the **PRIMARY download**: "Import this file to load the whole program so far — it's the one to use. The per-block files are optional; each imports as a separate routine."
 3. Output a brief **volume summary** showing total primary-tagged sets per muscle group for that block (training weeks, not deload). This gives the reviewer something to check against.
-4. Say: "Mesocycle M, Block B complete (overall block N of T). Say 'review' to validate this block before continuing, or 'next' to generate the next block directly." Read M, B, N, and T from the plan's mesocycle roadmap.
+4. **End your response with the "next-block" closing callout** (see "End Each Block Response With A Callout" below). Read M, B, N, and T from the plan's mesocycle roadmap.
 5. **STOP and wait for user input.** Do not proceed to the next block until the user responds.
 
 **When the user says "next" for subsequent blocks:**
@@ -38,7 +60,7 @@ Generate one block at a time. After each block:
 3. Write the JSON to its own standalone file and provide the download link.
 4. Append the new block to the cumulative `<routine_slug>_full.json` (assembly only — do not regenerate prior blocks) and provide its link as the primary download.
 5. Output the volume summary for the new block.
-6. Say: "Mesocycle M, Block B complete (overall block N of T). Say 'review' to validate this block before continuing, or 'next' to generate the next block directly."
+6. **End with the "next-block" closing callout** (see below).
 7. **STOP and wait for user input.** Do not proceed to the next block until the user responds.
 
 **When the user says "review" for any block:**
@@ -47,7 +69,48 @@ Generate one block at a time. After each block:
 3. Generate the corrected JSON version with all fixes applied.
 4. Write the corrected JSON to that block's standalone file and provide the download link.
 5. Replace that block in the cumulative `<routine_slug>_full.json` with the corrected version (assembly only — leave the other blocks untouched) and provide its link.
-6. Say: "Mesocycle M, Block B reviewed and updated. Say 'next' to continue to the next block."
+6. **End with the "review-complete" closing callout** (see below).
+
+## END EACH BLOCK RESPONSE WITH A CALLOUT
+
+Every response in the JSON-generation flow must end with a closing callout, formatted as a code block (triple backticks, no language identifier). The exact text depends on which state you're in. Reproduce the appropriate callout verbatim. Substitute M, B, N, and T from the plan's mesocycle roadmap.
+
+**State 1 — block complete, more blocks to go (block N of T, where N < T):**
+
+```
+✅ Mesocycle M, Block B complete (overall block N of T).
+
+▶ Reply "next" to generate the next block.
+🔍 Reply "review" if you'd like me to validate this block before continuing.
+```
+
+**State 2 — block reviewed and corrected (after the user said "review"):**
+
+```
+✅ Mesocycle M, Block B reviewed and updated.
+
+▶ Reply "next" to continue to the next block.
+```
+
+**State 3 — final block of an intermediate mesocycle (X < N in a multi-mesocycle program):**
+
+Before the callout, output the Mesocycle [X] Summary as specified in the Embedded Review Checklist section (phase name, split, rep focus, volume per muscle group, key exercises). Then end with:
+
+```
+✅ Mesocycle X complete.
+
+▶ When you're ready to continue, just ask me to generate Mesocycle X+1.
+   I'll use the roadmap and summary above to design the next phase in this same conversation.
+```
+
+**State 4 — final block of the final mesocycle (X equals N, program is done):**
+
+```
+🎉 Your full program is complete.
+
+All N mesocycles done. Open JSON.fit and import your file to start training.
+✏️ Want changes? Just tell me what to adjust.
+```
 
 ### Embedded Review Checklist
 
@@ -57,18 +120,7 @@ Each block should be a complete, standalone JSON file with routine_name, descrip
 
 **Long programs (5+ blocks):** Continue generating blocks in this same conversation. Do not suggest starting a fresh chat.
 
-**Mesocycle-based programs:** If the plan states this is Mesocycle [X] of [N], after generating and delivering the FINAL block of this mesocycle:
-
-If X < N:
-1. Output a Mesocycle [X] Summary:
-   - Phase name and training emphasis
-   - Split structure used
-   - Rep range focus
-   - Volume per muscle group (sets/week from your volume summaries)
-   - Key exercises used across all blocks
-2. Then say: "Mesocycle [X] complete. When you're ready to continue, just ask me to generate Mesocycle [X+1] — I'll use the roadmap and summary above to design the next phase in this same conversation."
-
-If X equals N, say: "That completes your full program — all [N] mesocycles are done. Enjoy your training!"
+**Mesocycle-based programs:** If the plan states this is Mesocycle [X] of [N], after generating and delivering the FINAL block of this mesocycle, follow State 3 (if X < N) or State 4 (if X equals N) from the closing-callout section above. The Mesocycle Summary content goes BEFORE the closing callout.
 
 The plan is fully self-contained: it lists all exercise pools, block structures, and periodization details. You do not need conversation history from prior blocks to generate any block correctly. Always reference the plan — never rely on memory of prior blocks in the conversation.
 
@@ -114,16 +166,14 @@ Translation rules:
 4. Values can be single integers ("3", "2", "1", "0") or ranges ("0-1", "1-2")
 5. If the plan specifies exact per-set values (e.g., "Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR."), use those exact values rather than re-deriving
 
-Example: For an exercise with 3 sets per week and a plan RIR progression of "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4":
+Example: For an exercise with 3 sets per week and a plan RIR progression of "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4", the rir_weekly object would be:
 
-```
-"rir_weekly": {
-  "1": "4, 3, 2",
-  "2": "3, 2, 1",
-  "3": "2, 1, 0",
-  "4": "1-2, 0-1, 0"
-}
-```
+- Week 1: "4, 3, 2"
+- Week 2: "3, 2, 1"
+- Week 3: "2, 1, 0"
+- Week 4: "1-2, 0-1, 0"
+
+(In the actual JSON file these are stored as string values keyed by week number — see the JSON Schema section below.)
 
 Floor: never go below RIR 0. If within-exercise math produces a negative value, clamp to 0.
 
@@ -159,72 +209,38 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
 
 ## JSON Schema
 
-```json
-{
-  "routine_name": "string",
-  "description": "string",
-  "days_per_week": 4,
-  "blocks": [
-    {
-      "block_name": "string",
-      "weeks": "string (e.g. '1-6')",
-      "structure": "string (e.g. 'Push Pull Legs Upper Lower')",
-      "weekly_schedule": [
-        {
-          "day_number": "number",
-          "type": "training | rest",
-          "day_name": "string (e.g. 'Push', 'Pull', 'REST DAY')"
-        }
-      ],
-      "deload_weeks": "[number] (optional — include only if block has deloads)",
-      "days": [
-        {
-          "day_name": "string",
-          "estimated_duration": "number (minutes)",
-          "exercises": "[Exercise]"
-        },
-        {
-          "day_name": "REST DAY",
-          "estimated_duration": 0,
-          "exercises": []
-        }
-      ]
-    }
-  ],
-  "_metadata": {
-    "isSamplePlan": "true (for sample plans only — prevents contaminating user exercise preferences)"
-  }
-}
-```
+The JSON file you generate has this shape (this is reference — the actual file is what gets written to disk, never pasted into chat):
 
-> **Note on `days_per_week` in the example above:** the value `4` is illustrative — it is the number of TRAINING days for an upper/lower program. Set it to the actual training-day count for the program you are generating (see Schema Rule #1). It is NOT always 7.
+- Root: `routine_name` (string), `description` (string), `days_per_week` (number), `blocks` (array).
+- Each block: `block_name` (string), `weeks` (string e.g. '1-6'), `structure` (string e.g. 'Push Pull Legs Upper Lower'), `weekly_schedule` (array of 7 day objects with `day_number`, `type`: 'training' or 'rest', `day_name`), optional `deload_weeks` (array of week numbers — include only if block has deloads), `days` (array of 7 day objects).
+- Each training day: `day_name` (string), `estimated_duration` (number, minutes), `exercises` (array).
+- Each rest day: `{"day_name": "REST DAY", "estimated_duration": 0, "exercises": []}`.
+- Optional root `_metadata`: `{"isSamplePlan": true}` — for sample plans only, prevents contaminating user exercise preferences.
 
-> **Note on `block_name`:** for mesocycle-based programs, set `block_name` to "Mesocycle M · Block B — <Phase> (Weeks X–Y)" using the plan's mesocycle roadmap (see Translation Principle #1). For short single-mesocycle programs (4/8 week) a plain block name is fine.
+> **Note on `days_per_week`:** this is the number of TRAINING days for the program (3 for full-body, 4 for upper/lower, 6 for PPL, etc.). It is NOT always 7. See Schema Rule #1.
 
-**For sample plan generation only:** Include `"_metadata": {"isSamplePlan": true}` at the root level to prevent the plan from overwriting users' saved exercise preferences when imported.
+> **Note on `block_name`:** for mesocycle-based programs, use "Mesocycle M · Block B — <Phase> (Weeks X–Y)" using the plan's mesocycle roadmap (see Translation Principle #1). For short single-mesocycle programs (4/8 week) a plain block name is fine.
 
-### Strength Exercise
+**For sample plan generation only:** Include `_metadata.isSamplePlan: true` at the root level to prevent the plan from overwriting users' saved exercise preferences when imported.
 
-```json
-{
-  "type": "strength",
-  "exercise": "string",
-  "sets": "number",
-  "reps": "string",
-  "rest": "number (seconds)",
-  "restQuick": "number (seconds — ~65% of rest, rounded)",
-  "primaryMuscles": ["from taxonomy"],
-  "secondaryMuscles": ["from taxonomy, or empty array"],
-  "superset_group": "string (optional — e.g. 'ss1'; same value on two exercises links them as a superset)",
-  "reps_weekly": { "1": "string", "2": "string" },
-  "rir_weekly": { "1": "string", "2": "string" },
-  "sets_weekly": { "1": "number", "2": "number" },
-  "notes": "string (leave empty — user fills this in during training)",
-  "alternatives": [
-    { "exercise": "string", "primaryMuscles": ["..."], "secondaryMuscles": ["..."] }
-  ]
-}
-```
+### Strength Exercise Schema
+
+Each strength exercise object has these fields:
+
+- `type`: "strength"
+- `exercise`: string (name from the library)
+- `sets`: number (default set count for training weeks)
+- `reps`: string (display rep range, e.g. "8-12")
+- `rest`: number (seconds)
+- `restQuick`: number (seconds — ~65% of rest, rounded)
+- `primaryMuscles`: array of strings (from taxonomy)
+- `secondaryMuscles`: array of strings (from taxonomy, or empty array)
+- `superset_group`: string (optional — e.g. 'ss1'; same value on two exercises links them as a superset)
+- `reps_weekly`: object — keys are week numbers as strings, values are comma-separated rep targets per set
+- `rir_weekly`: object — same shape as reps_weekly, values are comma-separated RIR values per set
+- `sets_weekly`: object — keys are week numbers, values are set counts (numbers)
+- `notes`: string (leave empty — user fills this in during training)
+- `alternatives`: array of objects, each with `exercise`, `primaryMuscles`, `secondaryMuscles`
 
 ---
 
@@ -236,17 +252,17 @@ Before generating JSON, read the canonical exercise library at https://json.fit/
 4. **Deload tagging** — if a block has deload weeks, include a `deload_weeks` array with the block-relative week numbers (e.g., [5] for a 5-week block with deload on week 5). This block-level flag marks which week(s) are deloads; the reduced training values for those weeks are carried in each exercise's `sets_weekly` / `reps_weekly` / `rir_weekly`. Emit BOTH — the flag marks the week, the per-week values carry the prescription.
 5. **Empty arrays** — if an exercise has no secondary muscles, use `[]`. Do not omit the field.
 6. **restQuick** — calculate as ~65% of the `rest` value, rounded to a clean number.
-7. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: `Straight sets: (sets × 45s) + (sets × rest_seconds) | Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s) | Total: exercise_count × 150s + 300s warmup`. Duration has been pre-approved in the review stage.
+7. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: Straight sets: (sets × 45s) + (sets × rest_seconds). Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s). Total: exercise_count × 150s + 300s warmup. Duration has been pre-approved in the review stage.
 8. **Superset rest encoding** — for superset exercises, SS[n]a's `rest` field represents the inter-exercise transition rest (60-90s). SS[n]b's `rest` field represents the full rest before repeating the pair (compound or isolation default for that exercise type). `restQuick` is calculated from each exercise's own `rest` value.
 9. **sets vs sets_weekly** — `sets` is the default set count for training weeks (used for display). `sets_weekly` must be specified for every week in the block: training weeks should match `sets`, and deload weeks should show reduced values. Both fields are required for every strength exercise.
 10. **deload_weeks optionality** — omit `deload_weeks` entirely for blocks without deloads. Do not include an empty array.
 11. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. The number of `type: "training"` entries must equal `days_per_week`. Example for a 5-training-day program:
-    - Day 1: {"day_number": 1, "type": "training", "day_name": "Push"}
-    - Day 2: {"day_number": 2, "type": "training", "day_name": "Pull"}
-    - Day 3: {"day_number": 3, "type": "rest", "day_name": "REST DAY"}
-    - Days 4,5: training, Day 6: rest, Day 7: training
+    - Day 1: training, "Push"
+    - Day 2: training, "Pull"
+    - Day 3: rest, "REST DAY"
+    - Days 4,5: training; Day 6: rest; Day 7: training
     (5 training entries → days_per_week: 5; 7 entries total.)
-12. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
+12. **Sample plan protection** — for sample plans only, include `_metadata.isSamplePlan: true` at the root level to prevent overwriting users' exercise preferences during import.
 13. **RIR** — carry RIR guidance from the approved plan into each exercise's rir_weekly field. Do not regenerate or modify RIR values — the plan is authoritative. Do not put RIR in the notes field.
 14. **Notes field** — leave the `notes` field as an empty string (`""`) for every exercise. This field is reserved for user input during training.
 15. **routine_name and block_name** — `routine_name` is the stable base program name across every standalone block file AND the cumulative file (no mesocycle suffix). Mesocycle/block identity lives in `block_name`: "Mesocycle M · Block B — <Phase> (Weeks X–Y)" for mesocycle-based programs.
@@ -290,5 +306,6 @@ Before presenting each block, silently verify:
 - [ ] Block-relative progression week keys start from "1"
 - [ ] Session durations are recalculated using the duration formula
 - [ ] Cumulative `<routine_slug>_full.json` updated with this block (appended on "next", replaced on "review") and offered as the primary download
+- [ ] Response ends with the appropriate closing callout (State 1, 2, 3, or 4) as a code block — and no other code blocks appear in the response
 
 Fix any issues before presenting.
