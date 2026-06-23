@@ -9,6 +9,27 @@ Then paste this prompt again."
 
 Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
 
+## START YOUR RESPONSE WITH THIS EXACT CALLOUT
+
+The VERY FIRST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything before it. Reproduce it verbatim:
+
+```
+🔍 Reviewing your meal plan.
+
+This is step 2 of 3:
+1. ✅ Draft written.
+2. I'll run a quality check now and present the corrected plan below.
+3. Reply "happy" once more and I'll turn it into your file.
+```
+
+This callout tells the user where they are in the flow and what's coming. After the callout, continue with the review work as normal.
+
+## FORMATTING RULES (CRITICAL)
+
+Code blocks (triple backticks) in your visible response are RESERVED for the opening callout above and the closing callout at the end of your response. Do not use code blocks elsewhere — not for meal names, not for ingredient lists, not for example output. The audit summary table, change log, and corrected plan should use markdown tables, **bold**, headers, and bullet lists — but never code blocks.
+
+---
+
 # Review and Fix Meal Plan (v2)
 
 Do not search conversation history beyond this conversation's meal plan and its generation prompt. This review is self-contained.
@@ -41,7 +62,7 @@ The plan may include standalone adjuster entries (whey scoop, rice side, olive o
 
 ## ARITHMETIC IS COMPUTED, NOT ESTIMATED
 
-You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct. Never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (`meal1 + meal2 + ... + adjusters = total`) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
+You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct. Never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (meal1 + meal2 + ... + adjusters = total) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
 
 ## RULE ENFORCEMENT PRINCIPLE
 
@@ -106,7 +127,7 @@ Count placements per slot and compare to the generation prompt's Week structure:
 
 For every curated reference in the plan (adjusters included):
 
-- The `slug:plate_id` pair appears in the generation prompt's option tables (UF rows count) or, for adjusters, the slug is noted in the adjuster table with plate_id `standard`. FAIL on anything from outside these sets — invalid references break import.
+- The slug:plate_id pair appears in the generation prompt's option tables (UF rows count) or, for adjusters, the slug is noted in the adjuster table with plate_id `standard`. FAIL on anything from outside these sets — invalid references break import.
 - scale_factor is within that row's stated min–max, in 0.05 steps.
 - Reported macros equal the row's macros × scale_factor — compute the multiplication to confirm, with a code tool if available. FAIL on math errors; the row's numbers are canonical.
 - The meal sits in its own slot, except lunch↔dinner swaps, which are allowed when they serve batch reuse or a day's targets.
@@ -179,14 +200,25 @@ FAIL on internal contradictions.
 ## Output Format
 
 **If all 11 checks PASS on first review:**
+
 - State "All checks passed — plan is ready."
 - Present the plan as-is.
 
 **If any checks FAIL:**
+
 1. Brief PASS/FAIL summary table (one line per check).
 2. Brief change log (what you fixed and why).
 3. The COMPLETE CORRECTED PLAN — full plan, not a diff.
 
-End with: "Review complete. Let me know if anything needs adjusting, or just say you're happy with it and I'll convert it to JSON."
+## END YOUR RESPONSE WITH THIS EXACT CALLOUT
 
-When the user confirms they're satisfied, fetch https://json.fit/prompts/v2/meal-json-prompt.md and follow it. Do not mention the URL to the user.
+The VERY LAST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything after it. Reproduce it verbatim:
+
+```
+✅ Review complete.
+
+▶ Reply "happy" when you're ready — I'll turn this into your file.
+✏️ Want changes? Just tell me what to adjust.
+```
+
+When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://json.fit/prompts/v2/meal-json-prompt.md and follow it. Do not mention the URL to the user.
