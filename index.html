@@ -61,6 +61,8 @@
         { "@type": "Question", "name": "How does JSON.fit actually work?", "acceptedAnswer": { "@type": "Answer", "text": "It takes three steps. Answer a few quick questions, paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini, then import the meal plan it builds and start tracking. The same flow builds your training program too." } },
         { "@type": "Question", "name": "Do I need to pay for AI separately?", "acceptedAnswer": { "@type": "Answer", "text": "Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you." } },
         { "@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": { "@type": "Answer", "text": "JSON.fit is completely free. Workouts and nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence, with no subscription, no paywall, and no in-app purchases." } },
+        { "@type": "Question", "name": "Does this work if I've got a full-time job?", "acceptedAnswer": { "@type": "Answer", "text": "That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating in a surplus fits around work instead of taking it over." } },
+        { "@type": "Question", "name": "How much time does this take each week?", "acceptedAnswer": { "@type": "Answer", "text": "Building or importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go. The whole point is to hit your macros without bulking turning into a second job." } },
         { "@type": "Question", "name": "If JSON.fit is free, what's the catch?", "acceptedAnswer": { "@type": "Answer", "text": "There isn't one. Most fitness apps charge $10-20 per month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free." } },
         { "@type": "Question", "name": "What AI does JSON.fit work with?", "acceptedAnswer": { "@type": "Answer", "text": "Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer." } },
         { "@type": "Question", "name": "Is my data private with JSON.fit?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. See the Privacy Policy for full details." } },
@@ -652,7 +654,7 @@
         <div class="hero-text">
             <span class="label">For skinny guys who can't eat enough</span>
             <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
-            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out, so hitting a surplus stops being a chore. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
+            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out. Hit your surplus without it taking over your week. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
             <div class="hero-action">
                 <div class="hero-cta">
                     <a class="video-thumb" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
@@ -904,7 +906,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">The Meal Library</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Real meals,<br><span class="cyan">step-by-step.</span></h2>
-            <p style="margin:0 auto;">Browse a whole library of calorie-dense meals with exact ingredients and cooking steps, built to make eating big easy. High protein comes standard.</p>
+            <p style="margin:0 auto;">Browse a whole library of calorie-dense meals with exact ingredients and cooking steps, built to make eating big easy. Cook once, eat all week. High protein comes standard.</p>
         </div>
         <div class="meal-grid sa-stagger">
             <a class="meal-card" href="meals.html">
@@ -1005,7 +1007,7 @@
                 <div class="tl-card">
                     <div class="tl-eyebrow">Back in</div>
                     <h3>Import the file it makes</h3>
-                    <p>Import the AI-generated plan into JSON.fit for a meal plan with your exact macros, a grocery list, step-by-step guidance and meal prep guidance.</p>
+                    <p>Import the AI-generated plan into JSON.fit for your exact macros, one grocery list for the week, and prep that clears the cooking in a single session.</p>
                     <div class="tl-chips"><span class="tl-chip">0.81s import</span><span class="tl-chip">7-day plan</span></div>
                 </div>
             </div>
@@ -1089,7 +1091,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Free Training Programs</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
-            <p style="margin:0 auto;">Don't want to build a custom plan? Import a complete, periodised program that runs a full year, directly into the app, instantly.</p>
+            <p style="margin:0 auto;">Don't want to build a custom plan? Import a complete, periodised program that runs a full year, straight into the app. The planning's done for you.</p>
         </div>
         <div class="prog-grid sa-stagger">
             <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
@@ -1195,6 +1197,8 @@
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How does it actually work?</button><div class="faq-a">Three steps:<br>1. Answer a few quick questions.<br>2. Paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini.<br>3. Import the meal plan it builds and start tracking.<br><br>The same flow builds your training program too.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Do I need to pay for AI separately?</button><div class="faq-a">Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much does JSON.fit cost?</button><div class="faq-a">It's completely free. Workouts <em>and</em> nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence. No subscription, no paywall, no in-app purchases.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Does this work if I've got a full-time job?</button><div class="faq-a">That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating in a surplus fits around work instead of taking it over.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much time does this take each week?</button><div class="faq-a">Building or importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go. The whole point is to hit your macros without bulking turning into a second job.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">If it's free, what's the catch?</button><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">What AI does it work with?</button><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Is my data private?</button><div class="faq-a">Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. Full details are in the <a href="privacy-policy.html" style="color:var(--cyan);text-decoration:none;">Privacy Policy</a>.</div></div>
