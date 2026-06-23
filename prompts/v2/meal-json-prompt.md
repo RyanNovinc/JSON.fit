@@ -4,6 +4,24 @@ Please convert the meal plan you just created into a specific JSON format that c
 
 **CRITICAL: This is a DATA TRANSFER operation only. NEVER recalculate nutrition values - this causes calorie inflation bugs. Copy the EXACT calories, macros, and ingredient amounts from your reviewed meal plan.**
 
+## START YOUR RESPONSE WITH THIS EXACT CALLOUT
+
+The VERY FIRST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything before it. Reproduce it verbatim:
+
+```
+📦 Converting your meal plan to a file. This is step 3 of 3.
+
+I'll write the JSON to a download for you. Macros and amounts come straight from your reviewed plan — no recalculation.
+```
+
+This callout tells the user where they are in the flow. After it, do the conversion work.
+
+## FORMATTING RULES (CRITICAL)
+
+Code blocks (triple backticks) in your **visible chat response** are RESERVED for the opening callout above and the closing callout at the end. The actual JSON output goes into a downloadable FILE, not into chat — that is the rule that already exists, and it keeps the visible chat code-block-clean for the callouts.
+
+In your visible chat response, do not use code blocks for anything other than the two callouts. The schema and examples that follow in this prompt are reference material for you — they teach the JSON shape, they are not text you reproduce in chat. The user only ever sees: your opening callout, a brief mention that the file is being created, the download link, and the closing callout.
+
 # MEAL PLANNING STRUCTURE
 
 This JSON format is designed to work directly with the app's simplified meal planning system. The structure uses dates as keys for easy lookup and management.
@@ -13,6 +31,7 @@ This JSON format is designed to work directly with the app's simplified meal pla
 **DO NOT output JSON to chat** — it will hit token limits for plans longer than 7 days.
 
 **You MUST:**
+
 1. Create a file (use Code Interpreter on ChatGPT, or computer tool on Claude)
 2. Write the complete JSON structure to the file
 3. If you reach output limits, STOP at the end of a complete day, then continue appending to the same file
@@ -21,7 +40,7 @@ This JSON format is designed to work directly with the app's simplified meal pla
 
 # JSON Schema Required
 
-```json
+```
 {
   "id": "string",
   "name": "string",
@@ -104,7 +123,7 @@ If the reviewed meal plan contains meals referenced by `curated_meal_slug`, thos
 
 Curated meal entry format:
 
-```json
+```
 {
   "id": "meal_20260518_dinner",
   "name": "BBQ Pulled Pork Burger",
@@ -136,89 +155,89 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 
 ## Core Meal Data
 
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **id** | Yes | String | Unique identifier for the meal plan |
-| **name** | Yes | String | Concise plan name from duration + goal only (e.g., "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance"). Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. See the "Plan Name" rule below. |
-| **startDate** | Yes | YYYY-MM-DD | Must match first day in dailyMeals |
-| **endDate** | Yes | YYYY-MM-DD | Must match last day in dailyMeals |
-| **dailyMeals** | Yes | Object | Date-keyed meals (see below) |
+| Field          | Required | Format     | Notes                                                                                                                                                                                                                                  |
+| -------------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **id**         | Yes      | String     | Unique identifier for the meal plan                                                                                                                                                                                                    |
+| **name**       | Yes      | String     | Concise plan name from duration + goal only (e.g., "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance"). Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. See the "Plan Name" rule below. |
+| **startDate**  | Yes      | YYYY-MM-DD | Must match first day in dailyMeals                                                                                                                                                                                                     |
+| **endDate**    | Yes      | YYYY-MM-DD | Must match last day in dailyMeals                                                                                                                                                                                                      |
+| **dailyMeals** | Yes      | Object     | Date-keyed meals (see below)                                                                                                                                                                                                           |
 
 ## Daily Meal Structure
 
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **date** | Yes | YYYY-MM-DD | Must match the object key |
-| **dayName** | Yes | String | "Monday", "Tuesday", etc. |
-| **meals** | Yes | Array | All meals for this day |
+| Field       | Required | Format     | Notes                     |
+| ----------- | -------- | ---------- | ------------------------- |
+| **date**    | Yes      | YYYY-MM-DD | Must match the object key |
+| **dayName** | Yes      | String     | "Monday", "Tuesday", etc. |
+| **meals**   | Yes      | Array      | All meals for this day    |
 
 ## Individual Meal Structure
 
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **id** | Yes | String | Unique meal identifier |
-| **name** | Yes | String | Meal name |
-| **type** | Yes | Enum | "breakfast", "brunch", "lunch", "second_lunch", "early_dinner", "dinner", "snack", "morning_snack", "afternoon_snack", "evening_snack", "pre_workout", "post_workout" |
-| **time** | Yes | String | "7:45 AM", "12:30 PM" format |
-| **calories** | Yes | Number | Total calories for this meal |
-| **macros.protein** | Yes | Number | Protein in grams |
-| **macros.carbs** | Yes | Number | Carbohydrates in grams |
-| **macros.fat** | Yes | Number | Fat in grams |
-| **macros.fiber** | Yes | Number | Fiber in grams |
-| **ingredients** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
-| **instructions** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
-| **tags** | No | Array | Tags like ["high_protein", "meal_prep"]. Omitted for curated meals. |
-| **curated_meal_slug** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
-| **plate_id** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
-| **scale_factor** | Conditional | Number | Required for curated meals only. Decimal (e.g. 1.0, 0.8). |
-| **isOriginal** | Yes | Boolean | Always true for generated meals |
-| **addedAt** | Yes | String | ISO timestamp when meal was created |
+| Field                   | Required    | Format  | Notes                                                                                                                                                                        |
+| ----------------------- | ----------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **id**                  | Yes         | String  | Unique meal identifier                                                                                                                                                       |
+| **name**                | Yes         | String  | Meal name                                                                                                                                                                    |
+| **type**                | Yes         | Enum    | "breakfast", "brunch", "lunch", "second_lunch", "early_dinner", "dinner", "snack", "morning_snack", "afternoon_snack", "evening_snack", "pre_workout", "post_workout" |
+| **time**                | Yes         | String  | "7:45 AM", "12:30 PM" format                                                                                                                                                 |
+| **calories**            | Yes         | Number  | Total calories for this meal                                                                                                                                                 |
+| **macros.protein**      | Yes         | Number  | Protein in grams                                                                                                                                                             |
+| **macros.carbs**        | Yes         | Number  | Carbohydrates in grams                                                                                                                                                       |
+| **macros.fat**          | Yes         | Number  | Fat in grams                                                                                                                                                                 |
+| **macros.fiber**        | Yes         | Number  | Fiber in grams                                                                                                                                                               |
+| **ingredients**         | Conditional | Array   | Required for invented meals. Omitted for curated meals.                                                                                                                      |
+| **instructions**        | Conditional | Array   | Required for invented meals. Omitted for curated meals.                                                                                                                      |
+| **tags**                | No          | Array   | Tags like ["high_protein", "meal_prep"]. Omitted for curated meals.                                                                                                        |
+| **curated_meal_slug** | Conditional | String  | Required for curated meals only. Exact-match lookup key.                                                                                                                     |
+| **plate_id**           | Conditional | String  | Required for curated meals only. Exact-match lookup key.                                                                                                                     |
+| **scale_factor**       | Conditional | Number  | Required for curated meals only. Decimal (e.g. 1.0, 0.8).                                                                                                                    |
+| **isOriginal**          | Yes         | Boolean | Always true for generated meals                                                                                                                                              |
+| **addedAt**             | Yes         | String  | ISO timestamp when meal was created                                                                                                                                          |
 
 ## Ingredient Structure
 
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **item** | Yes | String | Ingredient name |
-| **amount** | Yes | String | Quantity as text (e.g., "200", "1/2 cup") |
-| **unit** | Yes | String | Unit of measurement |
-| **notes** | No | String | Preparation notes, substitutions |
+| Field      | Required | Format | Notes                                     |
+| ---------- | -------- | ------ | ----------------------------------------- |
+| **item**   | Yes      | String | Ingredient name                           |
+| **amount** | Yes      | String | Quantity as text (e.g., "200", "1/2 cup") |
+| **unit**   | Yes      | String | Unit of measurement                       |
+| **notes**  | No       | String | Preparation notes, substitutions          |
 
 ## Grocery List Structure
 
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **total_estimated_cost_low** | Yes | Number | Lower bound of estimated cost (sum of all item prices) |
-| **total_estimated_cost_high** | Yes | Number | Upper bound with 10% buffer (low × 1.10, rounded up) |
-| **currency** | Yes | String | Currency symbol (e.g., "AU$", "$", "£", "€") |
-| **categories** | Yes | Array | Grouped grocery items |
-| **category_name** | Yes | String | Category like "Meat & Seafood" |
-| **items** | Yes | Array | Items in this category |
-| **item_name** | Yes | String | Product name |
-| **quantity** | Yes | String | Total amount needed |
-| **unit** | Yes | String | Unit of measurement |
-| **estimated_price** | Yes | Number | Price in local currency |
-| **notes** | No | String | Store location notes for items bought outside main grocery store |
-| **is_purchased** | Yes | Boolean | Always false (user will check off) |
-| **alternatives** | No | Array | 1-2 substitute options for hard-to-find items |
+| Field                            | Required | Format  | Notes                                                            |
+| -------------------------------- | -------- | ------- | ---------------------------------------------------------------- |
+| **total_estimated_cost_low**  | Yes      | Number  | Lower bound of estimated cost (sum of all item prices)           |
+| **total_estimated_cost_high** | Yes      | Number  | Upper bound with 10% buffer (low × 1.10, rounded up)             |
+| **currency**                     | Yes      | String  | Currency symbol (e.g., "AU$", "$", "£", "€")                     |
+| **categories**                   | Yes      | Array   | Grouped grocery items                                            |
+| **category_name**               | Yes      | String  | Category like "Meat & Seafood"                                   |
+| **items**                        | Yes      | Array   | Items in this category                                           |
+| **item_name**                   | Yes      | String  | Product name                                                     |
+| **quantity**                     | Yes      | String  | Total amount needed                                              |
+| **unit**                         | Yes      | String  | Unit of measurement                                              |
+| **estimated_price**             | Yes      | Number  | Price in local currency                                          |
+| **notes**                        | No       | String  | Store location notes for items bought outside main grocery store |
+| **is_purchased**                | Yes      | Boolean | Always false (user will check off)                               |
+| **alternatives**                 | No       | Array   | 1-2 substitute options for hard-to-find items                    |
 
 ## Alternative Items Structure (within grocery list items)
 
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **item_name** | Yes | String | Alternative product name |
-| **quantity** | Yes | String | Equivalent amount needed |
-| **unit** | Yes | String | Unit of measurement |
-| **estimated_price** | Yes | Number | Price in local currency |
-| **notes** | No | String | Conversion tips, cooking adjustments for alternatives |
+| Field                | Required | Format | Notes                                                 |
+| -------------------- | -------- | ------ | ----------------------------------------------------- |
+| **item_name**       | Yes      | String | Alternative product name                              |
+| **quantity**         | Yes      | String | Equivalent amount needed                              |
+| **unit**             | Yes      | String | Unit of measurement                                   |
+| **estimated_price** | Yes      | Number | Price in local currency                               |
+| **notes**            | No       | String | Conversion tips, cooking adjustments for alternatives |
 
 ## Metadata Structure
 
-| Field | Required | Format | Notes |
-|-------|----------|--------|-------|
-| **generatedAt** | Yes | String | ISO timestamp when plan was created |
-| **totalCost_low** | No | Number | Lower bound of estimated grocery cost |
-| **totalCost_high** | No | Number | Upper bound with 10% buffer |
-| **duration** | Yes | Number | Total days in the meal plan |
+| Field               | Required | Format | Notes                                 |
+| ------------------- | -------- | ------ | ------------------------------------- |
+| **generatedAt**     | Yes      | String | ISO timestamp when plan was created   |
+| **totalCost_low**  | No       | Number | Lower bound of estimated grocery cost |
+| **totalCost_high** | No       | Number | Upper bound with 10% buffer           |
+| **duration**        | Yes      | Number | Total days in the meal plan           |
 
 # CRITICAL CONVERSION RULES
 
@@ -226,8 +245,8 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 
 Name the plan from duration and goal only — e.g. "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance". Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. The app displays the calorie figure separately on the plan screen, so it must not be baked into the name.
 
-- Correct: `"7-Day Lean Bulk"`
-- Wrong: `"7-Day Lean Bulk Plan (3042 kcal)"`, `"7-Day Lean Bulk — 3042 kcal"`, `"7-Day Lean Bulk 26P/39C/35F"`
+- Correct: 7-Day Lean Bulk
+- Wrong: 7-Day Lean Bulk Plan (3042 kcal); 7-Day Lean Bulk — 3042 kcal; 7-Day Lean Bulk 26P/39C/35F
 
 ## Nutrition Value Preservation (MOST IMPORTANT)
 
@@ -284,7 +303,7 @@ If the meal plan mentions "200g chicken breast" in 3 different meals, the grocer
 
 If the meal plan says "Cook rice according to package instructions", convert this to specific steps like:
 
-```json
+```
 "instructions": [
   "Rinse 1 cup jasmine rice until water runs clear",
   "Add rice and 1.5 cups water to pot and bring to boil",
@@ -295,8 +314,19 @@ If the meal plan says "Cook rice according to package instructions", convert thi
 
 # FINAL STEPS
 
-- Complete structure - include all required fields
-- Validate JSON - ensure the output is valid, parseable JSON
-- Cross-check structure - verify all required fields are present and JSON is valid, preserve all nutrition values exactly as provided
+- Complete structure — include all required fields
+- Validate JSON — ensure the output is valid, parseable JSON
+- Cross-check structure — verify all required fields are present and JSON is valid, preserve all nutrition values exactly as provided
+
+## END YOUR RESPONSE WITH THIS EXACT CALLOUT
+
+After you have created the file and provided the download link, end your response with this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything after it. Reproduce it verbatim:
+
+```
+🎉 Your meal plan file is ready.
+
+▶ Open JSON.fit and import your file to start eating.
+✏️ Want changes? Just tell me what to adjust.
+```
 
 Start the conversion now.
