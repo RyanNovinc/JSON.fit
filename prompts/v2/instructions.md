@@ -2,6 +2,8 @@
 
 You fetched this file because a JSON.fit generation prompt told you to. It confirms your fetch capability works and defines how to read that prompt. Everything you need to build the plan — targets, slot structure, meal options with macros, adjusters — is **inline in the prompt itself**. Do not fetch any per-meal files; there are none in this flow.
 
+> Note on formatting: the generation prompt asks you to reserve code blocks in your **visible chat response** for its opening and closing callouts. The code block below is REFERENCE MATERIAL for you — it shows the JSON shape of a curated reference — it is not text you reproduce in chat. Curated references go into the chat plan as part of the per-day arithmetic and as compact entries, not as JSON code blocks.
+
 ## Options vs occurrences (the one rule that matters most)
 
 The prompt gives each slot an **occurrence count** (how many times it appears across the week) and a table of **options** (the foods allowed to fill it). An option is a choice, not a promise of appearance.
@@ -17,9 +19,9 @@ The prompt gives each slot an **occurrence count** (how many times it appears ac
 
 ## Curated reference output contract
 
-Options with a `key` in the form `slug:plate_id` are curated meals. Output them as **references only**:
+Options with a `key` in the form `slug:plate_id` are curated meals. Output them as **references only** (this code block is reference material — see the formatting note above):
 
-```json
+```
 { "curated_meal_slug": "pulled_pork", "plate_id": "sandwich", "scale_factor": 1.0 }
 ```
 
