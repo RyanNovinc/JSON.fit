@@ -74,6 +74,32 @@ main{flex:1;padding:2.25rem 0 3rem}
 .block h3{font-size:1.05rem;font-weight:700;margin-bottom:1rem;letter-spacing:-.01em}
 .block h3 .sub{font-weight:400;color:var(--text-3);font-size:.8rem;font-family:'DM Mono',monospace;margin-left:.4rem}
 
+/* volume section heading row — the h3 sits beside the info pill button */
+.vol-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.vol-head h3{margin-bottom:0}
+.vol-info-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--cyan-soft);border:1px solid var(--border-cyan);color:var(--cyan);padding:.4rem .8rem;border-radius:999px;font-family:'DM Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.02em;cursor:pointer;transition:background .2s,border-color .2s,transform .15s;white-space:nowrap;flex-shrink:0}
+.vol-info-btn:hover{background:rgba(34,211,238,0.14);border-color:rgba(34,211,238,0.32);transform:translateY(-1px)}
+.vol-info-btn svg{width:12px;height:12px}
+.vol-info-btn.active{background:rgba(34,211,238,0.14);border-color:rgba(34,211,238,0.32)}
+
+/* expandable science panel */
+.vol-panel{max-height:0;overflow:hidden;transition:max-height .45s ease,margin .35s ease,opacity .3s ease;opacity:0;margin-top:0}
+.vol-panel.open{max-height:2400px;opacity:1;margin-top:1.2rem;margin-bottom:1.4rem}
+.vol-panel-inner{background:var(--surface-2);border:1px solid var(--border-cyan);border-radius:12px;padding:1.5rem 1.6rem}
+.vol-panel h4{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);font-weight:500;margin:0 0 .7rem}
+.vol-panel h4:not(:first-child){margin-top:1.4rem}
+.vol-panel p{font-size:.88rem;line-height:1.7;color:var(--text-2);margin-bottom:.85rem}
+.vol-panel p:last-child{margin-bottom:0}
+.vol-panel p strong{color:var(--text);font-weight:600}
+.vol-ranges{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.25rem .9rem}
+.vol-range{display:flex;justify-content:space-between;align-items:baseline;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.78rem}
+.vol-range-name{color:var(--text-2)}
+.vol-range-val{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text)}
+.vol-cites{display:flex;flex-direction:column;gap:.65rem}
+.vol-cite{font-size:.74rem;line-height:1.55;color:var(--text-3)}
+.vol-cite em{color:var(--text-2);font-style:normal;font-weight:500}
+.vol-disclaimer{font-size:.74rem;line-height:1.55;color:var(--text-3);margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--border)}
+
 /* timeline */
 .timeline{display:flex;gap:10px;margin-bottom:.85rem;align-items:stretch}
 .phase{display:flex;flex-direction:column;gap:.45rem;min-width:0}
@@ -130,7 +156,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem}
 .foot-l a:hover{color:var(--cyan)}
 
-@media(max-width:560px){.week{grid-template-columns:1fr}.timeline{flex-direction:column;gap:1rem}.phase{width:100%}.phase-bar{height:34px}.phase-name{font-size:.72rem}}
+@media(max-width:560px){.week{grid-template-columns:1fr}.timeline{flex-direction:column;gap:1rem}.phase{width:100%}.phase-bar{height:34px}.phase-name{font-size:.72rem}.vol-info-btn{font-size:.62rem}}
 </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -234,6 +260,47 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     return keys.length ? String(keys[0]) : null;
   }
 
+  // ---- volume science panel content -------------------------------------
+  // Inlined as a render helper so the markup lives next to the rest of the page.
+  // Ranges are conservative-consensus values that bracket the practitioner
+  // ranges (Renaissance Periodization volume landmarks) and the meta-analytic
+  // dose-response work. The disclaimer at the end is deliberately honest about
+  // individual variation — these are guidance, not personalized prescription.
+  function volSciencePanelHTML(){
+    return ''
+      + '<div class="vol-panel" id="vol-panel" aria-hidden="true">'
+      +   '<div class="vol-panel-inner">'
+      +     '<h4>Why these numbers?</h4>'
+      +     '<p>Hypertrophy research shows muscle growth scales with the number of <strong>hard sets per muscle per week</strong>, and each muscle has its own productive range. JSON.fit programs target each muscle\'s specific range — that\'s why side delts can show 18 sets in the same program where chest shows 17. Both sit in their respective productive zones.</p>'
+      +     '<p>The framework here is <strong>MEV / MAV / MRV</strong> — Minimum Effective Volume, Maximum Adaptive Volume, and Maximum Recoverable Volume. Most muscles grow best in the 10–20 working sets per week range, with the exact range varying by muscle, training age, and recovery.</p>'
+
+      +     '<h4>Typical productive ranges</h4>'
+      +     '<div class="vol-ranges">'
+      +       '<div class="vol-range"><span class="vol-range-name">Chest</span><span class="vol-range-val">10–20 sets</span></div>'
+      +       '<div class="vol-range"><span class="vol-range-name">Side delts</span><span class="vol-range-val">10–24 sets</span></div>'
+      +       '<div class="vol-range"><span class="vol-range-name">Back</span><span class="vol-range-val">10–22 sets</span></div>'
+      +       '<div class="vol-range"><span class="vol-range-name">Biceps</span><span class="vol-range-val">8–20 sets</span></div>'
+      +       '<div class="vol-range"><span class="vol-range-name">Quads</span><span class="vol-range-val">8–20 sets</span></div>'
+      +       '<div class="vol-range"><span class="vol-range-name">Triceps</span><span class="vol-range-val">6–14 sets</span></div>'
+      +       '<div class="vol-range"><span class="vol-range-name">Hamstrings</span><span class="vol-range-val">6–16 sets</span></div>'
+      +       '<div class="vol-range"><span class="vol-range-name">Rear delts</span><span class="vol-range-val">6–18 sets</span></div>'
+      +     '</div>'
+
+      +     '<h4>What "effective" means</h4>'
+      +     '<p>A working set taken within a few reps of failure. Compound lifts count fully for the primary muscle (×1.0) and partially for muscles they assist (×0.5). So a bench press counts as one full set for chest and a half set for triceps. This is how the field measures volume — it\'s why a single press doesn\'t get triple-counted across chest, shoulders, and arms.</p>'
+
+      +     '<h4>Sources</h4>'
+      +     '<div class="vol-cites">'
+      +       '<div class="vol-cite">Schoenfeld, Ogborn &amp; Krieger (2017). <em>Dose-response relationship between weekly resistance training volume and increases in muscle mass.</em> Journal of Sports Sciences, 35(11), 1073–1082.</div>'
+      +       '<div class="vol-cite">Pelland et al. (2024). <em>The Resistance Training Dose-Response: meta-regressions exploring the effects of weekly volume and frequency on muscle hypertrophy and strength gain.</em> Sports Medicine.</div>'
+      +       '<div class="vol-cite">Israetel, Hoffmann &amp; Smith (2017). <em>Scientific Principles of Hypertrophy Training.</em> Renaissance Periodization (volume landmarks framework).</div>'
+      +     '</div>'
+
+      +     '<div class="vol-disclaimer">Ranges are guidance, not law. Your personal numbers depend on training age, recovery, sleep, and stress. JSON.fit picks a position within these ranges based on your experience and the program\'s phase.</div>'
+      +   '</div>'
+      + '</div>';
+  }
+
   function render(data){
     try{
       var blocks = Array.isArray(data.blocks) ? data.blocks : [];
@@ -329,7 +396,19 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       var rows = Object.keys(muscle).map(function(m){ return {m:m, v:muscle[m]}; }).sort(function(a,b){ return b.v-a.v; });
       if(rows.length){
         var mx = rows[0].v || 1;
-        html += '<div class="block"><div class="block-lbl">Weekly volume</div><h3>Effective sets per muscle<span class="sub">a working week</span></h3><div class="vol">';
+        // Heading row now uses .vol-head so the title sits beside the info button.
+        html += '<div class="block"><div class="block-lbl">Weekly volume</div>';
+        html += '<div class="vol-head">';
+        html +=   '<h3>Effective sets per muscle<span class="sub">a working week</span></h3>';
+        html +=   '<button class="vol-info-btn" id="vol-info-btn" type="button" aria-expanded="false" aria-controls="vol-panel">';
+        html +=     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+        html +=     'Why these numbers?';
+        html +=   '</button>';
+        html += '</div>';
+        // The expandable science panel — closed by default. Sits between the heading
+        // and the bars so the user reads the science before re-reading the numbers.
+        html += volSciencePanelHTML();
+        html += '<div class="vol">';
         rows.forEach(function(r){
           var sets = Math.round(r.v*10)/10;
           html += '<div class="vol-row"><span class="vol-name">'+esc(r.m)+'</span><div class="vol-wrap"><div class="vol-bar" style="width:'+(r.v/mx*100)+'%"></div></div><span class="vol-sets">'+sets+' sets</span></div>';
@@ -376,6 +455,27 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       loadingEl.style.display='none';
       contentEl.style.display='block';
       document.title = tp.title + ' — JSON.fit';
+
+      // ---- volume science panel toggle --------------------------------------
+      // Open/close the "Why these numbers?" panel. Fires a single analytics event
+      // the first time it opens per page-load (so we can see how often skeptics
+      // actually want the science). Keyboard accessibility via aria-expanded.
+      var volBtn = document.getElementById('vol-info-btn');
+      var volPanel = document.getElementById('vol-panel');
+      var volOpenedOnce = false;
+      if(volBtn && volPanel){
+        volBtn.addEventListener('click', function(){
+          var isOpen = volPanel.classList.toggle('open');
+          volBtn.classList.toggle('active', isOpen);
+          volBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          volPanel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+          if(isOpen && !volOpenedOnce){
+            volOpenedOnce = true;
+            if(typeof gtag === 'function') gtag('event','volume_science_opened',{program:slug});
+            if(window.track) window.track('volume_science_opened', {program: slug});
+          }
+        });
+      }
 
       // ---- import action ----------------------------------------------------
       // IMPORTANT: we open the app with its custom scheme (json-app://), NOT the
