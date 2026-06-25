@@ -645,17 +645,8 @@
             .founder-body p { margin-left:auto; margin-right:auto; }
         }
 
-        /* === Added: Android launch notify form (extends the existing .at card) === */
+        /* === Added: Android eyebrow dot === */
         .at-eyebrow .dot { width:5px; height:5px; border-radius:50%; background:var(--violet); }
-        .at-form { display:flex; gap:0.6rem; max-width:440px; margin:0 auto; }
-        .at-input { flex:1; min-width:0; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--text); font-family:'Outfit',sans-serif; font-size:0.92rem; transition:border-color 0.2s, box-shadow 0.2s; }
-        .at-input::placeholder { color:var(--text-3); }
-        .at-input:focus { outline:none; border-color:var(--violet-border); box-shadow:0 0 0 3px var(--violet-soft); }
-        .at-note { font-family:'DM Mono',monospace; font-size:0.66rem; color:var(--text-3); letter-spacing:0.02em; margin-top:0.9rem; }
-        .at-success { display:none; align-items:center; gap:0.6rem; max-width:440px; margin:0.9rem auto 0; padding:0.95rem 1.1rem; border:1px solid var(--violet-border); background:var(--violet-soft); border-radius:10px; color:var(--text); font-size:0.92rem; text-align:left; }
-        .at-success.show { display:flex; }
-        .at-success .tick { flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--violet); color:#1a0a2e; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; }
-        @media (max-width:560px) { .at-form { flex-direction:column; } }
     </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -690,8 +681,8 @@
                  ALT A (your previous): <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
                  ALT B (problem-first): <h1>The hard part of bulking was never the gym.<br class="hero-br">It's <span class="cyan">eating enough.</span></h1>
             -->
-            <h1>Eating big, <span class="cyan">made easy.</span></h1>
-            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out. Hit your surplus so the weight actually goes on, without bulking taking over your week. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
+            <h1>Eating big, <br class="hero-br"><span class="cyan">made easy.</span></h1>
+            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out, so hitting your surplus and actually gaining weight is finally the easy part. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
             <div class="hero-action">
                 <div class="hero-cta">
                     <a class="video-thumb" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
@@ -1041,7 +1032,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">How your plan gets built</span>
             <h2>Choose your meals, build <span class="cyan">your week.</span></h2>
-            <p style="margin:0 auto;">Prefer zero setup? The meal library and full-year programs work straight out of the box, no AI needed. The steps below are just there if you want a fully custom plan.</p>
+            <p style="margin:0 auto;">Just want to cook? Browse the meal library and make any meal in it, no AI needed. The steps below are for building a full meal plan around your goal and macros.</p>
         </div>
         <div class="tl" id="tl">
             <div class="tl-spine"></div>
@@ -1134,7 +1125,7 @@
     <div class="container">
         <div class="founder sa sa-up">
             <div class="founder-photo">
-                <img src="images/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.style.display='none';this.parentElement.classList.add('noimg');">
+                <img src="images/me/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.style.display='none';this.parentElement.classList.add('noimg');">
                 <span class="founder-initials">RN</span>
             </div>
             <div class="founder-body">
@@ -1265,21 +1256,13 @@
     </div>
 </section>
 
-<!-- Android launch: notify-me capture (honest urgency, real launch date) -->
+<!-- Android launch: announcement only (email capture removed for now; launching July 2026) -->
 <section class="at">
     <div class="container">
         <div class="at-card sa sa-up">
             <span class="at-eyebrow"><span class="dot"></span> Android</span>
             <h2>Android is <span class="vi">almost here.</span></h2>
-            <p class="at-sub">The Android build is done and in final review, launching July 2026. Drop your email and you'll be first to know the moment it lands on Google Play.</p>
-            <form class="at-form" id="androidForm" novalidate>
-                <label for="androidEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
-                <input class="at-input" id="androidEmail" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
-                <input type="text" id="androidWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-                <button class="at-btn" type="submit">Notify me at launch</button>
-            </form>
-            <div class="at-success" id="androidSuccess"><span class="tick">&#10003;</span> <span class="at-success-msg">You are on the list. We will email you the moment Android goes live.</span></div>
-            <p class="at-note">No spam. Just the launch announcement.</p>
+            <p class="at-sub" style="margin-bottom:0;">The build is done and in final review. JSON.fit lands on Google Play in July 2026.</p>
         </div>
     </div>
 </section>
@@ -1672,44 +1655,6 @@
     layout();
     update();
     setTimeout(function(){ layout(); update(); }, 120);
-})();
-</script>
-
-<!-- Android launch notify: mirrors the cookbook form's subscribe API contract -->
-<script>
-(function(){
-    var f = document.getElementById('androidForm');
-    if(!f) return;
-    f.addEventListener('submit', function(e){
-        e.preventDefault();
-        var email = document.getElementById('androidEmail');
-        var hp = document.getElementById('androidWebsite');
-        var btn = f.querySelector('.at-btn');
-        var val = (email.value || '').trim();
-        if(!val || val.indexOf('@') === -1){ email.focus(); email.style.borderColor = '#ef4444'; return; }
-        if(window.gtag) gtag('event', 'android_notify', { 'button_location': 'android_launch' });
-        var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending\u2026';
-        fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ email: val, website: hp ? hp.value : '', source: 'android-launch' })
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(d){
-            if(d && d.ok){
-                if(window.track) window.track('android_notify_submitted', {});
-                var msg = f.parentElement.querySelector('.at-success-msg');
-                if(msg) msg.textContent = (d.status === 'already_subscribed')
-                    ? 'Already on the list. We will email you at launch.' 
-                    : 'You are on the list. We will email you the moment Android goes live.';
-                f.style.display = 'none';
-                document.getElementById('androidSuccess').classList.add('show');
-            } else {
-                email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label;
-            }
-        })
-        .catch(function(){ email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label; });
-    });
 })();
 </script>
 </body>
