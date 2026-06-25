@@ -639,10 +639,15 @@
         .founder-body h2 { font-size:clamp(1.5rem,3vw,2rem); font-weight:800; letter-spacing:-0.02em; line-height:1.15; margin-bottom:1rem; }
         .founder-body p { color:var(--text-2); font-size:0.95rem; margin-bottom:1rem; max-width:580px; }
         .founder-sign { font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); }
+        .founder-links { display:flex; flex-direction:column; align-items:flex-start; gap:0.85rem; margin-top:1.6rem; }
+        .founder-links .flink { display:inline-flex; align-items:center; gap:0.4rem; color:var(--cyan); text-decoration:none; font-size:0.85rem; font-weight:600; letter-spacing:0.01em; transition:gap 0.2s,color 0.2s; }
+        .founder-links .flink:hover { gap:0.6rem; color:#67e8f9; }
+        .founder-links .flink-soon { display:inline-flex; align-items:center; gap:0.45rem; color:var(--violet); font-size:0.85rem; font-weight:600; letter-spacing:0.01em; cursor:default; }
         @media (max-width:760px) {
             .founder { grid-template-columns:1fr; gap:1.75rem; text-align:center; padding:2rem 1.5rem; }
             .founder-photo { max-width:230px; margin:0 auto; }
             .founder-body p { margin-left:auto; margin-right:auto; }
+            .founder-links { align-items:center; }
         }
 
         /* === Added: Android eyebrow dot === */
@@ -1136,6 +1141,10 @@
                 <p>I'm a skinny-by-default lifter who got sick of force-feeding myself and fitness apps that assume cooking is my hobby. So I built the thing I actually needed: big meals with the steps done for me, macros handled, prep that fits around a full-time job.</p>
                 <p>I'm bulking to 90kg on it in the open, and everything that works goes straight into the app. No team, no investors. Just me, building the tool I wish I'd had.</p>
                 <p class="founder-sign">Ryan, solo founder</p>
+                <div class="founder-links">
+                    <a class="flink" href="blog.html" onclick="gtag('event','blog_click',{'button_location':'founder'})">Read the blog <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+                    <span class="flink-soon" title="Coming soon">The Lab <span class="soon-pill">soon</span></span>
+                </div>
             </div>
         </div>
     </div>
