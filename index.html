@@ -66,7 +66,7 @@
         { "@type": "Question", "name": "If JSON.fit is free, what's the catch?", "acceptedAnswer": { "@type": "Answer", "text": "There isn't one. Most fitness apps charge $10-20 per month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free." } },
         { "@type": "Question", "name": "What AI does JSON.fit work with?", "acceptedAnswer": { "@type": "Answer", "text": "Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer." } },
         { "@type": "Question", "name": "Is my data private with JSON.fit?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. See the Privacy Policy for full details." } },
-        { "@type": "Question", "name": "Is JSON.fit available on Android?", "acceptedAnswer": { "@type": "Answer", "text": "Not yet, it's currently iOS only. Android is in development." } }
+        { "@type": "Question", "name": "Is JSON.fit available on Android?", "acceptedAnswer": { "@type": "Answer", "text": "Android launches July 2026. The build is complete and in final review now. Join the launch list on the site to be notified the moment it's live on Google Play." } }
       ]
     }
     </script>
@@ -545,7 +545,7 @@
         .at-card h2 .vi { color:var(--violet); }
         .at-sub { color:var(--text-2); font-size:0.92rem; max-width:460px; margin:0 auto 1.5rem; }
         .at-actions { display:flex; gap:0.6rem; flex-wrap:wrap; justify-content:center; }
-        .at-btn { display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; padding:0.7rem 1.2rem; border-radius:9px; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.9rem; text-decoration:none; background:var(--violet); color:#1a0a2e; transition:transform 0.2s, box-shadow 0.2s; }
+        .at-btn { display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; padding:0.7rem 1.2rem; border-radius:9px; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.9rem; text-decoration:none; background:var(--violet); color:#1a0a2e; transition:transform 0.2s, box-shadow 0.2s; cursor:pointer; border:none; }
         .at-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(168,85,247,0.3); }
         .at-btn.ghost { background:transparent; border:1px solid var(--violet-border); color:var(--violet); }
         @media (max-width:860px) {
@@ -623,6 +623,39 @@
                 letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3);
             }
         }
+
+        /* === Added: problem-stacking block === */
+        .pains { max-width:900px; margin:0 auto; }
+        .pain-grid { display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:center; max-width:840px; margin:0 auto; }
+        .pain { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1.1rem; font-size:0.9rem; color:var(--text-2); display:flex; align-items:center; gap:0.6rem; line-height:1.45; }
+        .pain::before { content:'\2715'; color:var(--red); font-size:0.8rem; flex-shrink:0; font-family:'DM Mono',monospace; }
+
+        /* === Added: founder block === */
+        .founder { display:grid; grid-template-columns:0.62fr 1.38fr; gap:2.5rem; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; }
+        .founder-photo { position:relative; aspect-ratio:1; border-radius:16px; overflow:hidden; background:linear-gradient(150deg,#14141a,#0a0a0f); border:1px solid var(--border-cyan); display:flex; align-items:center; justify-content:center; }
+        .founder-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+        .founder-initials { display:none; font-family:'DM Mono',monospace; font-size:2.8rem; color:var(--cyan); opacity:0.45; letter-spacing:0.05em; }
+        .founder-photo.noimg .founder-initials { display:block; }
+        .founder-body h2 { font-size:clamp(1.5rem,3vw,2rem); font-weight:800; letter-spacing:-0.02em; line-height:1.15; margin-bottom:1rem; }
+        .founder-body p { color:var(--text-2); font-size:0.95rem; margin-bottom:1rem; max-width:580px; }
+        .founder-sign { font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); }
+        @media (max-width:760px) {
+            .founder { grid-template-columns:1fr; gap:1.75rem; text-align:center; padding:2rem 1.5rem; }
+            .founder-photo { max-width:230px; margin:0 auto; }
+            .founder-body p { margin-left:auto; margin-right:auto; }
+        }
+
+        /* === Added: Android launch notify form (extends the existing .at card) === */
+        .at-eyebrow .dot { width:5px; height:5px; border-radius:50%; background:var(--violet); }
+        .at-form { display:flex; gap:0.6rem; max-width:440px; margin:0 auto; }
+        .at-input { flex:1; min-width:0; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--text); font-family:'Outfit',sans-serif; font-size:0.92rem; transition:border-color 0.2s, box-shadow 0.2s; }
+        .at-input::placeholder { color:var(--text-3); }
+        .at-input:focus { outline:none; border-color:var(--violet-border); box-shadow:0 0 0 3px var(--violet-soft); }
+        .at-note { font-family:'DM Mono',monospace; font-size:0.66rem; color:var(--text-3); letter-spacing:0.02em; margin-top:0.9rem; }
+        .at-success { display:none; align-items:center; gap:0.6rem; max-width:440px; margin:0.9rem auto 0; padding:0.95rem 1.1rem; border:1px solid var(--violet-border); background:var(--violet-soft); border-radius:10px; color:var(--text); font-size:0.92rem; text-align:left; }
+        .at-success.show { display:flex; }
+        .at-success .tick { flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--violet); color:#1a0a2e; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; }
+        @media (max-width:560px) { .at-form { flex-direction:column; } }
     </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -653,8 +686,12 @@
     <div class="hero-split">
         <div class="hero-text">
             <span class="label">For skinny guys who can't eat enough</span>
-            <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
-            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out. Hit your surplus without it taking over your week. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
+            <!-- HEADLINE: live option below. To try another, comment this one out and uncomment an alt:
+                 ALT A (your previous): <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
+                 ALT B (problem-first): <h1>The hard part of bulking was never the gym.<br class="hero-br">It's <span class="cyan">eating enough.</span></h1>
+            -->
+            <h1>Eating big, <span class="cyan">made easy.</span></h1>
+            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out. Hit your surplus so the weight actually goes on, without bulking taking over your week. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
             <div class="hero-action">
                 <div class="hero-cta">
                     <a class="video-thumb" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
@@ -679,6 +716,12 @@
                     </div>
                 </div>
                 <div class="hero-trust">
+                    <div class="hero-trust-chips">
+                        <span>No account</span>
+                        <span>Works offline</span>
+                        <span>Nothing sold</span>
+                        <span>Data stays on your phone</span>
+                    </div>
                     <p class="hero-trust-tag">
                         <svg class="laurel" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
 -329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
@@ -900,6 +943,24 @@
     <span class="ai-lbl">+ any AI</span>
 </div>
 
+<!-- Problem-stacking: name the pain before the solution -->
+<section class="section" style="padding-top:4rem;padding-bottom:0;">
+    <div class="container">
+        <div class="pains sa sa-up">
+            <span class="label" style="text-align:center;">Built for hardgainers</span>
+            <h2 style="text-align:center;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:2rem;">If you're a skinny guy, <span class="cyan">you know the drill.</span></h2>
+            <div class="pain-grid">
+                <div class="pain">Appetite gives out halfway through dinner.</div>
+                <div class="pain">The scale won't move no matter what you lift.</div>
+                <div class="pain">Every meal is the same chicken and rice.</div>
+                <div class="pain">Every bulking guide assumes you love cooking.</div>
+                <div class="pain">"Just eat more, bro," as if it's that easy.</div>
+            </div>
+            <p style="text-align:center;color:var(--text-2);margin:1.5rem auto 0;max-width:560px;">JSON.fit is built for exactly this. The meals, the macros and the prep are handled, so the only hard part left is showing up.</p>
+        </div>
+    </div>
+</section>
+
 <section class="section" id="meals" style="padding-top:4rem;padding-bottom:2rem;">
     <div class="container">
         <div class="section-head sa sa-up" style="text-align:center;">
@@ -959,7 +1020,7 @@
             <div class="cap-body">
                 <span class="cap-label">Free Cookbook + Updates</span>
                 <h2>Get all 81 bulking meals as a printable cookbook, <em>free.</em></h2>
-                <p>Macros and ingredients for every meal, yours to keep and print. Plus new meals as they land and what's working in my own bulk to 90kg.</p>
+                <p>Macros and ingredients for every meal, yours to keep and print. Plus new meals as they land, and what's working in my own bulk to 90kg. Subscribers get first access and a launch discount when the print edition drops.</p>
                 <form class="cap-form" id="capForm" novalidate>
                     <!-- Live: posts to the JSON.fit subscribe API (AWS). capWebsite is a honeypot for bots. -->
                     <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
@@ -980,6 +1041,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">How your plan gets built</span>
             <h2>Choose your meals, build <span class="cyan">your week.</span></h2>
+            <p style="margin:0 auto;">Prefer zero setup? The meal library and full-year programs work straight out of the box, no AI needed. The steps below are just there if you want a fully custom plan.</p>
         </div>
         <div class="tl" id="tl">
             <div class="tl-spine"></div>
@@ -1067,6 +1129,25 @@
     </div>
 </section>
 
+<!-- Founder: why I built this -->
+<section class="section" id="founder">
+    <div class="container">
+        <div class="founder sa sa-up">
+            <div class="founder-photo">
+                <img src="images/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.style.display='none';this.parentElement.classList.add('noimg');">
+                <span class="founder-initials">RN</span>
+            </div>
+            <div class="founder-body">
+                <span class="label">Why I built this</span>
+                <h2>I built JSON.fit because <span class="cyan">I'm the guy it's for.</span></h2>
+                <p>I'm a skinny-by-default lifter who got sick of force-feeding myself and fitness apps that assume cooking is my hobby. So I built the thing I actually needed: big meals with the steps done for me, macros handled, prep that fits around a full-time job.</p>
+                <p>I'm bulking to 90kg on it in the open, and everything that works goes straight into the app. No team, no investors. Just me, building the tool I wish I'd had.</p>
+                <p class="founder-sign">Ryan, solo founder</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="section" style="padding-top:2rem;">
     <div class="container">
         <div class="qual sa sa-up">
@@ -1149,7 +1230,7 @@
             <div class="review-rating-score">
                 <span class="review-rating-num">5.0</span>
                 <span class="review-rating-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                <span class="review-rating-count">8 ratings &middot; App Store</span>
+                <span class="review-rating-count">Rated 5.0 &middot; App Store</span>
             </div>
         </div>
         <div class="review-grid sa-stagger">
@@ -1180,11 +1261,28 @@
             Download on the App Store
         </a>
         <p class="cta-foot">&#128274; Your workouts &amp; nutrition stay on your device.</p>
-        <p class="cta-foot" style="margin-top:0.4rem;">&#128241; iOS only &middot; Android in development</p>
+        <p class="cta-foot" style="margin-top:0.4rem;">&#128241; On iPhone now &middot; Android launching July 2026</p>
     </div>
 </section>
 
-
+<!-- Android launch: notify-me capture (honest urgency, real launch date) -->
+<section class="at">
+    <div class="container">
+        <div class="at-card sa sa-up">
+            <span class="at-eyebrow"><span class="dot"></span> Android</span>
+            <h2>Android is <span class="vi">almost here.</span></h2>
+            <p class="at-sub">The Android build is done and in final review, launching July 2026. Drop your email and you'll be first to know the moment it lands on Google Play.</p>
+            <form class="at-form" id="androidForm" novalidate>
+                <label for="androidEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+                <input class="at-input" id="androidEmail" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
+                <input type="text" id="androidWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+                <button class="at-btn" type="submit">Notify me at launch</button>
+            </form>
+            <div class="at-success" id="androidSuccess"><span class="tick">&#10003;</span> <span class="at-success-msg">You are on the list. We will email you the moment Android goes live.</span></div>
+            <p class="at-note">No spam. Just the launch announcement.</p>
+        </div>
+    </div>
+</section>
 
 <section class="section">
     <div class="container">
@@ -1202,7 +1300,7 @@
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">If it's free, what's the catch?</button><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">What AI does it work with?</button><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Is my data private?</button><div class="faq-a">Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. Full details are in the <a href="privacy-policy.html" style="color:var(--cyan);text-decoration:none;">Privacy Policy</a>.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Is it available on Android?</button><div class="faq-a">Not yet, it's currently iOS only. Android is in development.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Is it available on Android?</button><div class="faq-a">Android launches July 2026, with the build done and in final review now. Want the heads-up the moment it goes live? Drop your email in the Android section above and we'll ping you at launch.</div></div>
         </div>
     </div>
 </section>
@@ -1226,7 +1324,7 @@
         <a href="privacy-policy.html">Privacy</a>
         <a href="terms-of-service.html">Terms</a>
     </div>
-    <div class="foot-r">&copy; 2026 JSON.fit</div>
+    <div class="foot-r">&copy; 2026 JSON.fit &middot; Updated June 2026</div>
 </footer>
 
 <script>
@@ -1574,6 +1672,44 @@
     layout();
     update();
     setTimeout(function(){ layout(); update(); }, 120);
+})();
+</script>
+
+<!-- Android launch notify: mirrors the cookbook form's subscribe API contract -->
+<script>
+(function(){
+    var f = document.getElementById('androidForm');
+    if(!f) return;
+    f.addEventListener('submit', function(e){
+        e.preventDefault();
+        var email = document.getElementById('androidEmail');
+        var hp = document.getElementById('androidWebsite');
+        var btn = f.querySelector('.at-btn');
+        var val = (email.value || '').trim();
+        if(!val || val.indexOf('@') === -1){ email.focus(); email.style.borderColor = '#ef4444'; return; }
+        if(window.gtag) gtag('event', 'android_notify', { 'button_location': 'android_launch' });
+        var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending\u2026';
+        fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ email: val, website: hp ? hp.value : '', source: 'android-launch' })
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            if(d && d.ok){
+                if(window.track) window.track('android_notify_submitted', {});
+                var msg = f.parentElement.querySelector('.at-success-msg');
+                if(msg) msg.textContent = (d.status === 'already_subscribed')
+                    ? 'Already on the list. We will email you at launch.' 
+                    : 'You are on the list. We will email you the moment Android goes live.';
+                f.style.display = 'none';
+                document.getElementById('androidSuccess').classList.add('show');
+            } else {
+                email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label;
+            }
+        })
+        .catch(function(){ email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label; });
+    });
 })();
 </script>
 </body>
