@@ -1309,7 +1309,7 @@
         <a href="privacy-policy.html">Privacy</a>
         <a href="terms-of-service.html">Terms</a>
     </div>
-    <div class="foot-r">&copy; 2026 JSON.fit &middot; Updated June 2026</div>
+    <div class="foot-r">&copy; 2026 JSON.fit &middot; Updated <span id="siteUpdated">June 2026</span></div>
 </footer>
 
 <script>
@@ -1659,17 +1659,22 @@
     setTimeout(function(){ layout(); update(); }, 120);
 })();
 </script>
-<!-- Phone status bar: show the visitor's local time -->
+<!-- Phone status bar time + footer updated stamp, both from the visitor's local date -->
 <script>
 (function(){
-  var el = document.getElementById("sbTime");
-  if(!el) return;
+  var clock = document.getElementById("sbTime");
   function tick(){
+    if(!clock) return;
     var t = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }).match(/\d{1,2}:\d{2}/);
-    if(t && t[0]) el.textContent = t[0];
+    if(t && t[0]) clock.textContent = t[0];
   }
   tick();
   setInterval(tick, 15000);
+
+  var stamp = document.getElementById("siteUpdated");
+  if(stamp){
+    stamp.textContent = new Date().toLocaleDateString([], { month: "long", year: "numeric" });
+  }
 })();
 </script>
 </body>
