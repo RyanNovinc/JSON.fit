@@ -1,9 +1,10 @@
 # robots.txt — json.fit
 # Strategy: maximum visibility. Let search engines AND AI assistants read and
 # cite the site. If you ever decide you want to opt OUT of your content being
-# used for model *training* (while still allowing live citation), flip the four
-# training crawlers below — GPTBot, ClaudeBot, CCBot, Google-Extended — to
-# "Disallow: /" and leave the *-User / *-SearchBot / search bots on "Allow: /".
+# used for model *training* (while still allowing live citation), flip the
+# training crawlers below — GPTBot, ClaudeBot, CCBot, Google-Extended,
+# Applebot-Extended, Meta-ExternalAgent — to "Disallow: /" and leave the
+# *-User / *-SearchBot / search bots on "Allow: /".
 
 # Default: everyone is welcome
 User-agent: *
@@ -38,6 +39,12 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
 User-agent: CCBot
 Allow: /
 
@@ -46,6 +53,9 @@ User-agent: Bingbot
 Allow: /
 
 User-agent: Googlebot
+Allow: /
+
+User-agent: Applebot
 Allow: /
 
 Sitemap: https://json.fit/sitemap.xml
