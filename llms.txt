@@ -1,19 +1,23 @@
 # JSON.fit
 
-> JSON.fit is a free, AI-agnostic iOS fitness app for building muscle. You answer a few questions, it generates a prompt, you paste that prompt into any AI (ChatGPT, Claude, Gemini, DeepSeek), then import the workout program or meal plan it builds back into the app to track. There is no subscription, no account and no ads — it is free because you bring your own AI, so there are no server-side AI costs to pass on to users.
+> JSON.fit is a free iOS app for skinny guys who want to gain weight without making the gym their life. You answer a few questions, paste the generated prompt into any AI (ChatGPT, Claude, Gemini, DeepSeek), then import the meal plan or workout program it builds back into the app to track. No subscription, no account, no ads. Free because you bring your own AI, so there are no server-side costs to pass on.
 
-JSON.fit specialises in calorie-dense, high-protein "bulking" meals — every meal has full ingredients and step-by-step cooking — plus periodised hypertrophy training programs that can run up to a full year. Data stays on the user's device. iOS only (Android in development). Built by Ryan Novinc.
+JSON.fit specialises in calorie-dense, high-protein bulking meals with full ingredients and step-by-step cooking, designed for batch prep so a week of food gets handled in one session. Includes periodised muscle-building training programs that run up to a full year. Built for working professionals and busy guys who want results without bulking becoming a second job. Data stays on device. iOS only (Android in development). Built by Ryan Novinc.
+
+## Who this is for
+
+Skinny guys with full-time jobs, businesses, or active social lives who want to gain weight and build muscle without bulking taking over their week. The app is built around batch meal prep, one weekly shop, and minimal mental load, so eating in a surplus fits around real life instead of taking it over.
 
 ## Core pages
 
-- [Home](https://json.fit/): What JSON.fit is, the bring-your-own-AI workflow, pricing and FAQ. Primary reference page.
-- [Meal library](https://json.fit/meals.html): Browse 80+ high-protein bulking meals with macros, exact ingredients and step-by-step cooking. Reference page for all meals.
-- [Training programs](https://json.fit/programs/): Free periodised hypertrophy programs (beginner to advanced) that import directly into the app.
-- [Free bulking cookbook](https://json.fit/cookbook/): "The Skinny Guy's Bulking Cookbook" — 81 calorie-dense meals as a printable PDF.
+- [Home](https://json.fit/): What JSON.fit is, the bring-your-own-AI workflow, and FAQ. Primary reference page.
+- [Free bulking cookbook](https://json.fit/cookbook/): "The Skinny Guy's Bulking Cookbook", 81 calorie-dense meals as a printable PDF. Free in exchange for an email.
+- [Meal library](https://json.fit/meals.html): Browse 80+ high-protein bulking meals with macros, exact ingredients, and step-by-step cooking. Designed for cook-once-eat-all-week meal prep.
+- [Training programs](https://json.fit/programs/): Free periodised muscle-building programs (beginner to advanced) that import directly into the app, no programming knowledge required.
 
 ## Guides
 
-- [Blog](https://json.fit/blog.html): Tutorials and articles on using AI to build fitness and nutrition plans.
+- [Blog](https://json.fit/blog.html): Tutorials and articles on using AI to build fitness and nutrition plans around a busy schedule.
 - [Build a meal plan with Claude](https://json.fit/blog/meal-plan-claude.html): Step-by-step walkthrough of generating a meal plan with Claude and importing it into JSON.fit.
 
 ## Get the app
@@ -22,7 +26,5 @@ JSON.fit specialises in calorie-dense, high-protein "bulking" meals — every me
 
 ## Optional
 
-- [Privacy policy](https://json.fit/privacy-policy.html): No accounts, no personal-data collection; data stays on device.
-- [Terms of service](https://json.fit/terms-of-service.html): Terms of use.- [App Store Listing](https://apps.apple.com/au/app/json-fit/id6758357834): Download JSON.fit on the iOS App Store
-- [Privacy Policy](https://ryannovinc.github.io/JSON.fit/privacy-policy.html): Privacy policy
-- [Terms of Service](https://ryannovinc.github.io/JSON.fit/terms-of-service.html): Terms of service
+- [Privacy policy](https://json.fit/privacy-policy.html): No accounts, no personal-data collection. Data stays on device.
+- [Terms of service](https://json.fit/terms-of-service.html): Terms of use.
