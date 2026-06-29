@@ -124,31 +124,48 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .proto-v{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.35}
 @media(max-width:700px){.protocol-grid{grid-template-columns:1fr 1fr}}
 
-/* ── Photo rig ── */
-.rig{background:#000;border:1px solid var(--violet-border);border-radius:18px;overflow:hidden}
-.rig-stage{position:relative;aspect-ratio:4/5;max-height:560px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,rgba(168,85,247,0.06),#000 70%);overflow:hidden}
-.rig-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s ease}
-.rig-frame.show{opacity:1}
-.rig-frame img{height:100%;width:auto;object-fit:contain}
-.rig-ph{display:flex;flex-direction:column;align-items:center;gap:1rem;color:var(--text-3)}
-.rig-ph svg{opacity:.35}
-.rig-ph-txt{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase}
-.rig-corner{position:absolute;top:1rem;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--text-2)}
-.rig-corner.tl{left:1rem}
-.rig-corner.tr{right:1rem;color:var(--violet)}
-.rig-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:36px 36px;opacity:.5}
-.rig-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;flex-wrap:wrap}
-.angle-tabs{display:flex;gap:.4rem}
+/* ── Visual record (grid + before/after compare) ── */
+.vr-block{}
+.vr-subhead{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.vr-kicker{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
+/* portrait frame — matches the 2:3 photo so nothing letterboxes */
+.vr-frame{position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,0.07),#000 72%)}
+.vr-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;animation:vrfade .35s ease}
+@keyframes vrfade{from{opacity:0}to{opacity:1}}
+.vr-cap{position:absolute;left:.6rem;top:.55rem;z-index:2;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.2rem .45rem;border-radius:4px;backdrop-filter:blur(6px)}
+.vr-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:var(--text-3)}
+.vr-ph svg{opacity:.3}
+.vr-ph span{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase}
+/* grid of four angles */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
+.grid4 .g-lab{margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2)}
+.grid4 .g-cell.dim .vr-frame{opacity:.4}
+@media(max-width:620px){.grid4{grid-template-columns:1fr 1fr;gap:.7rem}}
+/* before/after compare */
+.compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.25rem;max-width:780px;margin:0 auto}
+.compare .vr-frame{max-width:300px;width:100%;margin:0 auto}
+.cmp-tag{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:.6rem}
+.cmp-tag.latest{color:var(--violet)}
+.cmp-mid{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding-top:1.4rem}
+.cmp-arrow{color:var(--violet);font-size:1.1rem;line-height:1}
+.cmp-delta{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-3);text-align:center;letter-spacing:.04em;line-height:1.55}
+.cmp-delta b{display:block;font-size:.82rem;font-weight:500}
+.cmp-delta b.up{color:var(--up)}
+@media(max-width:620px){
+  .compare{grid-template-columns:1fr 1fr;gap:.7rem}
+  .cmp-mid{grid-column:1/-1;order:-1;flex-direction:row;padding-top:0;gap:.6rem}
+  .cmp-arrow{transform:rotate(90deg)}
+}
+/* shared pill / tab controls (carried over from the rig) */
+.angle-tabs{display:flex;gap:.4rem;flex-wrap:wrap}
 .angle-tab{padding:.4rem .85rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.06em;cursor:pointer;transition:all .15s;text-transform:uppercase}
 .angle-tab:hover{border-color:var(--violet-border);color:var(--text)}
 .angle-tab.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
-.spin-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .85rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.06em;cursor:pointer;transition:all .15s}
-.spin-btn:hover,.spin-btn.on{border-color:var(--violet-border);color:var(--violet)}
-.timepoints{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1rem;justify-content:center}
+.timepoints{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center}
 .tp{padding:.4rem .9rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;cursor:pointer;transition:all .15s}
 .tp:hover{border-color:var(--violet-border);color:var(--text)}
 .tp.active{background:var(--violet);border-color:var(--violet);color:#0a0010;font-weight:500}
-.rig-note{margin-top:1.25rem;font-size:.82rem;color:var(--text-3);line-height:1.6;text-align:center;max-width:560px;margin-left:auto;margin-right:auto}
+.rig-note{margin-top:1.75rem;font-size:.82rem;color:var(--text-3);line-height:1.6;text-align:center;max-width:560px;margin-left:auto;margin-right:auto}
 .rig-note strong{color:var(--text-2);font-weight:600}
 
 /* ── Charts ── */
@@ -299,24 +316,22 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
       <div class="section-line"></div>
       <span class="label">The Visual Record</span>
       <h2>Same pose. Same light.<br><span class="violet">Every angle, every month.</span></h2>
-      <p>Standardised photos so the only variable that changes is me. Rotate the angles, scrub through the months.</p>
+      <p>Standardised photos so the only variable that changes is me — four angles, shot the same way every month.</p>
     </div>
-    <div class="sa sa-up">
-      <div class="rig">
-        <div class="rig-stage" id="rigStage">
-          <div class="rig-grid"></div>
-          <span class="rig-corner tl" id="rigPose">FRONT</span>
-          <span class="rig-corner tr" id="rigTp">BASELINE</span>
-          <div class="rig-frame" id="rigFrame"></div>
-        </div>
-        <div class="rig-controls">
-          <div class="angle-tabs" id="angleTabs"></div>
-          <button class="spin-btn" id="spinBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg> Spin</button>
-        </div>
-      </div>
-      <div class="timepoints" id="timepoints"></div>
-      <p class="rig-note"><strong>Capture protocol:</strong> phone at 1.2m height, 2m distance, same corner of the same room, same morning light, fasted, first thing AM. Four angles, no flexing on the front shot. <span style="color:var(--text-3)">(Photos pending — first capture is the baseline.)</span></p>
+
+    <!-- current state: four angles -->
+    <div class="sa sa-up vr-block">
+      <div class="vr-subhead"><span class="vr-kicker">Current state · all angles</span><div class="timepoints" id="gridTps"></div></div>
+      <div class="grid4" id="gridAngles"></div>
     </div>
+
+    <!-- over time: before / after -->
+    <div class="sa sa-up vr-block" style="margin-top:3rem">
+      <div class="vr-subhead"><span class="vr-kicker">Over time · before &amp; after</span><div class="angle-tabs" id="cmpAngles"></div></div>
+      <div class="compare" id="compare"></div>
+    </div>
+
+    <p class="rig-note"><strong>Capture protocol:</strong> phone at 1.2m height, 2m distance, same corner of the same room, same morning light, fasted, first thing AM. Four angles, no flexing on the front shot.</p>
   </div>
 </section>
 
@@ -502,7 +517,7 @@ var DATA = {
     {
       label:"Baseline", date:"2026-06-01",
       weight_kg:82.0, bodyfat_pct:13.8, lean_mass_kg:70.7, fat_mass_kg:11.3,
-      photos:{front:"",right:"",back:"",left:""},
+      photos:{front:"/images/lab/2026-07/front.webp",right:"/images/lab/2026-07/right.webp",back:"/images/lab/2026-07/back.webp",left:"/images/lab/2026-07/left.webp"},
       measurements_cm:{ "Neck":38.0,"Shoulders":118,"Chest":102,"Arm (L)":36.0,"Arm (R)":36.5,"Waist":79.0,"Hips":96.0,"Thigh (L)":58.0,"Thigh (R)":58.0,"Calf":38.0 },
       lifts:{ "Squat":120,"Bench":90,"Deadlift":150,"OHP":55,"Weighted pull-up (+kg)":5 },
       scan:{ type:"InBody 770", visceral_fat:4, bmr_kcal:1820, bone_mass_kg:3.4, body_water_pct:58 },
@@ -512,7 +527,7 @@ var DATA = {
     {
       label:"Month 1", date:"2026-07-01",
       weight_kg:83.6, bodyfat_pct:14.3, lean_mass_kg:71.6, fat_mass_kg:12.0,
-      photos:{front:"/images/lab/2026-07/front.webp",right:"/images/lab/2026-07/right.webp",back:"/images/lab/2026-07/back.webp",left:"/images/lab/2026-07/left.webp"},
+      photos:{front:"",right:"",back:"",left:""},
       measurements_cm:{ "Neck":38.2,"Shoulders":119,"Chest":103.5,"Arm (L)":36.7,"Arm (R)":37.1,"Waist":80.0,"Hips":96.5,"Thigh (L)":58.8,"Thigh (R)":58.7,"Calf":38.3 },
       lifts:{ "Squat":127,"Bench":92,"Deadlift":157,"OHP":57,"Weighted pull-up (+kg)":7 },
       scan:{ type:"InBody 770", visceral_fat:4, bmr_kcal:1842, bone_mass_kg:3.4, body_water_pct:58 },
@@ -584,53 +599,75 @@ var DATA = {
       return '<div class="proto-cell"><div class="proto-k">'+c.k+'</div><div class="proto-v">'+c.v+'</div></div>';
     }).join('')+'</div>';
 
-  /* ── Photo rig ── */
-  var rigState={ tp:0, angle:0, spin:null };
-  var stage=document.getElementById('rigFrame');
-  var poseEl=document.getElementById('rigPose'), tpEl=document.getElementById('rigTp');
-  function renderRig(){
-    var ck=cks[rigState.tp];
-    var ang=DATA.angles[rigState.angle];
-    var src=(ck.photos&&ck.photos[ang])||"";
-    poseEl.textContent=ang.toUpperCase();
-    tpEl.textContent=ck.label.toUpperCase();
-    if(src){
-      stage.innerHTML='<img src="'+src+'" alt="'+ck.label+' '+ang+'" onclick="window.__lb(this.src,this.alt)">';
-    }else{
-      stage.innerHTML='<div class="rig-ph">'+
-        '<svg width="80" height="150" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>'+
-        '<div class="rig-ph-txt">awaiting capture</div></div>';
-    }
-    stage.classList.add('show');
+  /* ── Visual record: grid + before/after compare ── */
+  var PH='<div class="vr-ph">'+
+    '<svg width="56" height="106" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>'+
+    '<span>awaiting capture</span></div>';
+  function hasShots(ck){ if(!ck||!ck.photos) return false; for(var k in ck.photos){ if(ck.photos[k]) return true; } return false; }
+  function frameHTML(ck, ang, cap){
+    var src=ck&&ck.photos&&ck.photos[ang];
+    if(src) return (cap?'<span class="vr-cap">'+cap+'</span>':'')+'<img src="'+src+'" alt="'+ck.label+' '+ang+'" onclick="window.__lb(this.src,this.alt)">';
+    return PH;
   }
-  document.getElementById('angleTabs').innerHTML=DATA.angles.map(function(a,i){
+
+  // --- grid: all four angles for one timepoint (defaults to the latest captured) ---
+  var gridAngles=document.getElementById('gridAngles');
+  var gridTps=document.getElementById('gridTps');
+  var gridTp=0;
+  for(var gi=0;gi<cks.length;gi++){ if(hasShots(cks[gi])) gridTp=gi; }
+  function renderGrid(){
+    var ck=cks[gridTp];
+    gridAngles.innerHTML=DATA.angles.map(function(a){
+      var on=ck.photos&&ck.photos[a];
+      return '<div class="g-cell'+(on?'':' dim')+'"><div class="vr-frame">'+frameHTML(ck,a,null)+'</div><div class="g-lab">'+a+'</div></div>';
+    }).join('');
+  }
+  gridTps.innerHTML=cks.map(function(c,i){
+    return '<button class="tp'+(i===gridTp?' active':'')+'" data-t="'+i+'">'+c.label+'</button>';
+  }).join('');
+  gridTps.querySelectorAll('.tp').forEach(function(b){
+    b.addEventListener('click',function(){
+      gridTp=+b.dataset.t;
+      gridTps.querySelectorAll('.tp').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active'); renderGrid();
+    });
+  });
+  renderGrid();
+
+  // --- before / after compare: baseline vs latest captured timepoint ---
+  var compareEl=document.getElementById('compare');
+  var cmpAngles=document.getElementById('cmpAngles');
+  var cmpAngle=0;
+  var baseCk=cks[0];
+  var rightCk=null;
+  for(var ci=1;ci<cks.length;ci++){ if(hasShots(cks[ci])) rightCk=cks[ci]; }
+  function deltaHTML(){
+    if(!rightCk) return '<div class="cmp-delta">Δ pending<b>—</b>next capture</div>';
+    var dw=(rightCk.weight_kg!=null&&baseCk.weight_kg!=null)?+(rightCk.weight_kg-baseCk.weight_kg).toFixed(1):null;
+    var dl=(rightCk.lean_mass_kg!=null&&baseCk.lean_mass_kg!=null)?+(rightCk.lean_mass_kg-baseCk.lean_mass_kg).toFixed(1):null;
+    var days=Math.round((new Date(rightCk.date)-new Date(baseCk.date))/86400000);
+    var wt=(dw==null)?'<b>—</b>':'<b class="'+(dw>0?'up':'')+'">'+(dw>0?'+':'')+dw+' kg</b>';
+    var lean=(dl==null)?'':((dl>0?'+':'')+dl+' lean');
+    return '<div class="cmp-delta">'+days+' days'+wt+lean+'</div>';
+  }
+  function renderCompare(){
+    var ang=DATA.angles[cmpAngle];
+    compareEl.innerHTML=
+      '<div class="cmp-col"><span class="cmp-tag">'+baseCk.label+'</span><div class="vr-frame">'+frameHTML(baseCk,ang,null)+'</div></div>'+
+      '<div class="cmp-mid"><span class="cmp-arrow">&#8594;</span>'+deltaHTML()+'</div>'+
+      '<div class="cmp-col"><span class="cmp-tag latest">'+(rightCk?rightCk.label:'Next capture')+'</span><div class="vr-frame">'+(rightCk?frameHTML(rightCk,ang,null):PH)+'</div></div>';
+  }
+  cmpAngles.innerHTML=DATA.angles.map(function(a,i){
     return '<button class="angle-tab'+(i===0?' active':'')+'" data-a="'+i+'">'+a+'</button>';
   }).join('');
-  document.getElementById('timepoints').innerHTML=cks.map(function(c,i){
-    return '<button class="tp'+(i===0?' active':'')+'" data-t="'+i+'">'+c.label+'</button>';
-  }).join('');
-  // default to latest timepoint
-  rigState.tp=cks.length-1;
-  document.querySelectorAll('#timepoints .tp').forEach(function(b,i){ b.classList.toggle('active',i===rigState.tp); });
-  renderRig();
-  document.querySelectorAll('#angleTabs .angle-tab').forEach(function(b){
-    b.addEventListener('click',function(){ stopSpin(); rigState.angle=+b.dataset.a; setActive('#angleTabs .angle-tab',b); renderRig(); });
+  cmpAngles.querySelectorAll('.angle-tab').forEach(function(b){
+    b.addEventListener('click',function(){
+      cmpAngle=+b.dataset.a;
+      cmpAngles.querySelectorAll('.angle-tab').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active'); renderCompare();
+    });
   });
-  document.querySelectorAll('#timepoints .tp').forEach(function(b){
-    b.addEventListener('click',function(){ rigState.tp=+b.dataset.t; setActive('#timepoints .tp',b); renderRig(); });
-  });
-  function setActive(sel,el){ document.querySelectorAll(sel).forEach(function(x){x.classList.remove('active');}); el.classList.add('active'); }
-  var spinBtn=document.getElementById('spinBtn');
-  function stopSpin(){ if(rigState.spin){ clearInterval(rigState.spin); rigState.spin=null; spinBtn.classList.remove('on'); } }
-  spinBtn.addEventListener('click',function(){
-    if(rigState.spin){ stopSpin(); return; }
-    spinBtn.classList.add('on');
-    rigState.spin=setInterval(function(){
-      rigState.angle=(rigState.angle+1)%DATA.angles.length;
-      document.querySelectorAll('#angleTabs .angle-tab').forEach(function(x,i){x.classList.toggle('active',i===rigState.angle);});
-      renderRig();
-    },1100);
-  });
+  renderCompare();
 
   /* ── Charts (hand-built inline SVG line chart) ── */
   function lineChart(el, series, opts){
