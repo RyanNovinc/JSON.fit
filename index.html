@@ -457,13 +457,23 @@
         .hero-split .hero-btns { justify-content:flex-start; }
         .hero-split .hero-meta { text-align:left; }
         @media (max-width:860px) {
-            .hero-split { grid-template-columns:1fr; gap:2.5rem; }
+            /* Mobile hero: tighten the text block into one compact first screen so the
+               phone mockup rises up and peeks at the bottom (inviting a scroll) instead
+               of being buried far below a tall stack. Desktop layout is untouched. */
+            .hero { padding-top:4.5rem; padding-bottom:2.25rem; }
+            .hero-split { grid-template-columns:1fr; gap:1.25rem; }
             .hero-split .hero-text { text-align:center; order:1; }
             .hero-split .hero-sub { margin-left:auto; margin-right:auto; }
             .hero-split .hero-btns { justify-content:center; }
             .hero-split .hero-meta { text-align:center; }
             .hero-visual { order:2; }
             .phone { width:clamp(248px,72vw,280px); }
+            .hero-text .label { margin-bottom:0.8rem; }
+            .hero h1 { margin-bottom:1.05rem; }
+            .hero-sub { font-size:0.95rem; line-height:1.6; margin-bottom:1.35rem; }
+            .hero-action { gap:1.1rem; }
+            .hero-cta { gap:0.75rem; }
+            .hero-trust-chips { margin-bottom:0.55rem; }
         }
         @media (prefers-reduced-motion: reduce) { .phone { animation:none; } .poke { animation:none; } }
 
