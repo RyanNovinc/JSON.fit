@@ -457,23 +457,32 @@
         .hero-split .hero-btns { justify-content:flex-start; }
         .hero-split .hero-meta { text-align:left; }
         @media (max-width:860px) {
-            /* Mobile hero: tighten the text block into one compact first screen so the
-               phone mockup rises up and peeks at the bottom (inviting a scroll) instead
-               of being buried far below a tall stack. Desktop layout is untouched. */
-            .hero { padding-top:4.5rem; padding-bottom:2.25rem; }
-            .hero-split { grid-template-columns:1fr; gap:1.25rem; }
+            /* Mobile hero: the text block fills the first screen on its own, vertically
+               centred, and the phone mockup sits entirely below the fold as a clean
+               second screen, instead of being crammed up top with a sliver of phone
+               peeking. min-height uses svh so it matches the visible area on first load
+               (under the address bar) instead of overflowing the way 100vh does.
+               Desktop layout is untouched. */
+            .hero { padding: 56px 1.5rem 2.75rem; }
+            .hero-split { grid-template-columns:1fr; gap:2.25rem; }
             .hero-split .hero-text { text-align:center; order:1; }
+            .hero-text {
+                min-height: calc(100vh - 56px);   /* fallback for older browsers */
+                min-height: calc(100svh - 56px);  /* fills the first screen, below the fixed nav */
+                display:grid; align-content:center;
+            }
             .hero-split .hero-sub { margin-left:auto; margin-right:auto; }
             .hero-split .hero-btns { justify-content:center; }
             .hero-split .hero-meta { text-align:center; }
             .hero-visual { order:2; }
             .phone { width:clamp(248px,72vw,280px); }
-            .hero-text .label { margin-bottom:0.8rem; }
-            .hero h1 { margin-bottom:1.05rem; }
-            .hero-sub { font-size:0.95rem; line-height:1.6; margin-bottom:1.35rem; }
-            .hero-action { gap:1.1rem; }
-            .hero-cta { gap:0.75rem; }
-            .hero-trust-chips { margin-bottom:0.55rem; }
+            /* balanced spacing so the centred stack fills the screen rather than bunching */
+            .hero-text .label { margin-bottom:1rem; }
+            .hero h1 { margin-bottom:1.25rem; }
+            .hero-sub { font-size:0.98rem; line-height:1.65; margin-bottom:1.85rem; }
+            .hero-action { gap:1.6rem; }
+            .hero-cta { gap:0.9rem; }
+            .hero-trust-chips { margin-bottom:0.8rem; }
         }
         @media (prefers-reduced-motion: reduce) { .phone { animation:none; } .poke { animation:none; } }
 
