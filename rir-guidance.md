@@ -57,6 +57,20 @@ Apply to base matrix:
 - `powerlifting` → +1 RIR for barbell_compound and high_skill; others unchanged
 - `general_fitness` → +1 RIR all categories
 
+## Phase Modifiers
+
+Determine the training phase from the generation prompt's PHASE CONTEXT block (or the plan). Apply on top of the base matrix and any goal modifier, then apply the Within-Exercise set adjustments and hard floors as normal.
+
+- `cut` → +1 RIR, all categories. Recovery is compromised in an energy deficit; the goal shifts to muscle retention, not maximal fatigue.
+- `recomp` → base (no change). Near-maintenance energy supports normal proximity to failure.
+- `lean_bulk` → base.
+- `bulk` → base.
+- `maintain` → base.
+
+**Stacking:** phase and goal modifiers are additive (e.g. `general_fitness` + `cut` = +2 RIR, all categories). The hard floors in "Within-Exercise RIR" still apply and bound the result. Do not let the final prescribed RIR for any working set exceed 5.
+
+**Authoritative at review too:** this modifier applies during plan review as well as generation. When auditing a plan whose phase is `cut`, RIR values that omit the +1 phase adjustment are a mismatch to correct — not a value to revert.
+
 ## Within-Exercise RIR (by Set Count)
 
 Target RIR from matrix = middle sets. Adjust set-by-set:
