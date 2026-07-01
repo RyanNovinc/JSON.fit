@@ -352,7 +352,7 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
       </div>
       <div class="chart-card">
         <h3>Body fat</h3>
-        <div class="ch-sub">bioimpedance · % of total mass</div>
+        <div class="ch-sub" id="bfSub">bioimpedance · % of total mass</div>
         <div id="chartBf"></div>
       </div>
       <div class="chart-card" style="grid-column:1/-1">
@@ -388,7 +388,7 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
       <div class="section-line"></div>
       <span class="label">Tape Measurements</span>
       <h2>Where the size is going.</h2>
-      <p>Circumference at each site, cold, measured the same way each time. Δ is total change from baseline.</p>
+      <p>Circumference at each site, cold, measured the same way each time. Δ is total change from baseline. Sites still showing "—" haven't been taped yet.</p>
     </div>
     <div class="datatable sa sa-up"><div class="dt-scroll"><table class="dt" id="measureTable"></table></div></div>
   </div>
@@ -436,7 +436,7 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
       </div>
       <div class="method-cell">
         <h4><span class="ic">◇</span> Body composition</h4>
-        <p>Monthly multi-frequency bioimpedance (InBody-class), fasted, same time of day, same hydration state. Treated as a <em>trend line</em>, not gospel — bioimpedance can be off by several percent in absolute terms but is consistent enough to track direction.</p>
+        <p>Monthly multi-frequency bioimpedance on an <em>Evolt 360</em>, fasted, same time of day, same hydration state. Treated as a <em>trend line</em>, not gospel — bioimpedance can read several percent off in absolute terms, but is consistent enough to track direction month to month.</p>
       </div>
       <div class="method-cell">
         <h4><span class="ic">◇</span> Tape &amp; photos</h4>
@@ -483,28 +483,29 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
 /* ════════════════════════════════════════════════════════════════════
    THE LAB — single source of truth.
    Update this object each month and the whole page re-renders.
-   - Add a new object to `checkins` (keep them in chronological order).
+   - Baseline below is the REAL 2026-07-01 Evolt 360 scan. Every value present
+     here was measured. Tape sites beyond the waist and all lifts are null
+     until measured — they render as "—" rather than being invented.
+   - Add a new object to `checkins` each month (keep them chronological).
    - photos: create a subfolder per check-in under /images/lab/ and point to
      the files with a LEADING SLASH (root-absolute, so paths resolve correctly
      from inside the /lab/ folder), e.g.
-       front:"/images/lab/2026-06/front.webp"
+       front:"/images/lab/2026-07/front.webp"
      leave "" to show the "awaiting capture" placeholder.
-   - Anything you don't track yet: leave it null and that row/stat hides.
-   IMPORTANT: EVERY number below — including the baseline — is placeholder
-   mock data. Before The Lab goes live, replace it all with real measurements
-   and delete any months that haven't happened yet. The page's whole premise
-   is "trust data, not opinions" — never publish a number you didn't measure.
+   - Anything not tracked yet: leave it null and that row/stat shows "—".
+   The page's whole premise is "trust data, not opinions" —
+   never publish a number you didn't measure.
    ════════════════════════════════════════════════════════════════════ */
 var DATA = {
-  startDate: "2026-06-01",
+  startDate: "2026-07-01",
   target: { weight_kg: 90, label: "Lean-bulk target" },
   protocol: {
-    hypothesis: "Starting at <b>82&nbsp;kg</b>, I can add <b>~8&nbsp;kg</b> over the year while keeping the fat-mass share of the gain low — by running a structured JSON.fit program and a calibrated surplus from the JSON.fit meal plans. Every claim gets a number.",
+    hypothesis: "Starting at <b>77.3&nbsp;kg</b>, I can climb toward <b>90&nbsp;kg</b> over the year while keeping the fat-mass share of the gain low — by running a structured JSON.fit program and a calibrated surplus from the JSON.fit meal plans. Every claim gets a number.",
     cells: [
       { k: "Subject", v: "1 · me" },
       { k: "Duration", v: "12 months" },
       { k: "Training", v: "4×/week · JSON.fit program" },
-      { k: "Nutrition", v: "~+350 kcal surplus" },
+      { k: "Nutrition", v: "Calibrated surplus" },
       { k: "Cadence", v: "Weighed weekly · scanned monthly" },
       { k: "Surplus quality", v: "High-protein · 2g/kg+" },
       { k: "What's measured", v: "Comp · tape · lifts · photos" },
@@ -515,43 +516,13 @@ var DATA = {
   angles: ["front","right","back","left"],
   checkins: [
     {
-      label:"Baseline", date:"2026-06-01",
-      weight_kg:82.0, bodyfat_pct:13.8, lean_mass_kg:70.7, fat_mass_kg:11.3,
-      photos:{front:"/images/lab/2026-07/front.webp",right:"/images/lab/2026-07/right.webp",back:"/images/lab/2026-07/back.webp",left:"/images/lab/2026-07/left.webp"},
-      measurements_cm:{ "Neck":38.0,"Shoulders":118,"Chest":102,"Arm (L)":36.0,"Arm (R)":36.5,"Waist":79.0,"Hips":96.0,"Thigh (L)":58.0,"Thigh (R)":58.0,"Calf":38.0 },
-      lifts:{ "Squat":120,"Bench":90,"Deadlift":150,"OHP":55,"Weighted pull-up (+kg)":5 },
-      scan:{ type:"InBody 770", visceral_fat:4, bmr_kcal:1820, bone_mass_kg:3.4, body_water_pct:58 },
-      notes:"Day zero. Took the first photos and scan, logged starting lifts. No conclusions yet — just the baseline everything else gets measured against.",
-      video:null
-    },
-    {
-      label:"Month 1", date:"2026-07-01",
-      weight_kg:83.6, bodyfat_pct:14.3, lean_mass_kg:71.6, fat_mass_kg:12.0,
+      label:"Baseline", date:"2026-07-01",
+      weight_kg:77.3, bodyfat_pct:20.4, lean_mass_kg:61.5, fat_mass_kg:15.8,
       photos:{front:"",right:"",back:"",left:""},
-      measurements_cm:{ "Neck":38.2,"Shoulders":119,"Chest":103.5,"Arm (L)":36.7,"Arm (R)":37.1,"Waist":80.0,"Hips":96.5,"Thigh (L)":58.8,"Thigh (R)":58.7,"Calf":38.3 },
-      lifts:{ "Squat":127,"Bench":92,"Deadlift":157,"OHP":57,"Weighted pull-up (+kg)":7 },
-      scan:{ type:"InBody 770", visceral_fat:4, bmr_kcal:1842, bone_mass_kg:3.4, body_water_pct:58 },
-      notes:"+1.6kg, and the scan says roughly +0.9 lean / +0.7 fat. Faster scale weight than planned — a chunk is glycogen and water from upping carbs. Lifts moved on everything, so the surplus is doing its job. Holding intake steady another month before judging.",
-      video:null
-    },
-    {
-      label:"Month 2", date:"2026-08-01",
-      weight_kg:85.0, bodyfat_pct:14.9, lean_mass_kg:72.3, fat_mass_kg:12.7,
-      photos:{front:"",right:"",back:"",left:""},
-      measurements_cm:{ "Neck":38.5,"Shoulders":120,"Chest":104.5,"Arm (L)":37.3,"Arm (R)":37.6,"Waist":80.8,"Hips":97.0,"Thigh (L)":59.4,"Thigh (R)":59.3,"Calf":38.6 },
-      lifts:{ "Squat":132,"Bench":95,"Deadlift":162,"OHP":58,"Weighted pull-up (+kg)":10 },
-      scan:{ type:"InBody 770", visceral_fat:5, bmr_kcal:1858, bone_mass_kg:3.4, body_water_pct:57 },
-      notes:"Body fat creeping up a touch quicker than I'd like and waist is up 1.8cm from baseline. Pulled the surplus back ~150 kcal for month 3 to slow the fat side without killing the lean gains. This is exactly the kind of adjustment the data is here to trigger.",
-      video:null
-    },
-    {
-      label:"Month 3", date:"2026-09-01",
-      weight_kg:86.2, bodyfat_pct:15.2, lean_mass_kg:73.1, fat_mass_kg:13.1,
-      photos:{front:"",right:"",back:"",left:""},
-      measurements_cm:{ "Neck":38.7,"Shoulders":121,"Chest":105.5,"Arm (L)":37.9,"Arm (R)":38.1,"Waist":81.2,"Hips":97.3,"Thigh (L)":60.0,"Thigh (R)":59.9,"Calf":38.9 },
-      lifts:{ "Squat":138,"Bench":97,"Deadlift":168,"OHP":60,"Weighted pull-up (+kg)":12 },
-      scan:{ type:"InBody 770", visceral_fat:5, bmr_kcal:1871, bone_mass_kg:3.5, body_water_pct:57 },
-      notes:"Smaller scale jump after the surplus pullback, and the fat-mass curve flattened while lean mass kept climbing — which is the whole point. Arms +1.9cm, waist held nearly flat this month. On pace for the 90kg target without the bulk getting sloppy.",
+      measurements_cm:{ "Neck":null,"Shoulders":null,"Chest":null,"Arm (L)":null,"Arm (R)":null,"Waist (navel)":86.9,"Hips":null,"Thigh (L)":null,"Thigh (R)":null,"Calf":null },
+      lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
+      scan:{ type:"Evolt 360", skeletal_muscle_kg:34.2, visceral_fat_area:68, bmr_kcal:1698, body_water_pct:57 },
+      notes:"Day zero. First Evolt 360 scan on the books: 77.3 kg at 20.4% body fat — 61.5 kg lean, 15.8 kg fat. Left/right and upper/lower both read balanced, waist-to-hip 0.84, visceral fat area 68 cm² (mid-range). Bioimpedance body-fat % runs a few points loose in absolute terms, so I'm treating that number as a trend anchor rather than gospel. No conclusions yet — this is the line everything else gets measured against.",
       video:null
     }
   ]
@@ -720,6 +691,7 @@ var DATA = {
   }
   function shortMo(s){ var d=new Date(s+"T00:00:00"); return d.toLocaleDateString('en-AU',{month:'short'}); }
   document.getElementById('wtSub').textContent='kg · 7-day rolling average · target '+DATA.target.weight_kg+'kg';
+  document.getElementById('bfSub').textContent='Evolt 360 bioimpedance · % of total mass';
   lineChart(makeId('chartWeight'), cks.map(function(c){return {x:shortMo(c.date),y:c.weight_kg};}), {target:DATA.target.weight_kg,unit:'kg',color:'#a855f7'});
   lineChart(makeId('chartBf'), cks.map(function(c){return {x:shortMo(c.date),y:c.bodyfat_pct};}), {unit:'%',color:'#c084fc'});
   stackChart(makeId('chartComp'), cks.map(function(c){return {x:shortMo(c.date),lean:c.lean_mass_kg,fat:c.fat_mass_kg};}));
@@ -729,10 +701,10 @@ var DATA = {
   document.getElementById('scanTitle').textContent=latest.label+' scan — '+(latest.scan&&latest.scan.type||'');
   var sc=latest.scan||{};
   var scanCells=[
-    {v:fmt(sc.visceral_fat,0),l:'Visceral fat'},
-    {v:fmt(sc.bmr_kcal,0),l:'BMR · kcal',hl:true},
-    {v:fmt(sc.body_water_pct,0)+'%',l:'Body water'},
-    {v:fmt(sc.bone_mass_kg,1),l:'Bone mass · kg'}
+    {v:fmt(sc.skeletal_muscle_kg,1),l:'Skeletal muscle · kg',hl:true},
+    {v:fmt(sc.visceral_fat_area,0),l:'Visceral fat · cm²'},
+    {v:fmt(sc.bmr_kcal,0),l:'BMR · kcal'},
+    {v:fmt(sc.body_water_pct,0)+'%',l:'Body water'}
   ];
   document.getElementById('scanGrid').innerHTML=scanCells.map(function(c){
     return '<div class="scan-cell"><div class="scan-val'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="scan-lbl">'+c.l+'</div></div>';
