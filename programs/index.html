@@ -5,7 +5,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Program — JSON.fit</title>
+<title>Program · JSON.fit</title>
 <meta name="description" content="A complete, periodised training program ready to import into JSON.fit. Free.">
 <link rel="icon" type="image/x-icon" href="favicon-3.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32-3.png">
@@ -51,7 +51,16 @@ main{flex:1;padding:2.25rem 0 3rem}
 #subtitle{color:var(--text-3);font-family:'DM Mono',monospace;font-size:.72rem;margin-bottom:1rem}
 .d-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
 .d-tag{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--cyan);padding:.25rem .6rem;border:1px solid var(--border-cyan);border-radius:5px;background:var(--cyan-soft)}
-#desc{color:var(--text-2);font-size:.92rem;line-height:1.7;margin-bottom:1.5rem}
+
+/* program description — collapsed by default so the page doesn't read as a wall
+   of text on load; the toggle expands it. Toggle hides itself if the text is
+   short enough that clamping does nothing. */
+.desc-wrap{margin-bottom:1.5rem}
+#desc{color:var(--text-2);font-size:.92rem;line-height:1.7;margin-bottom:0}
+#desc.clamped{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.desc-toggle{margin-top:.6rem;background:none;border:none;color:var(--cyan);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.02em;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:.35rem}
+.desc-toggle svg{width:12px;height:12px;transition:transform .25s ease}
+.desc-toggle.open svg{transform:rotate(180deg)}
 
 /* listing (shown when no ?program= is set) */
 .list-head{margin-bottom:1.9rem}
@@ -64,7 +73,9 @@ main{flex:1;padding:2.25rem 0 3rem}
 .pseg{flex:1;border-radius:3px;background:linear-gradient(180deg,#2ee0f5,#0e7490)}
 .pc-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.1rem}
 .pc-open{margin-top:auto;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--cyan);display:inline-flex;align-items:center;gap:.35rem;font-weight:500}
-.import-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+
+/* import row — button centred with the note stacked underneath it */
+.import-row{display:flex;flex-direction:column;align-items:center;gap:.7rem;margin-bottom:2.5rem;text-align:center}
 .import-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.75rem;border-radius:12px;font-size:.98rem;font-weight:700;background:var(--cyan);color:#000;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:transform .2s,box-shadow .2s}
 .import-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--cyan-glow)}
 .import-note{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3)}
@@ -73,6 +84,10 @@ main{flex:1;padding:2.25rem 0 3rem}
 .block-lbl{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:.25rem}
 .block h3{font-size:1.05rem;font-weight:700;margin-bottom:1rem;letter-spacing:-.01em}
 .block h3 .sub{font-weight:400;color:var(--text-3);font-size:.8rem;font-family:'DM Mono',monospace;margin-left:.4rem}
+
+/* centred block variant — used for the in-app screenshots section */
+.block.centered{text-align:center}
+.block.centered .shots{justify-content:center;text-align:left}
 
 /* volume section heading row — the h3 sits beside the info pill button */
 .vol-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
@@ -271,8 +286,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       + '<div class="vol-panel" id="vol-panel" aria-hidden="true">'
       +   '<div class="vol-panel-inner">'
       +     '<h4>Why these numbers?</h4>'
-      +     '<p>Hypertrophy research shows muscle growth scales with the number of <strong>hard sets per muscle per week</strong>, and each muscle has its own productive range. JSON.fit programs target each muscle\'s specific range — that\'s why side delts can show 18 sets in the same program where chest shows 17. Both sit in their respective productive zones.</p>'
-      +     '<p>The framework here is <strong>MEV / MAV / MRV</strong> — Minimum Effective Volume, Maximum Adaptive Volume, and Maximum Recoverable Volume. Most muscles grow best in the 10–20 working sets per week range, with the exact range varying by muscle, training age, and recovery.</p>'
+      +     '<p>Hypertrophy research shows muscle growth scales with the number of <strong>hard sets per muscle per week</strong>, and each muscle has its own productive range. JSON.fit programs target each muscle\'s specific range, which is why side delts can show 18 sets in the same program where chest shows 17. Both sit in their respective productive zones.</p>'
+      +     '<p>The framework here is <strong>MEV / MAV / MRV</strong>: Minimum Effective Volume, Maximum Adaptive Volume, and Maximum Recoverable Volume. Most muscles grow best in the 10–20 working sets per week range, with the exact range varying by muscle, training age, and recovery.</p>'
 
       +     '<h4>Typical productive ranges</h4>'
       +     '<div class="vol-ranges">'
@@ -287,7 +302,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       +     '</div>'
 
       +     '<h4>What "effective" means</h4>'
-      +     '<p>A working set taken within a few reps of failure. Compound lifts count fully for the primary muscle (×1.0) and partially for muscles they assist (×0.5). So a bench press counts as one full set for chest and a half set for triceps. This is how the field measures volume — it\'s why a single press doesn\'t get triple-counted across chest, shoulders, and arms.</p>'
+      +     '<p>A working set taken within a few reps of failure. Compound lifts count fully for the primary muscle (×1.0) and partially for muscles they assist (×0.5). So a bench press counts as one full set for chest and a half set for triceps. This is how the field measures volume: it\'s why a single press doesn\'t get triple-counted across chest, shoulders, and arms.</p>'
 
       +     '<h4>Sources</h4>'
       +     '<div class="vol-cites">'
@@ -328,7 +343,15 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       if(level) html += '<span class="d-tag">'+esc(level)+'</span>';
       html += '<span class="d-tag">'+blocks.length+' blocks</span>';
       html += '</div>';
-      if(data.description) html += '<p id="desc">'+esc(data.description)+'</p>';
+      // Description starts clamped to 3 lines with a "Read more" toggle so it
+      // doesn't hit the reader as a wall of text on load.
+      if(data.description){
+        html += '<div class="desc-wrap"><p id="desc" class="clamped">'+esc(data.description)+'</p>'
+              + '<button class="desc-toggle" id="descToggle" type="button" aria-expanded="false">'
+              + '<span id="descToggleLabel">Read more</span>'
+              + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>'
+              + '</button></div>';
+      }
       var importNote = 'free · opens straight in the app';
       html += '<div class="import-row"><button class="import-btn" id="importTop">'
             + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
@@ -439,11 +462,11 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       });
       html += '</div></div>';
 
-      // ---- in-app screenshots ----
-      html += '<div class="block"><div class="block-lbl">How it looks in the app</div><h3>Train it set-by-set</h3><div class="shots">'
+      // ---- in-app screenshots (centred block) ----
+      html += '<div class="block centered"><div class="block-lbl">How it looks in the app</div><h3>Train it set-by-set</h3><div class="shots">'
             + '<div class="phone"><div class="phone-frame"><picture><source srcset="/images/programs/'+slug+'-exercise.webp" type="image/webp"><img class="phone-img" src="/images/programs/'+slug+'-exercise.png" alt="Exercise view in the JSON.fit app" loading="lazy" onerror="this.parentNode.parentNode.parentNode.style.display=\'none\'"></picture></div><div class="phone-cap">Exercise view</div></div>'
             + '<div class="phone"><div class="phone-frame"><picture><source srcset="/images/programs/'+slug+'-week.webp" type="image/webp"><img class="phone-img" src="/images/programs/'+slug+'-week.png" alt="Weekly plan in the JSON.fit app" loading="lazy" onerror="this.parentNode.parentNode.parentNode.style.display=\'none\'"></picture></div><div class="phone-cap">Your week</div></div>'
-            + '<p class="shots-note">Once imported, every exercise comes with a <strong>form demo</strong>, set/rep/RIR targets, rest timers and swap options. The full '+weeks+' weeks live in the app — this page is the preview.</p>'
+            + '<p class="shots-note">Once imported, every exercise comes with a <strong>form demo</strong>, set/rep/RIR targets, rest timers and swap options. The full '+weeks+' weeks live in the app. This page is the preview.</p>'
             + '</div></div>';
 
       // ---- footer import ----
@@ -454,7 +477,25 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       contentEl.innerHTML = html;
       loadingEl.style.display='none';
       contentEl.style.display='block';
-      document.title = tp.title + ' — JSON.fit';
+      document.title = tp.title + ' · JSON.fit';
+
+      // ---- description read-more toggle -------------------------------------
+      // Hide the toggle entirely if the text isn't tall enough to clamp.
+      var descEl = document.getElementById('desc');
+      var descToggle = document.getElementById('descToggle');
+      var descToggleLabel = document.getElementById('descToggleLabel');
+      if(descEl && descToggle){
+        if(descEl.scrollHeight <= descEl.clientHeight + 2){
+          descToggle.style.display = 'none';
+          descEl.classList.remove('clamped');
+        }
+        descToggle.addEventListener('click', function(){
+          var clamped = descEl.classList.toggle('clamped');
+          descToggle.classList.toggle('open', !clamped);
+          descToggle.setAttribute('aria-expanded', clamped ? 'false' : 'true');
+          if(descToggleLabel) descToggleLabel.textContent = clamped ? 'Read more' : 'Show less';
+        });
+      }
 
       // ---- volume science panel toggle --------------------------------------
       // Open/close the "Why these numbers?" panel. Fires a single analytics event
@@ -544,7 +585,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
         + '<div class="plist">'+cards+'</div>';
     loadingEl.style.display='none';
     contentEl.style.display='block';
-    document.title = 'Training programs — JSON.fit';
+    document.title = 'Training programs · JSON.fit';
   }
 
   if(!slug){ renderList(); return; }
