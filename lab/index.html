@@ -5,15 +5,15 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Lab — bulking to 90 kg on JSON.fit</title>
-<meta name="description" content="I built JSON.fit and I'm using it to bulk from 77 kg to 90 kg. Monthly Evolt 360 scans, standardised progress photos, lifts and the full numbers — posted as they happen.">
+<title>The Lab: bulking to 90 kg on JSON.fit</title>
+<meta name="description" content="I built JSON.fit and I'm using it to bulk from 77 kg to 90 kg. Monthly Evolt 360 scans, standardised progress photos, lifts and the full numbers, posted as they happen.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="The Lab — JSON.fit">
+<meta property="og:title" content="The Lab: JSON.fit">
 <meta property="og:description" content="Bulking from 77 kg to 90 kg on the app I built. Monthly scans, photos and every number, posted as they happen.">
 <meta property="og:image" content="https://json.fit/og-image.png">
 <meta property="og:url" content="https://json.fit/lab/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Lab — JSON.fit">
+<meta name="twitter:title" content="The Lab: JSON.fit">
 <meta name="twitter:description" content="Bulking from 77 kg to 90 kg on the app I built. Monthly scans, photos and every number.">
 <link rel="canonical" href="https://json.fit/lab/">
 <link rel="icon" type="image/x-icon" href="/favicon-3.ico">
@@ -25,7 +25,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* The Lab runs on violet — distinct from home (cyan) and nutrition (green) */
+  /* The Lab runs on violet, distinct from home (cyan) and nutrition (green) */
   --violet:#a855f7;
   --violet-bright:#c084fc;
   --violet-soft:rgba(168,85,247,0.08);
@@ -36,7 +36,7 @@
   --down:#ef4444;
   --flat:#9898a4;
   --amber:#f59e0b;
-  /* shared shell — identical to the rest of the site */
+  /* shared shell, identical to the rest of the site */
   --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
   --border:rgba(255,255,255,0.06);
   --text:#f0f0f2; --text-2:#9898a4; --text-3:#7a7a86;
@@ -54,7 +54,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-web
 .section{padding:5rem 0}
 .label{font-family:'DM Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--violet);display:block;margin-bottom:1rem}
 
-/* scroll animations — same engine as index.html */
+/* scroll animations, same engine as index.html */
 .sa{opacity:0;transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .sa-up{transform:translateY(50px)}
 .sa.vis{opacity:1;transform:none}
@@ -85,8 +85,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .hero{position:relative;padding:8.5rem 1.5rem 3.5rem;overflow:hidden;text-align:center}
 .hero::before{content:'';position:absolute;top:-20%;left:50%;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,var(--violet-glow) 0%,transparent 65%);opacity:.1;filter:blur(80px);transform:translateX(-50%);pointer-events:none}
 .hero-inner{max-width:680px;margin:0 auto;position:relative;z-index:2}
-.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .9rem;border:1px solid var(--violet-border);border-radius:100px;font-family:'DM Mono',monospace;font-size:.66rem;color:var(--violet);background:var(--violet-soft);margin-bottom:1.75rem;letter-spacing:.08em;text-transform:uppercase}
-.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);animation:pulse 2s infinite}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--violet);margin-bottom:1.75rem;letter-spacing:.24em;text-transform:uppercase}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;margin-bottom:1.25rem}
 .hero-sub{font-size:1rem;color:var(--text-2);max-width:560px;margin:0 auto 2.25rem;line-height:1.75}
@@ -102,6 +101,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .delta-up{color:var(--up)}.delta-down{color:var(--down)}.delta-flat{color:var(--flat)}
 .live-tag{position:absolute;top:.7rem;right:.7rem;display:flex;align-items:center;gap:.3rem;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;color:var(--up)}
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--up);animation:pulse 1.6s infinite}
+.vitals-head{max-width:680px;margin:0 auto .55rem;display:flex;justify-content:center}
+.vitals-head .live-tag{position:static;font-size:.58rem;letter-spacing:.16em}
 @media(max-width:600px){.vitals{grid-template-columns:1fr 1fr}.hero{padding-top:7rem}}
 .hero-updated{margin-top:1.25rem;font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em}
 
@@ -127,7 +128,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .vr-block{}
 .vr-subhead{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
 .vr-kicker{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
-/* portrait frame — matches the 2:3 photo so nothing letterboxes */
+.vr-block.centered .vr-subhead{flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.9rem}
+.vr-block.centered .angle-tabs{justify-content:center}
+/* portrait frame, matches the 2:3 photo so nothing letterboxes */
 .vr-frame{position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,0.07),#000 72%)}
 .vr-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;animation:vrfade .35s ease}
 @keyframes vrfade{from{opacity:0}to{opacity:1}}
@@ -152,7 +155,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .cmp-delta b.up{color:var(--up)}
 @media(max-width:620px){
   .compare{grid-template-columns:1fr 1fr;gap:.7rem}
-  .cmp-mid{grid-column:1/-1;order:-1;flex-direction:row;padding-top:0;gap:.6rem}
+  .cmp-mid{grid-column:1/-1;order:-1;flex-direction:row;justify-content:center;padding-top:0;gap:.6rem}
   .cmp-arrow{transform:rotate(90deg)}
 }
 /* shared pill / tab controls (carried over from the rig) */
@@ -287,34 +290,23 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
 <!-- HERO + LIVE VITALS -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="badge"><span class="badge-dot"></span> Bulk log · updated monthly</div>
+    <div class="badge">Updated monthly</div>
     <h1>Bulking to 90&nbsp;kg<br>on <span class="violet">the app I built.</span></h1>
-    <p class="hero-sub">I made JSON.fit. This is me using it — a year-long bulk from 77.3&nbsp;kg, with the program, the meal plan and the tracking all coming out of the app. Monthly Evolt&nbsp;360 scans, standardised photos and the lifts, posted good month or bad.</p>
+    <p class="hero-sub">I built JSON.fit. This is me using it to bulk from 77 to 90&nbsp;kg, tracked in public every month.</p>
+    <div class="vitals-head"><span class="live-tag"><span class="live-dot"></span>Latest</span></div>
     <div class="vitals" id="vitals"></div>
     <p class="hero-updated" id="updated"></p>
   </div>
 </section>
 
-<!-- THE PLAN -->
-<section class="section" style="padding-top:2.5rem">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">The Plan</span>
-      <h2>Start, target, and how.</h2>
-    </div>
-    <div class="protocol sa sa-up" id="protocol"></div>
-  </div>
-</section>
-
 <!-- VISUAL RECORD -->
-<section class="section" style="padding-top:1rem">
+<section class="section" style="padding-top:2.5rem">
   <div class="container">
     <div class="section-head center sa sa-up">
       <div class="section-line"></div>
-      <span class="label">The Visual Record</span>
-      <h2>Same pose. Same light.<br><span class="violet">Every angle, every month.</span></h2>
-      <p>Standardised photos so the only variable that changes is me — four angles, shot the same way every month.</p>
+      <span class="label">Photos</span>
+      <h2>Progress photos.</h2>
+      <p>Four angles, same setup every month.</p>
     </div>
 
     <!-- current state: four angles -->
@@ -324,12 +316,10 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
     </div>
 
     <!-- over time: before / after -->
-    <div class="sa sa-up vr-block" style="margin-top:3rem">
+    <div class="sa sa-up vr-block centered" style="margin-top:3rem">
       <div class="vr-subhead"><span class="vr-kicker">Over time · before &amp; after</span><div class="angle-tabs" id="cmpAngles"></div></div>
       <div class="compare" id="compare"></div>
     </div>
-
-    <p class="rig-note"><strong>Capture protocol:</strong> phone at 1.2m height, 2m distance, same corner of the same room, same morning light, fasted, first thing AM. Four angles, no flexing on the front shot.</p>
   </div>
 </section>
 
@@ -340,7 +330,6 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
       <div class="section-line"></div>
       <span class="label">Body Composition</span>
       <h2>The numbers over time.</h2>
-      <p>Bodyweight against target, and the split that actually matters on a bulk — lean mass vs fat mass. Trends, not single readings.</p>
     </div>
     <div class="chart-grid sa-stagger">
       <div class="chart-card">
@@ -386,68 +375,9 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
       <div class="section-line"></div>
       <span class="label">Segmental Lean Mass</span>
       <h2>Where the size is going.</h2>
-      <p>Lean mass per limb, straight off the monthly Evolt scan — same machine every time, so left vs right and month to month stay comparable. Δ is total change from baseline.</p>
+      <p>Lean mass per limb, straight off the monthly Evolt scan, same machine every time, so left vs right and month to month stay comparable. Δ is total change from baseline.</p>
     </div>
     <div class="datatable sa sa-up"><div class="dt-scroll"><table class="dt" id="measureTable"></table></div></div>
-  </div>
-</section>
-
-<!-- STRENGTH -->
-<section class="section" style="padding-top:1rem">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">Strength Markers</span>
-      <h2>Is the muscle doing anything?</h2>
-      <p>Top working sets on the main lifts, straight out of the JSON.fit program I'm running. Mass without strength is just calories.</p>
-    </div>
-    <div class="datatable sa sa-up"><div class="dt-scroll"><table class="dt" id="liftTable"></table></div></div>
-  </div>
-</section>
-
-<!-- MONTHLY LOG -->
-<section class="section" style="padding-top:1rem">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">Monthly Log</span>
-      <h2>What the data made me change.</h2>
-      <p>The monthly log. Data without interpretation is noise — so this is where the numbers turn into decisions.</p>
-    </div>
-    <div class="log sa sa-up" id="log"></div>
-  </div>
-</section>
-
-<!-- METHODOLOGY -->
-<section class="section" style="padding-top:1rem">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">Methodology</span>
-      <h2>How everything here is measured.</h2>
-      <p>Same tools, same conditions, same time of day — so when a number moves, it's me that moved, not the method.</p>
-    </div>
-    <div class="method-grid sa sa-up">
-      <div class="method-cell">
-        <h4><span class="ic">◇</span> Bodyweight</h4>
-        <p>Same scale, every Sunday AM, post-bathroom, pre-food, pre-water. The headline figure is a 7-day rolling average — daily weight swings ±1kg on water and food alone, so a single reading is meaningless.</p>
-      </div>
-      <div class="method-cell">
-        <h4><span class="ic">◇</span> Body composition</h4>
-        <p>Monthly multi-frequency bioimpedance on an <em>Evolt 360</em> — same machine, fasted, same time of day, same hydration state. Lean mass, fat mass, the per-limb split and waist all come off the same scan. Treated as a <em>trend line</em>, not gospel: bioimpedance can read a few percent off in absolute terms, but it's consistent enough to track direction month to month.</p>
-      </div>
-      <div class="method-cell">
-        <h4><span class="ic">◇</span> Photos</h4>
-        <p>Shot to a fixed rig: same height, distance, corner of the same room, same morning light, fasted, first thing AM. Four angles, no flexing on the front shot. The only thing allowed to change is the body.</p>
-      </div>
-      <div class="method-cell">
-        <h4><span class="ic">◇</span> Strength</h4>
-        <p>Top working sets logged in JSON.fit on the program I'm running. Same lifts, same form standards, same rest. Estimated 1RMs are calculated, not maxed out — I'm here to grow, not to test singles.</p>
-      </div>
-    </div>
-    <div class="disclaimer sa sa-up">
-      <p><strong style="color:var(--text)">This is one person's log — mine.</strong> It's a record of what I'm doing and what's happening, not medical, nutrition or training advice. Consumer body-composition tools carry real measurement error, and the unflattering numbers get posted too (including fat gained on a bulk) — a progress page that only shows the good months is worthless. Read it as a logbook, not a prescription.</p>
-    </div>
   </div>
 </section>
 
@@ -455,7 +385,7 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
 <section class="cta-wrap">
   <div class="cta-card sa sa-up">
     <h2>Run the same setup.</h2>
-    <p>Everything on this page — the program, the meal plan, the tracking — comes out of <span class="v">JSON.fit</span>. Same free app, same tools, your numbers.</p>
+    <p>Everything on this page (the program, the meal plan, the tracking) comes out of <span class="v">JSON.fit</span>. Same free app, same tools, your numbers.</p>
     <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'lab_cta'})">
       <svg width="15" height="18" viewBox="0 0 18 22" fill="none"><path d="M14.94 11.58c-.02-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.78-1.39-.14-2.72.82-3.43.82-.71 0-1.81-.8-2.98-.78-1.53.02-2.95.89-3.74 2.27-1.59 2.77-.41 6.87 1.15 9.11.76 1.1 1.66 2.34 2.85 2.29 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.27 1.23-2.51 1.25-2.57-.03-.01-2.4-.92-2.42-3.66z" fill="currentColor"/></svg>
       Download on the App Store
@@ -479,11 +409,11 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
 <script>
 "use strict";
 /* ════════════════════════════════════════════════════════════════════
-   THE LAB — single source of truth.
+   THE LAB: single source of truth.
    Update this object each month and the whole page re-renders.
    - Baseline below is the real 2026-07-01 Evolt 360 scan. Every value here
      was measured; anything not measured yet (e.g. lifts) stays null and
-     renders as "—" rather than being invented.
+     renders as "-" rather than being invented.
    - Add a new object to `checkins` each month (keep them chronological).
    - photos: create a subfolder per check-in under /images/lab/ and point to
      the files with a LEADING SLASH (root-absolute, so paths resolve correctly
@@ -491,14 +421,14 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
        front:"/images/lab/2026-07/front.webp"
      leave "" to show the "awaiting capture" placeholder.
    - segments_kg is the per-limb lean mass straight off the Evolt
-     segmental panel — copy it in each scan.
+     segmental panel, copy it in each scan.
    Never publish a number that wasn't measured.
    ════════════════════════════════════════════════════════════════════ */
 var DATA = {
   startDate: "2026-07-01",
   target: { weight_kg: 90, label: "Lean-bulk target" },
   plan: {
-    summary: "Started <b>1 July 2026</b> at <b>77.3&nbsp;kg</b> and 20.4% body fat. The target is <b>90&nbsp;kg</b> over roughly a year, keeping as much of the gain lean as a sensible surplus allows. The program and the meal plan both come out of JSON.fit — this page is the app being used for real, in public.",
+    summary: "Started <b>1 July 2026</b> at <b>77.3&nbsp;kg</b> and 20.4% body fat. The target is <b>90&nbsp;kg</b> over roughly a year, keeping as much of the gain lean as a sensible surplus allows. The program and the meal plan both come out of JSON.fit. This page is the app being used for real, in public.",
     cells: [
       { k: "Started", v: "1 Jul 2026 · 77.3 kg" },
       { k: "Target", v: "90 kg · ~12 months" },
@@ -521,7 +451,7 @@ var DATA = {
       segments_kg:{ "Arm (L)":3.27,"Arm (R)":3.31,"Torso":26.46,"Leg (L)":9.14,"Leg (R)":9.25 },
       lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
       scan:{ type:"Evolt 360", skeletal_muscle_kg:34.2, waist_cm:86.9, visceral_fat_area:68, whr:0.84, bmr_kcal:1698, tee_kcal:2614, body_water_pct:57, bio_age:28 },
-      notes:"Day zero. First Evolt 360 scan on the books: 77.3 kg at 20.4% body fat — 61.5 kg lean, 15.8 kg fat. Left/right and upper/lower both read balanced, waist-to-hip 0.84, visceral fat area 68 cm² (mid-range). Bioimpedance body-fat % runs a few points loose in absolute terms, so I'm treating that number as a trend anchor rather than gospel. No conclusions yet — this is the line everything else gets measured against.",
+      notes:"Day zero. First Evolt 360 scan on the books: 77.3 kg at 20.4% body fat: 61.5 kg lean, 15.8 kg fat. Left/right and upper/lower both read balanced, waist-to-hip 0.84, visceral fat area 68 cm² (mid-range). Bioimpedance body-fat % runs a few points loose in absolute terms, so I'm treating that number as a trend anchor rather than gospel. No conclusions yet. This is the line everything else gets measured against.",
       video:null
     }
   ]
@@ -532,42 +462,41 @@ var DATA = {
   var cks=DATA.checkins;
   var latest=cks[cks.length-1], base=cks[0];
 
-  function fmt(n,d){ if(n==null) return "—"; return (d!=null)?Number(n).toFixed(d):String(n); }
+  function fmt(n,d){ if(n==null) return "-"; return (d!=null)?Number(n).toFixed(d):String(n); }
   function delta(cur,prev,d){ if(cur==null||prev==null) return null; return +(cur-prev).toFixed(d==null?1:d); }
   function fmtDate(s){ var dt=new Date(s+"T00:00:00"); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); }
   function monthsBetween(a,b){ var x=new Date(a),y=new Date(b); return (y.getFullYear()-x.getFullYear())*12+(y.getMonth()-x.getMonth()); }
 
   /* ── Live vitals ── */
-  function vitalCard(lbl,val,unit,d,dUnit,hl,live){
+  function vitalCard(lbl,val,unit,d,dUnit,hl){
     var dh="";
     if(d!=null){
       var cls=d>0?'delta-up':(d<0?'delta-down':'delta-flat');
-      var arrow=d>0?'▲':(d<0?'▼':'—');
+      var arrow=d>0?'▲':(d<0?'▼':'-');
       dh='<div class="vital-delta '+cls+'">'+arrow+' '+(d>0?'+':'')+fmt(Math.abs(d),1).replace('-','')+' '+(dUnit||'')+'</div>';
       if(d>0){dh='<div class="vital-delta delta-up">▲ +'+fmt(d,1)+' '+(dUnit||'')+'</div>';}
       else if(d<0){dh='<div class="vital-delta delta-down">▼ '+fmt(d,1)+' '+(dUnit||'')+'</div>';}
-      else{dh='<div class="vital-delta delta-flat">— '+(dUnit||'')+'</div>';}
+      else{dh='<div class="vital-delta delta-flat">- '+(dUnit||'')+'</div>';}
     }
-    return '<div class="vital">'+(live?'<span class="live-tag"><span class="live-dot"></span>LATEST</span>':'')+
+    return '<div class="vital">'+
       '<div class="vital-lbl">'+lbl+'</div>'+
       '<div class="vital-val'+(hl?' hl':'')+'"><span class="count-up" data-target="'+val+'" data-decimals="'+( (val%1!==0)?1:0)+'">'+val+'</span><span class="vital-unit">'+(unit||'')+'</span></div>'+
       dh+'</div>';
   }
   var prev=cks.length>1?cks[cks.length-2]:base;
   document.getElementById('vitals').innerHTML=
-    vitalCard('Bodyweight',latest.weight_kg,'kg',delta(latest.weight_kg,prev.weight_kg),'kg',true,true)+
+    vitalCard('Bodyweight',latest.weight_kg,'kg',delta(latest.weight_kg,prev.weight_kg),'kg',true)+
     vitalCard('Body fat',latest.bodyfat_pct,'%',delta(latest.bodyfat_pct,prev.bodyfat_pct),'pt',false)+
     vitalCard('Lean mass',latest.lean_mass_kg,'kg',delta(latest.lean_mass_kg,prev.lean_mass_kg),'kg',true)+
     vitalCard('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false);
 
-  document.getElementById('updated').textContent='// updated '+fmtDate(latest.date)+' · day '+(Math.round((new Date(latest.date)-new Date(DATA.startDate))/86400000))+' of the bulk';
-
-  /* ── The plan ── */
-  document.getElementById('protocol').innerHTML=
-    '<p class="protocol-hyp">'+DATA.plan.summary.replace(/<b>/g,'<span class="h">').replace(/<\/b>/g,'</span>')+'</p>'+
-    '<div class="protocol-grid">'+DATA.plan.cells.map(function(c){
-      return '<div class="proto-cell"><div class="proto-k">'+c.k+'</div><div class="proto-v">'+c.v+'</div></div>';
-    }).join('')+'</div>';
+  // "day X" counts from the start date to *today* (evaluated in the visitor's
+  // browser on each load), so it ticks up automatically without touching the file.
+  var _start=new Date(DATA.startDate+"T00:00:00");
+  var _now=new Date();
+  var _today=new Date(_now.getFullYear(),_now.getMonth(),_now.getDate());
+  var _dayOfBulk=Math.max(0,Math.round((_today-_start)/86400000));
+  document.getElementById('updated').textContent='// updated '+fmtDate(latest.date)+' · day '+_dayOfBulk+' of the bulk';
 
   /* ── Visual record: grid + before/after compare ── */
   var PH='<div class="vr-ph">'+
@@ -612,11 +541,11 @@ var DATA = {
   var rightCk=null;
   for(var ci=1;ci<cks.length;ci++){ if(hasShots(cks[ci])) rightCk=cks[ci]; }
   function deltaHTML(){
-    if(!rightCk) return '<div class="cmp-delta">Δ pending<b>—</b>next capture</div>';
+    if(!rightCk) return '<div class="cmp-delta">Δ pending<b>-</b>next capture</div>';
     var dw=(rightCk.weight_kg!=null&&baseCk.weight_kg!=null)?+(rightCk.weight_kg-baseCk.weight_kg).toFixed(1):null;
     var dl=(rightCk.lean_mass_kg!=null&&baseCk.lean_mass_kg!=null)?+(rightCk.lean_mass_kg-baseCk.lean_mass_kg).toFixed(1):null;
     var days=Math.round((new Date(rightCk.date)-new Date(baseCk.date))/86400000);
-    var wt=(dw==null)?'<b>—</b>':'<b class="'+(dw>0?'up':'')+'">'+(dw>0?'+':'')+dw+' kg</b>';
+    var wt=(dw==null)?'<b>-</b>':'<b class="'+(dw>0?'up':'')+'">'+(dw>0?'+':'')+dw+' kg</b>';
     var lean=(dl==null)?'':((dl>0?'+':'')+dl+' lean');
     return '<div class="cmp-delta">'+days+' days'+wt+lean+'</div>';
   }
@@ -697,7 +626,7 @@ var DATA = {
   function makeId(id){ var el=document.getElementById(id); if(!el.id) el.id=id; return el; }
 
   /* ── Latest scan ── */
-  document.getElementById('scanTitle').textContent=latest.label+' scan — '+(latest.scan&&latest.scan.type||'');
+  document.getElementById('scanTitle').textContent=latest.label+' scan · '+(latest.scan&&latest.scan.type||'');
   var sc=latest.scan||{};
   var scanCells=[
     {v:fmt(sc.skeletal_muscle_kg,1),l:'Skeletal muscle · kg',hl:true},
@@ -720,37 +649,12 @@ var DATA = {
       var first=fmtFn(base,name), last=fmtFn(latest,name);
       var d=(first!=null&&last!=null)?+(last-first).toFixed(1):null;
       var dcls=d>0?'delta-up':(d<0?'delta-down':'');
-      var tds=cks.map(function(c,i){ var v=fmtFn(c,name); return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(v==null?'—':v)+'</td>'; }).join('');
-      return '<tr><td>'+name+'</td>'+tds+'<td class="'+dcls+'">'+(d==null?'—':(d>0?'+':'')+d)+'</td></tr>';
+      var tds=cks.map(function(c,i){ var v=fmtFn(c,name); return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(v==null?'-':v)+'</td>'; }).join('');
+      return '<tr><td>'+name+'</td>'+tds+'<td class="'+dcls+'">'+(d==null?'-':(d>0?'+':'')+d)+'</td></tr>';
     }).join('')+'</tbody>';
     tableEl.innerHTML=head+body;
   }
   buildTable(document.getElementById('measureTable'), Object.keys(base.segments_kg), ['Segment (lean kg)'], function(c,n){ return c.segments_kg?c.segments_kg[n]:null; });
-  buildTable(document.getElementById('liftTable'), Object.keys(base.lifts), ['Lift (kg)'], function(c,n){ return c.lifts?c.lifts[n]:null; });
-
-  /* ── Monthly log ── */
-  document.getElementById('log').innerHTML=cks.slice().reverse().map(function(c,idx,arr){
-    // previous in chronological terms
-    var chronIdx=cks.indexOf(c);
-    var p=chronIdx>0?cks[chronIdx-1]:null;
-    function chip(lbl,cur,prevv,unit,goodUp){
-      if(cur==null) return '';
-      var d=p?+(cur-prevv).toFixed(1):null;
-      var dh='';
-      if(d!=null&&d!==0){ var good=(d>0)===goodUp; dh=' <span class="'+(good?'d-up':'d-down')+'">'+(d>0?'+':'')+d+'</span>'; }
-      return '<span class="log-stat">'+lbl+' '+cur+unit+dh+'</span>';
-    }
-    var stats=
-      chip('WT',c.weight_kg, p&&p.weight_kg,'kg',true)+
-      chip('BF',c.bodyfat_pct, p&&p.bodyfat_pct,'%',false)+
-      chip('LEAN',c.lean_mass_kg, p&&p.lean_mass_kg,'kg',true)+
-      chip('FAT',c.fat_mass_kg, p&&p.fat_mass_kg,'kg',false);
-    var vid=c.video?'<a class="log-vid" href="'+c.video+'" target="_blank" rel="noopener"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>Watch the '+c.label.toLowerCase()+' meal-prep video</a>':'';
-    return '<div class="log-entry"><span class="log-dot"></span>'+
-      '<div class="log-meta"><span class="log-mo">'+c.label+'</span><span class="log-date">'+fmtDate(c.date)+'</span></div>'+
-      '<div class="log-stats">'+stats+'</div>'+
-      '<p class="log-notes">'+c.notes+'</p>'+vid+'</div>';
-  }).join('');
 
   /* ── Lightbox ── */
   var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
