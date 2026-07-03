@@ -150,6 +150,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .vr-fade img:nth-child(2){animation-delay:3.5s}
 @keyframes vrCross{0%{opacity:0}7%{opacity:1}43%{opacity:1}50%{opacity:0}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.vr-fade img{animation:none}.vr-fade img:nth-child(1){opacity:1}}
+/* designed "next capture" state for the empty right-hand compare frame */
+.vr-next{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;text-align:center;padding:1rem}
+.vr-next .nc-lbl{display:flex;align-items:center;gap:.4rem;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)}
+.vr-next .nc-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);animation:pulse 1.6s infinite}
+.vr-next .nc-date{font-family:'DM Mono',monospace;font-size:1.25rem;color:var(--violet);letter-spacing:.01em}
+.vr-next .nc-sub{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
 /* grid of four angles */
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
 .grid4 .g-lab{margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2)}
@@ -346,7 +352,7 @@ window.navBack=function(e){
 
     <!-- over time: before / after -->
     <div class="sa sa-up vr-block centered" style="margin-top:3rem">
-      <div class="vr-subhead"><span class="vr-kicker">Over time · before &amp; after</span><div class="angle-tabs" id="cmpAngles"></div></div>
+      <div class="vr-subhead"><span class="vr-kicker">Over time · before &amp; after</span><div class="angle-tabs" id="cmpAngles"></div><div class="timepoints" id="cmpRightTps" style="display:none"></div></div>
       <div class="compare" id="compare"></div>
     </div>
   </div>
@@ -640,15 +646,33 @@ var DATA = {
   });
   renderGrid();
 
-  // --- before / after compare: baseline vs latest captured timepoint ---
+  // --- before / after compare: baseline vs a chosen later month ---
   var compareEl=document.getElementById('compare');
   var cmpAngles=document.getElementById('cmpAngles');
+  var cmpRightTps=document.getElementById('cmpRightTps');
   var cmpAngle=0;
   var baseCk=cks[0];
-  var rightCk=null;
-  for(var ci=1;ci<cks.length;ci++){ if(hasShots(cks[ci])) rightCk=cks[ci]; }
-  function deltaHTML(){
-    if(!rightCk) return '<div class="cmp-delta">Δ pending<b>-</b>next capture</div>';
+  // indices of captured check-ins after the baseline
+  var capturedAfter=[];
+  for(var ci=1;ci<cks.length;ci++){ if(hasShots(cks[ci])) capturedAfter.push(ci); }
+  var cmpRightIdx=capturedAfter.length?capturedAfter[capturedAfter.length-1]:null;
+
+  // Next scheduled capture = the 1st of the month after the latest scan.
+  // Rolls forward on its own the moment a new month's scan is added.
+  function nextCaptureLabel(){
+    var d=new Date(latest.date+"T00:00:00");
+    d=new Date(d.getFullYear(),d.getMonth()+1,1);
+    return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+  }
+  function nextPanel(){
+    return '<div class="vr-next">'+
+      '<div class="nc-lbl"><span class="nc-dot"></span> Next capture</div>'+
+      '<div class="nc-date">'+nextCaptureLabel()+'</div>'+
+      '<div class="nc-sub">same rig · four angles</div>'+
+      '</div>';
+  }
+  function deltaHTML(rightCk){
+    if(!rightCk) return '<div class="cmp-delta">tracked<b>monthly</b>same rig</div>';
     var dw=(rightCk.weight_kg!=null&&baseCk.weight_kg!=null)?+(rightCk.weight_kg-baseCk.weight_kg).toFixed(1):null;
     var dl=(rightCk.lean_mass_kg!=null&&baseCk.lean_mass_kg!=null)?+(rightCk.lean_mass_kg-baseCk.lean_mass_kg).toFixed(1):null;
     var days=Math.round((new Date(rightCk.date)-new Date(baseCk.date))/86400000);
@@ -658,21 +682,43 @@ var DATA = {
   }
   function renderCompare(){
     var ang=DATA.angles[cmpAngle];
+    var rightCk=(cmpRightIdx!=null)?cks[cmpRightIdx]:null;
+    var rightInner=rightCk?frameHTML(rightCk,ang,null):nextPanel();
+    var rightTag=rightCk?rightCk.label:('Next capture · '+nextCaptureLabel());
     compareEl.innerHTML=
       '<div class="cmp-col"><span class="cmp-tag">'+baseCk.label+'</span><div class="vr-frame">'+frameHTML(baseCk,ang,null)+'</div></div>'+
-      '<div class="cmp-mid"><span class="cmp-arrow">&#8594;</span>'+deltaHTML()+'</div>'+
-      '<div class="cmp-col"><span class="cmp-tag latest">'+(rightCk?rightCk.label:'Next capture')+'</span><div class="vr-frame">'+(rightCk?frameHTML(rightCk,ang,null):PH)+'</div></div>';
+      '<div class="cmp-mid"><span class="cmp-arrow">&#8594;</span>'+deltaHTML(rightCk)+'</div>'+
+      '<div class="cmp-col"><span class="cmp-tag latest">'+rightTag+'</span><div class="vr-frame">'+rightInner+'</div></div>';
   }
-  cmpAngles.innerHTML=DATA.angles.map(function(a,i){
-    return '<button class="angle-tab'+(i===0?' active':'')+'" data-a="'+i+'">'+a+'</button>';
-  }).join('');
-  cmpAngles.querySelectorAll('.angle-tab').forEach(function(b){
-    b.addEventListener('click',function(){
-      cmpAngle=+b.dataset.a;
-      cmpAngles.querySelectorAll('.angle-tab').forEach(function(x){x.classList.remove('active');});
-      b.classList.add('active'); renderCompare();
+  // angle switcher only matters once there's a real second month to compare
+  if(capturedAfter.length){
+    cmpAngles.innerHTML=DATA.angles.map(function(a,i){
+      return '<button class="angle-tab'+(i===0?' active':'')+'" data-a="'+i+'">'+a+'</button>';
+    }).join('');
+    cmpAngles.querySelectorAll('.angle-tab').forEach(function(b){
+      b.addEventListener('click',function(){
+        cmpAngle=+b.dataset.a;
+        cmpAngles.querySelectorAll('.angle-tab').forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active'); renderCompare();
+      });
     });
-  });
+  } else {
+    cmpAngles.style.display='none';
+  }
+  // month picker for the right-hand side, shown once 2+ later months exist
+  if(capturedAfter.length>=2){
+    cmpRightTps.style.display='flex';
+    cmpRightTps.innerHTML=capturedAfter.map(function(idx){
+      return '<button class="tp'+(idx===cmpRightIdx?' active':'')+'" data-i="'+idx+'">'+cks[idx].label+'</button>';
+    }).join('');
+    cmpRightTps.querySelectorAll('.tp').forEach(function(b){
+      b.addEventListener('click',function(){
+        cmpRightIdx=+b.dataset.i;
+        cmpRightTps.querySelectorAll('.tp').forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active'); renderCompare();
+      });
+    });
+  }
   renderCompare();
 
   /* ── Charts (hand-built inline SVG line chart) ── */
