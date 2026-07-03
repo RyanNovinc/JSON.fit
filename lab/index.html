@@ -140,6 +140,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .vr-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:var(--text-3)}
 .vr-ph svg{opacity:.3}
 .vr-ph span{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase}
+/* empty-state for the static pre-tracker frames (no JS placeholder here) */
+.vr-frame.empty::after{content:'awaiting upload';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
 /* grid of four angles */
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
 .grid4 .g-lab{margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2)}
@@ -400,6 +402,80 @@ window.navBack=function(e){
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════════════════════════════
+     BEFORE THE TRACKER  (static, hand-written context section)
+     This sits OUTSIDE the measured record on purpose. Do NOT move any of
+     these old photos or numbers into DATA.checkins, or they will be pulled
+     into the compare, the charts and the segmental table and break them.
+     PHOTOS TO ADD (root-absolute paths, leading slash):
+       /images/lab/pre/67kg-front.webp   (skinny, ~5 yrs ago)
+       /images/lab/pre/82kg-front.webp   (first bulk peak, ~3.5 yrs ago,
+                                           use the relaxed garage shot, not the flex)
+     Leave the src as-is and the frame shows an "awaiting upload" placeholder.
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section" style="padding-top:1rem">
+  <div class="container">
+    <div class="section-head center sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Before the tracker</span>
+      <h2>How I got to the start line.</h2>
+      <p>The scan history above starts at 77&nbsp;kg on 1 July 2026. Here is the decade that came before it, so you know exactly who is doing this bulk, and why.</p>
+    </div>
+
+    <!-- the arc, one honest paragraph + the timeline cells -->
+    <div class="protocol sa sa-up" style="margin-bottom:2.5rem">
+      <p class="protocol-hyp">
+        185&nbsp;cm and <b class="h">under 60&nbsp;kg</b> right through my teens. <b class="h">67&nbsp;kg</b> when I left uni. Then I did a first bulk up to <b class="h">82&nbsp;kg</b> over about 18 months, and it worked. But I did it the miserable way, the same meals every day, forcing it down, so it never stuck, and I drifted back to <b class="h">77&nbsp;kg</b>. That is the whole reason I built JSON.fit, and the reason this run is tracked, sustainable, and built to actually last. Same size I proved I could reach, done properly this time.
+      </p>
+      <div class="protocol-grid">
+        <div class="proto-cell"><div class="proto-k">Teens</div><div class="proto-v">Under 60 kg</div></div>
+        <div class="proto-cell"><div class="proto-k">Uni</div><div class="proto-v">67 kg</div></div>
+        <div class="proto-cell"><div class="proto-k">First bulk · ~2022</div><div class="proto-v">82 kg · the hard way</div></div>
+        <div class="proto-cell"><div class="proto-k">Drifted back</div><div class="proto-v">77 kg · the restart</div></div>
+      </div>
+    </div>
+
+    <!-- the before/after proof photos: 67 kg → 82 kg -->
+    <div class="sa sa-up vr-block centered">
+      <div class="vr-subhead"><span class="vr-kicker">Proof · 67 kg to 82 kg · first bulk</span></div>
+      <div class="compare">
+        <div class="cmp-col">
+          <span class="cmp-tag">67 kg · the skinny one</span>
+          <div class="vr-frame">
+            <img src="/images/lab/pre/67kg-front.webp" alt="67 kg, before the first bulk"
+                 onclick="window.__lb(this.src,this.alt)"
+                 onerror="this.style.display='none';this.parentElement.classList.add('empty')">
+          </div>
+        </div>
+        <div class="cmp-mid">
+          <span class="cmp-arrow">&#8594;</span>
+          <div class="cmp-delta">~18 months<b class="up">+15 kg</b>the hard way</div>
+        </div>
+        <div class="cmp-col">
+          <span class="cmp-tag latest">82 kg · previous peak</span>
+          <div class="vr-frame">
+            <img src="/images/lab/pre/82kg-front.webp" alt="82 kg, first bulk peak"
+                 onclick="window.__lb(this.src,this.alt)"
+                 onerror="this.style.display='none';this.parentElement.classList.add('empty')">
+          </div>
+        </div>
+      </div>
+      <p class="rig-note"><strong>Older phone photos, not the scan rig.</strong> These are from my first bulk around 2022, years before this page existed. No Evolt data behind them, shown as proof the size is reachable, not as tracked results.</p>
+    </div>
+
+    <!-- honest disclaimer, seals the credibility of the measured record above -->
+    <div class="disclaimer sa sa-up" style="max-width:680px;margin-left:auto;margin-right:auto;margin-top:2rem">
+      <p>Everything above the line on this page is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. This one section is the deliberate exception: old phone photos from a different time and setup, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
+    </div>
+
+    <!-- OPTIONAL: once the pinned origin video is live, drop the link back in here.
+         <p style="text-align:center;margin-top:1.75rem">
+           <a class="log-vid" href="PASTE_VIDEO_URL" style="justify-content:center">▶ Watch the full story</a>
+         </p>
+    -->
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-wrap">
   <div class="cta-card sa sa-up">
@@ -442,6 +518,8 @@ window.navBack=function(e){
    - segments_kg is the per-limb lean mass straight off the Evolt
      segmental panel, copy it in each scan.
    Never publish a number that wasn't measured.
+   NOTE: the "Before the tracker" section in the HTML above is intentionally
+   NOT part of this data. Keep old, un-scanned photos out of `checkins`.
    ════════════════════════════════════════════════════════════════════ */
 var DATA = {
   startDate: "2026-07-01",
