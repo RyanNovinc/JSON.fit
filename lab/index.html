@@ -51,7 +51,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-web
 .violet{color:var(--violet)}
 .mono{font-family:'DM Mono',monospace}
 .container{max-width:1000px;margin:0 auto;padding:0 1.5rem}
-.section{padding:5rem 0}
+.section{padding:4.5rem 0 0}
 .label{font-family:'DM Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--violet);display:block;margin-bottom:1rem}
 
 /* scroll animations, same engine as index.html */
@@ -83,124 +83,150 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px}
 .hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all .3s}
 
-/* ── Hero ── */
-.hero{position:relative;padding:8.5rem 1.5rem 3.5rem;overflow:hidden;text-align:center}
-.hero::before{content:'';position:absolute;top:-20%;left:50%;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,var(--violet-glow) 0%,transparent 65%);opacity:.1;filter:blur(80px);transform:translateX(-50%);pointer-events:none}
-.hero-inner{max-width:680px;margin:0 auto;position:relative;z-index:2}
-.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--violet);margin-bottom:1.75rem;letter-spacing:.24em;text-transform:uppercase}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-.hero h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;margin-bottom:1.25rem}
-.hero-sub{font-size:1rem;color:var(--text-2);max-width:560px;margin:0 auto 2.25rem;line-height:1.75}
-
-/* ── Live vitals strip ── */
-.vitals{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--violet-border);border-radius:16px;overflow:hidden;max-width:680px;margin:0 auto}
-.vital{background:var(--surface);padding:1.4rem 1rem;text-align:center;position:relative}
-.vital-lbl{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:.55rem}
-.vital-val{font-family:'DM Mono',monospace;font-size:1.7rem;font-weight:500;line-height:1;letter-spacing:-.02em;color:var(--text)}
-.vital-val.hl{color:var(--violet)}
-.vital-unit{font-size:.7rem;color:var(--text-3);margin-left:.15rem}
-.vital-delta{font-family:'DM Mono',monospace;font-size:.62rem;margin-top:.5rem;display:inline-flex;align-items:center;gap:.2rem}
-.delta-up{color:var(--up)}.delta-down{color:var(--down)}.delta-flat{color:var(--flat)}
-.live-tag{position:absolute;top:.7rem;right:.7rem;display:flex;align-items:center;gap:.3rem;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;color:var(--up)}
+/* ── Hero: specimen sheet ── */
+.hero{position:relative;padding:7.5rem 1.5rem 3.25rem;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-22%;left:70%;width:720px;height:720px;border-radius:50%;background:radial-gradient(circle,var(--violet-glow) 0%,transparent 65%);opacity:.09;filter:blur(80px);pointer-events:none}
+.hero-grid{position:relative;z-index:2;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:3.5rem;align-items:center}
+.h-ov{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);margin-bottom:1.15rem}
+.h-display{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(2.6rem,5.4vw,3.9rem);line-height:1.05;letter-spacing:-.01em}
+.h-display em{color:var(--violet);font-style:italic}
+.h-sub{font-size:.95rem;color:var(--text-2);max-width:440px;margin-top:1.15rem;line-height:1.75}
+.h-hair{width:min(320px,52vw);height:1px;background:rgba(255,255,255,.14);margin:1.5rem 0 0}
+.h-status{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:1.3rem;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.h-status b{color:var(--text);font-weight:500}
+.h-status .live{display:inline-flex;align-items:center;gap:.4rem;color:var(--up)}
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--up);animation:pulse 1.6s infinite}
-.vitals-head{max-width:680px;margin:0 auto .55rem;display:flex;justify-content:center}
-.vitals-head .live-tag{position:static;font-size:.58rem;letter-spacing:.16em}
-@media(max-width:600px){.vitals{grid-template-columns:1fr 1fr}.hero{padding-top:7rem}}
-.hero-updated{margin-top:1.25rem;font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+/* specimen frame + readout rail */
+.spec{display:flex;flex-direction:column;gap:1rem}
+.spec-frame{position:relative;aspect-ratio:2/3;max-width:330px;width:100%;margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 30%,rgba(168,85,247,.08),#000 74%)}
+.spec-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;cursor:zoom-in;animation:vrfade .35s ease}
+.spec-cap{position:absolute;left:.65rem;bottom:.6rem;z-index:3;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.22rem .5rem;border-radius:4px;backdrop-filter:blur(6px)}
+/* viewfinder corner brackets */
+.spec-frame::before,.spec-frame::after,.spec-frame .bk::before,.spec-frame .bk::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--violet);border-style:solid;z-index:4;opacity:.85;pointer-events:none}
+.spec-frame::before{top:8px;left:8px;border-width:1.5px 0 0 1.5px;border-radius:3px 0 0 0}
+.spec-frame::after{top:8px;right:8px;border-width:1.5px 1.5px 0 0;border-radius:0 3px 0 0}
+.spec-frame .bk::before{bottom:8px;left:8px;border-width:0 0 1.5px 1.5px;border-radius:0 0 0 3px}
+.spec-frame .bk::after{bottom:8px;right:8px;border-width:0 1.5px 1.5px 0;border-radius:0 0 3px 0}
+/* readout rail under the frame */
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--violet-border);border-radius:12px;overflow:hidden;max-width:420px;margin:0 auto;width:100%}
+.ro{background:var(--surface);padding:.85rem .5rem;text-align:center}
+.ro-l{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.35rem}
+.ro-v{font-family:'DM Mono',monospace;font-size:1.05rem;color:var(--text);line-height:1}
+.ro-v.hl{color:var(--violet)}
+.ro-u{font-size:.58rem;color:var(--text-3);margin-left:.1rem}
+.ro-d{font-family:'DM Mono',monospace;font-size:.55rem;margin-top:.32rem;color:var(--text-3)}
+.ro-d.up{color:var(--up)}
+.ro-d.down{color:var(--down)}
+
+/* protocol bar under hero */
+.proto-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.012)}
+.proto-in{max-width:1000px;margin:0 auto;padding:.85rem 1.5rem;display:flex;justify-content:center;gap:2.2rem;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.proto-in b{color:var(--text-2);font-weight:500}
+.proto-in .k{color:var(--violet)}
 
 /* ── Section heads ── */
-.section-head{margin-bottom:2.5rem}
-.section-head.center{text-align:center}
-.section-head.center .section-line{margin:0 auto 1rem}
-.section-head h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:.65rem}
-.section-head p{color:var(--text-2);font-size:.98rem;max-width:560px}
-.section-head.center p{margin-left:auto;margin-right:auto}
+.section-head{margin-bottom:2rem;text-align:center}
+.section-head .section-line{margin:0 auto 1rem}
+.section-head h2{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:.55rem}
+.section-head p{color:var(--text-2);font-size:.95rem;max-width:540px;margin:0 auto}
 
-/* ── The plan ── */
-.protocol{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem}
-.protocol-hyp{font-size:1.05rem;line-height:1.7;color:var(--text);margin-bottom:1.75rem}
-.protocol-hyp .h{color:var(--violet);font-weight:600}
-.protocol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden}
-.proto-cell{background:var(--surface-2);padding:1.1rem 1rem}
-.proto-k{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.4rem}
-.proto-v{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.35}
-@media(max-width:700px){.protocol-grid{grid-template-columns:1fr 1fr}}
-
-/* ── Visual record (grid + before/after compare) ── */
+/* ── Visual record frames (shared by compare, hero, origin) ── */
 .vr-block{}
-.vr-subhead{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.vr-subhead{display:flex;align-items:center;justify-content:center;text-align:center;gap:.9rem;flex-direction:column;margin-bottom:1.1rem}
 .vr-kicker{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
-.vr-block.centered .vr-subhead{flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.9rem}
-.vr-block.centered .angle-tabs{justify-content:center}
 /* portrait frame, matches the 2:3 photo so nothing letterboxes */
 .vr-frame{position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,0.07),#000 72%)}
-.vr-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;animation:vrfade .35s ease}
+.vr-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;animation:vrfade .35s ease;z-index:2}
 @keyframes vrfade{from{opacity:0}to{opacity:1}}
-.vr-cap{position:absolute;left:.6rem;top:.55rem;z-index:2;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.2rem .45rem;border-radius:4px;backdrop-filter:blur(6px)}
-.vr-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:var(--text-3)}
+.vr-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:var(--text-3);z-index:1}
 .vr-ph svg{opacity:.3}
 .vr-ph span{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase}
 /* empty-state for the static pre-tracker frames (no JS placeholder here) */
 .vr-frame.empty::after{content:'awaiting upload';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
 /* autoplaying turn video, fills the 2:3 frame exactly like the photos */
-.vr-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.vr-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:2}
 /* crossfade stack: two stills fading back and forth on a loop */
-.vr-fade{position:absolute;inset:0}
+.vr-fade{position:absolute;inset:0;z-index:2}
 .vr-fade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:vrCross 7s infinite}
 .vr-fade img:nth-child(2){animation-delay:3.5s}
 @keyframes vrCross{0%{opacity:0}7%{opacity:1}43%{opacity:1}50%{opacity:0}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.vr-fade img{animation:none}.vr-fade img:nth-child(1){opacity:1}}
 /* designed "next capture" state for the empty right-hand compare frame */
-.vr-next{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;text-align:center;padding:1rem}
+.vr-next{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;text-align:center;padding:1rem;z-index:1}
 .vr-next .nc-lbl{display:flex;align-items:center;gap:.4rem;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)}
 .vr-next .nc-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);animation:pulse 1.6s infinite}
 .vr-next .nc-date{font-family:'DM Mono',monospace;font-size:1.25rem;color:var(--violet);letter-spacing:.01em}
 .vr-next .nc-sub{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
-/* grid of four angles */
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
-.grid4 .g-lab{margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2)}
-.grid4 .g-cell.dim .vr-frame{opacity:.4}
-@media(max-width:620px){.grid4{grid-template-columns:1fr 1fr;gap:.7rem}}
 /* before/after compare */
-.compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.25rem;max-width:780px;margin:0 auto}
-.compare .vr-frame{max-width:300px;width:100%;margin:0 auto}
+.compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.25rem;max-width:760px;margin:0 auto}
+.compare .vr-frame{max-width:290px;width:100%;margin:0 auto}
 .cmp-tag{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:.6rem}
 .cmp-tag.latest{color:var(--violet)}
 .cmp-mid{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding-top:1.4rem}
 .cmp-arrow{color:var(--violet);font-size:1.1rem;line-height:1}
 .cmp-delta{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-3);text-align:center;letter-spacing:.04em;line-height:1.55}
-.cmp-delta b{display:block;font-size:.82rem;font-weight:500}
+.cmp-delta b{display:block;font-size:.82rem;font-weight:500;color:var(--text-2)}
 .cmp-delta b.up{color:var(--up)}
 @media(max-width:620px){
   .compare{grid-template-columns:1fr 1fr;gap:.7rem}
   .cmp-mid{grid-column:1/-1;order:-1;flex-direction:row;justify-content:center;padding-top:0;gap:.6rem}
   .cmp-arrow{transform:rotate(90deg)}
 }
-/* shared pill / tab controls (carried over from the rig) */
-.angle-tabs{display:flex;gap:.4rem;flex-wrap:wrap}
+/* shared pill / tab controls */
+.angle-tabs{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-top:1.4rem}
 .angle-tab{padding:.4rem .85rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.06em;cursor:pointer;transition:all .15s;text-transform:uppercase}
 .angle-tab:hover{border-color:var(--violet-border);color:var(--text)}
 .angle-tab.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
-.timepoints{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.timepoints{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-top:.8rem}
 .tp{padding:.4rem .9rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;cursor:pointer;transition:all .15s}
 .tp:hover{border-color:var(--violet-border);color:var(--text)}
 .tp.active{background:var(--violet);border-color:var(--violet);color:#0a0010;font-weight:500}
-.rig-note{margin-top:1.75rem;font-size:.82rem;color:var(--text-3);line-height:1.6;text-align:center;max-width:560px;margin-left:auto;margin-right:auto}
-.rig-note strong{color:var(--text-2);font-weight:600}
 
-/* ── Charts ── */
-.chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
-@media(max-width:760px){.chart-grid{grid-template-columns:1fr}}
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.4rem 1rem}
-.chart-card h3{font-size:.92rem;font-weight:700;margin-bottom:.2rem}
-.chart-card .ch-sub{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);letter-spacing:.04em;margin-bottom:1rem}
+/* ── Trend: runway chart + latest scan strip ── */
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.5rem 1.1rem}
+.chart-top{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.chart-card h3{font-size:.95rem;font-weight:700}
+.ch-sub{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);letter-spacing:.04em}
 .chart-svg{width:100%;height:auto;display:block;overflow:visible}
-.ch-legend{display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap}
-.ch-leg{display:flex;align-items:center;gap:.4rem;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-2)}
-.ch-swatch{width:10px;height:3px;border-radius:2px}
+.scan-kick{margin:1.6rem 0 .7rem;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
+.scan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.scan-cell{background:var(--surface);padding:1.15rem .8rem;text-align:center}
+.scan-val{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);line-height:1}
+.scan-val.hl{color:var(--violet)}
+.scan-lbl{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.45rem}
+@media(max-width:600px){.scan-grid{grid-template-columns:1fr 1fr}}
 
-/* ── Data tables ── */
-.datatable{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+/* ── Monthly log ── */
+.log{position:relative;padding-left:1.75rem;max-width:760px;margin:0 auto}
+.log::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--border)}
+.log-entry{position:relative;padding-bottom:2.25rem}
+.log-entry:last-child{padding-bottom:0}
+.log-dot{position:absolute;left:-1.75rem;top:4px;width:13px;height:13px;border-radius:50%;border:2px solid var(--violet);background:var(--violet);box-shadow:0 0 0 4px var(--bg)}
+.log-dot.hollow{background:var(--bg)}
+.log-meta{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.55rem}
+.log-mo{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+.log-date{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em}
+.log-stats{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}
+.log-stat{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--text-2);padding:.2rem .55rem;border:1px solid var(--border);border-radius:5px}
+.log-stat .d-up{color:var(--up)}.log-stat .d-down{color:var(--down)}
+.log-notes{color:var(--text-2);font-size:.9rem;line-height:1.7;max-width:620px}
+.log-vid{display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--violet);text-decoration:none}
+.log-vid:hover{text-decoration:underline}
+.log-thumbs{display:flex;gap:.5rem;margin-top:.9rem}
+.log-thumb{position:relative;width:52px;aspect-ratio:2/3;border-radius:7px;overflow:hidden;border:1px solid var(--border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,.08),#000 75%)}
+.log-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;cursor:zoom-in;z-index:2}
+.log-thumb span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.42rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);z-index:1}
+.log-future{color:var(--text-3);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding-top:.15rem}
+
+/* ── Full data disclosure ── */
+.ddata{max-width:760px;margin:0 auto;border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden}
+.ddata summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.35rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.ddata summary::-webkit-details-marker{display:none}
+.ddata summary .chev{color:var(--violet);transition:transform .2s;font-size:.8rem}
+.ddata[open] summary .chev{transform:rotate(90deg)}
+.ddata[open] summary{border-bottom:1px solid var(--border);color:var(--text)}
 .dt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table.dt{width:100%;border-collapse:collapse;min-width:520px}
 .dt th,.dt td{padding:.7rem 1rem;text-align:right;font-family:'DM Mono',monospace;font-size:.78rem;border-bottom:1px solid var(--border)}
@@ -211,47 +237,27 @@ table.dt{width:100%;border-collapse:collapse;min-width:520px}
 .dt td.delta-up{color:var(--up)}
 .dt td.delta-down{color:var(--down)}
 .dt td.now{color:var(--violet);font-weight:500}
+.dt td.grp,.dt th.grp{color:var(--violet);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;background:var(--surface-2)}
+.ddata .d-note{padding:.9rem 1.35rem 1.1rem;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--text-3)}
 
-/* ── Scan breakdown ── */
-.scan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.scan-cell{background:var(--surface);padding:1.3rem 1rem;text-align:center}
-.scan-val{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;color:var(--text);line-height:1}
-.scan-val.hl{color:var(--violet)}
-.scan-lbl{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.5rem}
-@media(max-width:600px){.scan-grid{grid-template-columns:1fr 1fr}}
-
-/* ── Monthly log / check-in log ── */
-.log{position:relative;padding-left:1.75rem}
-.log::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--border)}
-.log-entry{position:relative;padding-bottom:2rem}
-.log-entry:last-child{padding-bottom:0}
-.log-dot{position:absolute;left:-1.75rem;top:4px;width:13px;height:13px;border-radius:50%;border:2px solid var(--violet);background:var(--bg);box-shadow:0 0 0 4px var(--bg)}
-.log-entry:first-child .log-dot{background:var(--violet)}
-.log-meta{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.6rem}
-.log-mo{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
-.log-date{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em}
-.log-stats{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}
-.log-stat{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--text-2);padding:.2rem .55rem;border:1px solid var(--border);border-radius:5px}
-.log-stat .d-up{color:var(--up)}.log-stat .d-down{color:var(--down)}
-.log-notes{color:var(--text-2);font-size:.9rem;line-height:1.7}
-.log-vid{display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--violet);text-decoration:none}
-.log-vid:hover{text-decoration:underline}
-
-/* ── Methodology ── */
-.method-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-@media(max-width:700px){.method-grid{grid-template-columns:1fr}}
-.method-cell{background:var(--surface);padding:1.5rem}
-.method-cell h4{font-size:.88rem;font-weight:700;margin-bottom:.45rem;display:flex;align-items:center;gap:.5rem}
-.method-cell h4 .ic{color:var(--violet)}
-.method-cell p{color:var(--text-2);font-size:.84rem;line-height:1.65}
-.disclaimer{margin-top:1.25rem;padding:1.1rem 1.25rem;border-left:2px solid var(--violet-border);background:var(--violet-soft);border-radius:0 8px 8px 0}
+/* ── Origin story ── */
+.protocol{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:760px;margin:0 auto 2.5rem}
+.protocol-hyp{font-size:1rem;line-height:1.75;color:var(--text)}
+.protocol-hyp .h{color:var(--violet);font-weight:600}
+.protocol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-top:1.5rem}
+.proto-cell{background:var(--surface-2);padding:1.1rem 1rem}
+.proto-k{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.4rem}
+.proto-v{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.35}
+@media(max-width:700px){.protocol-grid{grid-template-columns:1fr 1fr}}
+.disclaimer{margin:2rem auto 0;padding:1.1rem 1.25rem;border-left:2px solid var(--violet-border);background:var(--violet-soft);border-radius:0 8px 8px 0;max-width:680px}
 .disclaimer p{font-size:.82rem;color:var(--text-2);line-height:1.65}
 
 /* ── CTA ── */
-.cta-wrap{padding:4rem 0 5rem;display:flex;justify-content:center}
-.cta-card{max-width:520px;width:100%;background:var(--surface);border:1px solid var(--violet-border);border-radius:18px;padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.cta-wrap{padding:4.5rem 0 5rem;display:flex;justify-content:center}
+.cta-card{max-width:520px;width:100%;background:var(--surface);border:1px solid var(--violet-border);border-radius:18px;padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden;margin:0 1.5rem}
 .cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--violet),transparent)}
-.cta-card h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.6rem}
+.cta-card h2{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:1.9rem;letter-spacing:-.01em;line-height:1.15;margin-bottom:.6rem}
+.cta-card h2 em{color:var(--violet);font-style:italic}
 .cta-card p{color:var(--text-2);font-size:.92rem;line-height:1.65;margin-bottom:1.5rem}
 .cta-card p .v{color:var(--violet);font-weight:600}
 .cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem 2rem;border-radius:12px;font-size:.95rem;font-weight:700;text-decoration:none;background:var(--violet);color:#0a0010;transition:transform .25s,box-shadow .25s}
@@ -279,8 +285,15 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
   .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
   .hamburger.open span:nth-child(2){opacity:0}
   .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-  .protocol-grid{grid-template-columns:1fr 1fr}
+  .hero{padding:6.5rem 1.5rem 2.75rem}
+  .hero-grid{grid-template-columns:1fr;gap:2.25rem;text-align:center}
+  .h-sub{margin-left:auto;margin-right:auto}
+  .h-hair{margin:1.4rem auto 0}
+  .h-status{justify-content:center}
+  .spec-frame{max-width:270px}
+  .proto-in{gap:.9rem 1.6rem}
 }
+@media(prefers-reduced-motion:reduce){.live-dot,.nc-dot{animation:none}}
 </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -322,97 +335,93 @@ window.navBack=function(e){
 };
 </script>
 
-<!-- HERO + LIVE VITALS -->
+<!-- HERO: specimen sheet. Serif masthead left, latest capture + readout rail right. -->
 <section class="hero">
-  <div class="hero-inner">
-    <div class="badge">Updated monthly</div>
-    <h1>Bulking to 90&nbsp;kg<br>on <span class="violet">the app I built.</span></h1>
-    <p class="hero-sub">I built JSON.fit. This is me using it to bulk from 77 to 90&nbsp;kg, tracked in public every month.</p>
-    <div class="vitals-head"><span class="live-tag"><span class="live-dot"></span>Latest</span></div>
-    <div class="vitals" id="vitals"></div>
-    <p class="hero-updated" id="updated"></p>
+  <div class="hero-grid" id="heroGrid">
+    <div>
+      <div class="h-ov">The Lab &middot; <span class="violet">self-experiment</span> &middot; n = 1</div>
+      <h1 class="h-display">The bulk, <em>measured.</em></h1>
+      <p class="h-sub">I built JSON.fit. Now it's bulking me from 77 to 90&nbsp;kg. Every scan, photo and number lands here as it happens, whether it's working or not.</p>
+      <div class="h-hair"></div>
+      <div class="h-status" id="heroStatus"></div>
+    </div>
+    <div class="spec">
+      <div class="spec-frame" id="specFrame"><div class="bk"></div></div>
+      <div class="readout" id="readout"></div>
+    </div>
   </div>
 </section>
 
-<!-- VISUAL RECORD -->
-<section class="section" style="padding-top:2.5rem">
+<!-- protocol bar: rendered from DATA.plan.cells -->
+<div class="proto-bar"><div class="proto-in" id="protoBar"></div></div>
+
+<!-- THE RECORD: baseline vs latest capture -->
+<section class="section">
   <div class="container">
-    <div class="section-head center sa sa-up">
+    <div class="section-head sa sa-up">
       <div class="section-line"></div>
-      <span class="label">Photos</span>
-      <h2>Progress photos.</h2>
-      <p>Four angles, same setup every month.</p>
+      <span class="label">The record</span>
+      <h2>Where it started. Where it is.</h2>
+      <p>Same rig, same angles, first of every month. This pair is the whole page in one glance.</p>
     </div>
-
-    <!-- current state: four angles -->
-    <div class="sa sa-up vr-block">
-      <div class="vr-subhead"><span class="vr-kicker">Current state · all angles</span><div class="timepoints" id="gridTps"></div></div>
-      <div class="grid4" id="gridAngles"></div>
-    </div>
-
-    <!-- over time: before / after -->
-    <div class="sa sa-up vr-block centered" style="margin-top:3rem">
-      <div class="vr-subhead"><span class="vr-kicker">Over time · before &amp; after</span><div class="angle-tabs" id="cmpAngles"></div><div class="timepoints" id="cmpRightTps" style="display:none"></div></div>
+    <div class="sa sa-up">
       <div class="compare" id="compare"></div>
+      <div class="angle-tabs" id="cmpAngles"></div>
+      <div class="timepoints" id="cmpRightTps" style="display:none"></div>
     </div>
   </div>
 </section>
 
-<!-- BIOMETRICS -->
-<section class="section" style="padding-top:1rem">
+<!-- THE TREND: runway chart + latest scan strip -->
+<section class="section">
   <div class="container">
-    <div class="section-head center sa sa-up">
+    <div class="section-head sa sa-up">
       <div class="section-line"></div>
-      <span class="label">Body Composition</span>
-      <h2>The numbers over time.</h2>
+      <span class="label">The trend</span>
+      <h2>One line to watch.</h2>
+      <p>Bodyweight against the 90&nbsp;kg target. The dots fill in scan by scan.</p>
     </div>
-    <div class="chart-grid sa-stagger">
-      <div class="chart-card">
+    <div class="chart-card sa sa-up">
+      <div class="chart-top">
         <h3>Bodyweight</h3>
-        <div class="ch-sub" id="wtSub"></div>
-        <div id="chartWeight"></div>
+        <span class="ch-sub" id="wtSub"></span>
       </div>
-      <div class="chart-card">
-        <h3>Body fat</h3>
-        <div class="ch-sub" id="bfSub">bioimpedance · % of total mass</div>
-        <div id="chartBf"></div>
-      </div>
-      <div class="chart-card" style="grid-column:1/-1">
-        <h3>Lean mass vs fat mass</h3>
-        <div class="ch-sub">kg · the gain you actually want to see climb is the violet</div>
-        <div id="chartComp"></div>
-        <div class="ch-legend">
-          <span class="ch-leg"><span class="ch-swatch" style="background:var(--violet)"></span> Lean mass</span>
-          <span class="ch-leg"><span class="ch-swatch" style="background:var(--amber)"></span> Fat mass</span>
-        </div>
-      </div>
+      <div id="chartWeight"></div>
+    </div>
+    <div class="sa sa-up">
+      <p class="scan-kick" id="scanKick"></p>
+      <div class="scan-grid" id="scanGrid"></div>
     </div>
   </div>
 </section>
 
-<!-- LATEST SCAN -->
-<section class="section" style="padding-top:1rem">
+<!-- THE LOG: every check-in in my own words, newest first -->
+<section class="section">
   <div class="container">
-    <div class="section-head center sa sa-up">
+    <div class="section-head sa sa-up">
       <div class="section-line"></div>
-      <span class="label">Latest Body Scan</span>
-      <h2 id="scanTitle">Latest scan.</h2>
-      <p>The deeper markers a bathroom scale can't give you.</p>
+      <span class="label">The log</span>
+      <h2>Month by month, in my own words.</h2>
+      <p>Every scan gets an honest write-up. What moved, what didn't, what changes next.</p>
     </div>
-    <div class="scan-grid sa sa-up" id="scanGrid"></div>
+    <div class="log sa sa-up" id="logList"></div>
   </div>
 </section>
 
-<!-- MEASUREMENTS -->
-<section class="section" style="padding-top:1rem">
+<!-- FULL DATA: complete history behind a disclosure, not a separate page -->
+<section class="section">
   <div class="container">
-    <div class="section-head center sa sa-up">
+    <div class="section-head sa sa-up">
       <div class="section-line"></div>
-      <span class="label">Segmental Lean Mass</span>
-      <h2>Where the size is going.</h2>
-      <p>Lean mass per limb, straight off the monthly Evolt scan, same machine every time, so left vs right and month to month stay comparable. Δ is total change from baseline.</p>
+      <span class="label">Full data</span>
+      <h2>Every number, if you want it.</h2>
+      <p>The complete scan history, out of the way until you ask for it.</p>
     </div>
-    <div class="datatable sa sa-up"><div class="dt-scroll"><table class="dt" id="measureTable"></table></div></div>
+    <details class="ddata sa sa-up">
+      <summary>Scan history &middot; every metric, every month <span class="chev">&#9656;</span></summary>
+      <div class="dt-scroll"><table class="dt" id="fullTable"></table></div>
+      <p class="d-note">// same Evolt 360 every scan &middot; &Delta; is total change from baseline &middot; a column is added each month &middot; "-" means not measured</p>
+    </details>
   </div>
 </section>
 
@@ -420,41 +429,41 @@ window.navBack=function(e){
      BEFORE THE TRACKER  (static, hand-written context section)
      This sits OUTSIDE the measured record on purpose. Do NOT move any of
      these old photos or numbers into DATA.checkins, or they will be pulled
-     into the compare, the charts and the segmental table and break them.
+     into the compare, the chart and the full-data table and break them.
      PHOTOS (root-absolute paths, leading slash), saved at /images/pre/ :
        /images/pre/67kg-front.webp   (skinny, ~5 yrs ago)
        /images/pre/82kg-a.webp       (first bulk peak, ~3.5 yrs ago,
                                        relaxed garage shot, not the flex)
      Leave the src as-is and the frame shows an "awaiting upload" placeholder.
      ════════════════════════════════════════════════════════════════════ -->
-<section class="section" style="padding-top:1rem">
+<section class="section">
   <div class="container">
-    <div class="section-head center sa sa-up">
+    <div class="section-head sa sa-up">
       <div class="section-line"></div>
       <span class="label">Before the tracker</span>
       <h2>How I got to the start line.</h2>
-      <p>The scan history above starts at 77&nbsp;kg on 1 July 2026. Here is the decade that came before it, so you know exactly who is doing this bulk, and why.</p>
+      <p>The record above starts at 77&nbsp;kg on 1 July 2026. Here is the decade that came before it, so you know exactly who is doing this bulk, and why.</p>
     </div>
 
     <!-- the arc, one honest paragraph + the timeline cells -->
-    <div class="protocol sa sa-up" style="margin-bottom:2.5rem">
+    <div class="protocol sa sa-up">
       <p class="protocol-hyp">
-        185&nbsp;cm and <b class="h">under 60&nbsp;kg</b> right through my teens. <b class="h">67&nbsp;kg</b> when I left uni. Then I did a first bulk up to <b class="h">82&nbsp;kg</b> over about 18 months, and it worked. But I did it the miserable way, the same meals every day, forcing it down, so it never stuck, and I drifted back to <b class="h">77&nbsp;kg</b>. That is the whole reason I built JSON.fit, and the reason this run is tracked, sustainable, and built to actually last. Same size I proved I could reach, done properly this time.
+        185&nbsp;cm and <b class="h">under 60&nbsp;kg</b> right through my teens. <b class="h">67&nbsp;kg</b> leaving uni. A first bulk got me to <b class="h">82&nbsp;kg</b> in 18 months, but I did it the miserable way, the same meals every day, forced down, so it never stuck and I drifted back to <b class="h">77&nbsp;kg</b>. That's why JSON.fit exists, and why this run is built to last. Same size I've already proven I can reach, done properly this time.
       </p>
       <div class="protocol-grid">
         <div class="proto-cell"><div class="proto-k">Teens</div><div class="proto-v">Under 60 kg</div></div>
         <div class="proto-cell"><div class="proto-k">Uni</div><div class="proto-v">67 kg</div></div>
-        <div class="proto-cell"><div class="proto-k">First bulk · ~2022</div><div class="proto-v">82 kg · the hard way</div></div>
-        <div class="proto-cell"><div class="proto-k">Drifted back</div><div class="proto-v">77 kg · the restart</div></div>
+        <div class="proto-cell"><div class="proto-k">First bulk &middot; ~2022</div><div class="proto-v">82 kg &middot; the hard way</div></div>
+        <div class="proto-cell"><div class="proto-k">Drifted back</div><div class="proto-v">77 kg &middot; the restart</div></div>
       </div>
     </div>
 
     <!-- the before/after proof photos: 67 kg → 82 kg -->
-    <div class="sa sa-up vr-block centered">
-      <div class="vr-subhead"><span class="vr-kicker">Proof it worked · but the method didn't last</span></div>
+    <div class="sa sa-up vr-block">
+      <div class="vr-subhead"><span class="vr-kicker">Proof it worked &middot; but the method didn't last</span></div>
       <div class="compare">
         <div class="cmp-col">
-          <span class="cmp-tag">67 kg · the skinny one</span>
+          <span class="cmp-tag">67 kg &middot; the skinny one</span>
           <div class="vr-frame">
             <video src="/images/pre/67kg-turn.mp4"
                    poster="/images/pre/67kg-front.webp"
@@ -467,7 +476,7 @@ window.navBack=function(e){
           <div class="cmp-delta">~18 months<b class="up">+15 kg</b>didn't stick</div>
         </div>
         <div class="cmp-col">
-          <span class="cmp-tag latest">82 kg · previous peak</span>
+          <span class="cmp-tag latest">82 kg &middot; previous peak</span>
           <div class="vr-frame">
             <div class="vr-fade">
               <img src="/images/pre/82kg-a.webp" alt="82 kg, first bulk peak"
@@ -480,8 +489,8 @@ window.navBack=function(e){
     </div>
 
     <!-- honest disclaimer, seals the credibility of the measured record above -->
-    <div class="disclaimer sa sa-up" style="max-width:680px;margin-left:auto;margin-right:auto;margin-top:2rem">
-      <p>Everything above the line on this page is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. This one section is the deliberate exception: old phone photos from a different time and setup, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
+    <div class="disclaimer sa sa-up">
+      <p>Everything above this section is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. These two old phone photos are the one deliberate exception, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
     </div>
 
     <!-- OPTIONAL: once the pinned origin video is live, drop the link back in here.
@@ -495,13 +504,13 @@ window.navBack=function(e){
 <!-- CTA -->
 <section class="cta-wrap">
   <div class="cta-card sa sa-up">
-    <h2>Run the same setup.</h2>
-    <p>Everything on this page (the program, the meal plan, the tracking) comes out of <span class="v">JSON.fit</span>. Same free app, same tools, your numbers.</p>
+    <h2>Same app. <em>Your numbers.</em></h2>
+    <p>The program, the meal plan and the tracking on this page all come out of <span class="v">JSON.fit</span>. Same free app, same tools.</p>
     <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'lab_cta'})">
       <svg width="15" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="currentColor"/></svg>
       Download on the App Store
     </a>
-    <p class="cta-foot">$0 · no subscription · no accounts</p>
+    <p class="cta-foot">$0 &middot; no subscription &middot; no accounts</p>
   </div>
 </section>
 
@@ -512,7 +521,7 @@ window.navBack=function(e){
     <a href="https://json.fit/meals.html">Meals</a>
     <a href="https://json.fit/privacy-policy.html">Privacy</a>
   </div>
-  <div class="foot-r">© 2026 JSON.fit</div>
+  <div class="foot-r">&copy; 2026 JSON.fit</div>
 </footer>
 
 <div class="lightbox" id="lightbox"><img id="lbImg" src="" alt=""></div>
@@ -571,104 +580,90 @@ var DATA = {
 };
 
 (function(){
-  var APP="https://apps.apple.com/au/app/json-fit/id6758357834";
   var cks=DATA.checkins;
   var latest=cks[cks.length-1], base=cks[0];
+  var prev=cks.length>1?cks[cks.length-2]:base;
+  var TOTAL_SCANS=13; // baseline + 12 monthly scans
 
   function fmt(n,d){ if(n==null) return "-"; return (d!=null)?Number(n).toFixed(d):String(n); }
-  function delta(cur,prev,d){ if(cur==null||prev==null) return null; return +(cur-prev).toFixed(d==null?1:d); }
+  function delta(cur,prevV,d){ if(cur==null||prevV==null) return null; return +(cur-prevV).toFixed(d==null?1:d); }
   function fmtDate(s){ var dt=new Date(s+"T00:00:00"); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); }
   function monthsBetween(a,b){ var x=new Date(a),y=new Date(b); return (y.getFullYear()-x.getFullYear())*12+(y.getMonth()-x.getMonth()); }
 
-  /* ── Live vitals ── */
-  function vitalCard(lbl,val,unit,d,dUnit,hl){
-    var dh="";
-    if(d!=null){
-      var cls=d>0?'delta-up':(d<0?'delta-down':'delta-flat');
-      var arrow=d>0?'▲':(d<0?'▼':'-');
-      dh='<div class="vital-delta '+cls+'">'+arrow+' '+(d>0?'+':'')+fmt(Math.abs(d),1).replace('-','')+' '+(dUnit||'')+'</div>';
-      if(d>0){dh='<div class="vital-delta delta-up">▲ +'+fmt(d,1)+' '+(dUnit||'')+'</div>';}
-      else if(d<0){dh='<div class="vital-delta delta-down">▼ '+fmt(d,1)+' '+(dUnit||'')+'</div>';}
-      else{dh='<div class="vital-delta delta-flat">- '+(dUnit||'')+'</div>';}
-    }
-    return '<div class="vital">'+
-      '<div class="vital-lbl">'+lbl+'</div>'+
-      '<div class="vital-val'+(hl?' hl':'')+'"><span class="count-up" data-target="'+val+'" data-decimals="'+( (val%1!==0)?1:0)+'">'+val+'</span><span class="vital-unit">'+(unit||'')+'</span></div>'+
-      dh+'</div>';
-  }
-  var prev=cks.length>1?cks[cks.length-2]:base;
-  document.getElementById('vitals').innerHTML=
-    vitalCard('Bodyweight',latest.weight_kg,'kg',delta(latest.weight_kg,prev.weight_kg),'kg',true)+
-    vitalCard('Body fat',latest.bodyfat_pct,'%',delta(latest.bodyfat_pct,prev.bodyfat_pct),'pt',false)+
-    vitalCard('Lean mass',latest.lean_mass_kg,'kg',delta(latest.lean_mass_kg,prev.lean_mass_kg),'kg',true)+
-    vitalCard('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false);
-
-  // "day X" counts from the start date to *today* (evaluated in the visitor's
-  // browser on each load), so it ticks up automatically without touching the file.
+  /* ── Hero status line ── */
   var _start=new Date(DATA.startDate+"T00:00:00");
   var _now=new Date();
   var _today=new Date(_now.getFullYear(),_now.getMonth(),_now.getDate());
   var _dayOfBulk=Math.max(0,Math.round((_today-_start)/86400000));
-  document.getElementById('updated').textContent='// updated '+fmtDate(latest.date)+' · day '+_dayOfBulk+' of the bulk';
-
-  /* ── Visual record: grid + before/after compare ── */
-  var PH='<div class="vr-ph">'+
-    '<svg width="56" height="106" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>'+
-    '<span>awaiting capture</span></div>';
-  function hasShots(ck){ if(!ck||!ck.photos) return false; for(var k in ck.photos){ if(ck.photos[k]) return true; } return false; }
-  function frameHTML(ck, ang, cap){
-    var src=ck&&ck.photos&&ck.photos[ang];
-    if(src) return (cap?'<span class="vr-cap">'+cap+'</span>':'')+'<img src="'+src+'" alt="'+ck.label+' '+ang+'" onclick="window.__lb(this.src,this.alt)">';
-    return PH;
-  }
-
-  // --- grid: all four angles for one timepoint (defaults to the latest captured) ---
-  var gridAngles=document.getElementById('gridAngles');
-  var gridTps=document.getElementById('gridTps');
-  var gridTp=0;
-  for(var gi=0;gi<cks.length;gi++){ if(hasShots(cks[gi])) gridTp=gi; }
-  function renderGrid(){
-    var ck=cks[gridTp];
-    gridAngles.innerHTML=DATA.angles.map(function(a){
-      var on=ck.photos&&ck.photos[a];
-      return '<div class="g-cell'+(on?'':' dim')+'"><div class="vr-frame">'+frameHTML(ck,a,null)+'</div><div class="g-lab">'+a+'</div></div>';
-    }).join('');
-  }
-  gridTps.innerHTML=cks.map(function(c,i){
-    return '<button class="tp'+(i===gridTp?' active':'')+'" data-t="'+i+'">'+c.label+'</button>';
-  }).join('');
-  gridTps.querySelectorAll('.tp').forEach(function(b){
-    b.addEventListener('click',function(){
-      gridTp=+b.dataset.t;
-      gridTps.querySelectorAll('.tp').forEach(function(x){x.classList.remove('active');});
-      b.classList.add('active'); renderGrid();
-    });
-  });
-  renderGrid();
-
-  // --- before / after compare: baseline vs a chosen later month ---
-  var compareEl=document.getElementById('compare');
-  var cmpAngles=document.getElementById('cmpAngles');
-  var cmpRightTps=document.getElementById('cmpRightTps');
-  var cmpAngle=0;
-  var baseCk=cks[0];
-  // indices of captured check-ins after the baseline
-  var capturedAfter=[];
-  for(var ci=1;ci<cks.length;ci++){ if(hasShots(cks[ci])) capturedAfter.push(ci); }
-  var cmpRightIdx=capturedAfter.length?capturedAfter[capturedAfter.length-1]:null;
-
-  // Next scheduled capture = the 1st of the month after the latest scan.
-  // Rolls forward on its own the moment a new month's scan is added.
   function nextCaptureLabel(){
     var d=new Date(latest.date+"T00:00:00");
     d=new Date(d.getFullYear(),d.getMonth()+1,1);
     return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
   }
+  document.getElementById('heroStatus').innerHTML=
+    '<span class="live"><span class="live-dot"></span>Day '+_dayOfBulk+'</span>'+
+    '<span>Scan <b>'+cks.length+' of '+TOTAL_SCANS+'</b></span>'+
+    '<span>Next capture <b>'+nextCaptureLabel()+'</b></span>';
+
+  /* ── Specimen frame: latest captured photo, front preferred ── */
+  var PH='<div class="vr-ph">'+
+    '<svg width="56" height="106" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>'+
+    '<span>awaiting capture</span></div>';
+  function hasShots(ck){ if(!ck||!ck.photos) return false; for(var k in ck.photos){ if(ck.photos[k]) return true; } return false; }
+  function frameHTML(ck, ang){
+    var src=ck&&ck.photos&&ck.photos[ang];
+    if(src) return PH+'<img src="'+src+'" alt="'+ck.label+' '+ang+'" onclick="window.__lb(this.src,this.alt)" onerror="this.style.display=\'none\'">';
+    return PH;
+  }
+  var specCk=null;
+  for(var si=cks.length-1;si>=0;si--){ if(hasShots(cks[si])){ specCk=cks[si]; break; } }
+  var specFrame=document.getElementById('specFrame');
+  if(specCk){
+    var specAng=specCk.photos[DATA.angles[0]]?DATA.angles[0]:null;
+    if(!specAng){ for(var ai=0;ai<DATA.angles.length;ai++){ if(specCk.photos[DATA.angles[ai]]){ specAng=DATA.angles[ai]; break; } } }
+    specFrame.innerHTML='<div class="bk"></div>'+frameHTML(specCk,specAng)+
+      '<span class="spec-cap">'+specCk.label+' &middot; '+fmtDate(specCk.date)+' &middot; '+specAng+'</span>';
+  } else {
+    specFrame.innerHTML='<div class="bk"></div>'+PH;
+  }
+
+  /* ── Readout rail ── */
+  function roCell(lbl,val,unit,d,dUnit,hl,startSub){
+    var sub;
+    if(cks.length===1){ sub='<div class="ro-d">'+(startSub||'start')+'</div>'; }
+    else if(d==null){ sub='<div class="ro-d">'+(startSub||'&nbsp;')+'</div>'; }
+    else if(d>0){ sub='<div class="ro-d up">&#9650; +'+fmt(d,1)+' '+(dUnit||'')+'</div>'; }
+    else if(d<0){ sub='<div class="ro-d down">&#9660; '+fmt(d,1)+' '+(dUnit||'')+'</div>'; }
+    else { sub='<div class="ro-d">- '+(dUnit||'')+'</div>'; }
+    return '<div class="ro"><div class="ro-l">'+lbl+'</div>'+
+      '<div class="ro-v'+(hl?' hl':'')+'"><span class="count-up" data-target="'+val+'" data-decimals="1">'+fmt(val,1)+'</span><span class="ro-u">'+(unit||'')+'</span></div>'+
+      sub+'</div>';
+  }
+  document.getElementById('readout').innerHTML=
+    roCell('Weight',latest.weight_kg,'kg',cks.length>1?delta(latest.weight_kg,prev.weight_kg):null,'kg',true,'start')+
+    roCell('Body fat',latest.bodyfat_pct,'%',cks.length>1?delta(latest.bodyfat_pct,prev.bodyfat_pct):null,'pt',false,'start')+
+    roCell('Lean',latest.lean_mass_kg,'kg',cks.length>1?delta(latest.lean_mass_kg,prev.lean_mass_kg):null,'kg',true,'start')+
+    roCell('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false,'of '+DATA.target.weight_kg);
+
+  /* ── Protocol bar ── */
+  document.getElementById('protoBar').innerHTML=DATA.plan.cells.map(function(c){
+    return '<span><span class="k">'+c.k+'</span> <b>'+c.v+'</b></span>';
+  }).join('');
+
+  /* ── The record: baseline vs latest capture ── */
+  var compareEl=document.getElementById('compare');
+  var cmpAngles=document.getElementById('cmpAngles');
+  var cmpRightTps=document.getElementById('cmpRightTps');
+  var cmpAngle=0;
+  var baseCk=cks[0];
+  var capturedAfter=[];
+  for(var ci=1;ci<cks.length;ci++){ if(hasShots(cks[ci])) capturedAfter.push(ci); }
+  var cmpRightIdx=capturedAfter.length?capturedAfter[capturedAfter.length-1]:null;
   function nextPanel(){
     return '<div class="vr-next">'+
       '<div class="nc-lbl"><span class="nc-dot"></span> Next capture</div>'+
       '<div class="nc-date">'+nextCaptureLabel()+'</div>'+
-      '<div class="nc-sub">same rig · four angles</div>'+
+      '<div class="nc-sub">same rig &middot; four angles</div>'+
       '</div>';
   }
   function deltaHTML(rightCk){
@@ -683,10 +678,10 @@ var DATA = {
   function renderCompare(){
     var ang=DATA.angles[cmpAngle];
     var rightCk=(cmpRightIdx!=null)?cks[cmpRightIdx]:null;
-    var rightInner=rightCk?frameHTML(rightCk,ang,null):nextPanel();
-    var rightTag=rightCk?rightCk.label:('Next capture · '+nextCaptureLabel());
+    var rightInner=rightCk?frameHTML(rightCk,ang):nextPanel();
+    var rightTag=rightCk?(rightCk.label+' &middot; '+fmt(rightCk.weight_kg,1)+' kg'):'Next capture';
     compareEl.innerHTML=
-      '<div class="cmp-col"><span class="cmp-tag">'+baseCk.label+'</span><div class="vr-frame">'+frameHTML(baseCk,ang,null)+'</div></div>'+
+      '<div class="cmp-col"><span class="cmp-tag">'+baseCk.label+' &middot; '+fmt(baseCk.weight_kg,1)+' kg</span><div class="vr-frame">'+frameHTML(baseCk,ang)+'</div></div>'+
       '<div class="cmp-mid"><span class="cmp-arrow">&#8594;</span>'+deltaHTML(rightCk)+'</div>'+
       '<div class="cmp-col"><span class="cmp-tag latest">'+rightTag+'</span><div class="vr-frame">'+rightInner+'</div></div>';
   }
@@ -721,66 +716,59 @@ var DATA = {
   }
   renderCompare();
 
-  /* ── Charts (hand-built inline SVG line chart) ── */
-  function lineChart(el, series, opts){
-    opts=opts||{};
-    var W=opts.w||440, H=opts.h||170, pad={t:18,r:14,b:26,l:34};
-    var xs=series.map(function(_,i){return i;});
-    var allY=[]; series.forEach(function(p){allY.push(p.y);}); if(opts.target!=null) allY.push(opts.target);
+  /* ── Runway chart: all 13 scan slots, filled as they happen ── */
+  function runwayChart(el){
+    var W=640,H=210,pad={t:20,r:16,b:30,l:40};
+    var slots=TOTAL_SCANS-1; // 12 intervals
+    var startD=new Date(DATA.startDate+"T00:00:00");
+    function slotDate(i){ return new Date(startD.getFullYear(),startD.getMonth()+i,1); }
+    var logged=cks.map(function(c){
+      var s=monthsBetween(DATA.startDate,c.date); if(s<0)s=0; if(s>slots)s=slots;
+      return { slot:s, y:c.weight_kg };
+    }).filter(function(p){ return p.y!=null; });
+    var allY=[DATA.target.weight_kg];
+    logged.forEach(function(p){ allY.push(p.y); });
     var minY=Math.min.apply(null,allY), maxY=Math.max.apply(null,allY);
     var span=(maxY-minY)||1; minY-=span*0.18; maxY+=span*0.18;
-    function X(i){ return pad.l + (i/(Math.max(1,series.length-1)))*(W-pad.l-pad.r); }
-    function Y(v){ return pad.t + (1-(v-minY)/(maxY-minY))*(H-pad.t-pad.b); }
-    var path=series.map(function(p,i){ return (i?'L':'M')+X(i).toFixed(1)+' '+Y(p.y).toFixed(1); }).join(' ');
-    var area=path+' L'+X(series.length-1).toFixed(1)+' '+(H-pad.b)+' L'+X(0).toFixed(1)+' '+(H-pad.b)+' Z';
+    function X(i){ return pad.l+(i/slots)*(W-pad.l-pad.r); }
+    function Y(v){ return pad.t+(1-(v-minY)/(maxY-minY))*(H-pad.t-pad.b); }
     var g='';
-    // gridlines
     for(var k=0;k<=3;k++){ var gy=pad.t+k*(H-pad.t-pad.b)/3; g+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.05)"/>'; }
-    // target line
-    var tline='';
-    if(opts.target!=null){ var ty=Y(opts.target); tline='<line x1="'+pad.l+'" y1="'+ty+'" x2="'+(W-pad.r)+'" y2="'+ty+'" stroke="rgba(168,85,247,0.45)" stroke-dasharray="4 4"/><text x="'+(W-pad.r)+'" y="'+(ty-5)+'" text-anchor="end" font-family="DM Mono" font-size="9" fill="#a855f7">target '+opts.target+'</text>'; }
-    var dots=series.map(function(p,i){ return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(p.y).toFixed(1)+'" r="3" fill="#0a0a0f" stroke="'+(opts.color||'#a855f7')+'" stroke-width="2"/>'; }).join('');
-    var lbls=series.map(function(p,i){ return '<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#7a7a86">'+p.x+'</text>'; }).join('');
-    var vlast='<text x="'+X(series.length-1).toFixed(1)+'" y="'+(Y(series[series.length-1].y)-9)+'" text-anchor="end" font-family="DM Mono" font-size="10" fill="'+(opts.color||'#a855f7')+'">'+series[series.length-1].y+(opts.unit||'')+'</text>';
+    var ty=Y(DATA.target.weight_kg);
+    var tline='<line x1="'+pad.l+'" y1="'+ty+'" x2="'+(W-pad.r)+'" y2="'+ty+'" stroke="rgba(168,85,247,0.45)" stroke-dasharray="4 4"/>'+
+      '<text x="'+(W-pad.r)+'" y="'+(ty-6)+'" text-anchor="end" font-family="DM Mono" font-size="10" fill="#a855f7">target '+DATA.target.weight_kg+'</text>';
+    var line='', area='';
+    if(logged.length>=2){
+      var path=logged.map(function(p,i){ return (i?'L':'M')+X(p.slot).toFixed(1)+' '+Y(p.y).toFixed(1); }).join(' ');
+      area='<path d="'+path+' L'+X(logged[logged.length-1].slot).toFixed(1)+' '+(H-pad.b)+' L'+X(logged[0].slot).toFixed(1)+' '+(H-pad.b)+' Z" fill="url(#rwg)"/>';
+      line='<path d="'+path+'" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    }
+    var dots=logged.map(function(p){ return '<circle cx="'+X(p.slot).toFixed(1)+'" cy="'+Y(p.y).toFixed(1)+'" r="4.5" fill="#0a0a0f" stroke="#a855f7" stroke-width="2.5"/>'; }).join('');
+    var lastP=logged[logged.length-1];
+    var vlast=lastP?'<text x="'+X(lastP.slot).toFixed(1)+'" y="'+(Y(lastP.y)-11)+'" text-anchor="'+(lastP.slot>slots*0.85?'end':'start')+'" font-family="DM Mono" font-size="10.5" fill="#c084fc">'+lastP.y+'</text>':'';
+    var lastSlot=lastP?lastP.slot:-1;
+    var hollow='';
+    var hy=H-pad.b+8;
+    for(var i2=0;i2<=slots;i2++){
+      if(i2>lastSlot) hollow+='<circle cx="'+X(i2).toFixed(1)+'" cy="'+hy+'" r="3" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>';
+    }
+    var lbls='';
+    for(var i3=0;i3<=slots;i3+=3){
+      var d3=slotDate(i3);
+      var t3=d3.toLocaleDateString('en-AU',{month:'short'});
+      if(i3===slots) t3+=" '"+String(d3.getFullYear()).slice(2);
+      lbls+='<text x="'+X(i3).toFixed(1)+'" y="'+(H-4)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="'+(i3<=lastSlot?'#7a7a86':'#555560')+'">'+t3+'</text>';
+    }
     el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+
-      g+
-      '<defs><linearGradient id="'+el.id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+(opts.color||'#a855f7')+'" stop-opacity="0.18"/><stop offset="1" stop-color="'+(opts.color||'#a855f7')+'" stop-opacity="0"/></linearGradient></defs>'+
-      '<path d="'+area+'" fill="url(#'+el.id+'g)"/>'+
-      tline+
-      '<path d="'+path+'" fill="none" stroke="'+(opts.color||'#a855f7')+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
-      dots+lbls+vlast+
-      '</svg>';
+      '<defs><linearGradient id="rwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a855f7" stop-opacity="0.18"/><stop offset="1" stop-color="#a855f7" stop-opacity="0"/></linearGradient></defs>'+
+      g+tline+area+line+dots+hollow+vlast+lbls+'</svg>';
   }
-  function stackChart(el, series, opts){
-    opts=opts||{}; var W=460,H=200,pad={t:16,r:14,b:26,l:34};
-    var max=0; series.forEach(function(p){ max=Math.max(max,p.lean+p.fat); }); max*=1.08;
-    var bw=Math.min(46,(W-pad.l-pad.r)/series.length-14);
-    var gap=((W-pad.l-pad.r)-bw*series.length)/(series.length-1||1);
-    function Y(v){ return pad.t+(1-v/max)*(H-pad.t-pad.b); }
-    var bars=series.map(function(p,i){
-      var x=pad.l+i*(bw+gap);
-      var yLean=Y(p.lean), hLean=(H-pad.b)-yLean;
-      var yFat=Y(p.lean+p.fat), hFat=Y(p.lean)-yFat;
-      return '<rect x="'+x+'" y="'+yLean+'" width="'+bw+'" height="'+hLean+'" rx="2" fill="#a855f7"/>'+
-             '<rect x="'+x+'" y="'+yFat+'" width="'+bw+'" height="'+hFat+'" rx="2" fill="#f59e0b"/>'+
-             '<text x="'+(x+bw/2)+'" y="'+(H-8)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#7a7a86">'+p.x+'</text>'+
-             '<text x="'+(x+bw/2)+'" y="'+(yLean-5)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#a855f7">'+p.lean.toFixed(0)+'</text>';
-    }).join('');
-    var g='';
-    for(var k=0;k<=3;k++){ var gy=pad.t+k*(H-pad.t-pad.b)/3; g+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.05)"/>'; }
-    el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+g+bars+'</svg>';
-  }
-  function shortMo(s){ var d=new Date(s+"T00:00:00"); return d.toLocaleDateString('en-AU',{month:'short'}); }
-  document.getElementById('wtSub').textContent='kg · 7-day rolling average · target '+DATA.target.weight_kg+'kg';
-  document.getElementById('bfSub').textContent='Evolt 360 bioimpedance · % of total mass';
-  lineChart(makeId('chartWeight'), cks.map(function(c){return {x:shortMo(c.date),y:c.weight_kg};}), {target:DATA.target.weight_kg,unit:'kg',color:'#a855f7'});
-  lineChart(makeId('chartBf'), cks.map(function(c){return {x:shortMo(c.date),y:c.bodyfat_pct};}), {unit:'%',color:'#c084fc'});
-  stackChart(makeId('chartComp'), cks.map(function(c){return {x:shortMo(c.date),lean:c.lean_mass_kg,fat:c.fat_mass_kg};}));
-  function makeId(id){ var el=document.getElementById(id); if(!el.id) el.id=id; return el; }
+  runwayChart(document.getElementById('chartWeight'));
+  document.getElementById('wtSub').textContent='kg · Evolt 360 monthly · '+cks.length+' of '+TOTAL_SCANS+' logged';
 
-  /* ── Latest scan ── */
-  document.getElementById('scanTitle').textContent=latest.label+' scan · '+(latest.scan&&latest.scan.type||'');
+  /* ── Latest scan strip ── */
   var sc=latest.scan||{};
+  document.getElementById('scanKick').innerHTML='Latest scan &middot; '+(sc.type||'')+' &middot; '+fmtDate(latest.date);
   var scanCells=[
     {v:fmt(sc.skeletal_muscle_kg,1),l:'Skeletal muscle · kg',hl:true},
     {v:fmt(sc.waist_cm,1),l:'Waist · cm'},
@@ -788,26 +776,78 @@ var DATA = {
     {v:fmt(sc.whr,2),l:'Waist-to-hip'},
     {v:fmt(sc.bmr_kcal,0),l:'BMR · kcal'},
     {v:fmt(sc.tee_kcal,0),l:'TEE · kcal'},
-    {v:fmt(sc.body_water_pct,0)+'%',l:'Body water'},
+    {v:(sc.body_water_pct!=null?fmt(sc.body_water_pct,0)+'%':'-'),l:'Body water'},
     {v:fmt(sc.bio_age,0),l:'Bio age'}
   ];
   document.getElementById('scanGrid').innerHTML=scanCells.map(function(c){
     return '<div class="scan-cell"><div class="scan-val'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="scan-lbl">'+c.l+'</div></div>';
   }).join('');
 
-  /* ── Measurement table ── */
-  function buildTable(tableEl, rows, cols, fmtFn){
-    var head='<thead><tr><th>'+cols[0]+'</th>'+cks.map(function(c){return '<th>'+c.label.replace('Month','Mo')+'</th>';}).join('')+'<th>Δ base</th></tr></thead>';
-    var body='<tbody>'+rows.map(function(name){
-      var first=fmtFn(base,name), last=fmtFn(latest,name);
-      var d=(first!=null&&last!=null)?+(last-first).toFixed(1):null;
-      var dcls=d>0?'delta-up':(d<0?'delta-down':'');
-      var tds=cks.map(function(c,i){ var v=fmtFn(c,name); return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(v==null?'-':v)+'</td>'; }).join('');
-      return '<tr><td>'+name+'</td>'+tds+'<td class="'+dcls+'">'+(d==null?'-':(d>0?'+':'')+d)+'</td></tr>';
-    }).join('')+'</tbody>';
-    tableEl.innerHTML=head+body;
+  /* ── The log: newest first, with the next capture stubbed on top ── */
+  function dayOf(dateStr){ return Math.max(0,Math.round((new Date(dateStr+"T00:00:00")-_start)/86400000)); }
+  function logEntry(c,i){
+    var isNewest=(i===cks.length-1);
+    var chips='<span class="log-stat">'+fmt(c.weight_kg,1)+' kg</span>';
+    if(i>0){
+      var dw=delta(c.weight_kg,cks[i-1].weight_kg);
+      if(dw!=null) chips+='<span class="log-stat"><span class="'+(dw>0?'d-up':(dw<0?'d-down':''))+'">'+(dw>0?'+':'')+dw+' kg</span></span>';
+    }
+    chips+='<span class="log-stat">'+fmt(c.bodyfat_pct,1)+'% bf</span>'+
+           '<span class="log-stat">'+fmt(c.lean_mass_kg,1)+' kg lean</span>'+
+           (c.scan&&c.scan.type?'<span class="log-stat">'+c.scan.type+'</span>':'');
+    var thumbs=DATA.angles.map(function(a){
+      var src=c.photos&&c.photos[a];
+      return '<div class="log-thumb"><span>'+a+'</span>'+(src?'<img src="'+src+'" alt="'+c.label+' '+a+'" loading="lazy" onclick="window.__lb(this.src,this.alt)" onerror="this.style.display=\'none\'">':'')+'</div>';
+    }).join('');
+    var vid=c.video?'<a class="log-vid" href="'+c.video+'" target="_blank" rel="noopener">&#9654; Watch this month\u2019s check-in</a>':'';
+    return '<div class="log-entry">'+
+      '<span class="log-dot'+(isNewest?'':' hollow')+'"></span>'+
+      '<div class="log-meta"><span class="log-mo">'+c.label+'</span><span class="log-date">'+fmtDate(c.date)+' &middot; day '+dayOf(c.date)+'</span></div>'+
+      '<div class="log-stats">'+chips+'</div>'+
+      '<p class="log-notes">'+c.notes+'</p>'+vid+
+      '<div class="log-thumbs">'+thumbs+'</div>'+
+      '</div>';
   }
-  buildTable(document.getElementById('measureTable'), Object.keys(base.segments_kg), ['Segment (lean kg)'], function(c,n){ return c.segments_kg?c.segments_kg[n]:null; });
+  var logHTML='';
+  if(cks.length<TOTAL_SCANS){
+    logHTML+='<div class="log-entry"><span class="log-dot hollow"></span>'+
+      '<div class="log-future">Month '+cks.length+' &middot; lands '+nextCaptureLabel()+'</div></div>';
+  }
+  for(var li=cks.length-1;li>=0;li--){ logHTML+=logEntry(cks[li],li); }
+  document.getElementById('logList').innerHTML=logHTML;
+
+  /* ── Full data table: every metric + segmental panel, one column per scan ── */
+  var ROWS=[
+    {n:'Weight · kg',d:1,g:function(c){return c.weight_kg;}},
+    {n:'Body fat · %',d:1,g:function(c){return c.bodyfat_pct;}},
+    {n:'Lean mass · kg',d:1,g:function(c){return c.lean_mass_kg;}},
+    {n:'Fat mass · kg',d:1,g:function(c){return c.fat_mass_kg;}},
+    {n:'Skeletal muscle · kg',d:1,g:function(c){return c.scan?c.scan.skeletal_muscle_kg:null;}},
+    {n:'Waist · cm',d:1,g:function(c){return c.scan?c.scan.waist_cm:null;}},
+    {n:'Visceral fat · cm²',d:0,g:function(c){return c.scan?c.scan.visceral_fat_area:null;}},
+    {n:'Waist-to-hip',d:2,g:function(c){return c.scan?c.scan.whr:null;}},
+    {n:'BMR · kcal',d:0,g:function(c){return c.scan?c.scan.bmr_kcal:null;}},
+    {n:'TEE · kcal',d:0,g:function(c){return c.scan?c.scan.tee_kcal:null;}},
+    {n:'Body water · %',d:0,g:function(c){return c.scan?c.scan.body_water_pct:null;}},
+    {n:'Bio age',d:0,g:function(c){return c.scan?c.scan.bio_age:null;}}
+  ];
+  function segRow(name){
+    return {n:name+' · lean kg',d:2,g:function(c){return c.segments_kg?c.segments_kg[name]:null;}};
+  }
+  var segNames=Object.keys(base.segments_kg||{});
+  function rowHTML(r){
+    var first=r.g(base), last=r.g(latest);
+    var d=(first!=null&&last!=null&&cks.length>1)?+(last-first).toFixed(r.d):null;
+    var dcls=(d!=null)?(d>0?'delta-up':(d<0?'delta-down':'')):'';
+    var tds=cks.map(function(c,i){ var v=r.g(c); return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(v==null?'-':fmt(v,r.d))+'</td>'; }).join('');
+    return '<tr><td>'+r.n+'</td>'+tds+'<td class="'+dcls+'">'+(d==null?'-':(d>0?'+':'')+d)+'</td></tr>';
+  }
+  var colspan=cks.length+2;
+  var head='<thead><tr><th>Metric</th>'+cks.map(function(c){return '<th>'+c.label.replace('Month','Mo')+'</th>';}).join('')+'<th>&Delta; base</th></tr></thead>';
+  var body='<tbody>'+ROWS.map(rowHTML).join('')+
+    (segNames.length?'<tr><td class="grp" colspan="'+colspan+'">Segmental lean mass &middot; Evolt panel</td></tr>'+segNames.map(function(nm){return rowHTML(segRow(nm));}).join(''):'')+
+    '</tbody>';
+  document.getElementById('fullTable').innerHTML=head+body;
 
   /* ── Lightbox ── */
   var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
@@ -834,8 +874,8 @@ var DATA = {
   }
   var obs=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ fireEl(e.target); obs.unobserve(e.target);} }); },{threshold:0.12,rootMargin:'0px 0px -5% 0px'});
   document.querySelectorAll('.sa, .sa-stagger').forEach(function(el){ obs.observe(el); });
-  // hero vitals fire immediately
-  fireEl(document.querySelector('.hero-inner'));
+  // hero readout fires immediately
+  fireEl(document.getElementById('heroGrid'));
 })();
 </script>
 
