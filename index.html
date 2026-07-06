@@ -123,19 +123,49 @@
         .nav-links a.nav-lab { color: var(--violet); }
         .nav-links a.nav-lab:hover { color: #c084fc; }
         .soon-pill { font-family: 'DM Mono', monospace; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.4; color: var(--violet); background: var(--violet-soft); border: 1px solid var(--violet-border); padding: 0.1rem 0.4rem; border-radius: 100px; }
-        .hero { display: flex; align-items: center; padding: 5.5rem 1.5rem 3.25rem; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: -18%; left: 50%; width: 760px; height: 760px; border-radius: 50%; background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 65%); opacity: 0.08; filter: blur(80px); pointer-events: none; transform: translateX(-50%); }
-        .hero-split { max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        .hero-text { position: relative; z-index: 2; text-align: center; }
-        .badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.9rem; border: 1px solid var(--border-cyan); border-radius: 100px; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--cyan); background: var(--cyan-soft); margin-bottom: 2rem; letter-spacing: 0.03em; animation: heroFadeUp 0.7s ease both; }
-        .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)} }
-        .hero h1 { font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; animation: heroFadeUp 0.7s ease 0.07s both; }
-        .hero-sub { font-size: 1rem; color: var(--text-2); max-width: 500px; font-weight: 400; line-height: 1.75; margin: 0 auto 2rem; animation: heroFadeUp 0.7s ease 0.14s both; }
-        .hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; justify-content: center; animation: heroFadeUp 0.7s ease 0.21s both; }
-        .hero-meta { margin-top: 1.25rem; font-size: 0.73rem; color: var(--text-3); font-family: 'DM Mono', monospace; letter-spacing: 0.02em; animation: heroFadeUp 0.7s ease 0.28s both; text-align: center; }
-        .hero-meta strong { color: var(--cyan); }
+        /* === HERO: food wall + serif masthead === */
         @keyframes heroFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        .fhero { position: relative; display: flex; overflow: hidden; min-height: 100vh; min-height: 100svh; padding-top: 56px; }
+        .f-wall { position: absolute; inset: -14%; display: flex; gap: 20px; justify-content: center; transform: rotate(-7deg) scale(1.18); pointer-events: none; }
+        .f-col { display: flex; flex-direction: column; width: 250px; flex-shrink: 0; overflow: hidden; }
+        .f-track { display: flex; flex-direction: column; gap: 20px; animation: fdrift 48s linear infinite; }
+        .f-col.rev .f-track { animation-direction: reverse; animation-duration: 60s; }
+        @keyframes fdrift { to { transform: translateY(-50%); } }
+        .f-card { position: relative; height: 252px; border-radius: 22px; overflow: hidden; flex-shrink: 0; background: #141017; }
+        .f-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,8,0.85), transparent 55%); }
+        .f-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .f-meta { position: absolute; bottom: 11px; left: 12px; right: 12px; z-index: 2; display: flex; align-items: center; gap: 9px; }
+        .f-ring { width: 16px; height: 16px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.55); flex-shrink: 0; }
+        .f-ring.done { background: var(--green); border-color: var(--green); position: relative; }
+        .f-ring.done::after { content: ''; position: absolute; left: 4.5px; top: 2px; width: 3.5px; height: 7px; border: solid #06260f; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
+        .f-name { font-size: 14px; font-weight: 700; line-height: 1.25; }
+        .f-name.done { color: #9a9aa2; text-decoration: line-through; }
+        .f-kcal { font-family: 'DM Mono', monospace; font-size: 9.5px; color: var(--green); margin-top: 2px; letter-spacing: 0.04em; }
+        .f-scrim { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 44%, rgba(5,5,8,0.7) 0%, rgba(5,5,8,0.9) 66%, #050508 100%); }
+        .f-scrim::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(to top, #050508, transparent); }
+        .fh-fg { position: relative; z-index: 3; margin: auto; text-align: center; display: flex; flex-direction: column; align-items: center; max-width: 900px; padding: 3rem 1.5rem; }
+        .fh-ov { font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-2); margin-bottom: 1.15rem; animation: heroFadeUp 0.7s ease both; }
+        .fh-display { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 400; color: #fff; font-size: clamp(2.7rem, 6.2vw, 4.6rem); line-height: 1.06; letter-spacing: -0.01em; animation: heroFadeUp 0.7s ease 0.07s both; }
+        .fh-display .cyan { font-style: italic; }
+        .fh-l1 { display: inline; }
+        .fh-sub { font-size: 0.9rem; color: #9a9aa2; margin-top: 1rem; animation: heroFadeUp 0.7s ease 0.14s both; }
+        .fh-sub b { font-family: Georgia, serif; font-style: normal; font-weight: 400; font-size: 1.06rem; color: #e6e6e8; display: inline-block; text-align: right; }
+        .fh-sub b.tick-p { min-width: 2em; }
+        .fh-sub b.tick-k { min-width: 3.1em; }
+        .fh-hair { width: min(420px, 62vw); height: 1px; background: rgba(255,255,255,0.16); margin: 1.35rem auto 0; animation: heroFadeUp 0.7s ease 0.18s both; }
+        .fh-cta { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; margin-top: 1.9rem; animation: heroFadeUp 0.7s ease 0.24s both; }
+        .fh-row { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; justify-content: center; }
+        .fh-store { display: block; border-radius: 9px; }
+        .fh-watch { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.73rem; color: var(--text-2); transition: color 0.2s; }
+        .fh-watch .play { width: 22px; height: 22px; border-radius: 50%; background: var(--cyan); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .fh-watch .play svg { margin-left: 2px; }
+        .fh-watch b { color: var(--text); font-weight: 500; }
+        .fh-watch:hover { color: var(--cyan); }
+        .fh-browse { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.73rem; color: var(--cyan); letter-spacing: 0.02em; margin-top: 0.2rem; }
+        .fh-browse:hover { color: #67e8f9; }
+        .fh-trust { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; color: var(--text-3); margin-top: 0.35rem; }
+        .fh-trust .st { color: #f59e0b; }
+        .fh-trust b { color: var(--text); font-weight: 500; }
         .ai-strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; }
         .ai-strip span { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); letter-spacing:0.04em; }
         .ai-strip .ai-lbl { color:var(--text-2); font-weight:500; }
@@ -239,7 +269,6 @@
         .foot-l a:hover { color:var(--cyan); }
         .foot-r { font-size:0.7rem; color:var(--text-3); }
         .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
-        @media (max-width:600px) { .meal-card.meal-extra { display:none; } }
         .meal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; text-decoration:none; color:inherit; transition:border-color 0.2s, transform 0.2s; }
         .meal-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
         .meal-card img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--surface-2); }
@@ -251,6 +280,13 @@
         .meal-kcal { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--green); padding:0.2rem 0.5rem; border:1px solid rgba(34,197,94,0.2); border-radius:4px; background:rgba(34,197,94,0.05); letter-spacing:0.02em; }
         .meals-cta { display:inline-flex; align-items:center; gap:0.4rem; margin-top:1.75rem; padding:0.7rem 1.5rem; border-radius:10px; font-size:0.9rem; font-weight:700; text-decoration:none; background:var(--cyan); color:#000; transition:all 0.25s; font-family:'Outfit',sans-serif; }
         .meals-cta:hover { transform:translateY(-2px); box-shadow:0 8px 24px var(--cyan-glow); }
+        /* === Meal library strip (compressed section) === */
+        .strip-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1.25rem; margin-bottom:1.4rem; }
+        .strip-head h2 { font-size:clamp(1.5rem,3vw,1.9rem); font-weight:800; letter-spacing:-0.02em; line-height:1.15; }
+        .strip-link { display:inline-flex; align-items:center; gap:7px; text-decoration:none; font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--cyan); white-space:nowrap; padding-bottom:4px; transition:color 0.2s; }
+        .strip-link:hover { color:#67e8f9; }
+        .strip-hint { display:none; }
+        .strip-linkrow { display:none; }
         .pc-wrap { display:flex; flex-direction:column; align-items:center; gap:0.75rem; padding:0.5rem 0; }
         .pc-window { width:180px; overflow:hidden; border-radius:18px; border:1px solid var(--border-cyan); background:var(--bg); }
         .pc-strip { display:flex; flex-direction:row; flex-wrap:nowrap; transition:transform 0.35s ease; }
@@ -299,11 +335,29 @@
             .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
             .hamburger.open span:nth-child(2) { opacity:0; }
             .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
-            .hero-btns { justify-content:center; align-items:center; flex-direction:column; width:100%; }
-            .hero-btns a:first-child { display:flex !important; justify-content:center; }
-            .hero-meta { text-align:center; font-size:0.65rem; line-height:1.9; letter-spacing:0.01em; }
+            /* hero mobile: 2 wall columns, stacked serif headline, stacked CTA */
+            .f-wall { gap:14px; }
+            .f-col { width:170px; }
+            .f-col:nth-child(3), .f-col:nth-child(4) { display:none; }
+            .f-track { gap:14px; }
+            .f-card { height:210px; border-radius:18px; }
+            .f-name { font-size:11.5px; }
+            .f-kcal { font-size:8.5px; }
+            .f-ring { width:14px; height:14px; border-radius:7px; }
+            .f-ring.done::after { left:4px; top:1.5px; width:3px; height:6.5px; }
+            .fh-l1 { display:block; }
+            .fh-display { font-size:2.85rem; }
+            .fh-row { flex-direction:column; gap:0.85rem; }
+            .fh-tx { display:none; }
             .proof-grid { grid-template-columns:1fr; }
-            .meal-grid { grid-template-columns:1fr; }
+            /* meal strip mobile: horizontal swipe */
+            .strip-head { flex-direction:column; align-items:flex-start; gap:0.4rem; }
+            .strip-head .strip-link { display:none; }
+            .strip-hint { display:block; text-align:center; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-top:0.9rem; }
+            .strip-linkrow { display:block; text-align:center; margin-top:0.7rem; }
+            .meal-grid { display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; }
+            .meal-grid::-webkit-scrollbar { display:none; }
+            .meal-card { flex:0 0 76%; scroll-snap-align:center; }
             .flow { grid-template-columns:1fr; gap:0.6rem; }
             .flow-arrow { padding:0.2rem 0; }
             .flow-arrow .fa-h { display:none; }
@@ -317,8 +371,7 @@
             .section-head p { max-width:100%; }
         }
         @media (max-width: 480px) {
-            .hero h1 { font-size:clamp(1.9rem,8.5vw,2.6rem); line-height:1.08; text-wrap:balance; }
-            .hero-br { display:none; }
+            .fh-display { font-size:2.6rem; }
             .comp { overflow-x:auto; -webkit-overflow-scrolling:touch; }
             .comp-head, .comp-row { min-width:440px; }
             .ai-strip span { font-size:0.62rem; }
@@ -341,152 +394,7 @@
         .prog-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-2); padding:0.18rem 0.45rem; border:1px solid var(--border); border-radius:4px; }
         .prog-open { margin-top:auto; font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); display:flex; align-items:center; gap:0.3rem; transition:gap 0.2s; }
         @media (max-width:860px) { .prog-grid { grid-template-columns:1fr; } }
-        /* Interactive phone (hero right column) */
-        .hero-visual { display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; gap:1rem; }
-        .hero-visual::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-55%); width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, var(--cyan-glow), transparent 65%); opacity:0.16; filter:blur(55px); transition:background 0.4s ease; pointer-events:none; }
-        .hero-visual.is-green::before { background:radial-gradient(circle, var(--green), transparent 65%); opacity:0.14; }
-        .phone { position:relative; width:clamp(252px,24vw,320px); aspect-ratio:9/19.3; background:linear-gradient(150deg,#202027 0%,#0c0c11 46%,#050507 100%); border-radius:44px; padding:11px; box-shadow:0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.18), inset 0 1px 1px rgba(255,255,255,0.10); animation:phoneFloat 6s ease-in-out infinite; z-index:2; cursor:pointer; }
-        .phone:focus-visible { outline:2px solid var(--cyan); outline-offset:6px; }
-        @keyframes phoneFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
-        .phone-notch { position:absolute; top:11px; left:50%; transform:translateX(-50%); width:88px; height:22px; background:#000; border-radius:0 0 14px 14px; z-index:20; }
-        .screen { width:100%; height:100%; border-radius:33px; overflow:hidden; background:#0a0a0b; position:relative; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; }
-        .sb { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 1.1rem 0.2rem; font-size:0.62rem; font-weight:600; color:#fff; position:absolute; top:0; left:0; right:0; z-index:15; pointer-events:none; }
-        .sb-right { display:flex; gap:3px; align-items:center; }
-        .sb-right i { width:4px; height:4px; border-radius:50%; background:#fff; display:block; opacity:0.85; }
-        .scr { position:absolute; inset:0; padding:0; opacity:0; transform:translateX(8px); pointer-events:none; transition:opacity 0.28s ease, transform 0.28s ease; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-        .scr::-webkit-scrollbar { display:none; }
-        .scr.on { opacity:1; transform:none; pointer-events:auto; }
-        .scr[data-accent="cyan"] { --ac:#22d3ee; }
-        .scr[data-accent="green"] { --ac:#22c55e; }
-        /* Nutrition day (Georgia-serif masthead) */
-        .nd { padding:30px 0 16px; }
-        .nd-top { display:flex; align-items:center; justify-content:space-between; padding:0 16px 2px; }
-        .nd-top .chev { color:#fff; font-size:18px; line-height:1; }
-        .nd-top .plus { color:var(--ac); font-size:20px; line-height:1; }
-        .nd-head { text-align:center; padding:8px 22px 16px; }
-        .nd-overline { font-size:9px; letter-spacing:2.3px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-bottom:5px; }
-        .nd-day { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:27px; color:#fff; line-height:1.05; }
-        .nd-sub { font-size:11px; color:#8a8a90; margin-top:8px; }
-        .nd-sub b { font-family:Georgia,serif; font-style:normal; font-size:12.5px; color:#dcdce0; font-weight:400; }
-        .nd-hair { height:1px; background:#2a2a30; margin:13px 16px 11px; }
-        .nd-track { height:4px; background:#1c1c22; border-radius:2px; margin:0 16px; overflow:hidden; }
-        .nd-fill { height:100%; border-radius:2px; background:var(--ac); width:40%; }
-        .nd-eaten { text-align:center; font-size:9px; letter-spacing:1.4px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-top:8px; }
-        .nd-tl { font-size:9px; letter-spacing:1.8px; color:#6a6a70; font-weight:600; text-transform:uppercase; padding:14px 16px 10px; }
-        .nd-cards { padding:0 16px; }
-        .nd-card { margin-bottom:15px; }
-        .nd-photo { position:relative; height:108px; border-radius:16px; overflow:hidden; background:#121216; }
-        .nd-photo img { width:100%; height:100%; object-fit:cover; display:block; }
-        .nd-scrim { position:absolute; inset:0; background:rgba(8,8,10,0.6); }
-        .nd-chip { position:absolute; top:9px; left:9px; background:rgba(0,0,0,0.55); padding:3px 8px; border-radius:10px; font-size:8px; letter-spacing:1.1px; color:#e8e8ea; font-weight:600; }
-        .nd-vh { position:absolute; bottom:8px; right:8px; width:22px; height:22px; border-radius:11px; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:#e8e8ea; font-size:12px; }
-        .nd-mbody { display:flex; align-items:center; gap:10px; padding:9px 2px 0; }
-        .nd-ring { width:20px; height:20px; border-radius:10px; border:1.5px solid #5a5a60; flex-shrink:0; }
-        .nd-ring.done { border-color:var(--ac); background:var(--ac); position:relative; }
-        .nd-ring.done::after { content:''; position:absolute; left:6px; top:3px; width:4px; height:8px; border:solid #06262b; border-width:0 1.5px 1.5px 0; transform:rotate(45deg); }
-        .nd-name { font-family:Georgia,serif; font-size:14.5px; color:#fff; line-height:1.2; }
-        .nd-name.done { color:#8a8a90; text-decoration:line-through; }
-        .nd-macro { font-size:10px; color:#8a8a90; margin-top:3px; }
-        /* Workout log */
-        .wl-img { position:relative; width:100%; aspect-ratio:16/10; border-bottom-left-radius:18px; border-bottom-right-radius:18px; overflow:hidden; background:#000; }
-        .wl-img .frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transform:scale(0.9) translateY(11%); opacity:0; transition:opacity 0.25s ease; }
-        .wl-img .frame.show { opacity:1; }
-        .wl-ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#2f2f38; }
-        .wl-ph svg { width:42px; height:42px; }
-        .wl-ph span { font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:#3a3a44; }
-        .wl-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.32); }
-        .wl-head { position:absolute; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:34px 12px 0; z-index:3; }
-        .wl-hbtn { width:30px; height:30px; border-radius:15px; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; }
-        .wl-hright { display:flex; gap:7px; }
-        .wl-hbtn.hist { background:rgba(34,211,238,0.18); border:1px solid rgba(34,211,238,0.4); color:var(--ac); }
-        .wl-body { padding:12px 14px 0; }
-        .wl-titlerow { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-        .wl-title { font-family:'Outfit',sans-serif; font-size:18px; font-weight:700; color:#f0f0f2; letter-spacing:-0.3px; line-height:1.1; display:flex; align-items:center; gap:5px; }
-        .wl-title .cd { color:var(--ac); font-size:13px; }
-        .wl-muscles { font-family:'DM Mono',monospace; font-size:10px; color:#55555f; margin-top:5px; letter-spacing:0.2px; }
-        .wl-rx { display:flex; align-items:center; gap:9px; padding:7px 11px; border-radius:8px; border:1px solid rgba(34,211,238,0.25); background:rgba(34,211,238,0.04); margin:11px 0; }
-        .wl-rx .wk { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; color:var(--ac); }
-        .wl-rx .sx { font-family:'DM Mono',monospace; font-size:10.5px; color:#9898a4; }
-        .wl-tbl-head { display:flex; align-items:center; padding:0 2px 6px; border-bottom:1px solid rgba(255,255,255,0.05); }
-        .wl-tbl-head span { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.2px; color:#55555f; }
-        .wl-row { display:flex; align-items:center; padding:5px 2px; }
-        .wl-row .col-set { width:24px; font-family:'DM Mono',monospace; font-size:13px; color:#9898a4; }
-        .wl-row .col-prev { width:46px; font-family:'DM Mono',monospace; font-size:10px; color:#55555f; }
-        .wl-row .col-in { flex:1; margin:0 3px; }
-        .wl-row .col-in .box { background:#111116; border-radius:7px; min-height:30px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:13px; color:#3a3a44; }
-        .wl-row .col-chk { width:28px; display:flex; justify-content:center; }
-        .wl-row .col-chk .ring { width:20px; height:20px; border-radius:10px; border:1.5px solid #3a3a44; }
-        .wl-add { display:flex; align-items:center; justify-content:center; gap:5px; padding:9px 0 2px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
-        .wl-bottom { display:flex; align-items:center; gap:9px; padding:11px 14px 14px; border-top:1px solid rgba(255,255,255,0.04); background:#0a0a0b; flex-shrink:0; }
-        #scr-workout { display:flex; flex-direction:column; overflow:hidden; }
-        .wl-scroll { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-        .wl-scroll::-webkit-scrollbar { display:none; }
-        .wl-upnext { padding:13px 14px 10px; border-top:1px solid rgba(255,255,255,0.05); margin-top:11px; }
-        .wl-upnext-h { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.6px; color:#55555f; margin:0 0 9px 2px; }
-        .wl-mini { position:relative; display:flex; align-items:center; gap:10px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.04); border-radius:11px; padding:9px 10px; margin-bottom:7px; overflow:hidden; }
-        .wl-mini.active { border-color:rgba(255,255,255,0.09); background:rgba(255,255,255,0.02); }
-        .wl-mini-icon { position:relative; width:30px; height:30px; border-radius:8px; background:#111116; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; color:#55555f; }
-        .wl-mini-icon .cyc { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.25s ease; }
-        .wl-mini-icon .cyc.show { opacity:1; }
-        .wl-mini-icon img { width:100%; height:100%; object-fit:cover; }
-        .wl-mini-icon svg { width:15px; height:15px; }
-        .wl-mini-main { flex:1; min-width:0; }
-        .wl-mini-trow { display:flex; align-items:center; gap:6px; }
-        .wl-mini-title { font-family:'Outfit',sans-serif; font-size:12.5px; font-weight:600; color:#f0f0f2; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .wl-mini-cur { flex-shrink:0; font-family:'DM Mono',monospace; font-size:7px; font-weight:500; letter-spacing:0.6px; color:#000; background:var(--ac); padding:2px 5px; border-radius:5px; }
-        .wl-mini-meta { font-family:'DM Mono',monospace; font-size:9px; color:#55555f; margin-top:3px; }
-        .wl-mini-prog { position:absolute; left:0; right:0; bottom:0; height:2px; background:rgba(255,255,255,0.04); }
-        .wl-mini-progfill { height:100%; background:var(--ac); }
-        .wl-timer { display:flex; align-items:center; gap:5px; padding:8px 11px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.06); border-radius:9px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
-        .wl-start { flex:1; height:40px; border-radius:11px; background:var(--ac); display:flex; align-items:center; justify-content:center; color:#000; font-weight:700; font-size:13px; }
-        .poke { display:flex; flex-direction:column; align-items:center; gap:0.15rem; animation:pokeBob 2.2s ease-in-out infinite; }
-        @keyframes pokeBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-        .poke-arrow { color:var(--cyan); }
-        .poke-label { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--cyan); }
-        .hero-rating { display:flex; align-items:center; gap:0.55rem; margin-bottom:1.5rem; font-family:'DM Mono',monospace; font-size:0.74rem; color:var(--text-2); }
-        .hero-rating .stars { color:#f59e0b; font-size:0.85rem; letter-spacing:0.06em; }
-        .hero-rating b { color:var(--text); font-weight:500; }
-        .video-thumb { display:inline-flex; align-items:center; gap:0.7rem; cursor:pointer; text-decoration:none; }
-        .video-thumb .frame { position:relative; width:36px; height:58px; border-radius:8px; overflow:hidden; border:1px solid var(--border); background:linear-gradient(135deg,#0d2a30,#0a0a0f); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-        .video-thumb .play { width:20px; height:20px; border-radius:50%; background:rgba(255,255,255,0.92); display:flex; align-items:center; justify-content:center; }
-        .video-thumb .play svg { margin-left:2px; color:#050508; }
-        .video-thumb .vt-text { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-2); line-height:1.3; }
-        .video-thumb:hover .vt-text { color:var(--cyan); }
-        .video-thumb .vt-text b { color:var(--text); display:block; font-weight:500; }
-        @media (max-width:860px) { .hero-split .hero-rating { justify-content:center; } }
-        .hero-split .hero-text { text-align:center; }
-        .hero-split .hero-sub { margin-left:auto; margin-right:auto; }
-        .hero-split .hero-btns { justify-content:flex-start; }
-        .hero-split .hero-meta { text-align:left; }
-        @media (max-width:860px) {
-            /* Mobile hero: the text block fills the first screen on its own, vertically
-               centred, and the phone mockup sits entirely below the fold as a clean
-               second screen, instead of being crammed up top with a sliver of phone
-               peeking. min-height uses svh so it matches the visible area on first load
-               (under the address bar) instead of overflowing the way 100vh does.
-               Desktop layout is untouched. */
-            .hero { padding: 56px 1.5rem 2.75rem; }
-            .hero-split { grid-template-columns:1fr; gap:2.25rem; }
-            .hero-split .hero-text { text-align:center; order:1; }
-            .hero-text {
-                min-height: calc(100vh - 56px);   /* fallback for older browsers */
-                min-height: calc(100svh - 56px);  /* fills the first screen, below the fixed nav */
-                display:grid; align-content:center;
-            }
-            .hero-split .hero-sub { margin-left:auto; margin-right:auto; }
-            .hero-split .hero-btns { justify-content:center; }
-            .hero-split .hero-meta { text-align:center; }
-            .hero-visual { order:2; }
-            .phone { width:clamp(248px,72vw,280px); }
-            /* balanced spacing so the centred stack fills the screen rather than bunching */
-            .hero-text .label { margin-bottom:1rem; }
-            .hero h1 { margin-bottom:1.25rem; }
-            .hero-sub { font-size:0.98rem; line-height:1.65; margin-bottom:1.85rem; }
-            .hero-action { gap:1.6rem; }
-            .hero-cta { gap:0.9rem; }
-            .hero-trust-chips { margin-bottom:0.8rem; }
-        }
-        @media (prefers-reduced-motion: reduce) { .phone { animation:none; } .poke { animation:none; } }
+        @media (prefers-reduced-motion: reduce) { .f-track { animation:none; } .j-code div { opacity:1; animation:none; } .pl-wire i { animation:none; } .j-cur { animation:none; } }
 
         /* Free cookbook capture */
         .cap { padding:2rem 0 1.5rem; }
@@ -528,33 +436,9 @@
         }
         @media (prefers-reduced-motion:reduce) { .book { animation:none; } .cap-btn:hover { transform:none; } }
 
-        /* Hero action + trust block (redesigned) */
-        .hero-text .label { margin-bottom:1.25rem; }
-        .hero-action { display:flex; flex-direction:column; align-items:center; gap:1.75rem; animation:heroFadeUp 0.7s ease 0.21s both; }
-        .hero-cta { display:flex; flex-direction:column; align-items:center; gap:0.9rem; }
-        .getapp { display:flex; align-items:center; gap:0.85rem; width:280px; max-width:100%; }
-        .getapp .ga-line { flex:1; height:1px; background:rgba(255,255,255,0.12); }
-        .getapp .ga-lbl { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--text-3); white-space:nowrap; }
-        .hero-rating { display:flex; align-items:center; gap:0.5rem; margin:0; font-family:'DM Mono',monospace; font-size:0.74rem; color:var(--text-2); }
-        .hero-rating .stars { color:#f59e0b; font-size:0.85rem; letter-spacing:0.06em; }
-        .hero-rating b { color:var(--text); font-weight:500; }
-        .hero-rating .src { text-transform:uppercase; letter-spacing:0.12em; font-size:0.62rem; color:var(--text-3); }
-        .hero-stores { display:flex; gap:0.7rem; flex-wrap:wrap; align-items:center; justify-content:center; }
-        .store-badge { display:block; border-radius:9px; }
-        .video-thumb { display:inline-flex; align-items:center; gap:0.6rem; padding:0.5rem 0.85rem 0.5rem 0.55rem; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,0.02); cursor:pointer; text-decoration:none; transition:border-color .18s ease, background .18s ease; }
-        .video-thumb:hover { border-color:var(--border-cyan); background:var(--cyan-soft); }
-        .video-thumb .play { width:22px; height:22px; border-radius:50%; background:var(--cyan); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .video-thumb .play svg { color:#050508; margin-left:2px; }
-        .video-thumb .vt-text { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--text-2); line-height:1.3; }
-        .video-thumb .vt-text b { display:inline; color:var(--text); font-weight:500; }
-        .video-thumb:hover .vt-text { color:var(--cyan); }
-        .hero-trust { max-width:500px; text-align:center; }
-        .hero-trust-chips { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.75rem; justify-content:center; }
-        .hero-trust-chips span { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-2); padding:0.32rem 0.62rem; border:1px solid var(--border); border-radius:6px; letter-spacing:0.03em; background:rgba(255,255,255,0.02); }
-        .hero-trust-tag { font-family:'DM Mono',monospace; font-size:0.78rem; color:var(--cyan); letter-spacing:0.02em; display:inline-flex; align-items:center; gap:0.55rem; margin:0; }
         .laurel { width:20px; height:38px; color:var(--green); opacity:0.9; flex-shrink:0; }
         .laurel-r { transform:scaleX(-1); }
-        .hero-trust-tag .brk { color:var(--green); opacity:0.7; font-weight:500; }
+        .science-tag { display:flex; align-items:center; justify-content:center; gap:0.55rem; margin:2.2rem auto 0; font-family:'DM Mono',monospace; font-size:0.78rem; color:var(--cyan); letter-spacing:0.02em; }
 
         /* Android founding-tester section */
         .at { padding:1rem 0 3rem; }
@@ -573,44 +457,63 @@
             .at-card { padding:2rem 1.5rem; }
             .at-actions { flex-direction:column; align-items:center; }
         }
-        @media (max-width:860px) {
-            .hero-split .hero-action { align-items:center; }
-            .hero-split .hero-rating { justify-content:center; }
-            .hero-split .hero-cta { align-items:center; }
-            .hero-split .hero-stores { justify-content:center; }
-            .hero-split .hero-trust { align-self:auto; width:100%; max-width:500px; text-align:center; }
-            .hero-split .hero-trust-chips { justify-content:center; }
-            .hero-split .hero-trust-tag { justify-content:center; }
-        }
 
-        /* Timeline (How your plan gets built) */
-        .tl { position:relative; max-width:920px; margin:0 auto; }
-        .tl-spine { position:absolute; top:6px; bottom:6px; left:50%; transform:translateX(-50%); width:2px; border-radius:2px; background:linear-gradient(to bottom,var(--cyan),var(--violet),var(--green)); opacity:0.15; }
-        .tl-fill { position:absolute; top:6px; left:50%; transform:translateX(-50%); width:2px; height:0; border-radius:2px; background:linear-gradient(to bottom,var(--cyan),var(--violet),var(--green)); background-repeat:no-repeat; background-position:top center; box-shadow:0 0 12px rgba(34,211,238,0.3); }
-        .tl-step { position:relative; display:grid; grid-template-columns:1fr 72px 1fr; align-items:flex-start; margin-bottom:2.25rem; }
-        .tl-step:last-child { margin-bottom:0; }
-        .tl-node { position:relative; grid-column:2; justify-self:center; margin-top:0.5rem; width:46px; height:46px; border-radius:50%; background:var(--surface); border:2px solid rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); z-index:2; transition:border-color 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, background 0.45s ease; }
-        .tl-node.on { border-color:var(--ac); color:var(--ac); box-shadow:0 0 0 4px var(--ac-soft), 0 0 20px var(--ac-glow); }
-        .tl-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; opacity:0; transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1); }
-        .tl-step.left .tl-card { grid-column:1; transform:translateX(42px); border-right:2px solid var(--ac); text-align:right; }
-        .tl-step.right .tl-card { grid-column:3; transform:translateX(-42px); border-left:2px solid var(--ac); }
-        .tl-step.in .tl-card { opacity:1; transform:none; }
-        .tl-eyebrow { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ac); margin-bottom:0.5rem; }
-        .tl-card h3 { font-size:1.05rem; font-weight:700; line-height:1.3; margin-bottom:0.5rem; }
-        .tl-card p { font-size:0.85rem; color:var(--text-2); line-height:1.65; margin-bottom:0.9rem; }
-        .tl-chips { display:flex; flex-wrap:wrap; gap:0.35rem; }
-        .tl-step.left .tl-chips { justify-content:flex-end; }
-        .tl-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--ac); border:1px solid var(--ac-border); background:var(--ac-soft); padding:0.2rem 0.5rem; border-radius:4px; letter-spacing:0.02em; }
-        @media (max-width:760px) {
-            .tl { max-width:520px; }
-            .tl-spine, .tl-fill { left:22px; }
-            .tl-step { display:flex; align-items:flex-start; gap:1rem; margin-bottom:2rem; }
-            .tl-node { flex:0 0 46px; }
-            .tl-step.left .tl-card, .tl-step.right .tl-card { flex:1; text-align:left; transform:translateX(24px); border-left:2px solid var(--ac); border-right:1px solid var(--border); }
-            .tl-step.left .tl-chips { justify-content:flex-start; }
-            .tl-step.in .tl-card { transform:none; }
+        /* === Pipeline: how your plan gets built === */
+        .pl-flow { display:grid; grid-template-columns:1fr 56px 1.12fr 56px 1fr; align-items:center; max-width:1080px; margin:0 auto; padding:0.5rem 0 1rem; }
+        .pl-step { display:flex; flex-direction:column; gap:11px; }
+        .pl-tag { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; }
+        .pl-tag.t1 { color:var(--cyan); } .pl-tag.t2 { color:var(--violet); } .pl-tag.t3 { color:var(--green); }
+        .pl-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:15px 16px 16px; text-align:left; }
+        .pl-ct { font-size:0.9rem; font-weight:700; margin-bottom:10px; }
+        .pl-kv { display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-3); padding:6px 0; border-bottom:1px solid var(--border); }
+        .pl-kv b { color:var(--cyan); font-weight:500; }
+        .pl-kv:last-of-type { border-bottom:none; }
+        .pl-btn { margin-top:11px; background:var(--cyan); color:#000; font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:500; letter-spacing:0.04em; text-align:center; border-radius:8px; padding:9px 0; }
+        .pl-cap { font-size:0.78rem; color:var(--text-2); line-height:1.6; }
+        .pl-capc { text-align:center; }
+        .j-term { background:#0a0a0f; border:1px solid rgba(168,85,247,0.22); border-radius:14px; overflow:hidden; text-align:left; }
+        .j-tbar { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#101016; border-bottom:1px solid var(--border); }
+        .j-tbar i { width:8px; height:8px; border-radius:50%; background:#2c2c34; display:block; }
+        .j-tbar span { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); margin-left:4px; letter-spacing:0.04em; }
+        .j-code { padding:11px 14px 12px; font-family:'DM Mono',monospace; font-size:0.66rem; line-height:1.8; white-space:pre; overflow-x:auto; }
+        .j-code div { opacity:0; }
+        .vis .j-code div { animation:jln 0.35s forwards; }
+        .j-code div:nth-child(1) { animation-delay:0.1s; } .j-code div:nth-child(2) { animation-delay:0.3s; } .j-code div:nth-child(3) { animation-delay:0.5s; } .j-code div:nth-child(4) { animation-delay:0.7s; } .j-code div:nth-child(5) { animation-delay:0.9s; } .j-code div:nth-child(6) { animation-delay:1.1s; } .j-code div:nth-child(7) { animation-delay:1.3s; } .j-code div:nth-child(8) { animation-delay:1.5s; }
+        @keyframes jln { to { opacity:1; } }
+        .j-code .k { color:var(--cyan); } .j-code .s { color:var(--green); } .j-code .n { color:var(--violet); } .j-code .p { color:#55555f; }
+        .j-cur { display:inline-block; width:7px; height:12px; background:var(--cyan); vertical-align:-2px; animation:jblink 1.1s steps(1) infinite; }
+        @keyframes jblink { 50% { opacity:0; } }
+        .pl-ais { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; }
+        .pl-ai { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--violet); border:1px solid rgba(168,85,247,0.28); background:rgba(168,85,247,0.07); padding:3px 8px; border-radius:5px; letter-spacing:0.04em; }
+        .pl-res { background:var(--surface); border:1px solid rgba(34,197,94,0.28); border-radius:14px; overflow:hidden; text-align:left; }
+        .pl-rhead { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--border); gap:8px; }
+        .pl-rt { font-size:0.86rem; font-weight:700; }
+        .pl-pill { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.08em; color:var(--green); background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:100px; padding:3px 9px; white-space:nowrap; }
+        .pl-meal { display:flex; gap:10px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--border); }
+        .pl-thumb { position:relative; width:34px; height:34px; border-radius:9px; overflow:hidden; flex-shrink:0; background:#1b1410; }
+        .pl-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+        .pl-mn { font-size:0.78rem; font-weight:600; line-height:1.25; }
+        .pl-mk { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--text-3); margin-top:2px; }
+        .pl-rfoot { display:flex; gap:6px; flex-wrap:wrap; padding:11px 14px; }
+        .pl-fchip { font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--green); border:1px solid rgba(34,197,94,0.25); background:rgba(34,197,94,0.06); padding:3px 8px; border-radius:5px; letter-spacing:0.03em; }
+        .pl-wire { position:relative; height:2px; width:100%; opacity:0.55; }
+        .pl-wire.w1 { background:linear-gradient(90deg,var(--cyan),var(--violet)); }
+        .pl-wire.w2 { background:linear-gradient(90deg,var(--violet),var(--green)); }
+        .pl-wire i { position:absolute; top:50%; left:0; width:8px; height:8px; margin-top:-4px; border-radius:50%; animation:jflowx 1.9s ease-in-out infinite; }
+        .pl-wire.w1 i { background:var(--violet); box-shadow:0 0 10px var(--violet); }
+        .pl-wire.w2 i { background:var(--green); box-shadow:0 0 10px var(--green); animation-delay:0.6s; }
+        @keyframes jflowx { 0% { left:-4px; opacity:0; } 25% { opacity:1; } 100% { left:calc(100% - 4px); opacity:0; } }
+        @keyframes jflowy { 0% { top:-4px; opacity:0; } 25% { opacity:1; } 100% { top:42px; opacity:0; } }
+        .pl-wire .pl-pill { position:absolute; top:-30px; left:50%; transform:translateX(-50%); }
+        @media (max-width:860px) {
+            .pl-flow { display:flex; flex-direction:column; align-items:center; max-width:360px; }
+            .pl-step { width:100%; }
+            .pl-wire { width:2px; height:46px; margin:16px auto 14px; }
+            .pl-wire.w1 { background:linear-gradient(var(--cyan),var(--violet)); }
+            .pl-wire.w2 { background:linear-gradient(var(--violet),var(--green)); }
+            .pl-wire i { left:50%; top:0; margin-left:-4px; margin-top:0; animation-name:jflowy; }
+            .pl-wire .pl-pill { top:50%; left:auto; right:auto; transform:translate(-50%,-50%); left:50%; }
         }
-        @media (prefers-reduced-motion:reduce) { .tl-card, .tl-node { transition:none; } }
 
         /* Phone showcase (See It Working) */
         .show-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2.25rem; max-width:1080px; margin:0 auto; }
@@ -701,257 +604,60 @@
     </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-split">
-        <div class="hero-text">
-            <span class="label">For skinny guys who want to put on size</span>
-            <!-- HEADLINE: live option below. To try another, comment this one out and uncomment an alt:
-                 ALT A (your previous): <h1>Bulking meals built to <br class="hero-br">make eating big <span class="cyan">easy.</span></h1>
-                 ALT B (problem-first): <h1>The hard part of bulking was never the gym.<br class="hero-br">It's <span class="cyan">eating enough.</span></h1>
-            -->
-            <h1>Eating big, <br class="hero-br"><span class="cyan">made easy.</span></h1>
-            <p class="hero-sub">Big, calorie-dense meals with every ingredient and cooking step laid out, so hitting your surplus and actually gaining weight is finally the easy part. <strong style="color:var(--text);font-weight:600;">Free.</strong></p>
-            <div class="hero-action">
-                <div class="hero-cta">
-                    <a class="video-thumb" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
-                        <span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
-                        <span class="vt-text"><b>Watch how it works</b> &middot; 28 seconds</span>
-                    </a>
-                    <div class="getapp"><span class="ga-line"></span><span class="ga-lbl">Get the App</span><span class="ga-line"></span></div>
-                    <div class="hero-stores">
-                        <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})">
-                            <img src="images/App_Store.svg" alt="Download on the App Store" height="46" class="store-badge">
-                        </a>
-                        <!-- Android: when the Play listing is live, drop the Google Play badge in here so it sits next to the App Store one:
-                        <a href="GOOGLE_PLAY_URL" onclick="gtag('event','download_click',{'button_location':'hero','store':'google_play'})">
-                            <img src="images/Google_Play.svg" alt="Get it on Google Play" height="46" class="store-badge">
-                        </a>
-                        -->
-                    </div>
-                    <div class="hero-rating">
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                        <b>5.0</b>
-                        <span class="src">App Store</span>
-                    </div>
-                </div>
-                <div class="hero-trust">
-                    <div class="hero-trust-chips">
-                        <span>No account</span>
-                        <span>No ads</span>
-                        <span>No paywall</span>
-                    </div>
-                    <p class="hero-trust-tag">
-                        <svg class="laurel" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
--329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
-105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
--60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
--125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
-90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
-121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
--15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
-253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
-121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
-84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
--120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
-58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
--83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
--42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
--84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
--220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
--41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
--16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
--92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
-169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
-28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
--12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
--55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
-195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
--51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
--109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
-56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
-130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
--4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
-158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
--9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
-35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
--2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
-53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
-51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
-88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
-68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
-106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
-21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
--126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
-84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
--63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
--147 15z"/></g></svg>
-                        <span class="tt-text" style="display:inline-block;text-align:center;line-height:1.4;">Built on peer-reviewed<br>training and nutrition science</span>
-                        <svg class="laurel laurel-r" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
--329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
-105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
--60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
--125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
-90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
-121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
--15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
-253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
-121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
-84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
--120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
-58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
--83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
--42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
--84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
--220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
--41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
--16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
--92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
-169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
-28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
--12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
--55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
-195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
--51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
--109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
-56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
-130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
--4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
-158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
--9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
-35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
--2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
-53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
-51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
-88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
-68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
-106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
-21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
--126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
-84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
--63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
--147 15z"/></g></svg>
-                    </p>
-                </div>
+<!-- HERO: drifting meal wall + serif masthead -->
+<section class="fhero">
+    <div class="f-wall" aria-hidden="true">
+        <div class="f-col"><div class="f-track">
+            <div class="f-card"><img src="images/meals/pulled-pork.webp" data-fallback="images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; LOGGED</div></div></div></div>
+            <div class="f-card"><img src="images/meals/pulled-pork.webp" data-fallback="images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; LOGGED</div></div></div></div>
+        </div></div>
+        <div class="f-col rev"><div class="f-track">
+            <div class="f-card"><img src="images/meals/steak-and-eggs.webp" data-fallback="images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; LOGGED</div></div></div></div>
+            <div class="f-card"><img src="images/meals/lamb-shanks.webp" data-fallback="images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/king-kong-chocolate.webp" data-fallback="images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/steak-and-eggs.webp" data-fallback="images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; LOGGED</div></div></div></div>
+            <div class="f-card"><img src="images/meals/lamb-shanks.webp" data-fallback="images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/king-kong-chocolate.webp" data-fallback="images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div></div>
+        </div></div>
+        <div class="f-col"><div class="f-track">
+            <div class="f-card"><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; LOGGED</div></div></div></div>
+            <div class="f-card"><img src="images/meals/pulled-pork.webp" data-fallback="images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; LOGGED</div></div></div></div>
+            <div class="f-card"><img src="images/meals/pulled-pork.webp" data-fallback="images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div></div>
+        </div></div>
+        <div class="f-col rev"><div class="f-track">
+            <div class="f-card"><img src="images/meals/king-kong-chocolate.webp" data-fallback="images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/steak-and-eggs.webp" data-fallback="images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; LOGGED</div></div></div></div>
+            <div class="f-card"><img src="images/meals/lamb-shanks.webp" data-fallback="images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/king-kong-chocolate.webp" data-fallback="images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div></div>
+            <div class="f-card"><img src="images/meals/steak-and-eggs.webp" data-fallback="images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring done"></span><div><div class="f-name done">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; LOGGED</div></div></div></div>
+            <div class="f-card"><img src="images/meals/lamb-shanks.webp" data-fallback="images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><span class="f-ring"></span><div><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div></div>
+        </div></div>
+    </div>
+    <div class="f-scrim"></div>
+    <div class="fh-fg">
+        <span class="fh-ov">For skinny guys who want to put on size</span>
+        <h1 class="fh-display"><span class="fh-l1">Eating big,</span> <span class="cyan">made easy.</span></h1>
+        <p class="fh-sub"><b class="tick-p">239</b>g protein &middot; <b class="tick-k">3,311</b> kcal &middot; your numbers, handled</p>
+        <div class="fh-hair"></div>
+        <div class="fh-cta">
+            <div class="fh-row">
+                <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero'})">
+                    <img src="images/App_Store.svg" alt="Download on the App Store" height="46" class="fh-store">
+                </a>
+                <a class="fh-watch" id="heroVideo" href="https://www.youtube.com/shorts/3LugQ5uYzFE" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
+                    <span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="#050508"><polygon points="5,3 19,12 5,21"/></svg></span>
+                    <span><b>Watch how it works</b> &middot; 28 seconds</span>
+                </a>
             </div>
-        </div>
-
-        <!-- Interactive phone: Nutrition day (default) + Workout log. Tap (or wait ~5s) to switch. -->
-        <div class="hero-visual is-green" id="visual">
-            <div class="phone" id="phone" role="button" tabindex="0" aria-label="App preview. Activate to switch between the nutrition and workout screens.">
-                <div class="phone-notch"></div>
-                <div class="screen">
-                    <div class="sb"><span id="sbTime">9:41</span></div>
-
-                    <div class="scr on" data-accent="green" id="scr-nutrition">
-                        <div class="nd">
-                            <div class="nd-top"><span class="chev">&#8249;</span><span class="plus">+</span></div>
-                            <div class="nd-head">
-                                <div class="nd-overline">JUN 9</div>
-                                <div class="nd-day">Tuesday</div>
-                                <div class="nd-sub"><b>117</b> / 239g protein &middot; <b>1,580</b> / 3,311 kcal</div>
-                            </div>
-                            <div class="nd-hair"></div>
-                            <div class="nd-track"><div class="nd-fill"></div></div>
-                            <div class="nd-eaten">2 of 5 eaten</div>
-                            <div class="nd-tl">Timeline</div>
-                            <div class="nd-cards">
-                                <div class="nd-card">
-                                    <div class="nd-photo"><img src="images/meals/protein-pancakes.webp" alt="" fetchpriority="high" onerror="this.onerror=null;this.src='images/meals/protein-pancakes.png'"><div class="nd-scrim"></div><div class="nd-chip">6:00 AM &middot; BREAKFAST</div><div class="nd-vh">&#8250;</div></div>
-                                    <div class="nd-mbody"><div class="nd-ring done"></div><div><div class="nd-name done">Protein Pancakes</div><div class="nd-macro">760 kcal &middot; P52 C74 F27</div></div></div>
-                                </div>
-                                <div class="nd-card">
-                                    <div class="nd-photo"><img src="images/meals/steak-and-eggs.webp" alt="" onerror="this.onerror=null;this.src='images/meals/steak-and-eggs.png'"><div class="nd-scrim"></div><div class="nd-chip">9:00 AM &middot; BRUNCH</div><div class="nd-vh">&#8250;</div></div>
-                                    <div class="nd-mbody"><div class="nd-ring done"></div><div><div class="nd-name done">Steak &amp; Eggs</div><div class="nd-macro">820 kcal &middot; P65 C37 F44</div></div></div>
-                                </div>
-                                <div class="nd-card">
-                                    <div class="nd-photo"><img src="images/meals/massaman.webp" alt="" onerror="this.onerror=null;this.src='images/meals/massaman.png'"><div class="nd-chip">12:30 PM &middot; LUNCH</div><div class="nd-vh">&#8250;</div></div>
-                                    <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">Slow-Cooked Massaman Beef Curry</div><div class="nd-macro">890 kcal &middot; P52 C42 F58</div></div></div>
-                                </div>
-                                <div class="nd-card">
-                                    <div class="nd-photo"><img src="images/meals/king-kong-chocolate.webp" alt="" onerror="this.onerror=null;this.src='images/meals/king-kong-chocolate.png'"><div class="nd-chip">4:00 PM &middot; SNACK</div><div class="nd-vh">&#8250;</div></div>
-                                    <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">King Kong Chocolate</div><div class="nd-macro">1418 kcal &middot; P85 C93 F79</div></div></div>
-                                </div>
-                                <div class="nd-card">
-                                    <div class="nd-photo"><img src="images/meals/pulled-pork.webp" alt="" onerror="this.onerror=null;this.src='images/meals/pulled-pork.png'"><div class="nd-chip">7:30 PM &middot; DINNER</div><div class="nd-vh">&#8250;</div></div>
-                                    <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">Slow-Cooked BBQ Pulled Pork</div><div class="nd-macro">610 kcal &middot; P48 C28 F32</div></div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="scr" data-accent="cyan" id="scr-workout">
-                        <div class="wl-scroll">
-                            <div class="wl-img">
-                                <img class="frame" id="wl-frame-a" alt="" src="images/exercise/start.webp" onerror="this.onerror=null;this.src='images/exercise/start.png'">
-                                <img class="frame" id="wl-frame-b" alt="" src="images/exercise/end.webp" onerror="this.onerror=null;this.src='images/exercise/end.png'">
-                                <div class="wl-ph" id="wl-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 7v10M18 7v10M3 12h18M3 9.5v5M21 9.5v5"/></svg><span>exercise demo</span></div>
-                                <div class="wl-overlay"></div>
-                                <div class="wl-head">
-                                    <div class="wl-hbtn">&#8249;</div>
-                                    <div class="wl-hright">
-                                        <div class="wl-hbtn">&#8943;</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="wl-body">
-                                <div class="wl-titlerow"><div class="wl-title">Barbell Back Squat <span class="cd">&#9662;</span></div></div>
-                                <div class="wl-muscles">Quads &middot; Glutes</div>
-                                <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10, 10, 8</span></div>
-                                <div class="wl-tbl-head"><span style="width:24px">SET</span><span style="flex:1;text-align:center">KG</span><span style="flex:1;text-align:center">REPS</span><span style="width:28px;text-align:center">&#10003;</span></div>
-                                <div class="wl-row"><div class="col-set">1</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                                <div class="wl-row"><div class="col-set">2</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                                <div class="wl-row"><div class="col-set">3</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">8</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                                <div class="wl-add">+ Add set</div>
-                            </div>
-                            <div class="wl-upnext">
-                                <div class="wl-upnext-h">UP NEXT</div>
-                                <div class="wl-mini active">
-                                    <div class="wl-mini-icon"><img src="images/exercise/start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/start.png'"></div>
-                                    <div class="wl-mini-main">
-                                        <div class="wl-mini-trow"><span class="wl-mini-title">Barbell Back Squat</span><span class="wl-mini-cur">CURRENT</span></div>
-                                        <div class="wl-mini-meta">3 &times; 10, 10, 8 &middot; 0/3 done</div>
-                                    </div>
-                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
-                                </div>
-                                <div class="wl-mini">
-                                    <div class="wl-mini-icon"><img src="images/exercise/rdl-start.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"></div>
-                                    <div class="wl-mini-main">
-                                        <div class="wl-mini-trow"><span class="wl-mini-title">Romanian Deadlift</span></div>
-                                        <div class="wl-mini-meta">3 &times; 10 &middot; 0/3 done</div>
-                                    </div>
-                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
-                                </div>
-                                <div class="wl-mini">
-                                    <div class="wl-mini-icon"><img src="images/exercise/legpress.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/legpress.png'"></div>
-                                    <div class="wl-mini-main">
-                                        <div class="wl-mini-trow"><span class="wl-mini-title">Leg Press</span></div>
-                                        <div class="wl-mini-meta">3 &times; 12 &middot; 0/3 done</div>
-                                    </div>
-                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
-                                </div>
-                                <div class="wl-mini">
-                                    <div class="wl-mini-icon"><img src="images/exercise/backext.webp" alt="" onerror="this.onerror=null;this.src='images/exercise/backext.png'"></div>
-                                    <div class="wl-mini-main">
-                                        <div class="wl-mini-trow"><span class="wl-mini-title">Back Extension</span></div>
-                                        <div class="wl-mini-meta">3 &times; 12 &middot; 0/3 done</div>
-                                    </div>
-                                    <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wl-bottom">
-                            <div class="wl-timer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>0:00</div>
-                            <div class="wl-start">Start Workout</div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="poke">
-                <svg class="poke-arrow" width="22" height="26" viewBox="0 0 22 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="11" y1="23" x2="11" y2="4"/><polyline points="4 11 11 4 18 11"/></svg>
-                <span class="poke-label">Tap to switch</span>
-            </div>
+            <a class="fh-browse" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'hero'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals_hero'})">Browse all 81 meals &#8594;</a>
+            <div class="fh-trust"><span class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <b>5.0</b> App Store &middot; No ads &middot; No account<span class="fh-tx"> &middot; No paywall</span></div>
         </div>
     </div>
 </section>
@@ -980,47 +686,33 @@
     </div>
 </section>
 
-<section class="section" id="meals" style="padding-top:4rem;padding-bottom:2rem;">
+<section class="section" id="meals" style="padding-top:4rem;padding-bottom:2.5rem;">
     <div class="container">
-        <div class="section-head sa sa-up" style="text-align:center;">
-            <div class="section-line" style="margin:0 auto 1rem;"></div>
-            <span class="label">The Meal Library</span>
-            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Real meals,<br><span class="cyan">step-by-step.</span></h2>
-            <p style="margin:0 auto;">Browse a whole library of calorie-dense meals with exact ingredients and cooking steps, built to make eating big easy. Cook once, eat all week. High protein comes standard.</p>
+        <div class="strip-head sa sa-up">
+            <div>
+                <span class="label" style="margin-bottom:0.6rem;">The Meal Library</span>
+                <h2>81 real meals, <span class="cyan">every step written.</span></h2>
+            </div>
+            <a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a>
         </div>
         <div class="meal-grid sa-stagger">
             <a class="meal-card" href="meals.html">
                 <img src="images/meals/pulled-pork.webp" data-fallback="images/meals/pulled-pork.png" alt="Slow-Cooked BBQ Pulled Pork" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                 <div class="meal-body"><div class="meal-cuisine">Australian &middot; Pork</div><div class="meal-name">Slow-Cooked BBQ Pulled Pork</div><div class="meal-macros"><span class="meal-macro">48g P</span><span class="meal-macro">28g C</span><span class="meal-macro">32g F</span><span class="meal-kcal">610 kcal</span></div></div>
             </a>
-            <a class="meal-card meal-extra" href="meals.html">
+            <a class="meal-card" href="meals.html">
                 <img src="images/meals/lamb-shanks.webp" data-fallback="images/meals/lamb-shanks.png" alt="Red Wine-Braised Lamb Shanks" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                 <div class="meal-body"><div class="meal-cuisine">Australian &middot; Lamb</div><div class="meal-name">Red Wine&ndash;Braised Lamb Shanks</div><div class="meal-macros"><span class="meal-macro">54g P</span><span class="meal-macro">14g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">825 kcal</span></div></div>
-            </a>
-            <a class="meal-card meal-extra" href="meals.html">
-                <img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="Slow-Cooked Massaman Beef Curry" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                <div class="meal-body"><div class="meal-cuisine">Thai &middot; Beef</div><div class="meal-name">Slow-Cooked Massaman Beef Curry</div><div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">42g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">890 kcal</span></div></div>
-            </a>
-            <a class="meal-card meal-extra" href="meals.html">
-                <img src="images/meals/steak-and-eggs.webp" data-fallback="images/meals/steak-and-eggs.png" alt="Steak and Eggs" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                <div class="meal-body"><div class="meal-cuisine">Breakfast &middot; Beef</div><div class="meal-name">Steak &amp; Eggs</div><div class="meal-macros"><span class="meal-macro">65g P</span><span class="meal-macro">37g C</span><span class="meal-macro">44g F</span><span class="meal-kcal">820 kcal</span></div></div>
-            </a>
-            <a class="meal-card" href="meals.html">
-                <img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="Protein Pancakes" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                <div class="meal-body"><div class="meal-cuisine">Breakfast &middot; Dairy</div><div class="meal-name">Protein Pancakes</div><div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">74g C</span><span class="meal-macro">27g F</span><span class="meal-kcal">760 kcal</span></div></div>
             </a>
             <a class="meal-card" href="meals.html">
                 <img src="images/meals/king-kong-chocolate.webp" data-fallback="images/meals/king-kong-chocolate.png" alt="King Kong Chocolate protein smoothie" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                 <div class="meal-body"><div class="meal-cuisine">Smoothie &middot; Dairy</div><div class="meal-name">King Kong Chocolate</div><div class="meal-macros"><span class="meal-macro">85g P</span><span class="meal-macro">93g C</span><span class="meal-macro">79g F</span><span class="meal-kcal">1418 kcal</span></div></div>
             </a>
         </div>
-        <div style="text-align:center;">
-            <a href="meals.html" class="meals-cta" onclick="gtag('event','view_meals',{'button_location':'meals'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a>
-        </div>
+        <p class="strip-hint">Swipe to see more &#8594;</p>
+        <div class="strip-linkrow"><a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a></div>
     </div>
 </section>
-
-<!-- Free cookbook email capture -->
 <section class="cap">
     <div class="container">
         <div class="cap-card">
@@ -1059,43 +751,132 @@
         <div class="section-head sa sa-up" style="text-align:center;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">How your plan gets built</span>
-            <h2>Choose your meals, build <span class="cyan">your week.</span></h2>
+            <h2>Any AI in. <span class="cyan">Real plan out.</span></h2>
         </div>
-        <div class="tl" id="tl">
-            <div class="tl-spine"></div>
-            <div class="tl-fill" id="tlFill"></div>
-            <div class="tl-step left" style="--ac:#22d3ee; --ac-soft:rgba(34,211,238,0.08); --ac-border:rgba(34,211,238,0.22); --ac-glow:rgba(34,211,238,0.45);">
-                <div class="tl-node">01</div>
-                <div class="tl-card">
-                    <div class="tl-eyebrow">You</div>
-                    <h3>Answer a few questions</h3>
-                    <p>Your specific goal, height, weight, activity and the meals you actually like. JSON.fit turns your answers into a prompt to copy.</p>
-                    <div class="tl-chips"><span class="tl-chip">Weight gain</span><span class="tl-chip">90kg</span><span class="tl-chip">6 meals/day</span></div>
+        <div class="pl-flow sa sa-up">
+            <div class="pl-step">
+                <span class="pl-tag t1">01 &middot; You answer</span>
+                <div class="pl-card">
+                    <div class="pl-ct">A few quick questions</div>
+                    <div class="pl-kv"><span>Goal</span><b>Weight gain</b></div>
+                    <div class="pl-kv"><span>Target</span><b>90kg</b></div>
+                    <div class="pl-kv"><span>Meals</span><b>6 per day</b></div>
+                    <div class="pl-btn">Copy prompt</div>
                 </div>
+                <p class="pl-cap">Your goal, stats and the meals you actually like become a research-packed prompt. One tap to copy.</p>
             </div>
-            <div class="tl-step right" style="--ac:#a855f7; --ac-soft:rgba(168,85,247,0.10); --ac-border:rgba(168,85,247,0.26); --ac-glow:rgba(168,85,247,0.45);">
-                <div class="tl-node">02</div>
-                <div class="tl-card">
-                    <div class="tl-eyebrow">Any AI</div>
-                    <h3>Paste your prompt into any AI</h3>
-                    <p>Your prompt is packed with real research, so the AI of your choice builds your plan on proven science, not guesswork.</p>
-                    <div class="tl-chips"><span class="tl-chip">ChatGPT</span><span class="tl-chip">Claude</span><span class="tl-chip">Gemini</span></div>
+            <div class="pl-wire w1"><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t2">02 &middot; Any AI writes</span>
+                <div class="j-term">
+                    <div class="j-tbar"><i></i><i></i><i></i><span>meal-plan.json &middot; from ChatGPT</span></div>
+                    <div class="j-code"><div><span class="p">{</span></div><div>  <span class="k">&quot;plan&quot;</span><span class="p">:</span> <span class="s">&quot;7-Day Lean Bulk&quot;</span><span class="p">,</span></div><div>  <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">3311</span><span class="p">,</span></div><div>  <span class="k">&quot;protein_g&quot;</span><span class="p">:</span> <span class="n">239</span><span class="p">,</span></div><div>  <span class="k">&quot;meals&quot;</span><span class="p">:</span> <span class="p">[{</span></div><div>    <span class="k">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;Massaman Beef Curry&quot;</span><span class="p">,</span></div><div>    <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">890</span> <span class="p">}]</span></div><div><span class="p">}</span> <span class="j-cur"></span></div></div>
                 </div>
+                <div class="pl-ais"><span class="pl-ai">ChatGPT</span><span class="pl-ai">Claude</span><span class="pl-ai">Gemini</span><span class="pl-ai">+ any AI</span></div>
+                <p class="pl-cap pl-capc">Paste it in. The AI writes your week on real research and returns it as JSON.</p>
             </div>
-            <div class="tl-step left" style="--ac:#22c55e; --ac-soft:rgba(34,197,94,0.09); --ac-border:rgba(34,197,94,0.24); --ac-glow:rgba(34,197,94,0.45);">
-                <div class="tl-node">03</div>
-                <div class="tl-card">
-                    <div class="tl-eyebrow">Back in</div>
-                    <h3>Import the file it makes</h3>
-                    <p>Import the AI-generated plan into JSON.fit for your exact macros, one grocery list for the week, and prep that clears the cooking in a single session.</p>
-                    <div class="tl-chips"><span class="tl-chip">0.81s import</span><span class="tl-chip">7-day plan</span></div>
+            <div class="pl-wire w2"><span class="pl-pill">&#10003; 0.81S</span><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t3">03 &middot; JSON.fit imports</span>
+                <div class="pl-res">
+                    <div class="pl-rhead"><span class="pl-rt">7-Day Lean Bulk</span><span class="pl-pill">&#10003; IMPORTED</span></div>
+                    <div class="pl-meal"><span class="pl-thumb"><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span><div><div class="pl-mn">Protein Pancakes</div><div class="pl-mk">6:00 AM &middot; 760 kcal</div></div></div>
+                    <div class="pl-meal"><span class="pl-thumb"><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span><div><div class="pl-mn">Massaman Beef Curry</div><div class="pl-mk">12:30 PM &middot; 890 kcal</div></div></div>
+                    <div class="pl-rfoot"><span class="pl-fchip">One grocery list</span><span class="pl-fchip">Prep in one session</span><span class="pl-fchip">Exact macros</span></div>
                 </div>
+                <p class="pl-cap">Import the file. Macros, groceries and the week's prep, handled.</p>
             </div>
         </div>
         <p class="engine-foot sa sa-up">The same system builds your <strong>training program</strong> too: splits, volume per muscle, deloads, progressive overload. You can even build one that runs up to a year long.</p>
+        <p class="science-tag sa sa-up"><svg class="laurel" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
+-329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
+105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
+-60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
+-125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
+90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
+121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
+-15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
+253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
+121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
+84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
+-120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
+58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
+-83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
+-42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
+-84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
+-220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
+-41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
+-16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
+-92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
+169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
+28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
+-12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
+-55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
+195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
+-51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
+-109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
+56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
+130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
+-4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
+158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
+-9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
+35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
+-2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
+53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
+51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
+88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
+68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
+106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
+21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
+-126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
+84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
+-63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
+-147 15z"/></g></svg><span class="tt-text" style="display:inline-block;text-align:center;line-height:1.4;">Built on peer-reviewed<br>training and nutrition science</span><svg class="laurel laurel-r" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
+-329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
+105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
+-60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
+-125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
+90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
+121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
+-15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
+253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
+121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
+84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
+-120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
+58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
+-83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
+-42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
+-84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
+-220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
+-41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
+-16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
+-92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
+169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
+28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
+-12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
+-55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
+195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
+-51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
+-109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
+56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
+130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
+-4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
+158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
+-9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
+35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
+-2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
+53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
+51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
+88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
+68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
+106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
+21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
+-126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
+84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
+-63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
+-147 15z"/></g></svg></p>
     </div>
 </section>
-
 <!-- See It Working: real app screens from an imported plan -->
 <section class="section" style="padding-bottom:2rem;">
     <div class="container">
@@ -1510,64 +1291,6 @@
 </script>
 
 <!-- Interactive hero phone: default Nutrition day, auto-rotate ~5s, tap to switch -->
-<script>
-(function(){
-  var order = ['nutrition','workout'], idx = 0, timer = null, stopped = false;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function setScreen(name){
-    var screens = document.querySelectorAll('#phone .scr');
-    if(!screens.length) return;
-    screens.forEach(function(s){ s.classList.remove('on'); });
-    var el = document.getElementById('scr-' + name);
-    if(el){ el.classList.add('on'); el.scrollTop = 0; }
-    document.getElementById('visual').classList.toggle('is-green', name === 'nutrition');
-    idx = order.indexOf(name);
-  }
-
-  var phone = document.getElementById('phone');
-
-  if(phone){
-    phone.addEventListener('click', function(){
-      stopped = true;
-      if(timer){ clearInterval(timer); timer = null; }
-      setScreen(order[(idx + 1) % order.length]);
-    });
-    // Keyboard support — the phone is a focusable role="button"
-    phone.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
-        e.preventDefault();
-        phone.click();
-      }
-    });
-  }
-
-  if(!reduce && phone){
-    timer = setInterval(function(){
-      if(stopped){ clearInterval(timer); timer = null; return; }
-      setScreen(order[(idx + 1) % order.length]);
-    }, 5000);
-  }
-
-  // Exercise two-frame rep swap (start.png <-> end.png every 1s), mirrors the app's startImageCycling.
-  var fa = document.getElementById('wl-frame-a'),
-      fb = document.getElementById('wl-frame-b'),
-      ph = document.getElementById('wl-ph');
-  if(fa && fb && fa.getAttribute('src') && fb.getAttribute('src')){
-    if(ph) ph.style.display = 'none';
-    fa.classList.add('show');
-    if(!reduce){
-      var phase = 0;
-      setInterval(function(){
-        phase ^= 1;
-        fa.classList.toggle('show', phase === 0);
-        fb.classList.toggle('show', phase === 1);
-      }, 1000);
-    }
-  }
-})();
-</script>
-
 <!-- Hero "Watch how it works" — plays the Short inline in a modal (no new tab) -->
 <script>
 (function(){
@@ -1617,86 +1340,42 @@
 })();
 </script>
 
-<!-- Timeline (#how): scroll-driven spine fill + node activation; cards reveal on enter -->
+<!-- Footer updated stamp from the visitor's local date -->
 <script>
 (function(){
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var tl = document.getElementById('tl');
-    if(!tl) return;
-    var fill = document.getElementById('tlFill');
-    var spine = tl.querySelector('.tl-spine');
-    var steps = Array.prototype.slice.call(tl.querySelectorAll('.tl-step'));
-    var nodes = steps.map(function(s){ return s.querySelector('.tl-node'); });
-
-    var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-            if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-        });
-    }, { threshold:0.2, rootMargin:'0px 0px -8% 0px' });
-    steps.forEach(function(s){ io.observe(s); });
-
-    // Run the spine + fill only between the first and last node centres,
-    // so the line doesn't poke out above 01 or below the final node.
-    var spanTop = 0, spanH = 1;
-    function centerOf(n, tlTop){ var r = n.getBoundingClientRect(); return (r.top + r.height / 2) - tlTop; }
-    function layout(){
-        var tlTop = tl.getBoundingClientRect().top;
-        spanTop = centerOf(nodes[0], tlTop);
-        spanH = Math.max(1, centerOf(nodes[nodes.length - 1], tlTop) - spanTop);
-        spine.style.top = spanTop + 'px';
-        spine.style.bottom = 'auto';
-        spine.style.height = spanH + 'px';
-        fill.style.top = spanTop + 'px';
-        fill.style.backgroundSize = '100% ' + spanH + 'px';
-    }
-
-    if(reduce){
-        layout();
-        fill.style.height = spanH + 'px';
-        nodes.forEach(function(n){ n.classList.add('on'); });
-        return;
-    }
-
-    function update(){
-        var tlTop = tl.getBoundingClientRect().top;
-        var marker = window.innerHeight * 0.5;
-        var prog = Math.max(0, Math.min(1, (marker - (tlTop + spanTop)) / spanH));
-        var fillPx = prog * spanH;
-        fill.style.height = fillPx + 'px';
-        nodes.forEach(function(n){
-            var c = centerOf(n, tlTop) - spanTop;
-            if(fillPx >= c - 2){ n.classList.add('on'); } else { n.classList.remove('on'); }
-        });
-    }
-
-    var ticking = false;
-    function onScroll(){
-        if(!ticking){ ticking = true; requestAnimationFrame(function(){ update(); ticking = false; }); }
-    }
-    window.addEventListener('scroll', onScroll, { passive:true });
-    window.addEventListener('resize', function(){ layout(); update(); });
-    window.addEventListener('load', function(){ layout(); update(); });
-    layout();
-    update();
-    setTimeout(function(){ layout(); update(); }, 120);
-})();
-</script>
-<!-- Phone status bar time + footer updated stamp, both from the visitor's local date -->
-<script>
-(function(){
-  var clock = document.getElementById("sbTime");
-  function tick(){
-    if(!clock) return;
-    var t = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }).match(/\d{1,2}:\d{2}/);
-    if(t && t[0]) clock.textContent = t[0];
-  }
-  tick();
-  setInterval(tick, 15000);
-
   var stamp = document.getElementById("siteUpdated");
   if(stamp){
     stamp.textContent = new Date().toLocaleDateString([], { month: "long", year: "numeric" });
   }
+})();
+</script>
+<!-- Hero macro ticker: numbers tick between example profiles -->
+<script>
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var pEls = document.querySelectorAll('.tick-p');
+  var kEls = document.querySelectorAll('.tick-k');
+  if (!pEls.length || !kEls.length) return;
+  var profiles = [{p:239,k:3311},{p:205,k:2890},{p:262,k:3650},{p:186,k:2640}];
+  var idx = 0;
+  function ease(t){ return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
+  function tween(from, to, cb){
+    var start = null, dur = 900;
+    function frame(ts){
+      if(!start) start = ts;
+      var t = Math.min((ts - start) / dur, 1);
+      cb(Math.round(from + (to - from) * ease(t)));
+      if(t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  setInterval(function(){
+    var from = profiles[idx];
+    idx = (idx + 1) % profiles.length;
+    var to = profiles[idx];
+    tween(from.p, to.p, function(v){ pEls.forEach(function(el){ el.textContent = v; }); });
+    tween(from.k, to.k, function(v){ kEls.forEach(function(el){ el.textContent = v.toLocaleString(); }); });
+  }, 3400);
 })();
 </script>
 </body>
