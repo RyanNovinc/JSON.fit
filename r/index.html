@@ -77,7 +77,7 @@ main{flex:1;width:100%;max-width:760px;margin:0 auto;padding-bottom:6rem}
 
 .title-block{padding-top:1.5rem;margin-bottom:1.5rem}
 .cuisine{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem}
-.title{font-size:clamp(1.7rem,5vw,2.3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.title{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(2rem,5.5vw,2.7rem);letter-spacing:-.01em;line-height:1.1}
 
 /* Section primitives */
 .section{margin-bottom:2rem}
@@ -156,7 +156,8 @@ button.section-head:focus-visible{outline:2px solid var(--green);outline-offset:
 /* App teaser card */
 .teaser{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.75rem;position:relative;overflow:hidden;margin-bottom:2rem}
 .teaser::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-border),transparent)}
-.teaser h3{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem}
+.teaser h3{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:1.5rem;letter-spacing:-.01em;margin-bottom:.4rem}
+.teaser h3 em{color:var(--green);font-style:italic}
 .teaser p{color:var(--text-2);font-size:.88rem;line-height:1.6;margin-bottom:1.25rem}
 .teaser-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
 .teaser-list li{display:flex;align-items:center;gap:.6rem;font-size:.88rem;color:var(--text-2)}
@@ -545,7 +546,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
       // App teaser
       '<div class="teaser">'+
-        '<h3>Cook it step by step.</h3>'+
+        '<h3>Cook it <em>step by step.</em></h3>'+
         '<p>This recipe is free in the app \u2014 a guided cook mode that walks you through one step at a time, with timers that start as you reach them. Easier to follow at the stove than scrolling a page.</p>'+
         '<ul class="teaser-list">'+
           '<li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Step-by-step cook mode with built-in timers</li>'+

@@ -213,7 +213,8 @@
         .cta-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
         .cta-card > * { position:relative; z-index:1; }
         .cta-badge { display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--cyan); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
-        .cta-card h2 { font-size:1.5rem; font-weight:800; letter-spacing:-0.02em; margin-bottom:0.75rem; }
+        .cta-card h2 { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:1.9rem; letter-spacing:-0.01em; line-height:1.15; margin-bottom:0.75rem; }
+        .cta-card h2 em { color:var(--cyan); font-style:italic; }
         .cta-price { display:flex; align-items:baseline; justify-content:center; gap:0.4rem; margin-bottom:0.25rem; }
         .cta-price .big { font-family:'DM Mono',monospace; font-size:2.5rem; font-weight:500; color:var(--cyan); }
         .cta-price .unit { font-size:0.85rem; color:var(--text-2); }
@@ -413,8 +414,8 @@
         .book-icon { margin-top:auto; color:rgba(255,255,255,0.22); }
         .cap-body { position:relative; z-index:1; }
         .cap-label { font-family:'DM Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--green); display:block; margin-bottom:0.9rem; }
-        .cap-body h2 { font-size:clamp(1.5rem,3.4vw,2rem); font-weight:800; letter-spacing:-0.02em; line-height:1.12; margin-bottom:0.7rem; }
-        .cap-body h2 em { color:var(--green); font-style:normal; }
+        .cap-body h2 { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:clamp(1.9rem,3.8vw,2.5rem); letter-spacing:-0.01em; line-height:1.1; margin-bottom:0.8rem; }
+        .cap-body h2 em { color:var(--green); font-style:italic; }
         .cap-body p { color:var(--text-2); font-size:0.92rem; max-width:420px; margin-bottom:1.4rem; }
         .cap-form { display:flex; gap:0.6rem; max-width:440px; }
         .cap-input { flex:1; min-width:0; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--text); font-family:'Outfit',sans-serif; font-size:0.92rem; transition:border-color 0.2s, box-shadow 0.2s; }
@@ -730,8 +731,8 @@
             </div>
             <div class="cap-body">
                 <span class="cap-label">Free Cookbook + Updates</span>
-                <h2>Get all 81 bulking meals as a printable cookbook, <em>free.</em></h2>
-                <p>Macros and ingredients for every meal, yours to keep and print. Plus new meals as they land, and what's working in my own bulk to 90kg. Subscribers get first access and a launch discount when the print edition drops.</p>
+                <h2>All 81 meals, <em>free.</em></h2>
+                <p>The printable cookbook, macros and ingredients included, plus new meals as they land and my bulk to 90kg in the open. First access and a launch discount when the print edition drops.</p>
                 <form class="cap-form" id="capForm" novalidate>
                     <!-- Live: posts to the JSON.fit subscribe API (AWS). capWebsite is a honeypot for bots. -->
                     <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
@@ -968,7 +969,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Free Training Programs</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
-            <p style="margin:0 auto;">Don't want to build a custom plan? Import a complete, periodised program that runs a full year, straight into the app. The planning's done for you.</p>
+            <p style="margin:0 auto;">Don't want to build your own? Import a complete, periodised year-long program straight into the app.</p>
         </div>
         <div class="prog-grid sa-stagger">
             <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
@@ -1040,9 +1041,8 @@
 <section class="cta-wrap" id="download">
     <div class="cta-card sa sa-scale">
         <div class="cta-badge" style="color:var(--cyan)">No subscription</div>
-        <h2>Everything free.<br>No catch.</h2>
+        <h2>Everything free. <em>No catch.</em></h2>
         <div class="cta-price"><span class="big">$0</span><span class="unit">to use</span></div>
-        <p class="cta-sub">No subscription &middot; No paywall &middot; No ads &middot; No accounts</p>
         <div class="cta-checks">
             <div class="cta-check"><span class="ic ic-g">&#10003;</span> Full bulking meal library, step-by-step</div>
             <div class="cta-check"><span class="ic ic-c">&#10003;</span> AI meal plans built around your macros</div>
@@ -1050,7 +1050,7 @@
             <div class="cta-check"><span class="ic ic-c">&#10003;</span> Smart grocery lists &amp; pantry intelligence</div>
             <div class="cta-check"><span class="ic ic-c">&#10003;</span> Works with ChatGPT, Claude, Gemini &amp; more</div>
             <hr class="cta-div">
-            <div class="cta-check"><span class="ic ic-g">&#10003;</span> No ads, nothing sold. Your workouts &amp; nutrition stay on your device.</div>
+            <div class="cta-check"><span class="ic ic-g">&#10003;</span> No ads, no accounts, nothing sold. Ever.</div>
         </div>
         <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'cta'})">
             <svg width="15" height="18" viewBox="0 0 18 22" fill="none"><path d="M14.94 11.58c-.02-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.78-1.39-.14-2.72.82-3.43.82-.71 0-1.81-.8-2.98-.78-1.53.02-2.95.89-3.74 2.27-1.59 2.77-.41 6.87 1.15 9.11.76 1.1 1.66 2.34 2.85 2.29 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.27 1.23-2.51 1.25-2.57-.03-.01-2.4-.92-2.42-3.66zm-2.27-6.73C13.32 4.09 13.78 3 13.65 1.9c-.93.04-2.06.62-2.73 1.4-.6.7-1.12 1.81-.98 2.87 1.04.08 2.1-.53 2.73-1.32z" fill="currentColor"/></svg>

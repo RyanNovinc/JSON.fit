@@ -102,7 +102,6 @@
         .strip-linkrow { display:none; }
         .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
         .meal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; text-decoration:none; color:inherit; transition:border-color 0.2s, transform 0.2s; }
-        .meal-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
         .meal-card img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--surface-2); }
         .meal-body { padding:1rem 1.15rem 1.2rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:auto; }
         .meal-cuisine { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.13em; color:var(--cyan); }
@@ -118,6 +117,17 @@
         .hero-stores { display:flex; gap:0.7rem; justify-content:center; align-items:center; flex-wrap:wrap; }
         .store-badge { display:block; border-radius:9px; }
         .app-note { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-3); letter-spacing:0.03em; margin-top:0.95rem; }
+        .app-card { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.25rem 1.5rem; }
+        .app-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
+        /* closing capture band */
+        .cb { padding-top:4.5rem; text-align:center; }
+        .cb-display { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:clamp(1.8rem,4.4vw,2.6rem); line-height:1.1; letter-spacing:-0.01em; }
+        .cb-display em { color:var(--green); font-style:italic; }
+        .cb-btn { display:inline-flex; align-items:center; gap:0.5rem; margin-top:1.5rem; background:var(--green); color:#041109; border-radius:10px; padding:0.9rem 1.6rem; font-weight:700; font-size:0.95rem; text-decoration:none; transition:transform 0.2s,box-shadow 0.2s; }
+        .cb-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px var(--green-glow); }
+        /* scroll reveal */
+        .sa { opacity:0; transform:translateY(14px); transition:opacity 0.6s ease, transform 0.6s ease; }
+        .sa.vis { opacity:1; transform:none; }
         footer { border-top:1px solid var(--border); padding:1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; }
         .foot-l { font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); }
         .foot-l a { color:var(--text-3); text-decoration:none; margin-left:1.1rem; transition:color 0.2s; }
@@ -148,7 +158,7 @@
         @media (max-width:480px) {
             .fh-display { font-size:2.35rem; }
         }
-        @media (prefers-reduced-motion:reduce) { .f-track { animation:none; } .book { animation:none; } .btn:hover, .meal-card:hover { transform:none; } }
+        @media (prefers-reduced-motion:reduce) { .f-track { animation:none; } .book { animation:none; } .btn:hover, .cb-btn:hover { transform:none; } .sa { opacity:1; transform:none; transition:none; } }
     </style>
     <!-- self-hosted analytics, same pipeline as the rest of json.fit -->
     <script src="/analytics-web.js"
@@ -234,39 +244,40 @@
     <div class="wrap">
 
         <!-- MEALS: entice with real photos (secondary) -->
-        <section class="lp-sec">
+        <section class="lp-sec sa">
             <div class="strip-head">
                 <div>
                     <span class="lp-eyebrow">What's Inside</span>
-                    <h2>A taste of <span class="cyan">what's inside.</span></h2>
-                    <p>Every meal is calorie-dense and high-protein, with the exact ingredients and steps. Cook once, eat all week.</p>
+                    <h2>Cook once, <span class="cyan">eat all week.</span></h2>
+                    <p>Every meal is calorie-dense and high-protein, with exact ingredients and steps.</p>
                 </div>
                 <a class="strip-link" href="/meals.html" onclick="if(window.gtag)gtag('event','view_meals',{'button_location':'cookbook_page'})">Browse all 81 &#8594;</a>
             </div>
             <div class="meal-grid">
-                <a class="meal-card" href="/meals.html">
+                <div class="meal-card">
                     <img src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="Steak and Eggs" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     <div class="meal-body"><div class="meal-cuisine">Breakfast &middot; Beef</div><div class="meal-name">Steak &amp; Eggs</div><div class="meal-macros"><span class="meal-macro">65g P</span><span class="meal-macro">37g C</span><span class="meal-macro">44g F</span><span class="meal-kcal">820 kcal</span></div></div>
-                </a>
-                <a class="meal-card" href="/meals.html">
+                </div>
+                <div class="meal-card">
                     <img src="/images/meals/massaman.webp" data-fallback="/images/meals/massaman.png" alt="Slow-Cooked Massaman Beef Curry" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     <div class="meal-body"><div class="meal-cuisine">Thai &middot; Beef</div><div class="meal-name">Slow-Cooked Massaman Beef Curry</div><div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">42g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">890 kcal</span></div></div>
-                </a>
-                <a class="meal-card" href="/meals.html">
+                </div>
+                <div class="meal-card">
                     <img src="/images/meals/king-kong-chocolate.webp" data-fallback="/images/meals/king-kong-chocolate.png" alt="King Kong Chocolate protein smoothie" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     <div class="meal-body"><div class="meal-cuisine">Smoothie &middot; Dairy</div><div class="meal-name">King Kong Chocolate</div><div class="meal-macros"><span class="meal-macro">85g P</span><span class="meal-macro">93g C</span><span class="meal-macro">79g F</span><span class="meal-kcal">1418 kcal</span></div></div>
-                </a>
+                </div>
             </div>
             <p class="strip-hint">Swipe to see more &#8594;</p>
             <div class="strip-linkrow"><a class="strip-link" href="/meals.html" onclick="if(window.gtag)gtag('event','view_meals',{'button_location':'cookbook_page'})">Browse all 81 &#8594;</a></div>
         </section>
 
         <!-- APP: proper store badge (secondary) -->
-        <section class="lp-sec app-sec">
+        <section class="lp-sec app-sec sa">
+            <div class="app-card">
             <div class="app-head">
                 <span class="lp-eyebrow">The App</span>
                 <h2>Rather track it <span class="cyan">in the app?</span></h2>
-                <p>JSON.fit is free. Build meal plans and year-long training programs with your own AI to make your bulking journey easier. No subscription, no paywall.</p>
+                <p>Meal plans and year-long training programs, built with your own AI. No subscription, no paywall.</p>
             </div>
             <div class="hero-stores">
                 <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="if(window.gtag)gtag('event','download_click',{'button_location':'cookbook_page'})">
@@ -279,6 +290,13 @@
                 -->
             </div>
             <p class="app-note">On iPhone now &middot; Android soon</p>
+            </div>
+        </section>
+
+        <!-- CLOSE: second shot at the capture -->
+        <section class="cb sa">
+            <p class="cb-display">Go on, <em>it's free.</em></p>
+            <a class="cb-btn" id="closeCta" href="#f">Send me the cookbook</a>
         </section>
 
     </div>
@@ -333,6 +351,26 @@
         })
         .catch(function(){ email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label; });
     });
+
+    // Bottom CTA: back up to the form
+    var closeCta = document.getElementById('closeCta');
+    if (closeCta) closeCta.addEventListener('click', function(e){
+        e.preventDefault();
+        if (window.track) window.track('cta_clicked', { cta_id: 'cookbook_close' });
+        document.querySelector('.fhero').scrollIntoView({ behavior: 'smooth' });
+        if (form.style.display !== 'none') setTimeout(function(){ email.focus({ preventScroll: true }); }, 650);
+    });
+
+    // Scroll reveal
+    var els = document.querySelectorAll('.sa');
+    if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(en){ if (en.isIntersecting) { en.target.classList.add('vis'); io.unobserve(en.target); } });
+        }, { threshold: 0.15 });
+        els.forEach(function(el){ io.observe(el); });
+    } else {
+        els.forEach(function(el){ el.classList.add('vis'); });
+    }
 })();
 </script>
 </body>

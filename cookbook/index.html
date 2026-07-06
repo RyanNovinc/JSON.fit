@@ -55,8 +55,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .book-icon{margin-top:auto;color:rgba(255,255,255,0.22)}
 
 .dl-eyebrow{font-family:'DM Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--green);display:block;margin-bottom:1rem;animation:fadeUp 0.6s ease both}
-.dl-body h1{font-size:clamp(2rem,3.6vw,3rem);font-weight:800;line-height:1.07;letter-spacing:-0.025em;margin-bottom:1.1rem;animation:fadeUp 0.6s ease 0.06s both}
-.dl-body h1 em{color:var(--green);font-style:normal}
+.dl-body h1{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(2.3rem,3.8vw,3.3rem);line-height:1.07;letter-spacing:-0.01em;margin-bottom:1.1rem;animation:fadeUp 0.6s ease 0.06s both}
+.dl-body h1 em{color:var(--green);font-style:italic}
 .dl-sub{font-size:1rem;color:var(--text-2);max-width:440px;line-height:1.7;margin-bottom:1.9rem;animation:fadeUp 0.6s ease 0.12s both}
 .dl-btn{display:inline-flex;align-items:center;gap:0.6rem;background:var(--green);color:#041109;border:none;border-radius:12px;padding:1rem 1.6rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;text-decoration:none;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.6s ease 0.18s both}
 .dl-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px var(--green-glow)}
@@ -71,7 +71,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .appcard{max-width:980px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:2.5rem;position:relative;overflow:hidden}
 .appcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-border),transparent)}
 .appcard .label{font-family:'DM Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--green);display:block;margin-bottom:0.9rem}
-.appcard h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.7rem}
+.appcard h2{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(1.8rem,3.2vw,2.3rem);letter-spacing:-0.01em;line-height:1.15;margin-bottom:0.7rem}
+.appcard h2 em{color:var(--green);font-style:italic}
 .appcard>p{color:var(--text-2);font-size:0.95rem;line-height:1.7;max-width:560px;margin-bottom:1.75rem}
 .checklist{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0.8rem 1.75rem;margin-bottom:2rem}
 .checklist li{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.92rem;color:var(--text-2);line-height:1.5}
@@ -150,7 +151,7 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
 <section class="appcard-wrap">
   <div class="appcard">
     <span class="label">While you're here</span>
-    <h2>Now let the app do the work.</h2>
+    <h2>Now let the app <em>do the work.</em></h2>
     <p>The cookbook is the static version. In the app, these same meals get built into a full plan around <em>your</em> macros and your week, with a guided cook mode, timers, portion scaling and an auto grocery list. It's free, and there's nothing to sign up for.</p>
     <ul class="checklist">
       <li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Build any meal into a plan that hits your numbers</li>
