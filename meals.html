@@ -58,7 +58,9 @@ nav{position:sticky;top:0;z-index:100;padding:0 1.5rem;height:56px;display:flex;
 
 /* Header */
 header{max-width:1080px;margin:0 auto;width:100%;padding:3rem 1.5rem 1.5rem;text-align:center}
-h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:.6rem}
+.h-ov{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);display:block;margin-bottom:1rem}
+h1{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(2.3rem,5vw,3.4rem);letter-spacing:-.01em;line-height:1.08;margin-bottom:.7rem}
+h1 em{color:var(--green);font-style:italic}
 .sub{color:var(--text-2);font-size:1rem;max-width:520px;margin:0 auto}
 .lab-link{display:inline-block;margin-top:.9rem;color:var(--violet);font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.02em;text-decoration:none;transition:color .2s}
 .lab-link:hover{color:var(--violet-bright);text-decoration:underline}
@@ -106,7 +108,8 @@ main{flex:1;max-width:1080px;margin:0 auto;width:100%;padding:1.75rem 1.5rem 4re
 
 /* Bottom CTA */
 .foot-cta{max-width:560px;margin:1rem auto 0;text-align:center;padding:2.25rem 1.5rem;border-top:1px solid var(--border)}
-.foot-cta h2{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+.foot-cta h2{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:1.9rem;letter-spacing:-.01em;line-height:1.15;margin-bottom:.5rem}
+.foot-cta h2 em{color:var(--green);font-style:italic}
 .foot-cta p{color:var(--text-2);font-size:.92rem;margin-bottom:1.25rem}
 .cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem 2rem;border-radius:12px;font-size:1rem;font-weight:700;text-decoration:none;background:var(--green);color:#001b08;transition:transform .25s,box-shadow .25s}
 .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--green-glow)}
@@ -133,8 +136,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .book-icon{margin-top:auto;color:rgba(255,255,255,.22)}
 .cap-body{position:relative;z-index:1}
 .cap-label{font-family:'DM Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--green);display:block;margin-bottom:.9rem}
-.cap-body h2{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:.7rem}
-.cap-body h2 em{color:var(--green);font-style:normal}
+.cap-body h2{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(1.9rem,3.8vw,2.5rem);letter-spacing:-.01em;line-height:1.1;margin-bottom:.8rem}
+.cap-body h2 em{color:var(--green);font-style:italic}
 .cap-body p{color:var(--text-2);font-size:.92rem;max-width:420px;margin-bottom:1.4rem}
 .cap-form{display:flex;gap:.6rem;max-width:440px}
 .cap-input{flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.92rem;transition:border-color .2s,box-shadow .2s}
@@ -174,8 +177,9 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 </nav>
 
 <header>
-  <h1>Every bulking meal,<br><span class="green">step-by-step.</span></h1>
-  <p class="sub">High-protein bulking meals built around a real week, with exact ingredients and step-by-step cooking. Tap any meal for the full recipe.</p>
+  <span class="h-ov">The Meal Library</span>
+  <h1>Every meal, <em>every step.</em></h1>
+  <p class="sub">High-protein and calorie-dense, built around a real week. Tap any meal for the full recipe.</p>
   <a href="/lab/" class="lab-link">See my bulk to 90kg in The Lab &#8594;</a>
 </header>
 
@@ -211,8 +215,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     </div>
     <div class="cap-body">
       <span class="cap-label">Free Cookbook + Updates</span>
-      <h2>Get all 81 bulking meals as a printable cookbook, <em>free.</em></h2>
-      <p>Macros and ingredients for every meal, yours to keep and print. Plus new meals as they land and what's working in my own bulk to 90kg.</p>
+      <h2>All 81 meals, <em>free.</em></h2>
+      <p>The printable cookbook, macros and ingredients included, plus new meals as they land and my bulk to 90kg in the open.</p>
       <form class="cap-form" id="capForm" novalidate>
         <!-- Live: posts to the JSON.fit subscribe API (AWS). capWebsite is a honeypot for bots. -->
         <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
@@ -227,8 +231,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 </section>
 
 <div class="foot-cta">
-  <h2>Cook these in the app.</h2>
-  <p>Get JSON.fit for live timers, a step-by-step cook mode, and a plan that builds these meals around your macros and your week.</p>
+  <h2>Cook these <em>in the app.</em></h2>
+  <p>Live timers, Cook Mode, and a plan that builds these meals around your macros and your week.</p>
   <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'meals_footer'})">Download on the App Store</a>
 </div>
 
