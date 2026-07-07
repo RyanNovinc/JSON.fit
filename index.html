@@ -620,8 +620,8 @@
         .ph-card { display:flex; flex-direction:column; align-items:center; gap:1.4rem; }
         .ph { position:relative; width:100%; max-width:218px; aspect-ratio:9/19.3; background:linear-gradient(150deg,#202027 0%,#0c0c11 46%,#050507 100%); border-radius:34px; padding:7px; box-shadow:0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.16), inset 0 1px 1px rgba(255,255,255,0.10); }
         .ph-notch { position:absolute; top:7px; left:50%; transform:translateX(-50%); width:62px; height:16px; background:#000; border-radius:0 0 10px 10px; z-index:5; }
-        .ph-screen { position:relative; width:100%; height:100%; border-radius:27px; overflow:hidden; background:#0a0a0b; }
-        .ph-screen img { width:100%; height:100%; object-fit:cover; display:block; }
+        .ph-screen { position:absolute; inset:7px; border-radius:27px; overflow:hidden; background:#0a0a0b; }
+        .ph-screen img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
         .ph-card figcaption { font-family:'Outfit',sans-serif; font-size:0.98rem; line-height:1.5; color:var(--text); font-weight:500; text-align:center; max-width:230px; }
 
         /* === Added: problem-stacking block === */
