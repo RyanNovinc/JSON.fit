@@ -460,23 +460,26 @@
         }
 
         /* === Pipeline: how your plan gets built === */
-        .pl-flow { display:grid; grid-template-columns:1fr 56px 1.12fr 56px 1fr; align-items:center; max-width:1080px; margin:0 auto; padding:0.5rem 0 1rem; }
+        .pl-toggle { display:flex; width:max-content; margin:1.5rem auto 0; border:1px solid var(--border); border-radius:100px; padding:4px; background:var(--surface); }
+        .pl-tg { border:none; background:transparent; color:var(--text-2); font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.04em; padding:0.5rem 1.15rem; border-radius:100px; cursor:pointer; transition:all 0.18s; }
+        .pl-tg:hover { color:var(--text); }
+        .pl-tg.active { background:var(--cyan); color:#001318; font-weight:500; }
+        .pl-flow { display:grid; grid-template-columns:1fr 56px 1.12fr 56px 1fr; align-items:stretch; max-width:1080px; margin:0 auto; padding:0.5rem 0 1rem; }
         .pl-step { display:flex; flex-direction:column; gap:11px; }
         .pl-tag { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; }
         .pl-tag.t1 { color:var(--cyan); } .pl-tag.t2 { color:var(--violet); } .pl-tag.t3 { color:var(--green); }
-        .pl-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:15px 16px 16px; text-align:left; }
+        .pl-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:15px 16px 16px; text-align:left; flex:1; display:flex; flex-direction:column; }
         .pl-ct { font-size:0.9rem; font-weight:700; margin-bottom:10px; }
         .pl-kv { display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-3); padding:6px 0; border-bottom:1px solid var(--border); }
         .pl-kv b { color:var(--cyan); font-weight:500; }
         .pl-kv:last-of-type { border-bottom:none; }
         .pl-btn { margin-top:11px; background:var(--cyan); color:#000; font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:500; letter-spacing:0.04em; text-align:center; border-radius:8px; padding:9px 0; }
         .pl-cap { font-size:0.78rem; color:var(--text-2); line-height:1.6; }
-        .pl-capc { text-align:center; }
-        .j-term { background:#0a0a0f; border:1px solid rgba(168,85,247,0.22); border-radius:14px; overflow:hidden; text-align:left; }
+        .j-term { background:#0a0a0f; border:1px solid rgba(168,85,247,0.22); border-radius:14px; overflow:hidden; text-align:left; flex:1; display:flex; flex-direction:column; }
         .j-tbar { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#101016; border-bottom:1px solid var(--border); }
         .j-tbar i { width:8px; height:8px; border-radius:50%; background:#2c2c34; display:block; }
         .j-tbar span { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); margin-left:4px; letter-spacing:0.04em; }
-        .j-code { padding:11px 14px 12px; font-family:'DM Mono',monospace; font-size:0.66rem; line-height:1.8; white-space:pre; overflow-x:auto; }
+        .j-code { padding:11px 14px 12px; font-family:'DM Mono',monospace; font-size:0.66rem; line-height:1.8; white-space:pre; overflow-x:auto; flex:1; }
         .j-code div { opacity:0; }
         .vis .j-code div { animation:jln 0.35s forwards; }
         .j-code div:nth-child(1) { animation-delay:0.1s; } .j-code div:nth-child(2) { animation-delay:0.3s; } .j-code div:nth-child(3) { animation-delay:0.5s; } .j-code div:nth-child(4) { animation-delay:0.7s; } .j-code div:nth-child(5) { animation-delay:0.9s; } .j-code div:nth-child(6) { animation-delay:1.1s; } .j-code div:nth-child(7) { animation-delay:1.3s; } .j-code div:nth-child(8) { animation-delay:1.5s; }
@@ -484,34 +487,36 @@
         .j-code .k { color:var(--cyan); } .j-code .s { color:var(--green); } .j-code .n { color:var(--violet); } .j-code .p { color:#55555f; }
         .j-cur { display:inline-block; width:7px; height:12px; background:var(--cyan); vertical-align:-2px; animation:jblink 1.1s steps(1) infinite; }
         @keyframes jblink { 50% { opacity:0; } }
-        .pl-ais { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; }
+        .pl-ais { display:flex; gap:6px; justify-content:flex-start; flex-wrap:wrap; }
         .pl-ai { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--violet); border:1px solid rgba(168,85,247,0.28); background:rgba(168,85,247,0.07); padding:3px 8px; border-radius:5px; letter-spacing:0.04em; }
-        .pl-res { background:var(--surface); border:1px solid rgba(34,197,94,0.28); border-radius:14px; overflow:hidden; text-align:left; }
+        .pl-res { background:var(--surface); border:1px solid rgba(34,197,94,0.28); border-radius:14px; overflow:hidden; text-align:left; flex:1; display:flex; flex-direction:column; }
         .pl-rhead { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--border); gap:8px; }
         .pl-rt { font-size:0.86rem; font-weight:700; }
         .pl-pill { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.08em; color:var(--green); background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:100px; padding:3px 9px; white-space:nowrap; }
         .pl-meal { display:flex; gap:10px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--border); }
         .pl-thumb { position:relative; width:34px; height:34px; border-radius:9px; overflow:hidden; flex-shrink:0; background:#1b1410; }
+        .pl-thumb-ic { display:flex; align-items:center; justify-content:center; background:#0c130e; color:var(--green); }
         .pl-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
         .pl-mn { font-size:0.78rem; font-weight:600; line-height:1.25; }
         .pl-mk { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--text-3); margin-top:2px; }
-        .pl-rfoot { display:flex; gap:6px; flex-wrap:wrap; padding:11px 14px; }
+        .pl-rfoot { margin-top:auto;  display:flex; gap:6px; flex-wrap:wrap; padding:11px 14px; }
         .pl-fchip { font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--green); border:1px solid rgba(34,197,94,0.25); background:rgba(34,197,94,0.06); padding:3px 8px; border-radius:5px; letter-spacing:0.03em; }
-        .pl-wire { position:relative; height:2px; width:100%; opacity:0.55; }
-        .pl-wire.w1 { background:linear-gradient(90deg,var(--cyan),var(--violet)); }
-        .pl-wire.w2 { background:linear-gradient(90deg,var(--violet),var(--green)); }
-        .pl-wire i { position:absolute; top:50%; left:0; width:8px; height:8px; margin-top:-4px; border-radius:50%; animation:jflowx 1.9s ease-in-out infinite; }
+        .pl-wire { position:relative; height:2px; width:100%; align-self:center; }
+        .pl-wire::before { content:''; position:absolute; inset:0; opacity:0.55; border-radius:2px; }
+        .pl-wire.w1::before { background:linear-gradient(90deg,var(--cyan),var(--violet)); }
+        .pl-wire.w2::before { background:linear-gradient(90deg,var(--violet),var(--green)); }
+        .pl-wire i { position:absolute; top:50%; left:0; width:8px; height:8px; margin-top:-4px; border-radius:50%; opacity:0.55; animation:jflowx 1.9s ease-in-out infinite; }
         .pl-wire.w1 i { background:var(--violet); box-shadow:0 0 10px var(--violet); }
         .pl-wire.w2 i { background:var(--green); box-shadow:0 0 10px var(--green); animation-delay:0.6s; }
         @keyframes jflowx { 0% { left:-4px; opacity:0; } 25% { opacity:1; } 100% { left:calc(100% - 4px); opacity:0; } }
         @keyframes jflowy { 0% { top:-4px; opacity:0; } 25% { opacity:1; } 100% { top:42px; opacity:0; } }
-        .pl-wire .pl-pill { position:absolute; top:-30px; left:50%; transform:translateX(-50%); }
+        .pl-wire .pl-pill { position:absolute; top:-30px; left:50%; transform:translateX(-50%); z-index:2; background:linear-gradient(rgba(34,197,94,0.1),rgba(34,197,94,0.1)),#050508; }
         @media (max-width:860px) {
             .pl-flow { display:flex; flex-direction:column; align-items:center; max-width:360px; }
             .pl-step { width:100%; }
             .pl-wire { width:2px; height:46px; margin:16px auto 14px; }
-            .pl-wire.w1 { background:linear-gradient(var(--cyan),var(--violet)); }
-            .pl-wire.w2 { background:linear-gradient(var(--violet),var(--green)); }
+            .pl-wire.w1::before { background:linear-gradient(var(--cyan),var(--violet)); }
+            .pl-wire.w2::before { background:linear-gradient(var(--violet),var(--green)); }
             .pl-wire i { left:50%; top:0; margin-left:-4px; margin-top:0; animation-name:jflowy; }
             .pl-wire .pl-pill { top:50%; left:auto; right:auto; transform:translate(-50%,-50%); left:50%; }
         }
@@ -753,8 +758,13 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">How your plan gets built</span>
             <h2>Any AI in. <span class="cyan">Real plan out.</span></h2>
+            <p style="margin:0 auto;">Meal plans and full training programs, up to a year long, from the same three steps.</p>
+            <div class="pl-toggle" role="tablist">
+                <button class="pl-tg active" data-flow="meal" role="tab" aria-selected="true">Meal plan</button>
+                <button class="pl-tg" data-flow="train" role="tab" aria-selected="false">Training program</button>
+            </div>
         </div>
-        <div class="pl-flow sa sa-up">
+        <div class="pl-flow sa sa-up" id="flowMeal">
             <div class="pl-step">
                 <span class="pl-tag t1">01 &middot; You answer</span>
                 <div class="pl-card">
@@ -762,9 +772,11 @@
                     <div class="pl-kv"><span>Goal</span><b>Weight gain</b></div>
                     <div class="pl-kv"><span>Target</span><b>90kg</b></div>
                     <div class="pl-kv"><span>Meals</span><b>6 per day</b></div>
+                    <div class="pl-kv"><span>Training</span><b>4 days/week</b></div>
+                    <div style="flex:1;"></div>
                     <div class="pl-btn">Copy prompt</div>
                 </div>
-                <p class="pl-cap">Your goal, stats and the meals you actually like become a research-packed prompt. One tap to copy.</p>
+                <p class="pl-cap">Your goal, stats and favourite meals become a research-packed prompt. One tap to copy.</p>
             </div>
             <div class="pl-wire w1"><i></i></div>
             <div class="pl-step">
@@ -774,7 +786,7 @@
                     <div class="j-code"><div><span class="p">{</span></div><div>  <span class="k">&quot;plan&quot;</span><span class="p">:</span> <span class="s">&quot;7-Day Lean Bulk&quot;</span><span class="p">,</span></div><div>  <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">3311</span><span class="p">,</span></div><div>  <span class="k">&quot;protein_g&quot;</span><span class="p">:</span> <span class="n">239</span><span class="p">,</span></div><div>  <span class="k">&quot;meals&quot;</span><span class="p">:</span> <span class="p">[{</span></div><div>    <span class="k">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;Massaman Beef Curry&quot;</span><span class="p">,</span></div><div>    <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">890</span> <span class="p">}]</span></div><div><span class="p">}</span> <span class="j-cur"></span></div></div>
                 </div>
                 <div class="pl-ais"><span class="pl-ai">ChatGPT</span><span class="pl-ai">Claude</span><span class="pl-ai">Gemini</span><span class="pl-ai">+ any AI</span></div>
-                <p class="pl-cap pl-capc">Paste it in. The AI writes your week on real research and returns it as JSON.</p>
+                <p class="pl-cap">Paste it in. The AI writes your week on real research and returns it as JSON.</p>
             </div>
             <div class="pl-wire w2"><span class="pl-pill">&#10003; 0.81S</span><i></i></div>
             <div class="pl-step">
@@ -788,7 +800,42 @@
                 <p class="pl-cap">Import the file. Macros, groceries and the week's prep, handled.</p>
             </div>
         </div>
-        <p class="engine-foot sa sa-up">The same system builds your <strong>training program</strong> too: splits, volume per muscle, deloads, progressive overload. You can even build one that runs up to a year long.</p>
+        <div class="pl-flow" id="flowTrain" style="display:none">
+            <div class="pl-step">
+                <span class="pl-tag t1">01 &middot; You answer</span>
+                <div class="pl-card">
+                    <div class="pl-ct">A few quick questions</div>
+                    <div class="pl-kv"><span>Goal</span><b>Build muscle</b></div>
+                    <div class="pl-kv"><span>Days</span><b>4 per week</b></div>
+                    <div class="pl-kv"><span>Equipment</span><b>Full gym</b></div>
+                    <div class="pl-kv"><span>Length</span><b>52 weeks</b></div>
+                    <div style="flex:1;"></div>
+                    <div class="pl-btn">Copy prompt</div>
+                </div>
+                <p class="pl-cap">Your split, equipment and schedule become a research-packed prompt. One tap to copy.</p>
+            </div>
+            <div class="pl-wire w1"><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t2">02 &middot; Any AI writes</span>
+                <div class="j-term">
+                    <div class="j-tbar"><i></i><i></i><i></i><span>workout-program.json &middot; from Claude</span></div>
+                    <div class="j-code"><div><span class="p">{</span></div><div>  <span class="k">&quot;program&quot;</span><span class="p">:</span> <span class="s">&quot;52-Week Upper / Lower&quot;</span><span class="p">,</span></div><div>  <span class="k">&quot;weeks&quot;</span><span class="p">:</span> <span class="n">52</span><span class="p">,</span></div><div>  <span class="k">&quot;days_per_week&quot;</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span></div><div>  <span class="k">&quot;sessions&quot;</span><span class="p">:</span> <span class="p">[{</span></div><div>    <span class="k">&quot;exercise&quot;</span><span class="p">:</span> <span class="s">&quot;Barbell Bench Press&quot;</span><span class="p">,</span></div><div>    <span class="k">&quot;sets&quot;</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span> <span class="k">&quot;rest_s&quot;</span><span class="p">:</span> <span class="n">150</span> <span class="p">}]</span></div><div><span class="p">}</span> <span class="j-cur"></span></div></div>
+                </div>
+                <div class="pl-ais"><span class="pl-ai">ChatGPT</span><span class="pl-ai">Claude</span><span class="pl-ai">Gemini</span><span class="pl-ai">+ any AI</span></div>
+                <p class="pl-cap">Paste it in. The AI programs your year on real research and returns it as JSON.</p>
+            </div>
+            <div class="pl-wire w2"><span class="pl-pill">&#10003; 0.81S</span><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t3">03 &middot; JSON.fit imports</span>
+                <div class="pl-res">
+                    <div class="pl-rhead"><span class="pl-rt">52-Week Upper / Lower</span><span class="pl-pill">&#10003; IMPORTED</span></div>
+                    <div class="pl-meal"><span class="pl-thumb pl-thumb-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span><div><div class="pl-mn">Upper Body A</div><div class="pl-mk">Mon &middot; 6 exercises &middot; 14 sets</div></div></div>
+                    <div class="pl-meal"><span class="pl-thumb pl-thumb-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span><div><div class="pl-mn">Lower Body A</div><div class="pl-mk">Tue &middot; 5 exercises &middot; 16 sets</div></div></div>
+                    <div class="pl-rfoot"><span class="pl-fchip">Sets per muscle tracked</span><span class="pl-fchip">Deloads scheduled</span><span class="pl-fchip">Progressive overload</span></div>
+                </div>
+                <p class="pl-cap">Import the file. Sets, rest times and deloads for the year, handled.</p>
+            </div>
+        </div>
         <p class="science-tag sa sa-up"><svg class="laurel" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
 -329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
 105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
@@ -969,26 +1016,26 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Free Training Programs</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
-            <p style="margin:0 auto;">Don't want to build your own? Import a complete, periodised year-long program straight into the app.</p>
+            <p style="margin:0 auto;">Build a custom program with the same three steps: your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
         </div>
         <div class="prog-grid sa-stagger">
             <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
                 <span class="prog-split">Upper / Lower</span><h3>Beginner Foundation</h3>
                 <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd"></span></div><div class="wd-cap">4 training days &middot; 3 rest</div></div>
                 <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Beginner</span></div>
-                <span class="prog-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
             </a>
             <a class="prog-card" href="/programs/?program=ppl-upper-lower" onclick="gtag('event','view_program',{'program':'ppl-upper-lower'})">
                 <span class="prog-split">PPL + Upper/Lower</span><h3>Intermediate Hybrid</h3>
                 <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">5 training days &middot; 2 rest</div></div>
                 <div class="prog-meta"><span class="prog-chip">54 weeks</span><span class="prog-chip">Intermediate</span></div>
-                <span class="prog-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
             </a>
             <a class="prog-card" href="/programs/?program=ppl-advanced" onclick="gtag('event','view_program',{'program':'ppl-advanced'})">
                 <span class="prog-split">Push / Pull / Legs &times;2</span><h3>Advanced High-Volume</h3>
                 <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">6 training days &middot; 1 rest</div></div>
                 <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Advanced</span></div>
-                <span class="prog-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
             </a>
         </div>
     </div>
@@ -1349,6 +1396,27 @@
   }
 })();
 </script>
+<!-- Pipeline demo toggle: meal plan / training program -->
+<script>
+(function(){
+    var tgs = document.querySelectorAll('.pl-tg');
+    if (!tgs.length) return;
+    var flows = { meal: document.getElementById('flowMeal'), train: document.getElementById('flowTrain') };
+    if (!flows.meal || !flows.train) return;
+    tgs.forEach(function(b){
+        b.addEventListener('click', function(){
+            var k = b.getAttribute('data-flow');
+            tgs.forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+            b.classList.add('active'); b.setAttribute('aria-selected','true');
+            flows.meal.style.display = (k === 'meal') ? '' : 'none';
+            flows.train.style.display = (k === 'train') ? '' : 'none';
+            if (window.gtag) gtag('event', 'pipeline_toggle', { 'button_location': 'how_section', 'view': k });
+            if (window.track) window.track('cta_clicked', { cta_id: 'pipeline_toggle_' + k });
+        });
+    });
+})();
+</script>
+
 <!-- Hero macro ticker: numbers tick between example profiles -->
 <script>
 (function(){
