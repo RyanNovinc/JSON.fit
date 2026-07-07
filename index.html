@@ -1410,6 +1410,7 @@
             b.classList.add('active'); b.setAttribute('aria-selected','true');
             flows.meal.style.display = (k === 'meal') ? '' : 'none';
             flows.train.style.display = (k === 'train') ? '' : 'none';
+            flows[k].classList.add('vis'); // typing animation is gated on the reveal class
             if (window.gtag) gtag('event', 'pipeline_toggle', { 'button_location': 'how_section', 'view': k });
             if (window.track) window.track('cta_clicked', { cta_id: 'pipeline_toggle_' + k });
         });
