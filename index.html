@@ -618,10 +618,11 @@
         .poke-label { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--cyan); }
         .sw-hint { display:none; }
         @media (max-width:900px) {
-            .sw-row { display:flex; align-items:center; gap:1.5rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+            .sw-row { display:flex; align-items:center; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
             .sw-row::-webkit-scrollbar { display:none; }
             .sw-row > * { flex:0 0 auto; scroll-snap-align:center; }
-            .sw-demo { order:-1; }
+            .sw-row .phone { width:min(252px, 60vw); }
+            .sw-row .ph-card { width:172px; }
             .sw-demo::before { width:220px; height:220px; }
             .sw-hint { display:block; text-align:center; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-top:0.9rem; }
         }
@@ -1622,6 +1623,20 @@
   }
   tick();
   setInterval(tick, 15000);
+
+  // On mobile the carousel starts centered on the interactive phone
+  var row = visual.parentElement;
+  function centerDemo(){
+    if (!row || window.innerWidth > 900) return;
+    var r1 = row.getBoundingClientRect(), r2 = visual.getBoundingClientRect();
+    row.scrollLeft += (r2.left + r2.width / 2) - (r1.left + r1.width / 2);
+  }
+  centerDemo();
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(max-width: 900px)');
+    var onmq = function(e){ if (e.matches) centerDemo(); };
+    if (mq.addEventListener) mq.addEventListener('change', onmq);
+  }
 })();
 </script>
 
