@@ -182,6 +182,27 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .foot-l a{color:var(--text-3);text-decoration:none;margin:0 .75rem;transition:color .2s}
 .foot-l a:hover{color:var(--green)}
 
+/* Per-meal video: compact 9:16 facade + portrait player */
+.vfacade{display:flex;gap:1rem;align-items:stretch;padding:.9rem;border-radius:16px;cursor:pointer;background:var(--surface);border:1px solid var(--green-border);transition:border-color .2s,transform .2s}
+.vfacade:hover{border-color:var(--green);transform:translateY(-2px)}
+.vposter{position:relative;flex-shrink:0;width:112px;aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:linear-gradient(150deg,#1a1206,#0a0a0f)}
+.vposter img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.vposter .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,8,.7),transparent 60%)}
+.vplay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:rgba(5,5,8,.5);border:2px solid #fff;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.vplay::after{content:'';margin-left:3px;border-style:solid;border-width:8px 0 8px 13px;border-color:transparent transparent transparent #fff}
+.vmeta{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.vmeta .vk{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:.35rem}
+.vmeta .vt{font-weight:700;font-size:1rem;color:var(--text);line-height:1.2;margin-bottom:.3rem}
+.vmeta .vs{font-size:.82rem;color:var(--text-2);line-height:1.45}
+.vmeta .vgo{display:inline-flex;align-items:center;gap:.35rem;margin-top:.6rem;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--green)}
+.vmodal{position:fixed;inset:0;z-index:9999;background:rgba(5,5,8,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:1.5rem}
+.vmodal.open{display:flex}
+.vmodal-frame{position:relative;aspect-ratio:9/16;height:min(84vh,780px);max-width:94vw;border-radius:16px;overflow:hidden;border:1px solid var(--green-border);box-shadow:0 32px 80px rgba(0,0,0,.8);background:#000}
+.vmodal-slot,.vmodal-slot iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vmodal-close{position:absolute;top:1rem;right:1rem;z-index:2;width:38px;height:38px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.vmodal-close:hover{color:var(--green)}
+@media(max-width:420px){.vposter{width:96px}}
+
 /* Lightbox */
 .lightbox{position:fixed;inset:0;z-index:9999;background:rgba(5,5,8,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity .25s ease}
 .lightbox.open{opacity:1;pointer-events:all}
@@ -240,6 +261,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
 <div class="lightbox" id="lightbox"><img id="lbImg" src="" alt=""></div>
 
+<div class="vmodal" id="vmodal"><button class="vmodal-close" aria-label="Close">&#10005;</button><div class="vmodal-slot"></div></div>
+
 <script>
 (function(){
   "use strict";
@@ -248,6 +271,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     APP_STORE_URL: 'https://apps.apple.com/au/app/json-fit/id6758357834',
     IMAGE_BASE: 'https://json.fit/images/meals/',
     MEALS_JSON: '/r/meals.json',
+    VIDEOS_JSON: '/r/videos.json',
     MAX_PORTIONS: 12
   };
 
@@ -520,6 +544,9 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
       '<div class="section" id="desc-slot"><p class="description"></p></div>'+
 
+      // Per-meal video — populated async from /r/videos.json; stays hidden if this meal has no clip
+      '<div class="section" id="video-slot" style="display:none"></div>'+
+
       methodBlock+
 
       // Ingredients
@@ -670,7 +697,74 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   // ── Lightbox ──
   function openLb(src,alt){ var lb=document.getElementById('lightbox'); document.getElementById('lbImg').src=src; document.getElementById('lbImg').alt=alt||''; lb.classList.add('open'); document.body.style.overflow='hidden'; }
   document.getElementById('lightbox').addEventListener('click',function(){ this.classList.remove('open'); document.body.style.overflow=''; });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; } });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ document.getElementById('lightbox').classList.remove('open'); closeVideo(); document.body.style.overflow=''; } });
+
+  // ── Per-meal video (data lives in /r/videos.json, keyed by slug) ──
+  function fetchVideos(){
+    return new Promise(function(resolve){
+      var ctrl=new AbortController();
+      var t=setTimeout(function(){ctrl.abort();},5000);
+      fetch(CONFIG.VIDEOS_JSON,{signal:ctrl.signal})
+        .then(function(r){ clearTimeout(t); return r.ok?r.json():{}; })
+        .then(function(d){ resolve(d && typeof d==='object' ? d : {}); })
+        .catch(function(){ clearTimeout(t); resolve({}); }); // video is non-critical: never block the recipe
+    });
+  }
+  function ytId(url){
+    if(!url) return null;
+    url=String(url).trim();
+    if(/^[\w-]{11}$/.test(url)) return url;
+    try{
+      var u=new URL(url);
+      if(u.hostname.indexOf('youtu.be')>-1){ var seg=u.pathname.split('/').filter(Boolean)[0]; if(seg&&/^[\w-]{11}$/.test(seg)) return seg; }
+      var mm=u.pathname.match(/\/(?:shorts|embed|v)\/([\w-]{11})/); if(mm) return mm[1];
+      var v=u.searchParams.get('v'); if(v&&/^[\w-]{11}$/.test(v)) return v;
+    }catch(e){}
+    var any=url.match(/[\w-]{11}/); return any?any[0]:null;
+  }
+  function renderVideo(map){
+    var slot=document.getElementById('video-slot'); if(!slot) return;
+    var slug=getMealSlug();
+    var url = map && (map[slug] || (meal && map[meal.slug]));
+    var id = ytId(url);
+    if(!id){ slot.style.display='none'; slot.innerHTML=''; return; }
+    var poster='https://i.ytimg.com/vi/'+id+'/maxresdefault.jpg';
+    slot.style.display='';
+    slot.innerHTML =
+      '<div class="vfacade" role="button" tabindex="0" aria-label="Watch how this meal is made">'+
+        '<div class="vposter">'+
+          '<img src="'+esc(poster)+'" alt="" loading="lazy" data-hq="https://i.ytimg.com/vi/'+esc(id)+'/hqdefault.jpg">'+
+          '<div class="scrim"></div><div class="vplay"></div>'+
+        '</div>'+
+        '<div class="vmeta">'+
+          '<div class="vk">\u25B6 Watch me make it</div>'+
+          '<div class="vt">See how it\u2019s made</div>'+
+          '<div class="vs">A quick clip of this exact meal. Tap to watch full-screen.</div>'+
+          '<span class="vgo">tap to play \u2192</span>'+
+        '</div>'+
+      '</div>';
+    var img=slot.querySelector('.vposter img');
+    if(img) img.addEventListener('error',function(){ this.onerror=null; this.src=this.dataset.hq; }); // maxres → hq fallback
+    var card=slot.querySelector('.vfacade');
+    function go(){ openVideo(id); }
+    card.addEventListener('click',go);
+    card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+  }
+  function openVideo(id){
+    var m=document.getElementById('vmodal'); if(!m) return;
+    m.querySelector('.vmodal-slot').innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="Recipe video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    m.classList.add('open'); document.body.style.overflow='hidden';
+    if(typeof gtag==='function') gtag('event','meal_video_play',{meal:getMealSlug()||'',video_id:id});
+  }
+  function closeVideo(){
+    var m=document.getElementById('vmodal'); if(!m) return;
+    m.classList.remove('open'); m.querySelector('.vmodal-slot').innerHTML=''; document.body.style.overflow='';
+  }
+  (function(){
+    var vm=document.getElementById('vmodal'); if(!vm) return;
+    vm.addEventListener('click',function(e){ if(e.target===vm) closeVideo(); });
+    var cb=vm.querySelector('.vmodal-close'); if(cb) cb.addEventListener('click',closeVideo);
+  })();
 
   // ── State switching ──
   function showState(id){ document.querySelectorAll('.state').forEach(function(el){el.classList.remove('active');}); document.getElementById(id).classList.add('active'); }
@@ -687,6 +781,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       renderShell();
       renderDynamic();
       showState('state-content');
+      fetchVideos().then(renderVideo);
       if(typeof gtag==='function') gtag('event','recipe_view',{meal:slug});
     }).catch(function(){
       showError("Couldn't load this recipe","Check your connection and try again, or browse the full library.");
