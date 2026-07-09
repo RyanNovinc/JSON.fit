@@ -1,4 +1,5 @@
 {
-  "_comment": "Map a meal slug (the key in r/meals.json) to a YouTube link. Add a line to show a video on that recipe page; remove it to hide. That's the whole workflow — meals.json is never touched. Any YouTube URL form works (shorts / watch?v= / youtu.be) or a bare 11-char ID.",
-  "mango_mass": "https://www.youtube.com/shorts/4aoGKCBp_Y0"
+  "_comment": "Map a meal slug (the key in r/meals.json) to a YouTube link. Add a line to show a video on that recipe page; remove it to hide. meals.json is never touched. Any YouTube URL form works (shorts / watch?v= / youtu.be) or a bare 11-char ID.",
+  "mango_mass": "https://www.youtube.com/shorts/4aoGKCBp_Y0",
+  "cookies_gains": "https://www.youtube.com/shorts/LmHz-JwvijU"
 }
