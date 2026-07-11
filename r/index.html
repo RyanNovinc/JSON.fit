@@ -581,7 +581,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
           '<li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Auto grocery list & meal-prep schedule</li>'+
           '<li><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Scale portions \u2014 every ingredient recalculates</li>'+
         '</ul>'+
-        '<a href="'+CONFIG.APP_STORE_URL+'" class="store-link" onclick="gtag(\'event\',\'download_click\',{\'button_location\':\'recipe_teaser\'})"><img src="https://json.fit/images/App_Store.svg" alt="Download on the App Store" onerror="this.outerHTML=\'<span class=&quot;cta-btn&quot; style=&quot;display:inline-flex&quot;>Download on the App Store</span>\'"></a>'+
+        '<div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">'+
+        '<a href="'+CONFIG.APP_STORE_URL+'" class="store-link" onclick="gtag(\'event\',\'download_click\',{\'button_location\':\'recipe_teaser\',\'platform\':\'ios\'})"><img src="https://json.fit/images/App_Store.svg" alt="Download on the App Store" onerror="this.outerHTML=\'<span class=&quot;cta-btn&quot; style=&quot;display:inline-flex&quot;>Download on the App Store</span>\'"></a>'+
+        '<a href="'+CONFIG.PLAY_STORE_URL+'" class="store-link" onclick="gtag(\'event\',\'download_click\',{\'button_location\':\'recipe_teaser\',\'platform\':\'android\'})"><img src="https://json.fit/en_badge_web_generic.png" alt="Get it on Google Play" style="height:68px;margin:-11px 0;" onerror="this.outerHTML=\'<span class=&quot;cta-btn&quot; style=&quot;display:inline-flex&quot;>Get it on Google Play</span>\'"></a>'+
+      '</div>'+
         '<div class="teaser-foot">$0 \u00b7 no subscription \u00b7 no accounts</div>'+
       '</div>'+
     '</div>';
