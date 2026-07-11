@@ -598,7 +598,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     if(!document.getElementById('cta-bar')){
       var bar=document.createElement('div');
       bar.className='cta-bar'; bar.id='cta-bar';
-      bar.innerHTML='<div class="cta-bar-inner"><div class="cta-bar-text"><strong id="cta-bar-title">Make this in JSON.fit</strong><span id="cta-bar-sub"></span></div><a class="cta-btn" href="'+CONFIG.APP_STORE_URL+'" onclick="gtag(\'event\',\'download_click\',{\'button_location\':\'recipe_sticky\'})">Get the app free</a></div>';
+      bar.innerHTML='<div class="cta-bar-inner"><div class="cta-bar-text"><strong id="cta-bar-title">Make this in JSON.fit</strong><span id="cta-bar-sub"></span></div><a class="cta-btn" href="https://json.fit/#download" onclick="gtag(\'event\',\'view_download_options\',{\'button_location\':\'recipe_sticky\'})">Get the app free</a></div>';
       document.body.appendChild(bar);
     }
 
