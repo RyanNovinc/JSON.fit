@@ -1179,11 +1179,14 @@ function renderCTA(type) {
 
       <p class="cta-secondary-text">Get JSON.fit free to import this ${type === 'meal' ? 'meal plan' : 'workout'}.</p>
 
-      <a href="${APP_STORE_URL}" class="app-store-link" onclick="gtag('event','share_page_app_store_click',{type:'${type}'})">
-        <img src="https://json.fit/images/App_Store.svg" alt="Download on the App Store" onerror="this.outerHTML='<span style=&quot;display:inline-block;padding:0.75rem 1.5rem;border:1px solid var(--border);border-radius:10px;color:var(--text);font-weight:600;font-size:0.9rem;&quot;>Download on the App Store</span>'">
-      </a>
-
-      <div class="android-text">Android coming soon</div>
+      <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;align-items:center;">
+        <a href="${APP_STORE_URL}" class="app-store-link" onclick="gtag('event','share_page_app_store_click',{type:'${type}',platform:'ios'})">
+          <img src="https://json.fit/images/App_Store.svg" alt="Download on the App Store" onerror="this.outerHTML='<span style=&quot;display:inline-block;padding:0.75rem 1.5rem;border:1px solid var(--border);border-radius:10px;color:var(--text);font-weight:600;font-size:0.9rem;&quot;>Download on the App Store</span>'">
+        </a>
+        <a href="${PLAY_STORE_URL}" class="app-store-link" onclick="gtag('event','share_page_app_store_click',{type:'${type}',platform:'android'})">
+          <img src="https://json.fit/en_badge_web_generic.png" alt="Get it on Google Play" style="height:64px;margin:-10px 0;" onerror="this.outerHTML='<span style=&quot;display:inline-block;padding:0.75rem 1.5rem;border:1px solid var(--border);border-radius:10px;color:var(--text);font-weight:600;font-size:0.9rem;&quot;>Get it on Google Play</span>'">
+        </a>
+      </div>
 
       <div class="cta-foot">Free workouts forever · No subscription</div>
 
