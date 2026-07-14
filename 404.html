@@ -734,6 +734,7 @@ footer {
 <script>
 const API_BASE = 'https://eb6x42gp3h.execute-api.ap-southeast-2.amazonaws.com';
 const APP_STORE_URL = 'https://apps.apple.com/au/app/json-fit/id6758357834';
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON';
 const FALLBACK_DELAY_MS = 2000;
 
 // Extract shareId from URL path /p/{shareId}
@@ -943,7 +944,7 @@ function renderWorkout(data) {
         Workout shared with you
       </div>
       <h1 class="share-title">${escapeHtml(name)}</h1>
-      <p class="share-subtitle">Open in JSON.fit to import</p>
+      <p class="share-subtitle">Tap below to import</p>
     </div>
 
     <div class="preview-card">
@@ -1148,7 +1149,7 @@ function renderMealPlan(data) {
         Meal plan shared with you
       </div>
       <h1 class="share-title">${escapeHtml(name)}</h1>
-      <p class="share-subtitle">Open in JSON.fit to import</p>
+      <p class="share-subtitle">Tap below to import</p>
     </div>
 
     <div class="preview-card">
@@ -1168,31 +1169,31 @@ function renderCTA(type) {
   return `
     <div class="cta-section">
       <button class="cta-btn" id="open-in-app-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 11 12 14 22 4"/>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-        </svg>
-        Open in JSON.fit
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Import ${type === 'meal' ? 'meal plan' : 'workout'}
       </button>
 
       <div class="cta-divider">Don't have the app?</div>
 
       <p class="cta-secondary-text">Get JSON.fit free to import this ${type === 'meal' ? 'meal plan' : 'workout'}.</p>
 
-      <a href="${APP_STORE_URL}" class="app-store-link" onclick="gtag('event','share_page_app_store_click',{type:'${type}'})">
-        <img src="https://json.fit/images/App_Store.svg" alt="Download on the App Store" onerror="this.outerHTML='<span style=&quot;display:inline-block;padding:0.75rem 1.5rem;border:1px solid var(--border);border-radius:10px;color:var(--text);font-weight:600;font-size:0.9rem;&quot;>Download on the App Store</span>'">
-      </a>
-
-      <div class="android-text">Android coming soon</div>
+      <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;align-items:center;">
+        <a href="${APP_STORE_URL}" class="app-store-link" onclick="gtag('event','share_page_app_store_click',{type:'${type}',platform:'ios'})">
+          <img src="https://json.fit/images/App_Store.svg" alt="Download on the App Store" onerror="this.outerHTML='<span style=&quot;display:inline-block;padding:0.75rem 1.5rem;border:1px solid var(--border);border-radius:10px;color:var(--text);font-weight:600;font-size:0.9rem;&quot;>Download on the App Store</span>'">
+        </a>
+        <a href="${PLAY_STORE_URL}" class="app-store-link" onclick="gtag('event','share_page_app_store_click',{type:'${type}',platform:'android'})">
+          <img src="https://json.fit/en_badge_web_generic.png" alt="Get it on Google Play" style="height:64px;margin:-10px 0;" onerror="this.outerHTML='<span style=&quot;display:inline-block;padding:0.75rem 1.5rem;border:1px solid var(--border);border-radius:10px;color:var(--text);font-weight:600;font-size:0.9rem;&quot;>Get it on Google Play</span>'">
+        </a>
+      </div>
 
       <div class="cta-foot">Free workouts forever · No subscription</div>
 
-      <button class="debug-toggle" id="debug-toggle">show debug ▾</button>
+      <button class="debug-toggle" id="debug-toggle" style="display:none;">show debug ▾</button>
       <div class="debug-panel" id="debug-panel">
         <h4>Diagnostic Info</h4>
         <div id="debug-static"></div>
         <div class="debug-log" id="debug-log">
-          <div class="debug-log-entry"><span class="ts">--</span>tap "Open in JSON.fit" — log fills here</div>
+          <div class="debug-log-entry"><span class="ts">--</span>tap "Import" — log fills here</div>
         </div>
         <div class="debug-actions">
           <button class="debug-btn" id="debug-copy">Copy log</button>
@@ -1295,65 +1296,38 @@ function setupOpenInAppButton() {
   const btn = document.getElementById('open-in-app-btn');
   if (!btn) return;
 
+  // IMPORTANT: use the app's custom scheme (json-app://), NOT the universal link.
+  // iOS refuses to hand a universal link to the app when it targets the SAME
+  // domain you're already on (json.fit -> json.fit), and also ignores links
+  // triggered by script rather than a real tap. A custom scheme has neither
+  // limitation. Same approach as /programs/, which works reliably.
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    const startTime = Date.now();
-    const wasHidden = document.hidden;
+    if (window.track) window.track('cta_clicked', { cta_id: 'import_share' });
 
-    dlog('button clicked');
-    dlog('  start time', startTime);
-    dlog('  was hidden', wasHidden);
-    dlog('  current url', window.location.href);
+    const shareId = getShareId();
+    const appUrl = 'json-app://p/' + shareId;
+    const wasHidden = document.hidden;
 
     if (typeof gtag === 'function') {
       gtag('event', 'share_page_open_in_app_click');
     }
 
-    const universalLink = window.location.href;
+    // If the app opens, the page gets backgrounded -> cancel the App Store fallback.
+    let bailed = false;
+    function cancel() { bailed = true; }
+    document.addEventListener('visibilitychange', function () { if (document.hidden) cancel(); });
+    window.addEventListener('pagehide', cancel);
 
-    // Try multiple methods to trigger the universal link, each as a fallback for the next.
-    // iOS will only intercept the first navigation that successfully matches an associated domain.
+    try { window.location.href = appUrl; } catch (err) {}
 
-    dlog('attempting method 1: anchor click');
-    try {
-      const a = document.createElement('a');
-      a.href = universalLink;
-      a.rel = 'noopener';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      dlog('  method 1 dispatched');
-    } catch (err) {
-      dlog('  method 1 ERROR', err.message);
-    }
-
-    // Method 2: after a short delay, try direct location assignment
-    // (some iOS versions need this trick instead)
+    // Not installed (or dismissed) -> still on the page -> App Store.
     setTimeout(() => {
-      dlog('500ms check', { hidden: document.hidden, visible: document.visibilityState });
-      if (!document.hidden) {
-        dlog('attempting method 2: location.assign');
-        try {
-          window.location.assign(universalLink);
-        } catch (err) {
-          dlog('  method 2 ERROR', err.message);
-        }
-      } else {
-        dlog('app took over (page hidden) — skip method 2');
-      }
-    }, 500);
-
-    // Fallback to App Store after delay if app didn't intercept
-    setTimeout(() => {
-      dlog('2000ms check', { hidden: document.hidden, visible: document.visibilityState, elapsed: Date.now() - startTime });
-      if (Date.now() - startTime < FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden) {
-        dlog('FALLBACK: redirecting to App Store');
+      if (!bailed && !document.hidden && !wasHidden) {
         if (typeof gtag === 'function') {
           gtag('event', 'share_page_fallback_to_app_store');
         }
         window.location.href = APP_STORE_URL;
-      } else {
-        dlog('NO fallback — page hidden or elapsed exceeded');
       }
     }, FALLBACK_DELAY_MS);
   });
