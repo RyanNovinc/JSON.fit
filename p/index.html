@@ -1299,66 +1299,38 @@ function setupOpenInAppButton() {
   const btn = document.getElementById('open-in-app-btn');
   if (!btn) return;
 
+  // IMPORTANT: use the app's custom scheme (json-app://), NOT the universal link.
+  // iOS refuses to hand a universal link to the app when it targets the SAME
+  // domain you're already on (json.fit -> json.fit), and also ignores links
+  // triggered by script rather than a real tap. A custom scheme has neither
+  // limitation. Same approach as /programs/, which works reliably.
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    if(window.track) window.track('cta_clicked', {cta_id: 'open_in_app'});
-    const startTime = Date.now();
-    const wasHidden = document.hidden;
+    if (window.track) window.track('cta_clicked', { cta_id: 'import_share' });
 
-    dlog('button clicked');
-    dlog('  start time', startTime);
-    dlog('  was hidden', wasHidden);
-    dlog('  current url', window.location.href);
+    const shareId = getShareId();
+    const appUrl = 'json-app://p/' + shareId;
+    const wasHidden = document.hidden;
 
     if (typeof gtag === 'function') {
       gtag('event', 'share_page_open_in_app_click');
     }
 
-    const universalLink = window.location.href;
+    // If the app opens, the page gets backgrounded -> cancel the App Store fallback.
+    let bailed = false;
+    function cancel() { bailed = true; }
+    document.addEventListener('visibilitychange', function () { if (document.hidden) cancel(); });
+    window.addEventListener('pagehide', cancel);
 
-    // Try multiple methods to trigger the universal link, each as a fallback for the next.
-    // iOS will only intercept the first navigation that successfully matches an associated domain.
+    try { window.location.href = appUrl; } catch (err) {}
 
-    dlog('attempting method 1: anchor click');
-    try {
-      const a = document.createElement('a');
-      a.href = universalLink;
-      a.rel = 'noopener';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      dlog('  method 1 dispatched');
-    } catch (err) {
-      dlog('  method 1 ERROR', err.message);
-    }
-
-    // Method 2: after a short delay, try direct location assignment
-    // (some iOS versions need this trick instead)
+    // Not installed (or dismissed) -> still on the page -> App Store.
     setTimeout(() => {
-      dlog('500ms check', { hidden: document.hidden, visible: document.visibilityState });
-      if (!document.hidden) {
-        dlog('attempting method 2: location.assign');
-        try {
-          window.location.assign(universalLink);
-        } catch (err) {
-          dlog('  method 2 ERROR', err.message);
-        }
-      } else {
-        dlog('app took over (page hidden) — skip method 2');
-      }
-    }, 500);
-
-    // Fallback to App Store after delay if app didn't intercept
-    setTimeout(() => {
-      dlog('2000ms check', { hidden: document.hidden, visible: document.visibilityState, elapsed: Date.now() - startTime });
-      if (Date.now() - startTime < FALLBACK_DELAY_MS + 500 && !document.hidden && !wasHidden) {
-        dlog('FALLBACK: redirecting to App Store');
+      if (!bailed && !document.hidden && !wasHidden) {
         if (typeof gtag === 'function') {
           gtag('event', 'share_page_fallback_to_app_store');
         }
         window.location.href = APP_STORE_URL;
-      } else {
-        dlog('NO fallback — page hidden or elapsed exceeded');
       }
     }, FALLBACK_DELAY_MS);
   });
