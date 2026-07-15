@@ -342,7 +342,7 @@
             /* hero mobile: 2 wall columns, stacked serif headline, stacked CTA */
             .f-wall { gap:14px; }
             .f-col { width:170px; }
-            .f-col:nth-child(3), .f-col:nth-child(4) { display:none; }
+            .f-col:nth-child(n+3) { display:none; }
             .f-track { gap:14px; }
             .f-card { height:210px; border-radius:18px; }
             .f-name { font-size:11.5px; }
@@ -1503,12 +1503,28 @@
         return col;
     }
 
+    var MIN_COLS = 4, MAX_COLS = 8; // desktop range; real edge coverage decides the exact count, not a guess
+    var isMobile = window.matchMedia('(max-width: 860px)').matches;
+    var colTarget = isMobile ? 2 : MIN_COLS; // mobile keeps its existing fixed 2-column look
+    var colCap = isMobile ? 2 : MAX_COLS;    // hard ceiling so an ultrawide monitor can't load unbounded images
+
     var shuffled = shuffle(POOL.slice());
-    var perCol = Math.min(PER_COLUMN, Math.floor(shuffled.length / 4));
-    var directions = [false, true, false, true];
-    for (var i = 0; i < 4; i++) {
-        var slice = shuffled.slice(i * perCol, (i + 1) * perCol);
-        wall.appendChild(buildColumn(slice, directions[i]));
+    var perCol = Math.min(PER_COLUMN, Math.floor(shuffled.length / colCap));
+    var used = 0;
+    function nextSlice(){
+        var slice = shuffled.slice(used, used + perCol);
+        used += perCol;
+        return slice;
+    }
+
+    var built = 0;
+    while (built < colCap) {
+        wall.appendChild(buildColumn(nextSlice(), built % 2 === 1));
+        built++;
+        if (built < colTarget) continue; // always place the minimum before checking coverage
+        var firstEdge = wall.children[0].getBoundingClientRect();
+        var lastEdge = wall.children[built - 1].getBoundingClientRect();
+        if (firstEdge.left <= 0 && lastEdge.right >= window.innerWidth) break; // both edges covered
     }
 })();
 </script>
