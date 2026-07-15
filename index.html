@@ -1,276 +1,1670 @@
-/* Hero food wall, shared by every page that mounts a <div id="fWall">.
-   Real meal photos from the JSON.fit library (r/meals.json), not a hardcoded list.
-
-   Add data-rings="true" on the #fWall element for the ring/"LOGGED" treatment
-   (used on the homepage); omit it for a plain name+macro card (used elsewhere,
-   e.g. the cookbook page).
-
-   Load order: a placeholder pass first measures how many columns the screen
-   actually needs (no images touched), then the real columns are built and the
-   ones nearest the visual centre get fetchpriority="high" so the part of the
-   wall people actually look at wins the network race, with the outermost
-   columns marked "low" since they're the least seen.
-
-   Motion: every column is appended to the DOM first, then start() measures one
-   full cycle (n cards, valid only in-document) and sets --fdrift-duration
-   before adding the .run class, so the animation never plays at a CSS fallback
-   speed. The keyframe itself is a static translateY(-50%) in the stylesheet,
-   which keeps the drift on the compositor and immune to scroll and resize
-   jank. Requires the matching CSS: the gap moved from .f-track into .f-card
-   margin-bottom (so -50% equals exactly one card set), and the animation
-   gated behind .f-track.run. */
-(function(){
-var POOL = [
-  ["Butter Chicken", "butter-chicken-curry", 490, 48],
-  ["Butter Chicken with Basmati Rice", "butter-chicken-with-rice", 720, 52],
-  ["Brekkie to GROW-Grow", "brekkie-grow", 1185, 64],
-  ["Mango Mass", "mango-mass", 1147, 52],
-  ["King Kong Chocolate", "king-kong-chocolate", 1418, 85],
-  ["Strawberry Stack", "strawberry-stack", 1157, 56],
-  ["Choc Muscle MAXX", "choc-muscle-maxx", 1111, 77],
-  ["Cookies & Gains", "cookies-gains", 1148, 56],
-  ["Raspberry Rip", "raspberry-rip", 1070, 54],
-  ["Energy Lift Heavy", "energy-lift-heavy", 961, 52],
-  ["Mornin' Muscle", "mornin-muscle", 1192, 57],
-  ["Dirty Eden", "dirty-eden", 1165, 57],
-  ["Strawbrekkie BEAST", "strawbrekkie-beast", 1244, 63],
-  ["Banana Bulk", "banana-bulk", 1302, 64],
-  ["BBQ Pulled Pork", "pulled-pork", 610, 48],
-  ["BBQ Pulled Pork Burger", "pulled-pork-sandwich", 1210, 61],
-  ["Pulled Pork Rice Bowl", "pulled-pork-bowl", 1330, 61],
-  ["Loaded Pulled Pork Baked Potato", "pulled-pork-baked-potato", 1177, 60],
-  ["Pulled Pork Tacos", "pulled-pork-tacos", 1155, 61],
-  ["Pulled Pork Mac & Cheese Stack", "pulled-pork-mac-cheese", 1907, 102],
-  ["Bolognese", "bolognese", 510, 32],
-  ["Spaghetti Bolognese", "bolognese-spaghetti", 996, 48],
-  ["Loaded Bolognese Baked Potato", "bolognese-baked-potato", 1007, 44],
-  ["Bolognese with Garlic Bread", "bolognese-garlic-bread", 968, 42],
-  ["Bolognese Lasagne", "bolognese-lasagne", 1130, 62],
-  ["Massaman Beef Curry", "massaman", 890, 52],
-  ["Massaman Beef Curry with Rice", "massaman-rice", 1403, 59],
-  ["Chilli Con Carne", "chilli-con-carne", 620, 42],
-  ["Bulking Chilli Bowl", "chilli-con-carne-bowl", 1263, 52],
-  ["Loaded Chilli Nachos", "chilli-con-carne-nachos", 1319, 53],
-  ["Red Wine\u2013Braised Lamb Shank", "lamb-shanks", 825, 54],
-  ["Lamb Shank on Creamy Mash", "lamb-shanks-mash", 1417, 57],
-  ["Red Wine Beef Stew", "beef-stew", 700, 46],
-  ["Beef Stew on Creamy Mash", "beef-stew-mash", 1288, 52],
-  ["Beef Stew with Crusty Bread", "beef-stew-bread", 977, 52],
-  ["Maple Muscle Toast", "maple-muscle-toast", 1050, 60],
-  ["Muscle Oats", "muscle-oats", 960, 53],
-  ["Scramble Stack", "scramble-stack", 700, 42],
-  ["Protein Overnight Oats", "overnight-oats", 770, 47],
-  ["Greek Yoghurt Power Bowl", "greek-yoghurt-bowl", 740, 47],
-  ["Cottage Cheese Power Bowl", "cottage-cheese-bowl", 380, 28],
-  ["PB Banana Toast", "pb-banana-toast", 840, 45],
-  ["Protein Pancakes", "protein-pancakes", 760, 52],
-  ["Steak & Eggs", "steak-and-eggs", 820, 65],
-  ["Shakshuka", "shakshuka", 880, 46],
-  ["Freezer Breakfast Burrito", "freezer-breakfast-burrito", 680, 37],
-  ["Baked Oats", "baked-oats", 800, 51],
-  ["Smoked Salmon Bagel", "smoked-salmon-bagel", 790, 44],
-  ["Big Breakfast Plate", "big-breakfast-plate", 1130, 70],
-  ["Egg Muffins", "egg-muffins", 790, 44],
-  ["Protein Ice Cream", "protein-ice-cream", 320, 40],
-  ["Cottage Cheese Ice Cream", "cottage-cheese-ice-cream", 390, 29],
-  ["Chocolate Protein Mug Cake", "chocolate-protein-mug-cake", 325, 34],
-  ["Fudgy Protein Brownies", "fudgy-protein-brownies", 245, 13],
-  ["Protein Chocolate Chip Cookies", "protein-chocolate-chip-cookies", 210, 11],
-  ["Protein Banana Bread", "protein-banana-bread", 190, 10],
-  ["Edible Protein Cookie Dough", "edible-protein-cookie-dough", 340, 20],
-  ["No-Bake Protein Cheesecake", "no-bake-protein-cheesecake", 380, 22],
-  ["Chocolate Protein Mousse", "chocolate-protein-mousse", 395, 38],
-  ["Frozen Date Snickers Bark", "frozen-date-snickers-bark", 190, 6],
-  ["Pala\u010dinke (Croatian Cr\u00eapes)", "palacinke", 463, 12],
-  ["Greek Yogurt", "greek-yogurt-snack", 170, 17],
-  ["Beef Jerky", "beef-jerky", 115, 14],
-  ["Edamame", "edamame", 190, 17],
-  ["Protein Shake", "protein-shake", 250, 35],
-  ["Protein Bar", "protein-bar", 220, 20],
-  ["Cheese", "cheese-snack", 115, 7],
-  ["Hard-Boiled Eggs", "hard-boiled-eggs", 140, 12],
-  ["Tuna Pouch", "tuna-pouch", 110, 25],
-  ["Roasted Chickpeas", "roasted-chickpeas", 190, 10],
-  ["No-Bake Protein Balls", "no-bake-protein-balls", 150, 8],
-  ["Mixed Nuts", "mixed-nuts", 250, 9],
-  ["Trail Mix", "trail-mix", 290, 8],
-  ["Banana", "banana-snack", 105, 1],
-  ["Dried Fruit", "dried-fruit", 130, 1],
-  ["Dark Chocolate", "dark-chocolate", 170, 2],
-  ["Teriyaki Chicken Rice Bowl", "teriyaki-chicken-rice-bowl", 890, 56],
-  ["Beef & Broccoli Stir-Fry", "beef-broccoli-stir-fry", 860, 52],
-  ["Thai Basil Chicken over Rice", "thai-basil-chicken-over-rice-standard", 736, 44],
-  ["Thai Basil Chicken with Fried Egg", "thai-basil-chicken-with-fried-egg-fried-egg", 807, 50],
-  ["Beef Bulgogi over Jasmine Rice", "beef-bulgogi-bowl", 820, 50],
-  ["Spaghetti Carbonara", "spaghetti-carbonara", 1080, 54],
-  ["Salmon, Roast Potatoes & Greens", "sheet-pan-salmon-potatoes", 780, 46],
-  ["Chicken Fajita Bowl", "chicken-fajita-bowl", 770, 56],
-  ["Spicy Chipotle Chicken Burrito", "spicy-chipotle-chicken-burrito-standard", 933, 56],
-  ["Spicy Chipotle Chicken Burrito Bowl", "spicy-chipotle-chicken-burrito-bowl-burrito-bowl", 747, 51],
-  ["Chicken Shawarma Wrap", "chicken-shawarma-wrap-wrap", 738, 51],
-  ["Chicken Shawarma Rice Bowl", "chicken-shawarma-rice-bowl-rice-bowl", 793, 50],
-  ["Satay Chicken over Jasmine Rice", "satay-chicken", 919, 50],
-  ["Honey Chicken over Jasmine Rice", "honey-chicken", 786, 54],
-  ["Chicken Mac and Cheese", "chicken-mac-and-cheese", 935, 80],
-  ["Turkey Meatballs & Spaghetti", "turkey-meatballs-spaghetti", 810, 56],
-  ["Tuna Pasta Bake", "tuna-pasta-bake", 795, 57],
-  ["Lamb Kofta Rice Bowl", "lamb-kofta-rice-bowl", 857, 53],
-  ["Lamb Kofta Wrap", "lamb-kofta-wrap-wrap", 856, 55],
-  ["Sheet-Pan Sausage & Veg", "sheet-pan-sausage-veg", 733, 44],
-  ["Honey Soy Salmon Noodle Bowl", "honey-soy-salmon-noodles", 820, 53],
-  ["Carne Asada Bowl", "carne-asada-bowl", 827, 62],
-  ["Schnitzel Plate", "schnitzel-plate-plate", 621, 54],
-  ["Schnitzel Roll", "schnitzel-roll-roll", 881, 63],
-  ["Chicken Parma", "chicken-parma-parma", 747, 62],
-  ["Beef Rag\u00f9 with Gnocchi", "beef-ragu-gnocchi", 856, 53],
-  ["\u0106evapi with Flatbread", "cevapi-flatbread", 806, 51],
-  ["\u0106evapi Rice Plate", "cevapi-rice-plate", 760, 48],
-  ["Chicken Schnitzel", "chicken-schnitzel", 621, 54],
-  ["Chicken Shawarma", "chicken-shawarma", 738, 51],
-  ["Lamb Kofta", "lamb-kofta", 857, 53],
-  ["Spicy Chipotle Chicken Burrito", "spicy-chipotle-chicken-burrito", 933, 56],
-  ["Thai Basil Chicken", "thai-basil-chicken", 736, 44]
-];
-
-    var PER_COLUMN = 10;                  // unique meals per column: raise for more variety, lower to save data
-    var SPEED = { normal: 9, rev: 7 };    // px/second before the wall's 1.18 scale (about 10px/s on screen). Original design was 18/14: nudge up if this feels too still.
-    var DONE_CHANCE = 0.3;                // fraction of cards shown as already "logged" (rings only)
-    var MIN_COLS = 4, MAX_COLS = 8;       // desktop range; real edge coverage decides the exact count, not a guess
-
-    var wall = document.getElementById('fWall');
-    if (!wall) return;
-    var showRings = wall.dataset.rings === 'true';
-
-    function shuffle(arr){
-        for (var i = arr.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3C38HP30JG');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON.fit: Bulking meals, step-by-step. Free.</title>
+    <meta name="description" content="Big, calorie-dense bulking meals with every ingredient and cooking step, built for skinny guys who struggle to eat enough. Use any AI you already have to build a plan around your goal that hits the exact macros it needs, plus a free training program. Free to use.">
+    <meta property="og:title" content="JSON.fit: Bulking meals, step-by-step. Free.">
+    <meta property="og:description" content="Big, calorie-dense bulking meals built for eating big. Build them into a plan around your goal that hits the exact macros it needs, using the AI you already have. Free to use.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://json.fit/">
+    <meta property="og:image" content="https://json.fit/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="JSON.fit">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JSON.fit: Bulking meals, step-by-step. Free.">
+    <meta name="twitter:description" content="Big, calorie-dense bulking meals built for eating big. Build them into a plan that hits your goal's exact macros using the AI you already have. Free.">
+    <meta name="twitter:image" content="https://json.fit/og-cover.png">
+    <link rel="canonical" href="https://json.fit/">
+<link rel="icon" type="image/x-icon" href="favicon-3.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32-3.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192-3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180-3.png">
+    <link rel="alternate" type="text/plain" href="https://json.fit/llms.txt" title="LLM-readable site summary">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "JSON.fit",
+      "operatingSystem": "iOS, Android",
+      "applicationCategory": "HealthApplication",
+      "description": "AI-agnostic fitness app. Generate workout programs and meal plans using any AI, import as JSON, track everything. Completely free.",
+      "url": "https://json.fit/",
+      "downloadUrl": "https://apps.apple.com/au/app/json-fit/id6758357834",
+      "softwareVersion": "1.8",
+      "author": { "@type": "Person", "name": "Ryan Novinc" },
+      "offers": {
+        "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free: unlimited AI workout programs and meal plans"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "8",
+        "bestRating": "5"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "How does JSON.fit actually work?", "acceptedAnswer": { "@type": "Answer", "text": "It takes three steps. Answer a few quick questions, paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini, then import the meal plan it builds and start tracking. The same flow builds your training program too." } },
+        { "@type": "Question", "name": "Do I need to pay for AI separately?", "acceptedAnswer": { "@type": "Answer", "text": "Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you." } },
+        { "@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": { "@type": "Answer", "text": "JSON.fit is completely free. Workouts and nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence, with no subscription, no paywall, and no in-app purchases." } },
+        { "@type": "Question", "name": "Does this work if I've got a full-time job?", "acceptedAnswer": { "@type": "Answer", "text": "That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating in a surplus fits around work instead of taking it over." } },
+        { "@type": "Question", "name": "How much time does this take each week?", "acceptedAnswer": { "@type": "Answer", "text": "Building or importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go. The whole point is to hit your macros without bulking turning into a second job." } },
+        { "@type": "Question", "name": "If JSON.fit is free, what's the catch?", "acceptedAnswer": { "@type": "Answer", "text": "There isn't one. Most fitness apps charge $10-20 per month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free." } },
+        { "@type": "Question", "name": "What AI does JSON.fit work with?", "acceptedAnswer": { "@type": "Answer", "text": "Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer." } },
+        { "@type": "Question", "name": "Is my data private with JSON.fit?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. See the Privacy Policy for full details." } }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #22d3ee; --cyan-soft: rgba(34,211,238,0.08); --cyan-glow: rgba(34,211,238,0.35);
+            --green: #22c55e; --green-soft:rgba(34,197,94,0.07); --green-border:rgba(34,197,94,0.20); --green-glow:rgba(34,197,94,0.30);
+            --violet: #a855f7; --violet-soft: rgba(168,85,247,0.08); --violet-border: rgba(168,85,247,0.16);
+            --red: #ef4444;
+            --bg: #050508; --surface: #0a0a0f; --surface-2: #111116;
+            --border: rgba(255,255,255,0.06); --border-cyan: rgba(34,211,238,0.14);
+            --text: #f0f0f2; --text-2: #9898a4; --text-3: #7a7a86;
         }
-        return arr;
-    }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; line-height: 1.7; font-size: 16px; }
+        .cyan { color: var(--cyan); }
+        .green { color: var(--green); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        .section { padding: 6rem 0; }
+        .label { font-family: 'DM Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--cyan); display: block; margin-bottom: 1rem; }
+        .sa { opacity: 0; transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+        .sa-up { transform: translateY(60px); }
+        .sa-left { transform: translateX(-60px); }
+        .sa-right { transform: translateX(60px); }
+        .sa-scale { transform: scale(0.9) translateY(30px); }
+        .sa.vis { opacity: 1; transform: none; }
+        .sa-stagger > * { opacity: 0; transform: translateY(50px) scale(0.97); transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+        .sa-stagger.vis > *:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
+        .sa-stagger.vis > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.15s; }
+        .sa-stagger.vis > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.3s; }
+        .sa-stagger.vis > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.45s; }
+        .sa-stagger.vis > *:nth-child(5) { opacity:1; transform:none; transition-delay:0.6s; }
+        .sa-stagger.vis > *:nth-child(6) { opacity:1; transform:none; transition-delay:0.75s; }
+        .section-line { width: 0; height: 1px; background: var(--border-cyan); margin-bottom: 1rem; transition: width 0.7s ease; }
+        .section-line.vis { width: 48px; }
+        .count-up { display: inline-block; }
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; background: rgba(5,5,8,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); }
+        .nav-logo { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 1rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; }
+        .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-3); text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: color 0.2s; letter-spacing: 0.01em; }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta { background: var(--cyan) !important; color: #000 !important; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 600 !important; font-size: 0.78rem !important; transition: transform 0.2s, box-shadow 0.2s; }
+        .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--cyan-glow); }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+        .hamburger span { display: block; width: 20px; height: 2px; background: var(--text); margin: 4px 0; transition: all 0.3s; }
+        .nav-soon { color: var(--violet); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.01em; cursor: default; opacity: 0.85; display: inline-flex; align-items: center; gap: 0.4rem; transition: opacity 0.2s; }
+        .nav-soon:hover { opacity: 1; }
+        .nav-links a.nav-meals { color: var(--green); }
+        .nav-links a.nav-meals:hover { color: #4ade80; }
+        .nav-links a.nav-lab { color: var(--violet); }
+        .nav-links a.nav-lab:hover { color: #c084fc; }
+        .soon-pill { font-family: 'DM Mono', monospace; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.4; color: var(--violet); background: var(--violet-soft); border: 1px solid var(--violet-border); padding: 0.1rem 0.4rem; border-radius: 100px; }
+        /* === HERO: food wall + serif masthead === */
+        @keyframes heroFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        .fhero { position: relative; display: flex; overflow: hidden; min-height: 100vh; min-height: 100svh; padding-top: 56px; }
+        .f-wall { position: absolute; inset: -14%; display: flex; gap: 20px; justify-content: center; transform: rotate(-7deg) scale(1.18); pointer-events: none; }
+        .f-col { display: flex; flex-direction: column; width: 250px; flex-shrink: 0; overflow: hidden; }
+        .f-track { display: flex; flex-direction: column; gap: 20px; animation: fdrift linear infinite; animation-duration: var(--fdrift-duration, 48s); }
+        .f-col.rev .f-track { animation-direction: reverse; }
+        @keyframes fdrift { to { transform: translateY(var(--fdrift-shift, -50%)); } }
+        .f-card { position: relative; height: 252px; border-radius: 22px; overflow: hidden; flex-shrink: 0; background: #141017; }
+        .f-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,8,0.85), transparent 55%); }
+        .f-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .f-meta { position: absolute; bottom: 11px; left: 12px; right: 12px; z-index: 2; display: flex; align-items: center; gap: 9px; }
+        .f-ring { width: 16px; height: 16px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.55); flex-shrink: 0; }
+        .f-ring.done { background: var(--green); border-color: var(--green); position: relative; }
+        .f-ring.done::after { content: ''; position: absolute; left: 4.5px; top: 2px; width: 3.5px; height: 7px; border: solid #06260f; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
+        .f-name { font-size: 14px; font-weight: 700; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .f-name.done { color: #9a9aa2; text-decoration: line-through; }
+        .f-kcal { font-family: 'DM Mono', monospace; font-size: 9.5px; color: var(--green); margin-top: 2px; letter-spacing: 0.04em; }
+        .f-scrim { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 44%, rgba(5,5,8,0.7) 0%, rgba(5,5,8,0.9) 66%, #050508 100%); }
+        .f-scrim::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(to top, #050508, transparent); }
+        .fh-fg { position: relative; z-index: 3; margin: auto; text-align: center; display: flex; flex-direction: column; align-items: center; max-width: 900px; padding: 3rem 1.5rem; }
+        .fh-ov { font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-2); margin-bottom: 1.15rem; animation: heroFadeUp 0.7s ease both; }
+        .fh-display { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 400; color: #fff; font-size: clamp(2.7rem, 6.2vw, 4.6rem); line-height: 1.06; letter-spacing: -0.01em; animation: heroFadeUp 0.7s ease 0.07s both; }
+        .fh-display .cyan { font-style: italic; }
+        .fh-l1 { display: inline; }
+        .fh-sub { font-size: 0.9rem; color: #9a9aa2; margin-top: 1rem; animation: heroFadeUp 0.7s ease 0.14s both; }
+        .fh-sub b { font-family: Georgia, serif; font-style: normal; font-weight: 400; font-size: 1.06rem; color: #e6e6e8; display: inline-block; text-align: right; }
+        .fh-sub b.tick-p { min-width: 2em; }
+        .fh-sub b.tick-k { min-width: 3.1em; }
+        .fh-hair { width: min(420px, 62vw); height: 1px; background: rgba(255,255,255,0.16); margin: 1.35rem auto 0; animation: heroFadeUp 0.7s ease 0.18s both; }
+        .fh-cta { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; margin-top: 1.9rem; animation: heroFadeUp 0.7s ease 0.24s both; }
+        .fh-row { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; justify-content: center; }
+        .fh-store { display: block; border-radius: 9px; }
+        .fh-watch { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.73rem; color: var(--text-2); transition: color 0.2s; }
+        .fh-watch .play { width: 22px; height: 22px; border-radius: 50%; background: var(--cyan); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .fh-watch .play svg { margin-left: 2px; }
+        .fh-watch b { color: var(--text); font-weight: 500; }
+        .fh-watch:hover { color: var(--cyan); }
+        .fh-browse { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.73rem; color: var(--cyan); letter-spacing: 0.02em; margin-top: 0.2rem; }
+        .fh-browse:hover { color: #67e8f9; }
+        .fh-trust { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; color: var(--text-3); margin-top: 0.35rem; }
+        .fh-trust .st { color: #f59e0b; }
+        .fh-trust b { color: var(--text); font-weight: 500; }
+        .ai-strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; }
+        .ai-strip span { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); letter-spacing:0.04em; }
+        .ai-strip .ai-lbl { color:var(--text-2); font-weight:500; }
+        .section-head { margin-bottom: 3rem; }
+        .section-head h2 { font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 0.75rem; }
+        .section-head p { color:var(--text-2); font-size:1rem; max-width:500px; }
+        .proof-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-radius:14px; overflow:hidden; }
+        .proof-card { background:var(--surface); padding:2rem; display:flex; flex-direction:column; gap:1rem; transition:background 0.3s; }
+        .proof-card:hover { background:var(--surface-2); }
+        .proof-lbl { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--text-3); }
+        .proof-card h3 { font-size:0.95rem; font-weight:700; line-height:1.4; }
+        .proof-card p { color:var(--text-2); font-size:0.82rem; line-height:1.65; }
+        .proof-profile { display:flex; flex-wrap:wrap; gap:0.4rem; }
+        .proof-tag { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); padding:0.2rem 0.55rem; border-radius:4px; border:1px solid var(--border); background:rgba(255,255,255,0.02); letter-spacing:0.03em; }
+        .proof-vol { display:flex; flex-direction:column; gap:0.5rem; width:100%; }
+        .proof-vol-row { display:flex; align-items:center; gap:0.75rem; }
+        .proof-vol-name { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-2); width:90px; flex-shrink:0; }
+        .proof-vol-wrap { flex:1; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+        .proof-vol-bar { height:100%; border-radius:2px; width:0; transition:width 1s ease; }
+        .proof-vol-bar-n { background:var(--green); }
+        .proof-vol-sets { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--cyan); width:42px; text-align:right; flex-shrink:0; }
+        .proof-vol-sets-n { color:var(--green); }
+        .proof-stats { padding-top:1rem; border-top:1px solid var(--border); display:flex; gap:1.5rem; flex-wrap:wrap; }
+        .proof-stat { display:flex; flex-direction:column; gap:0.2rem; }
+        .proof-stat-num { font-family:'DM Mono',monospace; font-size:2.6rem; font-weight:500; color:var(--cyan); line-height:1; letter-spacing:-0.02em; }
+        .proof-stat-num-n { color:var(--green); }
+        .proof-stat-lbl { font-size:0.78rem; color:var(--text-2); }
+        .proof-link { display:inline-flex; align-items:center; gap:0.4rem; color:var(--cyan); text-decoration:none; font-size:0.82rem; font-weight:600; transition:gap 0.2s; font-family:'DM Mono',monospace; }
+        .proof-link:hover { gap:0.65rem; }
+        .comp { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+        .comp-head, .comp-row { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; }
+        .comp-head { border-bottom:1px solid var(--border); }
+        .comp-head div { padding:1rem; font-size:0.8rem; font-weight:600; color:var(--text-3); }
+        .comp-head div:nth-child(2) { color:var(--cyan); font-family:'DM Mono',monospace; background:var(--cyan-soft); border-left:1px solid var(--border); border-right:1px solid var(--border); }
+        .comp-head div:nth-child(4) { border-left:1px solid var(--border); }
+        .comp-row { border-bottom:1px solid var(--border); }
+        .comp-row:last-child { border-bottom:none; }
+        .comp-row div { padding:0.75rem 1rem; font-size:0.85rem; color:var(--text-2); display:flex; align-items:center; }
+        .comp-row div:first-child { font-weight:500; }
+        .comp-row div:nth-child(2) { color:var(--cyan); font-weight:600; border-left:1px solid var(--border); border-right:1px solid var(--border); background:rgba(34,211,238,0.02); }
+        .comp-row div:nth-child(4) { border-left:1px solid var(--border); }
+        .comp-x { color:var(--red) !important; }
+        .cta-wrap { padding:3rem 0 5rem; display:flex; justify-content:center; }
+        .cta-card { max-width:480px; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem 2rem; position:relative; overflow:hidden; text-align:center; }
+        .cta-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
+        .cta-card > * { position:relative; z-index:1; }
+        .cta-badge { display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--cyan); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
+        .cta-card h2 { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:1.9rem; letter-spacing:-0.01em; line-height:1.15; margin-bottom:0.75rem; }
+        .cta-card h2 em { color:var(--cyan); font-style:italic; }
+        .cta-price { display:flex; align-items:baseline; justify-content:center; gap:0.4rem; margin-bottom:0.25rem; }
+        .cta-price .big { font-family:'DM Mono',monospace; font-size:2.5rem; font-weight:500; color:var(--cyan); }
+        .cta-price .unit { font-size:0.85rem; color:var(--text-2); }
+        .cta-sub { font-size:0.78rem; color:var(--text-3); margin-bottom:1.5rem; }
+        .cta-checks { text-align:left; margin-bottom:1.5rem; }
+        .cta-check { display:flex; align-items:center; gap:0.5rem; padding:0.35rem 0; font-size:0.88rem; color:var(--text-2); }
+        .cta-check .ic { font-size:0.8rem; flex-shrink:0; font-weight:700; }
+        .ic-g { color:var(--green); }
+        .ic-c { color:var(--cyan); }
+        .cta-div { border:none; border-top:1px solid var(--border); margin:0.75rem 0; }
+        .cta-btn { display:flex; width:100%; align-items:center; justify-content:center; gap:0.5rem; padding:0.9rem; border-radius:10px; font-size:0.95rem; font-weight:700; text-decoration:none; border:none; font-family:'Outfit',sans-serif; transition:all 0.25s; background:var(--cyan); color:#000; }
+        .cta-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px var(--cyan-glow); }
+        .cta-foot { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-3); letter-spacing:0.03em; margin-top:1rem; }
+        .faq { max-width:640px; margin:0 auto; }
+        .faq-item { border-bottom:1px solid var(--border); padding:1.25rem 0; }
+        .faq-item:last-child { border-bottom:none; }
+        .faq-q { width:100%; background:none; border:none; padding:0; text-align:left; font-family:'Outfit',sans-serif; font-size:0.95rem; font-weight:600; color:var(--text); cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:1rem; user-select:none; }
+        .faq-q:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
+        .faq-q::after { content:'+'; font-family:'DM Mono',monospace; font-size:1.1rem; color:var(--cyan); flex-shrink:0; transition:transform 0.2s; }
+        .faq-item.open .faq-q::after { content:'\2212'; }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.35s ease; color:var(--text-2); font-size:0.88rem; line-height:1.7; }
+        .faq-item.open .faq-a { max-height:400px; padding-top:0.75rem; }
+        .lightbox { position:fixed; inset:0; z-index:9999; background:rgba(5,5,8,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
+        .lightbox.open { opacity:1; pointer-events:all; }
+        .lightbox-img { max-width:min(480px,90vw); max-height:90vh; height:auto; width:auto; border-radius:16px; border:1px solid var(--border-cyan); box-shadow:0 32px 80px rgba(0,0,0,0.8); transform:scale(0.94); transition:transform 0.25s ease; display:block; }
+        .lightbox.open .lightbox-img { transform:scale(1); }
+        .lightbox-close { position:absolute; top:1.25rem; right:1.25rem; background:var(--surface-2); border:1px solid var(--border); color:var(--text-2); width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:border-color 0.2s,color 0.2s; font-family:'DM Mono',monospace; }
+        .lightbox-close:hover { border-color:var(--cyan); color:var(--cyan); }
+        .lightbox-hint { position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%); font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--text-3); letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
+        .vmodal { position:fixed; inset:0; z-index:9999; background:rgba(5,5,8,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
+        .vmodal.open { opacity:1; pointer-events:all; }
+        .vmodal-frame { position:relative; aspect-ratio:9/16; height:min(82vh,760px); max-width:92vw; border-radius:16px; overflow:hidden; border:1px solid var(--border-cyan); box-shadow:0 32px 80px rgba(0,0,0,0.8); background:#000; transform:scale(0.96); transition:transform 0.25s ease; }
+        .vmodal.open .vmodal-frame { transform:scale(1); }
+        .vmodal-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+        .vmodal-close { position:absolute; top:1.25rem; right:1.25rem; background:var(--surface-2); border:1px solid var(--border); color:var(--text-2); width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:border-color 0.2s,color 0.2s; font-family:'DM Mono',monospace; z-index:2; }
+        .vmodal-close:hover { border-color:var(--cyan); color:var(--cyan); }
+        .review-rating-bar { display: flex; align-items: center; gap: 1.25rem; justify-content: center; margin-bottom: 2.5rem; }
+        .review-rating-score { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+        .review-rating-num { font-family: 'DM Mono', monospace; font-size: 3rem; font-weight: 500; color: var(--text); line-height: 1; letter-spacing: -0.02em; }
+        .review-rating-stars { color: #f59e0b; font-size: 1rem; letter-spacing: 0.08em; }
+        .review-rating-count { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text-3); letter-spacing: 0.08em; text-transform: uppercase; }
+        .review-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:14px; overflow:hidden; }
+        .review-card { background:var(--surface); padding:1.75rem; display:flex; flex-direction:column; gap:0.75rem; transition:background 0.3s; }
+        .review-card:hover { background:var(--surface-2); }
+        .review-stars { color:#f59e0b; font-size:1rem; letter-spacing:0.05em; }
+        .review-title { font-size:0.92rem; font-weight:700; color:var(--text); line-height:1.3; }
+        .review-body { color:var(--text-2); font-size:0.85rem; line-height:1.75; }
+        .review-meta { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); letter-spacing:0.04em; }
+        @media (max-width:860px) { .review-grid { grid-template-columns:1fr; } }
+        footer { border-top:1px solid var(--border); padding:2rem 1.5rem; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1rem; }
+        .foot-l { font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); justify-self:start; }
+        .foot-l a { color:var(--text-3); text-decoration:none; margin-left:1.25rem; transition:color 0.2s; }
+        .foot-l a:hover { color:var(--cyan); }
+.foot-social { display:flex; align-items:center; gap:1rem; justify-self:center; }
+.foot-social a { color:var(--text-3); display:flex; transition:color 0.2s, transform 0.2s; }
+.foot-social a:hover { color:var(--cyan); transform:translateY(-2px); }
+.foot-social svg { width:19px; height:19px; display:block; }
+        .foot-r { font-size:0.7rem; color:var(--text-3); justify-self:end; }
+        .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+        .meal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; text-decoration:none; color:inherit; transition:border-color 0.2s, transform 0.2s; }
+        .meal-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
+        .meal-card img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--surface-2); }
+        .meal-body { padding:1rem 1.15rem 1.2rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:auto; }
+        .meal-cuisine { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.13em; color:var(--cyan); }
+        .meal-name { font-size:1rem; font-weight:700; color:var(--text); line-height:1.3; }
+        .meal-macros { display:flex; gap:0.4rem; flex-wrap:wrap; }
+        .meal-macro { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); padding:0.2rem 0.5rem; border:1px solid var(--border-cyan); border-radius:4px; background:var(--cyan-soft); letter-spacing:0.02em; }
+        .meal-kcal { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--green); padding:0.2rem 0.5rem; border:1px solid rgba(34,197,94,0.2); border-radius:4px; background:rgba(34,197,94,0.05); letter-spacing:0.02em; }
+        .meals-cta { display:inline-flex; align-items:center; gap:0.4rem; margin-top:1.75rem; padding:0.7rem 1.5rem; border-radius:10px; font-size:0.9rem; font-weight:700; text-decoration:none; background:var(--cyan); color:#000; transition:all 0.25s; font-family:'Outfit',sans-serif; }
+        .meals-cta:hover { transform:translateY(-2px); box-shadow:0 8px 24px var(--cyan-glow); }
+        /* === Meal library strip (compressed section) === */
+        .strip-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1.25rem; margin-bottom:1.4rem; }
+        .strip-head h2 { font-size:clamp(1.5rem,3vw,1.9rem); font-weight:800; letter-spacing:-0.02em; line-height:1.15; }
+        .strip-link { display:inline-flex; align-items:center; gap:7px; text-decoration:none; font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--cyan); white-space:nowrap; padding-bottom:4px; transition:color 0.2s; }
+        .strip-link:hover { color:#67e8f9; }
+        .strip-hint { display:none; }
+        .strip-linkrow { display:none; }
+        .pc-wrap { display:flex; flex-direction:column; align-items:center; gap:0.75rem; padding:0.5rem 0; }
+        .pc-window { width:180px; overflow:hidden; border-radius:18px; border:1px solid var(--border-cyan); background:var(--bg); }
+        .pc-strip { display:flex; flex-direction:row; flex-wrap:nowrap; transition:transform 0.35s ease; }
+        .pc-strip img { width:180px; height:auto; display:block; flex-shrink:0; cursor:zoom-in; }
+        .pc-label { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); letter-spacing:0.08em; text-transform:uppercase; }
+        .pc-controls { display:flex; align-items:center; gap:0.6rem; }
+        .pc-btn { width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text-2); cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s,color 0.2s; }
+        .pc-btn:hover { border-color:var(--cyan); color:var(--cyan); }
+        .pc-btn:disabled { opacity:0.2; cursor:default; }
+        .pc-dots { display:flex; gap:0.35rem; }
+        .pc-dot { width:5px; height:5px; border-radius:50%; background:var(--border); border:none; cursor:pointer; padding:0; transition:background 0.2s,transform 0.2s; }
+        .pc-dot.on { background:var(--cyan); transform:scale(1.3); }
+        .engine { background: linear-gradient(180deg, transparent, rgba(34,211,238,0.02), transparent); }
+        .flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:0.75rem; align-items:stretch; margin-bottom:2rem; }
+        .flow-step { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.25rem; display:flex; flex-direction:column; gap:0.5rem; }
+        .flow-num { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--cyan); }
+        .flow-step h3 { font-size:1rem; font-weight:700; line-height:1.3; }
+        .flow-step p { font-size:0.82rem; color:var(--text-2); line-height:1.6; }
+        .flow-arrow { display:flex; align-items:center; justify-content:center; color:var(--text-3); }
+        .flow-arrow .fa-v { display:none; }
+        .flow-chips { display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:auto; }
+        .flow-chip { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--cyan); border:1px solid var(--border-cyan); background:var(--cyan-soft); padding:0.18rem 0.45rem; border-radius:4px; }
+        .flow-chip.g { color:var(--green); border-color:rgba(34,197,94,0.2); background:rgba(34,197,94,0.06); }
+        .engine-foot { text-align:center; margin-top:1.5rem; font-size:0.92rem; color:var(--text-2); max-width:580px; margin-left:auto; margin-right:auto; }
+        .engine-foot strong { color:var(--text); font-weight:600; }
+        .qual { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem 2rem; text-align:center; }
+        .qual-lead { color:var(--text-2); font-size:1rem; max-width:560px; margin:0 auto 2rem; }
+        .qual-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:14px; overflow:hidden; margin-bottom:2rem; }
+        .qual-cell { background:var(--surface-2); padding:1.5rem 1.25rem; text-align:left; }
+        .qual-cell .ic { color:var(--cyan); margin-bottom:0.6rem; display:block; }
+        .qual-cell h4 { font-size:0.92rem; font-weight:700; margin-bottom:0.35rem; }
+        .qual-cell p { font-size:0.8rem; color:var(--text-2); line-height:1.6; }
+        .qual-quote { max-width:520px; margin:0 auto; padding:1.1rem 1.4rem; border-left:2px solid var(--border-cyan); background:var(--cyan-soft); border-radius:0 8px 8px 0; text-align:left; }
+        .qual-quote p { font-size:0.88rem; color:var(--text-2); font-style:italic; line-height:1.6; margin-bottom:0.45rem; }
+        .qual-quote .meta { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); display:flex; align-items:center; gap:0.4rem; }
+        .qual-quote .stars { color:#f59e0b; }
+        .qual-br-m { display:none; }
+        @media (max-width:600px) { .qual-br-m { display:inline; } }
+        @media (max-width: 860px) {
+            .nav-links { display:none; position:fixed; top:0; left:0; right:0; bottom:0; width:100%; height:100vh; height:100dvh; background:#050508; flex-direction:column; justify-content:center; align-items:center; gap:2rem; z-index:9998; }
+            .nav-links.open { display:flex; }
+            .nav-links a { font-size:1.1rem; color:var(--text-2); }
+            .nav-links .nav-soon { font-size:1.1rem; }
+            .nav-links .nav-cta { font-size:1rem !important; padding:0.6rem 1.5rem; }
+            .hamburger { display:block; position:fixed; top:16px; right:16px; z-index:9999; }
+            .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+            .hamburger.open span:nth-child(2) { opacity:0; }
+            .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+            /* hero mobile: 2 wall columns, stacked serif headline, stacked CTA */
+            .f-wall { gap:14px; }
+            .f-col { width:170px; }
+            .f-col:nth-child(n+3) { display:none; }
+            .f-track { gap:14px; }
+            .f-card { height:210px; border-radius:18px; }
+            .f-name { font-size:11.5px; }
+            .f-kcal { font-size:8.5px; }
+            .f-ring { width:14px; height:14px; border-radius:7px; }
+            .f-ring.done::after { left:4px; top:1.5px; width:3px; height:6.5px; }
+            .fh-l1 { display:block; }
+            .fh-display { font-size:2.85rem; }
+            .fh-row { flex-direction:column; gap:0.85rem; }
+            .fh-tx { display:none; }
+            .proof-grid { grid-template-columns:1fr; }
+            /* meal strip mobile: horizontal swipe */
+            .strip-head { flex-direction:column; align-items:flex-start; gap:0.4rem; }
+            .strip-head .strip-link { display:none; }
+            .strip-hint { display:block; text-align:center; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-top:0.9rem; }
+            .strip-linkrow { display:block; text-align:center; margin-top:0.7rem; }
+            .meal-grid { display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; }
+            .meal-grid::-webkit-scrollbar { display:none; }
+            .meal-card { flex:0 0 76%; scroll-snap-align:center; }
+            .flow { grid-template-columns:1fr; gap:0.6rem; }
+            .flow-arrow { padding:0.2rem 0; }
+            .flow-arrow .fa-h { display:none; }
+            .flow-arrow .fa-v { display:block; }
+            .qual-grid { grid-template-columns:1fr; }
+            .comp-head, .comp-row { grid-template-columns:1.3fr 0.75fr 0.75fr 0.75fr; }
+            .comp-head div, .comp-row div { padding:0.6rem 0.4rem; font-size:0.7rem; }
+            footer { grid-template-columns:1fr; justify-items:center; gap:1rem; text-align:center; }
+            .foot-l, .foot-social, .foot-r { justify-self:center; }
+            .foot-l a { margin-left:0; margin:0 0.6rem; }
+            .ai-strip { gap:1rem; padding:0.8rem 1rem; }
+            .section-head p { max-width:100%; }
+        }
+        @media (max-width: 480px) {
+            .fh-display { font-size:2.6rem; }
+            .comp { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+            .comp-head, .comp-row { min-width:440px; }
+            .ai-strip span { font-size:0.62rem; }
+            .cta-card { padding:2rem 1.25rem; }
+            .proof-card { padding:1.5rem; }
+            .qual { padding:2rem 1.25rem; }
+        }
+        .prog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+        .prog-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.4rem; text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:0.6rem; transition:border-color 0.2s, transform 0.2s; }
+        .prog-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
+        .prog-card:hover .prog-open { gap:0.55rem; }
+        .prog-split { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--cyan); }
+        .prog-card h3 { font-size:1.1rem; font-weight:700; line-height:1.25; }
+        .wd-block { display:flex; flex-direction:column; gap:0.4rem; }
+        .week-dots { display:flex; gap:5px; align-items:center; }
+        .wd { width:13px; height:13px; border-radius:4px; background:var(--surface-2); border:1px solid rgba(255,255,255,0.1); }
+        .wd.on { background:var(--cyan); border-color:var(--cyan); }
+        .wd-cap { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--text-3); letter-spacing:0.04em; }
+        .prog-meta { display:flex; flex-wrap:wrap; gap:0.35rem; }
+        .prog-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-2); padding:0.18rem 0.45rem; border:1px solid var(--border); border-radius:4px; }
+        .prog-open { margin-top:auto; font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); display:flex; align-items:center; gap:0.3rem; transition:gap 0.2s; }
+        @media (max-width:860px) { .prog-grid { grid-template-columns:1fr; } }
+        @media (prefers-reduced-motion: reduce) { .f-track { animation:none; } .j-code div { opacity:1; animation:none; } .pl-wire i { animation:none; } .j-cur { animation:none; } }
 
-    function buildCard(entry, priority){
-        var done = showRings && Math.random() < DONE_CHANCE;
-        var card = document.createElement('div');
-        card.className = 'f-card';
+        /* Free cookbook capture */
+        .cap { padding:2rem 0 1.5rem; }
+        .cap-card { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; display:grid; grid-template-columns:0.82fr 1.18fr; gap:2.5rem; align-items:center; }
+        .cap-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--green),transparent); }
+        .cap-card::after { content:''; position:absolute; top:-30%; left:-10%; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,var(--green-glow),transparent 65%); opacity:0.12; filter:blur(50px); pointer-events:none; }
+        .cap-cover { display:flex; justify-content:center; position:relative; z-index:1; }
+        .book { position:relative; width:172px; aspect-ratio:3/4; border-radius:4px 12px 12px 4px; background:linear-gradient(158deg,#11321f 0%,#0a2114 55%,#06160d 100%); box-shadow:0 24px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(34,197,94,0.18), inset 1px 0 0 rgba(255,255,255,0.05); transform:rotate(-5deg); animation:bookFloat 6s ease-in-out infinite; padding:20px 16px 16px; display:flex; flex-direction:column; }
+        .book::before { content:''; position:absolute; top:0; bottom:0; left:0; width:9px; border-radius:4px 0 0 4px; background:linear-gradient(90deg,rgba(0,0,0,0.55),rgba(255,255,255,0.04)); }
+        @keyframes bookFloat { 0%,100%{transform:rotate(-5deg) translateY(0)} 50%{transform:rotate(-5deg) translateY(-7px)} }
+        .book-free { position:absolute; top:11px; right:-7px; background:var(--green); color:#041109; font-family:'DM Mono',monospace; font-size:0.6rem; font-weight:500; letter-spacing:0.12em; padding:0.22rem 0.5rem; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.4); }
+        .book-eyebrow { font-family:'DM Mono',monospace; font-size:0.5rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--green); margin-bottom:0.5rem; }
+        .book-title { font-family:Georgia,'Times New Roman',serif; font-size:1.18rem; line-height:1.12; color:#f4f4f2; font-weight:400; }
+        .book-rule { width:24px; height:2px; background:var(--green); margin:0.6rem 0; }
+        .book-sub { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.04em; color:#9aa39c; line-height:1.5; }
+        .book-icon { margin-top:auto; color:rgba(255,255,255,0.22); }
+        .cap-body { position:relative; z-index:1; }
+        .cap-label { font-family:'DM Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--green); display:block; margin-bottom:0.9rem; }
+        .cap-body h2 { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:clamp(1.9rem,3.8vw,2.5rem); letter-spacing:-0.01em; line-height:1.1; margin-bottom:0.8rem; }
+        .cap-body h2 em { color:var(--green); font-style:italic; }
+        .cap-body p { color:var(--text-2); font-size:0.92rem; max-width:420px; margin-bottom:1.4rem; }
+        .cap-form { display:flex; gap:0.6rem; max-width:440px; }
+        .cap-input { flex:1; min-width:0; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--text); font-family:'Outfit',sans-serif; font-size:0.92rem; transition:border-color 0.2s, box-shadow 0.2s; }
+        .cap-input::placeholder { color:var(--text-3); }
+        .cap-input:focus { outline:none; border-color:var(--green-border); box-shadow:0 0 0 3px var(--green-soft); }
+        .cap-btn { flex-shrink:0; background:var(--green); color:#041109; border:none; border-radius:10px; padding:0.85rem 1.3rem; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.92rem; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
+        .cap-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px var(--green-glow); }
+        .cap-btn:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+        .cap-note { font-family:'DM Mono',monospace; font-size:0.66rem; color:var(--text-3); letter-spacing:0.02em; margin-top:0.9rem; }
+        .cap-success { display:none; align-items:center; gap:0.6rem; max-width:440px; padding:0.95rem 1.1rem; border:1px solid var(--green-border); background:var(--green-soft); border-radius:10px; color:var(--text); font-size:0.92rem; }
+        .cap-success.show { display:flex; }
+        .cap-success .tick { flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--green); color:#041109; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; }
+        @media (max-width:860px) {
+            .cap-card { grid-template-columns:1fr; gap:2rem; padding:2rem 1.5rem; text-align:center; }
+            .cap-body p { margin-left:auto; margin-right:auto; }
+            .cap-label { text-align:center; }
+            .cap-form { flex-direction:column; margin:0 auto; }
+            .cap-success { margin:0 auto; text-align:left; }
+        }
+        @media (prefers-reduced-motion:reduce) { .book { animation:none; } .cap-btn:hover { transform:none; } }
 
-        var img = document.createElement('img');
-        img.alt = '';
-        if (priority) img.setAttribute('fetchpriority', priority);
-        img.src = '/images/meals/' + entry[1] + '.webp';
-        img.dataset.fallback = '/images/meals/' + entry[1] + '.png';
-        img.onerror = function(){
-            if (this.src.indexOf('.webp') > -1) { this.src = this.dataset.fallback; }
-            else { this.style.display = 'none'; }
-        };
+        .laurel { width:20px; height:38px; color:var(--green); opacity:0.9; flex-shrink:0; }
+        .laurel-r { transform:scaleX(-1); }
+        .science-tag { display:flex; align-items:center; justify-content:center; gap:0.55rem; margin:2.2rem auto 0; font-family:'DM Mono',monospace; font-size:0.78rem; color:var(--cyan); letter-spacing:0.02em; }
 
-        var meta = document.createElement('div');
-        meta.className = 'f-meta';
-
-        if (showRings) {
-            var ring = document.createElement('span');
-            ring.className = done ? 'f-ring done' : 'f-ring';
-            meta.appendChild(ring);
+        /* Android founding-tester section */
+        .at { padding:1rem 0 3rem; }
+        .at-card { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; text-align:center; }
+        .at-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--violet),transparent); }
+        .at-card > * { position:relative; z-index:1; }
+        .at-eyebrow { font-family:'DM Mono',monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--violet); display:inline-flex; align-items:center; gap:0.55rem; margin-bottom:1rem; }
+        .at-card h2 { font-size:clamp(1.5rem,3.2vw,1.9rem); font-weight:800; letter-spacing:-0.02em; line-height:1.12; margin-bottom:0.6rem; }
+        .at-card h2 .vi { color:var(--violet); }
+        .at-sub { color:var(--text-2); font-size:0.92rem; max-width:460px; margin:0 auto 1.5rem; }
+        .at-actions { display:flex; gap:0.6rem; flex-wrap:wrap; justify-content:center; }
+        .at-btn { display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; padding:0.7rem 1.2rem; border-radius:9px; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.9rem; text-decoration:none; background:var(--violet); color:#1a0a2e; transition:transform 0.2s, box-shadow 0.2s; cursor:pointer; border:none; }
+        .at-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(168,85,247,0.3); }
+        .at-btn.ghost { background:transparent; border:1px solid var(--violet-border); color:var(--violet); }
+        @media (max-width:860px) {
+            .at-card { padding:2rem 1.5rem; }
+            .at-actions { flex-direction:column; align-items:center; }
         }
 
-        var info = document.createElement('div');
-        var name = document.createElement('div');
-        name.className = (showRings && done) ? 'f-name done' : 'f-name';
-        name.textContent = entry[0];
-        var kcal = document.createElement('div');
-        kcal.className = 'f-kcal';
-        kcal.textContent = entry[2] + ' KCAL \u00B7 ' + ((showRings && done) ? 'LOGGED' : entry[3] + 'P');
-        info.appendChild(name);
-        info.appendChild(kcal);
-        meta.appendChild(info);
+        /* === Pipeline: how your plan gets built === */
+        .pl-toggle { display:flex; width:max-content; margin:1.5rem auto 0; border:1px solid var(--border); border-radius:100px; padding:4px; background:var(--surface); }
+        .pl-tg { border:none; background:transparent; color:var(--text-2); font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.04em; padding:0.5rem 1.15rem; border-radius:100px; cursor:pointer; transition:all 0.18s; }
+        .pl-tg:hover { color:var(--text); }
+        .pl-tg.active { background:var(--cyan); color:#001318; font-weight:500; }
+        .pl-flow { display:grid; grid-template-columns:1fr 56px 1.12fr 56px 1fr; align-items:stretch; max-width:1080px; margin:0 auto; padding:0.5rem 0 1rem; }
+        .pl-step { display:flex; flex-direction:column; gap:11px; }
+        .pl-tag { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; }
+        .pl-tag.t1 { color:var(--cyan); } .pl-tag.t2 { color:var(--violet); } .pl-tag.t3 { color:var(--green); }
+        .pl-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:15px 16px 16px; text-align:left; flex:1; display:flex; flex-direction:column; }
+        .pl-ct { font-size:0.9rem; font-weight:700; margin-bottom:10px; }
+        .pl-kv { display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-3); padding:6px 0; border-bottom:1px solid var(--border); }
+        .pl-kv b { color:var(--cyan); font-weight:500; }
+        .pl-kv:last-of-type { border-bottom:none; }
+        .pl-btn { margin-top:11px; background:var(--cyan); color:#000; font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:500; letter-spacing:0.04em; text-align:center; border-radius:8px; padding:9px 0; }
+        .pl-cap { font-size:0.78rem; color:var(--text-2); line-height:1.6; }
+        .j-term { background:#0a0a0f; border:1px solid rgba(168,85,247,0.22); border-radius:14px; overflow:hidden; text-align:left; flex:1; display:flex; flex-direction:column; }
+        .j-tbar { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#101016; border-bottom:1px solid var(--border); }
+        .j-tbar i { width:8px; height:8px; border-radius:50%; background:#2c2c34; display:block; }
+        .j-tbar span { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); margin-left:4px; letter-spacing:0.04em; }
+        .j-code { padding:11px 14px 12px; font-family:'DM Mono',monospace; font-size:0.66rem; line-height:1.8; white-space:pre; overflow-x:auto; flex:1; }
+        .j-code div { opacity:0; }
+        .vis .j-code div { animation:jln 0.35s forwards; }
+        .j-code div:nth-child(1) { animation-delay:0.1s; } .j-code div:nth-child(2) { animation-delay:0.3s; } .j-code div:nth-child(3) { animation-delay:0.5s; } .j-code div:nth-child(4) { animation-delay:0.7s; } .j-code div:nth-child(5) { animation-delay:0.9s; } .j-code div:nth-child(6) { animation-delay:1.1s; } .j-code div:nth-child(7) { animation-delay:1.3s; } .j-code div:nth-child(8) { animation-delay:1.5s; }
+        @keyframes jln { to { opacity:1; } }
+        .j-code .k { color:var(--cyan); } .j-code .s { color:var(--green); } .j-code .n { color:var(--violet); } .j-code .p { color:#55555f; }
+        .j-cur { display:inline-block; width:7px; height:12px; background:var(--cyan); vertical-align:-2px; animation:jblink 1.1s steps(1) infinite; }
+        @keyframes jblink { 50% { opacity:0; } }
+        .pl-ais { display:flex; gap:6px; justify-content:flex-start; flex-wrap:wrap; }
+        .pl-ai { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--violet); border:1px solid rgba(168,85,247,0.28); background:rgba(168,85,247,0.07); padding:3px 8px; border-radius:5px; letter-spacing:0.04em; }
+        .pl-res { background:var(--surface); border:1px solid rgba(34,197,94,0.28); border-radius:14px; overflow:hidden; text-align:left; flex:1; display:flex; flex-direction:column; }
+        .pl-rhead { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--border); gap:8px; }
+        .pl-rt { font-size:0.86rem; font-weight:700; }
+        .pl-pill { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.08em; color:var(--green); background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:100px; padding:3px 9px; white-space:nowrap; }
+        .pl-meal { display:flex; gap:10px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--border); }
+        .pl-thumb { position:relative; width:34px; height:34px; border-radius:9px; overflow:hidden; flex-shrink:0; background:#1b1410; }
+        .pl-thumb-ic { display:flex; align-items:center; justify-content:center; background:#0c130e; color:var(--green); }
+        .pl-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+        .pl-mn { font-size:0.78rem; font-weight:600; line-height:1.25; }
+        .pl-mk { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--text-3); margin-top:2px; }
+        .pl-rfoot { margin-top:auto;  display:flex; gap:6px; flex-wrap:wrap; padding:11px 14px; }
+        .pl-fchip { font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--green); border:1px solid rgba(34,197,94,0.25); background:rgba(34,197,94,0.06); padding:3px 8px; border-radius:5px; letter-spacing:0.03em; }
+        .pl-wire { position:relative; height:2px; width:100%; align-self:center; }
+        .pl-wire::before { content:''; position:absolute; inset:0; opacity:0.55; border-radius:2px; }
+        .pl-wire.w1::before { background:linear-gradient(90deg,var(--cyan),var(--violet)); }
+        .pl-wire.w2::before { background:linear-gradient(90deg,var(--violet),var(--green)); }
+        .pl-wire i { position:absolute; top:50%; left:0; width:8px; height:8px; margin-top:-4px; border-radius:50%; opacity:0.55; animation:jflowx 1.9s ease-in-out infinite; }
+        .pl-wire.w1 i { background:var(--violet); box-shadow:0 0 10px var(--violet); }
+        .pl-wire.w2 i { background:var(--green); box-shadow:0 0 10px var(--green); animation-delay:0.6s; }
+        @keyframes jflowx { 0% { left:-4px; opacity:0; } 25% { opacity:1; } 100% { left:calc(100% - 4px); opacity:0; } }
+        @keyframes jflowy { 0% { top:-4px; opacity:0; } 25% { opacity:1; } 100% { top:42px; opacity:0; } }
+        .pl-wire .pl-pill { position:absolute; top:-30px; left:50%; transform:translateX(-50%); z-index:2; background:linear-gradient(rgba(34,197,94,0.1),rgba(34,197,94,0.1)),#050508; }
+        @media (max-width:860px) {
+            .pl-flow { display:flex; flex-direction:column; align-items:center; max-width:360px; }
+            .pl-step { width:100%; }
+            .pl-wire { width:2px; height:46px; margin:16px auto 14px; }
+            .pl-wire.w1::before { background:linear-gradient(var(--cyan),var(--violet)); }
+            .pl-wire.w2::before { background:linear-gradient(var(--violet),var(--green)); }
+            .pl-wire i { left:50%; top:0; margin-left:-4px; margin-top:0; animation-name:jflowy; }
+            .pl-wire .pl-pill { top:50%; left:auto; right:auto; transform:translate(-50%,-50%); left:50%; }
+        }
 
-        card.appendChild(img);
-        card.appendChild(meta);
-        return card;
-    }
+        /* Phone showcase (See It Working) */
+        /* See It Working: interactive demo phone */
+        .sw-row { display:grid; grid-template-columns:1fr auto 1fr; gap:2.5rem; align-items:center; max-width:1000px; margin:0 auto; }
+        .sw-demo { display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; gap:1rem; }
+        .sw-demo::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-55%); width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, var(--cyan-glow), transparent 65%); opacity:0.16; filter:blur(55px); transition:background 0.4s ease; pointer-events:none; }
+        .sw-demo.is-green::before { background:radial-gradient(circle, var(--green), transparent 65%); opacity:0.14; }
+        .phone { position:relative; width:clamp(252px,24vw,300px); aspect-ratio:9/19.3; background:linear-gradient(150deg,#202027 0%,#0c0c11 46%,#050507 100%); border-radius:44px; padding:11px; box-shadow:0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.18), inset 0 1px 1px rgba(255,255,255,0.10); animation:phoneFloat 6s ease-in-out infinite; z-index:2; cursor:pointer; }
+        .phone:focus-visible { outline:2px solid var(--cyan); outline-offset:6px; }
+        @keyframes phoneFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+        .phone-notch { position:absolute; top:11px; left:50%; transform:translateX(-50%); width:88px; height:22px; background:#000; border-radius:0 0 14px 14px; z-index:20; }
+        .screen { width:100%; height:100%; border-radius:33px; overflow:hidden; background:#0a0a0b; position:relative; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; }
+        .sb { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 1.1rem 0.2rem; font-size:0.62rem; font-weight:600; color:#fff; position:absolute; top:0; left:0; right:0; z-index:15; pointer-events:none; }
+        .scr { position:absolute; inset:0; padding:0; opacity:0; transform:translateX(8px); pointer-events:none; transition:opacity 0.28s ease, transform 0.28s ease; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+        .scr::-webkit-scrollbar { display:none; }
+        .scr.on { opacity:1; transform:none; pointer-events:auto; }
+        .scr[data-accent="cyan"] { --ac:#22d3ee; }
+        .scr[data-accent="green"] { --ac:#22c55e; }
+        .nd { padding:30px 0 16px; }
+        .nd-top { display:flex; align-items:center; justify-content:space-between; padding:0 16px 2px; }
+        .nd-top .chev { color:#fff; font-size:18px; line-height:1; }
+        .nd-top .plus { color:var(--ac); font-size:20px; line-height:1; }
+        .nd-head { text-align:center; padding:8px 22px 16px; }
+        .nd-overline { font-size:9px; letter-spacing:2.3px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-bottom:5px; }
+        .nd-day { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:27px; color:#fff; line-height:1.05; }
+        .nd-sub { font-size:11px; color:#8a8a90; margin-top:8px; }
+        .nd-sub b { font-family:Georgia,serif; font-style:normal; font-size:12.5px; color:#dcdce0; font-weight:400; }
+        .nd-hair { height:1px; background:#2a2a30; margin:13px 16px 11px; }
+        .nd-track { height:4px; background:#1c1c22; border-radius:2px; margin:0 16px; overflow:hidden; }
+        .nd-fill { height:100%; border-radius:2px; background:var(--ac); width:40%; }
+        .nd-eaten { text-align:center; font-size:9px; letter-spacing:1.4px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-top:8px; }
+        .nd-tl { font-size:9px; letter-spacing:1.8px; color:#6a6a70; font-weight:600; text-transform:uppercase; padding:14px 16px 10px; }
+        .nd-cards { padding:0 16px; }
+        .nd-card { margin-bottom:15px; }
+        .nd-photo { position:relative; height:108px; border-radius:16px; overflow:hidden; background:#121216; }
+        .nd-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+        .nd-scrim { position:absolute; inset:0; background:rgba(8,8,10,0.6); }
+        .nd-chip { position:absolute; top:9px; left:9px; background:rgba(0,0,0,0.55); padding:3px 8px; border-radius:10px; font-size:8px; letter-spacing:1.1px; color:#e8e8ea; font-weight:600; }
+        .nd-vh { position:absolute; bottom:8px; right:8px; width:22px; height:22px; border-radius:11px; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:#e8e8ea; font-size:12px; }
+        .nd-mbody { display:flex; align-items:center; gap:10px; padding:9px 2px 0; }
+        .nd-ring { width:20px; height:20px; border-radius:10px; border:1.5px solid #5a5a60; flex-shrink:0; }
+        .nd-ring.done { border-color:var(--ac); background:var(--ac); position:relative; }
+        .nd-ring.done::after { content:''; position:absolute; left:6px; top:3px; width:4px; height:8px; border:solid #06262b; border-width:0 1.5px 1.5px 0; transform:rotate(45deg); }
+        .nd-name { font-family:Georgia,serif; font-size:14.5px; color:#fff; line-height:1.2; }
+        .nd-name.done { color:#8a8a90; text-decoration:line-through; }
+        .nd-macro { font-size:10px; color:#8a8a90; margin-top:3px; }
+        .wl-img { position:relative; width:100%; aspect-ratio:16/10; border-bottom-left-radius:18px; border-bottom-right-radius:18px; overflow:hidden; background:#000; }
+        .wl-img .frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transform:scale(0.9) translateY(11%); opacity:0; transition:opacity 0.25s ease; }
+        .wl-img .frame.show { opacity:1; }
+        .wl-ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#2f2f38; }
+        .wl-ph svg { width:42px; height:42px; }
+        .wl-ph span { font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:#3a3a44; }
+        .wl-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.32); }
+        .wl-head { position:absolute; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:34px 12px 0; z-index:3; }
+        .wl-hbtn { width:30px; height:30px; border-radius:15px; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; }
+        .wl-hright { display:flex; gap:7px; }
+        .wl-body { padding:12px 14px 0; }
+        .wl-titlerow { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+        .wl-title { font-family:'Outfit',sans-serif; font-size:18px; font-weight:700; color:#f0f0f2; letter-spacing:-0.3px; line-height:1.1; display:flex; align-items:center; gap:5px; }
+        .wl-title .cd { color:var(--ac); font-size:13px; }
+        .wl-muscles { font-family:'DM Mono',monospace; font-size:10px; color:#55555f; margin-top:5px; letter-spacing:0.2px; }
+        .wl-rx { display:flex; align-items:center; gap:9px; padding:7px 11px; border-radius:8px; border:1px solid rgba(34,211,238,0.25); background:rgba(34,211,238,0.04); margin:11px 0; }
+        .wl-rx .wk { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; color:var(--ac); }
+        .wl-rx .sx { font-family:'DM Mono',monospace; font-size:10.5px; color:#9898a4; }
+        .wl-tbl-head { display:flex; align-items:center; padding:0 2px 6px; border-bottom:1px solid rgba(255,255,255,0.05); }
+        .wl-tbl-head span { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.2px; color:#55555f; }
+        .wl-row { display:flex; align-items:center; padding:5px 2px; }
+        .wl-row .col-set { width:24px; font-family:'DM Mono',monospace; font-size:13px; color:#9898a4; }
+        .wl-row .col-in { flex:1; margin:0 3px; }
+        .wl-row .col-in .box { background:#111116; border-radius:7px; min-height:30px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:13px; color:#3a3a44; }
+        .wl-row .col-chk { width:28px; display:flex; justify-content:center; }
+        .wl-row .col-chk .ring { width:20px; height:20px; border-radius:10px; border:1.5px solid #3a3a44; }
+        .wl-add { display:flex; align-items:center; justify-content:center; gap:5px; padding:9px 0 2px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
+        .wl-bottom { display:flex; align-items:center; gap:9px; padding:11px 14px 14px; border-top:1px solid rgba(255,255,255,0.04); background:#0a0a0b; flex-shrink:0; }
+        #scr-workout { display:flex; flex-direction:column; overflow:hidden; }
+        .wl-scroll { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+        .wl-scroll::-webkit-scrollbar { display:none; }
+        .wl-upnext { padding:13px 14px 10px; border-top:1px solid rgba(255,255,255,0.05); margin-top:11px; }
+        .wl-upnext-h { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.6px; color:#55555f; margin:0 0 9px 2px; }
+        .wl-mini { position:relative; display:flex; align-items:center; gap:10px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.04); border-radius:11px; padding:9px 10px; margin-bottom:7px; overflow:hidden; }
+        .wl-mini.active { border-color:rgba(255,255,255,0.09); background:rgba(255,255,255,0.02); }
+        .wl-mini-icon { position:relative; width:30px; height:30px; border-radius:8px; background:#111116; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; color:#55555f; }
+        .wl-mini-icon img { width:100%; height:100%; object-fit:cover; }
+        .wl-mini-main { flex:1; min-width:0; }
+        .wl-mini-trow { display:flex; align-items:center; gap:6px; }
+        .wl-mini-title { font-family:'Outfit',sans-serif; font-size:12.5px; font-weight:600; color:#f0f0f2; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .wl-mini-cur { flex-shrink:0; font-family:'DM Mono',monospace; font-size:7px; font-weight:500; letter-spacing:0.6px; color:#000; background:var(--ac); padding:2px 5px; border-radius:5px; }
+        .wl-mini-meta { font-family:'DM Mono',monospace; font-size:9px; color:#55555f; margin-top:3px; }
+        .wl-mini-prog { position:absolute; left:0; right:0; bottom:0; height:2px; background:rgba(255,255,255,0.04); }
+        .wl-mini-progfill { height:100%; background:var(--ac); }
+        .wl-timer { display:flex; align-items:center; gap:5px; padding:8px 11px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.06); border-radius:9px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
+        .wl-start { flex:1; height:40px; border-radius:11px; background:var(--ac); display:flex; align-items:center; justify-content:center; color:#000; font-weight:700; font-size:13px; }
+        .poke { display:flex; flex-direction:column; align-items:center; gap:0.15rem; animation:pokeBob 2.2s ease-in-out infinite; }
+        @keyframes pokeBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        .poke-arrow { color:var(--cyan); }
+        .poke-label { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--cyan); }
+        .sw-hint { display:none; }
+        @media (max-width:900px) {
+            .sw-row { display:flex; align-items:center; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+            .sw-row::-webkit-scrollbar { display:none; }
+            .sw-row > * { flex:0 0 auto; scroll-snap-align:center; }
+            .sw-row .phone { width:min(252px, 60vw); }
+            .sw-row .ph-card { width:172px; }
+            .sw-demo::before { width:220px; height:220px; }
+            .sw-hint { display:block; text-align:center; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-top:0.9rem; }
+        }
+        .ph-card { display:flex; flex-direction:column; align-items:center; gap:1.4rem; }
+        .ph { position:relative; width:100%; max-width:218px; aspect-ratio:9/19.3; background:linear-gradient(150deg,#202027 0%,#0c0c11 46%,#050507 100%); border-radius:34px; padding:7px; box-shadow:0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.16), inset 0 1px 1px rgba(255,255,255,0.10); }
+        .ph-notch { position:absolute; top:7px; left:50%; transform:translateX(-50%); width:62px; height:16px; background:#000; border-radius:0 0 10px 10px; z-index:5; }
+        .ph-screen { position:absolute; inset:7px; border-radius:27px; overflow:hidden; background:#0a0a0b; }
+        .ph-screen img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+        .ph-card figcaption { font-family:'Outfit',sans-serif; font-size:0.98rem; line-height:1.5; color:var(--text); font-weight:500; text-align:center; max-width:230px; }
 
-    function debounce(fn, ms){
-        var t;
-        return function(){
-            var ctx = this, args = arguments;
-            clearTimeout(t);
-            t = setTimeout(function(){ fn.apply(ctx, args); }, ms);
-        };
-    }
+        /* === Added: problem-stacking block === */
+        .pains { max-width:900px; margin:0 auto; }
+        .pain-grid { display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:center; max-width:840px; margin:0 auto; }
+        .pain { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1.1rem; font-size:0.9rem; color:var(--text-2); display:flex; align-items:center; gap:0.6rem; line-height:1.45; }
+        .pain::before { content:'\2715'; color:var(--red); font-size:0.8rem; flex-shrink:0; font-family:'DM Mono',monospace; }
 
-    function buildColumn(entries, reverse, priority){
-        var col = document.createElement('div');
-        col.className = reverse ? 'f-col rev' : 'f-col';
-        var track = document.createElement('div');
-        track.className = 'f-track';
-        col.appendChild(track);
+        /* === Added: founder block === */
+        .founder { display:grid; grid-template-columns:0.62fr 1.38fr; gap:2.5rem; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; }
+        .founder-photo { position:relative; aspect-ratio:1; border-radius:16px; overflow:hidden; background:linear-gradient(150deg,#14141a,#0a0a0f); border:1px solid var(--border-cyan); display:flex; align-items:center; justify-content:center; }
+        .founder-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+        .founder-initials { display:none; font-family:'DM Mono',monospace; font-size:2.8rem; color:var(--cyan); opacity:0.45; letter-spacing:0.05em; }
+        .founder-photo.noimg .founder-initials { display:block; }
+        .founder-body h2 { font-size:clamp(1.5rem,3vw,2rem); font-weight:800; letter-spacing:-0.02em; line-height:1.15; margin-bottom:1rem; }
+        .founder-body p { color:var(--text-2); font-size:0.95rem; margin-bottom:1rem; max-width:580px; }
+        .founder-sign { font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--text-3); }
+        .founder-links { display:flex; flex-direction:column; align-items:flex-start; gap:0.85rem; margin-top:1.6rem; }
+        .founder-links .flink { display:inline-flex; align-items:center; gap:0.4rem; color:var(--cyan); text-decoration:none; font-size:0.85rem; font-weight:600; letter-spacing:0.01em; transition:gap 0.2s,color 0.2s; }
+        .founder-links .flink:hover { gap:0.6rem; color:#67e8f9; }
+        .founder-links .flink.flink-lab { color:var(--violet); }
+        .founder-links .flink.flink-lab:hover { color:#c084fc; }
+        .founder-links .flink-soon { display:inline-flex; align-items:center; gap:0.45rem; color:var(--violet); font-size:0.85rem; font-weight:600; letter-spacing:0.01em; cursor:default; }
+        @media (max-width:760px) {
+            .founder { grid-template-columns:1fr; gap:1.75rem; text-align:center; padding:2rem 1.5rem; }
+            .founder-body h2 .cyan { display:block; }
+            .founder-photo { max-width:230px; margin:0 auto; }
+            .founder-body p { margin-left:auto; margin-right:auto; }
+            .founder-links { align-items:center; }
+        }
 
-        var n = entries.length;
-        entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); });
-        entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); }); // duplicate set: this is what makes the loop seamless
+        /* === Added: Android eyebrow dot === */
+        .at-eyebrow .dot { width:5px; height:5px; border-radius:50%; background:var(--violet); }
+    </style>
+    <script src="/analytics-web.js"
+            data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
+            data-app-version="web"
+            data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
+</head>
+<body>
 
-        var lastShift = null;
-        col.start = function(){
-            var first = track.children[0];
-            var firstOfClone = track.children[n];
-            if (!first || !firstOfClone) return;
-            var shift = firstOfClone.offsetTop - first.offsetTop; // exact px for one full cycle, only measurable once the column is in the document
-            if (shift <= 0) return;
-            if (lastShift !== null && Math.abs(shift - lastShift) < 1) return; // nothing real changed (e.g. mobile URL bar resize): leave the running animation alone
-            lastShift = shift;
-            var speed = reverse ? SPEED.rev : SPEED.normal;
-            track.style.setProperty('--fdrift-duration', (shift / speed) + 's');
-            track.classList.add('run'); // the animation only begins once its true duration exists, so it never plays at a fallback speed
-        };
-        window.addEventListener('resize', debounce(col.start, 200));
-        return col;
-    }
+<nav>
+    <a href="#" class="nav-logo">
+        <svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
+        JSON<span class="cyan">.fit</span>
+    </a>
+    <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#meals" class="nav-meals">Meals</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#compare">Compare</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="/lab" class="nav-lab">The Lab</a></li>
+        <li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'nav'})">Download Free</a></li>
+    </ul>
+</nav>
 
-    var isMobile = window.matchMedia('(max-width: 860px)').matches;
-    var colTarget = isMobile ? 2 : MIN_COLS; // minimum columns before checking coverage
-    var colCap = isMobile ? 2 : MAX_COLS;    // hard ceiling so an ultrawide monitor can't load unbounded images
+<!-- HERO: drifting meal wall + serif masthead -->
+<section class="fhero">
+    <div class="f-wall" id="fWall" data-rings="true" aria-hidden="true"></div>
+    <div class="f-scrim"></div>
+    <div class="fh-fg">
+        <span class="fh-ov">For skinny guys who want to put on size</span>
+        <h1 class="fh-display"><span class="fh-l1">Eating big,</span> <span class="cyan">made easy.</span></h1>
+        <p class="fh-sub"><b class="tick-p">239</b>g protein &middot; <b class="tick-k">3,311</b> kcal &middot; your numbers, handled</p>
+        <div class="fh-hair"></div>
+        <div class="fh-cta">
+            <div class="fh-row" style="flex-direction:column;gap:1.1rem;">
+                <div style="display:flex;align-items:center;gap:1.4rem;justify-content:center;flex-wrap:wrap;">
+                    <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="gtag('event','download_click',{'button_location':'hero','platform':'ios'})">
+                        <img src="images/App_Store.svg" alt="Download on the App Store" height="46" class="fh-store">
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" onclick="gtag('event','download_click',{'button_location':'hero','platform':'android'})">
+                        <img src="en_badge_web_generic.png" alt="Get it on Google Play" height="68" class="fh-store" style="margin: -11px 0;">
+                    </a>
+                </div>
+                <a class="fh-watch" id="heroVideo" href="https://www.youtube.com/shorts/LjniPp6Qg88" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
+                    <span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="#050508"><polygon points="5,3 19,12 5,21"/></svg></span>
+                    <span><b>Watch how it works</b> &middot; 30 seconds</span>
+                </a>
+            </div>
+            <a class="fh-browse" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'hero'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals_hero'})">Browse all 81 meals &#8594;</a>
+            <div class="fh-trust"><span class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <b>5.0</b> App Store &middot; No ads &middot; No account<span class="fh-tx"> &middot; No paywall</span></div>
+        </div>
+    </div>
+</section>
 
-    // ---- Phase 1: how many columns does this screen actually need? Empty divs, zero images, zero network cost. ----
-    var N = colCap;
-    if (colTarget < colCap) {
-        var probes = [];
-        for (var p = 0; p < colCap; p++) {
-            var probe = document.createElement('div');
-            probe.className = 'f-col';
-            wall.appendChild(probe);
-            probes.push(probe);
-            if (probes.length >= colTarget) {
-                var fe = probes[0].getBoundingClientRect();
-                var le = probes[probes.length - 1].getBoundingClientRect();
-                if (fe.left <= 0 && le.right >= window.innerWidth) { N = probes.length; break; }
+<div class="ai-strip sa sa-up">
+    <span class="ai-lbl">Works with</span>
+    <span>ChatGPT</span><span>Claude</span><span>Gemini</span><span>DeepSeek</span>
+    <span class="ai-lbl">+ any AI</span>
+</div>
+
+<!-- Problem-stacking: name the pain before the solution -->
+<section class="section" style="padding-top:4rem;padding-bottom:0;">
+    <div class="container">
+        <div class="pains sa sa-up">
+            <span class="label" style="text-align:center;">Built for hardgainers</span>
+            <h2 style="text-align:center;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:2rem;">If you're a skinny guy, <span class="cyan">you know the drill.</span></h2>
+            <div class="pain-grid">
+                <div class="pain">Appetite gives out halfway through dinner.</div>
+                <div class="pain">The scale won't move no matter what you lift.</div>
+                <div class="pain">Every meal is the same chicken and rice.</div>
+                <div class="pain">Every bulking guide assumes you love cooking.</div>
+                <div class="pain">"Just eat more, bro," as if it's that easy.</div>
+            </div>
+            <p style="text-align:center;color:var(--text-2);margin:1.5rem auto 0;max-width:560px;">JSON.fit is built for exactly this. The meals, the macros and the prep are handled, so the only hard part left is showing up.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="meals" style="padding-top:4rem;padding-bottom:2.5rem;">
+    <div class="container">
+        <div class="strip-head sa sa-up">
+            <div>
+                <span class="label" style="margin-bottom:0.6rem;">The Meal Library</span>
+                <h2>81 real meals, <span class="cyan">every step written.</span></h2>
+            </div>
+            <a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a>
+        </div>
+        <div class="meal-grid sa-stagger">
+            <a class="meal-card" href="meals.html">
+                <img src="images/meals/pulled-pork.webp" data-fallback="images/meals/pulled-pork.png" alt="Slow-Cooked BBQ Pulled Pork" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                <div class="meal-body"><div class="meal-cuisine">Australian &middot; Pork</div><div class="meal-name">Slow-Cooked BBQ Pulled Pork</div><div class="meal-macros"><span class="meal-macro">48g P</span><span class="meal-macro">28g C</span><span class="meal-macro">32g F</span><span class="meal-kcal">610 kcal</span></div></div>
+            </a>
+            <a class="meal-card" href="meals.html">
+                <img src="images/meals/lamb-shanks.webp" data-fallback="images/meals/lamb-shanks.png" alt="Red Wine-Braised Lamb Shanks" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                <div class="meal-body"><div class="meal-cuisine">Australian &middot; Lamb</div><div class="meal-name">Red Wine&ndash;Braised Lamb Shanks</div><div class="meal-macros"><span class="meal-macro">54g P</span><span class="meal-macro">14g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">825 kcal</span></div></div>
+            </a>
+            <a class="meal-card" href="meals.html">
+                <img src="images/meals/king-kong-chocolate.webp" data-fallback="images/meals/king-kong-chocolate.png" alt="King Kong Chocolate protein smoothie" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                <div class="meal-body"><div class="meal-cuisine">Smoothie &middot; Dairy</div><div class="meal-name">King Kong Chocolate</div><div class="meal-macros"><span class="meal-macro">85g P</span><span class="meal-macro">93g C</span><span class="meal-macro">79g F</span><span class="meal-kcal">1418 kcal</span></div></div>
+            </a>
+        </div>
+        <p class="strip-hint">Swipe to see more &#8594;</p>
+        <div class="strip-linkrow"><a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a></div>
+    </div>
+</section>
+<section class="cap">
+    <div class="container">
+        <div class="cap-card">
+            <div class="cap-cover">
+                <div class="book">
+                    <div class="book-free">FREE</div>
+                    <div class="book-eyebrow">JSON.fit</div>
+                    <div class="book-title">The Skinny Guy's Bulking Cookbook</div>
+                    <div class="book-rule"></div>
+                    <div class="book-sub">81 calorie-dense meals</div>
+                    <div class="book-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2M5 2v9M5 11v11"/><path d="M17 2c-1.7 0-3 2-3 5s1.3 4 3 4v11"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="cap-body">
+                <span class="cap-label">Free Cookbook + Updates</span>
+                <h2>All 81 meals, <em>free.</em></h2>
+                <p>The printable cookbook, macros and ingredients included, plus new meals as they land and my bulk to 90kg in the open. First access and a launch discount when the print edition drops.</p>
+                <form class="cap-form" id="capForm" novalidate>
+                    <!-- Live: posts to the JSON.fit subscribe API (AWS). capWebsite is a honeypot for bots. -->
+                    <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+                    <input class="cap-input" id="capEmail" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
+                    <input type="text" id="capWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+                    <button class="cap-btn" type="submit">Send me the cookbook</button>
+                </form>
+                <div class="cap-success" id="capSuccess"><span class="tick">&#10003;</span> Check your inbox, your cookbook's on the way.</div>
+                <p class="cap-note">No ads, no spam. Unsubscribe anytime.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section engine" id="how">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">How your plan gets built</span>
+            <h2>Any AI in. <span class="cyan">Real plan out.</span></h2>
+            <p style="margin:0 auto;">Meal plans and full training programs, up to a year long, from the same three steps.</p>
+            <div class="pl-toggle" role="tablist">
+                <button class="pl-tg active" data-flow="meal" role="tab" aria-selected="true">Meal plan</button>
+                <button class="pl-tg" data-flow="train" role="tab" aria-selected="false">Training program</button>
+            </div>
+        </div>
+        <div class="pl-flow sa sa-up" id="flowMeal">
+            <div class="pl-step">
+                <span class="pl-tag t1">01 &middot; You answer</span>
+                <div class="pl-card">
+                    <div class="pl-ct">A few quick questions</div>
+                    <div class="pl-kv"><span>Goal</span><b>Weight gain</b></div>
+                    <div class="pl-kv"><span>Target</span><b>90kg</b></div>
+                    <div class="pl-kv"><span>Meals</span><b>6 per day</b></div>
+                    <div class="pl-kv"><span>Training</span><b>4 days/week</b></div>
+                    <div style="flex:1;"></div>
+                    <div class="pl-btn">Copy prompt</div>
+                </div>
+                <p class="pl-cap">Your goal, stats and favourite meals become a research-packed prompt. One tap to copy.</p>
+            </div>
+            <div class="pl-wire w1"><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t2">02 &middot; Any AI writes</span>
+                <div class="j-term">
+                    <div class="j-tbar"><i></i><i></i><i></i><span>meal-plan.json &middot; from ChatGPT</span></div>
+                    <div class="j-code"><div><span class="p">{</span></div><div>  <span class="k">&quot;plan&quot;</span><span class="p">:</span> <span class="s">&quot;7-Day Lean Bulk&quot;</span><span class="p">,</span></div><div>  <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">3311</span><span class="p">,</span></div><div>  <span class="k">&quot;protein_g&quot;</span><span class="p">:</span> <span class="n">239</span><span class="p">,</span></div><div>  <span class="k">&quot;meals&quot;</span><span class="p">:</span> <span class="p">[{</span></div><div>    <span class="k">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;Massaman Beef Curry&quot;</span><span class="p">,</span></div><div>    <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">890</span> <span class="p">}]</span></div><div><span class="p">}</span> <span class="j-cur"></span></div></div>
+                </div>
+                <div class="pl-ais"><span class="pl-ai">ChatGPT</span><span class="pl-ai">Claude</span><span class="pl-ai">Gemini</span><span class="pl-ai">+ any AI</span></div>
+                <p class="pl-cap">Paste it in. The AI writes your week on real research and returns it as JSON.</p>
+            </div>
+            <div class="pl-wire w2"><span class="pl-pill">&#10003; 0.81S</span><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t3">03 &middot; JSON.fit imports</span>
+                <div class="pl-res">
+                    <div class="pl-rhead"><span class="pl-rt">7-Day Lean Bulk</span><span class="pl-pill">&#10003; IMPORTED</span></div>
+                    <div class="pl-meal"><span class="pl-thumb"><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span><div><div class="pl-mn">Protein Pancakes</div><div class="pl-mk">6:00 AM &middot; 760 kcal</div></div></div>
+                    <div class="pl-meal"><span class="pl-thumb"><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span><div><div class="pl-mn">Massaman Beef Curry</div><div class="pl-mk">12:30 PM &middot; 890 kcal</div></div></div>
+                    <div class="pl-rfoot"><span class="pl-fchip">One grocery list</span><span class="pl-fchip">Prep in one session</span><span class="pl-fchip">Exact macros</span></div>
+                </div>
+                <p class="pl-cap">Import the file. Macros, groceries and the week's prep, handled.</p>
+            </div>
+        </div>
+        <div class="pl-flow" id="flowTrain" style="display:none">
+            <div class="pl-step">
+                <span class="pl-tag t1">01 &middot; You answer</span>
+                <div class="pl-card">
+                    <div class="pl-ct">A few quick questions</div>
+                    <div class="pl-kv"><span>Goal</span><b>Build muscle</b></div>
+                    <div class="pl-kv"><span>Days</span><b>4 per week</b></div>
+                    <div class="pl-kv"><span>Equipment</span><b>Full gym</b></div>
+                    <div class="pl-kv"><span>Length</span><b>52 weeks</b></div>
+                    <div style="flex:1;"></div>
+                    <div class="pl-btn">Copy prompt</div>
+                </div>
+                <p class="pl-cap">Your split, equipment and schedule become a research-packed prompt. One tap to copy.</p>
+            </div>
+            <div class="pl-wire w1"><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t2">02 &middot; Any AI writes</span>
+                <div class="j-term">
+                    <div class="j-tbar"><i></i><i></i><i></i><span>workout-program.json &middot; from Claude</span></div>
+                    <div class="j-code"><div><span class="p">{</span></div><div>  <span class="k">&quot;program&quot;</span><span class="p">:</span> <span class="s">&quot;52-Week Upper / Lower&quot;</span><span class="p">,</span></div><div>  <span class="k">&quot;weeks&quot;</span><span class="p">:</span> <span class="n">52</span><span class="p">,</span></div><div>  <span class="k">&quot;days_per_week&quot;</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span></div><div>  <span class="k">&quot;sessions&quot;</span><span class="p">:</span> <span class="p">[{</span></div><div>    <span class="k">&quot;exercise&quot;</span><span class="p">:</span> <span class="s">&quot;Barbell Bench Press&quot;</span><span class="p">,</span></div><div>    <span class="k">&quot;sets&quot;</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span> <span class="k">&quot;rest_s&quot;</span><span class="p">:</span> <span class="n">150</span> <span class="p">}]</span></div><div><span class="p">}</span> <span class="j-cur"></span></div></div>
+                </div>
+                <div class="pl-ais"><span class="pl-ai">ChatGPT</span><span class="pl-ai">Claude</span><span class="pl-ai">Gemini</span><span class="pl-ai">+ any AI</span></div>
+                <p class="pl-cap">Paste it in. The AI programs your year on real research and returns it as JSON.</p>
+            </div>
+            <div class="pl-wire w2"><span class="pl-pill">&#10003; 0.81S</span><i></i></div>
+            <div class="pl-step">
+                <span class="pl-tag t3">03 &middot; JSON.fit imports</span>
+                <div class="pl-res">
+                    <div class="pl-rhead"><span class="pl-rt">52-Week Upper / Lower</span><span class="pl-pill">&#10003; IMPORTED</span></div>
+                    <div class="pl-meal"><span class="pl-thumb pl-thumb-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span><div><div class="pl-mn">Upper Body A</div><div class="pl-mk">Mon &middot; 6 exercises &middot; 14 sets</div></div></div>
+                    <div class="pl-meal"><span class="pl-thumb pl-thumb-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span><div><div class="pl-mn">Lower Body A</div><div class="pl-mk">Tue &middot; 5 exercises &middot; 16 sets</div></div></div>
+                    <div class="pl-rfoot"><span class="pl-fchip">Sets per muscle tracked</span><span class="pl-fchip">Deloads scheduled</span><span class="pl-fchip">Progressive overload</span></div>
+                </div>
+                <p class="pl-cap">Import the file. Sets, rest times and deloads for the year, handled.</p>
+            </div>
+        </div>
+        <p class="science-tag sa sa-up"><svg class="laurel" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
+-329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
+105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
+-60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
+-125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
+90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
+121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
+-15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
+253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
+121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
+84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
+-120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
+58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
+-83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
+-42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
+-84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
+-220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
+-41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
+-16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
+-92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
+169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
+28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
+-12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
+-55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
+195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
+-51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
+-109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
+56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
+130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
+-4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
+158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
+-9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
+35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
+-2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
+53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
+51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
+88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
+68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
+106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
+21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
+-126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
+84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
+-63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
+-147 15z"/></g></svg><span class="tt-text" style="display:inline-block;text-align:center;line-height:1.4;">Built on peer-reviewed<br>training and nutrition science</span><svg class="laurel laurel-r" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
+-329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
+105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
+-60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
+-125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
+90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
+121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
+-15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
+253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
+121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
+84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
+-120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
+58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
+-83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
+-42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
+-84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
+-220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
+-41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
+-16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
+-92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
+169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
+28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
+-12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
+-55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
+195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
+-51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
+-109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
+56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
+130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
+-4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
+158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
+-9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
+35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
+-2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
+53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
+51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
+88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
+68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
+106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
+21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
+-126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
+84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
+-63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
+-147 15z"/></g></svg></p>
+    </div>
+</section>
+<!-- See It Working: real app screens from an imported plan -->
+<section class="section" style="padding-bottom:2rem;">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">See It Working</span>
+            <h2>Real AI output.<br><span class="cyan">Take it for a spin.</span></h2>
+            <p style="margin:0 auto;">An actual user's plan, generated and imported with Claude. Tap the phone to switch between the day's meals and the workout log.</p>
+        </div>
+        <div class="sw-row sa-stagger">
+            <figure class="ph-card">
+                <div class="ph">
+                    <div class="ph-notch"></div>
+                    <div class="ph-screen">
+                        <img src="images/Grocery.webp" data-fallback="images/Grocery.png" alt="Itemised shopping list with prices" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                    </div>
+                </div>
+                <figcaption>One priced shopping list. A week of food in a single trip.</figcaption>
+            </figure>
+            <div class="sw-demo is-green" id="swDemo">
+                <div class="phone" id="swPhone" role="button" tabindex="0" aria-label="App preview. Activate to switch between the nutrition and workout screens.">
+                    <div class="phone-notch"></div>
+                    <div class="screen">
+                        <div class="sb"><span id="sbTime">9:41</span></div>
+                        <div class="scr on" data-accent="green" id="scr-nutrition">
+                            <div class="nd">
+                                <div class="nd-top"><span class="chev">&#8249;</span><span class="plus">+</span></div>
+                                <div class="nd-head">
+                                    <div class="nd-overline">JUN 9</div>
+                                    <div class="nd-day">Tuesday</div>
+                                    <div class="nd-sub"><b>117</b> / 239g protein &middot; <b>1,580</b> / 3,311 kcal</div>
+                                </div>
+                                <div class="nd-hair"></div>
+                                <div class="nd-track"><div class="nd-fill"></div></div>
+                                <div class="nd-eaten">2 of 5 eaten</div>
+                                <div class="nd-tl">Timeline</div>
+                                <div class="nd-cards">
+                                    <div class="nd-card">
+                                        <div class="nd-photo"><img src="images/meals/protein-pancakes.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/protein-pancakes.png'"><div class="nd-scrim"></div><div class="nd-chip">6:00 AM &middot; BREAKFAST</div><div class="nd-vh">&#8250;</div></div>
+                                        <div class="nd-mbody"><div class="nd-ring done"></div><div><div class="nd-name done">Protein Pancakes</div><div class="nd-macro">760 kcal &middot; P52 C74 F27</div></div></div>
+                                    </div>
+                                    <div class="nd-card">
+                                        <div class="nd-photo"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/steak-and-eggs.png'"><div class="nd-scrim"></div><div class="nd-chip">9:00 AM &middot; BRUNCH</div><div class="nd-vh">&#8250;</div></div>
+                                        <div class="nd-mbody"><div class="nd-ring done"></div><div><div class="nd-name done">Steak &amp; Eggs</div><div class="nd-macro">820 kcal &middot; P65 C37 F44</div></div></div>
+                                    </div>
+                                    <div class="nd-card">
+                                        <div class="nd-photo"><img src="images/meals/massaman.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/massaman.png'"><div class="nd-chip">12:30 PM &middot; LUNCH</div><div class="nd-vh">&#8250;</div></div>
+                                        <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">Slow-Cooked Massaman Beef Curry</div><div class="nd-macro">890 kcal &middot; P52 C42 F58</div></div></div>
+                                    </div>
+                                    <div class="nd-card">
+                                        <div class="nd-photo"><img src="images/meals/king-kong-chocolate.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/king-kong-chocolate.png'"><div class="nd-chip">4:00 PM &middot; SNACK</div><div class="nd-vh">&#8250;</div></div>
+                                        <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">King Kong Chocolate</div><div class="nd-macro">1418 kcal &middot; P85 C93 F79</div></div></div>
+                                    </div>
+                                    <div class="nd-card">
+                                        <div class="nd-photo"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/pulled-pork.png'"><div class="nd-chip">7:30 PM &middot; DINNER</div><div class="nd-vh">&#8250;</div></div>
+                                        <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">Slow-Cooked BBQ Pulled Pork</div><div class="nd-macro">610 kcal &middot; P48 C28 F32</div></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scr" data-accent="cyan" id="scr-workout">
+                            <div class="wl-scroll">
+                                <div class="wl-img">
+                                    <img class="frame" id="wl-frame-a" alt="" loading="lazy" src="images/exercise/start.webp" onerror="this.onerror=null;this.src='images/exercise/start.png'">
+                                    <img class="frame" id="wl-frame-b" alt="" loading="lazy" src="images/exercise/end.webp" onerror="this.onerror=null;this.src='images/exercise/end.png'">
+                                    <div class="wl-ph" id="wl-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 7v10M18 7v10M3 12h18M3 9.5v5M21 9.5v5"/></svg><span>exercise demo</span></div>
+                                    <div class="wl-overlay"></div>
+                                    <div class="wl-head">
+                                        <div class="wl-hbtn">&#8249;</div>
+                                        <div class="wl-hright"><div class="wl-hbtn">&#8943;</div></div>
+                                    </div>
+                                </div>
+                                <div class="wl-body">
+                                    <div class="wl-titlerow"><div class="wl-title">Barbell Back Squat <span class="cd">&#9662;</span></div></div>
+                                    <div class="wl-muscles">Quads &middot; Glutes</div>
+                                    <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10, 10, 8</span></div>
+                                    <div class="wl-tbl-head"><span style="width:24px">SET</span><span style="flex:1;text-align:center">KG</span><span style="flex:1;text-align:center">REPS</span><span style="width:28px;text-align:center">&#10003;</span></div>
+                                    <div class="wl-row"><div class="col-set">1</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                    <div class="wl-row"><div class="col-set">2</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                    <div class="wl-row"><div class="col-set">3</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">8</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                    <div class="wl-add">+ Add set</div>
+                                </div>
+                                <div class="wl-upnext">
+                                    <div class="wl-upnext-h">UP NEXT</div>
+                                    <div class="wl-mini active">
+                                        <div class="wl-mini-icon"><img src="images/exercise/start.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/exercise/start.png'"></div>
+                                        <div class="wl-mini-main">
+                                            <div class="wl-mini-trow"><span class="wl-mini-title">Barbell Back Squat</span><span class="wl-mini-cur">CURRENT</span></div>
+                                            <div class="wl-mini-meta">3 &times; 10, 10, 8 &middot; 0/3 done</div>
+                                        </div>
+                                        <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                    </div>
+                                    <div class="wl-mini">
+                                        <div class="wl-mini-icon"><img src="images/exercise/rdl-start.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"></div>
+                                        <div class="wl-mini-main">
+                                            <div class="wl-mini-trow"><span class="wl-mini-title">Romanian Deadlift</span></div>
+                                            <div class="wl-mini-meta">3 &times; 10 &middot; 0/3 done</div>
+                                        </div>
+                                        <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                    </div>
+                                    <div class="wl-mini">
+                                        <div class="wl-mini-icon"><img src="images/exercise/legpress.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/exercise/legpress.png'"></div>
+                                        <div class="wl-mini-main">
+                                            <div class="wl-mini-trow"><span class="wl-mini-title">Leg Press</span></div>
+                                            <div class="wl-mini-meta">3 &times; 12 &middot; 0/3 done</div>
+                                        </div>
+                                        <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wl-bottom">
+                                <div class="wl-timer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>0:00</div>
+                                <div class="wl-start">Start Workout</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="poke">
+                    <svg class="poke-arrow" width="22" height="26" viewBox="0 0 22 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="11" y1="23" x2="11" y2="4"/><polyline points="4 11 11 4 18 11"/></svg>
+                    <span class="poke-label">Tap to switch</span>
+                </div>
+            </div>
+            <figure class="ph-card">
+                <div class="ph">
+                    <div class="ph-notch"></div>
+                    <div class="ph-screen">
+                        <img src="images/Meal_Prep.webp" data-fallback="images/Meal_Prep.png" alt="Step by step meal prep session" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                    </div>
+                </div>
+                <figcaption>Step-by-step prep that clears the week's cooking in one go.</figcaption>
+            </figure>
+        </div>
+        <p class="sw-hint">Swipe to see more &#8594;</p>
+        <div class="sa sa-up" style="max-width:560px;margin:4.5rem auto 0;">
+          <div style="position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--violet-border);border-radius:14px;padding:1.6rem 1.5rem;text-align:center;">
+            <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--violet),transparent);"></div>
+            <div style="font-size:0.82rem;font-weight:600;color:var(--violet);margin-bottom:0.7rem;">The Lab</div>
+            <div style="color:var(--text);font-size:1.15rem;font-weight:700;line-height:1.3;letter-spacing:-0.01em;margin-bottom:0.5rem;">Not just claims. I'm bulking in public.</div>
+            <p style="color:var(--text-2);font-size:0.9rem;line-height:1.55;max-width:400px;margin:0 auto 1.15rem;">Real body scans, tracked monthly and published, from <span style="font-family:'DM Mono',monospace;color:var(--violet);font-weight:500;white-space:nowrap;">77.3&thinsp;kg</span> to <span style="font-family:'DM Mono',monospace;color:var(--violet);font-weight:500;white-space:nowrap;">90&thinsp;kg</span>. Same skinny guy this app is built for.</p>
+            <a href="/lab" onclick="gtag('event','view_lab',{'button_location':'see_it_working'})" style="display:inline-flex;align-items:center;gap:0.45rem;background:var(--violet);color:#1a0a2e;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.85rem;padding:0.6rem 1.1rem;border-radius:9px;text-decoration:none;">See every number
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+    </div>
+</section>
+
+<!-- Founder: why I built this -->
+<section class="section" id="founder">
+    <div class="container">
+        <div class="founder sa sa-up">
+            <div class="founder-photo">
+                <img src="images/me/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.style.display='none';this.parentElement.classList.add('noimg');">
+                <span class="founder-initials">RN</span>
+            </div>
+            <div class="founder-body">
+                <span class="label">Why I built this</span>
+                <h2>I built JSON.fit because <span class="cyan">I'm the guy it's for.</span></h2>
+                <p>I'm a skinny-by-default lifter who got sick of force-feeding myself and fitness apps that assume cooking is my hobby. So I built the thing I actually needed: big meals with the steps done for me, macros handled, prep that fits around a full-time job.</p>
+                <p>I'm bulking to 90kg on it in the open, so I use this app every day. When something's clunky or missing, I feel it first and fix it, which is why it keeps getting better. No team, no investors, just me, building the tool I wish I'd had.</p>
+                <p class="founder-sign">Ryan, solo founder</p>
+                <div class="founder-links">
+                    <a class="flink" href="blog.html" onclick="gtag('event','blog_click',{'button_location':'founder'})">Read the blog <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+                    <a class="flink flink-lab" href="/lab">The Lab <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="programs" style="padding-top:2rem;">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">Free Training Programs</span>
+            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
+            <p style="margin:0 auto;">Build a custom program with the same three steps: your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
+        </div>
+        <div class="prog-grid sa-stagger">
+            <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
+                <span class="prog-split">Upper / Lower</span><h3>Beginner Foundation</h3>
+                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd"></span></div><div class="wd-cap">4 training days &middot; 3 rest</div></div>
+                <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Beginner</span></div>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+            <a class="prog-card" href="/programs/?program=ppl-upper-lower" onclick="gtag('event','view_program',{'program':'ppl-upper-lower'})">
+                <span class="prog-split">PPL + Upper/Lower</span><h3>Intermediate Hybrid</h3>
+                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">5 training days &middot; 2 rest</div></div>
+                <div class="prog-meta"><span class="prog-chip">54 weeks</span><span class="prog-chip">Intermediate</span></div>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+            <a class="prog-card" href="/programs/?program=ppl-advanced" onclick="gtag('event','view_program',{'program':'ppl-advanced'})">
+                <span class="prog-split">Push / Pull / Legs &times;2</span><h3>Advanced High-Volume</h3>
+                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">6 training days &middot; 1 rest</div></div>
+                <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Advanced</span></div>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="compare">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">Compare</span>
+            <h2>Premium personalisation.<br><span class="cyan">Zero cost.</span></h2>
+            <p style="margin:0 auto;">The kind of programming and nutrition that used to cost a fortune, now completely free.</p>
+        </div>
+        <div class="comp sa sa-up">
+            <div class="comp-head"><div></div><div>JSON.fit</div><div>Dietitian / PT</div><div>Other Apps</div></div>
+            <div class="comp-row"><div>Typical cost</div><div>Free</div><div>$150&ndash;300 USD/session</div><div>$20&ndash;60 USD/mo</div></div>
+            <div class="comp-row"><div>Expert-level personalisation</div><div>&#10003;</div><div>&#10003;</div><div class="comp-x">Basic</div></div>
+            <div class="comp-row"><div>Instant access</div><div>&#10003;</div><div class="comp-x">Weeks wait</div><div>&#10003;</div></div>
+            <div class="comp-row"><div>Unlimited plan changes</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>Grocery lists</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>Meal prep guidance</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>No ongoing fees</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>AI provider choice</div><div>Yours</div><div>N/A</div><div class="comp-x">Locked in</div></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="padding-bottom:0;">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center; margin-bottom:2rem;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">App Store Reviews</span>
+            <h2>What people are saying.</h2>
+        </div>
+        <div class="review-rating-bar sa sa-up">
+            <div class="review-rating-score">
+                <span class="review-rating-num">5.0</span>
+                <span class="review-rating-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="review-rating-count">Rated 5.0 &middot; App Store</span>
+            </div>
+        </div>
+        <div class="review-grid sa-stagger">
+            <div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="review-title">Awesome app, fitness plans</div><p class="review-body">Created me a 12 week fitness plan for all my personal priorities. Was even able to add additional preferences via AI.</p><div class="review-meta">Rory@TVX &middot; 23 May &middot; Australia</div></div>
+            <div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="review-title">Replaced my $30/month PT app</div><p class="review-body">Was paying for an AI trainer that was just GPT under the hood anyway. This app lets me use ChatGPT myself to build my program and just handles the tracking. Workouts are completely free too which I wasn't expecting.</p><div class="review-meta">ReeceAdam &middot; 31 Mar &middot; Australia</div></div>
+            <div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="review-title">Finally an AI fitness app that doesn't charge you for AI</div><p class="review-body">Already pay for ChatGPT Plus so I was sick of other apps charging me again for the same thing. JSON.fit lets me use my own AI and just handles the tracking. Workout imports are completely free.</p><div class="review-meta">Zac ishiyama &middot; 4 Apr &middot; App Store</div></div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-wrap" id="download">
+    <div class="cta-card sa sa-scale">
+        <div class="cta-badge" style="color:var(--cyan)">No subscription</div>
+        <h2>Everything free. <em>No catch.</em></h2>
+        <div class="cta-price"><span class="big">$0</span><span class="unit">to use</span></div>
+        <div class="cta-checks">
+            <div class="cta-check"><span class="ic ic-g">&#10003;</span> Full bulking meal library, step-by-step</div>
+            <div class="cta-check"><span class="ic ic-c">&#10003;</span> AI meal plans built around your macros</div>
+            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Free year-long training programs</div>
+            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Smart grocery lists &amp; pantry intelligence</div>
+            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Works with ChatGPT, Claude, Gemini &amp; more</div>
+            <hr class="cta-div">
+            <div class="cta-check"><span class="ic ic-g">&#10003;</span> No ads, no accounts, nothing sold. Ever.</div>
+        </div>
+        <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'cta','platform':'ios'})">
+            <svg width="15" height="18" viewBox="0 0 18 22" fill="none"><path d="M14.94 11.58c-.02-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.78-1.39-.14-2.72.82-3.43.82-.71 0-1.81-.8-2.98-.78-1.53.02-2.95.89-3.74 2.27-1.59 2.77-.41 6.87 1.15 9.11.76 1.1 1.66 2.34 2.85 2.29 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.27 1.23-2.51 1.25-2.57-.03-.01-2.4-.92-2.42-3.66zm-2.27-6.73C13.32 4.09 13.78 3 13.65 1.9c-.93.04-2.06.62-2.73 1.4-.6.7-1.12 1.81-.98 2.87 1.04.08 2.1-.53 2.73-1.32z" fill="currentColor"/></svg>
+            Download on the App Store
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" class="cta-btn" style="margin-top:0.75rem;background:#0a0a0f;color:var(--text);border:1px solid var(--border);" onclick="gtag('event','download_click',{'button_location':'cta','platform':'android'})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 20.5v-17c0-.6.3-1.1.8-1.4l10 9.9-10 9.9c-.5-.3-.8-.8-.8-1.4z" fill="#00d2ff"/><path d="M14.9 12l2.9-2.9L6.9 3.2c-.3-.2-.7-.2-1 0l9 8.8z" fill="#00f076"/><path d="M17.8 9.1L14.9 12l2.9 2.9 3.5-2c.6-.3.6-1.1 0-1.4l-3.5-2.4z" fill="#ffd400"/><path d="M6 20.8c.3.2.7.2 1 0l10.9-6.1-2.9-2.9-9 9z" fill="#ff3a44"/></svg>
+            Get it on Google Play
+        </a>
+        <p class="cta-foot">&#128274; Your workouts &amp; nutrition stay on your device.</p>
+        <p class="cta-foot" style="margin-top:0.4rem;">&#128241; iPhone &amp; Android</p>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;margin-bottom:2.5rem;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">FAQ</span>
+            <h2>Common questions.</h2>
+        </div>
+        <div class="faq sa sa-up">
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How does it actually work?</button><div class="faq-a">Three steps:<br>1. Answer a few quick questions.<br>2. Paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini.<br>3. Import the meal plan it builds and start tracking.<br><br>The same flow builds your training program too.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Do I need to pay for AI separately?</button><div class="faq-a">Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much does JSON.fit cost?</button><div class="faq-a">It's completely free. Workouts <em>and</em> nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence. No subscription, no paywall, no in-app purchases.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Does this work if I've got a full-time job?</button><div class="faq-a">That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating in a surplus fits around work instead of taking it over.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much time does this take each week?</button><div class="faq-a">Building or importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go. The whole point is to hit your macros without bulking turning into a second job.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">If it's free, what's the catch?</button><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">What AI does it work with?</button><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Is my data private?</button><div class="faq-a">Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. Full details are in the <a href="privacy-policy.html" style="color:var(--cyan);text-decoration:none;">Privacy Policy</a>.</div></div>
+        </div>
+    </div>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lbClose" aria-label="Close">&#10005;</button>
+    <img class="lightbox-img" id="lbImg" src="" alt="">
+    <p class="lightbox-hint">tap anywhere to close</p>
+</div>
+
+<!-- Demo video modal: plays the hero Short inline instead of leaving for YouTube -->
+<div class="vmodal" id="vmodal" role="dialog" aria-modal="true" aria-label="Demo video">
+    <button class="vmodal-close" id="vmClose" aria-label="Close">&#10005;</button>
+    <div class="vmodal-frame" id="vmFrame"></div>
+</div>
+
+<footer>
+    <div class="foot-l">
+        JSON<span class="cyan">.fit</span>
+        <a href="#" id="supportLink" rel="nofollow">Support</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-of-service.html">Terms</a>
+    </div>
+    <div class="foot-social">
+        <a href="https://www.instagram.com/ryan.novinc" target="_blank" rel="noopener" aria-label="Ryan on Instagram" onclick="gtag('event','social_click',{'platform':'instagram','location':'footer'})"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.16 15.58 2.16 15.2 2.16 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.16 8.8 2.16 12 2.16Zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg></a>
+        <a href="https://www.tiktok.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on TikTok" onclick="gtag('event','social_click',{'platform':'tiktok','location':'footer'})"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.08-.14 1.62.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+        <a href="https://www.youtube.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on YouTube" onclick="gtag('event','social_click',{'platform':'youtube','location':'footer'})"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5 31.1 31.1 0 0 0 0 12a31.1 31.1 0 0 0 .5 5.5 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.1 31.1 0 0 0 24 12a31.1 31.1 0 0 0-.5-5.5ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"/></svg></a>
+        <a href="https://www.facebook.com/share/1C13hNqwJz/" target="_blank" rel="noopener" aria-label="Ryan on Facebook" onclick="gtag('event','social_click',{'platform':'facebook','location':'footer'})"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07Z"/></svg></a>
+    </div>
+    <div class="foot-r">&copy; 2026 JSON.fit &middot; Updated <span id="siteUpdated">June 2026</span></div>
+</footer>
+
+<script src="/wall.js"></script>
+
+<script>
+(function()
+ {
+    // Support email assembled at runtime (light scraper protection, works on any host)
+    var supportLink = document.getElementById('supportLink');
+    if (supportLink) supportLink.href = 'mailto:' + ['support', 'json.fit'].join('@');
+
+    var burger = document.getElementById('burger');
+    var navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        burger.classList.toggle('open');
+        navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+        });
+    });
+
+    // FAQ accordion: only one panel open at a time (real buttons, keyboard accessible)
+    document.querySelectorAll('.faq-item .faq-q').forEach(function(q) {
+        q.addEventListener('click', function() {
+            var item = q.parentElement;
+            var isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(function(open) {
+                open.classList.remove('open');
+                var btn = open.querySelector('.faq-q');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            });
+            if (!isOpen) {
+                item.classList.add('open');
+                q.setAttribute('aria-expanded', 'true');
             }
+        });
+    });
+
+    // Free cookbook capture — live, posts to the JSON.fit subscribe API (AWS)
+    var capForm = document.getElementById('capForm');
+    if (capForm) {
+        capForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = document.getElementById('capEmail');
+            var hp = document.getElementById('capWebsite');
+            var btn = capForm.querySelector('.cap-btn');
+            var val = (email.value || '').trim();
+            if (!val || val.indexOf('@') === -1) { email.focus(); email.style.borderColor = '#ef4444'; return; }
+            if (window.gtag) gtag('event', 'cookbook_signup', { 'button_location': 'home' });
+            var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending\u2026';
+            fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ email: val, website: hp ? hp.value : '', source: 'cookbook-home' })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+                if (d && d.ok) {
+                    if(window.track) window.track('cookbook_email_submitted', {});
+                    var msg = document.getElementById('capSuccess');
+                    msg.innerHTML = '<span class="tick">&#10003;</span> ' + (d.status === 'already_subscribed'
+                        ? 'You\'re already on the list. Check your inbox for the cookbook.'
+                        : 'Almost there. Check your inbox to confirm and unlock your cookbook.');
+                    capForm.style.display = 'none';
+                    msg.classList.add('show');
+                } else {
+                    email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label;
+                }
+            })
+            .catch(function() { email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label; });
+        });
+    }
+
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lbImg');
+    var lbClose = document.getElementById('lbClose');
+    function openLb(src, alt) { lbImg.src = src; lbImg.alt = alt || ''; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+    lbClose.addEventListener('click', function(e) { e.stopPropagation(); closeLb(); });
+    lb.addEventListener('click', function(e) { if (e.target !== lbImg) closeLb(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+
+    function fireEl(el) {
+        el.classList.add('vis');
+        var line = el.querySelector('.section-line');
+        if (line) setTimeout(function() { line.classList.add('vis'); }, 80);
+        el.querySelectorAll('.proof-vol-bar, .er-bar').forEach(function(bar, i) {
+            setTimeout(function() {
+                bar.style.transition = 'width 0.9s cubic-bezier(0.22,1,0.36,1)';
+                bar.style.width = bar.getAttribute('data-w') || '0%';
+            }, 150 + i * 90);
+        });
+        el.querySelectorAll('.count-up').forEach(function(numEl) {
+            var target = parseFloat(numEl.getAttribute('data-target'));
+            var suffix = numEl.getAttribute('data-suffix') || '';
+            var prefix = numEl.getAttribute('data-prefix') || '';
+            var decimals = parseInt(numEl.getAttribute('data-decimals') || '0');
+            var duration = 1400;
+            var start = null;
+            function step(ts) {
+                if (!start) start = ts;
+                var progress = Math.min((ts - start) / duration, 1);
+                var ease = 1 - Math.pow(1 - progress, 3);
+                var val = target * ease;
+                numEl.textContent = prefix + (decimals > 0 ? val.toFixed(decimals) : Math.round(val).toLocaleString()) + suffix;
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        });
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                fireEl(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+
+    document.querySelectorAll('.sa, .sa-stagger, .proof-card').forEach(function(el) {
+        observer.observe(el);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            var href = a.getAttribute('href');
+            if (href === '#') return;
+            e.preventDefault();
+            setTimeout(function() {
+                var target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        });
+    });
+
+    (function() {
+        function makeCarousel(stripId, prevId, nextId, dotsId, lblId, captions) {
+            var strip = document.getElementById(stripId);
+            var prev  = document.getElementById(prevId);
+            var next  = document.getElementById(nextId);
+            var dots  = document.querySelectorAll('#' + dotsId + ' .pc-dot');
+            var lbl   = document.getElementById(lblId);
+            if (!strip) return;
+            var W = 180;
+            var n = captions.length;
+            var i = 0;
+            function show(idx) {
+                i = ((idx % n) + n) % n;
+                strip.style.transform = 'translateX(' + (-W * i) + 'px)';
+                dots.forEach(function(d, j) { d.classList.toggle('on', j === i); });
+                if (lbl) lbl.textContent = captions[i];
+            }
+            prev.addEventListener('click', function() { show(i - 1); });
+            next.addEventListener('click', function() { show(i + 1); });
+            dots.forEach(function(d, j) { d.addEventListener('click', function() { show(j); }); });
+            var tx = 0;
+            strip.parentElement.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; }, {passive:true});
+            strip.parentElement.addEventListener('touchend', function(e) {
+                var dx = e.changedTouches[0].clientX - tx;
+                if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1);
+            }, {passive:true});
+            strip.querySelectorAll('img').forEach(function(img) {
+                img.addEventListener('click', function() { openLb(img.src, img.alt); });
+            });
+            show(0);
         }
-        probes.forEach(function(el){ wall.removeChild(el); });
-    }
-
-    // ---- Phase 2: build and append every column first, THEN start them, so offsetTop is measured in-document ----
-    var shuffled = shuffle(POOL.slice());
-    var perCol = Math.min(PER_COLUMN, Math.floor(shuffled.length / N));
-    var used = 0;
-    function nextSlice(){
-        var slice = shuffled.slice(used, used + perCol);
-        used += perCol;
-        return slice;
-    }
-
-    var dists = [];
-    for (var i = 0; i < N; i++) dists.push(Math.abs(i - (N - 1) / 2));
-    var minDist = Math.min.apply(null, dists);
-    var maxDist = Math.max.apply(null, dists);
-
-    var cols = [];
-    for (var i = 0; i < N; i++) {
-        var priority = null;
-        if (dists[i] === minDist) priority = 'high';
-        else if (dists[i] === maxDist) priority = 'low';
-        var c = buildColumn(nextSlice(), i % 2 === 1, priority);
-        wall.appendChild(c);
-        cols.push(c);
-    }
-    cols.forEach(function(c){ c.start(); });
+        makeCarousel('strip2','prev2','next2','dots2','lbl2',[
+            'Imported in 0.81s','Every meal, every macro, timed','Grocery list + prep schedule',
+            'Exact items, exact costs','Step-by-step meal prep'
+        ]);
+    })();
 })();
+</script>
+
+<!-- Hero "Watch how it works" — plays the Short inline in a modal (no new tab) -->
+<script>
+(function(){
+  var trigger = document.getElementById('heroVideo');
+  var modal = document.getElementById('vmodal');
+  var frame = document.getElementById('vmFrame');
+  var closeBtn = document.getElementById('vmClose');
+  if(!trigger || !modal || !frame) return;
+  var VIDEO_ID = 'LjniPp6Qg88';
+
+  function openModal(){
+    frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?autoplay=1&rel=0&playsinline=1" title="JSON.fit demo" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if(window.track) window.track('video_opened', {});
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    frame.innerHTML = '';
+  }
+
+  trigger.addEventListener('click', function(e){ e.preventDefault(); openModal(); });
+  if(closeBtn) closeBtn.addEventListener('click', function(e){ e.stopPropagation(); closeModal(); });
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+})();
+</script>
+
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var a=e.target;
+    while(a&&a.tagName!=='A')a=a.parentElement;
+    if(!a||!a.href)return;
+    if(a.id==='heroVideo')return;
+    try{
+      var h=new URL(a.href).hostname;
+      if(!h||h===location.hostname)return;
+      var label;
+      if(h==='apps.apple.com')label='app_store';
+      else if(h==='www.youtube.com'||h==='youtu.be')label='youtube';
+      else{var p=h.replace(/^www\./,'').split('.');var s=p[p.length-2]||p[0];label=s==='nih'?'pubmed':s;}
+      if(window.track)window.track('outbound_click',{url:label});
+    }catch(err){}
+  },true);
+})();
+</script>
+
+<!-- Footer updated stamp from the visitor's local date -->
+<script>
+(function(){
+  var stamp = document.getElementById("siteUpdated");
+  if(stamp){
+    stamp.textContent = new Date().toLocaleDateString([], { month: "long", year: "numeric" });
+  }
+})();
+</script>
+<!-- See It Working: interactive app demo (tap or wait ~5s to switch screens) -->
+<script>
+(function(){
+  var order = ['nutrition','workout'], idx = 0, timer = null, stopped = false;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var phone = document.getElementById('swPhone');
+  var visual = document.getElementById('swDemo');
+  if(!phone || !visual) return;
+
+  function setScreen(name){
+    var screens = phone.querySelectorAll('.scr');
+    screens.forEach(function(sc){ sc.classList.remove('on'); });
+    var el = document.getElementById('scr-' + name);
+    if(el){ el.classList.add('on'); el.scrollTop = 0; }
+    visual.classList.toggle('is-green', name === 'nutrition');
+    idx = order.indexOf(name);
+  }
+
+  phone.addEventListener('click', function(){
+    stopped = true;
+    if(timer){ clearInterval(timer); timer = null; }
+    var next = order[(idx + 1) % order.length];
+    setScreen(next);
+    if (window.gtag) gtag('event', 'demo_screen_switched', { 'button_location': 'see_it_working', 'view': next });
+    if (window.track) window.track('cta_clicked', { cta_id: 'demo_phone_' + next });
+  });
+  phone.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+      e.preventDefault();
+      phone.click();
+    }
+  });
+
+  if(!reduce){
+    timer = setInterval(function(){
+      if(stopped){ clearInterval(timer); timer = null; return; }
+      setScreen(order[(idx + 1) % order.length]);
+    }, 5000);
+  }
+
+  var fa = document.getElementById('wl-frame-a'),
+      fb = document.getElementById('wl-frame-b'),
+      ph = document.getElementById('wl-ph');
+  if(fa && fb){
+    if(ph) ph.style.display = 'none';
+    fa.classList.add('show');
+    if(!reduce){
+      var phase = 0;
+      setInterval(function(){
+        phase ^= 1;
+        fa.classList.toggle('show', phase === 0);
+        fb.classList.toggle('show', phase === 1);
+      }, 1000);
+    }
+  }
+
+  var clock = document.getElementById("sbTime");
+  function tick(){
+    if(!clock) return;
+    var t = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }).match(/\d{1,2}:\d{2}/);
+    if(t && t[0]) clock.textContent = t[0];
+  }
+  tick();
+  setInterval(tick, 15000);
+
+  // On mobile the carousel starts centered on the interactive phone
+  var row = visual.parentElement;
+  function centerDemo(){
+    if (!row || window.innerWidth > 900) return;
+    var r1 = row.getBoundingClientRect(), r2 = visual.getBoundingClientRect();
+    row.scrollLeft += (r2.left + r2.width / 2) - (r1.left + r1.width / 2);
+  }
+  centerDemo();
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(max-width: 900px)');
+    var onmq = function(e){ if (e.matches) centerDemo(); };
+    if (mq.addEventListener) mq.addEventListener('change', onmq);
+  }
+})();
+</script>
+
+<!-- Pipeline demo toggle: meal plan / training program -->
+<script>
+(function(){
+    var tgs = document.querySelectorAll('.pl-tg');
+    if (!tgs.length) return;
+    var flows = { meal: document.getElementById('flowMeal'), train: document.getElementById('flowTrain') };
+    if (!flows.meal || !flows.train) return;
+    tgs.forEach(function(b){
+        b.addEventListener('click', function(){
+            var k = b.getAttribute('data-flow');
+            tgs.forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+            b.classList.add('active'); b.setAttribute('aria-selected','true');
+            flows.meal.style.display = (k === 'meal') ? '' : 'none';
+            flows.train.style.display = (k === 'train') ? '' : 'none';
+            flows[k].classList.add('vis'); // typing animation is gated on the reveal class
+            if (window.gtag) gtag('event', 'pipeline_toggle', { 'button_location': 'how_section', 'view': k });
+            if (window.track) window.track('cta_clicked', { cta_id: 'pipeline_toggle_' + k });
+        });
+    });
+})();
+</script>
+
+<!-- Hero macro ticker: numbers tick between example profiles -->
+<script>
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var pEls = document.querySelectorAll('.tick-p');
+  var kEls = document.querySelectorAll('.tick-k');
+  if (!pEls.length || !kEls.length) return;
+  var profiles = [{p:239,k:3311},{p:205,k:2890},{p:262,k:3650},{p:186,k:2640}];
+  var idx = 0;
+  function ease(t){ return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
+  function tween(from, to, cb){
+    var start = null, dur = 900;
+    function frame(ts){
+      if(!start) start = ts;
+      var t = Math.min((ts - start) / dur, 1);
+      cb(Math.round(from + (to - from) * ease(t)));
+      if(t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  setInterval(function(){
+    var from = profiles[idx];
+    idx = (idx + 1) % profiles.length;
+    var to = profiles[idx];
+    tween(from.p, to.p, function(v){ pEls.forEach(function(el){ el.textContent = v; }); });
+    tween(from.k, to.k, function(v){ kEls.forEach(function(el){ el.textContent = v.toLocaleString(); }); });
+  }, 3400);
+})();
+</script>
+</body>
+</html>
