@@ -49,14 +49,14 @@
         .fhero { position: relative; display: flex; overflow: hidden; min-height: 100vh; min-height: 100svh; }
         .f-wall { position: absolute; inset: -14%; display: flex; gap: 20px; justify-content: center; transform: rotate(-7deg) scale(1.18); pointer-events: none; }
         .f-col { display: flex; flex-direction: column; width: 250px; flex-shrink: 0; overflow: hidden; }
-        .f-track { display: flex; flex-direction: column; gap: 20px; animation: fdrift 48s linear infinite; }
-        .f-col.rev .f-track { animation-direction: reverse; animation-duration: 60s; }
-        @keyframes fdrift { to { transform: translateY(-50%); } }
+        .f-track { display: flex; flex-direction: column; gap: 20px; animation: fdrift linear infinite; animation-duration: var(--fdrift-duration, 48s); }
+        .f-col.rev .f-track { animation-direction: reverse; }
+        @keyframes fdrift { to { transform: translateY(var(--fdrift-shift, -50%)); } }
         .f-card { position: relative; height: 252px; border-radius: 22px; overflow: hidden; flex-shrink: 0; background: #141017; }
         .f-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,8,0.85), transparent 55%); }
         .f-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
         .f-meta { position: absolute; bottom: 11px; left: 12px; right: 12px; z-index: 2; }
-        .f-name { font-size: 14px; font-weight: 700; line-height: 1.25; }
+        .f-name { font-size: 14px; font-weight: 700; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .f-kcal { font-family: 'DM Mono', monospace; font-size: 9.5px; color: var(--green); margin-top: 2px; letter-spacing: 0.04em; }
         .f-scrim { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 44%, rgba(5,5,8,0.72) 0%, rgba(5,5,8,0.9) 66%, #050508 100%); }
         .f-scrim::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(to top, #050508, transparent); }
@@ -136,7 +136,7 @@
         @media (max-width:860px) {
             .f-wall { gap:14px; }
             .f-col { width:170px; }
-            .f-col:nth-child(3), .f-col:nth-child(4) { display:none; }
+            .f-col:nth-child(n+3) { display:none; }
             .f-track { gap:14px; }
             .f-card { height:210px; border-radius:18px; }
             .f-name { font-size:11.5px; }
@@ -177,40 +177,7 @@
 
 <!-- HERO: drifting meal wall + serif masthead + email capture -->
 <section class="fhero">
-    <div class="f-wall" aria-hidden="true">
-        <div class="f-col"><div class="f-track">
-            <div class="f-card"><img src="/images/meals/pulled-pork.webp" data-fallback="/images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div>
-            <div class="f-card"><img src="/images/meals/massaman.webp" data-fallback="/images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div>
-            <div class="f-card"><img src="/images/meals/protein-pancakes.webp" data-fallback="/images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; 52P</div></div></div>
-            <div class="f-card"><img src="/images/meals/pulled-pork.webp" data-fallback="/images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div>
-            <div class="f-card"><img src="/images/meals/massaman.webp" data-fallback="/images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div>
-            <div class="f-card"><img src="/images/meals/protein-pancakes.webp" data-fallback="/images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; 52P</div></div></div>
-        </div></div>
-        <div class="f-col rev"><div class="f-track">
-            <div class="f-card"><img src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; 65P</div></div></div>
-            <div class="f-card"><img src="/images/meals/lamb-shanks.webp" data-fallback="/images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div>
-            <div class="f-card"><img src="/images/meals/king-kong-chocolate.webp" data-fallback="/images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div>
-            <div class="f-card"><img src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; 65P</div></div></div>
-            <div class="f-card"><img src="/images/meals/lamb-shanks.webp" data-fallback="/images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div>
-            <div class="f-card"><img src="/images/meals/king-kong-chocolate.webp" data-fallback="/images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div>
-        </div></div>
-        <div class="f-col"><div class="f-track">
-            <div class="f-card"><img src="/images/meals/protein-pancakes.webp" data-fallback="/images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; 52P</div></div></div>
-            <div class="f-card"><img src="/images/meals/pulled-pork.webp" data-fallback="/images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div>
-            <div class="f-card"><img src="/images/meals/massaman.webp" data-fallback="/images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div>
-            <div class="f-card"><img src="/images/meals/protein-pancakes.webp" data-fallback="/images/meals/protein-pancakes.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Protein Pancakes</div><div class="f-kcal">760 KCAL &middot; 52P</div></div></div>
-            <div class="f-card"><img src="/images/meals/pulled-pork.webp" data-fallback="/images/meals/pulled-pork.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">BBQ Pulled Pork</div><div class="f-kcal">610 KCAL &middot; 48P</div></div></div>
-            <div class="f-card"><img src="/images/meals/massaman.webp" data-fallback="/images/meals/massaman.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Massaman Beef Curry</div><div class="f-kcal">890 KCAL &middot; 52P</div></div></div>
-        </div></div>
-        <div class="f-col rev"><div class="f-track">
-            <div class="f-card"><img src="/images/meals/king-kong-chocolate.webp" data-fallback="/images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div>
-            <div class="f-card"><img src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; 65P</div></div></div>
-            <div class="f-card"><img src="/images/meals/lamb-shanks.webp" data-fallback="/images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div>
-            <div class="f-card"><img src="/images/meals/king-kong-chocolate.webp" data-fallback="/images/meals/king-kong-chocolate.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">King Kong Chocolate</div><div class="f-kcal">1418 KCAL &middot; 85P</div></div></div>
-            <div class="f-card"><img src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Steak &amp; Eggs</div><div class="f-kcal">820 KCAL &middot; 65P</div></div></div>
-            <div class="f-card"><img src="/images/meals/lamb-shanks.webp" data-fallback="/images/meals/lamb-shanks.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"><div class="f-meta"><div class="f-name">Braised Lamb Shanks</div><div class="f-kcal">825 KCAL &middot; 54P</div></div></div>
-        </div></div>
-    </div>
+    <div class="f-wall" id="fWall" aria-hidden="true"></div>
     <div class="f-scrim"></div>
     <div class="fh-fg">
         <div class="fh-book">
@@ -280,7 +247,6 @@
                 <p>Meal plans and year-long training programs, built with your own AI. No subscription, no paywall.</p>
             </div>
             <div class="hero-stores">
-                <div class="hero-stores">
                 <a href="https://apps.apple.com/au/app/json-fit/id6758357834" onclick="if(window.gtag)gtag('event','download_click',{'button_location':'cookbook_page','platform':'ios'})">
                     <img src="/images/App_Store.svg" alt="Download on the App Store" height="46" class="store-badge">
                 </a>
@@ -371,5 +337,6 @@
     }
 })();
 </script>
+<script src="/wall.js"></script>
 </body>
 </html>
