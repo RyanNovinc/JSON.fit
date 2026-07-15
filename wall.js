@@ -134,7 +134,7 @@ var POOL = [
 ];
 
     var PER_COLUMN = 10;                  // unique meals per column: raise for more variety, lower to save data
-    var SPEED = { normal: 9, rev: 7 };    // px/second before the wall's 1.18 scale (about 10px/s on screen). Original design was 18/14: nudge up if this feels too still.
+    var SPEED = { normal: 13, rev: 10 };  // px/second before the wall's 1.18 scale (about 15px/s on screen). Range that works: 9/7 slow drift, 18/14 original design pace.
     var DONE_CHANCE = 0.3;                // fraction of cards shown as already "logged" (rings only)
     var MIN_COLS = 4, MAX_COLS = 8;       // desktop range; real edge coverage decides the exact count, not a guess
 
