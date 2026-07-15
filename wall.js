@@ -9,7 +9,17 @@
    actually needs (no images touched), then the real columns are built and the
    ones nearest the visual centre get fetchpriority="high" so the part of the
    wall people actually look at wins the network race, with the outermost
-   columns marked "low" since they're the least seen. */
+   columns marked "low" since they're the least seen.
+
+   Motion: this file is fully self-contained. It injects its own #fWall-scoped
+   style overrides (higher specificity than the legacy .f-track rules), so NO
+   per-page CSS edits are needed anywhere the wall is embedded. Every column
+   is appended to the DOM first, then start() measures one full cycle (n
+   cards, valid only in-document) and sets --fdrift-duration before adding
+   the .run class, so the animation never plays at a fallback speed. The
+   keyframe is a static translateY(-50%), which keeps the drift on the
+   compositor and immune to scroll and resize jank; the card gap lives in
+   .f-card margin-bottom so -50% equals exactly one card set. */
 (function(){
 var POOL = [
   ["Butter Chicken", "butter-chicken-curry", 490, 48],
@@ -123,14 +133,32 @@ var POOL = [
   ["Thai Basil Chicken", "thai-basil-chicken", 736, 44]
 ];
 
-    var PER_COLUMN = 10;                  // unique meals per column - raise for more variety, lower to save data
-    var SPEED = { normal: 18, rev: 14 };  // px/second - matches the original file's true rate
+    var PER_COLUMN = 10;                  // unique meals per column: raise for more variety, lower to save data
+    var SPEED = { normal: 9, rev: 7 };    // px/second before the wall's 1.18 scale (about 10px/s on screen). Original design was 18/14: nudge up if this feels too still.
     var DONE_CHANCE = 0.3;                // fraction of cards shown as already "logged" (rings only)
     var MIN_COLS = 4, MAX_COLS = 8;       // desktop range; real edge coverage decides the exact count, not a guess
 
     var wall = document.getElementById('fWall');
     if (!wall) return;
     var showRings = wall.dataset.rings === 'true';
+
+    // Self-contained motion styles. Scoped to #fWall so they outrank the legacy
+    // .f-track rules already in each page's stylesheet: no HTML edits required,
+    // and every page that embeds this wall gets the fix automatically.
+    (function(){
+        if (document.getElementById('fwall-motion-css')) return;
+        var st = document.createElement('style');
+        st.id = 'fwall-motion-css';
+        st.textContent =
+            '#fWall .f-track{gap:0;animation:none;}' +
+            '#fWall .f-card{margin-bottom:20px;}' +
+            '#fWall .f-track.run{animation:fdriftRun var(--fdrift-duration,300s) linear infinite;}' +
+            '#fWall .f-col.rev .f-track.run{animation-direction:reverse;}' +
+            '@keyframes fdriftRun{to{transform:translateY(-50%);}}' +
+            '@media (max-width:860px){#fWall .f-card{margin-bottom:14px;}}' +
+            '@media (prefers-reduced-motion:reduce){#fWall .f-track.run{animation:none;}}';
+        document.head.appendChild(st);
+    })();
 
     function shuffle(arr){
         for (var i = arr.length - 1; i > 0; i--) {
@@ -198,24 +226,22 @@ var POOL = [
 
         var n = entries.length;
         entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); });
-        entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); }); // duplicate set - this is what makes the loop seamless
+        entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); }); // duplicate set: this is what makes the loop seamless
 
         var lastShift = null;
-        function applyMotion(){
+        col.start = function(){
             var first = track.children[0];
             var firstOfClone = track.children[n];
             if (!first || !firstOfClone) return;
-            var shift = firstOfClone.offsetTop - first.offsetTop; // exact px for one full cycle, whatever the gap/card height is
+            var shift = firstOfClone.offsetTop - first.offsetTop; // exact px for one full cycle, only measurable once the column is in the document
             if (shift <= 0) return;
-            if (lastShift !== null && Math.abs(shift - lastShift) < 1) return; // nothing real changed - leave the running animation alone
+            if (lastShift !== null && Math.abs(shift - lastShift) < 1) return; // nothing real changed (e.g. mobile URL bar resize): leave the running animation alone
             lastShift = shift;
             var speed = reverse ? SPEED.rev : SPEED.normal;
-            track.style.setProperty('--fdrift-shift', '-' + shift + 'px');
             track.style.setProperty('--fdrift-duration', (shift / speed) + 's');
-        }
-
-        applyMotion();
-        window.addEventListener('resize', debounce(applyMotion, 200));
+            track.classList.add('run'); // the animation only begins once its true duration exists, so it never plays at a fallback speed
+        };
+        window.addEventListener('resize', debounce(col.start, 200));
         return col;
     }
 
@@ -241,7 +267,7 @@ var POOL = [
         probes.forEach(function(el){ wall.removeChild(el); });
     }
 
-    // ---- Phase 2: the real build, left-to-right in visual order, with the centre columns marked as network priority ----
+    // ---- Phase 2: build and append every column first, THEN start them, so offsetTop is measured in-document ----
     var shuffled = shuffle(POOL.slice());
     var perCol = Math.min(PER_COLUMN, Math.floor(shuffled.length / N));
     var used = 0;
@@ -256,10 +282,14 @@ var POOL = [
     var minDist = Math.min.apply(null, dists);
     var maxDist = Math.max.apply(null, dists);
 
+    var cols = [];
     for (var i = 0; i < N; i++) {
         var priority = null;
         if (dists[i] === minDist) priority = 'high';
         else if (dists[i] === maxDist) priority = 'low';
-        wall.appendChild(buildColumn(nextSlice(), i % 2 === 1, priority));
+        var c = buildColumn(nextSlice(), i % 2 === 1, priority);
+        wall.appendChild(c);
+        cols.push(c);
     }
+    cols.forEach(function(c){ c.start(); });
 })();
