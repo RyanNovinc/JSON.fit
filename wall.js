@@ -124,7 +124,7 @@ var POOL = [
 ];
 
     var PER_COLUMN = 10;                  // unique meals per column - raise for more variety, lower to save data
-    var SPEED = { normal: 14, rev: 11 };  // px/second
+    var SPEED = { normal: 18, rev: 14 };  // px/second - matches the original file's true rate
     var DONE_CHANCE = 0.3;                // fraction of cards shown as already "logged" (rings only)
     var MIN_COLS = 4, MAX_COLS = 8;       // desktop range; real edge coverage decides the exact count, not a guess
 
@@ -200,12 +200,15 @@ var POOL = [
         entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); });
         entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); }); // duplicate set - this is what makes the loop seamless
 
+        var lastShift = null;
         function applyMotion(){
             var first = track.children[0];
             var firstOfClone = track.children[n];
             if (!first || !firstOfClone) return;
             var shift = firstOfClone.offsetTop - first.offsetTop; // exact px for one full cycle, whatever the gap/card height is
             if (shift <= 0) return;
+            if (lastShift !== null && Math.abs(shift - lastShift) < 1) return; // nothing real changed - leave the running animation alone
+            lastShift = shift;
             var speed = reverse ? SPEED.rev : SPEED.normal;
             track.style.setProperty('--fdrift-shift', '-' + shift + 'px');
             track.style.setProperty('--fdrift-duration', (shift / speed) + 's');
