@@ -11,6 +11,12 @@
    wall people actually look at wins the network race, with the outermost
    columns marked "low" since they're the least seen.
 
+   Loading: two-phase. Only the cards actually on screen at load fetch
+   immediately; every card hidden below each column's clip waits until the
+   visible set has finished, then loads at low priority while still out of
+   sight. At ~15px/s the first hidden card is roughly 20 seconds away from
+   entering view, so the deferral is invisible to the visitor.
+
    Motion: this file is fully self-contained. It injects its own #fWall-scoped
    style overrides (higher specificity than the legacy .f-track rules), so NO
    per-page CSS edits are needed anywhere the wall is embedded. Every column
@@ -134,6 +140,7 @@ var POOL = [
 ];
 
     var PER_COLUMN = 10;                  // unique meals per column: raise for more variety, lower to save data
+    var EAGER_PER_COL = 5;                // cards per column fetched before anything else: roughly what's on screen at load
     var SPEED = { normal: 13, rev: 10 };  // px/second before the wall's 1.18 scale (about 15px/s on screen). Range that works: 9/7 slow drift, 18/14 original design pace.
     var DONE_CHANCE = 0.3;                // fraction of cards shown as already "logged" (rings only)
     var MIN_COLS = 4, MAX_COLS = 8;       // desktop range; real edge coverage decides the exact count, not a guess
@@ -152,11 +159,13 @@ var POOL = [
         st.textContent =
             '#fWall .f-track{gap:0;animation:none;}' +
             '#fWall .f-card{margin-bottom:20px;}' +
+            '#fWall .f-card img{opacity:0;transition:opacity .3s ease;}' +
+            '#fWall .f-card img.ld{opacity:1;}' +
             '#fWall .f-track.run{animation:fdriftRun var(--fdrift-duration,300s) linear infinite;}' +
             '#fWall .f-col.rev .f-track.run{animation-direction:reverse;}' +
             '@keyframes fdriftRun{to{transform:translateY(-50%);}}' +
             '@media (max-width:860px){#fWall .f-card{margin-bottom:14px;}}' +
-            '@media (prefers-reduced-motion:reduce){#fWall .f-track.run{animation:none;}}';
+            '@media (prefers-reduced-motion:reduce){#fWall .f-track.run{animation:none;}#fWall .f-card img{transition:none;}}';
         document.head.appendChild(st);
     })();
 
@@ -168,20 +177,49 @@ var POOL = [
         return arr;
     }
 
-    function buildCard(entry, priority){
+    // Two-phase image loading. Cards visible at load fetch immediately (centre
+    // columns at fetchpriority=high, per the existing column priorities). Every
+    // hidden card holds its URL in data-src and only gets a real src once the
+    // eager set has settled, so the on-screen images never share bandwidth
+    // with images nobody can see yet.
+    var pendingImgs = [];
+    var eagerLeft = 0;
+    var flushed = false;
+    function flushPending(){
+        if (flushed) return;
+        flushed = true;
+        pendingImgs.forEach(function(img){ img.src = img.dataset.src; });
+    }
+    function eagerSettled(){
+        eagerLeft--;
+        if (eagerLeft <= 0) flushPending();
+    }
+
+    function buildCard(entry, priority, eager){
         var done = showRings && Math.random() < DONE_CHANCE;
         var card = document.createElement('div');
         card.className = 'f-card';
 
         var img = document.createElement('img');
         img.alt = '';
-        if (priority) img.setAttribute('fetchpriority', priority);
-        img.src = '/images/meals/' + entry[1] + '.webp';
+        img.decoding = 'async';
         img.dataset.fallback = '/images/meals/' + entry[1] + '.png';
+        var settled = false;
+        function settle(){ if (eager && !settled) { settled = true; eagerSettled(); } }
+        img.addEventListener('load', function(){ img.classList.add('ld'); settle(); });
         img.onerror = function(){
             if (this.src.indexOf('.webp') > -1) { this.src = this.dataset.fallback; }
-            else { this.style.display = 'none'; }
+            else { this.style.display = 'none'; settle(); }
         };
+        if (eager) {
+            eagerLeft++;
+            if (priority) img.setAttribute('fetchpriority', priority);
+            img.src = '/images/meals/' + entry[1] + '.webp';
+        } else {
+            img.setAttribute('fetchpriority', 'low');
+            img.dataset.src = '/images/meals/' + entry[1] + '.webp';
+            pendingImgs.push(img);
+        }
 
         var meta = document.createElement('div');
         meta.className = 'f-meta';
@@ -225,8 +263,8 @@ var POOL = [
         col.appendChild(track);
 
         var n = entries.length;
-        entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); });
-        entries.forEach(function(e){ track.appendChild(buildCard(e, priority)); }); // duplicate set: this is what makes the loop seamless
+        entries.forEach(function(e, i){ track.appendChild(buildCard(e, priority, i < EAGER_PER_COL)); });
+        entries.forEach(function(e, i){ track.appendChild(buildCard(e, priority, i < EAGER_PER_COL)); }); // duplicate set: this is what makes the loop seamless. Reversed columns start half-shifted, so the cards they show at load are THIS copy: same URLs as the first set, so the browser reuses those fetches at zero extra cost.
 
         var lastShift = null;
         col.start = function(){
@@ -292,4 +330,5 @@ var POOL = [
         cols.push(c);
     }
     cols.forEach(function(c){ c.start(); });
+    setTimeout(flushPending, 2500); // safety net: a hung or slow eager request must never leave the below-fold cards waiting forever
 })();
