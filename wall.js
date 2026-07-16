@@ -25,7 +25,9 @@
    the .run class, so the animation never plays at a fallback speed. The
    keyframe is a static translateY(-50%), which keeps the drift on the
    compositor and immune to scroll and resize jank; the card gap lives in
-   .f-card margin-bottom so -50% equals exactly one card set. */
+   .f-card margin-bottom so -50% equals exactly one card set, and the two
+   card sets are built pixel-identical (the random LOGGED state is rolled
+   once per meal and shared by both copies) so the wrap is undetectable. */
 (function(){
 var POOL = [
   ["Butter Chicken", "butter-chicken-curry", 490, 48],
@@ -195,8 +197,7 @@ var POOL = [
         if (eagerLeft <= 0) flushPending();
     }
 
-    function buildCard(entry, priority, eager){
-        var done = showRings && Math.random() < DONE_CHANCE;
+    function buildCard(entry, priority, eager, done){
         var card = document.createElement('div');
         card.className = 'f-card';
 
@@ -263,8 +264,13 @@ var POOL = [
         col.appendChild(track);
 
         var n = entries.length;
-        entries.forEach(function(e, i){ track.appendChild(buildCard(e, priority, i < EAGER_PER_COL)); });
-        entries.forEach(function(e, i){ track.appendChild(buildCard(e, priority, i < EAGER_PER_COL)); }); // duplicate set: this is what makes the loop seamless. Reversed columns start half-shifted, so the cards they show at load are THIS copy: same URLs as the first set, so the browser reuses those fetches at zero extra cost.
+        // The random "logged" state is rolled ONCE per meal here and shared by
+        // both copies below. The two halves of the track must be pixel-identical
+        // (rings, strikethrough, LOGGED text included), otherwise the wrap from
+        // -50% back to 0 is visible as a flicker on every cycle.
+        var doneFlags = entries.map(function(){ return showRings && Math.random() < DONE_CHANCE; });
+        entries.forEach(function(e, i){ track.appendChild(buildCard(e, priority, i < EAGER_PER_COL, doneFlags[i])); });
+        entries.forEach(function(e, i){ track.appendChild(buildCard(e, priority, i < EAGER_PER_COL, doneFlags[i])); }); // duplicate set: this is what makes the loop seamless. Reversed columns start half-shifted, so the cards they show at load are THIS copy: same URLs as the first set, so the browser reuses those fetches at zero extra cost.
 
         var lastShift = null;
         col.start = function(){
