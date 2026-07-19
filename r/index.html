@@ -277,7 +277,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   };
 
   // ── State ──
-  var meal = null, plateIdx = 0, methodIdx = 0, servings = 1;
+  var meal = null, plateIdx = 0, methodIdx = 0, servings = 1, variantIdx = 0;
 
   // ── Helpers ──
   function esc(s){ if(s==null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
@@ -390,12 +390,22 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   // ── State helpers ──
   function currentPlate(){ return (meal.plates&&meal.plates[plateIdx])||{}; }
   function currentMethod(){ return (meal.methods&&meal.methods[methodIdx])||null; }
+  // ── Sauce-variant helpers (MAKE IT — mirrors the app) ──
+  function mealVariants(){ return (meal&&meal.variants&&meal.variants.length>1)?meal.variants:null; }
+  function currentVariant(){ var v=mealVariants(); return v?v[variantIdx]:null; }
+  function variantMethodData(method){ var v=currentVariant(); return (v&&method&&v.methods&&v.methods[method.id])||null; }
+  function variantExtraTotal(){ var v=currentVariant(); return (v&&!v.is_default)?(v.extra_total_minutes||0):0; }
+  function variantDescriptor(v){ var l=String(v.shortcut_level||''); if(l==='scratch'||l==='authentic'||l==='from_scratch') return 'Best flavour · more effort'; if(l==='shortcut'||l==='jar') return 'Quickest · weeknight'; return 'Everyday'; }
+  function activeMacros(plate){ var v=currentVariant(); if(v&&!v.is_default&&v.plate_macros&&v.plate_macros[plate.id]) return v.plate_macros[plate.id]; return plate.plate_macros||{}; }
 
   // ── Render: dynamic sections that depend on selected plate/method/servings ──
   function renderDynamic(){
+    var _vx=variantExtraTotal();
+    document.querySelectorAll('#method-list .method-time').forEach(function(el){ var b=parseInt(el.getAttribute('data-mins')||'0',10); el.textContent=formatTime(b+_vx); });
+    var _st=document.getElementById('single-time-val'); if(_st){ var _b2=parseInt(_st.getAttribute('data-mins')||'0',10); _st.textContent=formatTime(_b2+_vx); }
     var plate=currentPlate();
     var method=currentMethod();
-    var m=plate.plate_macros||{};
+    var m=activeMacros(plate)||{};
 
     // Hero image
     var img=imageUrl(plate);
@@ -451,7 +461,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
   function renderIngredients(plate, method){
     var sec=document.getElementById('ing-section');
-    var baseIngs=(method&&method.ingredients)||meal.ingredients||[];
+    var vd=variantMethodData(method);
+    var baseIngs=(vd&&vd.ingredients)||(method&&method.ingredients)||meal.ingredients||[];
     var plateIngs=plate.additional_ingredients||[];
     if(!baseIngs.length && !plateIngs.length){ sec.style.display='none'; return; }
     sec.style.display='';
@@ -495,13 +506,14 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
   function renderSteps(plate, method){
     var sec=document.getElementById('step-section');
-    var baseSteps=(method&&method.instructions)||meal.instructions||[];
+    var vds=variantMethodData(method);
+    var baseSteps=(vds&&vds.instructions)||(method&&method.instructions)||meal.instructions||[];
     var plateSteps=plate.additional_instructions||[];
     if(!baseSteps.length && !plateSteps.length){ sec.style.display='none'; return; }
     sec.style.display='';
 
     var total=baseSteps.length+plateSteps.length;
-    var t = method ? (method.time_total_minutes||0) : 0;
+    var t = method ? ((method.time_total_minutes||0)+variantExtraTotal()) : 0;
     t += (plate.assembly_time_minutes||0);
     var metaTxt = total+' step'+(total===1?'':'s')+(formatTime(t)?' · ~'+formatTime(t):'');
     document.getElementById('step-meta').textContent = metaTxt;
@@ -537,16 +549,28 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       '</div></div>'
     ) : '';
 
+    var variantBlock='';
+    variantIdx=0;
+    if(meal.variants&&meal.variants.length>1){
+      for(var vfi=0;vfi<meal.variants.length;vfi++){ if(meal.variants[vfi].is_default){ variantIdx=vfi; break; } }
+      variantBlock='<div class="section"><span class="eyebrow">Make it</span><div class="method-list" id="variant-list">'+
+        meal.variants.map(function(vv,i){
+          var extra=(!vv.is_default)?(((vv.extra_total_minutes||0)>0)?(vv.extra_total_minutes||0):(vv.extra_active_minutes||0)):0;
+          return '<button class="method-row'+(i===variantIdx?' active':'')+'" data-variant="'+i+'"><div class="method-mid"><div class="method-name">'+esc(vv.display_name||('Style '+(i+1)))+'</div><div class="method-desc">'+esc(variantDescriptor(vv))+'</div></div>'+(extra>0?'<div class="method-time">+'+esc(formatTime(extra))+'</div>':'')+'</button>';
+        }).join('')+
+      '</div></div>';
+    }
+
     var methodBlock='';
     if(multiMethod){
       methodBlock = '<div class="section"><div class="section-head"><span class="eyebrow">Method</span><div class="servings" id="servings-ctrl-top"></div></div><div class="method-list" id="method-list">'+
         methods.map(function(mm,i){
           var d=methodDescriptor(mm);
-          return '<button class="method-row'+(i===0?' active':'')+'" data-method="'+i+'"><div class="method-mid"><div class="method-name">'+esc(mm.display_name||('Method '+(i+1)))+'</div>'+(d?'<div class="method-desc">'+esc(d)+'</div>':'')+'</div><div class="method-time">'+esc(formatTime(mm.time_total_minutes))+'</div></button>';
+          return '<button class="method-row'+(i===0?' active':'')+'" data-method="'+i+'"><div class="method-mid"><div class="method-name">'+esc(mm.display_name||('Method '+(i+1)))+'</div>'+(d?'<div class="method-desc">'+esc(d)+'</div>':'')+'</div><div class="method-time" data-mins="'+(mm.time_total_minutes||0)+'">'+esc(formatTime(mm.time_total_minutes))+'</div></button>';
         }).join('')+
       '</div></div>';
     } else if(methods.length===1 && methods[0].time_total_minutes){
-      methodBlock = '<div class="section"><span class="eyebrow">Time</span><div class="single-time">'+esc(methods[0].display_name||'Cook')+' · '+esc(formatTime(methods[0].time_total_minutes))+'</div></div>';
+      methodBlock = '<div class="section"><span class="eyebrow">Time</span><div class="single-time">'+esc(methods[0].display_name||'Cook')+' · <span id="single-time-val" data-mins="'+(methods[0].time_total_minutes||0)+'">'+esc(formatTime(methods[0].time_total_minutes))+'</span></div></div>';
     }
 
     var html =
@@ -567,6 +591,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
       // Per-meal video — populated async from /r/videos.json; stays hidden if this meal has no clip
       '<div class="section" id="video-slot" style="display:none"></div>'+
+
+      variantBlock+
 
       methodBlock+
 
@@ -649,6 +675,18 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       });
     });
 
+    // Variant rows (MAKE IT)
+    var vrows=document.querySelectorAll('#variant-list .method-row');
+    vrows.forEach(function(r){
+      r.addEventListener('click',function(){
+        variantIdx=parseInt(r.getAttribute('data-variant'),10);
+        vrows.forEach(function(x){x.classList.remove('active');});
+        r.classList.add('active');
+        renderDynamic();
+        if(typeof gtag==='function') gtag('event','recipe_variant_switch',{variant:variantIdx});
+      });
+    });
+
     // Servings stepper
     var minus=document.getElementById('serv-minus'), plus=document.getElementById('serv-plus');
     if(minus) minus.addEventListener('click',function(){ servings=clampPortions(servings-1); renderDynamic(); });
@@ -666,7 +704,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   // ── Recipe schema for SEO / AI crawlers ──
   function updateSchema(plate, method){
     var old=document.getElementById('recipe-schema'); if(old) old.remove();
-    var m=plate.plate_macros||{};
+    var m=activeMacros(plate)||{};
     var img=imageUrl(plate);
     var ingredients=[];
     var baseI=(method&&method.ingredients)||meal.ingredients||[];
