@@ -1,0 +1,5883 @@
+{
+ "butter_chicken": {
+  "name": "Butter Chicken with Basmati Rice",
+  "serves": 1,
+  "method": "Stovetop · 15m",
+  "ingredients": [
+   {
+    "n": "Chicken thigh, boneless skinless",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Coriander / cilantro (fresh)",
+    "a": 4,
+    "u": "g"
+   },
+   {
+    "n": "Butter chicken simmer sauce (jar)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Thickened cream",
+    "a": 30,
+    "u": "ml"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+30m",
+   "ingredients": [
+    {
+     "n": "Chicken thigh, boneless skinless",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Coriander / cilantro (fresh)",
+     "a": 4,
+     "u": "g"
+    },
+    {
+     "n": "Plain Greek yoghurt",
+     "a": 60,
+     "u": "g"
+    },
+    {
+     "n": "Garam masala",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground coriander",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground turmeric",
+     "a": 0.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Kashmiri chilli powder",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Garlic",
+     "a": 2,
+     "u": "cloves"
+    },
+    {
+     "n": "Fresh ginger",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ghee",
+     "a": 15,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 75,
+     "u": "g"
+    },
+    {
+     "n": "Tomato passata",
+     "a": 200,
+     "u": "ml"
+    },
+    {
+     "n": "Thickened cream",
+     "a": 60,
+     "u": "ml"
+    },
+    {
+     "n": "Salt",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "standard": [
+    {
+     "n": "Basmati rice (dry)",
+     "a": 60,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "brekkie_grow": {
+  "name": "Brekkie to GROW-Grow",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 350,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Rolled oats (raw)",
+    "a": 45,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 20,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Ground cinnamon",
+    "a": 1,
+    "u": "tsp"
+   }
+  ]
+ },
+ "mango_mass": {
+  "name": "Mango Mass",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Frozen mango chunks",
+    "a": 165,
+    "u": "g"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Mango nectar",
+    "a": 150,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Macadamia nut butter",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   }
+  ]
+ },
+ "king_kong_chocolate": {
+  "name": "King Kong Chocolate",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Thickened cream",
+    "a": 100,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate whey protein",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Cocoa powder (unsweetened)",
+    "a": 10,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "strawberry_stack": {
+  "name": "Strawberry Stack",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 250,
+    "u": "ml"
+   },
+   {
+    "n": "Coconut cream",
+    "a": 100,
+    "u": "ml"
+   },
+   {
+    "n": "Frozen strawberries",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Almond butter",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   }
+  ]
+ },
+ "choc_muscle_maxx": {
+  "name": "Choc Muscle MAXX",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla ice cream",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate whey protein",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Cocoa powder (unsweetened)",
+    "a": 5,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Rolled oats (raw)",
+    "a": 50,
+    "u": "g"
+   }
+  ]
+ },
+ "cookies_gains": {
+  "name": "Cookies & Gains",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Oreo cookies",
+    "a": 44,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 16,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla ice cream",
+    "a": 50,
+    "u": "g"
+   }
+  ]
+ },
+ "raspberry_rip": {
+  "name": "Raspberry Rip",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Coconut cream",
+    "a": 100,
+    "u": "ml"
+   },
+   {
+    "n": "Frozen raspberries",
+    "a": 125,
+    "u": "g"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Cocoa powder (unsweetened)",
+    "a": 10,
+    "u": "g"
+   },
+   {
+    "n": "Desiccated coconut",
+    "a": 6,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   }
+  ]
+ },
+ "energy_lift_heavy": {
+  "name": "Energy Lift Heavy",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Frozen mango chunks",
+    "a": 165,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Coconut cream",
+    "a": 30,
+    "u": "ml"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Espresso shot",
+    "a": 30,
+    "u": "ml"
+   },
+   {
+    "n": "Chia seeds",
+    "a": 12,
+    "u": "g"
+   }
+  ]
+ },
+ "mornin_muscle": {
+  "name": "Mornin' Muscle",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Thickened cream",
+    "a": 100,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Cocoa powder (unsweetened)",
+    "a": 10,
+    "u": "g"
+   },
+   {
+    "n": "Espresso shot",
+    "a": 60,
+    "u": "ml"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 16,
+    "u": "g"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 20,
+    "u": "ml"
+   }
+  ]
+ },
+ "dirty_eden": {
+  "name": "Dirty Eden",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Coconut water",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 200,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Frozen pineapple chunks",
+    "a": 165,
+    "u": "g"
+   },
+   {
+    "n": "Baby spinach leaves",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Avocado",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Plain Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Almond butter",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Lemon juice",
+    "a": 20,
+    "u": "ml"
+   },
+   {
+    "n": "Fresh mint leaves",
+    "a": 6,
+    "u": "count"
+   }
+  ]
+ },
+ "strawbrekkie_beast": {
+  "name": "Strawbrekkie BEAST",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Cloudy apple juice",
+    "a": 100,
+    "u": "ml"
+   },
+   {
+    "n": "Frozen strawberries",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Frozen blueberries",
+    "a": 75,
+    "u": "g"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Rolled oats (raw)",
+    "a": 45,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Almond butter",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   }
+  ]
+ },
+ "banana_bulk": {
+  "name": "Banana Bulk",
+  "serves": 1,
+  "method": "Blender · 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 350,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 240,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 48,
+    "u": "g"
+   },
+   {
+    "n": "Medjool dates",
+    "a": 48,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Ground cinnamon",
+    "a": 1,
+    "u": "tsp"
+   }
+  ]
+ },
+ "pulled_pork": {
+  "name": "Slow-Cooked BBQ Pulled Pork",
+  "serves": 8,
+  "method": "Slow Cooker · 8h 15m",
+  "ingredients": [
+   {
+    "n": "Pork shoulder, boneless",
+    "a": 2200,
+    "u": "g"
+   },
+   {
+    "n": "Cloudy apple juice",
+    "a": 180,
+    "u": "ml"
+   },
+   {
+    "n": "BBQ sauce (bottled)",
+    "a": 500,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+15m",
+   "ingredients": [
+    {
+     "n": "Pork shoulder, boneless",
+     "a": 2200,
+     "u": "g"
+    },
+    {
+     "n": "Cloudy apple juice",
+     "a": 180,
+     "u": "ml"
+    },
+    {
+     "n": "Brown sugar",
+     "a": 24,
+     "u": "g"
+    },
+    {
+     "n": "Sweet paprika",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Onion powder",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Garlic powder",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 0.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Mustard powder",
+     "a": 0.75,
+     "u": "tsp"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Tomato ketchup",
+     "a": 625,
+     "u": "g"
+    },
+    {
+     "n": "Brown sugar",
+     "a": 24,
+     "u": "g"
+    },
+    {
+     "n": "Worcestershire sauce",
+     "a": 17,
+     "u": "ml"
+    },
+    {
+     "n": "Apple cider vinegar",
+     "a": 120,
+     "u": "ml"
+    },
+    {
+     "n": "Lemon juice",
+     "a": 15,
+     "u": "ml"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 1.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Onion powder",
+     "a": 1.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Mustard powder",
+     "a": 1.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "sandwich": [
+    {
+     "n": "Brioche burger bun",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Coleslaw (mayo-based)",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 30,
+     "u": "g"
+    }
+   ],
+   "bowl": [
+    {
+     "n": "Basmati rice (dry)",
+     "a": 95,
+     "u": "g"
+    },
+    {
+     "n": "Coleslaw (mayo-based)",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Tomato ketchup",
+     "a": 15,
+     "u": "g"
+    }
+   ],
+   "baked_potato": [
+    {
+     "n": "Baking potato (Sebago or russet)",
+     "a": 350,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Sour cream",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Spring onion",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Olive oil",
+     "a": 5,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 0.25,
+     "u": "tsp"
+    }
+   ],
+   "tacos": [
+    {
+     "n": "Flour tortilla (small)",
+     "a": 3,
+     "u": "count"
+    },
+    {
+     "n": "Avocado",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Coriander / cilantro (fresh)",
+     "a": 6,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 0.5,
+     "u": "count"
+    },
+    {
+     "n": "Pickled red onion",
+     "a": 20,
+     "u": "g"
+    }
+   ],
+   "mac_cheese": [
+    {
+     "n": "Macaroni / short pasta (dry)",
+     "a": 75,
+     "u": "g"
+    },
+    {
+     "n": "Salted butter",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Plain flour",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Full-cream milk",
+     "a": 250,
+     "u": "ml"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 60,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 0.25,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.25,
+     "u": "tsp"
+    }
+   ]
+  }
+ },
+ "bolognese": {
+  "name": "Slow-Simmered Bolognese",
+  "serves": 8,
+  "method": "Slow Cooker · 4h 10m",
+  "ingredients": [
+   {
+    "n": "Beef mince (regular fat)",
+    "a": 1000,
+    "u": "g"
+   },
+   {
+    "n": "Tomato pasta sauce (jar)",
+    "a": 1000,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+1h 55m",
+   "ingredients": [
+    {
+     "n": "Beef mince (regular fat)",
+     "a": 1000,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Pancetta (diced)",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Carrot",
+     "a": 120,
+     "u": "g"
+    },
+    {
+     "n": "Celery",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Red wine (cooking)",
+     "a": 250,
+     "u": "ml"
+    },
+    {
+     "n": "Canned crushed tomatoes",
+     "a": 1600,
+     "u": "g"
+    },
+    {
+     "n": "Tomato paste",
+     "a": 60,
+     "u": "g"
+    },
+    {
+     "n": "Beef stock cube",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Worcestershire sauce",
+     "a": 20,
+     "u": "ml"
+    },
+    {
+     "n": "White sugar",
+     "a": 8,
+     "u": "g"
+    },
+    {
+     "n": "Dried oregano",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Dried thyme",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Dried bay leaves",
+     "a": 3,
+     "u": "count"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "spaghetti_dry": [
+    {
+     "n": "Spaghetti (dry)",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Parmesan (grated)",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 5,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    }
+   ],
+   "baked_potato": [
+    {
+     "n": "Baking potato (Sebago or russet)",
+     "a": 350,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Sour cream",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 5,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 0.25,
+     "u": "tsp"
+    }
+   ],
+   "garlic_bread": [
+    {
+     "n": "Garlic bread (frozen)",
+     "a": 120,
+     "u": "g"
+    },
+    {
+     "n": "Parmesan (grated)",
+     "a": 15,
+     "u": "g"
+    }
+   ],
+   "lasagne": [
+    {
+     "n": "Lasagne sheets (dry)",
+     "a": 60,
+     "u": "g"
+    },
+    {
+     "n": "Ricotta (full-fat)",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Egg (whole)",
+     "a": 0.17,
+     "u": "count"
+    },
+    {
+     "n": "Mozzarella (shredded)",
+     "a": 50,
+     "u": "g"
+    },
+    {
+     "n": "Parmesan (grated)",
+     "a": 10,
+     "u": "g"
+    },
+    {
+     "n": "Salted butter",
+     "a": 5,
+     "u": "g"
+    },
+    {
+     "n": "Plain flour",
+     "a": 5,
+     "u": "g"
+    },
+    {
+     "n": "Full-cream milk",
+     "a": 67,
+     "u": "ml"
+    },
+    {
+     "n": "Ground nutmeg",
+     "a": 0.05,
+     "u": "tsp"
+    }
+   ]
+  }
+ },
+ "massaman": {
+  "name": "Slow-Cooked Massaman Beef Curry",
+  "serves": 8,
+  "method": "Slow Cooker · 8h 15m",
+  "ingredients": [
+   {
+    "n": "Beef chuck",
+    "a": 1600,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Waxy potato (Desiree or Dutch Cream)",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Massaman curry paste",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Coconut cream",
+    "a": 800,
+    "u": "ml"
+   },
+   {
+    "n": "Beef stock (liquid)",
+    "a": 500,
+    "u": "ml"
+   },
+   {
+    "n": "Fish sauce",
+    "a": 45,
+    "u": "ml"
+   },
+   {
+    "n": "Brown sugar",
+    "a": 30,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "Full Aromatics",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Beef chuck",
+     "a": 1600,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Waxy potato (Desiree or Dutch Cream)",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Massaman curry paste",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Coconut cream",
+     "a": 800,
+     "u": "ml"
+    },
+    {
+     "n": "Beef stock (liquid)",
+     "a": 500,
+     "u": "ml"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Fresh ginger",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Fish sauce",
+     "a": 45,
+     "u": "ml"
+    },
+    {
+     "n": "Brown sugar",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Tamarind paste",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Cinnamon stick",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Star anise",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Dried bay leaves",
+     "a": 3,
+     "u": "count"
+    }
+   ]
+  },
+  "plates": {
+   "rice": [
+    {
+     "n": "Basmati rice (dry)",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Roasted peanuts (unsalted)",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Coriander / cilantro (fresh)",
+     "a": 4,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 0.25,
+     "u": "count"
+    }
+   ]
+  }
+ },
+ "chilli_con_carne": {
+  "name": "Slow-Simmered Chilli Con Carne",
+  "serves": 8,
+  "method": "Slow Cooker · 6h 15m",
+  "ingredients": [
+   {
+    "n": "Beef mince (regular fat)",
+    "a": 1000,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Chilli con carne seasoning mix (sachet)",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Canned crushed tomatoes",
+    "a": 1600,
+    "u": "g"
+   },
+   {
+    "n": "Canned red kidney beans",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Canned black beans",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Water",
+    "a": 250,
+    "u": "ml"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+1h 10m",
+   "ingredients": [
+    {
+     "n": "Beef mince (regular fat)",
+     "a": 1000,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 5,
+     "u": "cloves"
+    },
+    {
+     "n": "Red capsicum",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Canned crushed tomatoes",
+     "a": 1600,
+     "u": "g"
+    },
+    {
+     "n": "Tomato paste",
+     "a": 90,
+     "u": "g"
+    },
+    {
+     "n": "Canned red kidney beans",
+     "a": 250,
+     "u": "g"
+    },
+    {
+     "n": "Canned black beans",
+     "a": 250,
+     "u": "g"
+    },
+    {
+     "n": "Beef stock cube",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "White sugar",
+     "a": 12,
+     "u": "g"
+    },
+    {
+     "n": "Sweet paprika",
+     "a": 8,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 10,
+     "u": "tsp"
+    },
+    {
+     "n": "Garlic powder",
+     "a": 4,
+     "u": "tsp"
+    },
+    {
+     "n": "Onion powder",
+     "a": 4,
+     "u": "tsp"
+    },
+    {
+     "n": "Dried oregano",
+     "a": 4,
+     "u": "tsp"
+    },
+    {
+     "n": "Cayenne pepper",
+     "a": 2.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Salt",
+     "a": 1.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Water",
+     "a": 250,
+     "u": "ml"
+    }
+   ]
+  },
+  "plates": {
+   "bowl": [
+    {
+     "n": "Basmati rice (dry)",
+     "a": 85,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Sour cream",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Avocado",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Coriander / cilantro (fresh)",
+     "a": 4,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 0.25,
+     "u": "count"
+    }
+   ],
+   "nachos": [
+    {
+     "n": "Corn chips",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 40,
+     "u": "g"
+    },
+    {
+     "n": "Sour cream",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Avocado",
+     "a": 60,
+     "u": "g"
+    },
+    {
+     "n": "Pickled jalapeños (sliced)",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Spring onion",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Coriander / cilantro (fresh)",
+     "a": 4,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 0.25,
+     "u": "count"
+    }
+   ]
+  }
+ },
+ "lamb_shanks": {
+  "name": "Slow-Cooked Lamb Shanks",
+  "serves": 4,
+  "method": "Slow Cooker · 8h 15m",
+  "ingredients": [
+   {
+    "n": "Lamb shank (bone-in)",
+    "a": 4,
+    "u": "count"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Carrot",
+    "a": 130,
+    "u": "g"
+   },
+   {
+    "n": "Celery",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Slow-cook recipe base (pouch)",
+    "a": 175,
+    "u": "g"
+   },
+   {
+    "n": "Canned crushed tomatoes",
+    "a": 400,
+    "u": "g"
+   },
+   {
+    "n": "Tomato paste",
+    "a": 140,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+10m",
+   "ingredients": [
+    {
+     "n": "Lamb shank (bone-in)",
+     "a": 4,
+     "u": "count"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Carrot",
+     "a": 130,
+     "u": "g"
+    },
+    {
+     "n": "Celery",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 45,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 3,
+     "u": "cloves"
+    },
+    {
+     "n": "Red wine (cooking)",
+     "a": 625,
+     "u": "ml"
+    },
+    {
+     "n": "Canned crushed tomatoes",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Tomato paste",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Chicken stock (liquid, low sodium)",
+     "a": 500,
+     "u": "ml"
+    },
+    {
+     "n": "Fresh thyme",
+     "a": 5,
+     "u": "count"
+    },
+    {
+     "n": "Dried bay leaves",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "mash": [
+    {
+     "n": "Baking potato (Sebago or russet)",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Salted butter",
+     "a": 25,
+     "u": "g"
+    },
+    {
+     "n": "Thickened cream",
+     "a": 50,
+     "u": "ml"
+    },
+    {
+     "n": "Full-cream milk",
+     "a": 30,
+     "u": "ml"
+    },
+    {
+     "n": "Fresh flat-leaf parsley",
+     "a": 3,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 0.25,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.125,
+     "u": "tsp"
+    }
+   ]
+  }
+ },
+ "beef_stew": {
+  "name": "Hearty Beef Stew",
+  "serves": 6,
+  "method": "Slow Cooker · 8h 15m",
+  "ingredients": [
+   {
+    "n": "Beef chuck",
+    "a": 1200,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Carrot",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Celery",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Brown/Swiss mushrooms",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Baby chat potatoes",
+    "a": 400,
+    "u": "g"
+   },
+   {
+    "n": "Beef casserole recipe base (sachet)",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Tomato paste",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Water",
+    "a": 750,
+    "u": "ml"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+10m",
+   "ingredients": [
+    {
+     "n": "Beef chuck",
+     "a": 1200,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 250,
+     "u": "g"
+    },
+    {
+     "n": "Carrot",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Celery",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Brown/Swiss mushrooms",
+     "a": 250,
+     "u": "g"
+    },
+    {
+     "n": "Baby chat potatoes",
+     "a": 400,
+     "u": "g"
+    },
+    {
+     "n": "Plain flour",
+     "a": 50,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 45,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Red wine (cooking)",
+     "a": 500,
+     "u": "ml"
+    },
+    {
+     "n": "Beef stock (liquid)",
+     "a": 750,
+     "u": "ml"
+    },
+    {
+     "n": "Tomato paste",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Worcestershire sauce",
+     "a": 10,
+     "u": "ml"
+    },
+    {
+     "n": "Fresh thyme",
+     "a": 4,
+     "u": "count"
+    },
+    {
+     "n": "Dried bay leaves",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "mash": [
+    {
+     "n": "Baking potato (Sebago or russet)",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Salted butter",
+     "a": 25,
+     "u": "g"
+    },
+    {
+     "n": "Thickened cream",
+     "a": 50,
+     "u": "ml"
+    },
+    {
+     "n": "Full-cream milk",
+     "a": 30,
+     "u": "ml"
+    },
+    {
+     "n": "Fresh flat-leaf parsley",
+     "a": 3,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 0.25,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.125,
+     "u": "tsp"
+    }
+   ],
+   "bread": [
+    {
+     "n": "Crusty sourdough or baguette",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Salted butter",
+     "a": 10,
+     "u": "g"
+    },
+    {
+     "n": "Fresh flat-leaf parsley",
+     "a": 3,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "maple_muscle_toast": {
+  "name": "Maple Muscle Toast",
+  "serves": 1,
+  "method": "Stovetop · 15m",
+  "ingredients": [
+   {
+    "n": "Brioche loaf (sliced)",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 100,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 20,
+    "u": "ml"
+   },
+   {
+    "n": "Salted butter",
+    "a": 10,
+    "u": "g"
+   },
+   {
+    "n": "Ground cinnamon",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "muscle_oats": {
+  "name": "Muscle Oats",
+  "serves": 1,
+  "method": "Stovetop · 8m",
+  "ingredients": [
+   {
+    "n": "Rolled oats (raw)",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 250,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Ground cinnamon",
+    "a": 1,
+    "u": "tsp"
+   }
+  ]
+ },
+ "scramble_stack": {
+  "name": "Scramble Stack",
+  "serves": 1,
+  "method": "Stovetop · 12m",
+  "ingredients": [
+   {
+    "n": "Egg (whole)",
+    "a": 4,
+    "u": "count"
+   },
+   {
+    "n": "Tasty cheese",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Crusty sourdough or baguette",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Avocado",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Salted butter",
+    "a": 12,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "overnight_oats": {
+  "name": "Protein Overnight Oats",
+  "serves": 1,
+  "method": "No-Cook (Overnight) · 4h 5m",
+  "ingredients": [
+   {
+    "n": "Rolled oats (raw)",
+    "a": 50,
+    "u": "g"
+   },
+   {
+    "n": "Chia seeds",
+    "a": 10,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 200,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   }
+  ],
+  "plates": {
+   "standard": [
+    {
+     "n": "Banana",
+     "a": 120,
+     "u": "g"
+    }
+   ],
+   "loaded": [
+    {
+     "n": "Banana",
+     "a": 120,
+     "u": "g"
+    },
+    {
+     "n": "Peanut butter (natural)",
+     "a": 32,
+     "u": "g"
+    },
+    {
+     "n": "Granola",
+     "a": 40,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "greek_yoghurt_bowl": {
+  "name": "Greek Yoghurt Power Bowl",
+  "serves": 1,
+  "method": "No-Cook · 5m",
+  "ingredients": [
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 280,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   }
+  ],
+  "plates": {
+   "standard": [
+    {
+     "n": "Mixed berries (fresh or frozen)",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Chia seeds",
+     "a": 10,
+     "u": "g"
+    },
+    {
+     "n": "Granola",
+     "a": 40,
+     "u": "g"
+    }
+   ],
+   "loaded": [
+    {
+     "n": "Mixed berries (fresh or frozen)",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Banana",
+     "a": 120,
+     "u": "g"
+    },
+    {
+     "n": "Chia seeds",
+     "a": 10,
+     "u": "g"
+    },
+    {
+     "n": "Granola",
+     "a": 50,
+     "u": "g"
+    },
+    {
+     "n": "Peanut butter (natural)",
+     "a": 32,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "cottage_cheese_bowl": {
+  "name": "Cottage Cheese Power Bowl",
+  "serves": 1,
+  "method": "No-Cook Assembly · 3m",
+  "ingredients": [
+   {
+    "n": "Cottage cheese (full-fat)",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Cherry tomatoes",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Cucumber",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Everything bagel seasoning",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "pb_banana_toast": {
+  "name": "PB Banana Toast",
+  "serves": 1,
+  "method": "No-Cook · 5m",
+  "ingredients": [
+   {
+    "n": "Crusty sourdough or baguette",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 25,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Chia seeds",
+    "a": 8,
+    "u": "g"
+   }
+  ]
+ },
+ "protein_pancakes": {
+  "name": "Protein Pancakes",
+  "serves": 1,
+  "method": "Stovetop · 18m",
+  "ingredients": [
+   {
+    "n": "Rolled oats (raw)",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Vanilla Greek yoghurt (full-fat)",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 60,
+    "u": "ml"
+   },
+   {
+    "n": "Baking powder",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salted butter",
+    "a": 8,
+    "u": "g"
+   }
+  ],
+  "plates": {
+   "standard": [
+    {
+     "n": "Mixed berries (fresh or frozen)",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Maple syrup",
+     "a": 20,
+     "u": "ml"
+    }
+   ],
+   "loaded": [
+    {
+     "n": "Banana",
+     "a": 120,
+     "u": "g"
+    },
+    {
+     "n": "Peanut butter (natural)",
+     "a": 32,
+     "u": "g"
+    },
+    {
+     "n": "Maple syrup",
+     "a": 20,
+     "u": "ml"
+    }
+   ]
+  }
+ },
+ "steak_and_eggs": {
+  "name": "Steak & Eggs",
+  "serves": 1,
+  "method": "Stovetop · 22m",
+  "ingredients": [
+   {
+    "n": "Sirloin steak",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 3,
+    "u": "count"
+   },
+   {
+    "n": "Waxy potato (Desiree or Dutch Cream)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Salted butter",
+    "a": 12,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 7,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 2,
+    "u": "cloves"
+   },
+   {
+    "n": "Salt",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "shakshuka": {
+  "name": "Shakshuka",
+  "serves": 1,
+  "method": "Stovetop · 25m",
+  "ingredients": [
+   {
+    "n": "Egg (whole)",
+    "a": 4,
+    "u": "count"
+   },
+   {
+    "n": "Canned crushed tomatoes",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Red capsicum",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Feta cheese",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Crusty sourdough or baguette",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 9,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 2,
+    "u": "cloves"
+   },
+   {
+    "n": "Ground cumin",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Sweet paprika",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "freezer_breakfast_burrito": {
+  "name": "Freezer Breakfast Burrito",
+  "serves": 5,
+  "method": "Stovetop (Batch) · 40m",
+  "ingredients": [
+   {
+    "n": "Breakfast sausage mince",
+    "a": 350,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 10,
+    "u": "count"
+   },
+   {
+    "n": "Large flour tortilla (burrito size)",
+    "a": 5,
+    "u": "count"
+   },
+   {
+    "n": "Tasty cheese",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Waxy potato (Desiree or Dutch Cream)",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Red capsicum",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 11,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "baked_oats": {
+  "name": "Baked Oats",
+  "serves": 1,
+  "method": "Oven · 30m",
+  "ingredients": [
+   {
+    "n": "Rolled oats (raw)",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 120,
+    "u": "ml"
+   },
+   {
+    "n": "Banana",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 21,
+    "u": "g"
+   },
+   {
+    "n": "Baking powder",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground cinnamon",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ],
+  "plates": {
+   "standard": [
+    {
+     "n": "Vanilla Greek yoghurt (full-fat)",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Mixed berries (fresh or frozen)",
+     "a": 60,
+     "u": "g"
+    }
+   ],
+   "loaded": [
+    {
+     "n": "Vanilla Greek yoghurt (full-fat)",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Banana",
+     "a": 60,
+     "u": "g"
+    },
+    {
+     "n": "Peanut butter (natural)",
+     "a": 32,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "smoked_salmon_bagel": {
+  "name": "Smoked Salmon Bagel",
+  "serves": 1,
+  "method": "Stovetop · 12m",
+  "ingredients": [
+   {
+    "n": "Smoked salmon",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Bagel",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Cream cheese",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Avocado",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Cucumber",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 5,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "big_breakfast_plate": {
+  "name": "Big Breakfast Plate",
+  "serves": 1,
+  "method": "Stovetop · 25m",
+  "ingredients": [
+   {
+    "n": "Breakfast sausage mince",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Bacon (rashers)",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 3,
+    "u": "count"
+   },
+   {
+    "n": "Baked beans",
+    "a": 130,
+    "u": "g"
+   },
+   {
+    "n": "Brown/Swiss mushrooms",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Cherry tomatoes",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Crusty sourdough or baguette",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Salted butter",
+    "a": 12,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "egg_muffins": {
+  "name": "Egg Muffins",
+  "serves": 4,
+  "method": "Oven (Batch) · 35m",
+  "ingredients": [
+   {
+    "n": "Egg (whole)",
+    "a": 8,
+    "u": "count"
+   },
+   {
+    "n": "Cottage cheese (full-fat)",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Breakfast sausage mince",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Tasty cheese",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Baby spinach leaves",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 5,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ],
+  "plates": {
+   "standard": [
+    {
+     "n": "Crusty sourdough or baguette",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Avocado",
+     "a": 80,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "protein_ice_cream": {
+  "name": "Protein Ice Cream",
+  "serves": 1,
+  "method": "Blend & Freeze (no machine) · 6h 5m",
+  "ingredients": [
+   {
+    "n": "Full-cream milk",
+    "a": 360,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 35,
+    "u": "g"
+   },
+   {
+    "n": "Instant pudding mix",
+    "a": 12,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   }
+  ]
+ },
+ "cottage_cheese_ice_cream": {
+  "name": "Cottage Cheese Ice Cream",
+  "serves": 1,
+  "method": "Blend & Freeze (no machine) · 5h 5m",
+  "ingredients": [
+   {
+    "n": "Cottage cheese (full-fat)",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Mixed berries (fresh or frozen)",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 25,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "chocolate_protein_mug_cake": {
+  "name": "Chocolate Protein Mug Cake",
+  "serves": 1,
+  "method": "Microwave · 5m",
+  "ingredients": [
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Cocoa powder (unsweetened)",
+    "a": 6,
+    "u": "g"
+   },
+   {
+    "n": "Baking powder",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 60,
+    "u": "ml"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 7,
+    "u": "ml"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 15,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.06,
+    "u": "tsp"
+   }
+  ]
+ },
+ "fudgy_protein_brownies": {
+  "name": "Fudgy Protein Brownies",
+  "serves": 8,
+  "method": "Oven · 40m",
+  "ingredients": [
+   {
+    "n": "Peanut butter (natural)",
+    "a": 128,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate whey protein",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Cocoa powder (unsweetened)",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 80,
+    "u": "ml"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 30,
+    "u": "ml"
+   },
+   {
+    "n": "Baking powder",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 85,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "protein_chocolate_chip_cookies": {
+  "name": "Protein Chocolate Chip Cookies",
+  "serves": 10,
+  "method": "Oven · 25m",
+  "ingredients": [
+   {
+    "n": "Peanut butter (natural)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 50,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Honey",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Baking powder",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "protein_banana_bread": {
+  "name": "Protein Banana Bread",
+  "serves": 10,
+  "method": "Oven · 1h",
+  "ingredients": [
+   {
+    "n": "Banana",
+    "a": 360,
+    "u": "g"
+   },
+   {
+    "n": "Plain Greek yoghurt",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Oat flour",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 60,
+    "u": "ml"
+   },
+   {
+    "n": "Baking powder",
+    "a": 1.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground cinnamon",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "edible_protein_cookie_dough": {
+  "name": "Edible Protein Cookie Dough",
+  "serves": 3,
+  "method": "No-Cook · 5m",
+  "ingredients": [
+   {
+    "n": "Peanut butter (natural)",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Oat flour",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 30,
+    "u": "ml"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 40,
+    "u": "ml"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 0.06,
+    "u": "tsp"
+   }
+  ]
+ },
+ "no_bake_protein_cheesecake": {
+  "name": "No-Bake Protein Cheesecake",
+  "serves": 4,
+  "method": "No-Bake (fridge-set) · 4h 15m",
+  "ingredients": [
+   {
+    "n": "Cream cheese",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Cottage cheese (full-fat)",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Plain Greek yoghurt",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 40,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Oat flour",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 28,
+    "u": "g"
+   },
+   {
+    "n": "Mixed berries (fresh or frozen)",
+    "a": 100,
+    "u": "g"
+   }
+  ]
+ },
+ "chocolate_protein_mousse": {
+  "name": "Chocolate Protein Mousse",
+  "serves": 1,
+  "method": "Blend & Chill · 35m",
+  "ingredients": [
+   {
+    "n": "Cottage cheese (full-fat)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate whey protein",
+    "a": 15,
+    "u": "g"
+   },
+   {
+    "n": "Cocoa powder (unsweetened)",
+    "a": 12,
+    "u": "g"
+   },
+   {
+    "n": "Maple syrup",
+    "a": 15,
+    "u": "ml"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 20,
+    "u": "ml"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 10,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.06,
+    "u": "tsp"
+   }
+  ]
+ },
+ "frozen_date_snickers_bark": {
+  "name": "Frozen Date Snickers Bark",
+  "serves": 10,
+  "method": "No-Bake (freezer-set) · 40m",
+  "ingredients": [
+   {
+    "n": "Medjool dates",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Peanut butter (natural)",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Roasted peanuts (unsalted)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.12,
+    "u": "tsp"
+   }
+  ]
+ },
+ "palacinke": {
+  "name": "Palačinke (Croatian Crêpes)",
+  "serves": 5,
+  "method": "Stovetop (traditional) · 30m",
+  "ingredients": [
+   {
+    "n": "Plain flour",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 400,
+    "u": "ml"
+   },
+   {
+    "n": "White sugar",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   },
+   {
+    "n": "Salted butter",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Jam (mixed berry or apricot)",
+    "a": 100,
+    "u": "g"
+   }
+  ]
+ },
+ "greek_yogurt_snack": {
+  "name": "Greek Yogurt",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Plain Greek yoghurt (full-fat)",
+    "a": 200,
+    "u": "g"
+   }
+  ]
+ },
+ "beef_jerky": {
+  "name": "Beef Jerky",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Beef jerky",
+    "a": 40,
+    "u": "g"
+   }
+  ]
+ },
+ "edamame": {
+  "name": "Edamame",
+  "serves": 1,
+  "method": "Steam / Microwave · 4m",
+  "ingredients": [
+   {
+    "n": "Edamame (in pods)",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.25,
+    "u": "tsp"
+   }
+  ]
+ },
+ "protein_shake": {
+  "name": "Protein Shake",
+  "serves": 1,
+  "method": "Shake & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Vanilla whey protein",
+    "a": 35,
+    "u": "g"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 350,
+    "u": "ml"
+   }
+  ]
+ },
+ "protein_bar": {
+  "name": "Protein Bar",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Protein bar (store-bought)",
+    "a": 1,
+    "u": "count"
+   }
+  ]
+ },
+ "cheese_snack": {
+  "name": "Cheese",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Tasty cheese",
+    "a": 30,
+    "u": "g"
+   }
+  ]
+ },
+ "hard_boiled_eggs": {
+  "name": "Hard-Boiled Eggs",
+  "serves": 1,
+  "method": "Boil (prep-ahead) · 12m",
+  "ingredients": [
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Salt",
+    "a": 0.12,
+    "u": "tsp"
+   }
+  ]
+ },
+ "tuna_pouch": {
+  "name": "Tuna Pouch",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Tuna (canned / pouch)",
+    "a": 95,
+    "u": "g"
+   }
+  ]
+ },
+ "roasted_chickpeas": {
+  "name": "Roasted Chickpeas",
+  "serves": 3,
+  "method": "Oven (or buy ready-roasted) · 35m",
+  "ingredients": [
+   {
+    "n": "Chickpeas (canned)",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 15,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "no_bake_protein_balls": {
+  "name": "No-Bake Protein Balls",
+  "serves": 12,
+  "method": "No-Bake (roll & chill) · 40m",
+  "ingredients": [
+   {
+    "n": "Peanut butter (natural)",
+    "a": 130,
+    "u": "g"
+   },
+   {
+    "n": "Rolled oats (raw)",
+    "a": 120,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla whey protein",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Honey",
+    "a": 60,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Vanilla extract",
+    "a": 1,
+    "u": "tsp"
+   }
+  ]
+ },
+ "mixed_nuts": {
+  "name": "Mixed Nuts",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Mixed nuts",
+    "a": 40,
+    "u": "g"
+   }
+  ]
+ },
+ "trail_mix": {
+  "name": "Trail Mix",
+  "serves": 1,
+  "method": "Grab & Go (or mix your own) · 1m",
+  "ingredients": [
+   {
+    "n": "Mixed nuts",
+    "a": 30,
+    "u": "g"
+   },
+   {
+    "n": "Dried fruit mix",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Chocolate chips",
+    "a": 10,
+    "u": "g"
+   }
+  ]
+ },
+ "banana_snack": {
+  "name": "Banana",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Banana",
+    "a": 120,
+    "u": "g"
+   }
+  ]
+ },
+ "steamed_rice": {
+  "name": "Steamed Rice",
+  "serves": 1,
+  "method": "Stovetop · 20m",
+  "ingredients": [
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 75,
+    "u": "g"
+   }
+  ]
+ },
+ "steamed_mixed_veg": {
+  "name": "Steamed Mixed Vegetables",
+  "serves": 1,
+  "method": "Steam · 12m",
+  "ingredients": [
+   {
+    "n": "Broccoli florets",
+    "a": 150,
+    "u": "g"
+   }
+  ]
+ },
+ "baked_potato": {
+  "name": "Baked Potato",
+  "serves": 1,
+  "method": "Oven · 50m",
+  "ingredients": [
+   {
+    "n": "Baking potato (Sebago or russet)",
+    "a": 150,
+    "u": "g"
+   }
+  ]
+ },
+ "berries": {
+  "name": "Mixed Berries",
+  "serves": 1,
+  "method": "Rinse & Go · 2m",
+  "ingredients": [
+   {
+    "n": "Mixed berries (fresh or frozen)",
+    "a": 150,
+    "u": "g"
+   }
+  ]
+ },
+ "dried_fruit": {
+  "name": "Dried Fruit",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Dried fruit mix",
+    "a": 40,
+    "u": "g"
+   }
+  ]
+ },
+ "dark_chocolate": {
+  "name": "Dark Chocolate",
+  "serves": 1,
+  "method": "Grab & Go · 1m",
+  "ingredients": [
+   {
+    "n": "Dark chocolate (70%+)",
+    "a": 30,
+    "u": "g"
+   }
+  ]
+ },
+ "teriyaki_chicken_rice_bowl": {
+  "name": "Teriyaki Chicken Rice Bowl",
+  "serves": 4,
+  "method": "One-Pan Stovetop · 25m",
+  "ingredients": [
+   {
+    "n": "Chicken breast",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 370,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 28,
+    "u": "g"
+   },
+   {
+    "n": "Broccoli florets",
+    "a": 500,
+    "u": "g"
+   },
+   {
+    "n": "Spring onion",
+    "a": 4,
+    "u": "count"
+   },
+   {
+    "n": "Sesame seeds",
+    "a": 18,
+    "u": "g"
+   },
+   {
+    "n": "Teriyaki sauce (bottled)",
+    "a": 250,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Chicken breast",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 370,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 28,
+     "u": "g"
+    },
+    {
+     "n": "Broccoli florets",
+     "a": 500,
+     "u": "g"
+    },
+    {
+     "n": "Spring onion",
+     "a": 4,
+     "u": "count"
+    },
+    {
+     "n": "Sesame seeds",
+     "a": 18,
+     "u": "g"
+    },
+    {
+     "n": "Soy sauce",
+     "a": 120,
+     "u": "ml"
+    },
+    {
+     "n": "Honey",
+     "a": 126,
+     "u": "g"
+    },
+    {
+     "n": "Rice vinegar",
+     "a": 45,
+     "u": "ml"
+    },
+    {
+     "n": "Fresh ginger",
+     "a": 3,
+     "u": "tsp"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Cornstarch",
+     "a": 12,
+     "u": "g"
+    },
+    {
+     "n": "Water",
+     "a": 30,
+     "u": "ml"
+    },
+    {
+     "n": "Sesame oil (toasted)",
+     "a": 5,
+     "u": "ml"
+    }
+   ]
+  }
+ },
+ "beef_broccoli_stir_fry": {
+  "name": "Beef & Broccoli Stir-Fry",
+  "serves": 4,
+  "method": "One-Pan Stovetop · 20m",
+  "ingredients": [
+   {
+    "n": "Sirloin steak",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 370,
+    "u": "g"
+   },
+   {
+    "n": "Broccoli florets",
+    "a": 500,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 28,
+    "u": "g"
+   },
+   {
+    "n": "Stir-fry sauce (bottled, oyster-style)",
+    "a": 200,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Sirloin steak",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 370,
+     "u": "g"
+    },
+    {
+     "n": "Broccoli florets",
+     "a": 500,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 28,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Fresh ginger",
+     "a": 3,
+     "u": "tsp"
+    },
+    {
+     "n": "Soy sauce",
+     "a": 75,
+     "u": "ml"
+    },
+    {
+     "n": "Cornstarch",
+     "a": 16,
+     "u": "g"
+    },
+    {
+     "n": "Oyster sauce",
+     "a": 45,
+     "u": "ml"
+    },
+    {
+     "n": "Chinese cooking wine (Shaoxing)",
+     "a": 30,
+     "u": "ml"
+    },
+    {
+     "n": "Brown sugar",
+     "a": 12,
+     "u": "g"
+    },
+    {
+     "n": "Water",
+     "a": 125,
+     "u": "ml"
+    },
+    {
+     "n": "Sesame oil (toasted)",
+     "a": 5,
+     "u": "ml"
+    }
+   ]
+  }
+ },
+ "thai_basil_chicken": {
+  "name": "Thai Basil Chicken",
+  "serves": 4,
+  "method": "Stir-Fry · 20m",
+  "ingredients": [
+   {
+    "n": "Chicken mince (ground chicken)",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 360,
+    "u": "g"
+   },
+   {
+    "n": "Thai basil (fresh)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 6,
+    "u": "cloves"
+   },
+   {
+    "n": "Red chilli (sliced)",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 28,
+    "u": "g"
+   },
+   {
+    "n": "Green beans",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Stir-fry sauce (bottled, oyster-style)",
+    "a": 150,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Chicken mince (ground chicken)",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 360,
+     "u": "g"
+    },
+    {
+     "n": "Thai basil (fresh)",
+     "a": 40,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 6,
+     "u": "cloves"
+    },
+    {
+     "n": "Red chilli (sliced)",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 28,
+     "u": "g"
+    },
+    {
+     "n": "Green beans",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Oyster sauce",
+     "a": 60,
+     "u": "ml"
+    },
+    {
+     "n": "Soy sauce",
+     "a": 40,
+     "u": "ml"
+    },
+    {
+     "n": "Fish sauce",
+     "a": 20,
+     "u": "ml"
+    },
+    {
+     "n": "White sugar",
+     "a": 12,
+     "u": "g"
+    }
+   ]
+  },
+  "plates": {
+   "fried_egg": [
+    {
+     "n": "Egg (whole)",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Olive oil",
+     "a": 3.5,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "beef_bulgogi_bowl": {
+  "name": "Beef Bulgogi Bowl",
+  "serves": 4,
+  "method": "Marinate & Sear · 25m",
+  "ingredients": [
+   {
+    "n": "Sirloin steak",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 370,
+    "u": "g"
+   },
+   {
+    "n": "Sesame seeds",
+    "a": 9,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Spring onion",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Bulgogi marinade (bottled)",
+    "a": 240,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+20m",
+   "ingredients": [
+    {
+     "n": "Sirloin steak",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 370,
+     "u": "g"
+    },
+    {
+     "n": "Sesame seeds",
+     "a": 9,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 14,
+     "u": "g"
+    },
+    {
+     "n": "Spring onion",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Soy sauce",
+     "a": 60,
+     "u": "ml"
+    },
+    {
+     "n": "Brown sugar",
+     "a": 24,
+     "u": "g"
+    },
+    {
+     "n": "Sesame oil (toasted)",
+     "a": 15,
+     "u": "ml"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Brown onion",
+     "a": 75,
+     "u": "g"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Pear (or apple)",
+     "a": 0.5,
+     "u": "count"
+    },
+    {
+     "n": "Fresh ginger",
+     "a": 1,
+     "u": "tsp"
+    }
+   ]
+  }
+ },
+ "spaghetti_carbonara": {
+  "name": "Spaghetti Carbonara",
+  "serves": 1,
+  "method": "Stovetop (cook fresh) · 15m",
+  "ingredients": [
+   {
+    "n": "Spaghetti (dry)",
+    "a": 125,
+    "u": "g"
+   },
+   {
+    "n": "Bacon (rashers)",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Parmesan (grated)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.75,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 1,
+    "u": "tsp"
+   }
+  ]
+ },
+ "sheet_pan_salmon_potatoes": {
+  "name": "Sheet-Pan Lemon-Garlic Salmon & Potatoes",
+  "serves": 4,
+  "method": "Sheet-Pan (oven) · 40m",
+  "ingredients": [
+   {
+    "n": "Salmon fillet",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Baby chat potatoes",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Broccoli florets",
+    "a": 400,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 28,
+    "u": "g"
+   },
+   {
+    "n": "Salted butter",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 4,
+    "u": "cloves"
+   },
+   {
+    "n": "Lemon",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Fresh flat-leaf parsley",
+    "a": 10,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "chicken_fajita_bowl": {
+  "name": "Chicken Fajita Bowl",
+  "serves": 4,
+  "method": "Stovetop · 30m",
+  "ingredients": [
+   {
+    "n": "Chicken breast",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 320,
+    "u": "g"
+   },
+   {
+    "n": "Red capsicum",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Canned black beans",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 42,
+    "u": "g"
+   },
+   {
+    "n": "Lime",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Water",
+    "a": 480,
+    "u": "ml"
+   },
+   {
+    "n": "Taco/fajita seasoning (sachet)",
+    "a": 60,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Chicken breast",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 320,
+     "u": "g"
+    },
+    {
+     "n": "Red capsicum",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Canned black beans",
+     "a": 250,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 42,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Water",
+     "a": 480,
+     "u": "ml"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Chilli powder",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Sweet paprika",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Garlic powder",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  }
+ },
+ "spicy_chipotle_chicken_burrito": {
+  "name": "Spicy Chipotle Chicken Burrito",
+  "serves": 4,
+  "method": "Cook & Assemble · 25m",
+  "ingredients": [
+   {
+    "n": "Chicken thigh, boneless skinless",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 260,
+    "u": "g"
+   },
+   {
+    "n": "Canned black beans",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Tasty cheese",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Cherry tomatoes",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Lime",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Coriander / cilantro (fresh)",
+    "a": 12,
+    "u": "g"
+   },
+   {
+    "n": "Taco/fajita seasoning (sachet)",
+    "a": 60,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Chicken thigh, boneless skinless",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 260,
+     "u": "g"
+    },
+    {
+     "n": "Canned black beans",
+     "a": 250,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Cherry tomatoes",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 14,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Coriander / cilantro (fresh)",
+     "a": 12,
+     "u": "g"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Smoked paprika",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Chilli powder",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Cayenne pepper",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "standard": [
+    {
+     "n": "Large flour tortilla (burrito size)",
+     "a": 1,
+     "u": "count"
+    }
+   ],
+   "extra_hot": [
+    {
+     "n": "Large flour tortilla (burrito size)",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Chipotle in adobo (optional upgrade)",
+     "a": 15,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "chicken_shawarma": {
+  "name": "Chicken Shawarma",
+  "serves": 4,
+  "method": "Marinate & Cook · 35m",
+  "ingredients": [
+   {
+    "n": "Chicken thigh, boneless skinless",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Plain Greek yoghurt",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 5,
+    "u": "cloves"
+   },
+   {
+    "n": "Olive oil",
+    "a": 28,
+    "u": "g"
+   },
+   {
+    "n": "Lemon",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Cherry tomatoes",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Cucumber",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Shawarma-style seasoning (blend)",
+    "a": 25,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Chicken thigh, boneless skinless",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Plain Greek yoghurt",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 5,
+     "u": "cloves"
+    },
+    {
+     "n": "Olive oil",
+     "a": 28,
+     "u": "g"
+    },
+    {
+     "n": "Lemon",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Cherry tomatoes",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Cucumber",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground coriander",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Sweet paprika",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground turmeric",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "wrap": [
+    {
+     "n": "Large flour tortilla (burrito size)",
+     "a": 1.5,
+     "u": "count"
+    }
+   ],
+   "rice_bowl": [
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 100,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "satay_chicken": {
+  "name": "Satay Chicken",
+  "serves": 4,
+  "method": "One-Pan Stir-Fry · 25m",
+  "ingredients": [
+   {
+    "n": "Chicken thigh, boneless skinless",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Lime",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Satay simmer sauce (jar)",
+    "a": 500,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Chicken thigh, boneless skinless",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 14,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Peanut butter (natural)",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Coconut milk (canned, full-fat)",
+     "a": 150,
+     "u": "ml"
+    },
+    {
+     "n": "Soy sauce",
+     "a": 45,
+     "u": "ml"
+    },
+    {
+     "n": "Brown sugar",
+     "a": 18,
+     "u": "g"
+    },
+    {
+     "n": "Curry powder",
+     "a": 3,
+     "u": "tsp"
+    },
+    {
+     "n": "Garlic",
+     "a": 3,
+     "u": "cloves"
+    },
+    {
+     "n": "Cornstarch",
+     "a": 6,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "honey_chicken": {
+  "name": "Honey Chicken",
+  "serves": 4,
+  "method": "Pan-Fried (lighter) · 25m",
+  "ingredients": [
+   {
+    "n": "Chicken breast",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 370,
+    "u": "g"
+   },
+   {
+    "n": "Cornstarch",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 28,
+    "u": "g"
+   },
+   {
+    "n": "Sesame seeds",
+    "a": 9,
+    "u": "g"
+   },
+   {
+    "n": "Spring onion",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Honey soy garlic marinade (bottled)",
+    "a": 200,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Chicken breast",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 370,
+     "u": "g"
+    },
+    {
+     "n": "Cornstarch",
+     "a": 40,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 28,
+     "u": "g"
+    },
+    {
+     "n": "Sesame seeds",
+     "a": 9,
+     "u": "g"
+    },
+    {
+     "n": "Spring onion",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Honey",
+     "a": 90,
+     "u": "g"
+    },
+    {
+     "n": "Soy sauce",
+     "a": 45,
+     "u": "ml"
+    },
+    {
+     "n": "Rice vinegar",
+     "a": 30,
+     "u": "ml"
+    },
+    {
+     "n": "Sesame oil (toasted)",
+     "a": 10,
+     "u": "ml"
+    },
+    {
+     "n": "Garlic",
+     "a": 3,
+     "u": "cloves"
+    }
+   ]
+  }
+ },
+ "chicken_mac_and_cheese": {
+  "name": "Chicken Mac and Cheese",
+  "serves": 4,
+  "method": "Stovetop + Oven · 40m",
+  "ingredients": [
+   {
+    "n": "Chicken breast",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Macaroni / short pasta (dry)",
+    "a": 340,
+    "u": "g"
+   },
+   {
+    "n": "Cottage cheese (full-fat)",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 300,
+    "u": "ml"
+   },
+   {
+    "n": "Tasty cheese",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Salted butter",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Plain flour",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Garlic powder",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Onion powder",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Smoked paprika",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "turkey_meatballs_spaghetti": {
+  "name": "Turkey Meatballs & Spaghetti",
+  "serves": 4,
+  "method": "Oven + Stovetop · 35m",
+  "ingredients": [
+   {
+    "n": "Turkey mince",
+    "a": 600,
+    "u": "g"
+   },
+   {
+    "n": "Spaghetti (dry)",
+    "a": 320,
+    "u": "g"
+   },
+   {
+    "n": "Breadcrumbs (panko or fine)",
+    "a": 50,
+    "u": "g"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 60,
+    "u": "ml"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Parmesan (grated)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 1.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Tomato pasta sauce (jar)",
+    "a": 750,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+10m",
+   "ingredients": [
+    {
+     "n": "Turkey mince",
+     "a": 600,
+     "u": "g"
+    },
+    {
+     "n": "Spaghetti (dry)",
+     "a": 320,
+     "u": "g"
+    },
+    {
+     "n": "Breadcrumbs (panko or fine)",
+     "a": 50,
+     "u": "g"
+    },
+    {
+     "n": "Full-cream milk",
+     "a": 60,
+     "u": "ml"
+    },
+    {
+     "n": "Egg (whole)",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Parmesan (grated)",
+     "a": 40,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 1.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Canned crushed tomatoes",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Tomato paste",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Olive oil",
+     "a": 28,
+     "u": "g"
+    },
+    {
+     "n": "Dried oregano",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Basil, dried",
+     "a": 2,
+     "u": "tsp"
+    }
+   ]
+  }
+ },
+ "tuna_pasta_bake": {
+  "name": "Tuna Pasta Bake",
+  "serves": 4,
+  "method": "Stovetop + Oven · 35m",
+  "ingredients": [
+   {
+    "n": "Tuna (canned / pouch)",
+    "a": 370,
+    "u": "g"
+   },
+   {
+    "n": "Macaroni / short pasta (dry)",
+    "a": 320,
+    "u": "g"
+   },
+   {
+    "n": "Cottage cheese (full-fat)",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Full-cream milk",
+    "a": 250,
+    "u": "ml"
+   },
+   {
+    "n": "Tasty cheese",
+    "a": 130,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 2,
+    "u": "cloves"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Peas (frozen)",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Sweetcorn (canned or frozen)",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Breadcrumbs (panko or fine)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Dried oregano",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "lamb_kofta": {
+  "name": "Lamb Kofta",
+  "serves": 4,
+  "method": "Mix, Form & Grill · 30m",
+  "ingredients": [
+   {
+    "n": "Lamb mince (lean; or regular)",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Plain Greek yoghurt",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 5,
+    "u": "cloves"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Breadcrumbs (panko or fine)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Lemon",
+    "a": 1,
+    "u": "count"
+   },
+   {
+    "n": "Fresh flat-leaf parsley",
+    "a": 20,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Cherry tomatoes",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Cucumber",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Shawarma-style seasoning (blend)",
+    "a": 20,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Lamb mince (lean; or regular)",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Plain Greek yoghurt",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 5,
+     "u": "cloves"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Breadcrumbs (panko or fine)",
+     "a": 40,
+     "u": "g"
+    },
+    {
+     "n": "Lemon",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Fresh flat-leaf parsley",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 14,
+     "u": "g"
+    },
+    {
+     "n": "Cherry tomatoes",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Cucumber",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground coriander",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Sweet paprika",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground cinnamon",
+     "a": 0.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  },
+  "plates": {
+   "rice_bowl": [
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 85,
+     "u": "g"
+    }
+   ],
+   "wrap": [
+    {
+     "n": "Large flour tortilla (burrito size)",
+     "a": 1.5,
+     "u": "count"
+    }
+   ]
+  }
+ },
+ "sheet_pan_sausage_veg": {
+  "name": "Sheet-Pan Sausage & Veg",
+  "serves": 4,
+  "method": "Sheet-Pan (oven) · 45m",
+  "ingredients": [
+   {
+    "n": "Sausages (chicken/turkey default; or pork)",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Baby chat potatoes",
+    "a": 1200,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Red capsicum",
+    "a": 400,
+    "u": "g"
+   },
+   {
+    "n": "Broccoli florets",
+    "a": 400,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 32,
+    "u": "g"
+   },
+   {
+    "n": "Dried oregano",
+    "a": 2,
+    "u": "tsp"
+   },
+   {
+    "n": "Sweet paprika",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Garlic powder",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ]
+ },
+ "honey_soy_salmon_noodles": {
+  "name": "Honey Soy Salmon Noodle Bowl",
+  "serves": 4,
+  "method": "Sheet-Pan or Pan-Sear · 25m",
+  "ingredients": [
+   {
+    "n": "Salmon fillet",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Noodles (egg / soba / udon / rice)",
+    "a": 280,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Broccoli florets",
+    "a": 400,
+    "u": "g"
+   },
+   {
+    "n": "Sesame seeds",
+    "a": 6,
+    "u": "g"
+   },
+   {
+    "n": "Spring onion",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Honey soy garlic marinade (bottled)",
+    "a": 175,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+5m",
+   "ingredients": [
+    {
+     "n": "Salmon fillet",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Noodles (egg / soba / udon / rice)",
+     "a": 280,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 14,
+     "u": "g"
+    },
+    {
+     "n": "Broccoli florets",
+     "a": 400,
+     "u": "g"
+    },
+    {
+     "n": "Sesame seeds",
+     "a": 6,
+     "u": "g"
+    },
+    {
+     "n": "Spring onion",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Honey",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Soy sauce",
+     "a": 60,
+     "u": "ml"
+    },
+    {
+     "n": "Garlic",
+     "a": 3,
+     "u": "cloves"
+    },
+    {
+     "n": "Fresh ginger",
+     "a": 3,
+     "u": "tsp"
+    },
+    {
+     "n": "Sesame oil (toasted)",
+     "a": 10,
+     "u": "ml"
+    },
+    {
+     "n": "Rice vinegar",
+     "a": 30,
+     "u": "ml"
+    }
+   ]
+  }
+ },
+ "carne_asada_bowl": {
+  "name": "Carne Asada Bowl",
+  "serves": 4,
+  "method": "Marinate & Grill · 30m",
+  "ingredients": [
+   {
+    "n": "Sirloin steak",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Jasmine rice (dry)",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Canned black beans",
+    "a": 250,
+    "u": "g"
+   },
+   {
+    "n": "Sweetcorn (canned or frozen)",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Cherry tomatoes",
+    "a": 200,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Lime",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Tasty cheese",
+    "a": 80,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 14,
+    "u": "g"
+   },
+   {
+    "n": "Coriander / cilantro (fresh)",
+    "a": 15,
+    "u": "g"
+   },
+   {
+    "n": "Taco/fajita seasoning (sachet)",
+    "a": 30,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "From Scratch",
+   "extra_time": "+10m",
+   "ingredients": [
+    {
+     "n": "Sirloin steak",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 300,
+     "u": "g"
+    },
+    {
+     "n": "Canned black beans",
+     "a": 250,
+     "u": "g"
+    },
+    {
+     "n": "Sweetcorn (canned or frozen)",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Cherry tomatoes",
+     "a": 200,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Lime",
+     "a": 2,
+     "u": "count"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 80,
+     "u": "g"
+    },
+    {
+     "n": "Olive oil",
+     "a": 14,
+     "u": "g"
+    },
+    {
+     "n": "Coriander / cilantro (fresh)",
+     "a": 15,
+     "u": "g"
+    },
+    {
+     "n": "Orange juice",
+     "a": 80,
+     "u": "ml"
+    },
+    {
+     "n": "Garlic",
+     "a": 3,
+     "u": "cloves"
+    },
+    {
+     "n": "Ground cumin",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Chilli powder",
+     "a": 2,
+     "u": "tsp"
+    },
+    {
+     "n": "Sweet paprika",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Brown sugar",
+     "a": 5,
+     "u": "g"
+    },
+    {
+     "n": "Salt",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    }
+   ]
+  }
+ },
+ "chicken_schnitzel": {
+  "name": "Chicken Schnitzel",
+  "serves": 4,
+  "method": "Crumb & Pan-Fry · 30m",
+  "ingredients": [
+   {
+    "n": "Chicken breast",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Plain flour",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Egg (whole)",
+    "a": 2,
+    "u": "count"
+   },
+   {
+    "n": "Breadcrumbs (panko or fine)",
+    "a": 100,
+    "u": "g"
+   },
+   {
+    "n": "Olive oil",
+    "a": 55,
+    "u": "g"
+   },
+   {
+    "n": "Garlic powder",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Sweet paprika",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ],
+  "plates": {
+   "plate": [
+    {
+     "n": "Baking potato (Sebago or russet)",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Lemon",
+     "a": 0.25,
+     "u": "count"
+    }
+   ],
+   "roll": [
+    {
+     "n": "Bread roll / bun",
+     "a": 1,
+     "u": "count"
+    },
+    {
+     "n": "Salted butter",
+     "a": 10,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 20,
+     "u": "g"
+    },
+    {
+     "n": "Lettuce",
+     "a": 15,
+     "u": "g"
+    },
+    {
+     "n": "Sweet chilli sauce",
+     "a": 15,
+     "u": "ml"
+    }
+   ],
+   "parma": [
+    {
+     "n": "Tomato paste",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Tasty cheese",
+     "a": 30,
+     "u": "g"
+    },
+    {
+     "n": "Pickled jalapeños (sliced)",
+     "a": 10,
+     "u": "g"
+    },
+    {
+     "n": "Baking potato (Sebago or russet)",
+     "a": 125,
+     "u": "g"
+    }
+   ]
+  }
+ },
+ "beef_ragu_gnocchi": {
+  "name": "Beef Ragù with Gnocchi",
+  "serves": 4,
+  "method": "Stovetop · 40m",
+  "ingredients": [
+   {
+    "n": "Gnocchi (store-bought)",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Parmesan (grated)",
+    "a": 40,
+    "u": "g"
+   },
+   {
+    "n": "Dried oregano",
+    "a": 1,
+    "u": "tsp"
+   },
+   {
+    "n": "Salt",
+    "a": 1.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Beef mince (regular fat)",
+    "a": 800,
+    "u": "g"
+   },
+   {
+    "n": "Tomato pasta sauce (jar)",
+    "a": 1000,
+    "u": "g"
+   }
+  ],
+  "alt": {
+   "label": "Slow-Braised Chuck",
+   "extra_time": "+2h 5m",
+   "ingredients": [
+    {
+     "n": "Gnocchi (store-bought)",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Brown onion",
+     "a": 150,
+     "u": "g"
+    },
+    {
+     "n": "Parmesan (grated)",
+     "a": 40,
+     "u": "g"
+    },
+    {
+     "n": "Dried oregano",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Salt",
+     "a": 1.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Ground black pepper",
+     "a": 0.5,
+     "u": "tsp"
+    },
+    {
+     "n": "Beef chuck",
+     "a": 800,
+     "u": "g"
+    },
+    {
+     "n": "Canned crushed tomatoes",
+     "a": 700,
+     "u": "g"
+    },
+    {
+     "n": "Tomato paste",
+     "a": 50,
+     "u": "g"
+    },
+    {
+     "n": "Garlic",
+     "a": 4,
+     "u": "cloves"
+    },
+    {
+     "n": "Carrot",
+     "a": 120,
+     "u": "g"
+    },
+    {
+     "n": "Celery",
+     "a": 100,
+     "u": "g"
+    },
+    {
+     "n": "Beef stock cube",
+     "a": 10,
+     "u": "g"
+    },
+    {
+     "n": "Red wine (cooking)",
+     "a": 125,
+     "u": "ml"
+    },
+    {
+     "n": "Olive oil",
+     "a": 18,
+     "u": "g"
+    },
+    {
+     "n": "Dried thyme",
+     "a": 1,
+     "u": "tsp"
+    },
+    {
+     "n": "Dried bay leaves",
+     "a": 2,
+     "u": "count"
+    }
+   ]
+  }
+ },
+ "cevapi": {
+  "name": "Ćevapi",
+  "serves": 4,
+  "method": "Mix, Rest & Grill · 30m",
+  "ingredients": [
+   {
+    "n": "Beef mince (regular fat)",
+    "a": 500,
+    "u": "g"
+   },
+   {
+    "n": "Lamb mince (lean; or regular)",
+    "a": 300,
+    "u": "g"
+   },
+   {
+    "n": "Brown onion",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Garlic",
+    "a": 6,
+    "u": "cloves"
+   },
+   {
+    "n": "Sweet paprika",
+    "a": 4,
+    "u": "tsp"
+   },
+   {
+    "n": "Bicarb soda (baking soda)",
+    "a": 0.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ajvar (red pepper relish)",
+    "a": 160,
+    "u": "g"
+   },
+   {
+    "n": "Cherry tomatoes",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Cucumber",
+    "a": 150,
+    "u": "g"
+   },
+   {
+    "n": "Salt",
+    "a": 1.5,
+    "u": "tsp"
+   },
+   {
+    "n": "Ground black pepper",
+    "a": 0.5,
+    "u": "tsp"
+   }
+  ],
+  "plates": {
+   "flatbread": [
+    {
+     "n": "Large flour tortilla (burrito size)",
+     "a": 1.5,
+     "u": "count"
+    }
+   ],
+   "rice_plate": [
+    {
+     "n": "Jasmine rice (dry)",
+     "a": 85,
+     "u": "g"
+    }
+   ]
+  }
+ }
+}
