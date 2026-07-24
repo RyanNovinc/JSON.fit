@@ -6,7 +6,7 @@ Stop immediately. Respond ONLY with this exact text:
 
 - Use Claude.ai with web search enabled in the message composer
 - Or ChatGPT with browsing enabled
-Then paste this prompt again."
+Then start again from your JSON.fit prompt."
 
 Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
 
@@ -77,6 +77,8 @@ NOT valid reasons to accept a violation: "acceptable trade-off", "close enough",
 Valid reasons: fixing would push another macro out of tolerance; fixing would violate a hard dietary restriction; fixing would push budget significantly above what was specified; **or the generation prompt states the user has already accepted a named shortfall** — in that case close it with adjusters/fillers as routine and do not relitigate it.
 
 You must ATTEMPT a fix before accepting any violation.
+
+**Attempting a fix means trying a few sensible adjustments, not proving impossibility.** Never write a search, solver, or exhaustive enumeration over option and scale combinations. If two or three targeted attempts don't land it, document it in one line naming the constraint that blocks it and move on. A weekly carb or fat average that can't be reached without breaking a daily calorie, protein or fibre band is documented, not solved.
 
 ## HARD CONSTRAINTS — ZERO TOLERANCE
 
