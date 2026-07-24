@@ -1,0 +1,18 @@
+{
+  "name": "json-fit-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "json.fit — static GitHub Pages site. No bundler: the build steps below just generate committed files.",
+  "scripts": {
+    "build": "npm run build:social && npm run build:recipes",
+    "build:social": "node scripts/build-social-images.mjs",
+    "build:recipes": "node scripts/build-recipe-pages.mjs",
+    "build:blog": "node scripts/build-blog.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
