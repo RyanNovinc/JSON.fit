@@ -5,7 +5,7 @@ Stop immediately. Respond ONLY with this exact text:
 "This prompt needs to fetch files from json.fit, but fetching isn't working in your AI. To use JSON.fit:
 - Use Claude.ai with web search enabled in the message composer
 - Or ChatGPT with browsing enabled
-Then paste this prompt again."
+Then start again from your JSON.fit prompt."
 
 Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
 
@@ -71,7 +71,13 @@ The following ARE valid reasons to accept a violation:
 - Fixing would require an exercise not in the library
 - Fixing would violate a hard constraint from the user profile (equipment, movement limitations)
 
-**You must ATTEMPT a fix before accepting any violation.** If your justification sounds like rationalisation, the answer is to fix the program, not defend the violation. Show the attempted fix and its cascade impact in your output. Only after demonstrating that the fix creates a worse violation may you leave the original violation in place.
+**You must ATTEMPT a fix before accepting any violation.**
+
+**Attempting a fix is capped at three rounds.** Try up to three targeted changes — add or remove sets, swap an exercise for another in the library, move sets to another training day. If the violation is still there after the third round, stop, mark the muscle ℹ️ CONSTRAINED, name the constraint blocking it in one line, and present the plan. Never write a search, solver, or enumeration over exercise and set combinations, and never state or imply that you checked every possibility. Three honest attempts and a clear explanation is the required standard, not proof.
+
+Name the blocking constraint in one line in the change log. You do not need to reproduce the failed attempts or their cascade tables in your output — the user wants the corrected plan and a short reason, not your working.
+
+If your justification sounds like rationalisation rather than a named constraint, the answer is to fix the program, not defend the violation.
 
 The user can override your fix if they disagree. Your job is to enforce the rules first.
 
@@ -254,7 +260,7 @@ After every fix:
 2. Recount the volume enumeration table for each of those muscles
 3. Verify each muscle is still in its target range
 4. If any muscle moved outside its range due to the cascade, that's a NEW violation requiring its own fix
-5. Repeat until no muscle is outside its target range
+5. Repeat — **but stop after three full fix-and-recount rounds.** If muscles are still trading places outside their ranges after the third round, the option set cannot satisfy every range simultaneously. Keep the best arrangement you reached, mark whichever muscles remain outside range as ℹ️ CONSTRAINED, name the constraint in one line in the change log, and present the plan. A plan that lands 11 of 12 muscles in range and says so plainly is the correct outcome — an endless recount loop is not.
 
 Do not claim a fix works without showing the recount tables for every affected muscle.
 
