@@ -78,7 +78,7 @@ Valid reasons: fixing would push another macro out of tolerance; fixing would vi
 
 You must ATTEMPT a fix before accepting any violation.
 
-**Attempting a fix means trying a few sensible adjustments, not proving impossibility.** Never write a search, solver, or exhaustive enumeration over option and scale combinations. If two or three targeted attempts don't land it, document it in one line naming the constraint that blocks it and move on. A weekly carb or fat average that can't be reached without breaking a daily calorie, protein or fibre band is documented, not solved.
+**Attempting a fix is capped at three adjustments.** Try up to three targeted changes — rescale an option, swap within a slot, resize an adjuster. If the target still misses after the third, stop, name the constraint that blocks it in one line, and move on. Never write a search, solver, or enumeration over option and scale combinations, and never state or imply that you checked every possibility. Three honest attempts and a clear explanation is the required standard, not proof.
 
 ## HARD CONSTRAINTS — ZERO TOLERANCE
 
@@ -175,7 +175,8 @@ FAIL if the last meal breaches the stated window. Fix by shifting dinner earlier
 
 - Every ingredient from every invented meal, every adjuster, and every curated meal (from your knowledge of those recipes) appears, with quantities totalled across the plan.
 - Pricing uses ACTUAL pack size, not portion used (90g cheese needed, smallest pack 250g → price the 250g pack), realistic for the stated store and location.
-- Categories logical; no phantom items; notes only for items bought outside the main store.
+- The pack-size rule applies only to items sold in fixed packs. Loose produce (bananas, individual onions, single heads of broccoli, one pear) is bought and priced at the amount the plan actually uses. FAIL on a quantity that far exceeds what the plan consumes — one banana snack does not need a two kilo bunch.
+- Categories logical; no phantom items; notes only for items bought outside the main store. A price tip, storage hint, cooking suggestion, or "cheaper elsewhere" remark is NOT a location note — remove it.
 - Total presented as a range with the 10% buffer (e.g. "$165–$182") and a currency symbol — never a single number.
 - Cross-check: pick 3 random ingredients from the plan and confirm they appear with correct totals.
 
