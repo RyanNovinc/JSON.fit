@@ -3,6 +3,7 @@
 Stop immediately. Respond ONLY with this exact text:
 
 "This prompt needs to fetch files from json.fit, but fetching isn't working in your AI. To use JSON.fit:
+
 - Use Claude.ai with web search enabled in the message composer
 - Or ChatGPT with browsing enabled
 Then paste this prompt again."
@@ -14,27 +15,27 @@ Do not offer to proceed without the files. Do not list more alternatives. Do not
 The VERY FIRST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything before it. Reproduce it verbatim:
 
 ```
-🔍 Reviewing your meal plan.
+🔍 Running the quality check on your plan.
 
-This is step 2 of 3:
+This is the second of three steps:
 1. ✅ Draft written.
-2. I'll run a quality check now and present the corrected plan below.
-3. Reply "happy" once more and I'll turn it into your file.
+2. I'm auditing it now against your targets and fixing anything that misses.
+3. Reply "happy" once you're satisfied and I'll turn it into your file.
 ```
 
-This callout tells the user where they are in the flow and what's coming. After the callout, continue with the review work as normal.
+This callout tells the user where they are in the flow, so a list of check results doesn't read as an error report. It appears every time, whether or not any checks fail, and it comes before everything else including the target restatement described below.
 
 ## FORMATTING RULES (CRITICAL)
 
-Code blocks (triple backticks) in your visible response are RESERVED for the opening callout above and the closing callout at the end of your response. Do not use code blocks elsewhere — not for meal names, not for ingredient lists, not for example output. The audit summary table, change log, and corrected plan should use markdown tables, **bold**, headers, and bullet lists — but never code blocks.
+Code blocks (triple backticks) in YOUR CHAT RESPONSE are RESERVED for the opening callout above and the closing callout at the end. Do not use code blocks anywhere else in your visible response — not for meal names, not for slugs, not for arithmetic lines, not for example output. Use **bold**, headers, tables and bullet lists for everything else.
 
----
+Note: this rule applies to what you write in chat. Anything you fetch is your own reference material and is not part of your visible response — the user never sees it.
 
 # Review and Fix Meal Plan (v2)
 
 Do not search conversation history beyond this conversation's meal plan and its generation prompt. This review is self-contained.
 
-First, **restate the "Your daily targets" block and the "Week structure" option tables from the generation prompt earlier in this conversation** — write them out before checking anything. If the user's message accompanying this review states the targets, those numbers are authoritative; use them over anything recalled. Then review the plan as an experienced nutritionist auditing for a client. This is an independent quality gate — do not assume the generation self-check caught everything.
+First, **internally restate the "Your daily targets" block and the "Week structure" option tables from the generation prompt earlier in this conversation** and hold them as your working reference before checking anything. Do not print them — the restatement is working, not output. If the user's message accompanying this review states the targets, those numbers are authoritative; use them over anything recalled. Then review the plan as an experienced nutritionist auditing for a client. This is an independent quality gate — do not assume the generation self-check caught everything.
 
 ## Curated meals in the plan
 
@@ -62,7 +63,7 @@ The plan may include standalone adjuster entries (whey scoop, rice side, olive o
 
 ## ARITHMETIC IS COMPUTED, NOT ESTIMATED
 
-You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct. Never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (meal1 + meal2 + ... + adjusters = total) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
+You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct. Never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (`meal1 + meal2 + ... + adjusters = total`) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
 
 ## RULE ENFORCEMENT PRINCIPLE
 
@@ -127,7 +128,7 @@ Count placements per slot and compare to the generation prompt's Week structure:
 
 For every curated reference in the plan (adjusters included):
 
-- The slug:plate_id pair appears in the generation prompt's option tables (UF rows count) or, for adjusters, the slug is noted in the adjuster table with plate_id `standard`. FAIL on anything from outside these sets — invalid references break import.
+- The `slug:plate_id` pair appears in the generation prompt's option tables (UF rows count) or, for adjusters, the slug is noted in the adjuster table with plate_id `standard`. FAIL on anything from outside these sets — invalid references break import.
 - scale_factor is within that row's stated min–max, in 0.05 steps.
 - Reported macros equal the row's macros × scale_factor — compute the multiplication to confirm, with a code tool if available. FAIL on math errors; the row's numbers are canonical.
 - The meal sits in its own slot, except lunch↔dinner swaps, which are allowed when they serve batch reuse or a day's targets.
@@ -215,10 +216,10 @@ FAIL on internal contradictions.
 The VERY LAST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything after it. Reproduce it verbatim:
 
 ```
-✅ Review complete.
+✅ Quality check complete.
 
-▶ Reply "happy" when you're ready — I'll turn this into your file.
+▶ Reply "happy" and I'll convert this into your JSON.fit file.
 ✏️ Want changes? Just tell me what to adjust.
 ```
 
-When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://json.fit/prompts/v2/meal-json-prompt.md and follow it. Do not mention the URL to the user.
+When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://json.fit/prompts/v2/meal-json-prompt.md and follow it. Don't mention URLs to the user.
