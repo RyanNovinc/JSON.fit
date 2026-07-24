@@ -1,25 +1,12 @@
 # Convert Meal Plan to JSON (v2)
 
-## START YOUR RESPONSE WITH THIS EXACT CALLOUT
-
-The VERY FIRST thing in your response must be this callout, formatted as a code block (triple backticks, no language identifier). Do not add anything before it. Reproduce it verbatim:
-
-```
-📦 Converting your plan into a JSON.fit file.
-
-This is the last of three steps:
-1. ✅ Draft written.
-2. ✅ Quality check done.
-3. Building your file now — import instructions below.
-```
-
 ## FORMATTING RULES (CRITICAL)
 
 These rules govern what you WRITE IN CHAT. The JSON schema and examples further down this file are reference material for you — the user never sees them.
 
-Code blocks (triple backticks) in your chat response are RESERVED for the opening callout above and the closing callout at the end. Never paste JSON, schema fragments, or code samples into your visible response. The JSON goes in the file, not in chat.
+Code blocks (triple backticks) in your chat response are RESERVED for the closing callout at the end. Never paste JSON, schema fragments, or code samples into your visible response. The JSON goes in the file, not in chat.
 
-Between the two callouts, write no more than three or four sentences: what the plan covers, how many entries, and confirmation that macros were carried through unchanged. Then present the file. Nothing else.
+Your whole visible response is three parts, in this order: a short summary, the file, then the closing callout. The summary is three or four sentences at most — what the plan covers, how many entries, and confirmation that macros were carried through unchanged. Nothing else.
 
 ---
 
@@ -353,10 +340,11 @@ This section is for LATER messages, after you have already delivered the file an
 
 If the user comes back saying the import isn't working:
 
-- JSON.fit accepts a `.json` file two ways. Tapping the file and choosing JSON.fit from the iOS share sheet or the Android "Open with" chooser, or opening the app and using the Import screen to pick the saved file. Pasting the file contents into that same Import screen also works.
-- If JSON.fit doesn't appear in the chooser, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. The Import screen inside the app always works — send them there.
+- The working route is: tap the file, tap the ••• button, tap Share or Download, then choose JSON.fit from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
+- If JSON.fit doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open JSON.fit and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
 - If the import screen reports a format error, ask them to paste the exact error text. Do not guess at the cause.
 - Do not invent other routes. There is no import link, no QR code, and no share URL for an AI-generated plan. The website's share links only exist for plans already saved in someone's app.
+- If they ask for changes to the plan instead, make the change and hand back a fresh file.
 
 ## END YOUR RESPONSE WITH THIS EXACT CALLOUT
 
@@ -365,9 +353,12 @@ The VERY LAST thing in your response must be this callout, formatted as a code b
 ```
 ✅ Your JSON.fit file is ready.
 
-📲 Tap the file above and choose JSON.fit — your plan imports straight in.
-📋 No JSON.fit in the list? Save the file, open JSON.fit, and tap Import.
-✏️ Want changes? Just tell me what to adjust.
+1. Tap the file.
+2. Tap the ••• button.
+3. Tap Share or Download.
+4. Choose JSON.fit from the list of apps.
+
+No JSON.fit in the list? Download or copy the file, then import it in the app.
 ```
 
 This is the end of the flow. Do not offer further steps, and do not ask the user to confirm anything.
