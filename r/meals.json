@@ -2794,7 +2794,7 @@
     "display_name": "BBQ Pulled Pork Burger",
     "description": "Brioche bun, melty cheese, slaw on top — the American classic, bulker-sized.",
     "base_serving_multiplier": 1,
-    "image_filename": "BBQ Pulled Pork Burger (sandwich).png",
+    "image_filename": "pulled-pork-sandwich.png",
     "additional_ingredients": [
      {
       "ingredient_id": "brioche_bun",
@@ -2858,7 +2858,7 @@
     "display_name": "Pulled Pork Rice Bowl",
     "description": "Bed of basmati, BBQ pork, slaw on the side, cheese on top. Easiest weeknight plate.",
     "base_serving_multiplier": 1,
-    "image_filename": "Pulled Pork Rice Bowl (bowl).png",
+    "image_filename": "pulled-pork-bowl.png",
     "additional_ingredients": [
      {
       "ingredient_id": "basmati_rice_dry",
@@ -2930,7 +2930,7 @@
     "display_name": "Loaded Pulled Pork Baked Potato",
     "description": "Whole baked potato, split and stuffed with BBQ pork, cheese, sour cream, spring onion.",
     "base_serving_multiplier": 1,
-    "image_filename": "Loaded Pulled Pork Baked Potato (baked_potato).png",
+    "image_filename": "pulled-pork-baked-potato.png",
     "equipment_required": [
      "oven"
     ],
@@ -3022,7 +3022,7 @@
     "display_name": "Pulled Pork Tacos",
     "description": "Three soft tortillas, plain shredded pork, smashed avo, cheese, coriander, lime.",
     "base_serving_multiplier": 1,
-    "image_filename": "Pulled Pork Tacos (tacos).png",
+    "image_filename": "pulled-pork-tacos.png",
     "reserve_before_finishing_note": "Reserve approximately 151g of plain shredded pork before tossing the rest with BBQ sauce. This plate uses unsauced pork — BBQ flavour conflicts with the Mexican plate.",
     "additional_ingredients": [
      {
@@ -3112,7 +3112,7 @@
     "description": "Stovetop mac and cheese topped with a chonky portion of BBQ pork. Treat night.",
     "is_stunt_plate": true,
     "base_serving_multiplier": 1.5,
-    "image_filename": "Pulled Pork Mac & Cheese Stack ⚡ STUNT PLATE (mac_cheese).png",
+    "image_filename": "pulled-pork-mac-cheese.png",
     "equipment_required": [
      "stovetop"
     ],
@@ -4045,7 +4045,7 @@
     "display_name": "Spaghetti Bolognese",
     "description": "Classic spag bol — al dente pasta, sauce tossed through, parmesan blizzard, drizzle of good oil.",
     "base_serving_multiplier": 1,
-    "image_filename": "Spaghetti Bolognese (spaghetti).png",
+    "image_filename": "bolognese-spaghetti.png",
     "equipment_required": [
      "stovetop"
     ],
@@ -4121,7 +4121,7 @@
     "display_name": "Loaded Bolognese Baked Potato",
     "description": "Whole baked potato split open and piled with bolognese, cheese and sour cream. Pub classic.",
     "base_serving_multiplier": 1,
-    "image_filename": "Loaded Bolognese Baked Potato (baked_potato).png",
+    "image_filename": "bolognese-baked-potato.png",
     "equipment_required": [
      "oven"
     ],
@@ -4211,7 +4211,7 @@
     "display_name": "Bolognese with Garlic Bread",
     "description": "Bolognese served as a stew in a bowl, with cheesy garlic bread for dipping. No pasta, all comfort.",
     "base_serving_multiplier": 1,
-    "image_filename": "Bolognese with Garlic Bread (garlic_bread).png",
+    "image_filename": "bolognese-garlic-bread.png",
     "equipment_required": [
      "oven"
     ],
@@ -4274,7 +4274,7 @@
     "description": "Layered baked lasagne with ricotta, mozzarella and béchamel. A weekend project worth the effort.",
     "is_stunt_plate": true,
     "base_serving_multiplier": 1,
-    "image_filename": "Bolognese Lasagne ⚡ STUNT PLATE (lasagne).png",
+    "image_filename": "bolognese-lasagne.png",
     "equipment_required": [
      "oven",
      "stovetop"
@@ -19665,7 +19665,7 @@
      "fat_g": 32.7,
      "fiber_g": 4.9
     },
-    "image_filename": "Lamb Kofta Rice Bowl (rice_bowl).png"
+    "image_filename": "lamb-kofta-rice-bowl.png"
    },
    {
     "id": "wrap",
