@@ -6,7 +6,7 @@ Stop immediately. Respond ONLY with this exact text:
 
 - Use Claude.ai with web search enabled in the message composer
 - Or ChatGPT with browsing enabled
-Then start again from your JSON.fit prompt."
+Then paste this prompt again."
 
 Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
 
@@ -52,6 +52,14 @@ The plan may include standalone adjuster entries (whey scoop, rice side, olive o
 - Where the table notes a curated slug, the entry is a curated reference (plate_id `standard`); otherwise it's a minimal invented entry using the table's exact unit macros.
 - When a day misses a target, adding or resizing an adjuster is a valid fix — prefer the smallest change that lands the day. If sensible adjuster amounts can't close a gap, fix the underlying meals; never stack absurd quantities.
 
+## Variety setting and the Variety note
+
+The generation prompt carries a VARIETY directive (convenience / balanced / high) — a user setting applying to MAIN slots only. Variety is generation's job, not yours: do not add or remove variety, and do not treat repetition in breakfast, snack or dessert slots as a defect at any setting.
+
+The plan notes must contain a 'Variety' item (one line per main slot). It is required plan content, not draft commentary — preserve it. While counting placements in check 2, confirm its per-slot numbers match the plan; correct the numbers if they don't.
+
+A reported shortfall that names its binding constraint is DOCUMENTED IMPOSSIBILITY under the rule enforcement principle — accept it, do not relitigate or attempt fixes. A shortfall with no named constraint, or a missing Variety note, gets the note added/corrected plus at most one advisory line in the change log. Never run a fix pass for variety.
+
 ## CRITICAL INSTRUCTIONS
 
 1. **Review the plan** using the checklist below, noting PASS or FAIL for each check.
@@ -78,8 +86,6 @@ Valid reasons: fixing would push another macro out of tolerance; fixing would vi
 
 You must ATTEMPT a fix before accepting any violation.
 
-**Attempting a fix is capped at three adjustments.** Try up to three targeted changes — rescale an option, swap within a slot, resize an adjuster. If the target still misses after the third, stop, name the constraint that blocks it in one line, and move on. Never write a search, solver, or enumeration over option and scale combinations, and never state or imply that you checked every possibility. Three honest attempts and a clear explanation is the required standard, not proof.
-
 ## HARD CONSTRAINTS — ZERO TOLERANCE
 
 These must pass after your fixes. If any still fail after revision, you have not finished — go back and fix again.
@@ -91,7 +97,7 @@ These must pass after your fixes. If any still fail after revision, you have not
 - **Occurrences** — slot counts exactly match the generation prompt's Week structure (dessert exact, never more, never "optional"). Adjusters exempt.
 - **Option-set integrity** — every curated reference in the plan exists in the generation prompt's option tables (including UF rows) or its adjuster table. Nothing from outside those sets.
 - **Meal timing** — first and last meals respect the times stated in the generation prompt's targets block.
-- **No draft content** — zero working, iteration, or revision commentary in the output.
+- **No draft content** — zero working, iteration, or revision commentary in the output (the Variety item in the plan notes is plan content, not draft commentary).
 
 ## What "Fix" Means
 
@@ -175,8 +181,7 @@ FAIL if the last meal breaches the stated window. Fix by shifting dinner earlier
 
 - Every ingredient from every invented meal, every adjuster, and every curated meal (from your knowledge of those recipes) appears, with quantities totalled across the plan.
 - Pricing uses ACTUAL pack size, not portion used (90g cheese needed, smallest pack 250g → price the 250g pack), realistic for the stated store and location.
-- The pack-size rule applies only to items sold in fixed packs. Loose produce (bananas, individual onions, single heads of broccoli, one pear) is bought and priced at the amount the plan actually uses. FAIL on a quantity that far exceeds what the plan consumes — one banana snack does not need a two kilo bunch.
-- Categories logical; no phantom items; notes only for items bought outside the main store. A price tip, storage hint, cooking suggestion, or "cheaper elsewhere" remark is NOT a location note — remove it.
+- Categories logical; no phantom items; notes only for items bought outside the main store.
 - Total presented as a range with the 10% buffer (e.g. "$165–$182") and a currency symbol — never a single number.
 - Cross-check: pick 3 random ingredients from the plan and confirm they appear with correct totals.
 
@@ -191,7 +196,7 @@ Grocery total falls within the budget stated in the generation prompt; ingredien
 Check across the plan: 3+ primary protein sources, 6+ vegetables, ~300g non-starchy vegetables/day, 3+ carb sources, and weekly coverage of leafy greens, crucifers, vitamin C, omega-3, legumes, whole grains.
 
 - Where a shortfall can be fixed **without leaving the option tables** — choosing a different picked option, a UF row, or vegetable adjusters (frozen veg) — fix it.
-- Where the shortfall exists because the user's picked basket is itself narrow, it is ADVISORY, not a FAIL: one line in the change log ("variety is limited by your picks — add a couple more options anytime"), no swaps. A one-pick-per-slot week is a designed outcome, not a defect.
+- Where the shortfall exists because the user's picked basket is itself narrow, it is ADVISORY, not a FAIL: one line in the change log ("see the Variety note — add a couple more options anytime"), no swaps. A one-pick-per-slot week is a designed outcome, not a defect.
 
 ### 11. Overall Coherence
 
