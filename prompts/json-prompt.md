@@ -31,42 +31,51 @@ Use these when applying rest style parameters and validating day structure.
 **You MUST:**
 
 1. Create a file (use Code Interpreter on ChatGPT, or computer tool on Claude)
-2. **Name every file with a `.json` extension.** For a single-block program use `workout-program.json`. For multi-block programs, give each block its own filename so nothing overwrites: `workout-block-1.json`, `workout-block-2.json`, and so on. This matters: the extension is what lets the user's phone offer JSON.fit as an app to open the file with. A file saved without `.json` cannot be imported by tapping.
+2. **Name every file with a `.json` extension.** The extension is what lets the user's phone offer JSON.fit as an app to open the file with — a file saved without `.json` cannot be imported by tapping.
 3. Write the complete JSON structure to the file
-4. If you reach output limits, STOP at the end of a complete block, then continue appending to the same file
-5. Never stop mid-block or mid-day
-6. When finished, present the file so the user can download it
+4. Never stop mid-block or mid-day
+5. When finished, present the file so the user can download it
 
-**Multi-block programs:**
-Generate one block at a time. After each block:
+**Multi-block programs — ONE cumulative file the user imports once.**
 
-1. Present the file for that block
-2. Output a brief **volume summary** showing total primary-tagged sets per muscle group for that block (training weeks, not deload). This gives the reviewer something to check against.
-3. End with **CALLOUT A** below
+The user should only ever have to import a single file: the newest one. Each block you generate produces a NEW file that contains that block PLUS every block before it — the `blocks` array grows by one entry each turn. The user imports only the final file, and it holds the whole program.
+
+Generate one block at a time (this keeps each response within output limits), but each file is cumulative:
+
+- **Block 1:** write a file whose `blocks` array holds block 1. Name it `workout-program-part-1.json`.
+- **Block 2 (on "next"):** write a NEW file whose `blocks` array holds blocks 1 AND 2. Name it `workout-program-part-2.json`.
+- **Block 3 (on "next"):** a new file holding blocks 1, 2 AND 3. `workout-program-part-3.json`.
+- ...and so on. The final part file contains every block.
+
+Naming rule: `workout-program-part-[N].json`, where N is the number of blocks the file contains. The highest-numbered file is always the complete program. Do not use per-block names like `block-2.json` that suggest a single block — the file is cumulative, and the name should reflect that it is the program "up to and including part N".
+
+After each block:
+
+1. Present the cumulative file for that turn.
+2. Output a brief **volume summary** for the block you just added (total primary-tagged sets per muscle group, training weeks not deload). This gives the user something to check against for the new block.
+3. End with **CALLOUT A** if more blocks remain, or **CALLOUT B** if this was the final block.
 4. **STOP and wait for user input.** Do not proceed to the next block until the user responds.
 
-**When user says "next" for subsequent blocks:**
+**When user says "next":**
 
-1. Generate the next block directly as JSON format (do not create text version first)
-2. Apply the same JSON schema and structure established above
-3. Write the JSON to a file with its own block-numbered filename and present it
-4. Output volume summary for the new block
-5. End with **CALLOUT A** if more blocks remain, or **CALLOUT B** if this was the final block
-6. **STOP and wait for user input.** Do not proceed to the next block until the user responds.
+1. Generate the next block, and write a new cumulative file containing all blocks so far (prior blocks copied across verbatim from what you already generated — do not regenerate or alter them).
+2. Present it, output the volume summary for the new block, and end with the correct callout.
+3. **STOP and wait for user input.**
 
-**When user says "review" for any block:**
+**If a cumulative file would be too large to write in one response** (long programs, typically 4+ blocks): STOP at the end of a complete block, tell the user in one line "this part was large — say **continue** and I'll finish writing the file", and complete the same file on the next turn. Never present a file that is cut off mid-structure.
 
-1. Read the workout program document from earlier in the conversation
-2. Apply the embedded review checklist below to the specified block
-3. Generate the corrected JSON version with all fixes applied
-4. Write corrected JSON to a file and present it
-5. End with **CALLOUT A**
+**When user says "review":**
+
+1. Read the workout program document from earlier in the conversation.
+2. Apply the embedded review checklist below to the most recent block.
+3. Write a corrected cumulative file (all blocks, with the fixes applied) and present it.
+4. End with **CALLOUT A**.
 
 ### Embedded Review Checklist
 
 Re-read the workout plan document from earlier in the conversation. Compare your JSON output against the plan and fix any discrepancies in exercise names, set counts, muscle tags, superset pairings, or day structure.
 
-Each block should be a complete, standalone JSON file with routine_name, description, days_per_week, and a single block in the blocks array. Keep routine_name and description consistent across all files.
+Each cumulative file has one routine_name, one description, one days_per_week, and a `blocks` array holding every block generated so far in order. Keep routine_name and description identical across all the part files — they are the same program at different stages of completion.
 
 **Long programs (5+ blocks):** Continue generating blocks in this same conversation. Do not suggest starting a fresh chat.
 
@@ -262,7 +271,7 @@ Before presenting each block, silently verify:
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
 - [ ] Block-relative week keys start from "1"
 - [ ] Session durations are recalculated using the duration formula
-- [ ] The filename ends in `.json`, and for multi-block programs carries its own block number
+- [ ] The filename ends in `.json`; for multi-block programs it follows `workout-program-part-[N].json` where N is the number of blocks in the file, and the `blocks` array actually contains all N blocks (every prior block copied across unchanged, newest block added)
 
 Fix any issues before presenting.
 
@@ -276,7 +285,7 @@ If the user comes back saying the import isn't working:
 
 - The working route is: tap the file, tap the ••• button, tap Share or Download, then choose JSON.fit from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
 - If JSON.fit doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open JSON.fit and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
-- Multi-block programs produce one file per block. The app can take them one at a time or several together — importing block 1 first and adding the rest afterwards is fine.
+- Multi-block programs are delivered as cumulative files (part 1, part 2, ...), each containing all blocks up to that point. The user only needs the highest-numbered file — it holds the whole program. If they've been importing along the way, the newest file supersedes the earlier ones; re-importing the final part gives them everything.
 - If the import screen reports a format error, ask them to paste the exact error text. Do not guess at the cause.
 - Do not invent other routes. There is no import link, no QR code, and no share URL for an AI-generated program. The website's share links only exist for programs already saved in someone's app.
 - If they ask for changes to the program instead, make the change and hand back a fresh file.
@@ -289,30 +298,34 @@ Every response you make in this stage ends with a callout, formatted as a code b
 
 ### CALLOUT A — use when more blocks are still to come
 
-Reproduce verbatim, substituting the real block numbers:
+Reproduce verbatim, substituting the real block numbers for [X] and [Y]:
 
 ```
-📦 Block [X] of [Y] is ready.
+📦 Part [X] of [Y] built — your program so far is in the file above.
 
-▶ Say "next" and I'll build the following block.
-🔍 Or say "review" if you'd like me to check this one first.
+▶ Say "next" and I'll add the following block.
+🔍 Or say "review" to check this part first.
 ```
 
-Do not give import instructions here. The user isn't finished yet, and telling them to import mid-program will leave them with a partial program in the app.
+Do not give import instructions here. The user waits until the whole program is built and imports the final file only. Telling them to import now would just be replaced by the next, more complete file.
 
 ### CALLOUT B — use after the final block
 
-Reproduce verbatim:
+If you know the user's first name, put it on its own line as the FIRST line inside the code block, followed by a colon (e.g. `Ryan:`). If you do not know it, omit that line entirely and start the block at the checkmark. Never write a placeholder, a bracket, or a guessed name. That first-name line is the ONLY part you may change — every line from the checkmark down is reproduced verbatim.
 
 ```
-✅ That's your whole program.
+Ryan:
 
-1. Tap a file.
+✅ That's your whole program — it's all in this last file.
+
+1. Tap the file above.
 2. Tap the ••• button.
 3. Tap Share or Download.
 4. Choose JSON.fit from the list of apps.
 
-Repeat for each block file. No JSON.fit in the list? Download or copy the file, then import it in the app.
+No JSON.fit in the list? Download or copy the file, then import it in the app.
 ```
 
-For a single-block program, CALLOUT B is the only callout you use.
+(The `Ryan:` line is an EXAMPLE — replace it with the actual user's first name, or drop the line if you don't know it.)
+
+The file this callout refers to is the final, highest-numbered part file — the one that contains every block. Do not tell the user to import the earlier part files; this one supersedes them all. For a single-block program there is just one file, and CALLOUT B is the only callout you use.
