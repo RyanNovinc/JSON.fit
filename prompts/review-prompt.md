@@ -43,9 +43,11 @@ First, read the workout program you just created so you have the full content in
 3. **After fixing, re-verify** — run the checklist again on the corrected plan to confirm all checks now pass.
 4. **Present the CORRECTED plan** — output the complete, clean, final version of the workout program with all fixes applied.
 5. **At the end, provide a brief change log** — a short bullet list of what you changed and why.
-6. **Session Duration Reporting** — Calculate and report the duration of each training day based on exercise count, sets, and rest periods. Include duration in the program output so the user knows what to expect. Do NOT treat duration as a constraint to fix — the user's volume and rest preferences drive session length, and that is intentional.
+6. **Session Duration Reporting** — Calculate and report the duration of each training day based on exercise count, sets, and the rest summary stated in the plan. Include duration in the program output so the user knows what to expect. Do NOT treat duration as a constraint to fix — the user's volume and rest preferences drive session length, and that is intentional.
 
-   **Soft warning only:** If any single session exceeds 2 hours (120 minutes), add a brief note to the user along the lines of: "⚠️ Day X is estimated at [duration] minutes — this is on the long end and may be hard to sustain productively. This is a result of your high volume and rest period choices. If that's intentional, no changes needed. If you'd like shorter sessions, consider [Conservative volume / Minimal rest / more training days]."
+   Duration is an estimate at the user's default rest pace. The app applies rest itself and recalculates session length live, so a user who switches to a faster pace mid-workout will see a shorter figure than the one you report here. That is expected, not an error to correct.
+
+   **Soft warning only:** If any single session exceeds 2 hours (120 minutes), add a brief note to the user along the lines of: "⚠️ Day X is estimated at [duration] minutes — this is on the long end and may be hard to sustain productively. This is a result of your high volume and rest period choices. If that's intentional, no changes needed. If you'd like shorter sessions, consider [Conservative volume / a faster rest pace / more training days]."
 
    Do NOT pause for user confirmation. Do NOT compress rest periods or reduce volume to fit a time target. Continue with the program as designed unless the user explicitly asks for changes.
 
@@ -114,6 +116,8 @@ The "Match?" column says ✅ MATCH or ❌ MISMATCH. Every column entry must be t
 
 **Do not proceed to volume enumeration until the tag audit table shows every row as ✅ MATCH.** Wrong tags will produce wrong volume numbers, and the user will see different numbers in the app than what you tell them here.
 
+Exercise names carry a second job beyond tags: the app looks each one up by name to decide how long that exercise rests for. A name that does not match the library falls back to a generic default rest. So a name mismatch is not cosmetic — fix it here rather than letting it through.
+
 ### Per-Muscle Volume Targets (DO THIS BEFORE VOLUME ENUMERATION)
 
 The volume enumeration tables in the next section need correct per-muscle target ranges to verify against. The original plan should already include a per-muscle target table — but rebuild it here from the canonical source to verify it's correct.
@@ -164,6 +168,8 @@ Verify RIR guidance is present and correct for every exercise in the plan.
 
 **Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan.
 
+**Why this audit matters more than it looks.** RIR is not only a training cue in JSON.fit. The app combines each exercise's first-set reps with its first-set RIR to estimate the load, and that estimate decides whether a compound gets heavy-compound rest or moderate-compound rest. RIR that is missing, or set far from what the lifter will actually do, changes how long they rest as well as how hard they train.
+
 ### Rep Range Audit
 
 Verify rep ranges are correct for every exercise in the plan based on its category and the user's primary goal.
@@ -178,22 +184,6 @@ Verify rep ranges are correct for every exercise in the plan based on its catego
 **Step 3: Fix any mismatches** silently. If a heavy compound is prescribed at 12-15 reps but the user's goal is strength (where heavy compounds should be 1-6), correct the rep range and re-verify.
 
 **Note:** The single-joint arm exercise exception (all curl variations and triceps isolation always use 10-15 reps regardless of program rep focus) is enforced in the Output Format and applies on top of the per-category guidance.
-
-### Rest Period Audit
-
-Verify rest periods are correct for every exercise in the plan based on its category and the user's selected rest tier.
-
-**Step 1: Fetch the rest guidance file.** Read https://json.fit/rest-guidance.md so you have the canonical per-tier × exercise category matrix in context.
-
-**Step 2: Identify the user's rest tier.** From the original plan or user profile: Optimal / Moderate / Minimal.
-
-**Step 3: Check every exercise has a rest period that matches its category and the user's tier.** For each exercise, confirm:
-- The exercise's category is correctly identified (heavy compound, moderate compound, unilateral compound, large isolation, small isolation)
-- The prescribed rest period falls within the file's matrix cell for that category × tier combination
-- Goal-specific overrides are applied (especially: strength programs use 3-5 minutes on heavy compounds regardless of tier)
-- Edge cases are handled correctly (antagonist supersets, drop sets, sets to failure, deload weeks)
-
-**Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan.
 
 ### Deload Audit
 
@@ -215,7 +205,9 @@ Verify the plan's deload programming — whether a deload is required, and if so
 - Load is held (no progression increment written into the deload week); the deload is expressed through reduced sets and raised RIR, not load references (the app does not track weight).
 - A "fake deload" (a week that only trims one or two sets, or keeps RIR near failure) is a FAIL — it does not reduce fatigue. Fix it to a real reduction.
 
-**Step 5: Fix any failures** silently and re-verify before presenting the corrected plan. Do not invent your own deload frequency or structure — the deload-guidance.md file is the canonical source.
+**Step 5: Confirm the deload week is identified as such in the plan structure,** not only described in prose. The app lengthens rest automatically during deload weeks, and it can only do that for a week the plan actually marks as a deload.
+
+**Step 6: Fix any failures** silently and re-verify before presenting the corrected plan. Do not invent your own deload frequency or structure — the deload-guidance.md file is the canonical source.
 
 ### Effective Volume Distribution Check
 
@@ -277,12 +269,13 @@ Do not claim a fix works without showing the recount tables for every affected m
 - **Weekly layout totals 7 days**: The plan's weekly layout accounts for all 7 days — training days (matching the user's training days per week) plus rest days. The number of training days must equal the user's training days per week from the profile, with the remaining days as rest. Fix any layout that omits rest days or has the wrong number of training days.
 - **Exercise order**: Compound before isolation, higher skill before lower skill
 - **Auxiliary placement**: If user selected auxiliary muscles, those exercises should appear as finishers at the end of sessions, not as dedicated sessions
+- **Superset pairing**: If the plan uses supersets, each pair must be two adjacent exercises marked with matching SS[n]a / SS[n]b notation. The app reads that pairing to apply superset rest timing, so an unpaired or non-adjacent marker is a real defect, not a formatting nit. Antagonist pairings (chest/back, biceps/triceps, quads/hamstrings isolation, side delts/rear delts) are the intended use; same-muscle supersets belong only in finishers.
 
 ### Practical Implementation Check
 
 - **Equipment consistency**: All exercises use equipment stated as available in the user's profile
 - **Skill appropriate**: Exercise complexity matches stated experience level
-- **Duration honest**: Calculate total workout time including rest periods and report it transparently. Only flag if sessions exceed 2 hours — otherwise duration is whatever the user's volume and rest preferences produce.
+- **Duration honest**: Calculate total workout time including rest and report it transparently. Only flag if sessions exceed 2 hours — otherwise duration is whatever the user's volume and rest preferences produce.
 
 ## END YOUR RESPONSE WITH THIS EXACT CALLOUT
 
