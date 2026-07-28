@@ -161,7 +161,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 <body>
 <nav>
   <div class="nav-left">
-    <a href="https://json.fit" class="nav-back" aria-label="Back" onclick="return window.navBack(event)">
+    <a href="https://json.fit" class="nav-back" aria-label="Back to homepage">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </a>
     <a href="https://json.fit" class="nav-logo">
@@ -175,22 +175,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   </div>
   <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'meals_nav'})">Get the app</a>
 </nav>
-
-<script>
-// Back arrow: if the visitor arrived from another json.fit page, step back to it;
-// otherwise (shared link, direct visit, external referrer) follow the href to the homepage.
-window.navBack=function(e){
-  try{
-    var ref=document.referrer;
-    if(ref && new URL(ref).hostname.replace(/^www\./,'')==='json.fit' && window.history.length>1){
-      e.preventDefault();
-      window.history.back();
-      return false;
-    }
-  }catch(err){}
-  return true;
-};
-</script>
 
 <header>
   <span class="h-ov">The Meal Library</span>
