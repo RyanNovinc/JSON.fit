@@ -71,7 +71,9 @@
         .bk .pages { position:absolute; top:3px; bottom:3px; right:0; width:10px; border-radius:0 3px 3px 0; background:repeating-linear-gradient(to bottom,#efe9da 0 2.4px,#d7d0bf 2.4px 3.4px); }
         .bk .cover { position:absolute; top:0; bottom:0; left:0; right:8px; border-radius:4px 6px 6px 4px; overflow:hidden; background:#0b2415; box-shadow:inset 0 1px 0 rgba(255,255,255,0.09),0 0 0 1px rgba(34,197,94,0.22); }
         .bk .cover::before { content:''; position:absolute; top:0; bottom:0; left:0; width:10px; background:linear-gradient(90deg,rgba(0,0,0,0.5),rgba(255,255,255,0.05)); z-index:3; }
-        .bk .ph { position:absolute; top:0; left:0; right:0; height:60%; width:100%; object-fit:cover; }
+        .bk .ph-stack { position:absolute; top:0; left:0; right:0; height:60%; overflow:hidden; background:#08170e; }
+        .bk .ph { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 600ms ease; }
+        .bk .ph.on { opacity:1; }
         .bk .band { position:absolute; left:0; right:0; bottom:0; height:40%; background:linear-gradient(168deg,#123722,#081c10); padding:10px 11px 9px 18px; text-align:left; display:flex; flex-direction:column; justify-content:center; }
         .bk .ovl { display:block; font-family:'DM Mono',monospace; font-size:0.48rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--green); margin-bottom:4px; }
         .bk .ttl { display:block; font-family:Georgia,'Times New Roman',serif; font-weight:400; font-size:1.16rem; line-height:1.04; color:#f6f4ee; }
@@ -226,7 +228,9 @@
             <div class="bk">
                 <div class="pages"></div>
                 <div class="cover">
-                    <img class="ph" src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                    <div class="ph-stack" id="bookPh" data-meals="protein-pancakes|pulled-pork|butter-chicken-with-rice|king-kong-chocolate|shakshuka|massaman|carne-asada-bowl|fudgy-protein-brownies|beef-bulgogi-bowl">
+                        <img class="ph on" src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                    </div>
                     <div class="band">
                         <span class="ovl">The Skinny Guy's</span>
                         <span class="ttl">Bulking Cookbook</span>
@@ -419,6 +423,53 @@
     } else {
         [].forEach.call(els, function(el){ el.classList.add('vis'); });
     }
+})();
+</script>
+
+<script>
+// Book cover: crossfade through the best meals, one new image loaded at a time
+(function(){
+    var stack = document.getElementById('bookPh');
+    if (!stack) return;
+    var names = (stack.getAttribute('data-meals') || '').split('|').filter(Boolean);
+    if (!names.length) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    function start(){
+        var items = [{ el: stack.querySelector('.ph'), loaded: true }];
+        names.forEach(function(n){
+            var im = document.createElement('img');
+            im.className = 'ph';
+            im.alt = '';
+            im.decoding = 'async';
+            stack.appendChild(im);
+            items.push({ el: im, name: n, loaded: false });
+        });
+
+        function load(k){
+            var it = items[k];
+            if (!it || it.loaded) return;
+            it.loaded = true;
+            var im = it.el;
+            im.onerror = function(){
+                if (im.src.indexOf('.webp') > -1) { im.src = '/images/meals/' + it.name + '.png'; }
+                else { im.style.display = 'none'; }
+            };
+            im.src = '/images/meals/' + it.name + '.webp';
+        }
+
+        load(1);
+        var i = 0;
+        setInterval(function(){
+            items[i].el.classList.remove('on');
+            i = (i + 1) % items.length;
+            items[i].el.classList.add('on');
+            load((i + 1) % items.length);
+        }, 2000);
+    }
+
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start);
 })();
 </script>
 <script src="/wall.js"></script>
