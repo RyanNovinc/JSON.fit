@@ -79,9 +79,9 @@
         .bk .free { position:absolute; top:11px; right:-7px; z-index:4; background:var(--green); color:#04210f; font-family:'DM Mono',monospace; font-size:0.62rem; font-weight:500; letter-spacing:0.12em; padding:0.24rem 0.5rem; border-radius:5px; box-shadow:0 5px 12px rgba(0,0,0,0.45); }
 
         .fh-ov { font-family:'DM Mono',monospace; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color:var(--text-2); margin-bottom:1.1rem; animation:heroFadeUp 0.7s ease 0.07s both; }
-        .fh-display { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:clamp(2.3rem,5.2vw,3.6rem); line-height:1.07; letter-spacing:-0.01em; animation:heroFadeUp 0.7s ease 0.12s both; }
+        .fh-display { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:clamp(2.5rem,5.6vw,4rem); line-height:1.06; letter-spacing:-0.01em; animation:heroFadeUp 0.7s ease 0.12s both; }
         .fh-display em { color:var(--green); font-style:italic; }
-        .fh-l1 { display:block; }
+        .fh-l1 { display:inline; }
         .fh-sub { font-size:0.95rem; color:#9a9aa2; margin-top:1rem; max-width:480px; animation:heroFadeUp 0.7s ease 0.18s both; }
         .fh-hair { width:min(380px,60vw); height:1px; background:rgba(255,255,255,0.16); margin:1.3rem auto 0; animation:heroFadeUp 0.7s ease 0.22s both; }
 
@@ -112,12 +112,6 @@
         .sec-head p { color:var(--text-2); font-size:0.9rem; max-width:470px; margin-top:0.35rem; }
         .sec-head.mid { text-align:center; }
         .sec-head.mid p { margin-left:auto; margin-right:auto; }
-
-        /* what's inside */
-        .ticks { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem 1.8rem; max-width:800px; margin:0 auto; }
-        .tick-row { display:flex; gap:0.7rem; align-items:flex-start; font-size:0.92rem; color:var(--text-2); line-height:1.55; }
-        .tick-row .c { color:var(--green); font-weight:700; flex-shrink:0; font-size:0.85rem; line-height:1.65; }
-        .tick-row b { color:var(--text); font-weight:600; }
 
         /* interior peek: real pages, print-friendly */
         .spreads { display:flex; justify-content:center; align-items:center; padding:0.4rem 0 0; }
@@ -177,13 +171,13 @@
             .f-name { font-size:11.5px; }
             .f-kcal { font-size:8.5px; }
             .fh-fg { padding-top:5rem; }
-            .fh-display { font-size:2.4rem; }
+            .fh-l1 { display:block; }
+            .fh-display { font-size:2.6rem; }
             .bk { width:150px; }
             .bk .ttl { font-size:1rem; }
             .bk .ovl { font-size:0.42rem; }
             .bk .sbb { font-size:0.4rem; }
             .cap-form { flex-direction:column; }
-            .ticks { grid-template-columns:1fr; gap:0.7rem; }
             .sec-head { text-align:center; }
             .sec-head p { margin-left:auto; margin-right:auto; }
             .page { width:35%; }
@@ -197,7 +191,7 @@
             .foot-l a { margin:0 0.55rem; }
         }
         @media (max-width:480px) {
-            .fh-display { font-size:2.2rem; }
+            .fh-display { font-size:2.35rem; }
             .trustline { font-size:0.62rem; }
         }
         @media (prefers-reduced-motion:reduce) {
@@ -243,8 +237,8 @@
             </div>
         </div>
         <span class="fh-ov">Free cookbook &middot; 90 pages &middot; 81 meals</span>
-        <h1 class="fh-display"><span class="fh-l1">3,000+ calorie days,</span> <em>without the force-feeding.</em></h1>
-        <p class="fh-sub">Every macro counted, every ingredient listed, every step written out. Built so one cooking session covers most of the week.</p>
+        <h1 class="fh-display"><span class="fh-l1">Eating big,</span> <em>on the house.</em></h1>
+        <p class="fh-sub">Every macro counted, every ingredient listed, every step written out.</p>
         <div class="fh-hair"></div>
 
         <div class="cap-block" data-location="hero">
@@ -264,21 +258,6 @@
 
 <main>
     <div class="wrap">
-
-        <!-- WHAT'S INSIDE -->
-        <section class="lp-sec sa">
-            <div class="sec-head mid">
-                <span class="lp-eyebrow">What's Inside</span>
-                <h2>Cook once, <span class="cyan">eat all week.</span></h2>
-                <p>Written for skinny guys with a full-time job, not for chefs with a spare afternoon.</p>
-            </div>
-            <div class="ticks">
-                <div class="tick-row"><span class="c">&#10003;</span><span><b>Full macros on every meal,</b> breakfast through dessert.</span></div>
-                <div class="tick-row"><span class="c">&#10003;</span><span><b>Shortcut versions by default:</b> jar sauces, seasoning sachets, honest times. From scratch only if you feel like it.</span></div>
-                <div class="tick-row"><span class="c">&#10003;</span><span><b>Built for batch prep,</b> so one cooking session covers most of the week.</span></div>
-                <div class="tick-row"><span class="c">&#10003;</span><span><b>Printable PDF, free forever,</b> updated as new meals land in the library.</span></div>
-            </div>
-        </section>
 
         <!-- INTERIOR PEEK -->
         <section class="lp-sec sa">
@@ -328,8 +307,8 @@
         <!-- PROOF -->
         <section class="lp-sec sa">
             <div class="proof">
-                <p>This isn't theory. <b>Every meal in the book is from my own bulk,</b> cooked, weighed and tracked in public on the way from 77.3kg to 90kg.</p>
-                <div class="meta">RYAN &middot; THE LAB &middot; JSON.FIT</div>
+                <p><b>I'm bulking myself, and I work full time.</b> So I wanted meals that actually taste good, are quick to make, and fit around a work week. Macros hit exactly, a full grocery list, and a meal prep guide.</p>
+                <div class="meta">RYAN &middot; JSON.FIT</div>
             </div>
         </section>
 
