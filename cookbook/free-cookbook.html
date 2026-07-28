@@ -126,7 +126,9 @@
 
         /* meal strip */
         .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
-        .meal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
+        .meal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; text-decoration:none; color:inherit; transition:border-color 0.2s, transform 0.2s; }
+        .meal-card:hover { border-color:var(--border-cyan); transform:translateY(-3px); }
+        .meal-card:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
         .meal-card img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--surface-2); }
         .meal-body { padding:1rem 1.15rem 1.2rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:auto; }
         .meal-cuisine { font-family:'DM Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.13em; color:var(--cyan); }
@@ -200,6 +202,7 @@
             .f-track { animation:none; }
             .bk { animation:none; }
             .btn:hover { transform:none; }
+            .meal-card:hover { transform:none; }
             .sa { opacity:1; transform:none; transition:none; }
             .fh-book,.fh-ov,.fh-display,.fh-sub,.fh-hair,.cap-block,.trustline { animation:none; }
         }
@@ -290,18 +293,18 @@
                 <h2>Calorie-dense, <span class="cyan">high protein, easy.</span></h2>
             </div>
             <div class="meal-grid">
-                <div class="meal-card">
+                <a class="meal-card" href="/meals.html" onclick="if(window.gtag)gtag('event','view_meals',{'button_location':'cookbook_page'})">
                     <img src="/images/meals/steak-and-eggs.webp" data-fallback="/images/meals/steak-and-eggs.png" alt="Steak and Eggs" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     <div class="meal-body"><div class="meal-cuisine">Breakfast &middot; Beef</div><div class="meal-name">Steak &amp; Eggs</div><div class="meal-macros"><span class="meal-macro">65g P</span><span class="meal-macro">37g C</span><span class="meal-macro">44g F</span><span class="meal-kcal">820 kcal</span></div></div>
-                </div>
-                <div class="meal-card">
+                </a>
+                <a class="meal-card" href="/meals.html" onclick="if(window.gtag)gtag('event','view_meals',{'button_location':'cookbook_page'})">
                     <img src="/images/meals/massaman.webp" data-fallback="/images/meals/massaman.png" alt="Slow-Cooked Massaman Beef Curry" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     <div class="meal-body"><div class="meal-cuisine">Thai &middot; Beef</div><div class="meal-name">Slow-Cooked Massaman Beef Curry</div><div class="meal-macros"><span class="meal-macro">52g P</span><span class="meal-macro">42g C</span><span class="meal-macro">58g F</span><span class="meal-kcal">890 kcal</span></div></div>
-                </div>
-                <div class="meal-card">
+                </a>
+                <a class="meal-card" href="/meals.html" onclick="if(window.gtag)gtag('event','view_meals',{'button_location':'cookbook_page'})">
                     <img src="/images/meals/king-kong-chocolate.webp" data-fallback="/images/meals/king-kong-chocolate.png" alt="King Kong Chocolate protein smoothie" loading="lazy" width="640" height="360" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     <div class="meal-body"><div class="meal-cuisine">Smoothie &middot; Dairy</div><div class="meal-name">King Kong Chocolate</div><div class="meal-macros"><span class="meal-macro">85g P</span><span class="meal-macro">93g C</span><span class="meal-macro">79g F</span><span class="meal-kcal">1418 kcal</span></div></div>
-                </div>
+                </a>
             </div>
             <p class="strip-hint">Swipe to see more &#8594;</p>
             <p class="strip-foot">All 81 are in the book</p>
