@@ -78,6 +78,16 @@ This JSON format is designed to work directly with the app's simplified meal pla
     "total_estimated_cost_low": "number",
     "total_estimated_cost_high": "number",
     "currency": "string",
+    "scratch_extras": [
+      {
+        "item_name": "string",
+        "ingredient_id": "string",
+        "quantity": "string",
+        "unit": "string",
+        "estimated_price": "number",
+        "notes": "string"
+      }
+    ],
     "categories": [
       {
         "category_name": "string",
@@ -222,6 +232,7 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 | **notes** | No | String | Store location notes for items bought outside main grocery store |
 | **is_purchased** | Yes | Boolean | Always false (user will check off) |
 | **alternatives** | No | Array | 1-2 substitute options for hard-to-find items |
+| **scratch_extras** | Conditional | Array | The reviewed plan's "If you cook these from scratch" list, if it has one. Same item shape, each with its `ingredient_id`. NOT part of any total. |
 
 
 ## Alternative Items Structure (within grocery list items)
@@ -285,6 +296,16 @@ The generation prompt's ingredient tables give every curated ingredient an `id`,
 - Copy the id **verbatim**. It is an exact-match key, like the slugs — the app uses it to match a priced item to its own records. A modified or invented id simply fails to match.
 - Items with no bracketed id (ingredients of invented meals, anything added outside the tables) omit `ingredient_id` entirely. Never guess one.
 - If the reviewed list has lost the brackets, do not reconstruct them from memory — omit the field for those items.
+
+
+## From-Scratch Extras
+
+The reviewed plan may end with a second, smaller grocery list headed "If you cook these from scratch". Those are ingredients for the alternative version of certain meals, which the user can switch to inside the app after importing.
+
+- Convert them into the top-level `grocery_list.scratch_extras` array, using the same item shape as an ordinary grocery item, each with its `ingredient_id` moved out of the brackets.
+- Do NOT merge them into `categories`, and do NOT include them in `total_estimated_cost`, `_low`, `_high`, or the metadata totals. They are not part of the shop the user is doing.
+- If the plan has no such list, omit `scratch_extras` entirely.
+- The app uses these purely to price a rebuilt list if the user switches a meal to from-scratch. Dropping them means those ingredients show with no price.
 
 
 ## Date Handling
