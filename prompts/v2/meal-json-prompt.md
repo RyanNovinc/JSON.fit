@@ -74,6 +74,7 @@ This JSON format is designed to work directly with the app's simplified meal pla
     }
   },
   "grocery_list": {
+    "total_estimated_cost": "number",
     "total_estimated_cost_low": "number",
     "total_estimated_cost_high": "number",
     "currency": "string",
@@ -83,6 +84,7 @@ This JSON format is designed to work directly with the app's simplified meal pla
         "items": [
           {
             "item_name": "string",
+            "ingredient_id": "string",
             "quantity": "string",
             "unit": "string",
             "estimated_price": "number",
@@ -205,6 +207,7 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 
 | Field | Required | Format | Notes |
 |---|---|---|---|
+| **total_estimated_cost** | Yes | Number | The plan's grocery total. Same value as total_estimated_cost_low. |
 | **total_estimated_cost_low** | Yes | Number | Lower bound of estimated cost (sum of all item prices) |
 | **total_estimated_cost_high** | Yes | Number | Upper bound with 10% buffer (low × 1.10, rounded up) |
 | **currency** | Yes | String | Currency symbol (e.g., "AU$", "$", "£", "€") |
@@ -212,6 +215,7 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 | **category_name** | Yes | String | Category like "Meat & Seafood" |
 | **items** | Yes | Array | Items in this category |
 | **item_name** | Yes | String | Product name |
+| **ingredient_id** | Conditional | String | Required for any item that came from a curated meal's ingredient table. Copy the id verbatim. Omit for items with no id. See the rule below. |
 | **quantity** | Yes | String | Total amount needed |
 | **unit** | Yes | String | Unit of measurement |
 | **estimated_price** | Yes | Number | Price in local currency |
@@ -273,6 +277,16 @@ This is a transcription step, not a planning step. Do not re-optimise, re-balanc
 - `scale_factor` is also copied verbatim as a decimal number
 
 
+## Grocery Ingredient IDs
+
+The generation prompt's ingredient tables give every curated ingredient an `id`, and the reviewed grocery list carries that id in square brackets after the item name — e.g. "Chicken thigh fillets [chicken_thigh]".
+
+- Move the bracketed id into the item's `ingredient_id` field, and remove the brackets from `item_name`. `"Chicken thigh fillets [chicken_thigh]"` becomes `"item_name": "Chicken thigh fillets"` with `"ingredient_id": "chicken_thigh"`.
+- Copy the id **verbatim**. It is an exact-match key, like the slugs — the app uses it to match a priced item to its own records. A modified or invented id simply fails to match.
+- Items with no bracketed id (ingredients of invented meals, anything added outside the tables) omit `ingredient_id` entirely. Never guess one.
+- If the reviewed list has lost the brackets, do not reconstruct them from memory — omit the field for those items.
+
+
 ## Date Handling
 
 - Use YYYY-MM-DD format consistently
@@ -294,6 +308,7 @@ This is a transcription step, not a planning step. Do not re-optimise, re-balanc
 - Remove duplicates and consolidate similar items
 - If the meal plan states the grocery total as a range, preserve both bounds: use the lower number for total_estimated_cost_low and the upper number for total_estimated_cost_high
 - If the plan only states a single number, set total_estimated_cost_low to that number and total_estimated_cost_high to that number × 1.10 rounded up
+- Always set `total_estimated_cost` as well, to the same value as `total_estimated_cost_low`. Some app screens read that single field, and a missing value renders the budget as zero.
 
 
 ## Time Formatting
