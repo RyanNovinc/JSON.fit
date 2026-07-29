@@ -1,6 +1,6 @@
 # JSON.fit Meal Planning — Instructions (v2)
 
-You fetched this file because a JSON.fit generation prompt told you to. It confirms your fetch capability works and defines how to read that prompt. Everything you need to build the plan — targets, slot structure, meal options with macros, adjusters — is **inline in the prompt itself**. Do not fetch any per-meal files; there are none in this flow.
+You fetched this file because a JSON.fit generation prompt told you to. It confirms your fetch capability works and defines how to read that prompt. Everything you need to build the plan — targets, slot structure, meal options with macros, curated ingredient tables, adjusters — is **inline in the prompt itself**. Do not fetch any per-meal files; there are none in this flow.
 
 > Note on formatting: the generation prompt asks you to reserve code blocks in your **visible chat response** for its opening and closing callouts. The code block below is REFERENCE MATERIAL for you — it shows the JSON shape of a curated reference — it is not text you reproduce in chat. Curated references go into the chat plan as part of the per-day arithmetic and as compact entries, not as JSON code blocks.
 
@@ -17,6 +17,16 @@ The prompt gives each slot an **occurrence count** (how many times it appears ac
 
 **Worked example 2 — batch meal.** Pulled pork serves 8 and is a lunch/dinner option. If you schedule it, place enough servings across the week's lunch/dinner occurrences to consume the batch, rotating its plates — or state "freeze N portions" in the prep notes. One placement with 7 orphaned servings and no freeze note is wrong.
 
+## Servings consumed is not the placement count
+
+For any option that serves more than one, the servings a plan actually consumes is the **sum of the scale factors**, never the number of times it appears.
+
+- Six placements at 0.7 consume **4.2 servings**, not 6.
+- Batches to cook = ceil(servings consumed ÷ serves).
+- Leftovers = (batches × serves) − servings consumed. State them in the prep notes.
+
+Prep notes, freeze counts and every grocery quantity follow from the batch figure. Deriving them from the placement count buys and cooks far more food than the plan eats, and it is invisible in the plan output — nothing looks wrong until the user is standing at the checkout.
+
 ## Curated reference output contract
 
 Options with a `key` in the form `slug:plate_id` are curated meals. Output them as **references only** (this code block is reference material — see the formatting note above):
@@ -25,7 +35,9 @@ Options with a `key` in the form `slug:plate_id` are curated meals. Output them 
 { "curated_meal_slug": "pulled_pork", "plate_id": "sandwich", "scale_factor": 1.0 }
 ```
 
-- Never write ingredients, instructions, or recipes for curated options — the app fills those in on import.
+- Never write ingredients, instructions, or recipes for curated options in the plan — the app fills those in on import.
+- **The grocery list is the exception.** The user has to buy the food, so curated ingredients are aggregated there as shopping items. Take them from the prompt's ingredient tables, which are the authoritative recipes — never from your own knowledge of the dish, and never as a recipe or method in the plan. Amounts come from the arithmetic in the prompt's grocery section.
+- The ingredient tables are deliberately generic and brand-free so you can localise them: find the equivalent product where the user shops, use pack sizes sold there, and price in the local currency. Swap the product, not the recipe.
 - Slugs and plate_ids are exact-match lookup keys: copy them **verbatim** from the option tables. Invalid keys break import.
 - Macros for a serving = the option row's macros × scale_factor. Use scale steps of **0.05**, inside the row's stated min–max. Never go outside a row's bounds.
 - Rows marked **(UF)** are universal fillers the user did not pick — use them only to cover occurrences the user's picks can't.
