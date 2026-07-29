@@ -97,6 +97,7 @@ These must pass after your fixes. If any still fail after revision, you have not
 - **Occurrences** — slot counts exactly match the generation prompt's Week structure (dessert exact, never more, never "optional"). Adjusters exempt.
 - **Option-set integrity** — every curated reference in the plan exists in the generation prompt's option tables (including UF rows) or its adjuster table. Nothing from outside those sets.
 - **Meal timing** — first and last meals respect the times stated in the generation prompt's targets block.
+- **Batch quantities** — servings consumed of a multi-serving meal equal the SUM OF ITS SCALE FACTORS, never its placement count. Prep notes and grocery quantities must follow from that.
 - **No draft content** — zero working, iteration, or revision commentary in the output (the Variety item in the plan notes is plan content, not draft commentary).
 
 ## What "Fix" Means
@@ -104,6 +105,7 @@ These must pass after your fixes. If any still fail after revision, you have not
 - **Nutrition/Budget**: rescale within the option's stated bounds (steps of 0.05), swap to another option in the same slot's table, add/resize an adjuster, or use a UF row for an uncovered occurrence.
 - **Occurrence errors**: add or remove placements until counts match exactly.
 - **Invalid reference**: replace with a valid option from that slot's table.
+- **Batch quantity errors**: recompute servings consumed as the sum of scale factors, recompute batches, then correct the prep notes and every affected grocery quantity.
 - **Grocery/format**: add missing items, correct quantities, remove all draft content, resolve table mismatches.
 
 ## Review Checklist
@@ -144,6 +146,15 @@ For every curated reference in the plan (adjusters included):
 
 ### 4. Batch & Plate Discipline
 
+**Servings consumed is the sum of the scale factors, NOT the number of placements.** This is the most commonly missed check in this review, and it is silent — everything looks right until the user cooks far too much food. Compute it explicitly for every multi-serving meal, with a code tool if available:
+
+- **Servings consumed** = sum of the scale_factors of every placement of that meal. Six placements at 0.7 consume **4.2 servings**, not 6.
+- **Batches to cook** = ceil(servings consumed ÷ serves).
+- **Leftovers** = (batches × serves) − servings consumed. State them.
+- FAIL if the prep notes, the freeze counts, or the grocery quantities were derived from the placement count instead. Fix by recomputing all three from the batch figure.
+
+Then:
+
 - Multi-serving options (serves > 1): the batch is consumed within the plan **or** the prep notes carry an explicit "freeze N portions" line. FAIL only when neither is true.
 - Multi-plate meals placed several times rotate plates rather than repeating one.
 - Maximum 1 stunt-marked plate in the week; none at all if the daily target is under 2,500 kcal.
@@ -179,11 +190,13 @@ FAIL if the last meal breaches the stated window. Fix by shifting dinner earlier
 
 ### 8. Grocery List Completeness & Accuracy
 
-- Every ingredient from every invented meal, every adjuster, and every curated meal (from your knowledge of those recipes) appears, with quantities totalled across the plan.
+- Every ingredient from every invented meal, every adjuster, and every curated meal appears, with quantities totalled across the plan. Curated meal ingredients come from the generation prompt's ingredient tables — those are the authoritative recipes. Do NOT reconstruct a curated meal's ingredients from its name or from your own knowledge of the dish; the app cooks the recipe in those tables, not yours.
+- Quantities are computed, not estimated. For each ingredient: (base amount ÷ servings the base recipe makes) × scale_factor for every placement, plus plate per-serving rows × scale_factor, summed across the plan. For multi-serving meals the figure that matters is the batches cooked (check 4), not the placement count. Use a code tool if available.
 - Pricing uses ACTUAL pack size, not portion used (90g cheese needed, smallest pack 250g → price the 250g pack), realistic for the stated store and location.
-- Categories logical; no phantom items; notes only for items bought outside the main store.
+- Loose produce (bananas, single potatoes, one lemon) is priced to the amount actually used — the pack-size rule does not apply to items sold loose. A quantity far above what the plan consumes is a FAIL.
+- Categories logical; no phantom items; notes only for items bought outside the main store, and never a price tip.
 - Total presented as a range with the 10% buffer (e.g. "$165–$182") and a currency symbol — never a single number.
-- Cross-check: pick 3 random ingredients from the plan and confirm they appear with correct totals.
+- Cross-check: pick 3 random ingredients from the plan, recompute their totals from the ingredient tables, and confirm they match.
 
 FAIL if 3+ ingredients are missing, quantities are significantly wrong, or the total is a single number.
 
