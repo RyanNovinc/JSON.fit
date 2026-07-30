@@ -199,11 +199,13 @@ FAIL if the last meal breaches the stated window. Fix by shifting dinner earlier
 
 ### 8. Grocery List — BUILD IT
 
-The plan has no grocery list yet. Generation deliberately doesn't write one: the ingredient tables arrive with THIS message, after the meals are settled, so you build the list once against a plan that is already final rather than one that might still change.
+The plan has no grocery list yet. Generation deliberately doesn't write one, so that you build it once against a plan that is already final rather than one that might still change.
+
+**The ingredient tables are in the generation prompt earlier in this conversation**, in the section headed "Ingredients — FOR STEP 2, NOT NOW", along with the store, city and weekly budget. Scroll back and use them. They are there; if you think they are missing, look again before reporting it.
 
 Do this AFTER checks 1 to 7, so you are pricing the corrected plan and not the draft.
 
-- Build from the ingredient tables in the message that launched this review. They are the authoritative recipes. Do NOT reconstruct a curated meal's ingredients from its name or from your own knowledge of the dish; the app cooks the recipe in those tables, not yours.
+- Build from those ingredient tables. They are the authoritative recipes. Do NOT reconstruct a curated meal's ingredients from its name or from your own knowledge of the dish; the app cooks the recipe in those tables, not yours.
 - The tables cover every option the user picked, including ones the plan didn't use. Only buy for meals that appear in the FINAL plan.
 - Quantities are computed, not estimated. For each ingredient: (base amount ÷ servings the base recipe makes) × scale_factor for every placement, plus plate per-serving rows × scale_factor, summed across the plan. For multi-serving meals the figure that matters is the batches cooked (check 4), not the placement count. Use a code tool if available.
 - Carry each item's id in square brackets after its name, exactly as the table gives it, even after you localise the product name.
@@ -218,7 +220,7 @@ This check cannot "pass" without a list: if you have not written one, you have n
 
 ### 9. Budget Compliance
 
-Grocery total falls within the budget stated in the generation prompt; ingredient choices match the budget tier; portions realistic. FAIL if costs significantly exceed it or premium items appear on a tight budget.
+The budget is stated in the generation prompt's step-2 grocery context line, next to the store and city. Grocery total falls within it; ingredient choices match the budget tier; portions realistic. FAIL if costs significantly exceed it or premium items appear on a tight budget.
 
 ### 10. Nutritional Quality (Advisory unless fixable in-table)
 
