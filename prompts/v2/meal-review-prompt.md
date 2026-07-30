@@ -106,7 +106,7 @@ These must pass after your fixes. If any still fail after revision, you have not
 - **Occurrence errors**: add or remove placements until counts match exactly.
 - **Invalid reference**: replace with a valid option from that slot's table.
 - **Batch quantity errors**: recompute servings consumed as the sum of scale factors, recompute batches, then correct the prep notes and every affected grocery quantity.
-- **Grocery/format**: add missing items, correct quantities, remove all draft content, resolve table mismatches.
+- **Grocery/format**: build or correct the list, fix quantities, remove all draft content, resolve table mismatches.
 
 ## Review Checklist
 
@@ -188,17 +188,24 @@ Verify against the times stated in the generation prompt's targets block — tho
 
 FAIL if the last meal breaches the stated window. Fix by shifting dinner earlier; cover any resulting gap with a snack occurrence the structure already grants (never an extra one).
 
-### 8. Grocery List Completeness & Accuracy
+### 8. Grocery List — BUILD IT
 
-- Every ingredient from every invented meal, every adjuster, and every curated meal appears, with quantities totalled across the plan. Curated meal ingredients come from the generation prompt's ingredient tables — those are the authoritative recipes. Do NOT reconstruct a curated meal's ingredients from its name or from your own knowledge of the dish; the app cooks the recipe in those tables, not yours.
+The plan has no grocery list yet. Generation deliberately doesn't write one: the ingredient tables arrive with THIS message, after the meals are settled, so you build the list once against a plan that is already final rather than one that might still change.
+
+Do this AFTER checks 1 to 7, so you are pricing the corrected plan and not the draft.
+
+- Build from the ingredient tables in the message that launched this review. They are the authoritative recipes. Do NOT reconstruct a curated meal's ingredients from its name or from your own knowledge of the dish; the app cooks the recipe in those tables, not yours.
+- The tables cover every option the user picked, including ones the plan didn't use. Only buy for meals that appear in the FINAL plan.
 - Quantities are computed, not estimated. For each ingredient: (base amount ÷ servings the base recipe makes) × scale_factor for every placement, plus plate per-serving rows × scale_factor, summed across the plan. For multi-serving meals the figure that matters is the batches cooked (check 4), not the placement count. Use a code tool if available.
+- Carry each item's id in square brackets after its name, exactly as the table gives it, even after you localise the product name.
+- Finish with the separate "If you cook these from scratch" list and its own subtotal, kept out of the main total.
 - Pricing uses ACTUAL pack size, not portion used (90g cheese needed, smallest pack 250g → price the 250g pack), realistic for the stated store and location.
 - Loose produce (bananas, single potatoes, one lemon) is priced to the amount actually used — the pack-size rule does not apply to items sold loose. A quantity far above what the plan consumes is a FAIL.
 - Categories logical; no phantom items; notes only for items bought outside the main store, and never a price tip.
 - Total presented as a range with the 10% buffer (e.g. "$165–$182") and a currency symbol — never a single number.
 - Cross-check: pick 3 random ingredients from the plan, recompute their totals from the ingredient tables, and confirm they match.
 
-FAIL if 3+ ingredients are missing, quantities are significantly wrong, or the total is a single number.
+This check cannot "pass" without a list: if you have not written one, you have not finished. FAIL also if 3+ ingredients are missing, quantities are significantly wrong, or the total is a single number.
 
 ### 9. Budget Compliance
 
