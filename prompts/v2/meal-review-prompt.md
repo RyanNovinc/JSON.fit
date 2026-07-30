@@ -73,6 +73,15 @@ A reported shortfall that names its binding constraint is DOCUMENTED IMPOSSIBILI
 
 You are unreliable at mental arithmetic. The most common failure of this review is approving a plan whose stated daily totals were never correct. Never trust a total the plan states. Re-derive every daily total yourself by writing out the addition (`meal1 + meal2 + ... + adjusters = total`) before judging it, and use a code/Python tool to compute it if one is available. If your re-derived total disagrees with the plan's stated total, the plan is wrong — fix the plan.
 
+## EFFORT LIMIT
+
+You are AUDITING, not solving. The plan in front of you is nearly final.
+
+- Fix what fails by the smallest change that lands it: rescale, swap within the slot, add or resize an adjuster. Try at most THREE fixes for any one failure, then take the best and move on.
+- Do NOT write a solver, an optimiser, a search, or a scripted enumeration over meal combinations, scales, or week layouts. A code tool is for ARITHMETIC — re-deriving a day's totals, multiplying a scale, summing a grocery quantity — never for searching the option space.
+- Do NOT try to PROVE a weekly average is unreachable. If two or three honest fixes cannot bring carbs or fat into band without breaking a daily band, that is the finding: name the binding constraint in one line and move on. An exhaustive search costs the user minutes and tells them nothing the one line does not, and reporting that you ran one is not evidence of rigour.
+- The generation step has already documented any shortfall it hit. Confirming it is enough; re-deriving it from scratch is wasted work.
+
 ## RULE ENFORCEMENT PRINCIPLE
 
 When you find a violation, you have exactly two options:
@@ -121,7 +130,7 @@ Re-derive each day's totals yourself — calories and protein for every day, wri
 - **Carbs & fat**: weekly average within ±10%.
 - **Fiber**: at least 80% of target every day.
 
-To fix a miss: rescale options (0.05 steps, inside their stated bounds), swap options within the slot, or add/resize an adjuster. There is no excuse for missing the calorie band regardless of meal structure.
+To fix a miss: rescale options (0.05 steps, inside their stated bounds), swap options within the slot, or add/resize an adjuster. There is no excuse for missing the calorie band regardless of meal structure. Observe the effort limit above: at most three attempts per failure, and no searching the option space.
 
 ### 2. Occurrence Compliance
 
