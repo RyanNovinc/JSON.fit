@@ -176,6 +176,70 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'meals_nav'})">Get the app</a>
 </nav>
 
+<script>
+// ── Back chevron ────────────────────────────────────────────────────────
+// Point back at wherever the visitor ENTERED the meal library from, not at
+// whatever page they happened to see last. A trip out to a recipe (/r/) and
+// back is a round trip, not a new entry, so it never overwrites the target.
+// That keeps cookbook -> meals -> back working while meals -> recipe -> back
+// -> back still leaves the library instead of bouncing into the recipe.
+(function(){
+  var link = document.querySelector('.nav-back');
+  if (!link) return;
+  var HOME = link.getAttribute('href') || 'https://json.fit';
+  var KEY  = 'jf_meals_entry';
+  var mem  = null; // fallback when sessionStorage is blocked (Safari private mode)
+
+  function read(){ try { return sessionStorage.getItem(KEY) || mem; } catch(e){ return mem; } }
+  function write(v){ mem = v; try { sessionStorage.setItem(KEY, v); } catch(e){} }
+
+  // Same-origin only: never let a referrer send the chevron off site.
+  function internal(u){
+    if (!u) return null;
+    try {
+      var url = new URL(u, location.href);
+      return url.origin === location.origin ? url : null;
+    } catch(e){ return null; }
+  }
+
+  // Pages that can never BE the entry point:
+  //   /r/...        a recipe detail, so the visitor is coming back to the library
+  //   /meals(.html) the library itself, i.e. a reload or a self link
+  function isRoundTrip(url){
+    var p = url.pathname.replace(/\/index\.html$/, '/');
+    return p.indexOf('/r/') === 0 || /(^|\/)meals(\.html)?$/.test(p);
+  }
+
+  function labelFor(url){
+    var p = url ? url.pathname.toLowerCase() : '/';
+    if (p.indexOf('/cookbook') === 0) return 'the cookbook';
+    if (p.indexOf('/lab') === 0) return 'The Lab';
+    if (p === '/' || p === '/index.html') return 'homepage';
+    return 'the previous page';
+  }
+
+  // An explicit ?from= wins, so a linking page can state its intent outright.
+  var explicit = internal(new URLSearchParams(location.search).get('from'));
+  if (explicit && !isRoundTrip(explicit)) {
+    write(explicit.href);
+  } else {
+    var ref = internal(document.referrer);
+    if (ref && !isRoundTrip(ref)) write(ref.href);
+    // else: arrived back from a recipe, or from off site / no referrer.
+    // Either way, leave whatever entry point is already stored alone.
+  }
+
+  var stored = internal(read());
+  var target = (stored && !isRoundTrip(stored)) ? stored.href : null;
+
+  link.setAttribute('href', target || HOME);
+  link.setAttribute('aria-label', 'Back to ' + (target ? labelFor(stored) : 'homepage'));
+  link.addEventListener('click', function(){
+    if (window.gtag) gtag('event','meals_back',{ 'button_location':'meals_nav', 'to': target ? labelFor(stored) : 'homepage' });
+  });
+})();
+</script>
+
 <header>
   <span class="h-ov">The Meal Library</span>
   <h1>Every meal, <em>every step.</em></h1>
