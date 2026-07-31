@@ -228,8 +228,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .ddata summary .chev{color:var(--violet);transition:transform .2s;font-size:.8rem}
 .ddata[open] summary .chev{transform:rotate(90deg)}
 .ddata[open] summary{border-bottom:1px solid var(--border);color:var(--text)}
-.dt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table.dt{width:100%;border-collapse:collapse;min-width:520px}
+.dt-wrap{position:relative}
+.dt-wrap::after{content:'';position:absolute;top:0;bottom:0;right:0;width:34px;pointer-events:none;background:linear-gradient(270deg,var(--surface) 12%,transparent);opacity:0;transition:opacity .2s;z-index:3}
+.dt-wrap.can-right::after{opacity:1}
+.dt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+table.dt{width:100%;border-collapse:separate;border-spacing:0}
+.dt th:not(:first-child),.dt td:not(:first-child){min-width:76px}
+.dt th:first-child,.dt td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:inset -1px 0 0 var(--border)}
+.dt th:first-child{background:var(--surface-2)}
 .dt th,.dt td{padding:.7rem 1rem;text-align:right;font-family:'DM Mono',monospace;font-size:.78rem;border-bottom:1px solid var(--border)}
 .dt th{color:var(--text-3);font-weight:500;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2)}
 .dt th:first-child,.dt td:first-child{text-align:left;color:var(--text);font-family:'Outfit',sans-serif;font-weight:500;font-size:.86rem}
@@ -238,7 +244,14 @@ table.dt{width:100%;border-collapse:collapse;min-width:520px}
 .dt td.delta-up{color:var(--up)}
 .dt td.delta-down{color:var(--down)}
 .dt td.now{color:var(--violet);font-weight:500}
-.dt td.grp,.dt th.grp{color:var(--violet);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;background:var(--surface-2)}
+.dt td.grp,.dt th.grp{color:var(--violet);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;background:var(--surface-2);padding:0}
+.dt td.grp .grp-in{position:sticky;left:0;display:inline-block;padding:.7rem 1rem}
+@media(max-width:620px){
+  .dt th,.dt td{padding:.6rem .65rem;font-size:.72rem}
+  .dt th{font-size:.56rem}
+  .dt th:first-child,.dt td:first-child{font-size:.78rem;min-width:112px;max-width:132px}
+  .dt th:not(:first-child),.dt td:not(:first-child){min-width:62px}
+}
 .ddata .d-note{padding:.9rem 1.35rem 1.1rem;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--text-3)}
 
 /* ── Origin story ── */
@@ -424,7 +437,7 @@ window.navBack=function(e){
     </div>
     <details class="ddata sa sa-up">
       <summary>Scan history &middot; every metric, every month <span class="chev">&#9656;</span></summary>
-      <div class="dt-scroll"><table class="dt" id="fullTable"></table></div>
+      <div class="dt-wrap" id="dtWrap"><div class="dt-scroll" id="dtScroll"><table class="dt" id="fullTable"></table></div></div>
       <p class="d-note">// same Evolt 360 every scan &middot; &Delta; is total change from baseline &middot; a column is added each month &middot; "-" means not measured</p>
     </details>
   </div>
@@ -855,9 +868,19 @@ var DATA = {
   var colspan=cks.length+2;
   var head='<thead><tr><th>Metric</th>'+cks.map(function(c){return '<th>'+c.label.replace('Month','Mo')+'</th>';}).join('')+'<th>&Delta; base</th></tr></thead>';
   var body='<tbody>'+ROWS.map(rowHTML).join('')+
-    (segNames.length?'<tr><td class="grp" colspan="'+colspan+'">Segmental lean mass &middot; Evolt panel</td></tr>'+segNames.map(function(nm){return rowHTML(segRow(nm));}).join(''):'')+
+    (segNames.length?'<tr><td class="grp" colspan="'+colspan+'"><span class="grp-in">Segmental lean mass &middot; Evolt panel</span></td></tr>'+segNames.map(function(nm){return rowHTML(segRow(nm));}).join(''):'')+
     '</tbody>';
   document.getElementById('fullTable').innerHTML=head+body;
+
+  /* ── Table scroll affordance: right fade while more columns exist ── */
+  var dtWrap=document.getElementById('dtWrap'), dtScroll=document.getElementById('dtScroll');
+  function dtFades(){ if(!dtScroll||!dtWrap) return; var max=dtScroll.scrollWidth-dtScroll.clientWidth; dtWrap.classList.toggle('can-right', max>2 && dtScroll.scrollLeft<max-2); }
+  if(dtScroll){
+    dtScroll.addEventListener('scroll',dtFades,{passive:true});
+    window.addEventListener('resize',dtFades);
+    var _dd=document.querySelector('.ddata'); if(_dd) _dd.addEventListener('toggle',dtFades);
+    dtFades();
+  }
 
   /* ── Lightbox ── */
   var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
