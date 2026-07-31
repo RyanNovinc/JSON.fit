@@ -117,12 +117,46 @@
 
         /* interior peek: real pages, print-friendly */
         .spreads { display:flex; justify-content:center; align-items:center; padding:0.4rem 0 0; }
-        .page { width:32%; max-width:238px; aspect-ratio:1/1.4145; background:#f6f3ea; border-radius:5px; box-shadow:0 14px 28px rgba(0,0,0,0.5); overflow:hidden; flex-shrink:0; }
+        .page { position:relative; width:32%; max-width:238px; aspect-ratio:1/1.4145; background:#f6f3ea; border:none; padding:0; border-radius:5px; box-shadow:0 14px 28px rgba(0,0,0,0.5); overflow:hidden; flex-shrink:0; cursor:zoom-in; font:inherit; color:inherit; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent; transform:var(--pt,none); transition:transform 0.28s ease, box-shadow 0.28s ease; }
         .page img { display:block; width:100%; height:100%; object-fit:cover; object-position:top center; }
-        .page:nth-child(1) { transform:rotate(-3.5deg) translateY(8px); z-index:1; margin-right:-10px; }
-        .page:nth-child(2) { transform:translateY(-4px); z-index:2; box-shadow:0 20px 38px rgba(0,0,0,0.62); }
-        .page:nth-child(3) { transform:rotate(3.5deg) translateY(8px); z-index:1; margin-left:-10px; }
+        .page:nth-child(1) { --pt:rotate(-3.5deg) translateY(8px); z-index:1; margin-right:-10px; }
+        .page:nth-child(2) { --pt:translateY(-4px); z-index:2; box-shadow:0 20px 38px rgba(0,0,0,0.62); }
+        .page:nth-child(3) { --pt:rotate(3.5deg) translateY(8px); z-index:1; margin-left:-10px; }
+        .page:focus-visible { transform:var(--pt,none) scale(1.045); z-index:4; outline:2px solid var(--cyan); outline-offset:4px; }
+        .page:active { transform:var(--pt,none) scale(0.985); }
+        .page-zoom { position:absolute; right:7px; bottom:7px; z-index:2; width:26px; height:26px; border-radius:8px; background:rgba(5,5,8,0.6); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; color:#eaf9fd; pointer-events:none; transition:background 0.25s ease, color 0.25s ease; }
+        @media (hover:hover) {
+            .page:hover { transform:var(--pt,none) scale(1.045); z-index:4; box-shadow:0 22px 44px rgba(0,0,0,0.66),0 0 0 2px var(--cyan-glow); }
+            .page:hover .page-zoom { background:var(--cyan); color:#04212a; }
+        }
         .spread-cap { text-align:center; font-family:'DM Mono',monospace; font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-top:1.3rem; }
+
+        /* full screen page viewer */
+        .lb { position:fixed; inset:0; z-index:9999; display:flex; opacity:0; pointer-events:none; transition:opacity 0.24s ease; }
+        .lb[hidden] { display:none; }
+        .lb.on { opacity:1; pointer-events:auto; }
+        .lb-bd { position:absolute; inset:0; background:rgba(5,5,8,0.94); -webkit-backdrop-filter:blur(9px); backdrop-filter:blur(9px); }
+        .lb-stage { position:relative; z-index:1; flex:1; display:flex; align-items:center; justify-content:center; overflow:hidden; touch-action:none; padding:calc(env(safe-area-inset-top,0px) + 3.4rem) 0.9rem calc(env(safe-area-inset-bottom,0px) + 3rem); transform:scale(0.965); transition:transform 0.3s cubic-bezier(0.22,0.61,0.36,1); }
+        .lb.on .lb-stage { transform:none; }
+        .lb-img { display:block; max-width:100%; max-height:100%; width:auto; height:auto; border-radius:4px; background:#f6f3ea; box-shadow:0 28px 60px rgba(0,0,0,0.72); transform-origin:center center; transform:translate3d(0,0,0) scale(1); transition:transform 0.28s cubic-bezier(0.22,0.61,0.36,1), opacity 0.18s ease; cursor:zoom-in; user-select:none; -webkit-user-select:none; -webkit-user-drag:none; will-change:transform; }
+        .lb-img.z { cursor:grab; }
+        .lb-img.drag { transition:none; cursor:grabbing; }
+        .lb-img.fade { opacity:0; }
+        .lb-btn { position:absolute; z-index:3; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); background:rgba(17,17,22,0.82); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); color:var(--text); border-radius:50%; cursor:pointer; transition:background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .lb-btn:hover { background:var(--surface-2); border-color:var(--border-cyan); color:var(--cyan); }
+        .lb-btn:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
+        .lb-x { width:44px; height:44px; top:calc(env(safe-area-inset-top,0px) + 0.65rem); right:calc(env(safe-area-inset-right,0px) + 0.65rem); }
+        .lb-nav { width:48px; height:48px; top:50%; margin-top:-24px; }
+        .lb-prev { left:calc(env(safe-area-inset-left,0px) + 0.85rem); }
+        .lb-next { right:calc(env(safe-area-inset-right,0px) + 0.85rem); }
+        .lb-foot { position:absolute; z-index:3; left:0; right:0; bottom:calc(env(safe-area-inset-bottom,0px) + 0.8rem); text-align:center; pointer-events:none; }
+        .lb-num { font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.14em; color:var(--text-2); }
+        .lb-hint { display:block; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.09em; text-transform:uppercase; color:var(--text-3); margin-top:0.35rem; transition:opacity 0.5s ease; }
+        .lb-hint.gone { opacity:0; }
+        @media (max-width:600px) {
+            .lb-nav { display:none; }
+            .lb-stage { padding-left:0.55rem; padding-right:0.55rem; }
+        }
 
         /* meal strip */
         .meal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
@@ -187,6 +221,7 @@
             .page { width:35%; }
             .page:nth-child(1) { margin-right:-14px; }
             .page:nth-child(3) { margin-left:-14px; }
+            .page-zoom { width:21px; height:21px; right:5px; bottom:5px; border-radius:6px; }
             .meal-grid { display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; }
             .meal-grid::-webkit-scrollbar { display:none; }
             .meal-card { flex:0 0 76%; scroll-snap-align:center; }
@@ -205,6 +240,10 @@
             .meal-card:hover { transform:none; }
             .sa { opacity:1; transform:none; transition:none; }
             .fh-book,.fh-ov,.fh-display,.fh-sub,.fh-hair,.cap-block,.trustline { animation:none; }
+            .page { transition:none; }
+            .page:hover,.page:focus-visible,.page:active { transform:var(--pt,none); }
+            .lb,.lb-img { transition:none; }
+            .lb-stage { transform:none; transition:none; }
         }
     </style>
     <!-- self-hosted analytics, same pipeline as the rest of json.fit -->
@@ -273,17 +312,20 @@
                 <h2>Real pages, <span class="cyan">print-friendly.</span></h2>
             </div>
             <div class="spreads">
-                <div class="page">
+                <button type="button" class="page" aria-label="Protein Pancakes page. Open full screen.">
                     <img src="/images/cookbook/page-breakfast.webp" data-fallback="/images/cookbook/page-breakfast.jpg" alt="Protein Pancakes page from The Skinny Guy's Bulking Cookbook" loading="lazy" width="760" height="1075" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                </div>
-                <div class="page">
+                    <span class="page-zoom" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></span>
+                </button>
+                <button type="button" class="page" aria-label="Slow-Cooked BBQ Pulled Pork page. Open full screen.">
                     <img src="/images/cookbook/page-main.webp" data-fallback="/images/cookbook/page-main.jpg" alt="Slow-Cooked BBQ Pulled Pork page from The Skinny Guy's Bulking Cookbook" loading="lazy" width="760" height="1075" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                </div>
-                <div class="page">
+                    <span class="page-zoom" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></span>
+                </button>
+                <button type="button" class="page" aria-label="Fudgy Protein Brownies page. Open full screen.">
                     <img src="/images/cookbook/page-dessert.webp" data-fallback="/images/cookbook/page-dessert.jpg" alt="Fudgy Protein Brownies page from The Skinny Guy's Bulking Cookbook" loading="lazy" width="760" height="1075" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                </div>
+                    <span class="page-zoom" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></span>
+                </button>
             </div>
-            <p class="spread-cap">Breakfast, mains, desserts &middot; one meal per page</p>
+            <p class="spread-cap">Tap a page to read it &middot; breakfast, mains, desserts</p>
         </section>
 
         <!-- MEAL STRIP: real photos, real macros -->
@@ -364,6 +406,27 @@
     </div>
     <div class="foot-r">&copy; 2026 JSON.fit</div>
 </footer>
+
+<!-- FULL SCREEN PAGE VIEWER -->
+<div class="lb" id="pageLb" role="dialog" aria-modal="true" aria-label="Cookbook page, full screen" hidden>
+    <div class="lb-bd"></div>
+    <div class="lb-stage">
+        <img class="lb-img" alt="" decoding="async">
+    </div>
+    <button type="button" class="lb-btn lb-x" aria-label="Close">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+    <button type="button" class="lb-btn lb-nav lb-prev" aria-label="Previous page">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="lb-btn lb-nav lb-next" aria-label="Next page">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    <div class="lb-foot">
+        <span class="lb-num" aria-live="polite">1 / 3</span>
+        <span class="lb-hint">Tap to zoom &middot; swipe to turn</span>
+    </div>
+</div>
 
 <script>
 (function(){
@@ -472,6 +535,209 @@
 
     if (document.readyState === 'complete') start();
     else window.addEventListener('load', start);
+})();
+</script>
+<script>
+// Cookbook page viewer: tap a preview page to read it full screen
+(function(){
+    var pages = [].slice.call(document.querySelectorAll('.spreads .page'));
+    var lb = document.getElementById('pageLb');
+    if (!pages.length || !lb) return;
+
+    var stage   = lb.querySelector('.lb-stage');
+    var img     = lb.querySelector('.lb-img');
+    var btnX    = lb.querySelector('.lb-x');
+    var btnPrev = lb.querySelector('.lb-prev');
+    var btnNext = lb.querySelector('.lb-next');
+    var num     = lb.querySelector('.lb-num');
+    var hint    = lb.querySelector('.lb-hint');
+    var reduce  = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    var items = pages.map(function(p){
+        var im = p.querySelector('img');
+        return {
+            src: im.getAttribute('src'),
+            fb:  im.getAttribute('data-fallback') || '',
+            alt: im.getAttribute('alt') || '',
+            key: (im.getAttribute('src') || '').split('/').pop().replace(/\.(webp|jpg|png)$/i, '')
+        };
+    });
+
+    var ZOOM = 2.4, SWIPE = 50, TAP = 9;
+    var idx = 0, isOpen = false, opener = null, primed = false, hintT = null, wheelT = null;
+    var scale = 1, tx = 0, ty = 0, base = { w:0, h:0 }, scrollY = 0, g = null;
+
+    function apply(){
+        img.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + scale.toFixed(4) + ')';
+        img.classList.toggle('z', scale > 1.01);
+    }
+    function measure(){ base.w = img.clientWidth; base.h = img.clientHeight; }
+    function clamp(){
+        var mx = Math.max(0, (base.w * scale - stage.clientWidth) / 2);
+        var my = Math.max(0, (base.h * scale - stage.clientHeight) / 2);
+        tx = Math.min(mx, Math.max(-mx, tx));
+        ty = Math.min(my, Math.max(-my, ty));
+    }
+    function reset(){ scale = 1; tx = 0; ty = 0; apply(); }
+    function zoomTo(ns, px, py){
+        var r = stage.getBoundingClientRect();
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        if (px == null) { px = cx; py = cy; }
+        ns = Math.min(4, Math.max(1, ns));
+        tx = px - cx - ns * (px - cx - tx) / scale;
+        ty = py - cy - ns * (py - cy - ty) / scale;
+        scale = ns;
+        if (scale <= 1.005) { scale = 1; tx = 0; ty = 0; }
+        clamp(); apply();
+        if (hint) hint.classList.add('gone');
+    }
+
+    function settle(){ measure(); clamp(); apply(); img.classList.remove('fade'); }
+
+    function show(i){
+        idx = (i % items.length + items.length) % items.length;
+        var it = items[idx];
+        reset();
+        img.style.opacity = '';
+        img.classList.add('fade');
+        img.onerror = function(){ if (it.fb && img.src.indexOf('.webp') > -1) img.src = it.fb; };
+        img.onload = settle;
+        img.src = it.src;
+        img.alt = it.alt;
+        num.textContent = (idx + 1) + ' / ' + items.length;
+        lb.setAttribute('aria-label', (it.alt || ('Cookbook page ' + (idx + 1))) + ', full screen');
+        if (img.complete && img.naturalWidth) settle();
+    }
+
+    function prime(){
+        if (primed) return; primed = true;
+        items.forEach(function(it){
+            var im = new Image();
+            im.onerror = function(){ if (it.fb && im.src.indexOf('.webp') > -1) im.src = it.fb; };
+            im.src = it.src;
+        });
+    }
+
+    function openLb(i, from){
+        if (isOpen) return;
+        isOpen = true; opener = from || null;
+        prime();
+        scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        document.body.style.position = 'fixed';
+        document.body.style.top = (-scrollY) + 'px';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        lb.hidden = false;
+        show(i);
+        requestAnimationFrame(function(){ lb.classList.add('on'); });
+        document.addEventListener('keydown', onKey, true);
+        window.addEventListener('resize', onResize);
+        setTimeout(function(){ btnX.focus(); }, 40);
+        if (hint) {
+            hint.classList.remove('gone');
+            clearTimeout(hintT);
+            hintT = setTimeout(function(){ hint.classList.add('gone'); }, 3400);
+        }
+        if (window.gtag) gtag('event', 'cookbook_page_view', { 'button_location':'cookbook_page', 'page': items[idx].key });
+    }
+
+    function closeLb(){
+        if (!isOpen) return;
+        isOpen = false;
+        lb.classList.remove('on');
+        document.removeEventListener('keydown', onKey, true);
+        window.removeEventListener('resize', onResize);
+        setTimeout(function(){ if (!isOpen) lb.hidden = true; }, reduce ? 0 : 250);
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+        if (opener) { try { opener.focus({ preventScroll:true }); } catch(e){ opener.focus(); } }
+        opener = null;
+        reset();
+    }
+
+    function onResize(){ if (isOpen) { reset(); measure(); } }
+
+    function onKey(e){
+        if (!isOpen) return;
+        var k = e.key;
+        if (k === 'Escape') { e.preventDefault(); closeLb(); }
+        else if (k === 'ArrowRight') { e.preventDefault(); show(idx + 1); }
+        else if (k === 'ArrowLeft') { e.preventDefault(); show(idx - 1); }
+        else if (k === '+' || k === '=') { e.preventDefault(); zoomTo(scale * 1.4); }
+        else if (k === '-' || k === '_') { e.preventDefault(); zoomTo(scale / 1.4); }
+        else if (k === '0') { e.preventDefault(); reset(); }
+        else if (k === 'Tab') {
+            var f = [].slice.call(lb.querySelectorAll('button')).filter(function(el){ return el.offsetParent !== null; });
+            e.preventDefault();
+            if (!f.length) return;
+            var at = f.indexOf(document.activeElement);
+            var n = e.shiftKey ? (at <= 0 ? f.length - 1 : at - 1) : (at === -1 || at === f.length - 1 ? 0 : at + 1);
+            f[n].focus();
+        }
+    }
+
+    stage.addEventListener('pointerdown', function(e){
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        g = { x:e.clientX, y:e.clientY, tx:tx, ty:ty, onImg:(e.target === img), moved:false, t:Date.now() };
+        img.classList.add('drag');
+        try { stage.setPointerCapture(e.pointerId); } catch(err){}
+        if (g.onImg) e.preventDefault();
+    });
+
+    stage.addEventListener('pointermove', function(e){
+        if (!g) return;
+        var dx = e.clientX - g.x, dy = e.clientY - g.y;
+        if (!g.moved && Math.abs(dx) + Math.abs(dy) > TAP) g.moved = true;
+        if (!g.moved) return;
+        if (scale > 1.01 && g.onImg) {
+            tx = g.tx + dx; ty = g.ty + dy; clamp(); apply();
+        } else if (Math.abs(dx) > Math.abs(dy)) {
+            tx = dx * 0.45; ty = 0; apply();
+            img.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / 430));
+        }
+    });
+
+    function endGesture(e){
+        if (!g) return;
+        var gg = g; g = null;
+        img.classList.remove('drag');
+        try { stage.releasePointerCapture(e.pointerId); } catch(err){}
+        var dx = e.clientX - gg.x, dy = e.clientY - gg.y;
+
+        if (!gg.moved && Date.now() - gg.t < 500) {
+            if (gg.onImg) zoomTo(scale > 1.01 ? 1 : ZOOM, e.clientX, e.clientY);
+            else closeLb();
+            return;
+        }
+        if (scale > 1.01 && gg.onImg) { clamp(); apply(); return; }
+        img.style.opacity = '';
+        if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy)) show(idx + (dx < 0 ? 1 : -1));
+        else reset();
+    }
+    stage.addEventListener('pointerup', endGesture);
+    stage.addEventListener('pointercancel', endGesture);
+
+    stage.addEventListener('wheel', function(e){
+        if (!isOpen) return;
+        e.preventDefault();
+        img.classList.add('drag');
+        zoomTo(scale * (e.deltaY < 0 ? 1.18 : 1 / 1.18), e.clientX, e.clientY);
+        clearTimeout(wheelT);
+        wheelT = setTimeout(function(){ img.classList.remove('drag'); }, 90);
+    }, { passive:false });
+
+    btnX.addEventListener('click', closeLb);
+    btnPrev.addEventListener('click', function(){ show(idx - 1); });
+    btnNext.addEventListener('click', function(){ show(idx + 1); });
+
+    pages.forEach(function(p, i){
+        p.addEventListener('click', function(){ openLb(i, p); });
+    });
 })();
 </script>
 <script src="/wall.js"></script>
