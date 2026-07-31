@@ -212,6 +212,7 @@ Do this AFTER checks 1 to 7, so you are pricing the corrected plan and not the d
 - Finish with the separate "If you cook these from scratch" list and its own subtotal, kept out of the main total.
 - Pricing uses ACTUAL pack size, not portion used (90g cheese needed, smallest pack 250g → price the 250g pack), realistic for the stated store and location.
 - Loose produce (bananas, single potatoes, one lemon) is priced to the amount actually used — the pack-size rule does not apply to items sold loose. A quantity far above what the plan consumes is a FAIL.
+- Where an item carries BOTH a weight and a piece count ("590 g, about 4 medium"), the two must agree at a normal size for that produce in the user's country. Do the division and check it. A count that does not follow from the weight makes every quantity on the list look guessed, which is the one thing a shopping list cannot afford. If you are unsure of typical sizes locally, give the weight alone rather than an invented count.
 - Categories logical; no phantom items; notes only for items bought outside the main store, and never a price tip.
 - Total presented as a range with the 10% buffer (e.g. "$165–$182") and a currency symbol — never a single number.
 - Cross-check: pick 3 random ingredients from the plan, recompute their totals from the ingredient tables, and confirm they match.
@@ -221,6 +222,15 @@ This check cannot "pass" without a list: if you have not written one, you have n
 ### 9. Budget Compliance
 
 The budget is stated in the generation prompt's step-2 grocery context line, next to the store and city. Grocery total falls within it; ingredient choices match the budget tier; portions realistic. FAIL if costs significantly exceed it or premium items appear on a tight budget.
+
+**Single-use items that force a whole new product.** Scan the list for any item that appears in exactly one meal, is needed in a tiny amount, and cannot be bought in a small enough pack. Ask two questions:
+
+1. Is this item a large share of the whole shop — say a tenth or more of the total? Judge it against the total you just calculated, in the user's own currency. There is no fixed figure here and there should not be; a jar that is trivial on one budget dominates another.
+2. Does an option in the SAME slot's table achieve the same thing using something already on the list?
+
+If both are yes, swap to that option and note it in the change log. A worked case: a dessert used once needed a small amount of chocolate protein powder, so the list bought a whole tub for that one serving, while a different dessert in the same table used the vanilla protein powder the plan was already buying. Same slot, same role in the day, a large share of the shop saved.
+
+If the answer to (2) is no, the item stays — the user picked these options and a single expensive ingredient is not a reason to drop a meal they chose. Do not invent a substitute, and do not silently remove the meal.
 
 ### 10. Nutritional Quality (Advisory unless fixable in-table)
 
