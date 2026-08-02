@@ -145,7 +145,9 @@ Curated meal entry format:
 }
 ```
 
-Fields used for curated meals: `id`, `name`, `type`, `time`, `calories`, `macros`, `curated_meal_slug`, `plate_id`, `scale_factor`, `isOriginal`, `addedAt`. Omit `ingredients`, `instructions`, and `tags`.
+Fields used for curated meals: `id`, `name`, `type`, `time`, `calories`, `macros`, `curated_meal_slug`, `plate_id`, `scale_factor`, `isOriginal`, `addedAt`. Omit `ingredients` and `instructions`.
+
+`tags` is omitted too, with ONE exception: adjusters. See below.
 
 Both formats (full invented meals and curated meal references) coexist in the same `meals` array. The app detects the format based on the presence of `curated_meal_slug`.
 
@@ -153,7 +155,11 @@ Both formats (full invented meals and curated meal references) coexist in the sa
 
 The reviewed plan may contain standalone adjuster entries (whey scoop, rice side, olive oil, psyllium, etc.) used to land daily targets. They are ordinary meal entries — convert them exactly like everything else, in place, at their stated times. Never strip, merge, or relocate them.
 
-- Adjusters that are curated references (the plan shows a `curated_meal_slug`, plate_id `standard`) use the curated meal entry format above.
+- **Every adjuster entry carries `"tags": ["adjuster"]`**, whether it is a curated reference or an invented entry. This is the only case where a curated meal keeps `tags`.
+
+  Why it matters: adjusters have no slot of their own in the schema, so they are typed `snack` (or a snack sub-type) — the closest available fit. Without this tag the app cannot tell them apart from the snacks the user actually picked, and a day with 2 snacks and 3 adjusters displays as 5 snacks the user never chose. The tag lets the app label them as top-ups instead. The user's snack count is a questionnaire answer; do not let adjusters appear to violate it.
+
+- Adjusters that are curated references (the plan shows a `curated_meal_slug`, plate_id `standard`) use the curated meal entry format above, plus that `tags` array.
 - Adjusters written as invented entries use the full invented format — their one-line ingredients and instructions from the plan become single-element arrays. Copy their macros verbatim from the plan.
 - Adjuster ingredients are included in the grocery list totals like any other ingredient.
 
@@ -195,7 +201,7 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 | **macros.fiber** | Yes | Number | Fiber in grams |
 | **ingredients** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
 | **instructions** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
-| **tags** | No | Array | Tags like ["high_protein", "meal_prep"]. Omitted for curated meals. |
+| **tags** | Conditional | Array | Tags like ["high_protein", "meal_prep"]. Omitted for curated meals, EXCEPT adjusters, which always carry `["adjuster"]`. |
 | **curated_meal_slug** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
 | **plate_id** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
 | **scale_factor** | Conditional | Number | Required for curated meals only. Decimal (e.g. 1.0, 0.8). |
