@@ -157,6 +157,25 @@ JSON.fit resolves rest at runtime from the exercise's category, how heavily it i
 
 Set the `rest` field to a plain integer number of seconds anyway. It is a compatibility fallback for users on app versions that predate runtime resolution, and it is ignored by current versions. A sensible category default is enough — 180 for free-weight compounds, 120 for machine compounds and large-muscle isolation, 90 for small-muscle isolation. Do not spend effort tuning it, do not derive a second reduced value from it, and do not give superset members a special value.
 
+**One thing you DO carry across: which pace the user starts on.**
+
+The app resolves all three tiers, but it has to pick one as the selected pace when the program is imported. That choice comes from the plan, in the root `default_pace` field.
+
+The plan states its rest summary in one named pace, in a line shaped like `Rest (OPTIMAL pace): around ...`. Read the pace named there and write it to `default_pace` at the root of the JSON, **lowercase**, as exactly one of:
+
+| Pace named in the plan | `default_pace` value |
+|---|---|
+| OPTIMAL / Optimal / Full | `"optimal"` |
+| MODERATE / Moderate / Balanced | `"moderate"` |
+| MINIMAL / Minimal / Quick | `"minimal"` |
+
+Rules:
+
+- Lowercase only. `"OPTIMAL"` is not a valid value and the app will ignore it, silently leaving the user on the middle pace.
+- Emit `default_pace` once, at the root, alongside `routine_name`. Never on a block, a day, or an exercise.
+- If the plan's rest summary does not name a pace at all, write `"moderate"`. Do not guess a pace from the program's goal, its rep ranges, or the rest numbers quoted in the summary.
+- This sets the starting pace only. The user can change it in the app at any time, and the app will not override a pace they have already chosen for themselves.
+
 ### Alternative Exercises
 
 Each exercise must include 2 alternatives (1 for bodyweight-only programs). Alternatives should target the same primary muscles, use different equipment or movement variations, and include their own primaryMuscles and secondaryMuscles tags.
@@ -188,6 +207,7 @@ Exercise names must also match the library exactly. The app looks up each exerci
   "routine_name": "string",
   "description": "string",
   "days_per_week": 7,
+  "default_pace": "optimal | moderate | minimal (lowercase — the rest pace named in the plan's rest summary)",
   "blocks": [
     {
       "block_name": "string",
@@ -258,6 +278,7 @@ Exercise names must also match the library exactly. The app looks up each exerci
 7. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. Example for 5-day program: Day 1 training "Push", Day 2 training "Pull", Day 3 rest "REST DAY", Days 4 and 5 training, Day 6 rest, Day 7 training.
 8. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
 9. **RIR** — carry RIR guidance from the approved plan into each exercise's notes field. Do not regenerate or modify RIR values — the plan is authoritative.
+10. **default_pace** — include `default_pace` at the root, lowercase, as one of `"optimal"`, `"moderate"` or `"minimal"`, read from the pace named in the plan's rest summary (see Rest Periods). Fall back to `"moderate"` only when the plan names no pace. This is the one rest-related value you carry from the plan into the file.
 
 ---
 
@@ -274,6 +295,7 @@ Before presenting each block, silently verify:
 - [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps, and the block carries a `deload_weeks` array
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
 - [ ] Block-relative week keys start from "1"
+- [ ] `default_pace` is present at the root, lowercase, and matches the pace named in the plan's rest summary
 - [ ] Session durations are recalculated using the duration formula
 - [ ] The filename ends in `.json`; for multi-block programs it follows `workout-program-part-[N].json` where N is the number of blocks in the file, and the `blocks` array actually contains all N blocks (every prior block copied across unchanged, newest block added)
 
