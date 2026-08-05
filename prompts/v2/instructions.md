@@ -43,6 +43,15 @@ Options with a `key` in the form `slug:plate_id` are curated meals. Output them 
 - Rows marked **(UF)** are universal fillers the user did not pick — use them only to cover occurrences the user's picks can't.
 - Maximum **1 stunt-marked plate** per week; skip stunt plates entirely below 2,500 kcal/day.
 
+## User-created meals
+
+Options marked **(user-created)** — their slugs start with `custom_` — are meals the user typed into the app themselves: their own recipe, photo and macros.
+
+- Output them exactly like curated references: `{ "curated_meal_slug": "custom_…", "plate_id": "standard", "scale_factor": 1.0 }`. A `custom_` slug is a verbatim lookup key like any other.
+- Their scale is **fixed at 1.0** (the row's min–max reads 1–1). Never rescale one to close a macro gap — close gaps with adjusters instead.
+- Their macros are **user-entered and authoritative**. Never adjust, "correct", or recompute them from the ingredients — schedule the row's numbers as given.
+- Their ingredient table is headed USER-CREATED and its amounts are already **PER SERVING**: multiply by scale_factor only, never divide by a servings count. The rows carry no id, so those grocery items get no bracketed id. Localise and price them like everything else, but never add ingredients the user did not write — and if the table says the user listed none, put nothing on the grocery list for that meal and do not invent a recipe for it.
+
 ## Adjuster output contract
 
 Adjusters are standalone entries used to close a day's macro gaps (max 3 per day). They do **not** count toward meal, snack, or dessert occurrence counts.
