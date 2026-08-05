@@ -281,9 +281,10 @@ Exercise names must also match the library exactly. The app looks up each exerci
 5. **sets vs sets_weekly** — `sets` is the default set count for training weeks (used for display). `sets_weekly` must be specified for every week in the block: training weeks should match `sets`, and deload weeks should show reduced values. Both fields are required for every strength exercise.
 6. **deload_weeks optionality** — omit `deload_weeks` entirely for blocks without deloads. Do not include an empty array.
 7. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. Example for 5-day program: Day 1 training "Push", Day 2 training "Pull", Day 3 rest "REST DAY", Days 4 and 5 training, Day 6 rest, Day 7 training.
-8. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
-9. **RIR** — carry RIR guidance from the approved plan into each exercise's notes field. Do not regenerate or modify RIR values — the plan is authoritative.
-10. **default_pace** — include `default_pace` at the root, lowercase, as one of `"optimal"`, `"moderate"` or `"minimal"`, read from the pace named in the plan's rest summary (see Rest Periods). Fall back to `"moderate"` only when the plan names no pace. This is the one rest-related value you carry from the plan into the file.
+8. **REST DAY entries in `days`** — every block's `days` array must hold the full 7-day week: one object per training day plus one `{ "day_name": "REST DAY", "estimated_duration": 0, "exercises": [] }` per rest day, ordered exactly as weekly_schedule orders the week. The app renders `days` and only `days` — weekly_schedule never reaches the screen — and it renders the array in order, so a rest day's position in the array IS its position in the user's week. A 6-day program therefore ships 7 day objects, one of them REST DAY. Do not collapse consecutive rest days into a single entry; two rest days are two objects.
+9. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
+10. **RIR** — carry RIR guidance from the approved plan into each exercise's notes field. Do not regenerate or modify RIR values — the plan is authoritative.
+11. **default_pace** — include `default_pace` at the root, lowercase, as one of `"optimal"`, `"moderate"` or `"minimal"`, read from the pace named in the plan's rest summary (see Rest Periods). Fall back to `"moderate"` only when the plan names no pace. This is the one rest-related value you carry from the plan into the file.
 
 ---
 
@@ -298,6 +299,7 @@ Before presenting each block, silently verify:
 - [ ] RIR guidance from the plan carried through to every exercise's notes
 - [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
 - [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps, and the block carries a `deload_weeks` array
+- [ ] Every block's `days` array totals 7 objects — training days plus REST DAY entries — ordered to match its weekly_schedule
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
 - [ ] Block-relative week keys start from "1"
 - [ ] `default_pace` is present at the root, lowercase, and matches the pace named in the plan's rest summary
