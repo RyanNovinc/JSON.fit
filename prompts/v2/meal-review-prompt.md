@@ -43,6 +43,17 @@ The plan may contain curated meal references (`curated_meal_slug` + `plate_id` +
 
 The user's picked options were chosen by the user looking at the food. Do not second-guess, equipment-check, or substitute them for taste, variety, or kitchen reasons. The only valid reasons to swap a picked option out of a given day are macro fit and allergen safety.
 
+## User-created meals in the plan
+
+Some options are the user's OWN meals — their slugs begin `custom_`, their option rows are marked **(user-created)**, and their ingredient tables are headed USER-CREATED. Treat them as curated references: same reference shape, same verbatim slug and plate_id, resolved by the app on import. Four differences, all of which override the general curated rules above:
+
+- **Their scale is fixed at 1.0** — the row's min–max reads 1–1. Never rescale a user-created meal to close a macro gap, and never treat a scale of 1.0 as something to optimise. Land the day with the other levers: rescale a curated option, swap within the slot, or add or resize an adjuster.
+- **Their macros are user-entered and authoritative.** Do not adjust, "correct", or recompute them from the ingredients. If the ingredients look inconsistent with the macros, the macros are right.
+- **Their ingredient list is exactly what the user typed.** You have no knowledge of these recipes — there is nothing to recall and nothing to correct. Use only the rows in their USER-CREATED table, whose amounts are already PER SERVING (multiply by scale_factor only, never divide by a servings count). Those rows carry no id, so their grocery items get no bracketed id.
+- **A user-created meal whose table lists no ingredients contributes nothing to the grocery list.** That is correct and is not a check-8 failure. Never invent a recipe for it, and never fill the gap from your own knowledge of a dish with a similar name.
+
+Everything else applies as normal: they count toward occurrences like any other meal, they must respect allergens, and they can be swapped out of a day for macro fit or allergen safety like any other option.
+
 ## Adjusters in the plan
 
 The plan may include standalone adjuster entries (whey scoop, rice side, olive oil, psyllium, etc.) used to land daily targets — the generation prompt carries the full adjuster table with exact per-unit macros. These are legitimate; do NOT strip them. Rules:
@@ -111,7 +122,7 @@ These must pass after your fixes. If any still fail after revision, you have not
 
 ## What "Fix" Means
 
-- **Nutrition/Budget**: rescale within the option's stated bounds (steps of 0.05), swap to another option in the same slot's table, add/resize an adjuster, or use a UF row for an uncovered occurrence.
+- **Nutrition/Budget**: rescale within the option's stated bounds (steps of 0.05), swap to another option in the same slot's table, add/resize an adjuster, or use a UF row for an uncovered occurrence. Never rescale a user-created (`custom_`) option — its bounds read 1–1 and its macros are the user's own.
 - **Occurrence errors**: add or remove placements until counts match exactly.
 - **Invalid reference**: replace with a valid option from that slot's table.
 - **Batch quantity errors**: recompute servings consumed as the sum of scale factors, recompute batches, then correct the prep notes and every affected grocery quantity.
@@ -130,7 +141,7 @@ Re-derive each day's totals yourself — calories and protein for every day, wri
 - **Carbs & fat**: weekly average within ±10%.
 - **Fiber**: at least 80% of target every day.
 
-To fix a miss: rescale options (0.05 steps, inside their stated bounds), swap options within the slot, or add/resize an adjuster. There is no excuse for missing the calorie band regardless of meal structure. Observe the effort limit above: at most three attempts per failure, and no searching the option space.
+To fix a miss: rescale options (0.05 steps, inside their stated bounds), swap options within the slot, or add/resize an adjuster. A user-created option is not a lever here — its scale is pinned at 1.0; adjust something else on the day. There is no excuse for missing the calorie band regardless of meal structure. Observe the effort limit above: at most three attempts per failure, and no searching the option space.
 
 ### 2. Occurrence Compliance
 
@@ -147,8 +158,8 @@ Count placements per slot and compare to the generation prompt's Week structure:
 
 For every curated reference in the plan (adjusters included):
 
-- The `slug:plate_id` pair appears in the generation prompt's option tables (UF rows count) or, for adjusters, the slug is noted in the adjuster table with plate_id `standard`. FAIL on anything from outside these sets — invalid references break import.
-- scale_factor is within that row's stated min–max, in 0.05 steps.
+- The `slug:plate_id` pair appears in the generation prompt's option tables (UF rows count) or, for adjusters, the slug is noted in the adjuster table with plate_id `standard`. FAIL on anything from outside these sets — invalid references break import. A `custom_` slug is a valid reference like any other, provided it appears in the option tables.
+- scale_factor is within that row's stated min–max, in 0.05 steps. User-created rows read 1–1, so anything other than exactly 1.0 on a `custom_` slug is a FAIL — fix it by setting the scale back to 1.0 and closing the resulting gap with an adjuster, never by leaving it rescaled.
 - Reported macros equal the row's macros × scale_factor — compute the multiplication to confirm, with a code tool if available. FAIL on math errors; the row's numbers are canonical.
 - The meal sits in its own slot, except lunch↔dinner swaps, which are allowed when they serve batch reuse or a day's targets.
 - Repetition matching the option tables is by design: a slot with one option repeating daily is correct. Do not add variety the user didn't pick.
@@ -165,9 +176,9 @@ For every curated reference in the plan (adjusters included):
 Then:
 
 - Multi-serving options (serves > 1): the batch is consumed within the plan **or** the prep notes carry an explicit "freeze N portions" line. FAIL only when neither is true.
-- Multi-plate meals placed several times rotate plates rather than repeating one.
+- Multi-plate meals placed several times rotate plates rather than repeating one. User-created meals have a single plate (`standard`) — repeating it is correct, not a FAIL.
 - Maximum 1 stunt-marked plate in the week; none at all if the daily target is under 2,500 kcal.
-- Fridge-stored batch servings appear within 4 days of the batch's cook (its first appearance in the plan); any serving later than that is covered by an explicit freeze-and-thaw note in the prep notes. FAIL otherwise.
+- Fridge-stored batch servings appear within 4 days of the batch's cook (its first appearance in the plan); any serving later than that is covered by an explicit freeze-and-thaw note in the prep notes. FAIL otherwise. User-created meals state no storage life — assume the same 4 days.
 
 ### 5. Dietary Restrictions
 
@@ -177,11 +188,11 @@ Scan every ingredient across every invented meal and every UF/adjuster entry, an
 - All "avoid" foods respected.
 - Eating challenges accommodated.
 
-FAIL if any restricted food appears. For a curated pick that conflicts with an allergen, swap to another option in that slot's table.
+FAIL if any restricted food appears. For a curated pick that conflicts with an allergen, swap to another option in that slot's table. A user-created meal carries its own allergen list from the user — check it like any other option, and swap it out of the day if it conflicts.
 
 ### 6. Inventions & Fillers Feasibility
 
-Applies ONLY to invented meals and adjuster inventions — never to the user's picked options:
+Applies ONLY to invented meals and adjuster inventions — never to the user's picked options, curated or user-created:
 
 - Standard kitchen assumed; no-cook or one-pan preferred; ≤20 minutes hands-on.
 - Detailed enough to cook (minimum 3–5 instruction steps for full invented meals; adjusters may use the one-line format).
@@ -206,6 +217,7 @@ The plan has no grocery list yet. Generation deliberately doesn't write one, so 
 Do this AFTER checks 1 to 7, so you are pricing the corrected plan and not the draft.
 
 - Build from those ingredient tables. They are the authoritative recipes. Do NOT reconstruct a curated meal's ingredients from its name or from your own knowledge of the dish; the app cooks the recipe in those tables, not yours.
+- The same rule binds harder on tables headed USER-CREATED: those rows are the user's own typed ingredients and are the ONLY source for that meal. Never pad them, never substitute your idea of the dish, and never add an ingredient the user did not write. Their amounts are already PER SERVING — multiply by scale_factor only, never divide by a servings count — and they carry no id, so those items get no bracketed id. If a USER-CREATED table says the user listed no ingredients, that meal contributes nothing to the list; that is correct and is not a miss.
 - The tables cover every option the user picked, including ones the plan didn't use. Only buy for meals that appear in the FINAL plan.
 - Quantities are computed, not estimated. For each ingredient: (base amount ÷ servings the base recipe makes) × scale_factor for every placement, plus plate per-serving rows × scale_factor, summed across the plan. For multi-serving meals the figure that matters is the batches cooked (check 4), not the placement count. Use a code tool if available.
 - Carry each item's id in square brackets after its name, exactly as the table gives it, even after you localise the product name.
@@ -230,7 +242,7 @@ The budget is stated in the generation prompt's step-2 grocery context line, nex
 
 If both are yes, swap to that option and note it in the change log. A worked case: a dessert used once needed a small amount of chocolate protein powder, so the list bought a whole tub for that one serving, while a different dessert in the same table used the vanilla protein powder the plan was already buying. Same slot, same role in the day, a large share of the shop saved.
 
-If the answer to (2) is no, the item stays — the user picked these options and a single expensive ingredient is not a reason to drop a meal they chose. Do not invent a substitute, and do not silently remove the meal.
+If the answer to (2) is no, the item stays — the user picked these options and a single expensive ingredient is not a reason to drop a meal they chose. Do not invent a substitute, and do not silently remove the meal. This applies with no exceptions to user-created meals: never drop or alter one over an ingredient's cost.
 
 ### 10. Nutritional Quality (Advisory unless fixable in-table)
 
