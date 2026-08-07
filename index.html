@@ -546,15 +546,22 @@
         .nd-top { display:flex; align-items:center; justify-content:space-between; padding:0 16px 2px; }
         .nd-top .chev { color:#fff; font-size:18px; line-height:1; }
         .nd-top .plus { color:var(--ac); font-size:20px; line-height:1; }
+        .nd-top .date { flex:1; text-align:center; font-size:8px; letter-spacing:2.3px; color:#6a6a70; font-weight:600; text-transform:uppercase; }
         .nd-head { text-align:center; padding:8px 22px 16px; }
-        .nd-overline { font-size:9px; letter-spacing:2.3px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-bottom:5px; }
         .nd-day { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:27px; color:#fff; line-height:1.05; }
-        .nd-sub { font-size:11px; color:#8a8a90; margin-top:8px; }
-        .nd-sub b { font-family:Georgia,serif; font-style:normal; font-size:12.5px; color:#dcdce0; font-weight:400; }
-        .nd-hair { height:1px; background:#2a2a30; margin:13px 16px 11px; }
+        .nd-cal { display:flex; align-items:baseline; justify-content:center; gap:5px; margin-top:10px; margin-bottom:11px; }
+        .nd-cal .fig { font-family:Georgia,serif; font-size:22px; color:#fff; line-height:1; }
+        .nd-cal .of { font-size:10.5px; color:#8a8a90; }
+        .nd-macros { display:flex; gap:11px; padding:16px 0 0; }
+        .nd-mcol { flex:1; text-align:left; }
+        .nd-mlabel { font-size:7.5px; letter-spacing:1.2px; color:#8a8a90; font-weight:600; text-transform:uppercase; margin-bottom:5px; }
+        .nd-mfig { font-family:Georgia,serif; font-size:12.5px; color:#e8e8ea; margin-bottom:6px; line-height:1; }
+        .nd-mfig i { font-style:normal; font-size:9px; color:#8a8a90; }
+        .nd-mtrack { height:2px; background:#1c1c22; overflow:hidden; }
+        .nd-mfill { height:100%; background:var(--ac); }
         .nd-track { height:4px; background:#1c1c22; border-radius:2px; margin:0 16px; overflow:hidden; }
         .nd-fill { height:100%; border-radius:2px; background:var(--ac); width:40%; }
-        .nd-eaten { text-align:center; font-size:9px; letter-spacing:1.4px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-top:8px; }
+        .nd-eaten { text-align:center; font-size:8.5px; letter-spacing:1.4px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-top:15px; }
         .nd-tl { font-size:9px; letter-spacing:1.8px; color:#6a6a70; font-weight:600; text-transform:uppercase; padding:14px 16px 10px; }
         .nd-cards { padding:0 16px; }
         .nd-card { margin-bottom:15px; }
@@ -570,32 +577,48 @@
         .nd-name { font-family:Georgia,serif; font-size:14.5px; color:#fff; line-height:1.2; }
         .nd-name.done { color:#8a8a90; text-decoration:line-through; }
         .nd-macro { font-size:10px; color:#8a8a90; margin-top:3px; }
-        .wl-img { position:relative; width:100%; aspect-ratio:16/10; border-bottom-left-radius:18px; border-bottom-right-radius:18px; overflow:hidden; background:#000; }
-        .wl-img .frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transform:scale(0.9) translateY(11%); opacity:0; transition:opacity 0.25s ease; }
+        .wl-img { position:relative; width:100%; aspect-ratio:16/9; border-bottom-left-radius:18px; border-bottom-right-radius:18px; overflow:hidden; background:#000; }
+        .wl-img .frame { position:absolute; inset:32px 0 0; width:100%; height:calc(100% - 32px); object-fit:contain; opacity:0; transition:opacity 0.25s ease; }
         .wl-img .frame.show { opacity:1; }
         .wl-ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#2f2f38; }
         .wl-ph svg { width:42px; height:42px; }
         .wl-ph span { font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:#3a3a44; }
-        .wl-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.32); }
+        .wl-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.36); }
         .wl-head { position:absolute; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:34px 12px 0; z-index:3; }
         .wl-hbtn { width:30px; height:30px; border-radius:15px; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; }
+        .wl-hbtn.hist { background:rgba(34,211,238,0.18); border:1px solid rgba(34,211,238,0.4); color:var(--ac); }
         .wl-hright { display:flex; gap:7px; }
+        .wl-ticks { position:absolute; left:11px; right:11px; bottom:7px; display:flex; gap:4px; z-index:4; }
+        .wl-tick { flex:1; height:3px; border-radius:2px; background:#2a2a32; }
+        .wl-tick.cur { background:var(--ac); }
+        .wl-tick.done { background:rgba(34,211,238,0.45); }
         .wl-body { padding:12px 14px 0; }
         .wl-titlerow { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-        .wl-title { font-family:'Outfit',sans-serif; font-size:18px; font-weight:700; color:#f0f0f2; letter-spacing:-0.3px; line-height:1.1; display:flex; align-items:center; gap:5px; }
+        .wl-title { font-family:'Outfit',sans-serif; font-size:17px; font-weight:700; color:#f0f0f2; letter-spacing:-0.3px; line-height:1.1; display:flex; align-items:center; gap:5px; }
         .wl-title .cd { color:var(--ac); font-size:13px; }
-        .wl-muscles { font-family:'DM Mono',monospace; font-size:10px; color:#55555f; margin-top:5px; letter-spacing:0.2px; }
+        .wl-muscles { font-family:'DM Mono',monospace; font-size:9.5px; color:#55555f; margin-top:5px; letter-spacing:0.2px; }
+        .wl-1rm { text-align:right; flex-shrink:0; }
+        .wl-1rm .lb { font-family:'DM Mono',monospace; font-size:7.5px; letter-spacing:1.4px; color:#55555f; display:block; }
+        .wl-1rm .vl { font-family:'DM Mono',monospace; font-size:12.5px; color:var(--ac); display:block; margin-top:2px; }
         .wl-rx { display:flex; align-items:center; gap:9px; padding:7px 11px; border-radius:8px; border:1px solid rgba(34,211,238,0.25); background:rgba(34,211,238,0.04); margin:11px 0; }
         .wl-rx .wk { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; color:var(--ac); }
         .wl-rx .sx { font-family:'DM Mono',monospace; font-size:10.5px; color:#9898a4; }
         .wl-tbl-head { display:flex; align-items:center; padding:0 2px 6px; border-bottom:1px solid rgba(255,255,255,0.05); }
         .wl-tbl-head span { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.2px; color:#55555f; }
+        .wl-tbl-head .info { display:inline-flex; align-items:center; gap:3px; justify-content:center; flex:1; }
+        .wl-tbl-head .info em { font-style:normal; width:9px; height:9px; border-radius:5px; border:1px solid #55555f; color:#55555f; font-size:6.5px; line-height:8px; text-align:center; }
         .wl-row { display:flex; align-items:center; padding:5px 2px; }
-        .wl-row .col-set { width:24px; font-family:'DM Mono',monospace; font-size:13px; color:#9898a4; }
+        .wl-row.done { opacity:0.55; }
+        .wl-row .col-set { width:24px; font-family:'DM Mono',monospace; font-size:13px; color:#9898a4; position:relative; text-align:center; }
+        .wl-row .col-set .x { position:absolute; left:-6px; top:0; color:#55555f; font-size:11px; }
+        .wl-row .col-prev { width:47px; padding-left:4px; font-family:'DM Mono',monospace; font-size:9px; color:#55555f; white-space:nowrap; }
         .wl-row .col-in { flex:1; margin:0 3px; }
-        .wl-row .col-in .box { background:#111116; border-radius:7px; min-height:30px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:13px; color:#3a3a44; }
+        .wl-row .col-in .box { background:#111116; border-radius:7px; min-height:30px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:13px; color:#f0f0f2; }
+        .wl-row .col-in .box.ghost { color:#3a3a44; }
         .wl-row .col-chk { width:28px; display:flex; justify-content:center; }
         .wl-row .col-chk .ring { width:20px; height:20px; border-radius:10px; border:1.5px solid #3a3a44; }
+        .wl-row .col-chk .ring.done { border-color:var(--ac); background:var(--ac); position:relative; }
+        .wl-row .col-chk .ring.done::after { content:''; position:absolute; left:6px; top:3px; width:4px; height:8px; border:solid #04202a; border-width:0 1.5px 1.5px 0; transform:rotate(45deg); }
         .wl-add { display:flex; align-items:center; justify-content:center; gap:5px; padding:9px 0 2px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
         .wl-bottom { display:flex; align-items:center; gap:9px; padding:11px 14px 14px; border-top:1px solid rgba(255,255,255,0.04); background:#0a0a0b; flex-shrink:0; }
         #scr-workout { display:flex; flex-direction:column; overflow:hidden; }
@@ -615,12 +638,45 @@
         .wl-mini-prog { position:absolute; left:0; right:0; bottom:0; height:2px; background:rgba(255,255,255,0.04); }
         .wl-mini-progfill { height:100%; background:var(--ac); }
         .wl-timer { display:flex; align-items:center; gap:5px; padding:8px 11px; background:#0a0a0f; border:1px solid rgba(255,255,255,0.06); border-radius:9px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
+        .wl-timer.grow { flex:1; color:var(--ac); font-size:13px; }
+        .wl-timer.grow .rest { margin-left:auto; font-size:10px; color:#55555f; }
+        .wl-finish { height:40px; border-radius:11px; border:1px solid rgba(34,211,238,0.35); background:rgba(34,211,238,0.14); display:flex; align-items:center; gap:6px; padding:0 12px; color:var(--ac); font-family:'DM Mono',monospace; font-size:11px; }
         .wl-start { flex:1; height:40px; border-radius:11px; background:var(--ac); display:flex; align-items:center; justify-content:center; color:#000; font-weight:700; font-size:13px; }
         .poke { display:flex; flex-direction:column; align-items:center; gap:0.15rem; animation:pokeBob 2.2s ease-in-out infinite; }
         @keyframes pokeBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
         .poke-arrow { color:var(--cyan); }
         .poke-label { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--cyan); }
         .sw-hint { display:none; }
+        @media (max-width:430px) {
+            .sw-row .wl-body { padding:10px 10px 0; }
+            .sw-row .wl-title { font-size:14px; }
+            .sw-row .wl-muscles { font-size:8.5px; }
+            .sw-row .wl-1rm .vl { font-size:10.5px; }
+            .sw-row .wl-1rm .lb { font-size:7px; }
+            .sw-row .wl-rx { padding:6px 8px; gap:6px; }
+            .sw-row .wl-rx .sx { font-size:9px; }
+            .sw-row .wl-rx .wk { font-size:8px; }
+            .sw-row .wl-tbl-head span { font-size:7.5px; }
+            .sw-row .wl-row .col-set { width:18px; font-size:11px; }
+            .sw-row .wl-row .col-prev { width:38px; padding-left:3px; font-size:7px; }
+            .sw-row .wl-row .col-in { margin:0 2px; }
+            .sw-row .wl-row .col-in .box { font-size:10px; min-height:26px; }
+            .sw-row .wl-row .col-chk { width:22px; }
+            .sw-row .wl-row .col-chk .ring { width:17px; height:17px; }
+            .sw-row .wl-row .col-chk .ring.done::after { left:5px; top:2px; height:7px; }
+            .sw-row .wl-bottom { gap:6px; padding:9px 10px 12px; }
+            .sw-row .wl-timer.grow { padding:7px 8px; font-size:11px; }
+            .sw-row .wl-timer.grow .rest { display:none; }
+            .sw-row .wl-finish { height:34px; padding:0 8px; font-size:9.5px; }
+            .sw-row .wl-start { height:34px; font-size:11px; }
+            .sw-row .nd-macros { gap:8px; }
+            .sw-row .nd-mlabel { font-size:7px; letter-spacing:0.9px; }
+            .sw-row .nd-mfig { font-size:11px; }
+            .sw-row .nd-mfig i { font-size:8px; }
+            .sw-row .nd-day { font-size:23px; }
+            .sw-row .nd-cal .fig { font-size:19px; }
+            .sw-row .nd-cal .of { font-size:9.5px; }
+        }
         @media (max-width:900px) {
             .sw-row { display:flex; align-items:center; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
             .sw-row::-webkit-scrollbar { display:none; }
@@ -753,7 +809,7 @@
         <div class="strip-head sa sa-up">
             <div>
                 <span class="label" style="margin-bottom:0.6rem;">The Meal Library</span>
-                <h2>85 real meals, <span class="cyan">every step written.</span></h2>
+                <h2>81 real meals, <span class="cyan">every step written.</span></h2>
                 <p style="color:var(--text-2);font-size:0.92rem;max-width:560px;margin-top:0.5rem;">Hand picked and cooked on my own bulk, and every meal defaults to the shortcut version: jar sauce, seasoning sachet, honest times. From scratch only if you feel like it.</p>
             </div>
             <a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a>
@@ -1008,15 +1064,30 @@
                         <div class="sb"><span id="sbTime">9:41</span></div>
                         <div class="scr on" data-accent="green" id="scr-nutrition">
                             <div class="nd">
-                                <div class="nd-top"><span class="chev">&#8249;</span><span class="plus">+</span></div>
+                                <div class="nd-top"><span class="chev">&#8249;</span><span class="date">JUN 9</span><span class="plus">+</span></div>
                                 <div class="nd-head">
-                                    <div class="nd-overline">JUN 9</div>
                                     <div class="nd-day">Tuesday</div>
-                                    <div class="nd-sub"><b>117</b> / 239g protein &middot; <b>1,580</b> / 3,311 kcal</div>
+                                    <div class="nd-cal"><span class="fig">1,580</span><span class="of">of 3,311 kcal</span></div>
+                                    <div class="nd-track" style="margin:0;"><div class="nd-fill" style="width:48%"></div></div>
+                                    <div class="nd-macros">
+                                        <div class="nd-mcol">
+                                            <div class="nd-mlabel">Protein</div>
+                                            <div class="nd-mfig">117<i> / 239g</i></div>
+                                            <div class="nd-mtrack"><div class="nd-mfill" style="width:49%"></div></div>
+                                        </div>
+                                        <div class="nd-mcol">
+                                            <div class="nd-mlabel">Carbs</div>
+                                            <div class="nd-mfig">111<i> / 337g</i></div>
+                                            <div class="nd-mtrack"><div class="nd-mfill" style="width:33%"></div></div>
+                                        </div>
+                                        <div class="nd-mcol">
+                                            <div class="nd-mlabel">Fat</div>
+                                            <div class="nd-mfig">71<i> / 240g</i></div>
+                                            <div class="nd-mtrack"><div class="nd-mfill" style="width:30%"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="nd-eaten">2 of 5 eaten</div>
                                 </div>
-                                <div class="nd-hair"></div>
-                                <div class="nd-track"><div class="nd-fill"></div></div>
-                                <div class="nd-eaten">2 of 5 eaten</div>
                                 <div class="nd-tl">Timeline</div>
                                 <div class="nd-cards">
                                     <div class="nd-card">
@@ -1051,17 +1122,30 @@
                                     <div class="wl-overlay"></div>
                                     <div class="wl-head">
                                         <div class="wl-hbtn">&#8249;</div>
-                                        <div class="wl-hright"><div class="wl-hbtn">&#8943;</div></div>
+                                        <div class="wl-hright">
+                                            <div class="wl-hbtn hist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div>
+                                            <div class="wl-hbtn">&#8943;</div>
+                                        </div>
+                                    </div>
+                                    <div class="wl-ticks">
+                                        <div class="wl-tick cur"></div>
+                                        <div class="wl-tick"></div>
+                                        <div class="wl-tick"></div>
                                     </div>
                                 </div>
                                 <div class="wl-body">
-                                    <div class="wl-titlerow"><div class="wl-title">Barbell Back Squat <span class="cd">&#9662;</span></div></div>
-                                    <div class="wl-muscles">Quads &middot; Glutes</div>
-                                    <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10, 10, 8</span></div>
-                                    <div class="wl-tbl-head"><span style="width:24px">SET</span><span style="flex:1;text-align:center">KG</span><span style="flex:1;text-align:center">REPS</span><span style="width:28px;text-align:center">&#10003;</span></div>
-                                    <div class="wl-row"><div class="col-set">1</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                                    <div class="wl-row"><div class="col-set">2</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
-                                    <div class="wl-row"><div class="col-set">3</div><div class="col-in"><div class="box">0</div></div><div class="col-in"><div class="box">8</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                    <div class="wl-titlerow">
+                                        <div>
+                                            <div class="wl-title">Barbell Back Squat <span class="cd">&#9662;</span></div>
+                                            <div class="wl-muscles">Quads &middot; Glutes</div>
+                                        </div>
+                                        <div class="wl-1rm"><span class="lb">1RM</span><span class="vl">140.0 kg</span></div>
+                                    </div>
+                                    <div class="wl-rx"><span class="wk">Week 1</span><span class="sx">3 &times; 10, 10, 8 &middot; RIR 2</span></div>
+                                    <div class="wl-tbl-head"><span style="width:24px;text-align:center">SET</span><span style="width:47px;padding-left:4px">PREV</span><span class="info">KG <em>i</em></span><span style="flex:1;text-align:center">REPS</span><span style="width:28px;text-align:center">&#10003;</span></div>
+                                    <div class="wl-row done"><div class="col-set">1</div><div class="col-prev">100 &times; 10</div><div class="col-in"><div class="box">105</div></div><div class="col-in"><div class="box">10</div></div><div class="col-chk"><div class="ring done"></div></div></div>
+                                    <div class="wl-row"><div class="col-set">2</div><div class="col-prev">100 &times; 10</div><div class="col-in"><div class="box ghost">105</div></div><div class="col-in"><div class="box ghost">10</div></div><div class="col-chk"><div class="ring"></div></div></div>
+                                    <div class="wl-row"><div class="col-set"><span class="x">&times;</span>3</div><div class="col-prev">100 &times; 8</div><div class="col-in"><div class="box ghost">107.5</div></div><div class="col-in"><div class="box ghost">8</div></div><div class="col-chk"><div class="ring"></div></div></div>
                                     <div class="wl-add">+ Add set</div>
                                 </div>
                                 <div class="wl-upnext">
@@ -1070,9 +1154,9 @@
                                         <div class="wl-mini-icon"><img src="images/exercise/start.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/exercise/start.png'"></div>
                                         <div class="wl-mini-main">
                                             <div class="wl-mini-trow"><span class="wl-mini-title">Barbell Back Squat</span><span class="wl-mini-cur">CURRENT</span></div>
-                                            <div class="wl-mini-meta">3 &times; 10, 10, 8 &middot; 0/3 done</div>
+                                            <div class="wl-mini-meta">3 &times; 10, 10, 8 &middot; 1/3 done</div>
                                         </div>
-                                        <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:0%"></div></div>
+                                        <div class="wl-mini-prog"><div class="wl-mini-progfill" style="width:33%"></div></div>
                                     </div>
                                     <div class="wl-mini">
                                         <div class="wl-mini-icon"><img src="images/exercise/rdl-start.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/exercise/rdl-start.png'"></div>
@@ -1093,8 +1177,8 @@
                                 </div>
                             </div>
                             <div class="wl-bottom">
-                                <div class="wl-timer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>0:00</div>
-                                <div class="wl-start">Start Workout</div>
+                                <div class="wl-timer grow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>1:24<span class="rest">rest</span></div>
+                                <div class="wl-finish"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V4h13l-2 4 2 4H4" stroke-linejoin="round"/></svg>12:04</div>
                             </div>
                         </div>
                     </div>
