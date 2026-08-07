@@ -151,6 +151,35 @@ Fields used for curated meals: `id`, `name`, `type`, `time`, `calories`, `macros
 
 Both formats (full invented meals and curated meal references) coexist in the same `meals` array. The app detects the format based on the presence of `curated_meal_slug`.
 
+# User-Created Meal Output Format
+
+Slugs beginning `custom_` are the user's OWN meals — recipes they typed into the app themselves, with their own photo and their own macros. They use the **same short reference format** as curated meals above: `curated_meal_slug`, `plate_id`, `scale_factor`, and no `ingredients`, `instructions` or `tags`.
+
+The difference is only where the app looks them up: from the user's own saved meals rather than the curated database. The slug is exactly as load-bearing either way.
+
+```
+{
+  "id": "meal_20260518_breakfast",
+  "name": "Nan's Baked Oats",
+  "type": "breakfast",
+  "time": "7:30 AM",
+  "calories": 540,
+  "macros": { "protein": 38, "carbs": 61, "fat": 14, "fiber": 7 },
+  "curated_meal_slug": "custom_1754500000000_a1b2",
+  "plate_id": "standard",
+  "scale_factor": 1.0,
+  "isOriginal": true,
+  "addedAt": "2026-05-18T07:30:00Z"
+}
+```
+
+- **NEVER convert a user-created meal into the full invented format.** Dropping the slug and writing its ingredients inline severs the meal from the user's own record — its photo, its recipe, and its meal-prep behaviour all disappear from the app, and it cannot be recovered from the imported file.
+- `scale_factor` is always exactly `1.0` for these meals. Never anything else.
+- `plate_id` is copied verbatim from the reviewed plan. It is normally `standard`.
+- Their macros are the user's own and are authoritative — copy them exactly, like every other number in this step.
+- Their grocery ingredients carry no bracketed id, because their ingredient tables have none. See the Grocery Ingredient IDs rule below.
+
+
 # Adjuster Entries
 
 The reviewed plan may contain standalone adjuster entries (whey scoop, rice side, olive oil, psyllium, etc.) used to land daily targets. They are ordinary meal entries — convert them exactly like everything else, in place, at their stated times. Never strip, merge, or relocate them.
@@ -199,12 +228,12 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 | **macros.carbs** | Yes | Number | Carbohydrates in grams |
 | **macros.fat** | Yes | Number | Fat in grams |
 | **macros.fiber** | Yes | Number | Fiber in grams |
-| **ingredients** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
-| **instructions** | Conditional | Array | Required for invented meals. Omitted for curated meals. |
-| **tags** | Conditional | Array | Tags like ["high_protein", "meal_prep"]. Omitted for curated meals, EXCEPT adjusters, which always carry `["adjuster"]`. |
-| **curated_meal_slug** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
-| **plate_id** | Conditional | String | Required for curated meals only. Exact-match lookup key. |
-| **scale_factor** | Conditional | Number | Required for curated meals only. Decimal (e.g. 1.0, 0.8). |
+| **ingredients** | Conditional | Array | Required for invented meals. Omitted for curated AND user-created meals. |
+| **instructions** | Conditional | Array | Required for invented meals. Omitted for curated AND user-created meals. |
+| **tags** | Conditional | Array | Tags like ["high_protein", "meal_prep"]. Omitted for curated and user-created meals, EXCEPT adjusters, which always carry `["adjuster"]`. |
+| **curated_meal_slug** | Conditional | String | Required for curated meals only. Exact-match lookup key. A `custom_` prefix means it is one of the user's own meals — same field, same verbatim copy. |
+| **plate_id** | Conditional | String | Required for curated meals only. Exact-match lookup key. User-created meals use `standard`. |
+| **scale_factor** | Conditional | Number | Required for curated meals only. Decimal (e.g. 1.0, 0.8). Always exactly 1.0 for `custom_` slugs. |
 | **isOriginal** | Yes | Boolean | Always true for generated meals |
 | **addedAt** | Yes | String | ISO timestamp when meal was created |
 
@@ -231,7 +260,7 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 | **category_name** | Yes | String | Category like "Meat & Seafood" |
 | **items** | Yes | Array | Items in this category |
 | **item_name** | Yes | String | Product name |
-| **ingredient_id** | Conditional | String | Required for any item that came from a curated meal's ingredient table. Copy the id verbatim. Omit for items with no id. See the rule below. |
+| **ingredient_id** | Conditional | String | Required for any item that came from a curated meal's ingredient table. Copy the id verbatim. Omit for items with no id, including every ingredient of a user-created meal. See the rule below. |
 | **quantity** | Yes | String | Total amount needed |
 | **unit** | Yes | String | Unit of measurement |
 | **estimated_price** | Yes | Number | Price in local currency |
@@ -292,6 +321,7 @@ This is a transcription step, not a planning step. Do not re-optimise, re-balanc
 - These are exact-match lookup keys for the app's internal database — do not modify, abbreviate, rephrase, or normalize them
 - Invalid slugs cause import failures
 - `scale_factor` is also copied verbatim as a decimal number
+- This applies identically to `custom_` slugs. They look unfamiliar because they are generated ids rather than readable names — copy them character for character and never tidy, shorten, or replace one with the meal's display name
 
 
 ## Grocery Ingredient IDs
@@ -300,7 +330,7 @@ The generation prompt's ingredient tables give every curated ingredient an `id`,
 
 - Move the bracketed id into the item's `ingredient_id` field, and remove the brackets from `item_name`. `"Chicken thigh fillets [chicken_thigh]"` becomes `"item_name": "Chicken thigh fillets"` with `"ingredient_id": "chicken_thigh"`.
 - Copy the id **verbatim**. It is an exact-match key, like the slugs — the app uses it to match a priced item to its own records. A modified or invented id simply fails to match.
-- Items with no bracketed id (ingredients of invented meals, anything added outside the tables) omit `ingredient_id` entirely. Never guess one.
+- Items with no bracketed id (ingredients of invented meals, ingredients of the user's own meals, anything added outside the tables) omit `ingredient_id` entirely. Never guess one. USER-CREATED ingredient tables deliberately carry no ids, so their items having no bracket is expected, not an omission to repair.
 - If the reviewed list has lost the brackets, do not reconstruct them from memory — omit the field for those items.
 
 
@@ -371,6 +401,7 @@ If the meal plan says "Cook rice according to package instructions", convert thi
 - Complete structure - include all required fields
 - Validate JSON - ensure the output is valid, parseable JSON
 - Cross-check structure - verify all required fields are present and JSON is valid, preserve all nutrition values exactly as provided
+- Confirm every `custom_` slug from the reviewed plan appears in the file as a reference entry, not as an invented meal
 - Confirm the filename ends in `.json`
 - Present the file, then close with the callout below
 
