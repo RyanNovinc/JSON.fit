@@ -211,7 +211,7 @@ Exercise names must also match the library exactly. The app looks up each exerci
 {
   "routine_name": "string",
   "description": "string",
-  "days_per_week": 7,
+  "days_per_week": "number — count of TRAINING days per week (4 for a 4-day split). NOT 7, and NOT the length of the days array",
   "default_pace": "optimal | moderate | minimal (lowercase — the rest pace named in the plan's rest summary)",
   "blocks": [
     {
@@ -300,6 +300,7 @@ Before presenting each block, silently verify:
 - [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
 - [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps, and the block carries a `deload_weeks` array
 - [ ] Every block's `days` array totals 7 objects — training days plus REST DAY entries — ordered to match its weekly_schedule
+- [ ] `days_per_week` at the root is the count of TRAINING days, not 7 and not the length of the `days` array (a 4-day split says 4 while its `days` array holds 7 objects)
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
 - [ ] Block-relative week keys start from "1"
 - [ ] `default_pace` is present at the root, lowercase, and matches the pace named in the plan's rest summary
