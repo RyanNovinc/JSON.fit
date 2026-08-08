@@ -58,13 +58,6 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-web
 .sa{opacity:0;transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .sa-up{transform:translateY(50px)}
 .sa.vis{opacity:1;transform:none}
-.sa-stagger>*{opacity:0;transform:translateY(40px) scale(.98);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
-.sa-stagger.vis>*:nth-child(1){opacity:1;transform:none;transition-delay:0s}
-.sa-stagger.vis>*:nth-child(2){opacity:1;transform:none;transition-delay:.1s}
-.sa-stagger.vis>*:nth-child(3){opacity:1;transform:none;transition-delay:.2s}
-.sa-stagger.vis>*:nth-child(4){opacity:1;transform:none;transition-delay:.3s}
-.sa-stagger.vis>*:nth-child(5){opacity:1;transform:none;transition-delay:.4s}
-.sa-stagger.vis>*:nth-child(6){opacity:1;transform:none;transition-delay:.5s}
 .section-line{width:0;height:1px;background:var(--violet-border);margin-bottom:1rem;transition:width .7s ease}
 .section-line.vis{width:48px}
 .count-up{display:inline-block}
@@ -99,19 +92,37 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--up);animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
-/* specimen frame + readout rail */
-.spec{display:flex;flex-direction:column;gap:1rem}
-.spec-frame{position:relative;aspect-ratio:2/3;max-width:330px;width:100%;margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 30%,rgba(168,85,247,.08),#000 74%)}
-.spec-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;cursor:zoom-in;animation:vrfade .35s ease}
-.spec-cap{position:absolute;left:.65rem;bottom:.6rem;z-index:3;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.22rem .5rem;border-radius:4px;backdrop-filter:blur(6px)}
+/* specimen frame */
+.spec{display:flex;flex-direction:column;gap:.85rem}
+.spec-frame{position:relative;aspect-ratio:2/3;max-width:330px;width:100%;margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 30%,rgba(168,85,247,.08),#000 74%);touch-action:pan-y}
+.spec-frame:focus-visible{outline:2px solid var(--violet);outline-offset:3px}
+.spec-shot{position:absolute;inset:0;z-index:2;animation:vrfade .28s ease}
+.spec-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;cursor:zoom-in}
+.spec-cap{position:absolute;left:.65rem;bottom:.6rem;z-index:5;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.22rem .5rem;border-radius:4px;backdrop-filter:blur(6px)}
 /* viewfinder corner brackets */
 .spec-frame::before,.spec-frame::after,.spec-frame .bk::before,.spec-frame .bk::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--violet);border-style:solid;z-index:4;opacity:.85;pointer-events:none}
 .spec-frame::before{top:8px;left:8px;border-width:1.5px 0 0 1.5px;border-radius:3px 0 0 0}
 .spec-frame::after{top:8px;right:8px;border-width:1.5px 1.5px 0 0;border-radius:0 3px 0 0}
 .spec-frame .bk::before{bottom:8px;left:8px;border-width:0 0 1.5px 1.5px;border-radius:0 0 0 3px}
 .spec-frame .bk::after{bottom:8px;right:8px;border-width:0 1.5px 1.5px 0;border-radius:0 0 3px 0}
-/* readout rail under the frame */
-.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--violet-border);border-radius:12px;overflow:hidden;max-width:420px;margin:0 auto;width:100%}
+/* angle cycling: edge chevrons + pills, plus swipe and arrow keys */
+.spec-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(5,5,8,.62);border:1px solid var(--violet-border);color:var(--text);cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:border-color .18s,background .18s,transform .18s}
+.spec-nav:hover{border-color:var(--violet);background:rgba(5,5,8,.8)}
+.spec-nav:active{transform:translateY(-50%) scale(.92)}
+.spec-nav:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+.spec-nav.prev{left:.55rem}
+.spec-nav.next{right:.55rem}
+.spec-angles{display:flex;gap:.35rem;justify-content:center;flex-wrap:wrap}
+.sa-pill{padding:.32rem .7rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-3);
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.sa-pill:hover{border-color:var(--violet-border);color:var(--text)}
+.sa-pill.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
+.sa-pill:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+
+/* readout rail, now sitting under the protocol bar */
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--violet-border);border-radius:12px;overflow:hidden;max-width:560px;margin:0 auto;width:100%}
 .ro{background:var(--surface);padding:.85rem .5rem;text-align:center}
 .ro-l{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.35rem}
 .ro-v{font-family:'DM Mono',monospace;font-size:1.05rem;color:var(--text);line-height:1}
@@ -133,11 +144,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .section-head h2{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:.55rem}
 .section-head p{color:var(--text-2);font-size:.95rem;max-width:540px;margin:0 auto}
 
-/* ── Visual record frames (shared by compare, hero, origin) ── */
-.vr-block{}
-.vr-subhead{display:flex;align-items:center;justify-content:center;text-align:center;gap:.9rem;flex-direction:column;margin-bottom:1.1rem}
-.vr-kicker{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
-/* portrait frame, matches the 2:3 photo so nothing letterboxes */
+/* ── Shared photo frame (used by the origin story) ── */
 .vr-frame{position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,0.07),#000 72%)}
 .vr-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;animation:vrfade .35s ease;z-index:2}
 @keyframes vrfade{from{opacity:0}to{opacity:1}}
@@ -153,16 +160,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .vr-fade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:vrCross 7s infinite}
 .vr-fade img:nth-child(2){animation-delay:3.5s}
 @keyframes vrCross{0%{opacity:0}7%{opacity:1}43%{opacity:1}50%{opacity:0}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.vr-fade img{animation:none}.vr-fade img:nth-child(1){opacity:1}}
-/* designed "next capture" state for the empty right-hand compare frame */
-.vr-next{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;text-align:center;padding:1rem;z-index:1}
-.vr-next .nc-lbl{display:flex;align-items:center;gap:.4rem;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)}
-.vr-next .nc-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);animation:pulse 1.6s infinite}
-.vr-next .nc-date{font-family:'DM Mono',monospace;font-size:1.25rem;color:var(--violet);letter-spacing:.01em}
-.vr-next .nc-sub{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
+@media(prefers-reduced-motion:reduce){.vr-fade img{animation:none}.vr-fade img:nth-child(1){opacity:1}.spec-shot{animation:none}}
 /* before/after compare */
-.compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.25rem;max-width:760px;margin:0 auto}
-.compare .vr-frame{max-width:290px;width:100%;margin:0 auto}
+.compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.25rem;max-width:620px;margin:0 auto}
+.compare .vr-frame{max-width:250px;width:100%;margin:0 auto}
 .cmp-tag{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:.6rem}
 .cmp-tag.latest{color:var(--violet)}
 .cmp-mid{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding-top:1.4rem}
@@ -175,15 +176,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
   .cmp-mid{grid-column:1/-1;order:-1;flex-direction:row;justify-content:center;padding-top:0;gap:.6rem}
   .cmp-arrow{transform:rotate(90deg)}
 }
-/* shared pill / tab controls */
-.angle-tabs{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-top:1.4rem}
-.angle-tab{padding:.4rem .85rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.06em;cursor:pointer;transition:all .15s;text-transform:uppercase}
-.angle-tab:hover{border-color:var(--violet-border);color:var(--text)}
-.angle-tab.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
-.timepoints{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-top:.8rem}
-.tp{padding:.4rem .9rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-2);font-family:'DM Mono',monospace;font-size:.66rem;cursor:pointer;transition:all .15s}
-.tp:hover{border-color:var(--violet-border);color:var(--text)}
-.tp.active{background:var(--violet);border-color:var(--violet);color:#0a0010;font-weight:500}
 
 /* ── Trend: runway chart + latest scan strip ── */
 .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.5rem 1.1rem}
@@ -199,32 +191,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .scan-lbl{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.45rem}
 @media(max-width:600px){.scan-grid{grid-template-columns:1fr 1fr}}
 
-/* ── Monthly log ── */
-.log{position:relative;padding-left:1.75rem;max-width:760px;margin:0 auto}
-.log::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--border)}
-.log-entry{position:relative;padding-bottom:2.25rem}
-.log-entry:last-child{padding-bottom:0}
-.log-dot{position:absolute;left:-1.75rem;top:4px;width:13px;height:13px;border-radius:50%;border:2px solid var(--violet);background:var(--violet);box-shadow:0 0 0 4px var(--bg)}
-.log-dot.hollow{background:var(--bg)}
-.log-meta{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.55rem}
-.log-mo{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
-.log-date{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em}
-.log-stats{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}
-.log-stat{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--text-2);padding:.2rem .55rem;border:1px solid var(--border);border-radius:5px}
-.log-stat .d-up{color:var(--up)}.log-stat .d-down{color:var(--down)}
-.log-notes{color:var(--text-2);font-size:.9rem;line-height:1.7;max-width:620px}
-.log-vid{display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--violet);text-decoration:none}
-.log-vid:hover{text-decoration:underline}
-.log-thumbs{display:flex;gap:.5rem;margin-top:.9rem}
-.log-thumb{position:relative;width:52px;aspect-ratio:2/3;border-radius:7px;overflow:hidden;border:1px solid var(--border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,.08),#000 75%)}
-.log-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;cursor:zoom-in;z-index:2}
-.log-thumb span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.42rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);z-index:1}
-.log-future{color:var(--text-3);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding-top:.15rem}
-
-/* ── Full data disclosure ── */
+/* ── Disclosures: full data + the origin story ── */
 .ddata{max-width:760px;margin:0 auto;border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden}
-.ddata summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.35rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.ddata+.ddata{margin-top:.9rem}
+.ddata summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.35rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);transition:color .2s}
 .ddata summary::-webkit-details-marker{display:none}
+.ddata summary:hover{color:var(--text)}
+.ddata summary:focus-visible{outline:2px solid var(--violet);outline-offset:-2px}
 .ddata summary .chev{color:var(--violet);transition:transform .2s;font-size:.8rem}
 .ddata[open] summary .chev{transform:rotate(90deg)}
 .ddata[open] summary{border-bottom:1px solid var(--border);color:var(--text)}
@@ -254,16 +227,17 @@ table.dt{width:100%;border-collapse:separate;border-spacing:0}
 }
 .ddata .d-note{padding:.9rem 1.35rem 1.1rem;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--text-3)}
 
-/* ── Origin story ── */
-.protocol{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:760px;margin:0 auto 2.5rem}
-.protocol-hyp{font-size:1rem;line-height:1.75;color:var(--text)}
-.protocol-hyp .h{color:var(--violet);font-weight:600}
-.protocol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-top:1.5rem}
+/* ── Origin story, inside its disclosure ── */
+.origin-in{padding:1.5rem 1.35rem 1.75rem}
+.origin-hyp{font-size:.98rem;line-height:1.75;color:var(--text-2)}
+.origin-hyp b{color:var(--violet);font-weight:600}
+.protocol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:1.4rem}
 .proto-cell{background:var(--surface-2);padding:1.1rem 1rem}
 .proto-k{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.4rem}
 .proto-v{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.35}
 @media(max-width:700px){.protocol-grid{grid-template-columns:1fr 1fr}}
-.disclaimer{margin:2rem auto 0;padding:1.1rem 1.25rem;border-left:2px solid var(--violet-border);background:var(--violet-soft);border-radius:0 8px 8px 0;max-width:680px}
+.vr-kicker{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);margin:1.75rem 0 1rem}
+.disclaimer{margin:1.75rem auto 0;padding:1.1rem 1.25rem;border-left:2px solid var(--violet-border);background:var(--violet-soft);border-radius:0 8px 8px 0}
 .disclaimer p{font-size:.82rem;color:var(--text-2);line-height:1.65}
 
 /* ── CTA ── */
@@ -307,7 +281,7 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justi
   .spec-frame{max-width:270px}
   .proto-in{gap:.9rem 1.6rem}
 }
-@media(prefers-reduced-motion:reduce){.live-dot,.nc-dot{animation:none}}
+@media(prefers-reduced-motion:reduce){.live-dot{animation:none}}
 </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -353,7 +327,7 @@ window.navBack=function(e){
 };
 </script>
 
-<!-- HERO: specimen sheet. Serif masthead left, latest capture + readout rail right. -->
+<!-- HERO: specimen sheet. Serif masthead left, latest capture right, cycling through every angle. -->
 <section class="hero">
   <div class="hero-grid" id="heroGrid">
     <div>
@@ -364,8 +338,18 @@ window.navBack=function(e){
       <div class="h-status" id="heroStatus"></div>
     </div>
     <div class="spec">
-      <div class="spec-frame" id="specFrame"><div class="bk"></div></div>
-      <div class="readout" id="readout"></div>
+      <div class="spec-frame" id="specFrame">
+        <div class="bk"></div>
+        <div class="spec-shot" id="specShot"></div>
+        <button class="spec-nav prev" id="specPrev" aria-label="Previous angle" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="spec-nav next" id="specNext" aria-label="Next angle" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <span class="spec-cap" id="specCap"></span>
+      </div>
+      <div class="spec-angles" id="specAngles"></div>
     </div>
   </div>
 </section>
@@ -373,20 +357,11 @@ window.navBack=function(e){
 <!-- protocol bar: rendered from DATA.plan.cells -->
 <div class="proto-bar"><div class="proto-in" id="protoBar"></div></div>
 
-<!-- THE RECORD: baseline vs latest capture -->
-<section class="section">
+<!-- readout rail: the four headline numbers, sitting under the protocol bar
+     so the hero photo carries the top of the page on its own -->
+<section class="section" style="padding-top:2.5rem">
   <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">The record</span>
-      <h2>Where it started. Where it is.</h2>
-      <p>Same rig, same angles, first of every month. This pair is the whole page in one glance.</p>
-    </div>
-    <div class="sa sa-up">
-      <div class="compare" id="compare"></div>
-      <div class="angle-tabs" id="cmpAngles"></div>
-      <div class="timepoints" id="cmpRightTps" style="display:none"></div>
-    </div>
+    <div class="readout sa sa-up" id="readout"></div>
   </div>
 </section>
 
@@ -413,109 +388,78 @@ window.navBack=function(e){
   </div>
 </section>
 
-<!-- THE LOG: every check-in in my own words, newest first -->
+<!-- THE DETAIL: full scan history and the pre-tracker backstory, both folded away -->
 <section class="section">
   <div class="container">
     <div class="section-head sa sa-up">
       <div class="section-line"></div>
-      <span class="label">The log</span>
-      <h2>Month by month, in my own words.</h2>
-      <p>Every scan gets an honest write-up. What moved, what didn't, what changes next.</p>
+      <span class="label">The detail</span>
+      <h2>Everything else, if you want it.</h2>
+      <p>The complete scan history and the decade before it, out of the way until you ask.</p>
     </div>
-    <div class="log sa sa-up" id="logList"></div>
-  </div>
-</section>
 
-<!-- FULL DATA: complete history behind a disclosure, not a separate page -->
-<section class="section">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">Full data</span>
-      <h2>Every number, if you want it.</h2>
-      <p>The complete scan history, out of the way until you ask for it.</p>
-    </div>
     <details class="ddata sa sa-up">
       <summary>Scan history &middot; every metric, every month <span class="chev">&#9656;</span></summary>
       <div class="dt-wrap" id="dtWrap"><div class="dt-scroll" id="dtScroll"><table class="dt" id="fullTable"></table></div></div>
       <p class="d-note">// same Evolt 360 every scan &middot; &Delta; is total change from baseline &middot; a column is added each month &middot; "-" means not measured</p>
     </details>
-  </div>
-</section>
 
-<!-- ════════════════════════════════════════════════════════════════════
-     BEFORE THE TRACKER  (static, hand-written context section)
-     This sits OUTSIDE the measured record on purpose. Do NOT move any of
-     these old photos or numbers into DATA.checkins, or they will be pulled
-     into the compare, the chart and the full-data table and break them.
-     PHOTOS (root-absolute paths, leading slash), saved at /images/pre/ :
-       /images/pre/67kg-front.webp   (skinny, ~5 yrs ago)
-       /images/pre/82kg-a.webp       (first bulk peak, ~3.5 yrs ago,
-                                       relaxed garage shot, not the flex)
-     Leave the src as-is and the frame shows an "awaiting upload" placeholder.
-     ════════════════════════════════════════════════════════════════════ -->
-<section class="section">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">Before the tracker</span>
-      <h2>How I got to the start line.</h2>
-      <p>The record above starts at 77&nbsp;kg on 1 July 2026. Here is the decade that came before it, so you know exactly who is doing this bulk, and why.</p>
-    </div>
+    <!-- ════════════════════════════════════════════════════════════════════
+         BEFORE THE TRACKER  (static, hand-written context section)
+         This sits OUTSIDE the measured record on purpose. Do NOT move any of
+         these old photos or numbers into DATA.checkins, or they will be pulled
+         into the chart and the full-data table and break them.
+         PHOTOS (root-absolute paths, leading slash), saved at /images/pre/ :
+           /images/pre/67kg-front.webp   (skinny, ~5 yrs ago)
+           /images/pre/82kg-a.webp       (first bulk peak, ~3.5 yrs ago,
+                                           relaxed garage shot, not the flex)
+         Leave the src as-is and the frame shows an "awaiting upload" placeholder.
+         ════════════════════════════════════════════════════════════════════ -->
+    <details class="ddata sa sa-up">
+      <summary>Before the tracker &middot; how I got to the start line <span class="chev">&#9656;</span></summary>
+      <div class="origin-in">
+        <p class="origin-hyp">
+          185&nbsp;cm and <b>under 60&nbsp;kg</b> right through my teens. <b>67&nbsp;kg</b> leaving uni. A first bulk got me to <b>82&nbsp;kg</b> in 18 months, but I did it the miserable way, the same meals every day, forced down, so it never stuck and I drifted back to <b>77&nbsp;kg</b>. That's why JSON.fit exists, and why this run is built to last. Same size I've already proven I can reach, done properly this time.
+        </p>
+        <div class="protocol-grid">
+          <div class="proto-cell"><div class="proto-k">Teens</div><div class="proto-v">Under 60 kg</div></div>
+          <div class="proto-cell"><div class="proto-k">Uni</div><div class="proto-v">67 kg</div></div>
+          <div class="proto-cell"><div class="proto-k">First bulk &middot; ~2022</div><div class="proto-v">82 kg &middot; the hard way</div></div>
+          <div class="proto-cell"><div class="proto-k">Drifted back</div><div class="proto-v">77 kg &middot; the restart</div></div>
+        </div>
 
-    <!-- the arc, one honest paragraph + the timeline cells -->
-    <div class="protocol sa sa-up">
-      <p class="protocol-hyp">
-        185&nbsp;cm and <b class="h">under 60&nbsp;kg</b> right through my teens. <b class="h">67&nbsp;kg</b> leaving uni. A first bulk got me to <b class="h">82&nbsp;kg</b> in 18 months, but I did it the miserable way, the same meals every day, forced down, so it never stuck and I drifted back to <b class="h">77&nbsp;kg</b>. That's why JSON.fit exists, and why this run is built to last. Same size I've already proven I can reach, done properly this time.
-      </p>
-      <div class="protocol-grid">
-        <div class="proto-cell"><div class="proto-k">Teens</div><div class="proto-v">Under 60 kg</div></div>
-        <div class="proto-cell"><div class="proto-k">Uni</div><div class="proto-v">67 kg</div></div>
-        <div class="proto-cell"><div class="proto-k">First bulk &middot; ~2022</div><div class="proto-v">82 kg &middot; the hard way</div></div>
-        <div class="proto-cell"><div class="proto-k">Drifted back</div><div class="proto-v">77 kg &middot; the restart</div></div>
-      </div>
-    </div>
-
-    <!-- the before/after proof photos: 67 kg → 82 kg -->
-    <div class="sa sa-up vr-block">
-      <div class="vr-subhead"><span class="vr-kicker">Proof it worked &middot; but the method didn't last</span></div>
-      <div class="compare">
-        <div class="cmp-col">
-          <span class="cmp-tag">67 kg &middot; the skinny one</span>
-          <div class="vr-frame">
-            <video src="/images/pre/67kg-turn.mp4"
-                   poster="/images/pre/67kg-front.webp"
-                   autoplay muted loop playsinline
-                   onerror="this.style.display='none';this.parentElement.classList.add('empty')"></video>
+        <span class="vr-kicker">Proof it worked &middot; but the method didn't last</span>
+        <div class="compare">
+          <div class="cmp-col">
+            <span class="cmp-tag">67 kg &middot; the skinny one</span>
+            <div class="vr-frame">
+              <video src="/images/pre/67kg-turn.mp4"
+                     poster="/images/pre/67kg-front.webp"
+                     autoplay muted loop playsinline
+                     onerror="this.style.display='none';this.parentElement.classList.add('empty')"></video>
+            </div>
           </div>
-        </div>
-        <div class="cmp-mid">
-          <span class="cmp-arrow">&#8594;</span>
-          <div class="cmp-delta">~18 months<b class="up">+15 kg</b>didn't stick</div>
-        </div>
-        <div class="cmp-col">
-          <span class="cmp-tag latest">82 kg &middot; previous peak</span>
-          <div class="vr-frame">
-            <div class="vr-fade">
-              <img src="/images/pre/82kg-a.webp" alt="82 kg, first bulk peak"
-                   onerror="this.style.display='none';this.parentElement.parentElement.classList.add('empty')">
-              <img src="/images/pre/82kg-b.webp" alt="82 kg, first bulk peak, second angle">
+          <div class="cmp-mid">
+            <span class="cmp-arrow">&#8594;</span>
+            <div class="cmp-delta">~18 months<b class="up">+15 kg</b>didn't stick</div>
+          </div>
+          <div class="cmp-col">
+            <span class="cmp-tag latest">82 kg &middot; previous peak</span>
+            <div class="vr-frame">
+              <div class="vr-fade">
+                <img src="/images/pre/82kg-a.webp" alt="82 kg, first bulk peak"
+                     onerror="this.style.display='none';this.parentElement.parentElement.classList.add('empty')">
+                <img src="/images/pre/82kg-b.webp" alt="82 kg, first bulk peak, second angle">
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="disclaimer">
+          <p>Everything on the page above is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. These two old phone photos are the one deliberate exception, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
+        </div>
       </div>
-    </div>
-
-    <!-- honest disclaimer, seals the credibility of the measured record above -->
-    <div class="disclaimer sa sa-up">
-      <p>Everything above this section is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. These two old phone photos are the one deliberate exception, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
-    </div>
-
-    <!-- OPTIONAL: once the pinned origin video is live, drop the link back in here.
-         <p style="text-align:center;margin-top:1.75rem">
-           <a class="log-vid" href="PASTE_VIDEO_URL" style="justify-content:center">▶ Watch the full story</a>
-         </p>
-    -->
+    </details>
   </div>
 </section>
 
@@ -562,11 +506,12 @@ window.navBack=function(e){
      the files with a LEADING SLASH (root-absolute, so paths resolve correctly
      from inside the /lab/ folder), e.g.
        front:"/images/lab/2026-07/front.webp"
-     leave "" to show the "awaiting capture" placeholder.
+     leave "" to show the "awaiting capture" placeholder. The hero cycles
+     through whichever angles actually have a file, in DATA.angles order.
    - segments_kg is the per-limb lean mass straight off the Evolt
      segmental panel, copy it in each scan.
    Never publish a number that wasn't measured.
-   NOTE: the "Before the tracker" section in the HTML above is intentionally
+   NOTE: the "Before the tracker" disclosure in the HTML above is intentionally
    NOT part of this data. Keep old, un-scanned photos out of `checkins`.
    ════════════════════════════════════════════════════════════════════ */
 var DATA = {
@@ -577,11 +522,11 @@ var DATA = {
     cells: [
       { k: "Started", v: "1 Jul 2026 · 77.3 kg" },
       { k: "Target", v: "90 kg · ~12 months" },
-      { k: "Training", v: "4×/week · JSON.fit program" },
+      { k: "Training", v: "6×/week · JSON.fit program" },
       { k: "Nutrition", v: "Surplus · 2 g/kg+ protein" }
     ]
   },
-  // angle order used by the photo rig + spin
+  // angle order used by the photo rig + the hero cycle
   angles: ["front","right","back","left"],
   checkins: [
     {
@@ -628,27 +573,75 @@ var DATA = {
     '<span>Scan <b>'+cks.length+' of '+TOTAL_SCANS+'</b></span>'+
     '<span>Next capture <b>'+nextCaptureLabel()+'</b></span>';
 
-  /* ── Specimen frame: latest captured photo, front preferred ── */
+  /* ── Specimen frame: latest captured check-in, cycling through its angles ── */
   var PH='<div class="vr-ph">'+
     '<svg width="56" height="106" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>'+
     '<span>awaiting capture</span></div>';
   function hasShots(ck){ if(!ck||!ck.photos) return false; for(var k in ck.photos){ if(ck.photos[k]) return true; } return false; }
-  function frameHTML(ck, ang){
+  function shotHTML(ck,ang){
     var src=ck&&ck.photos&&ck.photos[ang];
     if(src) return PH+'<img src="'+src+'" alt="'+ck.label+' '+ang+'" onclick="window.__lb(this.src,this.alt)" onerror="this.style.display=\'none\'">';
     return PH;
   }
+
   var specCk=null;
   for(var si=cks.length-1;si>=0;si--){ if(hasShots(cks[si])){ specCk=cks[si]; break; } }
+  var specAngles=specCk?DATA.angles.filter(function(a){ return !!specCk.photos[a]; }):[];
+  var specIdx=0;
   var specFrame=document.getElementById('specFrame');
-  if(specCk){
-    var specAng=specCk.photos[DATA.angles[0]]?DATA.angles[0]:null;
-    if(!specAng){ for(var ai=0;ai<DATA.angles.length;ai++){ if(specCk.photos[DATA.angles[ai]]){ specAng=DATA.angles[ai]; break; } } }
-    specFrame.innerHTML='<div class="bk"></div>'+frameHTML(specCk,specAng)+
-      '<span class="spec-cap">'+specCk.label+' &middot; '+fmtDate(specCk.date)+' &middot; '+specAng+'</span>';
-  } else {
-    specFrame.innerHTML='<div class="bk"></div>'+PH;
+  var specShot=document.getElementById('specShot');
+  var specCap=document.getElementById('specCap');
+  var specPills=document.getElementById('specAngles');
+  var specPrev=document.getElementById('specPrev');
+  var specNext=document.getElementById('specNext');
+
+  function renderSpec(){
+    if(!specCk||!specAngles.length){
+      specShot.innerHTML=PH;
+      specCap.style.display='none';
+      return;
+    }
+    var ang=specAngles[specIdx];
+    specShot.innerHTML=shotHTML(specCk,ang);
+    // replay the crossfade on every switch
+    specShot.style.animation='none'; void specShot.offsetWidth; specShot.style.animation='';
+    specCap.innerHTML=specCk.label+' &middot; '+fmtDate(specCk.date)+' &middot; '+ang;
+    var btns=specPills.querySelectorAll('.sa-pill');
+    for(var n=0;n<btns.length;n++){ btns[n].classList.toggle('active',n===specIdx); }
   }
+  function specStep(d){
+    if(specAngles.length<2) return;
+    specIdx=(specIdx+d+specAngles.length)%specAngles.length;
+    renderSpec();
+  }
+  if(specAngles.length>1){
+    specPrev.style.display='flex';
+    specNext.style.display='flex';
+    specPills.innerHTML=specAngles.map(function(a,n){
+      return '<button class="sa-pill" data-i="'+n+'" aria-label="Show '+a+' angle">'+a+'</button>';
+    }).join('');
+    specPills.querySelectorAll('.sa-pill').forEach(function(b){
+      b.addEventListener('click',function(){ specIdx=+b.dataset.i; renderSpec(); });
+    });
+    specPrev.addEventListener('click',function(){ specStep(-1); });
+    specNext.addEventListener('click',function(){ specStep(1); });
+    // keyboard, once the frame has focus
+    specFrame.setAttribute('tabindex','0');
+    specFrame.addEventListener('keydown',function(e){
+      if(e.key==='ArrowLeft'){ e.preventDefault(); specStep(-1); }
+      if(e.key==='ArrowRight'){ e.preventDefault(); specStep(1); }
+    });
+    // swipe on touch
+    var _x0=null;
+    specFrame.addEventListener('touchstart',function(e){ _x0=e.touches[0].clientX; },{passive:true});
+    specFrame.addEventListener('touchend',function(e){
+      if(_x0==null) return;
+      var dx=e.changedTouches[0].clientX-_x0;
+      if(Math.abs(dx)>40) specStep(dx<0?1:-1);
+      _x0=null;
+    },{passive:true});
+  }
+  renderSpec();
 
   /* ── Readout rail ── */
   function roCell(lbl,val,unit,d,dUnit,hl,startSub){
@@ -672,72 +665,6 @@ var DATA = {
   document.getElementById('protoBar').innerHTML=DATA.plan.cells.map(function(c){
     return '<span><span class="k">'+c.k+'</span> <b>'+c.v+'</b></span>';
   }).join('');
-
-  /* ── The record: baseline vs latest capture ── */
-  var compareEl=document.getElementById('compare');
-  var cmpAngles=document.getElementById('cmpAngles');
-  var cmpRightTps=document.getElementById('cmpRightTps');
-  var cmpAngle=0;
-  var baseCk=cks[0];
-  var capturedAfter=[];
-  for(var ci=1;ci<cks.length;ci++){ if(hasShots(cks[ci])) capturedAfter.push(ci); }
-  var cmpRightIdx=capturedAfter.length?capturedAfter[capturedAfter.length-1]:null;
-  function nextPanel(){
-    return '<div class="vr-next">'+
-      '<div class="nc-lbl"><span class="nc-dot"></span> Next capture</div>'+
-      '<div class="nc-date">'+nextCaptureLabel()+'</div>'+
-      '<div class="nc-sub">same rig &middot; four angles</div>'+
-      '</div>';
-  }
-  function deltaHTML(rightCk){
-    if(!rightCk) return '<div class="cmp-delta">tracked<b>monthly</b>same rig</div>';
-    var dw=(rightCk.weight_kg!=null&&baseCk.weight_kg!=null)?+(rightCk.weight_kg-baseCk.weight_kg).toFixed(1):null;
-    var dl=(rightCk.lean_mass_kg!=null&&baseCk.lean_mass_kg!=null)?+(rightCk.lean_mass_kg-baseCk.lean_mass_kg).toFixed(1):null;
-    var days=Math.round((new Date(rightCk.date)-new Date(baseCk.date))/86400000);
-    var wt=(dw==null)?'<b>-</b>':'<b class="'+(dw>0?'up':'')+'">'+(dw>0?'+':'')+dw+' kg</b>';
-    var lean=(dl==null)?'':((dl>0?'+':'')+dl+' lean');
-    return '<div class="cmp-delta">'+days+' days'+wt+lean+'</div>';
-  }
-  function renderCompare(){
-    var ang=DATA.angles[cmpAngle];
-    var rightCk=(cmpRightIdx!=null)?cks[cmpRightIdx]:null;
-    var rightInner=rightCk?frameHTML(rightCk,ang):nextPanel();
-    var rightTag=rightCk?(rightCk.label+' &middot; '+fmt(rightCk.weight_kg,1)+' kg'):'Next capture';
-    compareEl.innerHTML=
-      '<div class="cmp-col"><span class="cmp-tag">'+baseCk.label+' &middot; '+fmt(baseCk.weight_kg,1)+' kg</span><div class="vr-frame">'+frameHTML(baseCk,ang)+'</div></div>'+
-      '<div class="cmp-mid"><span class="cmp-arrow">&#8594;</span>'+deltaHTML(rightCk)+'</div>'+
-      '<div class="cmp-col"><span class="cmp-tag latest">'+rightTag+'</span><div class="vr-frame">'+rightInner+'</div></div>';
-  }
-  // angle switcher only matters once there's a real second month to compare
-  if(capturedAfter.length){
-    cmpAngles.innerHTML=DATA.angles.map(function(a,i){
-      return '<button class="angle-tab'+(i===0?' active':'')+'" data-a="'+i+'">'+a+'</button>';
-    }).join('');
-    cmpAngles.querySelectorAll('.angle-tab').forEach(function(b){
-      b.addEventListener('click',function(){
-        cmpAngle=+b.dataset.a;
-        cmpAngles.querySelectorAll('.angle-tab').forEach(function(x){x.classList.remove('active');});
-        b.classList.add('active'); renderCompare();
-      });
-    });
-  } else {
-    cmpAngles.style.display='none';
-  }
-  // month picker for the right-hand side, shown once 2+ later months exist
-  if(capturedAfter.length>=2){
-    cmpRightTps.style.display='flex';
-    cmpRightTps.innerHTML=capturedAfter.map(function(idx){
-      return '<button class="tp'+(idx===cmpRightIdx?' active':'')+'" data-i="'+idx+'">'+cks[idx].label+'</button>';
-    }).join('');
-    cmpRightTps.querySelectorAll('.tp').forEach(function(b){
-      b.addEventListener('click',function(){
-        cmpRightIdx=+b.dataset.i;
-        cmpRightTps.querySelectorAll('.tp').forEach(function(x){x.classList.remove('active');});
-        b.classList.add('active'); renderCompare();
-      });
-    });
-  }
-  renderCompare();
 
   /* ── Runway chart: all 13 scan slots, filled as they happen ── */
   function runwayChart(el){
@@ -789,55 +716,20 @@ var DATA = {
   runwayChart(document.getElementById('chartWeight'));
   document.getElementById('wtSub').textContent='kg · Evolt 360 monthly · '+cks.length+' of '+TOTAL_SCANS+' logged';
 
-  /* ── Latest scan strip ── */
+  /* ── Latest scan strip: four headline body metrics.
+     Everything else (BMR, TEE, body water, bio age, segmental) lives in the
+     scan-history table so this row stays scannable. ── */
   var sc=latest.scan||{};
   document.getElementById('scanKick').innerHTML='Latest scan &middot; '+(sc.type||'')+' &middot; '+fmtDate(latest.date);
   var scanCells=[
     {v:fmt(sc.skeletal_muscle_kg,1),l:'Skeletal muscle · kg',hl:true},
     {v:fmt(sc.waist_cm,1),l:'Waist · cm'},
     {v:fmt(sc.visceral_fat_area,0),l:'Visceral fat · cm²'},
-    {v:fmt(sc.whr,2),l:'Waist-to-hip'},
-    {v:fmt(sc.bmr_kcal,0),l:'BMR · kcal'},
-    {v:fmt(sc.tee_kcal,0),l:'TEE · kcal'},
-    {v:(sc.body_water_pct!=null?fmt(sc.body_water_pct,0)+'%':'-'),l:'Body water'},
-    {v:fmt(sc.bio_age,0),l:'Bio age'}
+    {v:fmt(sc.whr,2),l:'Waist-to-hip'}
   ];
   document.getElementById('scanGrid').innerHTML=scanCells.map(function(c){
     return '<div class="scan-cell"><div class="scan-val'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="scan-lbl">'+c.l+'</div></div>';
   }).join('');
-
-  /* ── The log: newest first, with the next capture stubbed on top ── */
-  function dayOf(dateStr){ return Math.max(0,Math.round((new Date(dateStr+"T00:00:00")-_start)/86400000)); }
-  function logEntry(c,i){
-    var isNewest=(i===cks.length-1);
-    var chips='<span class="log-stat">'+fmt(c.weight_kg,1)+' kg</span>';
-    if(i>0){
-      var dw=delta(c.weight_kg,cks[i-1].weight_kg);
-      if(dw!=null) chips+='<span class="log-stat"><span class="'+(dw>0?'d-up':(dw<0?'d-down':''))+'">'+(dw>0?'+':'')+dw+' kg</span></span>';
-    }
-    chips+='<span class="log-stat">'+fmt(c.bodyfat_pct,1)+'% bf</span>'+
-           '<span class="log-stat">'+fmt(c.lean_mass_kg,1)+' kg lean</span>'+
-           (c.scan&&c.scan.type?'<span class="log-stat">'+c.scan.type+'</span>':'');
-    var thumbs=DATA.angles.map(function(a){
-      var src=c.photos&&c.photos[a];
-      return '<div class="log-thumb"><span>'+a+'</span>'+(src?'<img src="'+src+'" alt="'+c.label+' '+a+'" loading="lazy" onclick="window.__lb(this.src,this.alt)" onerror="this.style.display=\'none\'">':'')+'</div>';
-    }).join('');
-    var vid=c.video?'<a class="log-vid" href="'+c.video+'" target="_blank" rel="noopener">&#9654; Watch this month\u2019s check-in</a>':'';
-    return '<div class="log-entry">'+
-      '<span class="log-dot'+(isNewest?'':' hollow')+'"></span>'+
-      '<div class="log-meta"><span class="log-mo">'+c.label+'</span><span class="log-date">'+fmtDate(c.date)+' &middot; day '+dayOf(c.date)+'</span></div>'+
-      '<div class="log-stats">'+chips+'</div>'+
-      '<p class="log-notes">'+c.notes+'</p>'+vid+
-      '<div class="log-thumbs">'+thumbs+'</div>'+
-      '</div>';
-  }
-  var logHTML='';
-  if(cks.length<TOTAL_SCANS){
-    logHTML+='<div class="log-entry"><span class="log-dot hollow"></span>'+
-      '<div class="log-future">Month '+cks.length+' &middot; lands '+nextCaptureLabel()+'</div></div>';
-  }
-  for(var li=cks.length-1;li>=0;li--){ logHTML+=logEntry(cks[li],li); }
-  document.getElementById('logList').innerHTML=logHTML;
 
   /* ── Full data table: every metric + segmental panel, one column per scan ── */
   var ROWS=[
@@ -878,7 +770,7 @@ var DATA = {
   if(dtScroll){
     dtScroll.addEventListener('scroll',dtFades,{passive:true});
     window.addEventListener('resize',dtFades);
-    var _dd=document.querySelector('.ddata'); if(_dd) _dd.addEventListener('toggle',dtFades);
+    var _dd=dtWrap.closest('.ddata'); if(_dd) _dd.addEventListener('toggle',dtFades);
     dtFades();
   }
 
@@ -906,9 +798,7 @@ var DATA = {
     });
   }
   var obs=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ fireEl(e.target); obs.unobserve(e.target);} }); },{threshold:0.12,rootMargin:'0px 0px -5% 0px'});
-  document.querySelectorAll('.sa, .sa-stagger').forEach(function(el){ obs.observe(el); });
-  // hero readout fires immediately
-  fireEl(document.getElementById('heroGrid'));
+  document.querySelectorAll('.sa').forEach(function(el){ obs.observe(el); });
 })();
 </script>
 
