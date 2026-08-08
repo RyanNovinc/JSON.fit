@@ -1,7 +1,7 @@
 {
   "routine_name": "1-Year Hypertrophy Program (Full 52-Week Plan)",
   "description": "A year of high-volume training for the advanced lifter who's earned the recovery to handle it. A Push/Pull/Legs split run twice over, six days a week, with three phases moving from foundation hypertrophy through strength-hypertrophy crossover to a metabolic finisher. Per-muscle volume sits at the upper end of the productive range throughout — close to MRV, deloaded between blocks, with exercises rotating to keep the stimulus from going stale.",
-  "days_per_week": 7,
+  "days_per_week": 6,
   "blocks": [
     {
       "block_name": "Block 1 \u2014 Foundation Hypertrophy",
