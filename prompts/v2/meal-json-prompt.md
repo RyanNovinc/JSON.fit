@@ -200,7 +200,7 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 | Field | Required | Format | Notes |
 |---|---|---|---|
 | **id** | Yes | String | Unique identifier for the meal plan |
-| **name** | Yes | String | Concise plan name from duration + goal only (e.g., "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance"). Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. See the "Plan Name" rule below. |
+| **name** | Yes | String | Concise plan name from duration + the phase it serves (e.g., "7-Day Build · Phase 4", "14-Day Trim · Phase 3"). Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. See the "Plan Name" rule below. |
 | **startDate** | Yes | YYYY-MM-DD | Must match first day in dailyMeals |
 | **endDate** | Yes | YYYY-MM-DD | Must match last day in dailyMeals |
 | **dailyMeals** | Yes | Object | Date-keyed meals (see below) |
@@ -295,10 +295,19 @@ The reviewed plan may contain standalone adjuster entries (whey scoop, rice side
 
 ## Plan Name
 
-Name the plan from duration and goal only — e.g. "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance". Do NOT append calorie counts, macro splits, dates, or any parenthetical figures to the name. The app displays the calorie figure separately on the plan screen, so it must not be baked into the name.
+Name the plan from its duration and the PHASE it serves — e.g. "7-Day Build · Phase 4", "14-Day Trim · Phase 3", "7-Day Recomp · Phase 1".
 
-- Correct: `"7-Day Lean Bulk"`
-- Wrong: `"7-Day Lean Bulk Plan (3042 kcal)"`, `"7-Day Lean Bulk — 3042 kcal"`, `"7-Day Lean Bulk 26P/39C/35F"`
+Read the phase from the generation prompt's **Route** block earlier in this conversation. That block states it directly, in the form "phase 4 of 10 — Build". Use the phase name and number exactly as it appears there.
+
+Why the number is there: a meal plan is regenerated at every phase change, so someone a year in has a stack of them. Without the position, their fourth plan and their first carry the same name, and the list tells them nothing about which is which. The phase is the only thing that separates one from the next.
+
+- Include the phase NUMBER but not the total. "Phase 4" ages correctly; "Phase 4 of 10" does not, because the total moves whenever the user changes their goal or their route — leaving an old plan carrying a denominator that no longer matches anything.
+- Do NOT put the user's name in it. Every plan belongs to the user, so their own name is the one piece of information the list cannot tell them — and the name is the field that travels when a plan is shared or exported.
+- Do NOT append calorie counts, macro splits, dates, or any parenthetical figures. The app displays the calorie figure separately on the plan screen, so it must not be baked into the name.
+- If the Route block is absent — a profile with no goal body fat generates no roadmap — fall back to duration and goal alone: "7-Day Lean Bulk", "14-Day Cut", "5-Day Maintenance". Never invent a phase number.
+
+- Correct: `"7-Day Build · Phase 4"`, `"14-Day Trim · Phase 3"`, `"7-Day Cut"` (no roadmap)
+- Wrong: `"7-Day Build · Phase 4 (3042 kcal)"`, `"Ryan · Phase 4 · Build"`, `"7-Day Build · Phase 4 of 10"`, `"7-Day Build 26P/39C/35F"`
 
 
 ## Nutrition Value Preservation (MOST IMPORTANT)
@@ -313,6 +322,8 @@ Name the plan from duration and goal only — e.g. "7-Day Lean Bulk", "14-Day Cu
 - When in doubt, preserve the reviewed plan data exactly as written
 
 This is a transcription step, not a planning step. Do not re-optimise, re-balance, or re-check the plan against targets. Never write a search, solver, or enumeration here — the reviewed plan is final and your only job is to carry it across without altering a number.
+
+The phase in the plan name is the one exception to "carry it across", and it is not a recalculation: you are reading a value the generation prompt already stated, not deriving one. Do not re-derive the phase from the plan's calorie direction, and do not correct the Route block's phase if you disagree with it.
 
 
 ## Curated Meal Slug Preservation
@@ -401,6 +412,7 @@ If the meal plan says "Cook rice according to package instructions", convert thi
 - Complete structure - include all required fields
 - Validate JSON - ensure the output is valid, parseable JSON
 - Cross-check structure - verify all required fields are present and JSON is valid, preserve all nutrition values exactly as provided
+- Confirm the plan `name` carries the phase from the Route block, with a number and no total — or, where there is no Route block, duration and goal alone with no invented phase
 - Confirm every `custom_` slug from the reviewed plan appears in the file as a reference entry, not as an invented meal
 - Confirm the filename ends in `.json`
 - Present the file, then close with the callout below
