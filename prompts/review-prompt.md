@@ -45,7 +45,7 @@ First, read the workout program you just created so you have the full content in
 1. **Review the plan** using the checklist below, noting PASS or FAIL for each check.
 2. **If ANY check fails, FIX IT IMMEDIATELY** — do not ask the user for permission to fix. Silently revise the plan to resolve all failures.
 3. **After fixing, re-verify** — run the checklist again on the corrected plan to confirm all checks now pass.
-4. **Present the CORRECTED plan** — output the complete, clean, final version of the workout program with all fixes applied.
+4. **Present the CORRECTED plan** — output the complete, clean, final version of the workout program with all fixes applied. Mirror the draft's own section structure. In particular, the draft opens with a spec-sheet table headed "What this plan was built from" (goal, experience, volume tier, equipment, phase) and a block roadmap; reproduce those as the draft had them. Do NOT reintroduce a "Program Overview" table restating duration, days per week and split — the draft deliberately does not carry one, because those facts are already in the roadmap, the weekly layout, and the summary at the end.
 5. **End with the "What the check changed" summary** — the section specified at the bottom of this file, immediately before the closing callout. It replaces the old free-form change log.
 6. **Session Duration Reporting** — Calculate and report the duration of each training day based on exercise count, sets, and the rest summary stated in the plan. Include duration in the program output so the user knows what to expect. Do NOT treat duration as a constraint to fix — the user's volume and rest preferences drive session length, and that is intentional.
 
