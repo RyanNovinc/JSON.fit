@@ -20,6 +20,8 @@ This is step 2 of 3:
 1. ✅ Draft written.
 2. I'll run a quality check now and present the corrected plan below.
 3. Reply "happy" once more and I'll turn it into your file.
+
+Don't want to read all of it? Skip to 🔍 What the check changed at the bottom.
 ```
 
 This callout tells the user where they are in the flow and what's coming. After the callout, continue with the review work as normal.
@@ -27,6 +29,8 @@ This callout tells the user where they are in the flow and what's coming. After 
 ## FORMATTING RULES (CRITICAL)
 
 Code blocks (triple backticks) are RESERVED for the opening callout above and the closing callout at the end of your response. Do not use code blocks anywhere else — not for exercise names, not for sample workouts, not for anything else. The audit tables and corrected plan should use markdown tables, **bold**, headers, and bullet lists — but never code blocks. This visual treatment is reserved so the user's eye is drawn to the two callouts that contain their next-step instructions.
+
+Emoji in a HEADING is reserved the same way. The only heading in your entire response allowed to carry an emoji is the summary heading near the end, "🔍 What the check changed". Every other heading is plain text. Status markers such as ✅, ❌, ⚠️ and ℹ️ inside tables and prose are unaffected — this rule is about headings only, and it exists so the user can find the summary by scrolling without reading.
 
 ---
 
@@ -42,7 +46,7 @@ First, read the workout program you just created so you have the full content in
 2. **If ANY check fails, FIX IT IMMEDIATELY** — do not ask the user for permission to fix. Silently revise the plan to resolve all failures.
 3. **After fixing, re-verify** — run the checklist again on the corrected plan to confirm all checks now pass.
 4. **Present the CORRECTED plan** — output the complete, clean, final version of the workout program with all fixes applied.
-5. **At the end, provide a brief change log** — a short bullet list of what you changed and why.
+5. **End with the "What the check changed" summary** — the section specified at the bottom of this file, immediately before the closing callout. It replaces the old free-form change log.
 6. **Session Duration Reporting** — Calculate and report the duration of each training day based on exercise count, sets, and the rest summary stated in the plan. Include duration in the program output so the user knows what to expect. Do NOT treat duration as a constraint to fix — the user's volume and rest preferences drive session length, and that is intentional.
 
    Duration is an estimate at the user's default rest pace. The app applies rest itself and recalculates session length live, so a user who switches to a faster pace mid-workout will see a shorter figure than the one you report here. That is expected, not an error to correct.
@@ -77,7 +81,7 @@ The following ARE valid reasons to accept a violation:
 
 **Attempting a fix is capped at three rounds.** Try up to three targeted changes — add or remove sets, swap an exercise for another in the library, move sets to another training day. If the violation is still there after the third round, stop, mark the muscle ℹ️ CONSTRAINED, name the constraint blocking it in one line, and present the plan. Never write a search, solver, or enumeration over exercise and set combinations, and never state or imply that you checked every possibility. Three honest attempts and a clear explanation is the required standard, not proof.
 
-Name the blocking constraint in one line in the change log. You do not need to reproduce the failed attempts or their cascade tables in your output — the user wants the corrected plan and a short reason, not your working.
+Name the blocking constraint in one line in the summary. You do not need to reproduce the failed attempts or their cascade tables in your output — the user wants the corrected plan and a short reason, not your working.
 
 If your justification sounds like rationalisation rather than a named constraint, the answer is to fix the program, not defend the violation.
 
@@ -91,15 +95,19 @@ This audit is the most important check in this review. Volume calculations downs
 
 **Step 1: Fetch the library.** Read https://json.fit/exercises.md so you have the canonical tags in context.
 
-**Step 2: Build a tag audit table.** For EVERY exercise in the program, produce a row in this table:
+**Step 2: Check EVERY exercise in the program** — its primary tags, its secondary tags, and its name — against the library. Do this for all of them, without exception. Compare the exact muscle lists, not a paraphrase or an abbreviation.
 
-| Exercise | Plan Primary Tags | Library Primary Tags | Plan Secondary Tags | Library Secondary Tags | Match? |
-|----------|-------------------|----------------------|---------------------|------------------------|--------|
-| Barbell Row | Upper Back, Lats | Upper Back | Biceps, Rear Delts | Lats, Biceps, Rear Delts | ❌ MISMATCH |
+**Step 3: Report only the MISMATCHES.** Do not print a row for an exercise that matches. Give the count of exercises checked, then a table of mismatches only:
 
-The "Match?" column says ✅ MATCH or ❌ MISMATCH. Every column entry must be the EXACT muscle list — do not paraphrase or abbreviate.
+| Exercise | Plan Primary Tags | Library Primary Tags | Plan Secondary Tags | Library Secondary Tags |
+|----------|-------------------|----------------------|---------------------|------------------------|
+| Barbell Row | Upper Back, Lats | Upper Back | Biceps, Rear Delts | Lats, Biceps, Rear Delts |
 
-**Step 3: Fix every mismatch.** For each ❌ MISMATCH row, correct the program so its tags exactly match the library's tags. The library is authoritative — your biomechanical knowledge is not. If the library says Primary = Upper Back only, the program must say Primary = Upper Back only, even if you believe Lats are also primary movers.
+If every exercise matches, write one line: "Tag audit: [N] exercises checked against the library, all match." Nothing else.
+
+Checking every exercise is not optional. Only the REPORTING is trimmed to failures, because a wall of identical PASS rows buries the two rows that matter.
+
+**Step 4: Fix every mismatch.** Correct the program so its tags exactly match the library's tags. The library is authoritative — your biomechanical knowledge is not. If the library says Primary = Upper Back only, the program must say Primary = Upper Back only, even if you believe Lats are also primary movers.
 
 **Common mistake patterns to specifically check for:**
 - Rows (Barbell Row, T-Bar Row, Chest-Supported T-Bar Row, Seated Cable Row, Pendlay Row, Seal Row): Library Primary = Upper Back ONLY. Lats is Secondary. Do NOT add Lats to Primary.
@@ -107,14 +115,14 @@ The "Match?" column says ✅ MATCH or ❌ MISMATCH. Every column entry must be t
 - RDL variants (Romanian Deadlift, Stiff-Leg Deadlift): Library Primary = Hamstrings ONLY. Glutes and Lower Back are Secondary.
 - Hip Thrust / Glute Bridge: Library Primary = Glutes ONLY. Hamstrings is Secondary.
 
-**Step 4: Re-verify.** After fixing tags, run the audit table again and confirm every row shows ✅ MATCH before moving to volume enumeration.
+**Step 5: Re-verify.** After fixing tags, re-check every corrected exercise and confirm it now matches before moving to volume enumeration.
 
-**Step 5: Other library checks.**
+**Step 6: Other library checks.**
 - Every exercise name must appear EXACTLY in the library (no variants, no abbreviations)
 - Alternative exercises must also be from the library
 - If any exercise is not in the library, replace it with a library entry that fits the movement pattern
 
-**Do not proceed to volume enumeration until the tag audit table shows every row as ✅ MATCH.** Wrong tags will produce wrong volume numbers, and the user will see different numbers in the app than what you tell them here.
+**Do not proceed to volume enumeration until every tag matches.** Wrong tags will produce wrong volume numbers, and the user will see different numbers in the app than what you tell them here.
 
 Exercise names carry a second job beyond tags: the app looks each one up by name to decide how long that exercise rests for. A name that does not match the library falls back to a generic default rest. So a name mismatch is not cosmetic — fix it here rather than letting it through.
 
@@ -166,7 +174,7 @@ Verify RIR guidance is present and correct for every exercise in the plan.
 - Within-exercise progression follows the set-count pattern from the file
 - Format matches the user's experience tier (behavioural cues for beginners, numerical for advanced)
 
-**Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan.
+**Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan. Report only the checks that FAILED, plus a one-line pass count for the rest.
 
 **Why this audit matters more than it looks.** RIR is not only a training cue in JSON.fit. The app combines each exercise's first-set reps with its first-set RIR to estimate the load, and that estimate decides whether a compound gets heavy-compound rest or moderate-compound rest. RIR that is missing, or set far from what the lifter will actually do, changes how long they rest as well as how hard they train.
 
@@ -181,7 +189,7 @@ Verify rep ranges are correct for every exercise in the plan based on its catego
 - The prescribed rep range falls within the file's per-category range for the user's primary goal
 - Goal-specific adjustments are applied (e.g., strength programs use lower rep ranges per the file's Goal-Specific Rules section)
 
-**Step 3: Fix any mismatches** silently. If a heavy compound is prescribed at 12-15 reps but the user's goal is strength (where heavy compounds should be 1-6), correct the rep range and re-verify.
+**Step 3: Fix any mismatches** silently. If a heavy compound is prescribed at 12-15 reps but the user's goal is strength (where heavy compounds should be 1-6), correct the rep range and re-verify. Report only the categories that FAILED, plus a one-line pass count for the rest.
 
 **Note:** The single-joint arm exercise exception (all curl variations and triceps isolation always use 10-15 reps regardless of program rep focus) is enforced in the Output Format and applies on top of the per-category guidance.
 
@@ -200,7 +208,7 @@ Verify the plan's deload programming — whether a deload is required, and if so
 
 **Step 4: Check deload STRUCTURE for every block that has one.** Confirm against the file:
 - The deload is the final week WITHIN the block's week range (not an appended extra week).
-- The deload week reduces effective volume by roughly the file's prescribed amount (~40–50%) versus the block's peak training week — verify by comparing the deload week's set counts to the peak week's, not by trusting a label.
+- The deload week reduces effective volume by roughly the file's prescribed amount (~40–50%) versus the block's peak training week — verify PER MUSCLE by comparing each muscle's deload-week effective sets to its peak-week effective sets, not by trusting the overall total. A flat "every exercise drops to 2 sets" rule looks like a 44% cut in aggregate while cutting a muscle built from 3-set exercises by only 33%.
 - RIR is raised (per the file, typically +2–3) relative to the peak week.
 - Load is held (no progression increment written into the deload week); the deload is expressed through reduced sets and raised RIR, not load references (the app does not track weight).
 - A "fake deload" (a week that only trims one or two sets, or keeps RIR near failure) is a FAIL — it does not reduce fatigue. Fix it to a real reduction.
@@ -212,6 +220,8 @@ Verify the plan's deload programming — whether a deload is required, and if so
 ### Effective Volume Distribution Check
 
 For EVERY non-exempt muscle in the program, you MUST produce an enumeration table. Do not narrate or estimate volume — enumerate exercise by exercise. **Use the tag values from the tag audit above (which match the library), not whatever was in the original plan.**
+
+Unlike the tag audit, these tables are printed in full whether they pass or fail. The tag audit is a lookup, so its passes carry no information; this is a calculation, and printing it is what stops you estimating.
 
 For each muscle, list:
 - Every exercise that tags that muscle as primary OR secondary
@@ -252,7 +262,7 @@ After every fix:
 2. Recount the volume enumeration table for each of those muscles
 3. Verify each muscle is still in its target range
 4. If any muscle moved outside its range due to the cascade, that's a NEW violation requiring its own fix
-5. Repeat — **but stop after three full fix-and-recount rounds.** If muscles are still trading places outside their ranges after the third round, the option set cannot satisfy every range simultaneously. Keep the best arrangement you reached, mark whichever muscles remain outside range as ℹ️ CONSTRAINED, name the constraint in one line in the change log, and present the plan. A plan that lands 11 of 12 muscles in range and says so plainly is the correct outcome — an endless recount loop is not.
+5. Repeat — **but stop after three full fix-and-recount rounds.** If muscles are still trading places outside their ranges after the third round, the option set cannot satisfy every range simultaneously. Keep the best arrangement you reached, mark whichever muscles remain outside range as ℹ️ CONSTRAINED, name the constraint in one line in the summary, and present the plan. A plan that lands 11 of 12 muscles in range and says so plainly is the correct outcome — an endless recount loop is not.
 
 Do not claim a fix works without showing the recount tables for every affected muscle.
 
@@ -276,6 +286,49 @@ Do not claim a fix works without showing the recount tables for every affected m
 - **Equipment consistency**: All exercises use equipment stated as available in the user's profile
 - **Skill appropriate**: Exercise complexity matches stated experience level
 - **Duration honest**: Calculate total workout time including rest and report it transparently. Only flag if sessions exceed 2 hours — otherwise duration is whatever the user's volume and rest preferences produce.
+
+---
+
+## FINISH WITH "What the check changed"
+
+The LAST thing in your response before the closing callout is one section, headed exactly:
+
+## 🔍 What the check changed
+
+The user already approved the plan at step 1. The only new information in this entire response is the DIFFERENCE between what they approved and what you are now showing them. Everything above this section is your working. This section is the only part written for someone deciding whether to say happy again.
+
+Write it in this exact order, and write nothing else in it:
+
+1. **A change table.** One row per change you actually made. Columns: What I found | What I changed | What it means for you. The third column is written for the user, not for a coach: what will be different when they train, in plain words. If a change costs them nothing, say so ("your training days move, nothing else changed"). Merge trivially related fixes into one row rather than listing six near-identical wording corrections separately.
+2. **One line on volume.** Either "Volume unchanged — all [N] muscles were already in range and still are", or the muscles that moved and where they landed.
+3. **A structural warning line, ONLY IF something in the step 1 "Your plan at a glance" summary is now different** — the split, the day layout, the block structure, the program length, the deload weeks, or the longest session. Write it as: "**Your week changed** — check the layout above before you say happy." Name what moved in the same line. If nothing structural moved, omit this line entirely rather than writing a reassuring version of it.
+4. **Any ℹ️ CONSTRAINED muscle**, one line each, naming the constraint that blocked the fix.
+
+If the review found nothing to fix, this whole section is ONE line: "All checks passed. Nothing changed from the plan you approved." Do not pad it, do not list the checks you ran, and do not manufacture a cosmetic change so the section has content. Finding nothing is a good outcome and the user should be told it plainly.
+
+Hard rules for this section:
+
+- ONE LINE per table cell. If a fix needs a paragraph to justify, the justification belongs up in the audit section and the table carries only the conclusion.
+- No re-derivation, no volume maths, no exercise lists, no restatement of the corrected plan.
+- The whole section must fit on one phone screen.
+- It goes immediately before the closing callout, nowhere else.
+- This is the only heading in the response that may carry an emoji.
+
+Shape to follow. The content below is illustrative only — use the real review:
+
+## 🔍 What the check changed
+
+| What I found | What I changed | What it means for you |
+|---|---|---|
+| Side delts trained on back-to-back days | Reordered the week to Push / Legs / Pull | Your training days move. No exercise, set count or total changed |
+| Deload cut chest by only 37.5%, needs 40-50% | Wrote explicit per-exercise deload set counts | Week 6 gets slightly lighter than the draft had it |
+| Incline DB press had compound cues but isolation reps | Rep range 8-12 to 6-10 | Heavier weight, fewer reps, on that one exercise |
+
+**Volume unchanged** — all 14 muscles were already inside their target ranges and still are.
+
+**Your week changed** — Push / Pull / Legs became Push / Legs / Pull. Check the layout above before you say happy.
+
+---
 
 ## END YOUR RESPONSE WITH THIS EXACT CALLOUT
 
