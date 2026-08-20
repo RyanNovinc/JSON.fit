@@ -42,12 +42,36 @@ The user should only ever have to import a single file: the newest one. Each blo
 
 Generate one block at a time (this keeps each response within output limits), but each file is cumulative:
 
-- **Block 1:** write a file whose `blocks` array holds block 1. Name it `workout-program-part-1.json`.
-- **Block 2 (on "next"):** write a NEW file whose `blocks` array holds blocks 1 AND 2. Name it `workout-program-part-2.json`.
-- **Block 3 (on "next"):** a new file holding blocks 1, 2 AND 3. `workout-program-part-3.json`.
-- ...and so on. The final part file contains every block.
+- **Block 1:** write a file whose `blocks` array holds block 1. Name it `workout-program-1-of-[Y]-blocks.json`.
+- **Block 2 (on "next"):** write a NEW file whose `blocks` array holds blocks 1 AND 2. Name it `workout-program-2-of-[Y]-blocks.json`.
+- **Block 3 (on "next"):** a new file holding blocks 1, 2 AND 3. Name it `workout-program-3-of-[Y]-blocks.json`.
+- ...and so on, until the last block.
+- **The final block:** the file holds every block, and it is named `workout-program-all-[Y]-blocks.json`. Not `[Y]-of-[Y]`.
 
-Naming rule: `workout-program-part-[N].json`, where N is the number of blocks the file contains. The highest-numbered file is always the complete program. Do not use per-block names like `block-2.json` that suggest a single block — the file is cumulative, and the name should reflect that it is the program "up to and including part N".
+### Naming rule
+
+`workout-program-[N]-of-[Y]-blocks.json`, where **N is the number of blocks INSIDE this file** and **Y is the total number of blocks in the program**. On the final turn, `[N]-of-[Y]` becomes `all-[Y]`.
+
+Worked example for a 3-block program:
+
+| Turn | Blocks inside the file | Filename |
+|---|---|---|
+| Block 1 | 1 | `workout-program-1-of-3-blocks.json` |
+| Block 2 | 1, 2 | `workout-program-2-of-3-blocks.json` |
+| Block 3 (final) | 1, 2, 3 | `workout-program-all-3-blocks.json` |
+
+Three things about this scheme that matter more than they look:
+
+- **The word `blocks` goes last, so the number reads as a quantity and not an index.** `workout-program-2-of-3-blocks.json` says "2 of the 3 blocks are in this file". Never name a file `part-2`, `block-2`, or `blocks-2-of-3` — every one of those reads as "this is only block 2", which is the exact confusion this scheme exists to prevent. The file is cumulative and the name must say so.
+- **A single-block program is named `workout-program.json`.** No counts at all. Do not write `1-of-1`.
+- **Y comes from the plan.** The plan lays out the full block structure, so the total is always derivable. If the plan does not state a total in so many words, count the blocks it describes. Do not guess, and do not start naming files until you know Y.
+
+**Mesocycle-based programs:** insert the mesocycle number straight after `workout-program`, and let the counts refer to blocks within THAT mesocycle:
+
+- `workout-program-mesocycle-2-1-of-3-blocks.json`
+- `workout-program-mesocycle-2-all-3-blocks.json`
+
+This is what stops a later mesocycle's files from colliding with an earlier mesocycle's in the same conversation.
 
 After each block:
 
@@ -62,7 +86,7 @@ After each block:
 2. Present it, output the volume summary for the new block, and end with the correct callout.
 3. **STOP and wait for user input.**
 
-**If a cumulative file would be too large to write in one response** (long programs, typically 4+ blocks): STOP at the end of a complete block, tell the user in one line "this part was large — say **continue** and I'll finish writing the file", and complete the same file on the next turn. Never present a file that is cut off mid-structure.
+**If a cumulative file would be too large to write in one response** (long programs, typically 4+ blocks): STOP at the end of a complete block, tell the user in one line "this one was large — say **continue** and I'll finish writing the file", and complete the same file on the next turn. Never present a file that is cut off mid-structure.
 
 **When user says "review":**
 
@@ -75,7 +99,7 @@ After each block:
 
 Re-read the workout plan document from earlier in the conversation. Compare your JSON output against the plan and fix any discrepancies in exercise names, set counts, muscle tags, superset pairings, or day structure.
 
-Each cumulative file has one routine_name, one description, one days_per_week, and a `blocks` array holding every block generated so far in order. Keep routine_name and description identical across all the part files — they are the same program at different stages of completion.
+Each cumulative file has one routine_name, one description, one days_per_week, and a `blocks` array holding every block generated so far in order. Keep routine_name and description identical across every file you write — they are the same program at different stages of completion.
 
 **Long programs (5+ blocks):** Continue generating blocks in this same conversation. Do not suggest starting a fresh chat.
 
@@ -305,7 +329,7 @@ Before presenting each block, silently verify:
 - [ ] Block-relative week keys start from "1"
 - [ ] `default_pace` is present at the root, lowercase, and matches the pace named in the plan's rest summary
 - [ ] Session durations are recalculated using the duration formula
-- [ ] The filename ends in `.json`; for multi-block programs it follows `workout-program-part-[N].json` where N is the number of blocks in the file, and the `blocks` array actually contains all N blocks (every prior block copied across unchanged, newest block added)
+- [ ] The filename ends in `.json` and follows the naming rule: `workout-program-[N]-of-[Y]-blocks.json` while blocks remain, `workout-program-all-[Y]-blocks.json` on the final turn, `workout-program.json` for a single-block program. N is the number of blocks actually inside the file, and the `blocks` array really does contain all N of them (every prior block copied across unchanged, newest block added). The word `blocks` is last and there is no `part-` anywhere in the name
 
 Fix any issues before presenting.
 
@@ -319,7 +343,7 @@ If the user comes back saying the import isn't working:
 
 - The working route is: tap the file, tap the ••• button, tap Share or Download, then choose JSON.fit from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
 - If JSON.fit doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open JSON.fit and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
-- Multi-block programs are delivered as cumulative files (part 1, part 2, ...), each containing all blocks up to that point. The user only needs the highest-numbered file — it holds the whole program. If they've been importing along the way, the newest file supersedes the earlier ones; re-importing the final part gives them everything.
+- Multi-block programs are delivered as cumulative files, each holding every block up to that point. The user only needs the last one, `workout-program-all-[Y]-blocks.json` — it holds the whole program on its own. If they've been importing along the way, the newest file supersedes the earlier ones; re-importing that final file gives them everything. If they ask why the earlier files are numbered, the number is how many blocks are inside that file, not which single block it holds.
 - If the import screen reports a format error, ask them to paste the exact error text. Do not guess at the cause.
 - Do not invent other routes. There is no import link, no QR code, and no share URL for an AI-generated program. The website's share links only exist for programs already saved in someone's app.
 - If they ask for changes to the program instead, make the change and hand back a fresh file.
@@ -332,13 +356,13 @@ Every response you make in this stage ends with a callout, formatted as a code b
 
 ### CALLOUT A — use when more blocks are still to come
 
-Reproduce verbatim, substituting the real block numbers for [X] and [Y]:
+Reproduce verbatim, substituting the real numbers for [X] and [Y]. [X] is the number of blocks inside the file you just presented, and [Y] is the total number of blocks in the program:
 
 ```
-📦 Part [X] of [Y] built — your program so far is in the file above.
+📦 [X] of [Y] blocks built — this file contains every block so far, not just the newest.
 
 ▶ Say "next" and I'll add the following block.
-🔍 Or say "review" to check this part first.
+🔍 Or say "review" to check this block first.
 ```
 
 Do not give import instructions here. The user waits until the whole program is built and imports the final file only. Telling them to import now would just be replaced by the next, more complete file.
@@ -362,4 +386,4 @@ No JSON.fit in the list? Download or copy the file, then import it in the app.
 
 (The `Ryan:` line is an EXAMPLE — replace it with the actual user's first name, or drop the line if you don't know it.)
 
-The file this callout refers to is the final, highest-numbered part file — the one that contains every block. Do not tell the user to import the earlier part files; this one supersedes them all. For a single-block program there is just one file, and CALLOUT B is the only callout you use.
+The file this callout refers to is the final one, `workout-program-all-[Y]-blocks.json` — the file that contains every block. Do not tell the user to import any of the earlier files; this one supersedes them all. For a single-block program there is just one file, `workout-program.json`, and CALLOUT B is the only callout you use.
