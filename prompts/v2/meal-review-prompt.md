@@ -21,6 +21,8 @@ This is the second of three steps:
 1. ✅ Draft written.
 2. I'm auditing it now against your targets and fixing anything that misses.
 3. Reply "happy" once you're satisfied and I'll turn it into your file.
+
+Don't want to read all of it? Skip to 🔍 What the check changed at the bottom.
 ```
 
 This callout tells the user where they are in the flow, so a list of check results doesn't read as an error report. It appears every time, whether or not any checks fail, and it comes before everything else including the target restatement described below.
@@ -30,6 +32,8 @@ This callout tells the user where they are in the flow, so a list of check resul
 Code blocks (triple backticks) in YOUR CHAT RESPONSE are RESERVED for the opening callout above and the closing callout at the end. Do not use code blocks anywhere else in your visible response — not for meal names, not for slugs, not for arithmetic lines, not for example output. Use **bold**, headers, tables and bullet lists for everything else.
 
 Note: this rule applies to what you write in chat. Anything you fetch is your own reference material and is not part of your visible response — the user never sees it.
+
+Emoji in a HEADING is reserved the same way. The only heading in your entire response allowed to carry an emoji is the summary heading near the end, "🔍 What the check changed". Every other heading is plain text. Status markers such as ✅ and ❌ inside tables and prose are unaffected — this rule is about headings only, and it exists so the user can find the summary by scrolling without reading.
 
 # Review and Fix Meal Plan (v2)
 
@@ -77,7 +81,7 @@ A reported shortfall that names its binding constraint is DOCUMENTED IMPOSSIBILI
 2. **If ANY check fails, FIX IT IMMEDIATELY** — do not ask permission. Silently revise the plan to resolve all failures.
 3. **After fixing, re-verify** — run the checklist again on the corrected plan.
 4. **Present the CORRECTED plan** — the complete, clean, final version. No review process, no before/after, no working. Only the clean corrected plan.
-5. **End with a brief change log** — short bullets of what changed and why.
+5. **End with the "What the check changed" summary** — the section specified at the bottom of this file, immediately before the closing callout. It replaces the old free-form change log, and it is the last thing in your response.
 6. **USE WEB SEARCH** if available — to verify grocery pricing and product availability only.
 
 ## ARITHMETIC IS COMPUTED, NOT ESTIMATED
@@ -261,16 +265,65 @@ FAIL on internal contradictions.
 
 ## Output Format
 
-**If all 11 checks PASS on first review:**
+Your response is always in this order:
 
-- State "All checks passed — plan is ready."
-- Present the plan as-is.
+1. The opening callout.
+2. A brief PASS/FAIL table, one line per check. Report the checks that FAILED in full; for the rest, one line giving the count that passed. A wall of identical PASS rows buries the two rows that matter.
+3. The COMPLETE CORRECTED PLAN — full plan, not a diff. No before/after, no working.
+4. The "What the check changed" section specified below.
+5. The closing callout.
 
-**If any checks FAIL:**
+If all 11 checks pass on first review, step 2 is one line ("All 11 checks passed") and the plan is presented as-is. The section at step 4 still appears — see its rule for the nothing-changed case.
 
-1. Brief PASS/FAIL summary table (one line per check).
-2. Brief change log (what you fixed and why).
-3. The COMPLETE CORRECTED PLAN — full plan, not a diff.
+---
+
+## FINISH WITH "What the check changed"
+
+The LAST thing in your response before the closing callout is one section, headed exactly:
+
+## 🔍 What the check changed
+
+The user already approved this plan at step 1. The only new information in this entire response is the DIFFERENCE between what they approved and what you are now showing them, plus the grocery list you just built, which they have never seen. Everything above this section is your working. This is the only part written for someone deciding whether to say happy again.
+
+Write it in this exact order, and write nothing else in it:
+
+1. **A change table, OUTSIDE the quote.** One row per change you actually made. Columns: What I found | What I changed | What it means for you. The third column is written for the user, not for a nutritionist: what will be different when they eat or shop, in plain words. If a change costs them nothing, say so. Merge trivially related fixes into one row rather than listing six near-identical rescales separately.
+2. **Everything from here down goes INSIDE a blockquote** — every line prefixed with a > character, including the blank lines between paragraphs.
+3. **One line on the shop, ALWAYS PRESENT.** The grocery total as a range with its currency, the store, and the number of prep sessions. This is the first time the user sees any of it, so it is the most valuable line in the section: "**Your shop:** AU$165–182 at Coles, plus two prep sessions, Sunday and Wednesday."
+4. **One line on targets.** Either "Every day still lands inside its calorie and protein bands", or the days that moved and where they landed.
+5. **One line on structure, ALWAYS PRESENT.** If nothing in the step 1 "Your plan at a glance" summary moved — the meals filling each slot, the occurrence counts, the prep days, the daily calorie figure — write exactly: "**Your meals are unchanged** — same food, same days, as you approved them." If any of those DID move, replace it with "**Your plan changed** — [what moved]. Check the plan above before you say happy." Never omit this line. Silence is indistinguishable from the section being broken, and the user cannot tell the difference between "nothing moved" and "nobody checked".
+6. **Any documented impossibility**, one line each, naming the constraint that blocked the fix. A variety shortfall that already named its constraint at step 1 goes here as one line, not as a new finding.
+
+If the review found nothing to fix, the change table is omitted entirely and the quoted lines still appear, led by: "> All 11 checks passed. Nothing changed from the plan you approved." The shop line and the structure line follow it. Do not pad, do not list the checks you ran, and do not manufacture a cosmetic change so the table has content. Finding nothing is a good outcome and the user should be told it plainly.
+
+Hard rules for this section:
+
+- THE BLOCKQUOTE IS NOT DECORATION. It is what makes this section look different from the plan and the audit above it, so the user can find the part written for them. Every single line inside it starts with a > character. A blank line inside the quote is "> " on its own, NOT an empty line — an unprefixed blank line ends the quote early and splits the section in two.
+- The change table stays OUTSIDE the quote. Tables nested inside blockquotes render inconsistently across different AI apps, and this file is read by several.
+- ONE LINE per table cell. If a fix needs a paragraph to justify, the justification belongs up in the audit and the table carries only the conclusion.
+- No re-derivation, no per-day arithmetic, no meal lists, no restatement of the corrected plan or the grocery list. The shop line is a total, not a list.
+- The whole section must fit on one phone screen.
+- It goes immediately before the closing callout, nowhere else.
+- This is the only heading in the response that may carry an emoji.
+
+Shape to follow, including the > prefixes exactly as shown. The content is illustrative only — use the real review:
+
+---
+
+## 🔍 What the check changed
+
+| What I found | What I changed | What it means for you |
+|---|---|---|
+| Thursday came in 180 kcal under target | Added a whey scoop adjuster at 3pm | One extra shake on Thursday |
+| Pulled pork batch sized from 6 placements, not 6.3 servings | Recomputed batches and the grocery quantity | You buy 1.2kg of pork, not 2kg |
+| Dessert appeared 3 times, your structure grants 1 | Kept Saturday, removed the other two | Two fewer desserts |
+| Chocolate protein tub bought for one dessert serving | Swapped to the vanilla dessert in the same slot | AU$22 off the shop, same slot, same day |
+
+> **Your shop:** AU$165–182 at Coles, plus two prep sessions, Sunday and Wednesday.
+>
+> **Targets:** every day still lands inside its calorie and protein bands.
+>
+> **Your plan changed** — dessert dropped from 3 to 1 and Thursday gained an adjuster. Check the plan above before you say happy.
 
 ## END YOUR RESPONSE WITH THIS EXACT CALLOUT
 
