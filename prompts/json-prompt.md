@@ -66,12 +66,14 @@ Three things about this scheme that matter more than they look:
 - **A single-block program is named `workout-program.json`.** No counts at all. Do not write `1-of-1`.
 - **Y comes from the plan.** The plan lays out the full block structure, so the total is always derivable. If the plan does not state a total in so many words, count the blocks it describes. Do not guess, and do not start naming files until you know Y.
 
-**Mesocycle-based programs:** insert the mesocycle number straight after `workout-program`, and let the counts refer to blocks within THAT mesocycle:
+**Mesocycle-based programs:** append the mesocycle at the END of the name, after the block count, and let the counts refer to blocks within THAT mesocycle:
 
-- `workout-program-mesocycle-2-1-of-3-blocks.json`
-- `workout-program-mesocycle-2-all-3-blocks.json`
+- `workout-program-1-of-3-blocks-mesocycle-2.json`
+- `workout-program-all-3-blocks-mesocycle-2.json`
 
 This is what stops a later mesocycle's files from colliding with an earlier mesocycle's in the same conversation.
+
+**It goes at the end for a reason. NEVER put two numbers next to each other in a filename.** `workout-program-mesocycle-2-1-of-3-blocks.json` is wrong, because `2-1` reads as a single number and the user sees "mesocycle 21 of 3 blocks". This rule applies to any future addition to the name as well: if a new element carries a number, it goes at the end, separated from the block count by a word.
 
 After each block:
 
