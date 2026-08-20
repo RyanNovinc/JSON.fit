@@ -299,34 +299,39 @@ The user already approved the plan at step 1. The only new information in this e
 
 Write it in this exact order, and write nothing else in it:
 
-1. **A change table.** One row per change you actually made. Columns: What I found | What I changed | What it means for you. The third column is written for the user, not for a coach: what will be different when they train, in plain words. If a change costs them nothing, say so ("your training days move, nothing else changed"). Merge trivially related fixes into one row rather than listing six near-identical wording corrections separately.
-2. **One line on volume.** Either "Volume unchanged — all [N] muscles were already in range and still are", or the muscles that moved and where they landed.
-3. **A structural warning line, ONLY IF something in the step 1 "Your plan at a glance" summary is now different** — the split, the day layout, the block structure, the program length, the deload weeks, or the longest session. Write it as: "**Your week changed** — check the layout above before you say happy." Name what moved in the same line. If nothing structural moved, omit this line entirely rather than writing a reassuring version of it.
-4. **Any ℹ️ CONSTRAINED muscle**, one line each, naming the constraint that blocked the fix.
+1. **A change table, OUTSIDE the quote.** One row per change you actually made. Columns: What I found | What I changed | What it means for you. The third column is written for the user, not for a coach: what will be different when they train, in plain words. If a change costs them nothing, say so ("two exercises swap position, nothing else moves"). Merge trivially related fixes into one row rather than listing six near-identical wording corrections separately.
+2. **Everything from here down goes INSIDE a blockquote** — every line prefixed with a > character, including the blank lines between paragraphs.
+3. **One line on volume.** Either "Volume unchanged — all [N] muscles were already in range and still are", or the muscles that moved and where they landed.
+4. **One line on structure, ALWAYS PRESENT.** If nothing in the step 1 "Your plan at a glance" summary moved — the split, the day layout, the block structure, the program length, the deload weeks, the longest session — write exactly: "**Structure unchanged** — your week, your blocks and your deloads are as you approved them." If any of those DID move, replace it with "**Your week changed** — [what moved]. Check the layout above before you say happy." Never omit this line. Silence is indistinguishable from the section being broken, and the user cannot tell the difference between "nothing moved" and "nobody checked".
+5. **Any ℹ️ CONSTRAINED muscle**, one line each, naming the constraint that blocked the fix.
 
-If the review found nothing to fix, this whole section is ONE line: "All checks passed. Nothing changed from the plan you approved." Do not pad it, do not list the checks you ran, and do not manufacture a cosmetic change so the section has content. Finding nothing is a good outcome and the user should be told it plainly.
+If the review found nothing to fix, this whole section is the heading plus ONE quoted line: "> All checks passed. Nothing changed from the plan you approved." Do not pad it, do not list the checks you ran, and do not manufacture a cosmetic change so the section has content. Finding nothing is a good outcome and the user should be told it plainly.
 
 Hard rules for this section:
 
+- THE BLOCKQUOTE IS NOT DECORATION. It is what makes this section look different from the several thousand words of audit above it, so the user can find the part written for them. Every single line inside it starts with a > character. A blank line inside the quote is "> " on its own, NOT an empty line — an unprefixed blank line ends the quote early and splits the section in two.
+- The change table stays OUTSIDE the quote. Tables nested inside blockquotes render inconsistently across different AI apps, and this file is read by several.
 - ONE LINE per table cell. If a fix needs a paragraph to justify, the justification belongs up in the audit section and the table carries only the conclusion.
 - No re-derivation, no volume maths, no exercise lists, no restatement of the corrected plan.
 - The whole section must fit on one phone screen.
 - It goes immediately before the closing callout, nowhere else.
 - This is the only heading in the response that may carry an emoji.
 
-Shape to follow. The content below is illustrative only — use the real review:
+Shape to follow, including the > prefixes exactly as shown. The content is illustrative only — use the real review:
+
+---
 
 ## 🔍 What the check changed
 
 | What I found | What I changed | What it means for you |
 |---|---|---|
 | Side delts trained on back-to-back days | Reordered the week to Push / Legs / Pull | Your training days move. No exercise, set count or total changed |
-| Deload cut chest by only 37.5%, needs 40-50% | Wrote explicit per-exercise deload set counts | Week 6 gets slightly lighter than the draft had it |
+| Deload cut chest by only 37.5%, needs 40-50% | Wrote explicit per-exercise deload set counts | Week 6 gets meaningfully lighter than the draft had it |
 | Incline DB press had compound cues but isolation reps | Rep range 8-12 to 6-10 | Heavier weight, fewer reps, on that one exercise |
 
-**Volume unchanged** — all 14 muscles were already inside their target ranges and still are.
-
-**Your week changed** — Push / Pull / Legs became Push / Legs / Pull. Check the layout above before you say happy.
+> **Volume unchanged** — all 14 muscles were already inside their target ranges and still are.
+>
+> **Your week changed** — Push / Pull / Legs became Push / Legs / Pull. Check the layout above before you say happy.
 
 ---
 
