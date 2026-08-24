@@ -225,7 +225,11 @@ Do this AFTER checks 1 to 7, so you are pricing the corrected plan and not the d
 - The tables cover every option the user picked, including ones the plan didn't use. Only buy for meals that appear in the FINAL plan.
 - Quantities are computed, not estimated. For each ingredient: (base amount ÷ servings the base recipe makes) × scale_factor for every placement, plus plate per-serving rows × scale_factor, summed across the plan. For multi-serving meals the figure that matters is the batches cooked (check 4), not the placement count. Use a code tool if available.
 - Carry each item's id in square brackets after its name, exactly as the table gives it, even after you localise the product name.
-- Finish with the separate "If you cook these from scratch" list and its own subtotal, kept out of the main total.
+- Finish with the separate list of extras for the make-it-yourself versions of meals, and its own subtotal, kept out of the main total. Head that list **"If you make these yourself"** and state its subtotal in exactly this shape:
+
+  **Not in the total:** up to $37.50 more if you switch meals to the make-it-yourself version in the app. Nothing to action now.
+
+  Every clause there is load-bearing. "From scratch" is internal vocabulary the user has never seen and does not map to anything they chose. "Up to" matters because that figure is the CEILING, what switching every eligible meal would cost — switching one costs a fraction of it, and without "up to" a reader planning to swap a single meal reads the whole figure as its price. "Nothing to action now" matters most: any figure sitting outside a total reads as a decision the user has to make before continuing, and this one is not. They import the plan and toggle individual meals either way in the app whenever they like, as many times as they like.
 - Pricing uses ACTUAL pack size, not portion used (90g cheese needed, smallest pack 250g → price the 250g pack), realistic for the stated store and location.
 - Loose produce (bananas, single potatoes, one lemon) is priced to the amount actually used — the pack-size rule does not apply to items sold loose. A quantity far above what the plan consumes is a FAIL.
 - Where an item carries BOTH a weight and a piece count ("590 g, about 4 medium"), the two must agree at a normal size for that produce in the user's country. Do the division and check it. A count that does not follow from the weight makes every quantity on the list look guessed, which is the one thing a shopping list cannot afford. If you are unsure of typical sizes locally, give the weight alone rather than an invented count.
@@ -238,7 +242,7 @@ Do this AFTER checks 1 to 7, so you are pricing the corrected plan and not the d
 - An item is a **kitchen staple** when it is shelf-stable AND the plan consumes less than about half the pack. Oil, honey, syrup, protein powder, spices and seasoning blends, cocoa, sauces in jars or bottles, a large bag of rice or oats. Fresh meat, produce, dairy, bread and anything frozen are never staples, whatever the pack size.
 - Put them in their own grocery category, named exactly **"Kitchen staples — last beyond this week"**, and give that category its own subtotal.
 - Everything else stays in the ordinary categories. Give those a combined subtotal too.
-- Both subtotals are part of the main total. This is a presentation split, not the scratch-extras exclusion — the user is buying all of it this shop.
+- Both subtotals are part of the main total. This is a presentation split, not the exclusion applied to the make-it-yourself extras — the user is buying all of this in this shop.
 - State both figures in the summary at the end (see its shop line). The point of the split is that the staples figure does not repeat next time, and the user cannot know that unless you tell them.
 - Cross-check: pick 3 random ingredients from the plan, recompute their totals from the ingredient tables, and confirm they match.
 
