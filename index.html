@@ -61,7 +61,7 @@
         { "@type": "Question", "name": "How does JSON.fit actually work?", "acceptedAnswer": { "@type": "Answer", "text": "It takes three steps. Answer a few quick questions, paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini, then import the meal plan it builds and start tracking. The same flow builds your training program too." } },
         { "@type": "Question", "name": "Do I need to pay for AI separately?", "acceptedAnswer": { "@type": "Answer", "text": "Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you." } },
         { "@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": { "@type": "Answer", "text": "JSON.fit is completely free. Workouts and nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence, with no subscription, no paywall, and no in-app purchases." } },
-        { "@type": "Question", "name": "Does this work if I've got a full-time job?", "acceptedAnswer": { "@type": "Answer", "text": "That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating in a surplus fits around work instead of taking it over." } },
+        { "@type": "Question", "name": "Does this work if I've got a full-time job?", "acceptedAnswer": { "@type": "Answer", "text": "That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating enough fits around work instead of taking it over." } },
         { "@type": "Question", "name": "How much time does this take each week?", "acceptedAnswer": { "@type": "Answer", "text": "Building or importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go. The whole point is to hit your macros without bulking turning into a second job." } },
         { "@type": "Question", "name": "If JSON.fit is free, what's the catch?", "acceptedAnswer": { "@type": "Answer", "text": "There isn't one. Most fitness apps charge $10-20 per month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free." } },
         { "@type": "Question", "name": "What AI does JSON.fit work with?", "acceptedAnswer": { "@type": "Answer", "text": "Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer." } },
@@ -354,6 +354,7 @@
             .fh-row { flex-direction:column; gap:0.85rem; }
             .fh-tx { display:none; }
             .proof-grid { grid-template-columns:1fr; }
+            .ledger { grid-template-columns:1fr; gap:0; }
             /* meal strip mobile: horizontal swipe */
             .strip-head { flex-direction:column; align-items:flex-start; gap:0.4rem; }
             .strip-head .strip-link { display:none; }
@@ -693,11 +694,13 @@
         .ph-screen img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
         .ph-card figcaption { font-family:'Outfit',sans-serif; font-size:0.98rem; line-height:1.5; color:var(--text); font-weight:500; text-align:center; max-width:230px; }
 
-        /* === Added: problem-stacking block === */
+        /* === Problem ledger === */
         .pains { max-width:900px; margin:0 auto; }
-        .pain-grid { display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:center; max-width:840px; margin:0 auto; }
-        .pain { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1.1rem; font-size:0.9rem; color:var(--text-2); display:flex; align-items:center; gap:0.6rem; line-height:1.45; }
-        .pain::before { content:'\2715'; color:var(--red); font-size:0.8rem; flex-shrink:0; font-family:'DM Mono',monospace; }
+        .ledger { max-width:860px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:0 3.5rem; }
+        .ld-row { display:flex; gap:1.1rem; align-items:baseline; padding:1.05rem 0; border-bottom:1px solid var(--border); }
+        .ld-n { font-family:'DM Mono',monospace; font-size:0.68rem; color:#2f2f38; letter-spacing:0.08em; flex-shrink:0; padding-top:2px; }
+        .ld-t { font-size:0.98rem; color:var(--text-2); line-height:1.45; }
+        .ld-t b { color:var(--text); font-weight:600; }
 
         /* === Added: founder block === */
         .founder { display:grid; grid-template-columns:0.62fr 1.38fr; gap:2.5rem; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem; }
@@ -754,7 +757,7 @@
     <div class="f-wall" id="fWall" data-rings="true" aria-hidden="true"></div>
     <div class="f-scrim"></div>
     <div class="fh-fg">
-        <span class="fh-ov">For skinny guys who want to put on size</span>
+        <span class="fh-ov">For skinny guys who work full time and don't get hungry</span>
         <h1 class="fh-display"><span class="fh-l1">Eating big,</span> <span class="cyan">made easy.</span></h1>
         <p class="fh-sub"><b class="tick-p">239</b>g protein &middot; <b class="tick-k">3,311</b> kcal &middot; your numbers, handled</p>
         <div class="fh-hair"></div>
@@ -789,17 +792,17 @@
 <section class="section" style="padding-top:4rem;padding-bottom:0;">
     <div class="container">
         <div class="pains sa sa-up">
-            <span class="label" style="text-align:center;">Built for hardgainers</span>
-            <h2 style="text-align:center;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:2rem;">If you're a skinny guy, <span class="cyan">you know the drill.</span></h2>
-            <div class="pain-grid">
-                <div class="pain">Appetite gives out halfway through dinner.</div>
-                <div class="pain">The scale won't move no matter what you lift.</div>
-                <div class="pain">Every meal is the same chicken and rice.</div>
-                <div class="pain">Six meals a day sounds like a part-time job.</div>
-                <div class="pain">Every bulking guide assumes you love cooking.</div>
-                <div class="pain">"Just eat more, bro," as if it's that easy.</div>
+            <span class="label" style="text-align:center;">Built for skinny guys with full-time jobs</span>
+            <h2 style="text-align:center;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:2rem;">Hitting your macros around a full-time job. <span class="cyan">Made easy.</span></h2>
+            <div class="ledger">
+                <div class="ld-row"><span class="ld-n">01</span><span class="ld-t"><b>You're full three bites</b> before the plate is.</span></div>
+                <div class="ld-row"><span class="ld-n">04</span><span class="ld-t"><b>Six meals a day</b>, fitted around a nine to five.</span></div>
+                <div class="ld-row"><span class="ld-n">02</span><span class="ld-t"><b>Not hungry again</b>, and the next meal's already due.</span></div>
+                <div class="ld-row"><span class="ld-n">05</span><span class="ld-t"><b>Sunday disappears</b> into prep, or the week falls apart.</span></div>
+                <div class="ld-row"><span class="ld-n">03</span><span class="ld-t"><b>3,300 calories</b> of chicken and rice is a mountain.</span></div>
+                <div class="ld-row"><span class="ld-n">06</span><span class="ld-t"><b>Every bulking guide</b> assumes you have time to cook.</span></div>
             </div>
-            <p style="text-align:center;color:var(--text-2);margin:1.5rem auto 0;max-width:560px;">JSON.fit is built for exactly this. Meals you'll actually look forward to, with the macros and the prep handled, so the only hard part left is showing up.</p>
+            <p style="text-align:center;color:var(--text-2);margin:1.5rem auto 0;max-width:560px;">Not more food. Denser food, with the shopping and prep already done.</p>
         </div>
     </div>
 </section>
@@ -810,7 +813,7 @@
             <div>
                 <span class="label" style="margin-bottom:0.6rem;">The Meal Library</span>
                 <h2>81 real meals, <span class="cyan">every step written.</span></h2>
-                <p style="color:var(--text-2);font-size:0.92rem;max-width:560px;margin-top:0.5rem;">Hand picked and cooked on my own bulk, and every meal defaults to the shortcut version: jar sauce, seasoning sachet, honest times. From scratch only if you feel like it.</p>
+                <p style="color:var(--text-2);font-size:0.92rem;max-width:560px;margin-top:0.5rem;">Hand picked and cooked on my own bulk. Every meal opens on the fast version by default: jar sauce, seasoning sachet, real times, not optimistic ones. From scratch is there if you ever want it.</p>
             </div>
             <a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a>
         </div>
@@ -850,7 +853,7 @@
             <div class="cap-body">
                 <span class="cap-label">Free Cookbook + Updates</span>
                 <h2>All 81 meals, <em>free.</em></h2>
-                <p>The printable cookbook, macros and ingredients included, plus new meals as they land and my bulk to 90kg in the open. First access and a launch discount when the print edition drops.</p>
+                <p>Every meal printed, with macros, ingredients and times. New meals as they land.</p>
                 <form class="cap-form" id="capForm" novalidate>
                     <!-- Live: posts to the JSON.fit subscribe API (AWS). capWebsite is a honeypot for bots. -->
                     <label for="capEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
@@ -871,7 +874,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">How your plan gets built</span>
             <h2>Any AI in. <span class="cyan">Real plan out.</span></h2>
-            <p style="margin:0 auto;">Meal plans and full training programs, up to a year long, from the same three steps.</p>
+            <p style="margin:0 auto;">A week of meals, or a training program up to a year long, from the same three steps.</p>
             <div class="pl-toggle" role="tablist">
                 <button class="pl-tg active" data-flow="meal" role="tab" aria-selected="true">Meal plan</button>
                 <button class="pl-tg" data-flow="train" role="tab" aria-selected="false">Training program</button>
@@ -1045,7 +1048,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">See It Working</span>
             <h2>Real AI output.<br><span class="cyan">Take it for a spin.</span></h2>
-            <p style="margin:0 auto;">An actual user's plan, generated and imported with Claude. Tap the phone to switch between the day's meals and the workout log.</p>
+            <p style="margin:0 auto;">An actual user's plan, generated and imported with Claude.</p>
         </div>
         <div class="sw-row sa-stagger">
             <figure class="ph-card">
@@ -1204,7 +1207,7 @@
             <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--violet),transparent);"></div>
             <div style="font-size:0.82rem;font-weight:600;color:var(--violet);margin-bottom:0.7rem;">The Lab</div>
             <div style="color:var(--text);font-size:1.15rem;font-weight:700;line-height:1.3;letter-spacing:-0.01em;margin-bottom:0.5rem;">Not just claims. I'm bulking in public.</div>
-            <p style="color:var(--text-2);font-size:0.9rem;line-height:1.55;max-width:400px;margin:0 auto 1.15rem;">Real body scans, tracked monthly and published, from <span style="font-family:'DM Mono',monospace;color:var(--violet);font-weight:500;white-space:nowrap;">77.3&thinsp;kg</span> to <span style="font-family:'DM Mono',monospace;color:var(--violet);font-weight:500;white-space:nowrap;">90&thinsp;kg</span>. Same skinny guy this app is built for.</p>
+            <p style="color:var(--text-2);font-size:0.9rem;line-height:1.55;max-width:400px;margin:0 auto 1.15rem;">Real body scans, tracked monthly and published, from <span style="font-family:'DM Mono',monospace;color:var(--violet);font-weight:500;white-space:nowrap;">77.3&thinsp;kg</span> to <span style="font-family:'DM Mono',monospace;color:var(--violet);font-weight:500;white-space:nowrap;">90&thinsp;kg</span>. Same skinny guy, same full-time job.</p>
             <a href="/lab" onclick="gtag('event','view_lab',{'button_location':'see_it_working'})" style="display:inline-flex;align-items:center;gap:0.45rem;background:var(--violet);color:#1a0a2e;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.85rem;padding:0.6rem 1.1rem;border-radius:9px;text-decoration:none;">See every number
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
@@ -1224,8 +1227,8 @@
             <div class="founder-body">
                 <span class="label">Why I built this</span>
                 <h2>I built JSON.fit because <span class="cyan">I'm the guy it's for.</span></h2>
-                <p>I'm a skinny-by-default lifter who got sick of force-feeding myself and fitness apps that assume cooking is my hobby. So I built the thing I actually needed: big meals with the steps done for me, macros handled, prep that fits around a full-time job.</p>
-                <p>I'm bulking to 90kg on it in the open, so I use this app every day. When something's clunky or missing, I feel it first and fix it, which is why it keeps getting better. No team, no investors, just me, building the tool I wish I'd had.</p>
+                <p>I'm a skinny-by-default lifter who got sick of force-feeding myself and fitness apps that assume cooking is my hobby. So I built the thing I actually needed: big meals with the steps done for me, macros handled, prep that fits around a full-time job, and the most direct path from where I am to where I want to end up.</p>
+                <p>I'm bulking to 90kg on it in the open, so I use this app every day. I'm the first person to hit anything clunky or missing, and I fix it that week, which is why it keeps getting better. No team, no investors, just me, building the tool I wish I'd had.</p>
                 <p class="founder-sign">Ryan, solo founder</p>
                 <div class="founder-links">
                     <a class="flink" href="blog.html" onclick="gtag('event','blog_click',{'button_location':'founder'})">Read the blog <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
@@ -1242,7 +1245,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Free Training Programs</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
-            <p style="margin:0 auto;">Build a custom program with the same three steps: your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
+            <p style="margin:0 auto;">Build your own the same way as the meals: answer a few questions, paste the prompt into your AI, import what comes back. Your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
         </div>
         <div class="prog-grid sa-stagger">
             <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
@@ -1273,15 +1276,15 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Compare</span>
             <h2>Premium personalisation.<br><span class="cyan">Zero cost.</span></h2>
-            <p style="margin:0 auto;">The kind of programming and nutrition that used to cost a fortune, now completely free.</p>
+            <p style="margin:0 auto;">The plan people pay a coach for, without the bill or the two-week wait.</p>
         </div>
         <div class="comp sa sa-up">
             <div class="comp-head"><div></div><div>JSON.fit</div><div>Dietitian / PT</div><div>Other Apps</div></div>
             <div class="comp-row"><div>Typical cost</div><div>Free</div><div>$150&ndash;300 USD/session</div><div>$20&ndash;60 USD/mo</div></div>
-            <div class="comp-row"><div>Expert-level personalisation</div><div>&#10003;</div><div>&#10003;</div><div class="comp-x">Basic</div></div>
+            <div class="comp-row"><div>Built around your stats and goal</div><div>&#10003;</div><div>&#10003;</div><div class="comp-x">Basic</div></div>
             <div class="comp-row"><div>Instant access</div><div>&#10003;</div><div class="comp-x">Weeks wait</div><div>&#10003;</div></div>
             <div class="comp-row"><div>Unlimited plan changes</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
-            <div class="comp-row"><div>Grocery lists</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>Priced grocery list</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
             <div class="comp-row"><div>Meal prep guidance</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
             <div class="comp-row"><div>No ongoing fees</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
             <div class="comp-row"><div>AI provider choice</div><div>Yours</div><div>N/A</div><div class="comp-x">Locked in</div></div>
@@ -1320,7 +1323,7 @@
             <div class="cta-check"><span class="ic ic-g">&#10003;</span> Full bulking meal library, step-by-step</div>
             <div class="cta-check"><span class="ic ic-c">&#10003;</span> AI meal plans built around your macros</div>
             <div class="cta-check"><span class="ic ic-c">&#10003;</span> Free year-long training programs</div>
-            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Smart grocery lists &amp; pantry intelligence</div>
+            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Priced grocery list and a one-session prep plan</div>
             <div class="cta-check"><span class="ic ic-c">&#10003;</span> Works with ChatGPT, Claude, Gemini &amp; more</div>
             <hr class="cta-div">
             <div class="cta-check"><span class="ic ic-g">&#10003;</span> No ads, no accounts, nothing sold. Ever.</div>
@@ -1348,7 +1351,7 @@
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How does it actually work?</button><div class="faq-a">Three steps:<br>1. Answer a few quick questions.<br>2. Paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini.<br>3. Import the meal plan it builds and start tracking.<br><br>The same flow builds your training program too.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Do I need to pay for AI separately?</button><div class="faq-a">Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much does JSON.fit cost?</button><div class="faq-a">It's completely free. Workouts <em>and</em> nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence. No subscription, no paywall, no in-app purchases.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Does this work if I've got a full-time job?</button><div class="faq-a">That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating in a surplus fits around work instead of taking it over.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Does this work if I've got a full-time job?</button><div class="faq-a">That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating enough fits around work instead of taking it over.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much time does this take each week?</button><div class="faq-a">Building or importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go. The whole point is to hit your macros without bulking turning into a second job.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">If it's free, what's the catch?</button><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free.</div></div>
             <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">What AI does it work with?</button><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
