@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The research behind JSON.fit</title>
+<meta name="description" content="Every number JSON.fit prescribes, with the peer-reviewed study behind it. Rest periods, rep ranges and training volume, cited in full.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The research behind JSON.fit">
+<meta property="og:description" content="Every number JSON.fit prescribes, with the study behind it.">
+<meta property="og:image" content="https://json.fit/og-image.png">
+<meta property="og:url" content="https://json.fit/research/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The research behind JSON.fit">
+<meta name="twitter:description" content="Every number JSON.fit prescribes, with the study behind it.">
+<link rel="canonical" href="https://json.fit/research/">
+<link rel="icon" type="image/x-icon" href="/favicon-3.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180-3.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Research runs on cyan — it is the app's own colour, and this page is the
+     app showing its working, not a separate area like The Lab (violet). */
+  --cyan:#22d3ee;
+  --cyan-bright:#67e8f9;
+  --cyan-soft:rgba(34,211,238,0.08);
+  --cyan-glow:rgba(34,211,238,0.35);
+  --cyan-border:rgba(34,211,238,0.16);
+
+  --up:#22c55e;
+  --amber:#f59e0b;
+
+  /* shared shell, identical to the rest of the site */
+  --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
+  --border:rgba(255,255,255,0.06);
+  --text:#f0f0f2; --text-2:#9898a4; --text-3:#7a7a86;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px;overflow-x:hidden}
+.cyan{color:var(--cyan)}
+.mono{font-family:'DM Mono',monospace}
+.container{max-width:820px;margin:0 auto;padding:0 1.5rem}
+
+/* ── Nav, identical structure to /lab/ ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-left{display:flex;align-items:center;gap:.6rem}
+.nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.4rem}
+.nav-back{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(5,5,8,0.6);border:1px solid var(--border);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--text-3);text-decoration:none;transition:border-color .2s,color .2s;flex-shrink:0}
+.nav-back:hover{border-color:var(--cyan-border);color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-3);text-decoration:none;font-size:.8rem;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a.active{color:var(--cyan)}
+.nav-cta{background:var(--cyan)!important;color:#001014!important;padding:.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:.78rem!important;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--cyan-glow)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all .3s}
+
+/* ── Hero ── */
+.hero{position:relative;padding:7.5rem 1.5rem 2rem;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-30%;left:60%;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,var(--cyan-glow) 0%,transparent 65%);opacity:.08;filter:blur(80px);pointer-events:none}
+.hero-in{position:relative;z-index:2;max-width:820px;margin:0 auto}
+.h-ov{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);margin-bottom:1.15rem}
+.h-display{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(2.3rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.01em}
+.h-display em{color:var(--cyan);font-style:italic}
+.h-sub{font-size:.95rem;color:var(--text-2);max-width:560px;margin-top:1.15rem;line-height:1.75}
+
+/* ── Topic switcher ── */
+.topics{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1.75rem}
+.topic{padding:.42rem .95rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-3);
+  font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .15s;display:inline-block}
+.topic:hover{border-color:var(--cyan-border);color:var(--text)}
+.topic.active{background:var(--cyan-soft);border-color:var(--cyan-border);color:var(--cyan)}
+.topic:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+/* ── Document card ── */
+.doc-wrap{padding:2.25rem 0 4rem}
+.doc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem 2rem 2.25rem}
+.doc-meta{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:1.5rem;padding-bottom:1.1rem;border-bottom:1px solid var(--border);display:flex;gap:1.25rem;flex-wrap:wrap}
+.doc-meta a{color:var(--text-3);text-decoration:none;border-bottom:1px solid var(--border)}
+.doc-meta a:hover{color:var(--cyan);border-bottom-color:var(--cyan-border)}
+
+/* rendered markdown */
+.md h1{display:none} /* the hero already carries the title */
+.md h2{font-size:1.28rem;font-weight:700;letter-spacing:-.01em;color:#fff;margin:2.4rem 0 .9rem;padding-top:1.6rem;border-top:1px solid var(--border)}
+.md > h2:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.md h3{font-size:.98rem;font-weight:600;color:var(--cyan);margin:1.8rem 0 .5rem;font-family:'Outfit',sans-serif}
+.md p{color:var(--text-2);font-size:.93rem;line-height:1.78;margin-bottom:.9rem}
+.md p em{color:var(--text-3);font-style:italic}
+.md strong{color:var(--text);font-weight:600}
+.md a{color:var(--cyan);text-decoration:none;border-bottom:1px solid var(--cyan-border);transition:border-color .2s}
+.md a:hover{border-bottom-color:var(--cyan)}
+.md ul,.md ol{margin:0 0 1.1rem 1.15rem;color:var(--text-2)}
+.md li{font-size:.92rem;line-height:1.72;margin-bottom:.42rem;padding-left:.2rem}
+.md li::marker{color:var(--cyan)}
+.md hr{border:none;border-top:1px solid var(--border);margin:2.2rem 0}
+.md code{font-family:'DM Mono',monospace;font-size:.85em;background:var(--surface-2);padding:.12rem .38rem;border-radius:4px;color:var(--cyan-bright)}
+.md blockquote{border-left:2px solid var(--cyan-border);background:var(--cyan-soft);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1.4rem 0}
+.md blockquote p:last-child{margin-bottom:0}
+.md table{width:100%;border-collapse:separate;border-spacing:0;margin:1.2rem 0;font-size:.85rem}
+.md th,.md td{padding:.65rem .85rem;text-align:left;border-bottom:1px solid var(--border);color:var(--text-2)}
+.md th{color:var(--text-3);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2)}
+.md tr:last-child td{border-bottom:none}
+
+/* states */
+.state{padding:3rem 1rem;text-align:center;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+.state a{color:var(--cyan);text-decoration:none}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.foot-l{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--text-3)}
+.foot-l a{color:var(--text-3);text-decoration:none;margin-left:1.25rem;transition:color .2s}
+.foot-l a:hover{color:var(--cyan)}
+.foot-r{font-size:.7rem;color:var(--text-3)}
+
+@media(max-width:860px){
+  .nav-links{display:none;position:fixed;inset:0;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:1.1rem;color:var(--text-2)}
+  .nav-links .nav-cta{font-size:1rem!important;padding:.6rem 1.5rem}
+  .hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}
+  .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+  .hero{padding:6.5rem 1.5rem 1.5rem}
+  .doc{padding:1.5rem 1.25rem 1.75rem;border-radius:14px}
+  .md h2{font-size:1.15rem}
+}
+</style>
+<script src="/analytics-web.js"
+  data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
+  data-app-version="web"
+  data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="https://json.fit" class="nav-back" aria-label="Back" onclick="return window.navBack(event)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <a href="https://json.fit" class="nav-logo">
+      <svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
+      JSON<span class="cyan">.fit</span>
+    </a>
+  </div>
+  <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="https://json.fit/#meals">Meals</a></li>
+    <li><a href="https://json.fit/#programs">Programs</a></li>
+    <li><a href="https://json.fit/blog.html">Blog</a></li>
+    <li><a href="/lab/">The Lab</a></li>
+    <li><a href="/research/" class="active">Research</a></li>
+    <li><a href="https://json.fit/#download" class="nav-cta" onclick="gtag('event','view_download_options',{'button_location':'research_nav'})">Download Free</a></li>
+  </ul>
+</nav>
+
+<script>
+// Back arrow: if the visitor arrived from another json.fit page, step back to it;
+// otherwise (shared link, direct visit, in-app link) follow the href to the homepage.
+window.navBack=function(e){
+  try{
+    var ref=document.referrer;
+    if(ref && new URL(ref).hostname.replace(/^www\./,'')==='json.fit' && window.history.length>1){
+      e.preventDefault(); window.history.back(); return false;
+    }
+  }catch(err){}
+  return true;
+};
+</script>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-in">
+    <div class="h-ov">The research &middot; <span class="cyan">every number, cited</span></div>
+    <h1 class="h-display" id="docTitle">Showing <em>the working.</em></h1>
+    <p class="h-sub" id="docBlurb">Every number JSON.fit prescribes comes from somewhere. This is where.</p>
+    <div class="topics" id="topics"></div>
+  </div>
+</section>
+
+<!-- DOCUMENT -->
+<section class="doc-wrap">
+  <div class="container">
+    <div class="doc">
+      <div class="doc-meta" id="docMeta"></div>
+      <div class="md" id="docBody"><div class="state">Loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-l">JSON<span class="cyan">.fit</span>
+    <a href="https://json.fit">Home</a>
+    <a href="https://json.fit/meals.html">Meals</a>
+    <a href="https://json.fit/privacy-policy.html">Privacy</a>
+  </div>
+  <div class="foot-r">&copy; 2026 JSON.fit</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+"use strict";
+/* ════════════════════════════════════════════════════════════════════
+   THE RESEARCH PAGE
+
+   This page renders the SAME .md files the AI fetches when it builds a
+   program. It does not hold a copy of them. That is the entire point:
+   the moment a reference file is edited, the prompt chain and this page
+   change together, and there is no second version to forget about.
+
+   Add a topic by adding one entry to TOPICS. The file must already be
+   published at json.fit root, since that is where the prompt chain
+   expects it.
+
+   The markdown is fetched at an ABSOLUTE URL rather than a relative one
+   so this file also renders correctly when opened straight off disk for
+   review, before it is ever deployed.
+   ════════════════════════════════════════════════════════════════════ */
+
+var TOPICS = [
+  {
+    key: 'rest',
+    label: 'Rest periods',
+    file: 'https://json.fit/rest-references.md',
+    title: 'How long to <em>rest.</em>',
+    blurb: 'Rest is a secondary lever behind volume, load and how close you train to failure. These are the studies that set every number the timer counts down.'
+  },
+  {
+    key: 'reps',
+    label: 'Rep ranges',
+    file: 'https://json.fit/rep-range-references.md',
+    title: 'How many <em>reps.</em>',
+    blurb: 'Muscle grows across roughly 5 to 30 reps when effort and weekly sets are matched. What changes with the number is which exercises can carry it.'
+  },
+  {
+    key: 'volume',
+    label: 'Training volume',
+    file: 'https://json.fit/volume-references.md',
+    title: 'How many <em>sets.</em>',
+    blurb: 'Weekly sets per muscle is the dial that drives growth. Every muscle gets its own range, and these are the meta-analyses behind them.'
+  }
+];
+
+(function(){
+  var params = new URLSearchParams(location.search);
+  var key = params.get('topic') || 'rest';
+  var topic = TOPICS.filter(function(t){ return t.key === key; })[0] || TOPICS[0];
+
+  document.getElementById('docTitle').innerHTML = topic.title;
+  document.getElementById('docBlurb').textContent = topic.blurb;
+  document.title = topic.label + ' — the research behind JSON.fit';
+
+  document.getElementById('topics').innerHTML = TOPICS.map(function(t){
+    return '<a class="topic' + (t.key === topic.key ? ' active' : '') +
+           '" href="?topic=' + t.key + '">' + t.label + '</a>';
+  }).join('');
+
+  document.getElementById('docMeta').innerHTML =
+    '<span>Source &middot; <a href="' + topic.file + '">' + topic.file.replace('https://json.fit/','') + '</a></span>' +
+    '<span>Read by the app when it writes your program</span>';
+
+  var body = document.getElementById('docBody');
+
+  // A CDN failure must not leave a blank page. Every failure path ends with a
+  // working link to the raw file, which is the thing the visitor came for.
+  function fallback(msg){
+    body.innerHTML = '<div class="state">' + msg +
+      '<br><br><a href="' + topic.file + '">Open the raw file &rarr;</a></div>';
+  }
+
+  if (typeof marked === 'undefined') { fallback('Could not load the renderer'); return; }
+
+  fetch(topic.file, { cache: 'no-cache' })
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function(md){
+      body.innerHTML = marked.parse(md);
+      // Every citation here points off-site to PubMed and friends. Open them in
+      // a new tab so a visitor reading the list does not lose their place, and
+      // set rel to stop the target page reaching back into this one.
+      body.querySelectorAll('a[href^="http"]').forEach(function(a){
+        if (a.hostname !== location.hostname) {
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+        }
+      });
+    })
+    .catch(function(){ fallback('Could not load the document'); });
+
+  /* ── Mobile menu ── */
+  var burger = document.getElementById('burger'), navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', function(e){ e.stopPropagation(); burger.classList.toggle('open'); navLinks.classList.toggle('open'); });
+  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ burger.classList.remove('open'); navLinks.classList.remove('open'); }); });
+})();
+</script>
+
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var a=e.target;
+    while(a&&a.tagName!=='A')a=a.parentElement;
+    if(!a||!a.href)return;
+    try{
+      var h=new URL(a.href).hostname;
+      if(!h||h===location.hostname)return;
+      var label;
+      if(h==='apps.apple.com')label='app_store';
+      else if(h==='www.youtube.com'||h==='youtu.be')label='youtube';
+      else{var p=h.replace(/^www\./,'').split('.');var s=p[p.length-2]||p[0];label=s==='nih'?'pubmed':s;}
+      if(window.track)window.track('outbound_click',{url:label});
+    }catch(err){}
+  },true);
+})();
+</script>
+
+</body>
+</html>
