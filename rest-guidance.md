@@ -11,8 +11,8 @@ User's rest tier (Optimal / Moderate / Minimal) comes from questionnaire. Apply 
 | Heavy compound (squat, deadlift, bench, OHP, weighted pull-ups/dips at <6 RM) | 3–5 min | 2.5–3 min | 2 min |
 | Moderate compound (rows, machine compounds, lat pulldowns, leg press, hack squat) | 2.5–3 min | 2 min | 75–90 s |
 | Unilateral compound (Bulgarian splits, lunges, single-arm rows) | 90 s–2 min between sides; 2.5 min between pairs | 75–90 s between sides; 2 min between pairs | 60 s between sides; 90 s between pairs |
-| Large-muscle isolation (curls, triceps ext, leg curls, leg ext, pec deck) | 2 min | 75–90 s | 60 s |
-| Small-muscle isolation (lateral raises, rear delts, calves, wrist curls, face pulls) | 60–90 s | 45–75 s | 30–60 s |
+| High-cost isolation (curls, triceps ext, leg curls, leg ext, pec deck) | 2 min | 75–90 s | 60 s |
+| Low-cost isolation (lateral raises, rear delts, calves, wrist curls, face pulls) | 90 s | 75 s | 60 s |
 | Superset transition (between the two exercises of an antagonist pair) | 60 s | 45 s | 30 s |
 | Superset round (after the second exercise, before repeating the pair) | 2 min | 105 s | 90 s |
 
@@ -21,6 +21,10 @@ Hard floor on heavy compounds: never below 2 min, regardless of tier or instruct
 The two superset rows are the per-tier split of the antagonist-superset range given under Edge Cases below. They are listed as matrix rows because a superset member needs a tier lookup like any other exercise — the edge-case note gives the range, these rows give the value.
 
 **Unilateral note.** The row above gives two numbers because a unilateral exercise has two rest events. JSON.fit counts one set as both sides, so the only rest event its timer fires is the between-pairs one — that is the value the app uses. The between-sides number is for the lifter's own pacing.
+
+**Isolation category names.** These two rows were "Large-muscle isolation" and "Small-muscle isolation" until 24 Aug 2026. A rest category describes what a set COSTS to recover from, not the size of the muscle it trains, and the old names invited the wrong comparison: a barbell curl is a small muscle doing an expensive set, which is why it sits on the higher row. `rep-range-guidance.md` still sorts the same exercises by muscle size, correctly, because reps ARE prescribed by muscle size. The two files are not in conflict; they were never measuring the same thing.
+
+**Low-cost isolation, raised 24 Aug 2026** from 60–90 / 45–75 / 30–60. The old row sat below this file's own moderate-confidence recommendation of ~90 s on isolation at every tier, and its Minimal value of 30–45 s sat under the 60 s line where volume load starts to fall — the one rest effect this file rates high confidence. 90 is Singer 2024's hypertrophy plateau; 60 is the floor of the useful zone. The 75 in the middle is interpolation, and no study names it. Note that within ±30 s no published RCT shows a meaningful adaptation difference, so the gap between this row's Optimal and Minimal is at the edge of what the evidence can distinguish.
 
 ## Goal Overrides
 
@@ -35,7 +39,9 @@ The Optimal column is the well-supported one: longer rest preserves reps across 
 
 The claim is not that short rest is equally good in general. It is that **volume load, not the clock, is what drives the adaptation** — so rest can be cut right up to the point where reps start falling off, and no further. That point is what the Feedback Signal below detects. The Minimal numbers are the shortest rests at which most lifters stay above that line on each category; they are a starting estimate, and the feedback signal is the correction.
 
-This is why the Minimal column shortens far more on isolation work than on heavy compounds. A lateral raise recovers enough in 30 seconds to repeat its reps; a heavy squat does not, at any tier, which is what the hard floor encodes.
+Minimal bottoms out at 60 s everywhere except superset transitions, which are a different event — the antagonist pair rests one muscle while the other works, so the clock understates the recovery. Sixty seconds is not an arbitrary floor: it is where the evidence stops supporting further cuts, and cutting past it trades volume load for time, which is the one trade this matrix will not make.
+
+This is why the Minimal column shortens far more on heavy compounds in relative terms than the numbers first suggest. A lateral raise and a squat both land on their own floor; the squat's floor is simply four times higher, which is what the hard floor encodes.
 
 ## Edge Cases
 
@@ -64,4 +70,4 @@ Rest is a secondary lever. Adaptation drivers in order:
 3. Progressive overload
 4. Exercise selection
 
-For full citations see https://json.fit/rest-references.md
+For full citations see https://json.fit/research/?topic=rest
