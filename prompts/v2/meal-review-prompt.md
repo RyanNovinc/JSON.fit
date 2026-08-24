@@ -231,13 +231,26 @@ Do this AFTER checks 1 to 7, so you are pricing the corrected plan and not the d
 - Where an item carries BOTH a weight and a piece count ("590 g, about 4 medium"), the two must agree at a normal size for that produce in the user's country. Do the division and check it. A count that does not follow from the weight makes every quantity on the list look guessed, which is the one thing a shopping list cannot afford. If you are unsure of typical sizes locally, give the weight alone rather than an invented count.
 - Categories logical; no phantom items; notes only for items bought outside the main store, and never a price tip.
 - Total presented as a range with the 10% buffer (e.g. "$165–$182") and a currency symbol — never a single number.
+- **Compute the low bound, do not estimate it.** Add up every item price with a code tool if one is available, and write that exact figure as the low bound. The high bound is that figure × 1.10. A total that does not equal the sum of the items on the list is a FAIL, and it is invisible to the user, who has no way to check it.
+
+**Split the list into food and staples.** A one-week list priced by pack size charges a full week for things that last months, which makes an ordinary shop look alarming. Separate them:
+
+- An item is a **kitchen staple** when it is shelf-stable AND the plan consumes less than about half the pack. Oil, honey, syrup, protein powder, spices and seasoning blends, cocoa, sauces in jars or bottles, a large bag of rice or oats. Fresh meat, produce, dairy, bread and anything frozen are never staples, whatever the pack size.
+- Put them in their own grocery category, named exactly **"Kitchen staples — last beyond this week"**, and give that category its own subtotal.
+- Everything else stays in the ordinary categories. Give those a combined subtotal too.
+- Both subtotals are part of the main total. This is a presentation split, not the scratch-extras exclusion — the user is buying all of it this shop.
+- State both figures in the summary at the end (see its shop line). The point of the split is that the staples figure does not repeat next time, and the user cannot know that unless you tell them.
 - Cross-check: pick 3 random ingredients from the plan, recompute their totals from the ingredient tables, and confirm they match.
 
 This check cannot "pass" without a list: if you have not written one, you have not finished. FAIL also if 3+ ingredients are missing, quantities are significantly wrong, or the total is a single number.
 
 ### 9. Budget Compliance
 
-The budget is stated in the generation prompt's step-2 grocery context line, next to the store and city. Grocery total falls within it; ingredient choices match the budget tier; portions realistic. FAIL if costs significantly exceed it or premium items appear on a tight budget.
+The budget is stated in the generation prompt's step-2 grocery context line, next to the store and city.
+
+**It may be a number or it may be a phrase.** If it is a range in the user's currency, the grocery total must fall within it — FAIL if it significantly exceeds it. If it is a tier label ("keep it reasonable", "moderate", "tight"), there is no number to test and you must NOT invent one, guess at a local average, or fabricate a threshold to pass or fail against. Treat the label as a directive on CHOICES rather than a cap on the total: within a slot, prefer the cheaper of two options that do the same job, prefer the standard cut over the premium one, and prefer the pack size the plan actually needs. Then report the figure you arrived at and move on. A total is not a failure just because it is larger than you expected.
+
+Regardless of which form the budget takes: ingredient choices match the tier and portions are realistic. FAIL if premium items appear on a tight budget.
 
 **Single-use items that force a whole new product.** Scan the list for any item that appears in exactly one meal, is needed in a tiny amount, and cannot be bought in a small enough pack. Ask two questions:
 
@@ -245,6 +258,8 @@ The budget is stated in the generation prompt's step-2 grocery context line, nex
 2. Does an option in the SAME slot's table achieve the same thing using something already on the list?
 
 If both are yes, swap to that option and note it in the change log. A worked case: a dessert used once needed a small amount of chocolate protein powder, so the list bought a whole tub for that one serving, while a different dessert in the same table used the vanilla protein powder the plan was already buying. Same slot, same role in the day, a large share of the shop saved.
+
+**Clusters count too.** Run the same two questions against the SET of single-use items, not only the biggest one. Four items at 3% each are 12% of the shop and will each pass a test applied one at a time. If the set as a whole is a large share and several of them have same-slot alternatives, swap the ones that do.
 
 If the answer to (2) is no, the item stays — the user picked these options and a single expensive ingredient is not a reason to drop a meal they chose. Do not invent a substitute, and do not silently remove the meal. This applies with no exceptions to user-created meals: never drop or alter one over an ingredient's cost.
 
@@ -289,10 +304,25 @@ Write it in this exact order, and write nothing else in it:
 
 1. **A change table, OUTSIDE the quote.** One row per change you actually made. Columns: What I found | What I changed | What it means for you. The third column is written for the user, not for a nutritionist: what will be different when they eat or shop, in plain words. If a change costs them nothing, say so. Merge trivially related fixes into one row rather than listing six near-identical rescales separately.
 2. **Everything from here down goes INSIDE a blockquote** — every line prefixed with a > character, including the blank lines between paragraphs.
-3. **One line on the shop, ALWAYS PRESENT.** The grocery total as a range with its currency, the store, and the number of prep sessions. This is the first time the user sees any of it, so it is the most valuable line in the section: "**Your shop:** AU$165–182 at Coles, plus two prep sessions, Sunday and Wednesday."
-4. **One line on targets.** Either "Every day still lands inside its calorie and protein bands", or the days that moved and where they landed.
-5. **One line on structure, ALWAYS PRESENT.** If nothing in the step 1 "Your plan at a glance" summary moved — the meals filling each slot, the occurrence counts, the prep days, the daily calorie figure — write exactly: "**Your meals are unchanged** — same food, same days, as you approved them." If any of those DID move, replace it with "**Your plan changed** — [what moved]. Check the plan above before you say happy." Never omit this line. Silence is indistinguishable from the section being broken, and the user cannot tell the difference between "nothing moved" and "nobody checked".
-6. **Any documented impossibility**, one line each, naming the constraint that blocked the fix. A variety shortfall that already named its constraint at step 1 goes here as one line, not as a new finding.
+3. **The shop block, ALWAYS PRESENT — three lines, in this order.** The grocery total is the single most consequential number in this whole flow. It is the first time the user sees any of it, and a large number landing with no explanation is the likeliest reason someone abandons the app. Write these three lines exactly in this shape, with the real figures:
+
+   💰 **Your shop: AU$328 at Coles**
+   AU$217 food for the week · AU$111 staples that last months
+   Estimates. You'll own some already, and any brand swap moves the total.
+
+   The rules on these three lines are strict, because every one of them exists to stop the number being drowned:
+
+   - **Line 1 is the total, alone, bold, with the 💰 and nothing else on it.** No prep sessions, no meal count, no caveats. Nothing may share this line.
+   - **Line 2 is two figures separated by a middle dot.** Not a sentence. Do not explain what a staple is here — the phrase "last months" does that job.
+   - **Line 3 is one short line of caveats and it goes last**, where it cannot get in the way of the figure.
+   - **Do not add a fourth line, and do not expand any of the three into a paragraph.** Reassurance that runs long is skipped, and then the number is all that lands, which is worse than saying nothing.
+   - **Do not promise that the next shop will be cheaper**, or estimate it, or give a percentage. Meat, produce and dairy are rebought every week. "Staples that last months" implies what is true without asserting a figure you cannot support.
+   - If the plan has no staples at all, write line 1 and line 3 and drop line 2. Never write a zero.
+
+4. **One line on cooking.** How many prep sessions and which days. Its own line, below the shop block.
+5. **One line on targets.** Either "Every day still lands inside its calorie and protein bands", or the days that moved and where they landed.
+6. **One line on structure, ALWAYS PRESENT.** If nothing in the step 1 "Your plan at a glance" summary moved — the meals filling each slot, the occurrence counts, the prep days, the daily calorie figure — write exactly: "**Your meals are unchanged** — same food, same days, as you approved them." If any of those DID move, replace it with "**Your plan changed** — [what moved]. Check the plan above before you say happy." Never omit this line. Silence is indistinguishable from the section being broken, and the user cannot tell the difference between "nothing moved" and "nobody checked".
+7. **Any documented impossibility**, one line each, naming the constraint that blocked the fix. A variety shortfall that already named its constraint at step 1 goes here as one line, not as a new finding.
 
 If the review found nothing to fix, the change table is omitted entirely and the quoted lines still appear, led by: "> All 11 checks passed. Nothing changed from the plan you approved." The shop line and the structure line follow it. Do not pad, do not list the checks you ran, and do not manufacture a cosmetic change so the table has content. Finding nothing is a good outcome and the user should be told it plainly.
 
@@ -304,7 +334,7 @@ Hard rules for this section:
 - No re-derivation, no per-day arithmetic, no meal lists, no restatement of the corrected plan or the grocery list. The shop line is a total, not a list.
 - The whole section must fit on one phone screen.
 - It goes immediately before the closing callout, nowhere else.
-- This is the only heading in the response that may carry an emoji.
+- This is the only heading in the response that may carry an emoji, and the shop total is the only LINE that may carry one. Do not put an icon on the cooking, targets or structure lines — if every line carries an icon, none of them stands out and the price stops being the first thing the eye lands on.
 
 Shape to follow, including the > prefixes exactly as shown. The content is illustrative only — use the real review:
 
@@ -319,7 +349,11 @@ Shape to follow, including the > prefixes exactly as shown. The content is illus
 | Dessert appeared 3 times, your structure grants 1 | Kept Saturday, removed the other two | Two fewer desserts |
 | Chocolate protein tub bought for one dessert serving | Swapped to the vanilla dessert in the same slot | AU$22 off the shop, same slot, same day |
 
-> **Your shop:** AU$165–182 at Coles, plus two prep sessions, Sunday and Wednesday.
+> 💰 **Your shop: AU$328 at Coles**
+> AU$217 food for the week · AU$111 staples that last months
+> Estimates. You'll own some already, and any brand swap moves the total.
+>
+> **Cooking:** two prep sessions, Sunday and Wednesday.
 >
 > **Targets:** every day still lands inside its calorie and protein bands.
 >
