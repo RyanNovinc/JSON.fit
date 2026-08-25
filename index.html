@@ -400,7 +400,7 @@
         .prog-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-2); padding:0.18rem 0.45rem; border:1px solid var(--border); border-radius:4px; }
         .prog-open { margin-top:auto; font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); display:flex; align-items:center; gap:0.3rem; transition:gap 0.2s; }
         @media (max-width:860px) { .prog-grid { grid-template-columns:1fr; } }
-        @media (prefers-reduced-motion: reduce) { .f-track { animation:none; } .j-code div { opacity:1; animation:none; } .pl-wire i { animation:none; } .j-cur { animation:none; } }
+        @media (prefers-reduced-motion: reduce) { .f-track { animation:none; } .px-con i { animation:none; display:none; } .pl-flow.vis .pl-step, .pl-flow.vis .px-bub { animation:none; } }
 
         /* Free cookbook capture */
         .cap { padding:2rem 0 1.5rem; }
@@ -442,9 +442,10 @@
         }
         @media (prefers-reduced-motion:reduce) { .book { animation:none; } .cap-btn:hover { transform:none; } }
 
-        .laurel { width:20px; height:38px; color:var(--green); opacity:0.9; flex-shrink:0; }
-        .laurel-r { transform:scaleX(-1); }
-        .science-tag { display:flex; align-items:center; justify-content:center; gap:0.55rem; margin:2.2rem auto 0; font-family:'DM Mono',monospace; font-size:0.78rem; color:var(--cyan); letter-spacing:0.02em; }
+        /* Peer-reviewed science tag: quiet pill replaces the hand-traced laurels */
+        .science-tag { display:flex; justify-content:center; margin:2.2rem auto 0; }
+        .sci-pill { display:inline-flex; align-items:center; gap:0.6rem; padding:0.6rem 1.2rem; border:1px solid var(--border); border-radius:100px; background:var(--surface); font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--text-2); letter-spacing:0.04em; text-align:center; line-height:1.5; }
+        .sci-pill svg { color:var(--cyan); flex-shrink:0; }
 
         /* Android founding-tester section */
         .at { padding:1rem 0 3rem; }
@@ -469,61 +470,79 @@
         .pl-tg { border:none; background:transparent; color:var(--text-2); font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.04em; padding:0.5rem 1.15rem; border-radius:100px; cursor:pointer; transition:all 0.18s; }
         .pl-tg:hover { color:var(--text); }
         .pl-tg.active { background:var(--cyan); color:#001318; font-weight:500; }
-        .pl-flow { display:grid; grid-template-columns:1fr 56px 1.12fr 56px 1fr; align-items:stretch; max-width:1080px; margin:0 auto; padding:0.5rem 0 1rem; }
+        .pl-flow { display:grid; grid-template-columns:1fr 64px 1.16fr 64px 1fr; align-items:stretch; max-width:1080px; margin:0 auto; padding:0.5rem 0 1rem; }
         .pl-step { display:flex; flex-direction:column; gap:11px; }
         .pl-tag { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; }
-        .pl-tag.t1 { color:var(--cyan); } .pl-tag.t2 { color:var(--violet); } .pl-tag.t3 { color:var(--green); }
-        .pl-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:15px 16px 16px; text-align:left; flex:1; display:flex; flex-direction:column; }
-        .pl-ct { font-size:0.9rem; font-weight:700; margin-bottom:10px; }
-        .pl-kv { display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--text-3); padding:6px 0; border-bottom:1px solid var(--border); }
-        .pl-kv b { color:var(--cyan); font-weight:500; }
-        .pl-kv:last-of-type { border-bottom:none; }
-        .pl-btn { margin-top:11px; background:var(--cyan); color:#000; font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:500; letter-spacing:0.04em; text-align:center; border-radius:8px; padding:9px 0; }
+        .pl-tag.t1 { color:var(--cyan); } .pl-tag.t2 { color:#cfcfd6; } .pl-tag.t3 { color:var(--green); }
         .pl-cap { font-size:0.78rem; color:var(--text-2); line-height:1.6; }
-        .j-term { background:#0a0a0f; border:1px solid rgba(168,85,247,0.22); border-radius:14px; overflow:hidden; text-align:left; flex:1; display:flex; flex-direction:column; }
-        .j-tbar { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#101016; border-bottom:1px solid var(--border); }
-        .j-tbar i { width:8px; height:8px; border-radius:50%; background:#2c2c34; display:block; }
-        .j-tbar span { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-3); margin-left:4px; letter-spacing:0.04em; }
-        .j-code { padding:11px 14px 12px; font-family:'DM Mono',monospace; font-size:0.66rem; line-height:1.8; white-space:pre; overflow-x:auto; flex:1; }
-        .j-code div { opacity:0; }
-        .vis .j-code div { animation:jln 0.35s forwards; }
-        .j-code div:nth-child(1) { animation-delay:0.1s; } .j-code div:nth-child(2) { animation-delay:0.3s; } .j-code div:nth-child(3) { animation-delay:0.5s; } .j-code div:nth-child(4) { animation-delay:0.7s; } .j-code div:nth-child(5) { animation-delay:0.9s; } .j-code div:nth-child(6) { animation-delay:1.1s; } .j-code div:nth-child(7) { animation-delay:1.3s; } .j-code div:nth-child(8) { animation-delay:1.5s; }
-        @keyframes jln { to { opacity:1; } }
-        .j-code .k { color:var(--cyan); } .j-code .s { color:var(--green); } .j-code .n { color:var(--violet); } .j-code .p { color:#55555f; }
-        .j-cur { display:inline-block; width:7px; height:12px; background:var(--cyan); vertical-align:-2px; animation:jblink 1.1s steps(1) infinite; }
-        @keyframes jblink { 50% { opacity:0; } }
-        .pl-ais { display:flex; gap:6px; justify-content:flex-start; flex-wrap:wrap; }
-        .pl-ai { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--violet); border:1px solid rgba(168,85,247,0.28); background:rgba(168,85,247,0.07); padding:3px 8px; border-radius:5px; letter-spacing:0.04em; }
-        .pl-res { background:var(--surface); border:1px solid rgba(34,197,94,0.28); border-radius:14px; overflow:hidden; text-align:left; flex:1; display:flex; flex-direction:column; }
-        .pl-rhead { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--border); gap:8px; }
-        .pl-rt { font-size:0.86rem; font-weight:700; }
-        .pl-pill { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.08em; color:var(--green); background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:100px; padding:3px 9px; white-space:nowrap; }
-        .pl-meal { display:flex; gap:10px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--border); }
-        .pl-thumb { position:relative; width:34px; height:34px; border-radius:9px; overflow:hidden; flex-shrink:0; background:#1b1410; }
-        .pl-thumb-ic { display:flex; align-items:center; justify-content:center; background:#0c130e; color:var(--green); }
-        .pl-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-        .pl-mn { font-size:0.78rem; font-weight:600; line-height:1.25; }
-        .pl-mk { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--text-3); margin-top:2px; }
-        .pl-rfoot { margin-top:auto;  display:flex; gap:6px; flex-wrap:wrap; padding:11px 14px; }
-        .pl-fchip { font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--green); border:1px solid rgba(34,197,94,0.25); background:rgba(34,197,94,0.06); padding:3px 8px; border-radius:5px; letter-spacing:0.03em; }
-        .pl-wire { position:relative; height:2px; width:100%; align-self:center; }
-        .pl-wire::before { content:''; position:absolute; inset:0; opacity:0.55; border-radius:2px; }
-        .pl-wire.w1::before { background:linear-gradient(90deg,var(--cyan),var(--violet)); }
-        .pl-wire.w2::before { background:linear-gradient(90deg,var(--violet),var(--green)); }
-        .pl-wire i { position:absolute; top:50%; left:0; width:8px; height:8px; margin-top:-4px; border-radius:50%; opacity:0.55; animation:jflowx 1.9s ease-in-out infinite; }
-        .pl-wire.w1 i { background:var(--violet); box-shadow:0 0 10px var(--violet); }
-        .pl-wire.w2 i { background:var(--green); box-shadow:0 0 10px var(--green); animation-delay:0.6s; }
-        @keyframes jflowx { 0% { left:-4px; opacity:0; } 25% { opacity:1; } 100% { left:calc(100% - 4px); opacity:0; } }
-        @keyframes jflowy { 0% { top:-4px; opacity:0; } 25% { opacity:1; } 100% { top:42px; opacity:0; } }
-        .pl-wire .pl-pill { position:absolute; top:-30px; left:50%; transform:translateX(-50%); z-index:2; background:linear-gradient(rgba(34,197,94,0.1),rgba(34,197,94,0.1)),#050508; }
+        /* shared window */
+        .px-win { background:var(--surface); border:1px solid var(--border); border-radius:16px; flex:1; display:flex; flex-direction:column; overflow:hidden; }
+        /* app sheet (steps 01 + 03) */
+        .px-grab { width:36px; height:4px; border-radius:2px; background:rgba(255,255,255,0.14); margin:10px auto 0; flex-shrink:0; }
+        .px-sh { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 16px 10px; }
+        .px-sh .t { font-size:0.92rem; font-weight:700; line-height:1.3; }
+        .px-loc { font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; padding:3px 7px; border-radius:4px; white-space:nowrap; color:var(--cyan); border:1px solid var(--border-cyan); background:var(--cyan-soft); }
+        .px-kv { display:flex; justify-content:space-between; padding:9px 16px; border-top:1px solid var(--border); font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--text-3); }
+        .px-kv b { color:var(--cyan); font-weight:500; }
+        .px-btn { margin:14px 16px 16px; margin-top:auto; background:var(--cyan); color:#001318; border-radius:9px; padding:10px; display:flex; align-items:center; justify-content:center; gap:7px; font-family:'DM Mono',monospace; font-size:0.7rem; font-weight:500; letter-spacing:0.04em; }
+        /* chat window (step 02) */
+        .px-ch { display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--border); }
+        .px-ava { width:26px; height:26px; border-radius:50%; background:#17171d; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:#e8e8ea; flex-shrink:0; }
+        .px-ch .t { font-size:0.85rem; font-weight:700; line-height:1.2; }
+        .px-ch .s { font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--text-3); letter-spacing:0.04em; margin-top:2px; }
+        .px-cb { padding:14px; display:flex; flex-direction:column; gap:10px; flex:1; }
+        .px-bub { max-width:92%; border-radius:14px; padding:10px 12px; }
+        .px-bub.you { align-self:flex-end; background:rgba(34,211,238,0.07); border:1px solid var(--border-cyan); border-bottom-right-radius:4px; }
+        .px-ptag { font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.12em; color:var(--cyan); text-transform:uppercase; margin-bottom:6px; }
+        .px-ptxt { font-family:'DM Mono',monospace; font-size:0.64rem; line-height:1.65; color:var(--text-2); -webkit-mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,0)); mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,0)); }
+        .px-more { display:inline-block; margin-top:2px; font-family:'DM Mono',monospace; font-size:0.55rem; color:var(--text-3); border:1px solid var(--border); border-radius:100px; padding:2px 8px; }
+        .px-bub.ai { align-self:flex-start; background:var(--surface-2); border:1px solid var(--border); border-bottom-left-radius:4px; }
+        .px-line { font-size:0.78rem; color:var(--text); margin-bottom:8px; }
+        .px-file { display:flex; align-items:center; gap:10px; background:#0a0a0f; border:1px solid var(--border-cyan); border-radius:10px; padding:9px 11px; }
+        .px-fic { width:30px; height:30px; border-radius:8px; background:var(--cyan-soft); display:flex; align-items:center; justify-content:center; color:var(--cyan); font-family:'DM Mono',monospace; font-size:0.72rem; flex-shrink:0; }
+        .px-fn { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--text); }
+        .px-fs { font-family:'DM Mono',monospace; font-size:0.54rem; color:var(--text-3); margin-top:2px; }
+        .px-fdl { margin-left:auto; color:var(--cyan); display:flex; flex-shrink:0; }
+        .px-cin { margin-top:auto; display:flex; align-items:center; gap:8px; border-top:1px solid var(--border); padding:10px 12px; }
+        .px-msg { flex:1; background:var(--surface-2); border:1px solid var(--border); border-radius:100px; padding:8px 14px; font-size:0.72rem; color:var(--text-3); }
+        .px-send { width:30px; height:30px; border-radius:50%; background:#17171d; border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; color:var(--text-3); flex-shrink:0; }
+        /* import sheet (step 03) */
+        .px-ih { padding:12px 16px 4px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+        .px-ih .t { font-size:0.9rem; font-weight:700; line-height:1.3; }
+        .px-pillg { font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; color:var(--green); background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:100px; padding:3px 9px; white-space:nowrap; }
+        .px-isub { padding:0 16px 10px; font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--text-3); letter-spacing:0.03em; }
+        .px-row { display:flex; gap:10px; align-items:center; padding:9px 16px; border-top:1px solid var(--border); }
+        .px-thumb { position:relative; width:34px; height:34px; border-radius:9px; overflow:hidden; flex-shrink:0; }
+        .px-thumb .fb { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:#0c130e; color:var(--green); }
+        .px-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+        .px-rn { font-size:0.78rem; font-weight:600; line-height:1.25; }
+        .px-rm { font-family:'DM Mono',monospace; font-size:0.58rem; color:var(--text-3); margin-top:2px; }
+        .px-chips { margin-top:auto; display:flex; gap:6px; flex-wrap:wrap; padding:12px 16px; border-top:1px solid var(--border); }
+        .px-chip { font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--green); border:1px solid rgba(34,197,94,0.25); background:rgba(34,197,94,0.06); padding:3px 8px; border-radius:5px; letter-spacing:0.03em; }
+        /* verb-labelled connectors */
+        .px-con { position:relative; display:flex; align-items:center; justify-content:center; }
+        .px-con::before { content:''; position:absolute; left:-16px; right:-16px; top:50%; height:2px; transform:translateY(-50%); background:linear-gradient(90deg,transparent,rgba(34,211,238,0.45),transparent); }
+        .px-conb { width:34px; height:34px; border-radius:50%; background:#0a0a0f; border:1px solid var(--border-cyan); display:flex; align-items:center; justify-content:center; color:var(--cyan); position:relative; z-index:1; box-shadow:0 0 0 6px var(--bg); }
+        .px-conl { position:absolute; top:calc(50% + 26px); font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--cyan); white-space:nowrap; }
+        .px-con i { position:absolute; top:50%; left:-12px; width:7px; height:7px; margin-top:-3.5px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan); opacity:0; animation:pxdash 2.6s ease-in-out infinite; }
+        .px-con.c2 i { animation-delay:1.3s; }
+        @keyframes pxdash { 0% { left:-10px; opacity:0; } 20% { opacity:0.9; } 100% { left:calc(100% + 3px); opacity:0; } }
+        @keyframes pxdashv { 0% { top:-8px; opacity:0; } 20% { opacity:0.9; } 100% { top:calc(100% + 2px); opacity:0; } }
+        /* entrance, gated on the reveal class like the rest of the page */
+        @keyframes pxup { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:none; } }
+        .pl-flow.vis .pl-step:nth-child(1) { animation:pxup 0.55s 0.05s both; }
+        .pl-flow.vis .pl-step:nth-child(3) { animation:pxup 0.55s 0.2s both; }
+        .pl-flow.vis .pl-step:nth-child(5) { animation:pxup 0.55s 0.35s both; }
+        .pl-flow.vis .px-bub.you { animation:pxup 0.45s 0.5s both; }
+        .pl-flow.vis .px-bub.ai { animation:pxup 0.45s 0.85s both; }
         @media (max-width:860px) {
-            .pl-flow { display:flex; flex-direction:column; align-items:center; max-width:360px; }
+            .pl-flow { display:flex; flex-direction:column; align-items:center; max-width:380px; }
             .pl-step { width:100%; }
-            .pl-wire { width:2px; height:46px; margin:16px auto 14px; }
-            .pl-wire.w1::before { background:linear-gradient(var(--cyan),var(--violet)); }
-            .pl-wire.w2::before { background:linear-gradient(var(--violet),var(--green)); }
-            .pl-wire i { left:50%; top:0; margin-left:-4px; margin-top:0; animation-name:jflowy; }
-            .pl-wire .pl-pill { top:50%; left:auto; right:auto; transform:translate(-50%,-50%); left:50%; }
+            .px-con { width:100%; height:64px; }
+            .px-con::before { left:50%; right:auto; top:-6px; bottom:-6px; width:2px; height:auto; transform:translateX(-50%); background:linear-gradient(180deg,transparent,rgba(34,211,238,0.45),transparent); }
+            .px-conb svg { transform:rotate(90deg); }
+            .px-conl { top:50%; left:calc(50% + 28px); transform:translateY(-50%); }
+            .px-con i { left:50%; top:-8px; margin-left:-3.5px; margin-top:0; animation-name:pxdashv; }
         }
 
         /* Phone showcase (See It Working) */
@@ -813,7 +832,7 @@
             <div>
                 <span class="label" style="margin-bottom:0.6rem;">The Meal Library</span>
                 <h2>81 real meals, <span class="cyan">every step written.</span></h2>
-                <p style="color:var(--text-2);font-size:0.92rem;max-width:560px;margin-top:0.5rem;">Hand picked and cooked on my own bulk. Every meal opens on the fast version by default: jar sauce, seasoning sachet, real times, not optimistic ones. From scratch is there if you ever want it.</p>
+                <p style="color:var(--text-2);font-size:0.92rem;max-width:560px;margin-top:0.5rem;">Cooked on my own bulk. Every meal defaults to the fast version: jar sauce, real times. From scratch if you want it.</p>
             </div>
             <a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a>
         </div>
@@ -883,35 +902,60 @@
         <div class="pl-flow sa sa-up" id="flowMeal">
             <div class="pl-step">
                 <span class="pl-tag t1">01 &middot; You answer</span>
-                <div class="pl-card">
-                    <div class="pl-ct">A few quick questions</div>
-                    <div class="pl-kv"><span>Goal</span><b>Weight gain</b></div>
-                    <div class="pl-kv"><span>Target</span><b>90kg</b></div>
-                    <div class="pl-kv"><span>Meals</span><b>6 per day</b></div>
-                    <div class="pl-kv"><span>Training</span><b>4 days/week</b></div>
-                    <div style="flex:1;"></div>
-                    <div class="pl-btn">Copy prompt</div>
+                <div class="px-win">
+                    <div class="px-grab"></div>
+                    <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
+                    <div class="px-kv"><span>Goal</span><b>Weight gain</b></div>
+                    <div class="px-kv"><span>Target</span><b>90kg</b></div>
+                    <div class="px-kv"><span>Meals</span><b>6 per day</b></div>
+                    <div class="px-kv"><span>Training</span><b>4 days/week</b></div>
+                    <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
                 </div>
                 <p class="pl-cap">Your goal, stats and favourite meals become a research-packed prompt. One tap to copy.</p>
             </div>
-            <div class="pl-wire w1"><i></i></div>
+            <div class="px-con"><i></i><div class="px-conb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></div><span class="px-conl">Paste</span></div>
             <div class="pl-step">
                 <span class="pl-tag t2">02 &middot; Any AI writes</span>
-                <div class="j-term">
-                    <div class="j-tbar"><i></i><i></i><i></i><span>meal-plan.json &middot; from ChatGPT</span></div>
-                    <div class="j-code"><div><span class="p">{</span></div><div>  <span class="k">&quot;plan&quot;</span><span class="p">:</span> <span class="s">&quot;7-Day Lean Bulk&quot;</span><span class="p">,</span></div><div>  <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">3311</span><span class="p">,</span></div><div>  <span class="k">&quot;protein_g&quot;</span><span class="p">:</span> <span class="n">239</span><span class="p">,</span></div><div>  <span class="k">&quot;meals&quot;</span><span class="p">:</span> <span class="p">[{</span></div><div>    <span class="k">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;Massaman Beef Curry&quot;</span><span class="p">,</span></div><div>    <span class="k">&quot;kcal&quot;</span><span class="p">:</span> <span class="n">890</span> <span class="p">}]</span></div><div><span class="p">}</span> <span class="j-cur"></span></div></div>
+                <div class="px-win">
+                    <div class="px-ch">
+                        <span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span>
+                        <div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div>
+                    </div>
+                    <div class="px-cb">
+                        <div class="px-bub you">
+                            <div class="px-ptag">Pasted from JSON.fit</div>
+                            <div class="px-ptxt">You are a sports nutritionist. Build a 7-day meal plan for an 82 kg male targeting 90 kg: 3,311 kcal, 239 g protein, 6 meals a day, built from the favourites listed below&hellip;</div>
+                            <span class="px-more">+ 1,240 more words</span>
+                        </div>
+                        <div class="px-bub ai">
+                            <div class="px-line">Done. Your week is attached.</div>
+                            <div class="px-file">
+                                <span class="px-fic">{&hairsp;}</span>
+                                <div><div class="px-fn">meal-plan.json</div><div class="px-fs">3,311 kcal &middot; 239 g protein &middot; valid</div></div>
+                                <span class="px-fdl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><polyline points="7 10 12 15 17 10"/><path d="M4 20h16"/></svg></span>
+                            </div>
+                        </div>
+                        <div class="px-cin"><span class="px-msg">Message</span><span class="px-send"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></span></div>
+                    </div>
                 </div>
-                <div class="pl-ais"><span class="pl-ai">ChatGPT</span><span class="pl-ai">Claude</span><span class="pl-ai">Gemini</span><span class="pl-ai">+ any AI</span></div>
                 <p class="pl-cap">Paste it in. The AI writes your week on real research and returns it as JSON.</p>
             </div>
-            <div class="pl-wire w2"><span class="pl-pill">&#10003; 0.81S</span><i></i></div>
+            <div class="px-con c2"><i></i><div class="px-conb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></div><span class="px-conl">Import</span></div>
             <div class="pl-step">
                 <span class="pl-tag t3">03 &middot; JSON.fit imports</span>
-                <div class="pl-res">
-                    <div class="pl-rhead"><span class="pl-rt">7-Day Lean Bulk</span><span class="pl-pill">&#10003; IMPORTED</span></div>
-                    <div class="pl-meal"><span class="pl-thumb"><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span><div><div class="pl-mn">Protein Pancakes</div><div class="pl-mk">6:00 AM &middot; 760 kcal</div></div></div>
-                    <div class="pl-meal"><span class="pl-thumb"><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span><div><div class="pl-mn">Massaman Beef Curry</div><div class="pl-mk">12:30 PM &middot; 890 kcal</div></div></div>
-                    <div class="pl-rfoot"><span class="pl-fchip">One grocery list</span><span class="pl-fchip">Prep in one session</span><span class="pl-fchip">Exact macros</span></div>
+                <div class="px-win">
+                    <div class="px-grab"></div>
+                    <div class="px-ih"><span class="t">7-Day Lean Bulk</span><span class="px-pillg">&#10003; IMPORTED</span></div>
+                    <div class="px-isub">meal-plan.json &middot; imported in 0.81 s</div>
+                    <div class="px-row">
+                        <span class="px-thumb"><span class="fb"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v7c0 1.1.9 2 2 2s2-.9 2-2V3M6 3v18"/><path d="M15 3c-1.7 0-3 2-3 4.5S13.3 12 15 12v9M15 3v9"/></svg></span><img src="images/meals/protein-pancakes.webp" data-fallback="images/meals/protein-pancakes.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span>
+                        <div><div class="px-rn">Protein Pancakes</div><div class="px-rm">6:00 AM &middot; 760 kcal</div></div>
+                    </div>
+                    <div class="px-row">
+                        <span class="px-thumb"><span class="fb"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v7c0 1.1.9 2 2 2s2-.9 2-2V3M6 3v18"/><path d="M15 3c-1.7 0-3 2-3 4.5S13.3 12 15 12v9M15 3v9"/></svg></span><img src="images/meals/massaman.webp" data-fallback="images/meals/massaman.png" alt="" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}"></span>
+                        <div><div class="px-rn">Massaman Beef Curry</div><div class="px-rm">12:30 PM &middot; 890 kcal</div></div>
+                    </div>
+                    <div class="px-chips"><span class="px-chip">One grocery list</span><span class="px-chip">Prep in one session</span><span class="px-chip">Exact macros</span></div>
                 </div>
                 <p class="pl-cap">Import the file. Macros, groceries and the week's prep, handled.</p>
             </div>
@@ -919,126 +963,65 @@
         <div class="pl-flow" id="flowTrain" style="display:none">
             <div class="pl-step">
                 <span class="pl-tag t1">01 &middot; You answer</span>
-                <div class="pl-card">
-                    <div class="pl-ct">A few quick questions</div>
-                    <div class="pl-kv"><span>Goal</span><b>Build muscle</b></div>
-                    <div class="pl-kv"><span>Days</span><b>4 per week</b></div>
-                    <div class="pl-kv"><span>Equipment</span><b>Full gym</b></div>
-                    <div class="pl-kv"><span>Length</span><b>52 weeks</b></div>
-                    <div style="flex:1;"></div>
-                    <div class="pl-btn">Copy prompt</div>
+                <div class="px-win">
+                    <div class="px-grab"></div>
+                    <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
+                    <div class="px-kv"><span>Goal</span><b>Build muscle</b></div>
+                    <div class="px-kv"><span>Days</span><b>4 per week</b></div>
+                    <div class="px-kv"><span>Equipment</span><b>Full gym</b></div>
+                    <div class="px-kv"><span>Length</span><b>52 weeks</b></div>
+                    <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
                 </div>
                 <p class="pl-cap">Your split, equipment and schedule become a research-packed prompt. One tap to copy.</p>
             </div>
-            <div class="pl-wire w1"><i></i></div>
+            <div class="px-con"><i></i><div class="px-conb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></div><span class="px-conl">Paste</span></div>
             <div class="pl-step">
                 <span class="pl-tag t2">02 &middot; Any AI writes</span>
-                <div class="j-term">
-                    <div class="j-tbar"><i></i><i></i><i></i><span>workout-program.json &middot; from Claude</span></div>
-                    <div class="j-code"><div><span class="p">{</span></div><div>  <span class="k">&quot;program&quot;</span><span class="p">:</span> <span class="s">&quot;52-Week Upper / Lower&quot;</span><span class="p">,</span></div><div>  <span class="k">&quot;weeks&quot;</span><span class="p">:</span> <span class="n">52</span><span class="p">,</span></div><div>  <span class="k">&quot;days_per_week&quot;</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span></div><div>  <span class="k">&quot;sessions&quot;</span><span class="p">:</span> <span class="p">[{</span></div><div>    <span class="k">&quot;exercise&quot;</span><span class="p">:</span> <span class="s">&quot;Barbell Bench Press&quot;</span><span class="p">,</span></div><div>    <span class="k">&quot;sets&quot;</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span> <span class="k">&quot;rest_s&quot;</span><span class="p">:</span> <span class="n">150</span> <span class="p">}]</span></div><div><span class="p">}</span> <span class="j-cur"></span></div></div>
+                <div class="px-win">
+                    <div class="px-ch">
+                        <span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span>
+                        <div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div>
+                    </div>
+                    <div class="px-cb">
+                        <div class="px-bub you">
+                            <div class="px-ptag">Pasted from JSON.fit</div>
+                            <div class="px-ptxt">You are a strength coach. Program 52 weeks of upper/lower for 4 days a week in a full gym, with progressive overload and scheduled deloads&hellip;</div>
+                            <span class="px-more">+ 1,180 more words</span>
+                        </div>
+                        <div class="px-bub ai">
+                            <div class="px-line">Done. Your year is attached.</div>
+                            <div class="px-file">
+                                <span class="px-fic">{&hairsp;}</span>
+                                <div><div class="px-fn">workout-program.json</div><div class="px-fs">52 weeks &middot; 4 days/week &middot; valid</div></div>
+                                <span class="px-fdl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><polyline points="7 10 12 15 17 10"/><path d="M4 20h16"/></svg></span>
+                            </div>
+                        </div>
+                        <div class="px-cin"><span class="px-msg">Message</span><span class="px-send"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></span></div>
+                    </div>
                 </div>
-                <div class="pl-ais"><span class="pl-ai">ChatGPT</span><span class="pl-ai">Claude</span><span class="pl-ai">Gemini</span><span class="pl-ai">+ any AI</span></div>
                 <p class="pl-cap">Paste it in. The AI programs your year on real research and returns it as JSON.</p>
             </div>
-            <div class="pl-wire w2"><span class="pl-pill">&#10003; 0.81S</span><i></i></div>
+            <div class="px-con c2"><i></i><div class="px-conb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></div><span class="px-conl">Import</span></div>
             <div class="pl-step">
                 <span class="pl-tag t3">03 &middot; JSON.fit imports</span>
-                <div class="pl-res">
-                    <div class="pl-rhead"><span class="pl-rt">52-Week Upper / Lower</span><span class="pl-pill">&#10003; IMPORTED</span></div>
-                    <div class="pl-meal"><span class="pl-thumb pl-thumb-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span><div><div class="pl-mn">Upper Body A</div><div class="pl-mk">Mon &middot; 6 exercises &middot; 14 sets</div></div></div>
-                    <div class="pl-meal"><span class="pl-thumb pl-thumb-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span><div><div class="pl-mn">Lower Body A</div><div class="pl-mk">Tue &middot; 5 exercises &middot; 16 sets</div></div></div>
-                    <div class="pl-rfoot"><span class="pl-fchip">Sets per muscle tracked</span><span class="pl-fchip">Deloads scheduled</span><span class="pl-fchip">Progressive overload</span></div>
+                <div class="px-win">
+                    <div class="px-grab"></div>
+                    <div class="px-ih"><span class="t">52-Week Upper / Lower</span><span class="px-pillg">&#10003; IMPORTED</span></div>
+                    <div class="px-isub">workout-program.json &middot; imported in 0.81 s</div>
+                    <div class="px-row">
+                        <span class="px-thumb"><span class="fb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span></span>
+                        <div><div class="px-rn">Upper Body A</div><div class="px-rm">Mon &middot; 6 exercises &middot; 14 sets</div></div>
+                    </div>
+                    <div class="px-row">
+                        <span class="px-thumb"><span class="fb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></span></span>
+                        <div><div class="px-rn">Lower Body A</div><div class="px-rm">Tue &middot; 5 exercises &middot; 16 sets</div></div>
+                    </div>
+                    <div class="px-chips"><span class="px-chip">Sets per muscle tracked</span><span class="px-chip">Deloads scheduled</span><span class="px-chip">Progressive overload</span></div>
                 </div>
                 <p class="pl-cap">Import the file. Sets, rest times and deloads for the year, handled.</p>
             </div>
         </div>
-        <p class="science-tag sa sa-up"><svg class="laurel" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
--329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
-105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
--60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
--125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
-90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
-121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
--15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
-253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
-121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
-84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
--120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
-58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
--83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
--42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
--84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
--220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
--41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
--16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
--92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
-169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
-28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
--12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
--55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
-195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
--51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
--109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
-56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
-130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
--4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
-158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
--9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
-35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
--2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
-53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
-51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
-88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
-68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
-106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
-21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
--126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
-84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
--63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
--147 15z"/></g></svg><span class="tt-text" style="display:inline-block;text-align:center;line-height:1.4;">Built on peer-reviewed<br>training and nutrition science</span><svg class="laurel laurel-r" viewBox="18 11 274 512" aria-hidden="true"><g transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M1685 5591 c-16 -10 -76 -66 -132 -124 -130 -136 -142 -171 -107
--329 19 -87 10 -120 -37 -146 -56 -31 -76 -51 -104 -104 -58 -113 -76 -91 -84
-105 -8 194 -33 222 -149 163 -59 -30 -68 -41 -86 -99 -7 -25 -25 -61 -40 -80
--60 -78 -58 -217 5 -321 47 -78 48 -98 9 -142 -16 -19 -34 -53 -40 -76 -30
--125 -69 -148 -94 -56 -10 35 -25 74 -35 88 -10 14 -26 50 -36 80 -23 70 -40
-90 -80 90 -41 0 -55 -16 -105 -128 -42 -93 -42 -93 -38 -201 4 -124 28 -177
-121 -263 51 -46 51 -46 39 -86 -7 -22 -12 -48 -12 -59 0 -11 -11 -37 -25 -57
--15 -21 -25 -51 -25 -71 0 -18 -5 -46 -10 -60 -10 -27 -10 -27 -58 38 -184
-253 -261 271 -270 63 -6 -143 9 -214 62 -298 26 -40 57 -79 70 -87 107 -70
-121 -99 121 -231 0 -169 -6 -169 -187 -12 -199 172 -185 -239 15 -420 49 -46
-84 -62 184 -88 36 -9 46 -18 72 -63 60 -104 71 -132 62 -163 -11 -43 -41 -42
--120 5 -43 27 -79 41 -102 41 -19 0 -51 4 -72 9 -38 9 -77 -10 -77 -37 0 -40
-58 -180 95 -229 95 -127 154 -157 309 -159 137 -1 124 7 194 -122 36 -66 51
--83 83 -97 26 -12 39 -24 39 -38 0 -21 -5 -21 -150 4 -179 31 -243 20 -248
--42 -7 -88 78 -181 243 -264 121 -60 181 -62 279 -10 76 40 96 38 142 -20 68
--84 87 -96 202 -125 23 -6 42 -17 42 -24 0 -23 -51 -34 -190 -41 -187 -10
--220 -26 -220 -113 0 -61 27 -87 112 -107 40 -10 95 -29 122 -43 85 -42 152
--41 239 2 161 79 245 83 374 18 23 -12 51 -22 61 -22 10 0 27 -6 37 -14 23
--16 5 -30 -57 -41 -20 -4 -60 -22 -88 -40 -29 -19 -71 -36 -98 -40 -72 -10
--92 -27 -92 -78 1 -76 51 -111 183 -128 119 -16 193 -6 264 35 76 44 152 113
-169 153 21 48 32 49 73 4 33 -36 44 -41 80 -41 66 0 147 -64 177 -140 10 -25
-28 -47 45 -56 16 -8 36 -29 45 -47 20 -37 31 -47 60 -47 52 0 63 88 26 198
--12 34 -25 87 -28 117 -12 98 -43 114 -232 115 -57 0 -112 5 -123 10 -26 15
--55 75 -63 134 -3 27 -11 55 -16 61 -6 7 -21 40 -34 73 -57 145 -244 262 -312
-195 -22 -22 -14 -222 11 -259 47 -72 -16 -85 -95 -19 -23 19 -52 35 -64 35
--51 0 -62 22 -38 78 34 80 30 144 -18 256 -81 188 -104 217 -183 224 -85 7
--109 -37 -112 -203 -1 -49 -3 -96 -3 -102 -4 -26 -39 -12 -69 27 -16 22 -51
-56 -76 75 -66 50 -67 63 -16 163 61 119 63 203 5 339 -48 114 -71 138 -123
-130 -58 -10 -94 -55 -128 -166 -16 -51 -35 -96 -43 -98 -20 -8 -49 24 -56 61
--4 21 -22 47 -52 74 -55 49 -56 75 -4 110 47 31 128 155 136 208 3 22 4 94 2
-158 -3 125 -17 156 -68 156 -40 0 -125 -71 -174 -146 -55 -84 -65 -87 -84 -21
--9 31 -23 53 -43 68 -47 33 -39 87 17 114 111 55 185 129 209 210 9 31 25 70
-35 88 31 50 28 150 -5 183 -42 42 -131 16 -215 -61 -108 -99 -117 -97 -123 25
--2 47 -7 94 -11 105 -12 33 14 55 85 70 176 36 378 268 337 386 -23 66 -200
-53 -285 -22 -45 -39 -67 -35 -71 14 -3 31 2 42 27 65 37 34 52 71 44 115 -8
-51 13 67 72 54 33 -8 59 -7 93 1 26 7 70 17 97 22 87 18 233 143 251 215 22
-88 -110 128 -293 90 -48 -10 -55 17 -14 59 17 17 31 39 31 48 0 46 45 73 112
-68 182 -13 293 -5 344 26 27 16 74 38 104 49 69 26 92 59 67 99 -26 39 -170
-106 -227 106 -44 0 -70 13 -70 34 0 5 30 39 66 75 36 36 73 74 82 84 23 26 44
-21 99 -23 74 -58 205 -80 367 -61 109 13 136 28 136 78 0 76 -76 142 -182 157
--126 19 -106 79 30 91 55 5 87 13 112 30 19 13 60 35 90 49 30 14 83 52 118
-84 61 56 62 59 62 109 0 106 -87 117 -295 39 -22 -8 -53 -17 -68 -21 -15 -3
--63 -38 -105 -77 -88 -82 -96 -78 -68 33 17 64 21 137 8 155 -24 36 -100 44
--147 15z"/></g></svg></p>
+        <p class="science-tag sa sa-up"><span class="sci-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Built on peer-reviewed training and nutrition science</span></span></p>
     </div>
 </section>
 <!-- See It Working: real app screens from an imported plan -->
@@ -1227,8 +1210,8 @@
             <div class="founder-body">
                 <span class="label">Why I built this</span>
                 <h2>I built JSON.fit because <span class="cyan">I'm the guy it's for.</span></h2>
-                <p>I'm a skinny-by-default lifter who got sick of force-feeding myself and fitness apps that assume cooking is my hobby. So I built the thing I actually needed: big meals with the steps done for me, macros handled, prep that fits around a full-time job, and the most direct path from where I am to where I want to end up.</p>
-                <p>I'm bulking to 90kg on it in the open, so I use this app every day. I'm the first person to hit anything clunky or missing, and I fix it that week, which is why it keeps getting better. No team, no investors, just me, building the tool I wish I'd had.</p>
+                <p>I'm a skinny-by-default lifter who got sick of force-feeding myself and apps that assume cooking is my hobby. So I built what I needed: big meals with the steps done, macros handled, prep that fits around a full-time job.</p>
+                <p>I'm bulking to 90kg on it in the open, so I hit anything clunky first and fix it that week. No team, no investors, just me.</p>
                 <p class="founder-sign">Ryan, solo founder</p>
                 <div class="founder-links">
                     <a class="flink" href="blog.html" onclick="gtag('event','blog_click',{'button_location':'founder'})">Read the blog <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
@@ -1245,7 +1228,7 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Free Training Programs</span>
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
-            <p style="margin:0 auto;">Build your own the same way as the meals: answer a few questions, paste the prompt into your AI, import what comes back. Your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
+            <p style="margin:0 auto;">Built the same way as the meals: your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
         </div>
         <div class="prog-grid sa-stagger">
             <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
@@ -1718,7 +1701,8 @@
             b.classList.add('active'); b.setAttribute('aria-selected','true');
             flows.meal.style.display = (k === 'meal') ? '' : 'none';
             flows.train.style.display = (k === 'train') ? '' : 'none';
-            flows[k].classList.add('vis'); // typing animation is gated on the reveal class
+            var f = flows[k];
+            f.classList.remove('vis'); void f.offsetWidth; f.classList.add('vis'); // entrance animation replays on switch
             if (window.gtag) gtag('event', 'pipeline_toggle', { 'button_location': 'how_section', 'view': k });
             if (window.track) window.track('cta_clicked', { cta_id: 'pipeline_toggle_' + k });
         });
