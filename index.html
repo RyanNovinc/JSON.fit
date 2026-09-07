@@ -714,6 +714,9 @@
         .ph-screen { position:absolute; inset:7px; border-radius:27px; overflow:hidden; background:#0a0a0b; }
         .ph-screen img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
         .ph-card figcaption { font-family:'Outfit',sans-serif; font-size:0.98rem; line-height:1.5; color:var(--text); font-weight:500; text-align:center; max-width:230px; }
+        /* flanking screens crossfade when the demo phone flips between nutrition and workout */
+        .ph-card .ph-screen img, .ph-card figcaption { transition:opacity 0.2s ease; }
+        .ph-card.swapping .ph-screen img, .ph-card.swapping figcaption { opacity:0; }
 
         /* === Problem ledger === */
         .pains { max-width:900px; margin:0 auto; }
@@ -893,14 +896,14 @@
             <p style="margin:0 auto;">An actual user's plan, generated and imported with Claude.</p>
         </div>
         <div class="sw-row sa-stagger">
-            <figure class="ph-card">
+            <figure class="ph-card" id="swCardL">
                 <div class="ph">
                     <div class="ph-notch"></div>
                     <div class="ph-screen">
-                        <img src="images/Grocery.webp" data-fallback="images/Grocery.png" alt="Itemised shopping list with prices" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                        <img id="swImgL" src="images/Grocery.webp" data-fallback="images/Grocery.png" alt="Itemised shopping list with prices" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     </div>
                 </div>
-                <figcaption>One priced shopping list. A week of food in a single trip.</figcaption>
+                <figcaption id="swCapL">One priced shopping list. A week of food in a single trip.</figcaption>
             </figure>
             <div class="sw-demo is-green" id="swDemo">
                 <div class="phone" id="swPhone" role="button" tabindex="0" aria-label="App preview. Activate to switch between the nutrition and workout screens.">
@@ -1033,14 +1036,14 @@
                     <span class="poke-label">Tap to switch</span>
                 </div>
             </div>
-            <figure class="ph-card">
+            <figure class="ph-card" id="swCardR">
                 <div class="ph">
                     <div class="ph-notch"></div>
                     <div class="ph-screen">
-                        <img src="images/Meal_Prep.webp" data-fallback="images/Meal_Prep.png" alt="Step by step meal prep session" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
+                        <img id="swImgR" src="images/Meal_Prep.webp" data-fallback="images/Meal_Prep.png" alt="Step by step meal prep session" loading="lazy" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
                     </div>
                 </div>
-                <figcaption>Step-by-step prep that clears the week's cooking in one go.</figcaption>
+                <figcaption id="swCapR">Step-by-step prep that clears the week's cooking in one go.</figcaption>
             </figure>
         </div>
         <p class="sw-hint">Swipe to see more &#8594;</p>
@@ -1610,12 +1613,68 @@
   var visual = document.getElementById('swDemo');
   if(!phone || !visual) return;
 
+  // Flanking phones: each side has a nutrition version and a workout version,
+  // swapped in step with the demo phone so all three screens tell one story.
+  var FLANKS = {
+    nutrition: {
+      l: { webp:'images/Grocery.webp', png:'images/Grocery.png',
+           alt:'Itemised shopping list with prices',
+           cap:'One priced shopping list. A week of food in a single trip.' },
+      r: { webp:'images/Meal_Prep.webp', png:'images/Meal_Prep.png',
+           alt:'Step by step meal prep session',
+           cap:"Step-by-step prep that clears the week's cooking in one go." }
+    },
+    workout: {
+      l: { webp:'images/Training_Week.webp', png:'images/Training_Week.png',
+           alt:"This week's training days, exercises and session length",
+           cap:'Your training week, already written. Eight exercises, sixty five minutes.' },
+      r: { webp:'images/Rep_Scheme.webp', png:'images/Rep_Scheme.png',
+           alt:'Target reps and RIR progression across four weeks',
+           cap:'Reps drop, weight climbs. Progression handled week by week.' }
+    }
+  };
+  var cardL = document.getElementById('swCardL'), imgL = document.getElementById('swImgL'), capL = document.getElementById('swCapL');
+  var cardR = document.getElementById('swCardR'), imgR = document.getElementById('swImgR'), capR = document.getElementById('swCapR');
+  var flankState = 'nutrition';
+
+  // preload the workout pair so the first swap doesn't show an empty screen
+  ['images/Training_Week.webp','images/Rep_Scheme.webp'].forEach(function(src){ var i = new Image(); i.src = src; });
+
+  function applyFlank(card, img, cap, d){
+    if(!img) return;
+    img.onerror = function(){ this.onerror = null; this.src = d.png; };
+    img.src = d.webp;
+    img.alt = d.alt;
+    img.setAttribute('data-fallback', d.png);
+    img.style.display = '';
+    if(cap) cap.textContent = d.cap;
+    if(card) card.classList.remove('swapping');
+  }
+
+  function setFlanks(name){
+    var set = FLANKS[name];
+    if(!set || name === flankState) return;
+    flankState = name;
+    if(reduce){
+      applyFlank(cardL, imgL, capL, set.l);
+      applyFlank(cardR, imgR, capR, set.r);
+      return;
+    }
+    if(cardL) cardL.classList.add('swapping');
+    if(cardR) cardR.classList.add('swapping');
+    setTimeout(function(){
+      applyFlank(cardL, imgL, capL, set.l);
+      applyFlank(cardR, imgR, capR, set.r);
+    }, 200);
+  }
+
   function setScreen(name){
     var screens = phone.querySelectorAll('.scr');
     screens.forEach(function(sc){ sc.classList.remove('on'); });
     var el = document.getElementById('scr-' + name);
     if(el){ el.classList.add('on'); el.scrollTop = 0; }
     visual.classList.toggle('is-green', name === 'nutrition');
+    setFlanks(name);
     idx = order.indexOf(name);
   }
 
