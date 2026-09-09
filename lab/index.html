@@ -6,15 +6,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Lab: bulking to 90 kg on JSON.fit</title>
-<meta name="description" content="I built JSON.fit and I'm using it to bulk from 77 kg to 90 kg. Monthly Evolt 360 scans, standardised progress photos, lifts and the full numbers, posted as they happen.">
+<meta name="description" content="I built JSON.fit and I'm using it to get from 77 kg to 90 kg at 13% body fat. The full planned route, monthly scans, standardised progress photos and every number, posted as they happen.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Lab: JSON.fit">
-<meta property="og:description" content="Bulking from 77 kg to 90 kg on the app I built. Monthly scans, photos and every number, posted as they happen.">
+<meta property="og:description" content="The whole route from 77 kg to 90 kg at 13%, planned by the app I built. Monthly scans, photos and every number, posted as they happen.">
 <meta property="og:image" content="https://json.fit/og-image.png">
 <meta property="og:url" content="https://json.fit/lab/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Lab: JSON.fit">
-<meta name="twitter:description" content="Bulking from 77 kg to 90 kg on the app I built. Monthly scans, photos and every number.">
+<meta name="twitter:description" content="The whole route from 77 kg to 90 kg at 13%, planned by the app I built. Monthly scans, photos and every number.">
 <link rel="canonical" href="https://json.fit/lab/">
 <link rel="icon" type="image/x-icon" href="/favicon-3.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
@@ -142,7 +142,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .section-head{margin-bottom:2rem;text-align:center}
 .section-head .section-line{margin:0 auto 1rem}
 .section-head h2{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:.55rem}
-.section-head p{color:var(--text-2);font-size:.95rem;max-width:540px;margin:0 auto}
+.section-head p{color:var(--text-2);font-size:.95rem;max-width:560px;margin:0 auto}
 
 /* ── Shared photo frame (used by the origin story) ── */
 .vr-frame{position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,0.07),#000 72%)}
@@ -177,12 +177,72 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
   .cmp-arrow{transform:rotate(90deg)}
 }
 
-/* ── Trend: runway chart + latest scan strip ── */
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.5rem 1.1rem}
-.chart-top{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+/* ── Route: planned line + logged scans ── */
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.25rem 1.1rem}
+.chart-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.35rem}
 .chart-card h3{font-size:.95rem;font-weight:700}
 .ch-sub{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);letter-spacing:.04em}
 .chart-svg{width:100%;height:auto;display:block;overflow:visible}
+.chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* view toggle */
+.toggle{display:flex;gap:.35rem}
+.tg{padding:.32rem .8rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-3);
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.tg:hover{border-color:var(--violet-border);color:var(--text)}
+.tg.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
+.tg:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+
+/* legend */
+.legend{display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;margin-top:.9rem;
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.legend i{display:inline-block;width:18px;height:0;border-top:2px solid var(--violet);margin-right:.4rem;vertical-align:middle;font-style:normal}
+.legend i.plan{border-top-style:dashed;border-color:rgba(168,85,247,.55)}
+.legend i.band{height:8px;border:none;background:var(--violet-soft);border-top:1px solid var(--violet-border);border-bottom:1px solid var(--violet-border)}
+.legend i.dot{width:8px;height:8px;border:2px solid var(--violet);border-radius:50%;background:var(--bg)}
+
+/* phase strip */
+.strip{display:flex;margin-top:1.1rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);height:26px}
+.seg{display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.53rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);overflow:hidden;white-space:nowrap;
+  border-right:1px solid var(--border)}
+.seg:last-child{border-right:none}
+.seg.cut{background:rgba(239,68,68,.10);color:#f08a8a}
+.seg.build{background:rgba(34,197,94,.09);color:#7fd6a0}
+.seg.reveal{background:var(--violet-soft);color:var(--violet-bright)}
+.seg.done{opacity:.42}
+
+/* current-phase card */
+.nowcard{margin-top:1.4rem;display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:var(--border);
+  border:1px solid var(--violet-border);border-radius:14px;overflow:hidden}
+.nc{background:var(--surface);padding:1.25rem 1.35rem}
+.nc-k{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:.5rem}
+.nc-title{font-size:1.15rem;font-weight:700;color:#fff;line-height:1.25}
+.nc-body{font-size:.86rem;color:var(--text-2);line-height:1.6;margin-top:.5rem}
+.nc-rows{display:flex;flex-direction:column;gap:.7rem}
+.nc-row{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem}
+.nc-l{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-3)}
+.nc-v{font-family:'DM Mono',monospace;font-size:.92rem;color:var(--text);text-align:right}
+.nc-v.hl{color:var(--violet)}
+.nc-v.dn{color:var(--down)} .nc-v.up{color:var(--up)}
+@media(max-width:700px){.nowcard{grid-template-columns:1fr}}
+
+/* milestone rail */
+.miles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;margin-top:.9rem}
+.mi{background:var(--surface);padding:1.05rem .7rem;text-align:center}
+.mi-v{font-family:'DM Mono',monospace;font-size:1.15rem;color:var(--text);line-height:1}
+.mi-v.hl{color:var(--violet)}
+.mi-l{font-family:'DM Mono',monospace;font-size:.53rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.45rem;line-height:1.4}
+@media(max-width:600px){.miles{grid-template-columns:1fr 1fr}}
+
+.routenote{max-width:760px;margin:1.5rem auto 0;padding:1rem 1.2rem;border-left:2px solid var(--violet-border);
+  background:var(--violet-soft);border-radius:0 8px 8px 0}
+.routenote p{font-size:.82rem;color:var(--text-2);line-height:1.65}
+.routenote b{color:var(--violet)}
+.routenote+.routenote{margin-top:.7rem}
+
+/* latest scan strip */
 .scan-kick{margin:1.6rem 0 .7rem;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
 .scan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
 .scan-cell{background:var(--surface);padding:1.15rem .8rem;text-align:center}
@@ -333,7 +393,7 @@ window.navBack=function(e){
     <div>
       <div class="h-ov">The Lab &middot; <span class="violet">self-experiment</span> &middot; n = 1</div>
       <h1 class="h-display">The bulk, <em>measured.</em></h1>
-      <p class="h-sub">I built JSON.fit. Now it's bulking me from 77 to 90&nbsp;kg. Every scan, photo and number lands here as it happens, whether it's working or not.</p>
+      <p class="h-sub">I built JSON.fit. Now it's routing me from 77 to 90&nbsp;kg at 13% body fat. Every scan, photo and number lands here as it happens, whether it's working or not.</p>
       <div class="h-hair"></div>
       <div class="h-status" id="heroStatus"></div>
     </div>
@@ -365,22 +425,57 @@ window.navBack=function(e){
   </div>
 </section>
 
-<!-- THE TREND: runway chart + latest scan strip -->
+<!-- ════════════════════════════════════════════════════════════════════
+     THE ROUTE
+     Replaces the old 12-slot runway chart, which plotted weight against a
+     flat 90 kg line over a year the plan never actually claimed.
+     The line here is generated output, not drawing: see the ROUTE object
+     in the script below and the comment above it.
+     ════════════════════════════════════════════════════════════════════ -->
 <section class="section">
   <div class="container">
     <div class="section-head sa sa-up">
       <div class="section-line"></div>
-      <span class="label">The trend</span>
-      <h2>One line to watch.</h2>
-      <p>Bodyweight against the 90&nbsp;kg target. The dots fill in scan by scan.</p>
+      <span class="label">The route</span>
+      <h2>The whole plan, and where I am on it.</h2>
+      <p>Not a guess. This line comes straight out of JSON.fit's own planner, run on my real numbers. Every scan lands on it.</p>
     </div>
+
     <div class="chart-card sa sa-up">
       <div class="chart-top">
-        <h3>Bodyweight</h3>
-        <span class="ch-sub" id="wtSub"></span>
+        <h3 id="chTitle">Bodyweight</h3>
+        <div class="toggle">
+          <button class="tg active" data-v="w">Weight</button>
+          <button class="tg" data-v="b">Body fat</button>
+        </div>
       </div>
-      <div id="chartWeight"></div>
+      <span class="ch-sub" id="chSub"></span>
+      <div class="chart-scroll"><div id="chartRoute"></div></div>
+      <div class="legend" id="legend"></div>
+      <div class="strip" id="strip"></div>
     </div>
+
+    <div class="nowcard sa sa-up">
+      <div class="nc">
+        <div class="nc-k" id="ncPhase"></div>
+        <div class="nc-title" id="ncTitle"></div>
+        <div class="nc-body" id="ncBody"></div>
+      </div>
+      <div class="nc">
+        <div class="nc-rows" id="ncRows"></div>
+      </div>
+    </div>
+
+    <div class="miles sa sa-up" id="miles"></div>
+
+    <div class="routenote sa sa-up">
+      <p><b>Why it dips first.</b> At 77&nbsp;kg and 20% I'm carrying 15.4&nbsp;kg of fat on 61.6&nbsp;kg of lean. The opening cut takes 3.7&nbsp;kg of that off over six to ten weeks, then everything after it goes up. Same muscle at 73.3&nbsp;kg as at 77&nbsp;kg, just less covering it.</p>
+    </div>
+
+    <div class="routenote sa sa-up">
+      <p><b>Where the line comes from.</b> <code>deriveRoadmap</code> and <code>planCurve</code>, the same two functions the app runs on your phone, fed my starting numbers: 77&nbsp;kg, 20% body fat, 185&nbsp;cm, goal 90&nbsp;kg at 13%, operating between 16 and 18%. Whole-plan estimate 2.2 to 4.3 years. Nothing here is hand-drawn.</p>
+    </div>
+
     <div class="sa sa-up">
       <p class="scan-kick" id="scanKick"></p>
       <div class="scan-grid" id="scanGrid"></div>
@@ -456,7 +551,7 @@ window.navBack=function(e){
         </div>
 
         <div class="disclaimer">
-          <p>Everything on the page above is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. These two old phone photos are the one deliberate exception, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
+          <p>Everything on the page above is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. The route line is the one thing on this page that isn't a measurement: it's generated by the app's planner from my starting numbers, and it's shown dashed for exactly that reason. These two old phone photos are the other deliberate exception, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
         </div>
       </div>
     </details>
@@ -467,7 +562,7 @@ window.navBack=function(e){
 <section class="cta-wrap">
   <div class="cta-card sa sa-up">
     <h2>Same app. <em>Your numbers.</em></h2>
-    <p>The program, the meal plan and the tracking on this page all come out of <span class="v">JSON.fit</span>. Same free app, same tools.</p>
+    <p>The route, the program, the meal plan and the tracking on this page all come out of <span class="v">JSON.fit</span>. Same free app, same tools.</p>
     <div style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;">
       <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'lab_cta','platform':'ios'})">
         <svg width="15" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="currentColor"/></svg>
@@ -496,7 +591,74 @@ window.navBack=function(e){
 <script>
 "use strict";
 /* ════════════════════════════════════════════════════════════════════
-   THE LAB: single source of truth.
+   THE ROUTE: generated output, not hand-drawn.
+
+   Produced by running the app's own deriveRoadmap() + planCurve() against
+   this profile:
+       currentWeightKg 77, currentBodyFatPct 20, heightCm 185, sex male,
+       goalWeightKg 90, goalBodyFatPct 13,
+       phaseOrder 'cut_first', preBuildBf 16, ceilingBf 18
+   Generated 2026-09-09.
+
+   REGENERATE, DO NOT EDIT BY HAND. If the goal, the band or the starting
+   numbers change, re-run the engine and paste the new object. Editing a
+   point here makes the line disagree with the plan it claims to draw,
+   which is the exact failure planCurve was written to avoid.
+
+   `points` is [month, weightKg, bodyFatPct]. `nodes` are the phase
+   boundaries, the only places the line changes direction.
+   ════════════════════════════════════════════════════════════════════ */
+var ROUTE = {
+  generated:"2026-09-09",
+  start:{weightKg:77,bodyFatPct:20},
+  goal:{weightKg:90,bodyFatPct:13},
+  band:{bottom:16,top:18},
+  estYears:[2.2,4.3],
+  totalMonths:38.6,
+  nodes:[
+    {month:0,     weightKg:77,   bodyFatPct:20,   kind:"start"},
+    {month:1.85,  weightKg:73.3, bodyFatPct:16,   kind:"trim"},
+    {month:14.45, weightKg:82.9, bodyFatPct:18,   kind:"build"},
+    {month:15.4,  weightKg:80.9, bodyFatPct:16,   kind:"trim"},
+    {month:29.3,  weightKg:91.5, bodyFatPct:18,   kind:"build"},
+    {month:30.25, weightKg:89.3, bodyFatPct:16,   kind:"trim"},
+    {month:36.75, weightKg:94.2, bodyFatPct:16.9, kind:"build"},
+    {month:38.6,  weightKg:90,   bodyFatPct:13,   kind:"reveal"}
+  ],
+  points:[[0,77,20],[0.62,74.99,17.66],[1.23,73.71,16.19],[1.85,73.3,16],[2.98,74.05,16.19],[4.11,74.78,16.37],[5.23,75.49,16.55],[6.36,76.17,16.72],[7.49,76.83,16.88],[8.62,77.47,17.04],[9.75,78.09,17.19],[10.88,78.69,17.33],[12.01,79.27,17.47],[13.14,79.83,17.61],[14.45,82.9,18],[14.69,82.4,17.6],[14.93,81.9,17.2],[15.16,81.4,16.6],[15.4,80.9,16],[16.39,81.65,16.17],[17.38,82.38,16.33],[18.37,83.09,16.49],[19.36,83.78,16.64],[20.35,84.45,16.79],[21.34,85.1,16.93],[22.33,85.73,17.07],[23.32,86.34,17.2],[24.31,86.94,17.33],[25.3,87.52,17.45],[26.29,88.09,17.57],[27.28,88.64,17.69],[28.27,89.18,17.8],[29.3,91.5,18],[29.54,90.94,17.5],[29.78,90.38,17],[30.01,89.84,16.5],[30.25,89.3,16],[31.18,90.16,16.14],[32.11,90.99,16.27],[33.04,91.79,16.4],[33.97,92.55,16.52],[34.9,93.28,16.63],[35.83,93.94,16.76],[36.75,94.2,16.9],[37.21,93.13,15.9],[37.68,92.06,14.9],[38.14,91.02,13.95],[38.6,90,13]],
+  /* One entry per phase occurrence, in order. `rate` is %BW/week as the
+     roadmap prescribes it; null on the terminal reveal, which the engine
+     does not rate-limit. */
+  phases:[
+    {kind:"trim",  from:0,     to:1.85,  rate:-0.59, endKg:73.3, endBf:16,   label:"Cut &middot; 16%"},
+    {kind:"build", from:1.85,  to:14.45, rate:0.24,  endKg:82.9, endBf:18,   label:"Build &middot; 18%"},
+    {kind:"trim",  from:14.45, to:15.4,  rate:-0.58, endKg:80.9, endBf:16,   label:"Cut"},
+    {kind:"build", from:15.4,  to:29.3,  rate:0.22,  endKg:91.5, endBf:18,   label:"Build &middot; 18%"},
+    {kind:"trim",  from:29.3,  to:30.25, rate:-0.58, endKg:89.3, endBf:16,   label:"Cut"},
+    {kind:"build", from:30.25, to:36.75, rate:0.20,  endKg:94.2, endBf:16.9, label:"Build"},
+    {kind:"reveal",from:36.75, to:38.6,  rate:null,  endKg:90,   endBf:13,   label:"Reveal &middot; 13%"}
+  ]
+};
+
+/* Wording lifted from phaseIntentFor() in src/utils/phaseIntent.ts, so the
+   site and the phone say the same thing about what a phase asks for. */
+var PHASE_INTENT = {
+  build: {title:"Gain weight on purpose",
+          detail:"I eat above maintenance, so the scale climbs. Some of that is fat, and that is the trade: muscle goes on faster this way.",
+          dir:"up", word:"Rising"},
+  trim:  {title:"Lose fat, keep the muscle",
+          detail:"I eat below maintenance and keep lifting hard. The scale falls, and the job is making sure what leaves is fat.",
+          dir:"down", word:"Falling"},
+  recomp:{title:"Hold your weight",
+          detail:"Muscle up, fat down, the scale roughly still. It is the one phase where both move at once.",
+          dir:"flat", word:"Steady"},
+  reveal:{title:"Bring it down to the finish",
+          detail:"The last stretch. Fat comes off and what is built underneath shows.",
+          dir:"down", word:"Falling"}
+};
+
+/* ════════════════════════════════════════════════════════════════════
+   THE LAB: single source of truth for MEASURED data.
    Update this object each month and the whole page re-renders.
    - Baseline below is the real 2026-07-01 Evolt 360 scan. Every value here
      was measured; anything not measured yet (e.g. lifts) stays null and
@@ -513,17 +675,19 @@ window.navBack=function(e){
    Never publish a number that wasn't measured.
    NOTE: the "Before the tracker" disclosure in the HTML above is intentionally
    NOT part of this data. Keep old, un-scanned photos out of `checkins`.
+   NOTE: ROUTE above is the one PROJECTED thing on the page. Keep the two
+   apart: measured goes here, generated goes there.
    ════════════════════════════════════════════════════════════════════ */
 var DATA = {
   startDate: "2026-07-01",
-  target: { weight_kg: 90, label: "Lean-bulk target" },
+  target: { weight_kg: 90, label: "Route target" },
   plan: {
-    summary: "Started <b>1 July 2026</b> at <b>77.3&nbsp;kg</b> and 20.4% body fat. The target is <b>90&nbsp;kg</b> over roughly a year, keeping as much of the gain lean as a sensible surplus allows. The program and the meal plan both come out of JSON.fit. This page is the app being used for real, in public.",
+    summary: "Started <b>1 July 2026</b> at <b>77.3&nbsp;kg</b> and 20.4% body fat. The route runs to <b>90&nbsp;kg at 13% body fat</b>, cycling between 16 and 18% along the way. The plan, the program and the meal plan all come out of JSON.fit. This page is the app being used for real, in public.",
     cells: [
       { k: "Started", v: "1 Jul 2026 · 77.3 kg" },
-      { k: "Target", v: "90 kg · ~12 months" },
+      { k: "Target", v: "90 kg at 13% · 2.2–4.3 yr" },
       { k: "Training", v: "6×/week · JSON.fit program" },
-      { k: "Nutrition", v: "Surplus · 2 g/kg+ protein" }
+      { k: "Nutrition", v: "Route-driven · 2 g/kg+ protein" }
     ]
   },
   // angle order used by the photo rig + the hero cycle
@@ -551,18 +715,26 @@ var DATA = {
   var cks=DATA.checkins;
   var latest=cks[cks.length-1], base=cks[0];
   var prev=cks.length>1?cks[cks.length-2]:base;
-  var TOTAL_SCANS=13; // baseline + 12 monthly scans
+  /* Scans the route calls for: baseline plus one a month across the plan.
+     Derived from ROUTE.totalMonths so it can never drift from the plan. */
+  var TOTAL_SCANS=Math.ceil(ROUTE.totalMonths)+1;
 
   function fmt(n,d){ if(n==null) return "-"; return (d!=null)?Number(n).toFixed(d):String(n); }
   function delta(cur,prevV,d){ if(cur==null||prevV==null) return null; return +(cur-prevV).toFixed(d==null?1:d); }
   function fmtDate(s){ var dt=new Date(s+"T00:00:00"); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); }
   function monthsBetween(a,b){ var x=new Date(a),y=new Date(b); return (y.getFullYear()-x.getFullYear())*12+(y.getMonth()-x.getMonth()); }
+  /* Fractional months, for placing a scan or today's marker on the route. */
+  function monthsSinceStart(iso){
+    var a=new Date(DATA.startDate+"T00:00:00"), b=new Date(iso+"T00:00:00");
+    return (b-a)/(1000*60*60*24*30.4375);
+  }
 
   /* ── Hero status line ── */
   var _start=new Date(DATA.startDate+"T00:00:00");
   var _now=new Date();
   var _today=new Date(_now.getFullYear(),_now.getMonth(),_now.getDate());
   var _dayOfBulk=Math.max(0,Math.round((_today-_start)/86400000));
+  var TODAY_M=Math.max(0,monthsSinceStart(_today.toISOString().slice(0,10)));
   function nextCaptureLabel(){
     var d=new Date(latest.date+"T00:00:00");
     d=new Date(d.getFullYear(),d.getMonth()+1,1);
@@ -666,55 +838,163 @@ var DATA = {
     return '<span><span class="k">'+c.k+'</span> <b>'+c.v+'</b></span>';
   }).join('');
 
-  /* ── Runway chart: all 13 scan slots, filled as they happen ── */
-  function runwayChart(el){
-    var W=640,H=210,pad={t:20,r:16,b:30,l:40};
-    var slots=TOTAL_SCANS-1; // 12 intervals
-    var startD=new Date(DATA.startDate+"T00:00:00");
-    function slotDate(i){ return new Date(startD.getFullYear(),startD.getMonth()+i,1); }
-    var logged=cks.map(function(c){
-      var s=monthsBetween(DATA.startDate,c.date); if(s<0)s=0; if(s>slots)s=slots;
-      return { slot:s, y:c.weight_kg };
-    }).filter(function(p){ return p.y!=null; });
-    var allY=[DATA.target.weight_kg];
-    logged.forEach(function(p){ allY.push(p.y); });
-    var minY=Math.min.apply(null,allY), maxY=Math.max.apply(null,allY);
-    var span=(maxY-minY)||1; minY-=span*0.18; maxY+=span*0.18;
-    function X(i){ return pad.l+(i/slots)*(W-pad.l-pad.r); }
-    function Y(v){ return pad.t+(1-(v-minY)/(maxY-minY))*(H-pad.t-pad.b); }
-    var g='';
-    for(var k=0;k<=3;k++){ var gy=pad.t+k*(H-pad.t-pad.b)/3; g+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.05)"/>'; }
-    var ty=Y(DATA.target.weight_kg);
-    var tline='<line x1="'+pad.l+'" y1="'+ty+'" x2="'+(W-pad.r)+'" y2="'+ty+'" stroke="rgba(168,85,247,0.45)" stroke-dasharray="4 4"/>'+
-      '<text x="'+(W-pad.r)+'" y="'+(ty-6)+'" text-anchor="end" font-family="DM Mono" font-size="10" fill="#a855f7">target '+DATA.target.weight_kg+'</text>';
-    var line='', area='';
+  /* ════════════════════════════════════════════════════════════════
+     ROUTE CHART
+     Replaced the 12-slot runway chart. Two views over the same x axis:
+     weight against the goal line, or body fat against the operating band.
+     The plan is DASHED and the measured scans are SOLID, deliberately:
+     nothing on this page should let a projection read as data.
+     ════════════════════════════════════════════════════════════════ */
+  var VIEW='w';
+
+  function drawRoute(){
+    var W=680,H=250,pad={t:26,r:18,b:34,l:42};
+    var isW=(VIEW==='w');
+    var el=document.getElementById('chartRoute');
+
+    var vals=ROUTE.points.map(function(p){ return isW?p[1]:p[2]; });
+    var lo=Math.min.apply(null,vals), hi=Math.max.apply(null,vals);
+    if(!isW){ lo=Math.min(lo,ROUTE.band.bottom); hi=Math.max(hi,ROUTE.band.top); }
+    cks.forEach(function(c){
+      var v=isW?c.weight_kg:c.bodyfat_pct;
+      if(v==null) return;
+      lo=Math.min(lo,v); hi=Math.max(hi,v);
+    });
+    var sp=(hi-lo)||1; lo-=sp*0.14; hi+=sp*0.14;
+
+    function X(m){ return pad.l+(m/ROUTE.totalMonths)*(W-pad.l-pad.r); }
+    function Y(v){ return pad.t+(1-(v-lo)/(hi-lo))*(H-pad.t-pad.b); }
+
+    var s='';
+    for(var k=0;k<=3;k++){
+      var gy=pad.t+k*(H-pad.t-pad.b)/3;
+      var gv=hi-(k/3)*(hi-lo);
+      s+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.05)"/>';
+      s+='<text x="'+(pad.l-8)+'" y="'+(gy+3)+'" text-anchor="end" font-family="DM Mono" font-size="9" fill="#5b5b62">'+gv.toFixed(isW?0:1)+(isW?'':'%')+'</text>';
+    }
+
+    if(!isW){
+      var by1=Y(ROUTE.band.top), by2=Y(ROUTE.band.bottom);
+      s+='<rect x="'+pad.l+'" y="'+by1.toFixed(1)+'" width="'+(W-pad.l-pad.r)+'" height="'+(by2-by1).toFixed(1)+'" fill="rgba(168,85,247,0.07)"/>';
+      s+='<line x1="'+pad.l+'" y1="'+by1.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+by1.toFixed(1)+'" stroke="rgba(168,85,247,0.2)"/>';
+      s+='<line x1="'+pad.l+'" y1="'+by2.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+by2.toFixed(1)+'" stroke="rgba(168,85,247,0.2)"/>';
+      s+='<text x="'+(W-pad.r-4)+'" y="'+(by1-5).toFixed(1)+'" text-anchor="end" font-family="DM Mono" font-size="8.5" fill="#a855f7">operating band '+ROUTE.band.bottom+'&#8211;'+ROUTE.band.top+'%</text>';
+    } else {
+      var ty=Y(ROUTE.goal.weightKg);
+      s+='<line x1="'+pad.l+'" y1="'+ty.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+ty.toFixed(1)+'" stroke="rgba(168,85,247,0.4)" stroke-dasharray="4 4"/>';
+      s+='<text x="'+(W-pad.r)+'" y="'+(ty-6).toFixed(1)+'" text-anchor="end" font-family="DM Mono" font-size="9.5" fill="#a855f7">goal '+ROUTE.goal.weightKg+' kg</text>';
+    }
+
+    for(var yr=12;yr<ROUTE.totalMonths;yr+=12){
+      s+='<line x1="'+X(yr).toFixed(1)+'" y1="'+pad.t+'" x2="'+X(yr).toFixed(1)+'" y2="'+(H-pad.b)+'" stroke="rgba(255,255,255,0.05)"/>';
+      s+='<text x="'+(X(yr)+4).toFixed(1)+'" y="'+(pad.t+10)+'" font-family="DM Mono" font-size="8.5" fill="#4a4a52">'+(yr/12)+'y</text>';
+    }
+
+    var d=ROUTE.points.map(function(p,i){ return (i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(isW?p[1]:p[2]).toFixed(1); }).join(' ');
+    s+='<path d="'+d+'" fill="none" stroke="rgba(168,85,247,0.5)" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>';
+
+    ROUTE.nodes.forEach(function(n,i){
+      if(i===0) return;
+      s+='<circle cx="'+X(n.month).toFixed(1)+'" cy="'+Y(isW?n.weightKg:n.bodyFatPct).toFixed(1)+'" r="3" fill="#0a0a0f" stroke="rgba(168,85,247,0.55)" stroke-width="1.5"/>';
+    });
+
+    s+='<line x1="'+X(TODAY_M).toFixed(1)+'" y1="'+pad.t+'" x2="'+X(TODAY_M).toFixed(1)+'" y2="'+(H-pad.b)+'" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 3" opacity="0.7"/>';
+    s+='<text x="'+(X(TODAY_M)+5).toFixed(1)+'" y="'+(H-pad.b-6)+'" font-family="DM Mono" font-size="8.5" fill="#c084fc">today</text>';
+
+    var logged=cks.filter(function(c){ return (isW?c.weight_kg:c.bodyfat_pct)!=null; });
     if(logged.length>=2){
-      var path=logged.map(function(p,i){ return (i?'L':'M')+X(p.slot).toFixed(1)+' '+Y(p.y).toFixed(1); }).join(' ');
-      area='<path d="'+path+' L'+X(logged[logged.length-1].slot).toFixed(1)+' '+(H-pad.b)+' L'+X(logged[0].slot).toFixed(1)+' '+(H-pad.b)+' Z" fill="url(#rwg)"/>';
-      line='<path d="'+path+'" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+      var ad=logged.map(function(c,i){
+        return (i?'L':'M')+X(monthsSinceStart(c.date)).toFixed(1)+' '+Y(isW?c.weight_kg:c.bodyfat_pct).toFixed(1);
+      }).join(' ');
+      s+='<path d="'+ad+'" fill="none" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
     }
-    var dots=logged.map(function(p){ return '<circle cx="'+X(p.slot).toFixed(1)+'" cy="'+Y(p.y).toFixed(1)+'" r="4.5" fill="#0a0a0f" stroke="#a855f7" stroke-width="2.5"/>'; }).join('');
-    var lastP=logged[logged.length-1];
-    var vlast=lastP?'<text x="'+X(lastP.slot).toFixed(1)+'" y="'+(Y(lastP.y)-11)+'" text-anchor="'+(lastP.slot>slots*0.85?'end':'start')+'" font-family="DM Mono" font-size="10.5" fill="#c084fc">'+lastP.y+'</text>':'';
-    var lastSlot=lastP?lastP.slot:-1;
-    var hollow='';
-    var hy=H-pad.b+8;
-    for(var i2=0;i2<=slots;i2++){
-      if(i2>lastSlot) hollow+='<circle cx="'+X(i2).toFixed(1)+'" cy="'+hy+'" r="3" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>';
+    logged.forEach(function(c){
+      var x=X(monthsSinceStart(c.date)), y=Y(isW?c.weight_kg:c.bodyfat_pct);
+      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5" fill="#0a0a0f" stroke="#a855f7" stroke-width="2.5"/>';
+    });
+    var lastC=logged[logged.length-1];
+    if(lastC){
+      var lx=X(monthsSinceStart(lastC.date)), ly=Y(isW?lastC.weight_kg:lastC.bodyfat_pct);
+      var anchor=(monthsSinceStart(lastC.date)>ROUTE.totalMonths*0.85)?'end':'start';
+      s+='<text x="'+(lx+(anchor==='end'?-9:9)).toFixed(1)+'" y="'+(ly-9).toFixed(1)+'" text-anchor="'+anchor+'" font-family="DM Mono" font-size="10" fill="#c084fc">'+
+        (isW?(lastC.weight_kg+' kg'):(lastC.bodyfat_pct+'%'))+'</text>';
     }
-    var lbls='';
-    for(var i3=0;i3<=slots;i3+=3){
-      var d3=slotDate(i3);
-      var t3=d3.toLocaleDateString('en-AU',{month:'short'});
-      if(i3===slots) t3+=" '"+String(d3.getFullYear()).slice(2);
-      lbls+='<text x="'+X(i3).toFixed(1)+'" y="'+(H-4)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="'+(i3<=lastSlot?'#7a7a86':'#555560')+'">'+t3+'</text>';
+
+    for(var m=0;m<=36;m+=6){
+      s+='<text x="'+X(m).toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#5b5b62">'+(m===0?'start':'m'+m)+'</text>';
     }
-    el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+
-      '<defs><linearGradient id="rwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a855f7" stop-opacity="0.18"/><stop offset="1" stop-color="#a855f7" stop-opacity="0"/></linearGradient></defs>'+
-      g+tline+area+line+dots+hollow+vlast+lbls+'</svg>';
+
+    el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+s+'</svg>';
+    document.getElementById('chTitle').textContent=isW?'Bodyweight':'Body fat';
+    document.getElementById('chSub').textContent=
+      (isW?'kg':'%')+' \u00b7 planned route vs logged scans \u00b7 '+cks.length+' of '+TOTAL_SCANS+' logged';
+    document.getElementById('legend').innerHTML=
+      '<span><i class="plan"></i>planned route</span>'+
+      '<span><i class="dot"></i>measured scan</span>'+
+      (isW?'':'<span><i class="band"></i>operating band</span>');
   }
-  runwayChart(document.getElementById('chartWeight'));
-  document.getElementById('wtSub').textContent='kg · Evolt 360 monthly · '+cks.length+' of '+TOTAL_SCANS+' logged';
+
+  /* ── Phase strip: widths proportional to real duration ── */
+  document.getElementById('strip').innerHTML=ROUTE.phases.map(function(p){
+    var w=((p.to-p.from)/ROUTE.totalMonths*100).toFixed(2);
+    var cls=(p.kind==='trim')?'cut':((p.kind==='reveal')?'reveal':'build');
+    var done=(p.to<=TODAY_M)?' done':'';
+    var txt=((p.to-p.from)/ROUTE.totalMonths>0.07)?p.label:'';
+    return '<div class="seg '+cls+done+'" style="width:'+w+'%" title="'+p.label.replace(/&middot;/g,'-')+'">'+txt+'</div>';
+  }).join('');
+
+  /* ── Current-phase card: derived from where today falls on the route ── */
+  (function(){
+    var idx=0;
+    for(var i=0;i<ROUTE.phases.length;i++){ if(TODAY_M>=ROUTE.phases[i].from) idx=i; }
+    var ph=ROUTE.phases[idx];
+    var next=ROUTE.phases[idx+1];
+    var intent=PHASE_INTENT[ph.kind]||PHASE_INTENT.recomp;
+    var dirCls=(intent.dir==='down')?'dn':((intent.dir==='up')?'up':'');
+    var dirGlyph=(intent.dir==='down')?'\u25bc':((intent.dir==='up')?'\u25b2':'\u2014');
+
+    document.getElementById('ncPhase').textContent='Right now \u00b7 phase '+(idx+1)+' of '+ROUTE.phases.length;
+    document.getElementById('ncTitle').textContent=intent.title;
+    document.getElementById('ncBody').textContent=intent.detail;
+
+    var rows=[
+      ['Scale should be','<span class="nc-v '+dirCls+'">'+dirGlyph+' '+intent.word+'</span>'],
+      ['Target rate', ph.rate==null?'<span class="nc-v">&mdash;</span>':'<span class="nc-v">'+(ph.rate>0?'+':'\u2212')+Math.abs(ph.rate).toFixed(2)+' %/wk</span>'],
+      ['Phase ends at','<span class="nc-v hl">'+ph.endKg+' kg \u00b7 '+ph.endBf+'%</span>'],
+      ['Then', next?('<span class="nc-v">'+(PHASE_INTENT[next.kind]||{}).word+' to '+next.endBf+'%</span>'):'<span class="nc-v hl">Goal</span>']
+    ];
+    document.getElementById('ncRows').innerHTML=rows.map(function(r){
+      return '<div class="nc-row"><span class="nc-l">'+r[0]+'</span>'+r[1]+'</div>';
+    }).join('');
+  })();
+
+  /* ── Milestone rail ── */
+  (function(){
+    var ws=ROUTE.points.map(function(p){ return p[1]; });
+    var lowest=Math.min.apply(null,ws), highest=Math.max.apply(null,ws);
+    var lowM=0, hiM=0;
+    ROUTE.points.forEach(function(p){ if(p[1]===lowest) lowM=p[0]; if(p[1]===highest) hiM=p[0]; });
+    var cuts=ROUTE.phases.filter(function(p){ return p.kind==='trim'; }).length;
+    var cells=[
+      {v:lowest.toFixed(1), l:'Lightest point<br>month '+Math.round(lowM)},
+      {v:highest.toFixed(1), l:'Heaviest point<br>month '+Math.round(hiM)},
+      {v:String(cuts), l:'Cuts along<br>the way'},
+      {v:ROUTE.estYears[0]+'\u2013'+ROUTE.estYears[1], l:'Years to<br>'+ROUTE.goal.weightKg+' kg at '+ROUTE.goal.bodyFatPct+'%', hl:true}
+    ];
+    document.getElementById('miles').innerHTML=cells.map(function(c){
+      return '<div class="mi"><div class="mi-v'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="mi-l">'+c.l+'</div></div>';
+    }).join('');
+  })();
+
+  document.querySelectorAll('.tg').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tg').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      VIEW=b.dataset.v;
+      drawRoute();
+    });
+  });
+  drawRoute();
 
   /* ── Latest scan strip: four headline body metrics.
      Everything else (BMR, TEE, body water, bio age, segmental) lives in the
