@@ -5,6 +5,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050508">
 <title>The Lab: bulking to 90 kg on JSON.fit</title>
 <meta name="description" content="I built JSON.fit and I'm using it to get from 77 kg to 90 kg at 13% body fat. The full planned route, monthly scans, standardised progress photos and every number, posted as they happen.">
 <meta property="og:type" content="website">
@@ -42,7 +43,7 @@
   --text:#f0f0f2; --text-2:#9898a4; --text-3:#7a7a86;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{overflow-x:hidden;scroll-behavior:smooth}
+html{overflow-x:hidden;scroll-behavior:smooth;background:var(--bg)}
 body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px;overflow-x:hidden;
   /* faint lab grid texture in the background for atmosphere */
   background-image:linear-gradient(rgba(168,85,247,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.025) 1px,transparent 1px);
@@ -990,9 +991,22 @@ var DATA = {
     }
 
     el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+s+'</svg>';
+    /* A tap anywhere on the chart selects the NEAREST point, measured in
+       screen pixels, so on a phone where the whole chart is 350px wide a
+       finger does not have to land on a three-pixel circle. 36px reach. */
+    var cands=[];
+    logged.forEach(function(c){ cands.push({t:'ck',i:cks.indexOf(c),x:X(monthsSinceStart(c.date)),y:Y(isW?c.weight_kg:c.bodyfat_pct)}); });
+    ROUTE.nodes.forEach(function(n,i){ if(i>0) cands.push({t:'node',i:i,x:X(n.month),y:Y(isW?n.weightKg:n.bodyFatPct)}); });
     el.onclick=function(e){
-      var t=e.target.closest('[data-ck],[data-node]'); if(!t) return;
-      var next=t.hasAttribute('data-ck')?{t:'ck',i:+t.getAttribute('data-ck')}:{t:'node',i:+t.getAttribute('data-node')};
+      var svg=el.querySelector('svg'); if(!svg||!svg.getScreenCTM) return;
+      var ctm=svg.getScreenCTM(); if(!ctm) return;
+      var pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
+      var u=pt.matrixTransform(ctm.inverse());
+      var reach=36/ctm.a; // screen px expressed in viewBox units
+      var best=null, bd=Infinity;
+      cands.forEach(function(c){ var d=Math.hypot(c.x-u.x,c.y-u.y); if(d<bd){ bd=d; best=c; } });
+      if(!best||bd>reach) return;
+      var next={t:best.t,i:best.i};
       SEL=(SEL&&SEL.t===next.t&&SEL.i===next.i)?null:next;
       drawRoute();
     };
