@@ -211,6 +211,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .seg.build{background:rgba(34,197,94,.09);color:#7fd6a0}
 .seg.reveal{background:var(--violet-soft);color:var(--violet-bright)}
 .seg.done{opacity:.42}
+.seg.gone{background:rgba(255,255,255,.04);color:#4a4a52}
 
 /* current-phase card */
 .nowcard{margin-top:1.4rem;display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:var(--border);
@@ -438,7 +439,7 @@ window.navBack=function(e){
       <div class="section-line"></div>
       <span class="label">The route</span>
       <h2>The whole plan, and where I am on it.</h2>
-      <p>Not a guess. This line comes straight out of JSON.fit's own planner, run on my real numbers. Every scan lands on it.</p>
+      <p>The line is JSON.fit's planner run on my numbers. The dots are me.</p>
     </div>
 
     <div class="chart-card sa sa-up">
@@ -449,7 +450,6 @@ window.navBack=function(e){
           <button class="tg" data-v="b">Body fat</button>
         </div>
       </div>
-      <span class="ch-sub" id="chSub"></span>
       <div class="chart-scroll"><div id="chartRoute"></div></div>
       <div class="legend" id="legend"></div>
       <div class="strip" id="strip"></div>
@@ -464,16 +464,6 @@ window.navBack=function(e){
       <div class="nc">
         <div class="nc-rows" id="ncRows"></div>
       </div>
-    </div>
-
-    <div class="miles sa sa-up" id="miles"></div>
-
-    <div class="routenote sa sa-up">
-      <p><b>Why it dips first.</b> At 77&nbsp;kg and 20% I'm carrying 15.4&nbsp;kg of fat on 61.6&nbsp;kg of lean. The opening cut takes 3.7&nbsp;kg of that off over six to ten weeks, then everything after it goes up. Same muscle at 73.3&nbsp;kg as at 77&nbsp;kg, just less covering it.</p>
-    </div>
-
-    <div class="routenote sa sa-up">
-      <p><b>Where the line comes from.</b> <code>deriveRoadmap</code> and <code>planCurve</code>, the same two functions the app runs on your phone, fed my starting numbers: 77&nbsp;kg, 20% body fat, 185&nbsp;cm, goal 90&nbsp;kg at 13%, operating between 16 and 18%. Whole-plan estimate 2.2 to 4.3 years. Nothing here is hand-drawn.</p>
     </div>
 
     <div class="sa sa-up">
@@ -595,10 +585,19 @@ window.navBack=function(e){
 
    Produced by running the app's own deriveRoadmap() + planCurve() against
    this profile:
-       currentWeightKg 77, currentBodyFatPct 20, heightCm 185, sex male,
+       currentWeightKg 83, currentBodyFatPct 20, heightCm 185, sex male,
+       ageYears 29, trainingState consistent,
        goalWeightKg 90, goalBodyFatPct 13,
-       phaseOrder 'cut_first', preBuildBf 16, ceilingBf 18
-   Generated 2026-09-09.
+       phaseOrder 'cut_first', preBuildBf 13, ceilingBf 15, wayIn 'cut'
+   Generated 2026-09-15.
+
+   RE-DERIVED FROM WHERE I STAND, 15 Sep 2026. The first route (9 Sep) ran
+   from the 1 July scan, 77 kg at 20%. Two and a half months and no
+   training later the home scale reads 83 kg, so the plan was re-derived
+   from there, exactly as the app does it: the route always starts from
+   the live profile. The 20% is my estimate from a photo, not a scan; the
+   next DEXA replaces it. It starts at `startMonth` on the chart so the
+   July scan stays where it was and the gap between the two is visible.
 
    REGENERATE, DO NOT EDIT BY HAND. If the goal, the band or the starting
    numbers change, re-run the engine and paste the new object. Editing a
@@ -609,34 +608,36 @@ window.navBack=function(e){
    boundaries, the only places the line changes direction.
    ════════════════════════════════════════════════════════════════════ */
 var ROUTE = {
-  generated:"2026-09-09",
-  start:{weightKg:77,bodyFatPct:20},
+  generated:"2026-09-15",
+  /* Months since DATA.startDate (1 Jul 2026) at which this projection begins. */
+  startMonth:2.5,
+  start:{weightKg:83,bodyFatPct:20},
   goal:{weightKg:90,bodyFatPct:13},
-  band:{bottom:16,top:18},
-  estYears:[2.2,4.3],
-  totalMonths:38.6,
+  band:{bottom:13,top:15},
+  estYears:[1.8,3.6],
+  /* Plan length from startMonth, and the chart's whole horizon from day zero. */
+  planMonths:32.6,
+  totalMonths:35.1,
   nodes:[
-    {month:0,     weightKg:77,   bodyFatPct:20,   kind:"start"},
-    {month:1.85,  weightKg:73.3, bodyFatPct:16,   kind:"trim"},
-    {month:14.45, weightKg:82.9, bodyFatPct:18,   kind:"build"},
-    {month:15.4,  weightKg:80.9, bodyFatPct:16,   kind:"trim"},
-    {month:29.3,  weightKg:91.5, bodyFatPct:18,   kind:"build"},
-    {month:30.25, weightKg:89.3, bodyFatPct:16,   kind:"trim"},
-    {month:36.75, weightKg:94.2, bodyFatPct:16.9, kind:"build"},
-    {month:38.6,  weightKg:90,   bodyFatPct:13,   kind:"reveal"}
+    {month:2.5   , weightKg:83   , bodyFatPct:20   , kind:"start"},
+    {month:5.6   , weightKg:76.3 , bodyFatPct:13   , kind:"trim"},
+    {month:18.5  , weightKg:84.6 , bodyFatPct:15   , kind:"build"},
+    {month:19.45 , weightKg:82.7 , bodyFatPct:13   , kind:"trim"},
+    {month:34.15 , weightKg:92.2 , bodyFatPct:15.1 , kind:"build"},
+    {month:35.1  , weightKg:90   , bodyFatPct:13   , kind:"reveal"}
   ],
-  points:[[0,77,20],[0.62,74.99,17.66],[1.23,73.71,16.19],[1.85,73.3,16],[2.98,74.05,16.19],[4.11,74.78,16.37],[5.23,75.49,16.55],[6.36,76.17,16.72],[7.49,76.83,16.88],[8.62,77.47,17.04],[9.75,78.09,17.19],[10.88,78.69,17.33],[12.01,79.27,17.47],[13.14,79.83,17.61],[14.45,82.9,18],[14.69,82.4,17.6],[14.93,81.9,17.2],[15.16,81.4,16.6],[15.4,80.9,16],[16.39,81.65,16.17],[17.38,82.38,16.33],[18.37,83.09,16.49],[19.36,83.78,16.64],[20.35,84.45,16.79],[21.34,85.1,16.93],[22.33,85.73,17.07],[23.32,86.34,17.2],[24.31,86.94,17.33],[25.3,87.52,17.45],[26.29,88.09,17.57],[27.28,88.64,17.69],[28.27,89.18,17.8],[29.3,91.5,18],[29.54,90.94,17.5],[29.78,90.38,17],[30.01,89.84,16.5],[30.25,89.3,16],[31.18,90.16,16.14],[32.11,90.99,16.27],[33.04,91.79,16.4],[33.97,92.55,16.52],[34.9,93.28,16.63],[35.83,93.94,16.76],[36.75,94.2,16.9],[37.21,93.13,15.9],[37.68,92.06,14.9],[38.14,91.02,13.95],[38.6,90,13]],
+  points:[[2.5,83,20],[2.94,82.01,19.04],[3.39,81.03,18.06],[3.83,80.06,17.07],[4.27,79.1,16.07],[4.71,78.16,15.06],[5.16,77.22,14.04],[5.6,76.3,13],[6.21,76.85,13.13],[6.83,77.38,13.26],[7.44,77.9,13.38],[8.06,78.39,13.5],[8.67,78.87,13.62],[9.29,79.33,13.73],[9.9,79.77,13.84],[10.51,80.2,13.94],[11.13,80.62,14.04],[11.74,81.02,14.14],[12.36,81.41,14.23],[12.97,81.78,14.32],[13.59,82.14,14.41],[14.2,82.49,14.49],[14.81,82.82,14.57],[15.43,83.14,14.65],[16.04,83.46,14.72],[16.66,83.76,14.8],[17.27,84.05,14.87],[17.89,84.33,14.93],[18.5,84.6,15],[18.82,83.96,14.34],[19.13,83.33,13.67],[19.45,82.7,13],[20.06,83.28,13.13],[20.68,83.83,13.25],[21.29,84.37,13.37],[21.9,84.89,13.48],[22.51,85.39,13.6],[23.13,85.88,13.7],[23.74,86.34,13.81],[24.35,86.79,13.9],[24.96,87.23,14],[25.58,87.65,14.09],[26.19,88.05,14.18],[26.8,88.44,14.27],[27.41,88.82,14.35],[28.03,89.19,14.43],[28.64,89.54,14.51],[29.25,89.88,14.59],[29.86,90.2,14.66],[30.48,90.52,14.73],[31.09,90.83,14.8],[31.7,91.12,14.86],[32.31,91.4,14.92],[32.92,91.68,14.98],[33.54,91.94,15.04],[34.15,92.2,15.1],[34.47,91.46,14.41],[34.78,90.73,13.71],[35.1,90,13]],
   /* One entry per phase occurrence, in order. `rate` is %BW/week as the
      roadmap prescribes it; null on the terminal reveal, which the engine
-     does not rate-limit. */
+     does not rate-limit. `months` is the engine's own [lo, hi] estimate.
+     `macros` on the current phase is the app's computeMacrosPhaseAware
+     output for this profile at moderate activity, high-protein split. */
   phases:[
-    {kind:"trim",  from:0,     to:1.85,  rate:-0.59, endKg:73.3, endBf:16,   label:"Cut &middot; 16%"},
-    {kind:"build", from:1.85,  to:14.45, rate:0.24,  endKg:82.9, endBf:18,   label:"Build &middot; 18%"},
-    {kind:"trim",  from:14.45, to:15.4,  rate:-0.58, endKg:80.9, endBf:16,   label:"Cut"},
-    {kind:"build", from:15.4,  to:29.3,  rate:0.22,  endKg:91.5, endBf:18,   label:"Build &middot; 18%"},
-    {kind:"trim",  from:29.3,  to:30.25, rate:-0.58, endKg:89.3, endBf:16,   label:"Cut"},
-    {kind:"build", from:30.25, to:36.75, rate:0.20,  endKg:94.2, endBf:16.9, label:"Build"},
-    {kind:"reveal",from:36.75, to:38.6,  rate:null,  endKg:90,   endBf:13,   label:"Reveal &middot; 13%"}
+    {kind:"trim",   from:2.5   , to:5.6   , rate:-0.6 , endKg:76.3, endBf:13, months:[2.3,3.9], label:"Cut &middot; 13%", macros:{kcal:2390,protein:183,carbs:237,fat:79}},
+    {kind:"build",  from:5.6   , to:18.5  , rate:0.19 , endKg:84.6, endBf:15, months:[8.4,17.4], label:"Build &middot; 15%"},
+    {kind:"trim",   from:18.5  , to:19.45 , rate:-0.56, endKg:82.7, endBf:13, months:[0.7,1.2], label:"Cut"},
+    {kind:"build",  from:19.45 , to:34.15 , rate:0.18 , endKg:92.2, endBf:15.1, months:[9.6,19.8], label:"Build"},
+    {kind:"reveal", from:34.15 , to:35.1  , rate:null , endKg:90, endBf:13, months:[0.7,1.2], label:"Reveal &middot; 13%"}
   ]
 };
 
@@ -682,12 +683,12 @@ var DATA = {
   startDate: "2026-07-01",
   target: { weight_kg: 90, label: "Route target" },
   plan: {
-    summary: "Started <b>1 July 2026</b> at <b>77.3&nbsp;kg</b> and 20.4% body fat. The route runs to <b>90&nbsp;kg at 13% body fat</b>, cycling between 16 and 18% along the way. The plan, the program and the meal plan all come out of JSON.fit. This page is the app being used for real, in public.",
+    summary: "Started <b>1 July 2026</b> at <b>77.3&nbsp;kg</b>. Ten weeks off, back at <b>83&nbsp;kg</b>, route re-run from there: cut to 13%, then cycle 13 to 15% up to <b>90&nbsp;kg at 13%</b>. Plan, program and meals all from JSON.fit.",
     cells: [
       { k: "Started", v: "1 Jul 2026 · 77.3 kg" },
-      { k: "Target", v: "90 kg at 13% · 2.2–4.3 yr" },
-      { k: "Training", v: "6×/week · JSON.fit program" },
-      { k: "Nutrition", v: "Route-driven · 2 g/kg+ protein" }
+      { k: "Now", v: "83 kg · cutting to 13%" },
+      { k: "Target", v: "90 kg at 13% · 1.8–3.6 yr" },
+      { k: "Eating", v: "2,390 kcal · 183 g protein" }
     ]
   },
   // angle order used by the photo rig + the hero cycle
@@ -706,6 +707,20 @@ var DATA = {
       lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
       scan:{ type:"Evolt 360", skeletal_muscle_kg:34.2, waist_cm:86.9, visceral_fat_area:68, whr:0.84, bmr_kcal:1698, tee_kcal:2614, body_water_pct:57, bio_age:28 },
       notes:"Day zero. First Evolt 360 scan on the books: 77.3 kg at 20.4% body fat: 61.5 kg lean, 15.8 kg fat. Left/right and upper/lower both read balanced, waist-to-hip 0.84, visceral fat area 68 cm² (mid-range). Bioimpedance body-fat % runs a few points loose in absolute terms, so I'm treating that number as a trend anchor rather than gospel. No conclusions yet. This is the line everything else gets measured against.",
+      video:null
+    },
+    {
+      /* A weigh-in, not a scan: home scale, morning, and the body fat is my
+         estimate from a photo. `estimate:true` keeps it out of the scan
+         count and draws it hollow on the chart. The route is re-run from
+         this point. Replace with the next scan when it lands. */
+      label:"Restart", date:"2026-09-15", estimate:true,
+      weight_kg:83, bodyfat_pct:20, lean_mass_kg:null, fat_mass_kg:null,
+      photos:{ front:"", right:"", back:"", left:"" },
+      segments_kg:null,
+      lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
+      scan:null,
+      notes:"Ten weeks without training and 6 kg up. Home scale, morning; body fat estimated from a photo, so it stays hollow on the chart until the next scan. Route re-run from here.",
       video:null
     }
   ]
@@ -740,9 +755,10 @@ var DATA = {
     d=new Date(d.getFullYear(),d.getMonth()+1,1);
     return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
   }
+  var scanned=cks.filter(function(c){ return !c.estimate; });
   document.getElementById('heroStatus').innerHTML=
     '<span class="live"><span class="live-dot"></span>Day '+_dayOfBulk+'</span>'+
-    '<span>Scan <b>'+cks.length+' of '+TOTAL_SCANS+'</b></span>'+
+    '<span>Scan <b>'+scanned.length+' of '+TOTAL_SCANS+'</b></span>'+
     '<span>Next capture <b>'+nextCaptureLabel()+'</b></span>';
 
   /* ── Specimen frame: latest captured check-in, cycling through its angles ── */
@@ -824,13 +840,20 @@ var DATA = {
     else if(d<0){ sub='<div class="ro-d down">&#9660; '+fmt(d,1)+' '+(dUnit||'')+'</div>'; }
     else { sub='<div class="ro-d">- '+(dUnit||'')+'</div>'; }
     return '<div class="ro"><div class="ro-l">'+lbl+'</div>'+
-      '<div class="ro-v'+(hl?' hl':'')+'"><span class="count-up" data-target="'+val+'" data-decimals="1">'+fmt(val,1)+'</span><span class="ro-u">'+(unit||'')+'</span></div>'+
+      '<div class="ro-v'+(hl?' hl':'')+'">'+(val==null?'<span>-</span>':'<span class="count-up" data-target="'+val+'" data-decimals="1">'+fmt(val,1)+'</span>')+'<span class="ro-u">'+(unit||'')+'</span></div>'+
       sub+'</div>';
   }
   document.getElementById('readout').innerHTML=
     roCell('Weight',latest.weight_kg,'kg',cks.length>1?delta(latest.weight_kg,prev.weight_kg):null,'kg',true,'start')+
-    roCell('Body fat',latest.bodyfat_pct,'%',cks.length>1?delta(latest.bodyfat_pct,prev.bodyfat_pct):null,'pt',false,'start')+
-    roCell('Lean',latest.lean_mass_kg,'kg',cks.length>1?delta(latest.lean_mass_kg,prev.lean_mass_kg):null,'kg',true,'start')+
+    /* An estimated body fat gets no delta against a scan, and lean comes
+       from the last entry that actually measured it. */
+    roCell('Body fat',latest.bodyfat_pct,'%',(cks.length>1&&!latest.estimate)?delta(latest.bodyfat_pct,prev.bodyfat_pct):null,'pt',false,latest.estimate?'estimate':'start')+
+    (function(){
+      var lastLean=null; for(var i=cks.length-1;i>=0;i--){ if(cks[i].lean_mass_kg!=null){ lastLean=cks[i]; break; } }
+      if(!lastLean) return roCell('Lean',null,'kg',null,'kg',true,'');
+      var prevLean=null; for(var j=cks.indexOf(lastLean)-1;j>=0;j--){ if(cks[j].lean_mass_kg!=null){ prevLean=cks[j]; break; } }
+      return roCell('Lean',lastLean.lean_mass_kg,'kg',prevLean?delta(lastLean.lean_mass_kg,prevLean.lean_mass_kg):null,'kg',true,lastLean===latest?'start':'last scan');
+    })()+
     roCell('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false,'of '+DATA.target.weight_kg);
 
   /* ── Protocol bar ── */
@@ -846,6 +869,32 @@ var DATA = {
      nothing on this page should let a projection read as data.
      ════════════════════════════════════════════════════════════════ */
   var VIEW='w';
+
+  /* ── Tap a point to read it ──
+     SEL is {t:'ck', i} for a measured check-in or {t:'node', i} for a
+     phase boundary on the plan. Opens on the latest measured point, the
+     way the app's chart opens on today. Tapping the lit point clears it. */
+  var SEL=null;
+  (function(){ var li=-1; cks.forEach(function(c,i){ if(c.weight_kg!=null) li=i; }); if(li>=0) SEL={t:'ck',i:li}; })();
+  function monthToLabel(m){
+    var d=new Date(DATA.startDate+'T00:00:00'); d.setDate(d.getDate()+Math.round(m*30.4375));
+    return d.toLocaleDateString('en-AU',{month:'short',year:'numeric'});
+  }
+  var NODE_WORD={trim:'End of cut',build:'End of build',recomp:'End of hold',reveal:'Goal',start:'Route starts'};
+  function flagText(){
+    if(!SEL) return null;
+    if(SEL.t==='ck'){
+      var c=cks[SEL.i]; if(!c) return null;
+      return fmtDate(c.date)+' \u00b7 '+fmt(c.weight_kg,1)+' kg \u00b7 '+fmt(c.bodyfat_pct,1)+'%'+(c.estimate?' est.':'')+(c.scan&&c.scan.type?(' \u00b7 '+c.scan.type):'');
+    }
+    var n=ROUTE.nodes[SEL.i]; if(!n) return null;
+    return (NODE_WORD[n.kind]||n.kind)+' \u00b7 '+monthToLabel(n.month)+' \u00b7 '+n.weightKg+' kg \u00b7 '+n.bodyFatPct+'%';
+  }
+  function flagAnchor(isW){
+    if(!SEL) return null;
+    if(SEL.t==='ck'){ var c=cks[SEL.i]; if(!c) return null; return {m:monthsSinceStart(c.date), v:isW?c.weight_kg:c.bodyfat_pct}; }
+    var n=ROUTE.nodes[SEL.i]; if(!n) return null; return {m:n.month, v:isW?n.weightKg:n.bodyFatPct};
+  }
 
   function drawRoute(){
     var W=680,H=250,pad={t:26,r:18,b:34,l:42};
@@ -895,7 +944,9 @@ var DATA = {
 
     ROUTE.nodes.forEach(function(n,i){
       if(i===0) return;
-      s+='<circle cx="'+X(n.month).toFixed(1)+'" cy="'+Y(isW?n.weightKg:n.bodyFatPct).toFixed(1)+'" r="3" fill="#0a0a0f" stroke="rgba(168,85,247,0.55)" stroke-width="1.5"/>';
+      var on=SEL&&SEL.t==='node'&&SEL.i===i;
+      s+='<circle cx="'+X(n.month).toFixed(1)+'" cy="'+Y(isW?n.weightKg:n.bodyFatPct).toFixed(1)+'" r="'+(on?4:3)+'" fill="'+(on?'#a855f7':'#0a0a0f')+'" stroke="rgba(168,85,247,'+(on?'1':'0.55')+')" stroke-width="1.5"/>';
+      s+='<circle cx="'+X(n.month).toFixed(1)+'" cy="'+Y(isW?n.weightKg:n.bodyFatPct).toFixed(1)+'" r="14" fill="transparent" data-node="'+i+'" style="cursor:pointer"/>';
     });
 
     s+='<line x1="'+X(TODAY_M).toFixed(1)+'" y1="'+pad.t+'" x2="'+X(TODAY_M).toFixed(1)+'" y2="'+(H-pad.b)+'" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 3" opacity="0.7"/>';
@@ -910,32 +961,52 @@ var DATA = {
     }
     logged.forEach(function(c){
       var x=X(monthsSinceStart(c.date)), y=Y(isW?c.weight_kg:c.bodyfat_pct);
-      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5" fill="#0a0a0f" stroke="#a855f7" stroke-width="2.5"/>';
+      var ci=cks.indexOf(c), on=SEL&&SEL.t==='ck'&&SEL.i===ci;
+      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5" fill="'+(on?'#a855f7':'#0a0a0f')+'" stroke="#a855f7" stroke-width="2.5"'+(c.estimate&&!on?' stroke-dasharray="2.5 2.5"':'')+'/>';
+      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="16" fill="transparent" data-ck="'+ci+'" style="cursor:pointer"/>';
     });
-    var lastC=logged[logged.length-1];
+    var lastC=SEL?null:logged[logged.length-1];
     if(lastC){
       var lx=X(monthsSinceStart(lastC.date)), ly=Y(isW?lastC.weight_kg:lastC.bodyfat_pct);
       var anchor=(monthsSinceStart(lastC.date)>ROUTE.totalMonths*0.85)?'end':'start';
       s+='<text x="'+(lx+(anchor==='end'?-9:9)).toFixed(1)+'" y="'+(ly-9).toFixed(1)+'" text-anchor="'+anchor+'" font-family="DM Mono" font-size="10" fill="#c084fc">'+
-        (isW?(lastC.weight_kg+' kg'):(lastC.bodyfat_pct+'%'))+'</text>';
+        (isW?(lastC.weight_kg+' kg'):(lastC.bodyfat_pct+'%'))+(lastC.estimate&&!isW?' est.':'')+'</text>';
     }
 
-    for(var m=0;m<=36;m+=6){
+    for(var m=0;m<=ROUTE.totalMonths;m+=6){
       s+='<text x="'+X(m).toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#5b5b62">'+(m===0?'start':'m'+m)+'</text>';
     }
 
+    /* The flag: a pill in the top margin with a leader down to the point,
+       the same reading the app gives when a node on its chart is tapped. */
+    var ft=flagText(), fa=flagAnchor(isW);
+    if(ft&&fa&&fa.v!=null){
+      var fx=X(fa.m), fy=Y(fa.v);
+      var fw=Math.min(W-pad.l-pad.r, ft.length*6.1+20), fh=19, fyTop=4;
+      var bx=Math.min(Math.max(fx-fw/2,pad.l),W-pad.r-fw);
+      s+='<line x1="'+fx.toFixed(1)+'" y1="'+(fyTop+fh)+'" x2="'+fx.toFixed(1)+'" y2="'+(fy-7).toFixed(1)+'" stroke="#a855f7" stroke-width="1" opacity="0.45"/>';
+      s+='<rect x="'+bx.toFixed(1)+'" y="'+fyTop+'" width="'+fw.toFixed(1)+'" height="'+fh+'" rx="'+(fh/2)+'" fill="#0a0a0f" stroke="rgba(168,85,247,0.45)"/>';
+      s+='<text x="'+(bx+fw/2).toFixed(1)+'" y="'+(fyTop+13)+'" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#e8e8ea">'+ft+'</text>';
+    }
+
     el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+s+'</svg>';
+    el.onclick=function(e){
+      var t=e.target.closest('[data-ck],[data-node]'); if(!t) return;
+      var next=t.hasAttribute('data-ck')?{t:'ck',i:+t.getAttribute('data-ck')}:{t:'node',i:+t.getAttribute('data-node')};
+      SEL=(SEL&&SEL.t===next.t&&SEL.i===next.i)?null:next;
+      drawRoute();
+    };
     document.getElementById('chTitle').textContent=isW?'Bodyweight':'Body fat';
-    document.getElementById('chSub').textContent=
-      (isW?'kg':'%')+' \u00b7 planned route vs logged scans \u00b7 '+cks.length+' of '+TOTAL_SCANS+' logged';
     document.getElementById('legend').innerHTML=
-      '<span><i class="plan"></i>planned route</span>'+
-      '<span><i class="dot"></i>measured scan</span>'+
+      '<span><i class="plan"></i>the plan</span>'+
+      '<span><i class="dot"></i>me, measured</span>'+
       (isW?'':'<span><i class="band"></i>operating band</span>');
   }
 
   /* ── Phase strip: widths proportional to real duration ── */
-  document.getElementById('strip').innerHTML=ROUTE.phases.map(function(p){
+  document.getElementById('strip').innerHTML=
+    '<div class="seg gone" style="width:'+(ROUTE.startMonth/ROUTE.totalMonths*100).toFixed(2)+'%" title="Before the route was re-run"></div>'+
+    ROUTE.phases.map(function(p){
     var w=((p.to-p.from)/ROUTE.totalMonths*100).toFixed(2);
     var cls=(p.kind==='trim')?'cut':((p.kind==='reveal')?'reveal':'build');
     var done=(p.to<=TODAY_M)?' done':'';
@@ -954,35 +1025,32 @@ var DATA = {
     var dirGlyph=(intent.dir==='down')?'\u25bc':((intent.dir==='up')?'\u25b2':'\u2014');
 
     document.getElementById('ncPhase').textContent='Right now \u00b7 phase '+(idx+1)+' of '+ROUTE.phases.length;
-    document.getElementById('ncTitle').textContent=intent.title;
+    document.getElementById('ncTitle').textContent=ph.label.replace(/&middot;/g,'\u00b7').replace(/^Cut \u00b7 /,'Cutting to ').replace(/^Build \u00b7 /,'Building to ').replace(/^Reveal \u00b7 /,'Revealing at ');
     document.getElementById('ncBody').textContent=intent.detail;
 
+    /* Calendar window the phase ends in, from the engine's [lo, hi] months
+       counted from the day the route was re-derived. */
+    function endWindow(){
+      if(!ph.months) return null;
+      var base=new Date(ROUTE.generated+'T00:00:00');
+      function plus(mo){ var d=new Date(base); d.setDate(d.getDate()+Math.round(mo*30.4375)); return d.toLocaleDateString('en-AU',{month:'short',year:'2-digit'}); }
+      var a=plus(ph.months[0]), b=plus(ph.months[1]);
+      return a===b?a:(a+' \u2013 '+b);
+    }
     var rows=[
-      ['Scale should be','<span class="nc-v '+dirCls+'">'+dirGlyph+' '+intent.word+'</span>'],
-      ['Target rate', ph.rate==null?'<span class="nc-v">&mdash;</span>':'<span class="nc-v">'+(ph.rate>0?'+':'\u2212')+Math.abs(ph.rate).toFixed(2)+' %/wk</span>'],
-      ['Phase ends at','<span class="nc-v hl">'+ph.endKg+' kg \u00b7 '+ph.endBf+'%</span>'],
-      ['Then', next?('<span class="nc-v">'+(PHASE_INTENT[next.kind]||{}).word+' to '+next.endBf+'%</span>'):'<span class="nc-v hl">Goal</span>']
+      ['Scale','<span class="nc-v '+dirCls+'">'+dirGlyph+' '+intent.word+'</span>']
     ];
+    if(ph.macros){
+      rows.push(['Eating','<span class="nc-v">'+ph.macros.kcal.toLocaleString('en-AU')+' kcal \u00b7 '+ph.macros.protein+'p \u00b7 '+ph.macros.carbs+'c \u00b7 '+ph.macros.fat+'f</span>']);
+    }
+    if(ph.months){
+      var win=endWindow();
+      rows.push(['Done by','<span class="nc-v">'+(win||(ph.months[0]+'\u2013'+ph.months[1]+' months'))+'</span>']);
+    }
+    rows.push(['Ends at','<span class="nc-v hl">'+ph.endKg+' kg \u00b7 '+ph.endBf+'%</span>']);
+    void next;
     document.getElementById('ncRows').innerHTML=rows.map(function(r){
       return '<div class="nc-row"><span class="nc-l">'+r[0]+'</span>'+r[1]+'</div>';
-    }).join('');
-  })();
-
-  /* ── Milestone rail ── */
-  (function(){
-    var ws=ROUTE.points.map(function(p){ return p[1]; });
-    var lowest=Math.min.apply(null,ws), highest=Math.max.apply(null,ws);
-    var lowM=0, hiM=0;
-    ROUTE.points.forEach(function(p){ if(p[1]===lowest) lowM=p[0]; if(p[1]===highest) hiM=p[0]; });
-    var cuts=ROUTE.phases.filter(function(p){ return p.kind==='trim'; }).length;
-    var cells=[
-      {v:lowest.toFixed(1), l:'Lightest point<br>month '+Math.round(lowM)},
-      {v:highest.toFixed(1), l:'Heaviest point<br>month '+Math.round(hiM)},
-      {v:String(cuts), l:'Cuts along<br>the way'},
-      {v:ROUTE.estYears[0]+'\u2013'+ROUTE.estYears[1], l:'Years to<br>'+ROUTE.goal.weightKg+' kg at '+ROUTE.goal.bodyFatPct+'%', hl:true}
-    ];
-    document.getElementById('miles').innerHTML=cells.map(function(c){
-      return '<div class="mi"><div class="mi-v'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="mi-l">'+c.l+'</div></div>';
     }).join('');
   })();
 
