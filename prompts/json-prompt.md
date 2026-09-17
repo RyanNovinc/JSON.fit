@@ -374,8 +374,6 @@ Do not give import instructions here. The user waits until the whole program is 
 If you know the user's first name, put it on its own line as the FIRST line inside the code block, followed by a colon (e.g. `Ryan:`). If you do not know it, omit that line entirely and start the block at the checkmark. Never write a placeholder, a bracket, or a guessed name. That first-name line is the ONLY part you may change — every line from the checkmark down is reproduced verbatim.
 
 ```
-Ryan:
-
 ✅ That's your whole program — it's all in this last file.
 
 1. Tap the file that was just created.
