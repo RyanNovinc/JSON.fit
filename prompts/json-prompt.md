@@ -378,12 +378,12 @@ Ryan:
 
 ✅ That's your whole program — it's all in this last file.
 
-1. Tap the file above.
-2. Tap the ••• button.
-3. Tap Share or Download.
+1. Tap the file that was just created.
+2. Tap ••• or Share.
+3. Tap "Save as JSON" or "Share a copy" — whichever you see.
 4. Choose JSON.fit from the list of apps.
 
-No JSON.fit in the list? Download or copy the file, then import it in the app.
+No JSON.fit in the list? Save or copy the file, then import it in the app.
 ```
 
 (The `Ryan:` line is an EXAMPLE — replace it with the actual user's first name, or drop the line if you don't know it.)
