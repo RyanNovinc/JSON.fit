@@ -193,6 +193,7 @@ Verify rep ranges are correct for every exercise in the plan based on its catego
 - The exercise's category is correctly identified (heavy compound, moderate compound, unilateral compound, large isolation, small isolation, power)
 - The prescribed rep range falls within the file's per-category range for the user's primary goal
 - Goal-specific adjustments are applied (e.g., strength programs use lower rep ranges per the file's Goal-Specific Rules section)
+- For programs with mesocycles, each block's compound rep window is the one the file tables for that mesocycle's theme ("The mesocycle theme moves the floor"), and consecutive mesocycles do not share a floor. A roadmap that writes the full band in one mesocycle and a narrower window with the same floor in the next trains identically in both. Correct the windows to the table
 
 **Step 3: Fix any mismatches** silently. If a heavy compound is prescribed at 12-15 reps but the user's goal is strength (where heavy compounds should be 1-6), correct the rep range and re-verify. Report only the categories that FAILED, plus a one-line pass count for the rest.
 
