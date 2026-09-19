@@ -57,19 +57,17 @@ Apply to base matrix:
 - `powerlifting` → +1 RIR for barbell_compound and high_skill; others unchanged
 - `general_fitness` → +1 RIR all categories
 
+The hard floors in "Within-Exercise RIR" still apply and bound the result. Do not let the final prescribed RIR for any working set exceed 5.
+
 ## Phase Modifiers
 
-Determine the training phase from the generation prompt's PHASE CONTEXT block (or the plan). Apply on top of the base matrix and any goal modifier, then apply the Within-Exercise set adjustments and hard floors as normal.
+There are none. Every phase (`cut`, `recomp`, `lean_bulk`, `bulk`, `maintain`) uses the base matrix plus any goal modifier, unchanged.
 
-- `cut` → +1 RIR, all categories. Recovery is compromised in an energy deficit; the goal shifts to muscle retention, not maximal fatigue.
-- `recomp` → base (no change). Near-maintenance energy supports normal proximity to failure.
-- `lean_bulk` → base.
-- `bulk` → base.
-- `maintain` → base.
+Do NOT add RIR for a cut. No trial has manipulated proximity to failure under energy restriction, and self-reported RIR carries 1-2 reps of error in trained lifters, so a +1 adjustment is smaller than the noise it is expressed in. Reduced recovery in a deficit shows up on its own as fewer reps at the same target RIR, so the progression adapts without a modifier.
 
-**Stacking:** phase and goal modifiers are additive (e.g. `general_fitness` + `cut` = +2 RIR, all categories). The hard floors in "Within-Exercise RIR" still apply and bound the result. Do not let the final prescribed RIR for any working set exceed 5.
+This matches the PHASE CONTEXT block in the generation prompt. If the two ever appear to disagree, the PHASE CONTEXT block wins.
 
-**Authoritative at review too:** this modifier applies during plan review as well as generation. When auditing a plan whose phase is `cut`, RIR values that omit the +1 phase adjustment are a mismatch to correct — not a value to revert.
+**Authoritative at review too:** when auditing a plan, RIR values that carry a phase adjustment (for example +1 across every category on a cut) are a mismatch. Correct them back to the base matrix plus goal modifier.
 
 ## Within-Exercise RIR (by Set Count)
 
@@ -81,7 +79,9 @@ Target RIR from matrix = middle sets. Adjust set-by-set:
 | 2 | target+1 | — | target-1 |
 | 3 | target+1 | target | target-1 |
 | 4 | target+1 | target | target-1 |
-| 5+ | target+2 (cap 4 on compounds) | target | target-1 |
+| 5+ | target+1 | target | target-1 |
+
+The first-set offset is +1 at every set count. This is the same rule the JSON conversion step applies, so the plan and the file cannot disagree.
 
 **Hard floors:**
 - `barbell_compound` and `high_skill`: never below RIR 0
