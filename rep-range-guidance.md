@@ -19,7 +19,7 @@ Map rep ranges to exercise category, not goal label. Within category constraints
 
 The band is what the exercise tolerates AND what gets written. The user's working position inside it is decided by progression, not by prescription: they start near the bottom, work to the top, add load, return to the bottom.
 
-The only thing permitted to shift a band is the mesocycle's stated rep theme (see the roadmap's rep focus and Within-Mesocycle Progression below). A strength-emphasis block may narrow a compound toward its floor; a metabolic block may narrow isolation toward its ceiling. Both must stay inside the category band. "Variety" is not a reason to move a band.
+The only thing permitted to shift a band is the mesocycle's stated rep theme, and only to the windows tabled under "The mesocycle theme moves the floor" in Within-Mesocycle Progression below. Do not invent any other window. A strength-emphasis block may narrow a compound toward its floor; a metabolic block may narrow isolation toward its ceiling. Both must stay inside the category band. "Variety" is not a reason to move a band.
 
 ### High-rep allowance
 
@@ -67,7 +67,17 @@ Adjustments:
 - Joints flaring under added load → rep-only progression
 - Two sessions stalled with no RIR change → abandon double progression
 
-**How this is written into a program.** Weekly rep targets start at the band floor in Week 1 and climb one rep per week at a fixed load, while RIR falls per rir-guidance.md. The deload week returns to the Week 1 target at the same load.
+**How this is written into a program.** Weekly rep targets start at the floor of the block's rep window in Week 1 and climb one rep per week at a fixed load, while RIR falls per rir-guidance.md. The deload week returns to the Week 1 target at the same load.
+
+**The mesocycle theme moves the floor, not the ceiling.** A climb of one rep per week covers four or five reps, so it never reaches a ceiling further away than that. Under this progression the floor is the only part of a rep window the lifter ever trains at. Two mesocycles whose compound windows share a floor are the same training under a different label. So for hypertrophy-goal programs each mesocycle uses the compound window below, and consecutive mesocycles never share a floor:
+
+| Mesocycle theme | Heavy compound barbell (band 5–10) | Moderate and unilateral compound (band 6–15) |
+|---|---|---|
+| Hypertrophy | 6–10 | 8–12 |
+| Strength-Hypertrophy | 5–8 | 6–10 |
+| Metabolic / Intensity | 6–10 | 10–15 |
+
+Isolation stays on its full 10–15 band in every mesocycle. A program with no mesocycle structure uses the Hypertrophy row. Strength-goal programs use the Strength column of the category table instead. When a window is narrower than the block's climb (5–8 over five training weeks), hold a target for two weeks rather than passing the top.
 
 **Band edges are hard.** The climb stops at the category ceiling. It does not cross it — a lifter who reaches the ceiling adds load and returns to the floor. No target, deload included, goes under the floor. If the plan needs a rep target outside the band, the exercise is wrong for that block — change the exercise, not the band.
 
