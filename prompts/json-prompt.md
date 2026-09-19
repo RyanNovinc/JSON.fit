@@ -142,13 +142,15 @@ The plan is fully self-contained: it lists all exercise pools, block structures,
 For each exercise, design a weekly rep progression across the block. Since the app doesn't track weight, progressions are expressed entirely through rep targets — the user manages their own load increases.
 
 **Starting point rule:**
-Start at the TOP of the prescribed range in Week 1, reduce across the block. The rep ceiling is Week 1; the floor is the final training week before deload. This signals increasing load week over week.
+Start at the BOTTOM of the prescribed range in Week 1 and step UP across the block. The load stays the same for the whole block; the reps climb as RIR falls. The rep floor is Week 1; the highest target is the final training week before deload, and it never goes past the top of the range. This matches the double progression default in https://json.fit/rep-range-guidance.md.
 
-**Linear progression (default for all exercises):**
-Maintain rep targets in early weeks. Slight rep reduction in later weeks signals that the lifter should be using heavier loads.
-Example (5-week block, 4 sets): Week 1: "10, 10, 10, 8" → Week 2: "10, 10, 8, 8" → Week 3: "8, 8, 8, 8" → Week 4: "8, 8, 6, 6" → Week 5 (deload): "12, 12"
+**Double progression (default for all exercises):**
+Add one rep per set per week. Do not climb faster: the falling RIR across a block only frees up two or three reps, and anything beyond that has to come from real strength gain. Use the same rep target on every set within a week — RIR already falls from the first set to the last, which is what holds the reps level as fatigue builds. If the block has more training weeks than the range has room for, hold a target for two weeks rather than passing the top of the range. When the lifter reaches the top of the range they add load, and the next block starts again from the bottom.
+Example (5-week block, 4 sets, range 8-12): Week 1: "8, 8, 8, 8" → Week 2: "9, 9, 9, 9" → Week 3: "10, 10, 10, 10" → Week 4: "11, 11, 11, 11" → Week 5 (deload): "8, 8"
 
-`reps_weekly` values must be comma-separated rep targets per set (e.g., "10, 10, 10, 8"), not shorthand like "4x10".
+**Deload week reps:** return to the Week 1 target at the same load. Fewer reps at a held load is what raises RIR. Never raise reps in a deload week — more reps at a held load is a harder week, not an easier one.
+
+`reps_weekly` values must be comma-separated rep targets per set (e.g., "10, 10, 10, 10"), not shorthand like "4x10".
 
 **rir_weekly field — REQUIRED whenever the exercise has reps_weekly populated.**
 
@@ -323,10 +325,10 @@ Before presenting each block, silently verify:
 - [ ] Every exercise from the plan appears in JSON with correct set counts
 - [ ] Exercise names are identical everywhere (across days, notes, superset references) AND match the canonical library exactly
 - [ ] Superset exercises are adjacent with matching superset_group values and cross-referenced in notes
-- [ ] Rep progressions trend flat-to-decreasing across weeks (not identical every week)
+- [ ] Rep progressions start at the bottom of the range and trend flat-to-increasing across weeks (not identical every week, never past the top of the range)
 - [ ] RIR guidance from the plan carried through to every exercise's notes
 - [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
-- [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps, and the block carries a `deload_weeks` array
+- [ ] Deload weeks show reduced sets_weekly (~40-50%) and reps back at the Week 1 target, and the block carries a `deload_weeks` array
 - [ ] Every block's `days` array totals 7 objects — training days plus REST DAY entries — ordered to match its weekly_schedule
 - [ ] `days_per_week` at the root is the count of TRAINING days, not 7 and not the length of the `days` array (a 4-day split says 4 while its `days` array holds 7 objects)
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
