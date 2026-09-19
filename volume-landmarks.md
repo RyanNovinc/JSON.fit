@@ -50,7 +50,7 @@ Treat Back as a single muscle group (lats, mid-back, upper back combined). Split
 
 **Counting sets toward Back.** The exercise library tags Lats and Upper Back separately, and most back exercises tag one as Primary and the other as Secondary. For the Back row a set counts ONCE: 1.0 if either Lats or Upper Back is Primary, 0.5 if one of them appears only as Secondary. Never add the Primary and the Secondary contribution of the same set together. A 4-set row is 4.0 toward Back, not 6.0. Tags in the program and in the JSON stay exactly as the library writes them (Lats, Upper Back). Only the volume row is combined, so the per-muscle target table has one Back row and no separate Lats or Upper Back rows.
 
-**Lats or Upper Back as a priority muscle.** If the user names Lats or Upper Back as a priority, the Back row takes the priority range, and at least 60% of Back sets must come from exercises whose Primary tag is the named muscle. With no back priority, vertical pulls make up at least one-third of Back sets.
+**Lats or Upper Back as a priority muscle.** If the user names Lats or Upper Back as a priority, the Back row takes the priority range, and the named muscle's share of back work must be at least 60%. Count the share in RAW sets, not effective sets: sets whose Primary tag is the named muscle ÷ all sets whose Primary tag is Lats or Upper Back. Exercises that tag them only as Secondary are left out of both numbers. With no back priority, vertical pulls make up at least one-third on the same count.
 
 ### Note on Traps
 
