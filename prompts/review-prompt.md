@@ -279,6 +279,11 @@ Do not claim a fix works without showing the recount tables for every affected m
 - **Movement patterns**: Balanced push/pull ratios, adequate hip hinge and squat patterns for leg training
 - **Progression potential**: All exercises should allow clear weight/rep/set progression across the mesocycle
 - **Set counts**: Don't exceed 5 sets of any single isolation exercise in one session
+- **Best-evidence variation**: For three muscles a controlled trial shows one variation grows the muscle more at the same sets. Check each, in every block:
+  - **Triceps:** if the week has only one direct triceps exercise, it must be an overhead extension (Overhead Cable Triceps Extension or Overhead Dumbbell Triceps Extension). If it has two or more, at least one must be overhead.
+  - **Hamstrings:** if the week has only one leg curl, it must be Seated Leg Curl, not Lying Leg Curl.
+  - **Calves:** straight-knee raises (Standing Calf Raise, Smith Machine Calf Raise, Leg Press Calf Raise, Single-Leg Dumbbell Calf Raise) must carry at least half of the weekly calf sets.
+  A miss is a FAIL. Fix it by swapping the exercise and keeping its sets, reps and RIR. Every exercise named here carries the same tags as the one it replaces, so no volume total changes. Skip a check only when the user's equipment rules the favoured exercise out or the profile lists it as disliked, and say so in one line.
 
 ### Programming Logic Review
 
