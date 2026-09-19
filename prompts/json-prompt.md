@@ -129,8 +129,8 @@ The plan is fully self-contained: it lists all exercise pools, block structures,
 ## Translation Principles
 
 1. **The plan is authoritative for structure; the exercise library is authoritative for tags** — use the exercise names, sets, superset pairings, and day structure exactly as specified from the plan. However, before finalizing any JSON, verify every exercise's primaryMuscles and secondaryMuscles tags against the canonical exercise library at https://json.fit/exercises.md. If the plan's tags differ from the library, use the library's tags (the library is authoritative). Do not add, remove, or rename exercises. If the plan declares a mesocycle structure, append the mesocycle name to routine_name in every JSON file. The reviewed plan's set counts are final — do not adjust them based on your own volume recalculation.
-2. **Treat exercise names as identifiers** — use the exact same string for the same exercise across all blocks, days, notes, and superset references. Never vary naming.
-3. **Design what the plan doesn't specify** — you are responsible for alternative exercises and technique notes. For rep progressions: follow the plan's scheme if stated, otherwise use the defaults below. You are NOT responsible for rest periods — see the Rest Periods section.
+2. **Treat exercise names as identifiers** — use the exact same string for the same exercise across all blocks, days and superset references. Never vary naming.
+3. **Design what the plan doesn't specify** — you are responsible for alternative exercises. Do NOT write technique notes: the app ships its own coaching cues for every library exercise and shows those, never text from this file. For rep progressions: follow the plan's scheme if stated, otherwise use the defaults below. You are NOT responsible for rest periods — see the Rest Periods section.
 4. **Only program working sets** — do not include warm-up sets.
 
 ---
@@ -161,19 +161,22 @@ Structure: identical to reps_weekly. An object with week numbers as keys ("1", "
 Translation rules:
 
 1. The number of comma-separated values per week must match the exercise's set count for that week (matches reps_weekly)
-2. Source the values from the exercise's notes field, which contains the RIR progression (e.g., "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4")
-3. The week-level target from the notes is the middle-set value. Apply within-exercise progression:
+2. Source the values from the plan's RIR line for that exercise (e.g., "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4")
+3. The week-level target from the plan is the middle-set value. Apply within-exercise progression:
    - Set 1: target + 1 (one rep further from failure)
    - Middle sets: target
    - Last set: target - 1 (one rep closer to failure, never below 0)
 4. Values can be single integers ("3", "2", "1", "0") or ranges ("0-1", "1-2")
-5. If the plan notes specify exact per-set values (e.g., "Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR."), use those exact values rather than re-deriving
+5. If the plan specifies exact per-set values (e.g., "Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR."), use those exact values rather than re-deriving
+6. **Deload weeks are the exception to rule 3.** Write the plan's deload RIR flat on every set, with no first-set or last-set offset, and never write a deload set below RIR 3. If the plan gives a range (3-4), write "4" on every set. The deload holds the load and returns reps to the Week 1 target, which already leaves the lifter about four reps from failure; an offset that writes "2" on the last set contradicts both the load and the deload canon ("every set stays clearly short of failure")
 
-Example: for an exercise with 3 sets per week and notes "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4", rir_weekly is an object mapping week "1" to "4, 3, 2", week "2" to "3, 2, 1", week "3" to "2, 1, 0", and week "4" to "1-2, 0-1, 0".
+Example: for an exercise with 3 sets per week and the plan line "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4", rir_weekly is an object mapping week "1" to "4, 3, 2", week "2" to "3, 2, 1", week "3" to "2, 1, 0", and week "4" to "1-2, 0-1, 0".
 
 Floor: never go below RIR 0. If within-exercise math produces a negative value, clamp to 0.
 
-Do not regenerate RIR guidance from scratch — translate from the plan notes that already include the RIR progression.
+Do not regenerate RIR guidance from scratch — translate from the plan's RIR line for each exercise. The plan's RIR text is the SOURCE for `rir_weekly`; it is not copied into the file.
+
+**Unilateral exercises.** Keep `reps` and `reps_weekly` as plain numbers — the app parses them. One set is both sides. Do not add a per-side marker anywhere in the file.
 
 **reps_weekly and rir_weekly are load-bearing beyond rep display.** The app derives each exercise's rest period from them: first-set reps plus first-set RIR give an estimated RM, and that decides whether a compound is treated as a heavy set or a moderate one. A missing or malformed rir_weekly does not just lose the RIR display, it makes the app guess at the load. Populate both accurately for every resistance exercise.
 
@@ -217,11 +220,13 @@ Each exercise must include 2 alternatives (1 for bodyweight-only programs). Alte
 
 ### Notes
 
-Only include non-obvious technique tips or specific setup instructions. Do not add notes for standard exercises performed in standard ways. If the plan includes notes for an exercise, carry them through.
+Do not write a `notes` field on any exercise. Leave the key out entirely.
+
+The app has its own coaching cues for every exercise in the library (setup, execution, what to feel, common mistakes) and shows those on the logging screen. Text written here never reaches that screen, RIR is shown from `rir_weekly`, and supersets are read from `superset_group`. A note on every exercise in every block is the single largest waste of output in this step, so none are written. If the plan carries notes for an exercise, they stay in the plan.
 
 ### Supersets
 
-Place superset exercises adjacent in the exercises array. Include "Superset with [exact exercise name]" in both exercises' notes field. Add "superset_group": "ss1" (or "ss2", "ss3" etc.) to both exercises in the pair — use the same string value for both. The plan marks supersets with SS[n]a/SS[n]b notation — translate these to adjacent array entries with matching superset_group values.
+Place superset exercises adjacent in the exercises array. Add "superset_group": "ss1" (or "ss2", "ss3" etc.) to both exercises in the pair — use the same string value for both. The plan marks supersets with SS[n]a/SS[n]b notation — translate these to adjacent array entries with matching superset_group values.
 
 `superset_group` is what tells the app to apply superset rest timing, so getting the pairing and the matching group string right matters more than it used to. Adjacency plus a matching group value is the whole contract.
 
@@ -293,7 +298,6 @@ Exercise names must also match the library exactly. The app looks up each exerci
   "reps_weekly": { "1": "string", "2": "string" },
   "rir_weekly": { "1": "string", "2": "string" },
   "sets_weekly": { "1": "number", "2": "number" },
-  "notes": "string (form cues, RIR guidance, or other coaching notes — multiple notes allowed)",
   "alternatives": [
     { "exercise": "string", "primaryMuscles": ["..."], "secondaryMuscles": ["..."] }
   ]
@@ -307,13 +311,13 @@ Exercise names must also match the library exactly. The app looks up each exerci
 1. **Block-relative keys** — weekly progression keys always start from "1" within each block. Block B (weeks 7-12) uses "1", "2", "3"... not "7", "8", "9".
 2. **Deload tagging** — if a block has deload weeks, include a `deload_weeks` array with the block-relative week numbers (e.g., [5] for a 5-week block with deload on week 5). The app also reads this to lengthen rest during deload weeks, so an omitted deload_weeks costs more than a missing label.
 3. **Empty arrays** — if an exercise has no secondary muscles, use `[]`. Do not omit the field.
-4. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: `Straight sets: (sets × 45s) + (sets × rest_seconds) | Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s) | Total: exercise_count × 150s + 300s warmup`. Use the same category defaults given under Rest Periods for `rest_seconds`. This figure is an estimate shown before import; the app recomputes it live from the user's actual rest pace, so do not agonise over it. Duration has been pre-approved in the review stage.
+4. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: `Straight sets: (sets × 45s) + (sets × rest_seconds) | Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s) | Total: exercise_count × 150s + 300s warmup`. For `rest_seconds` in THIS formula use the four figures in the plan's rest summary (heavy compounds, machine and cable compounds, large-muscle isolation, small isolation), not the `rest` field defaults, so the number matches the one the plan and the review already reported to the user. This figure is an estimate shown before import; the app recomputes it live from the user's actual rest pace, so do not agonise over it. Duration has been pre-approved in the review stage.
 5. **sets vs sets_weekly** — `sets` is the default set count for training weeks (used for display). `sets_weekly` must be specified for every week in the block: training weeks should match `sets`, and deload weeks should show reduced values. Both fields are required for every strength exercise.
 6. **deload_weeks optionality** — omit `deload_weeks` entirely for blocks without deloads. Do not include an empty array.
 7. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. Example for 5-day program: Day 1 training "Push", Day 2 training "Pull", Day 3 rest "REST DAY", Days 4 and 5 training, Day 6 rest, Day 7 training.
 8. **REST DAY entries in `days`** — every block's `days` array must hold the full 7-day week: one object per training day plus one `{ "day_name": "REST DAY", "estimated_duration": 0, "exercises": [] }` per rest day, ordered exactly as weekly_schedule orders the week. The app renders `days` and only `days` — weekly_schedule never reaches the screen — and it renders the array in order, so a rest day's position in the array IS its position in the user's week. A 6-day program therefore ships 7 day objects, one of them REST DAY. Do not collapse consecutive rest days into a single entry; two rest days are two objects.
 9. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
-10. **RIR** — carry RIR guidance from the approved plan into each exercise's notes field. Do not regenerate or modify RIR values — the plan is authoritative.
+10. **RIR** — RIR lives in `rir_weekly` and nowhere else. Translate it from the approved plan; do not regenerate or modify RIR values (the plan is authoritative), and do not copy the plan's RIR text into the file.
 11. **default_pace** — include `default_pace` at the root, lowercase, as one of `"optimal"`, `"moderate"` or `"minimal"`, read from the pace named in the plan's rest summary (see Rest Periods). Fall back to `"moderate"` only when the plan names no pace. This is the one rest-related value you carry from the plan into the file.
 
 ---
@@ -323,12 +327,13 @@ Exercise names must also match the library exactly. The app looks up each exerci
 Before presenting each block, silently verify:
 
 - [ ] Every exercise from the plan appears in JSON with correct set counts
-- [ ] Exercise names are identical everywhere (across days, notes, superset references) AND match the canonical library exactly
-- [ ] Superset exercises are adjacent with matching superset_group values and cross-referenced in notes
+- [ ] Exercise names are identical everywhere (across days and superset references) AND match the canonical library exactly
+- [ ] Superset exercises are adjacent with matching superset_group values
 - [ ] Rep progressions start at the bottom of the range and trend flat-to-increasing across weeks (not identical every week, never past the top of the range)
-- [ ] RIR guidance from the plan carried through to every exercise's notes
+- [ ] No exercise carries a `notes` field
 - [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
 - [ ] Deload weeks show reduced sets_weekly (~40-50%) and reps back at the Week 1 target, and the block carries a `deload_weeks` array
+- [ ] Deload week rir_weekly is flat on every set and never below 3
 - [ ] Every block's `days` array totals 7 objects — training days plus REST DAY entries — ordered to match its weekly_schedule
 - [ ] `days_per_week` at the root is the count of TRAINING days, not 7 and not the length of the `days` array (a 4-day split says 4 while its `days` array holds 7 objects)
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
