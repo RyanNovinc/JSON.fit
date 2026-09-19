@@ -138,13 +138,18 @@ The volume enumeration tables in the next section need correct per-muscle target
 
 **Step 3: Look up the tier × experience mapping.** In the landmarks file, find the matching cell in the tier mapping table to determine the position within MAV (e.g., "MAV-low", "MAV-mid", "MAV-high to MRV").
 
-**Step 4: Build the per-muscle target table.** For every muscle in the program (including any auxiliary muscles the user has selected), apply the position from Step 3 to that muscle's MAV range from the landmarks file:
+**Step 4: Build the per-muscle target table.** For every muscle in the program (including any auxiliary muscles the user has selected), apply the landmarks file in this order:
+
+- **Priority muscles** (named in the profile): MAV-high to MRV.
+- **Non-priority, non-exempt muscles:** the position from Step 3. If the profile names any priority muscles, step that position down using the step rule in the landmarks file's Priority Muscles section (one step for 1-2 priority muscles, two steps for 3 or more, never below MEV).
+- **Exempt-from-floor muscles** not named as priority or auxiliary: 0–[MRV − 1]. No floor, and no ceiling below MRV.
+- **Auxiliary muscles:** MAV-low as the floor, MRV as the ceiling.
+- **Back is ONE row** (Lats + Upper Back combined), per the landmarks file's Note on Back. If the profile names Lats or Upper Back as a priority, the Back row takes the priority range.
 
 | Muscle | Target Range (effective sets/week) |
 |--------|------------------------------------|
 | Chest | [low]–[high] |
-| Lats | [low]–[high] |
-| Upper Back | [low]–[high] |
+| Back (Lats + Upper Back combined) | [low]–[high] |
 | Front Delts | [low]–[high] |
 | Side Delts | [low]–[high] |
 | Rear Delts | [low]–[high] |
@@ -230,6 +235,8 @@ For each muscle, list:
 - The contribution (sets × weight)
 - The running total
 
+**Back is one table.** List every exercise that tags Lats OR Upper Back. Each set counts ONCE toward Back: 1.0 if either tag is Primary, 0.5 if one of them appears only as Secondary. Never add a set's Primary and Secondary contributions together — a 4-set row is 4.0 toward Back, not 6.0. Under the Back total, state the share of Back sets that come from lat-primary exercises. If the profile names Lats or Upper Back as a priority, at least 60% of Back sets must come from exercises whose Primary tag is that muscle. With no back priority, vertical pulls must be at least one-third of Back sets.
+
 After enumerating all contributing exercises for a muscle, sum the contributions to get the effective volume.
 
 Format each muscle as a table like this:
@@ -251,7 +258,7 @@ Compare each muscle's summed total against THAT MUSCLE'S target range from the P
 - Flag as ⚠️ HIGH (must fix) if the table's summed total exceeds the ceiling of THAT muscle's target range
 - Flag as ⚠️ LOW (must fix) if the table's summed total falls below the floor of THAT muscle's target range
 - Auxiliary muscles use the MAV-low range from the landmarks file as their floor (typically 4-6 effective sets) — these MUST appear in the enumeration if the user selected them
-- Exempt-from-floor muscles (Front Delts, Rear Delts, Traps, Forearms, Lower Back, Glutes — UNLESS user selected as auxiliary) don't need enumeration if compound contributions cover MEV. However, they are NOT exempt from the ceiling — if compound contributions push them above the target range ceiling, this is a HIGH flag that must be fixed per the Rule Enforcement Principle. "Exempt from floor" never means "exempt from ceiling."
+- Exempt-from-floor muscles (Front Delts, Rear Delts, Traps, Forearms, Lower Back, Glutes — UNLESS user selected as priority or auxiliary) have no floor and no target ceiling below MRV. A low total, including 0, is NOT a violation. The library tags prime movers only, so stabiliser work never shows in the count. Do not add direct sets (shrugs, back extensions, front raises) to lift one of these muscles toward MEV. If the draft says it added direct work for one of them only to reach a floor, remove that work and recount. Do not swap out presses or rows to hold one of them under a number below MRV either. Enumerate them only to confirm the total stays below MRV — at or above MRV is a HIGH flag that must be fixed per the Rule Enforcement Principle. "Exempt from floor" never means "exempt from MRV."
 
 **Cascade recount requirement.** When you adjust any exercise (add sets, remove sets, swap exercise, remove exercise), you MUST recount EVERY muscle that exercise tags as Primary OR Secondary. Not just the muscle you were trying to fix.
 
@@ -277,7 +284,8 @@ Do not claim a fix works without showing the recount tables for every affected m
 
 - **Weekly structure**: Logical distribution of training stress across the week; no two consecutive days hitting the same muscle group heavily
 - **Weekly layout totals 7 days**: The plan's weekly layout accounts for all 7 days — training days (matching the user's training days per week) plus rest days. The number of training days must equal the user's training days per week from the profile, with the remaining days as rest. Fix any layout that omits rest days or has the wrong number of training days.
-- **Exercise order**: Compound before isolation, higher skill before lower skill
+- **Exercise order**: Compound before isolation, higher skill before lower skill. Priority placement (next line) is the one exception.
+- **Priority placement**: If the profile names priority muscles, each priority muscle's first exercise of the day must sit in the first half of that session. On a day whose main lifts do not train that muscle (side delts or biceps on a lower day, for example), its isolation work may open the session or follow the first compound. A priority muscle first trained in the back half of a session is a FAIL. Fix it by reordering only — no set count changes, so volume is unaffected.
 - **Auxiliary placement**: If user selected auxiliary muscles, those exercises should appear as finishers at the end of sessions, not as dedicated sessions
 - **Superset pairing**: If the plan uses supersets, each pair must be two adjacent exercises marked with matching SS[n]a / SS[n]b notation. The app reads that pairing to apply superset rest timing, so an unpaired or non-adjacent marker is a real defect, not a formatting nit. Antagonist pairings (chest/back, biceps/triceps, quads/hamstrings isolation, side delts/rear delts) are the intended use; same-muscle supersets belong only in finishers.
 
@@ -285,6 +293,7 @@ Do not claim a fix works without showing the recount tables for every affected m
 
 - **Equipment consistency**: All exercises use equipment stated as available in the user's profile
 - **Skill appropriate**: Exercise complexity matches stated experience level
+- **Loaded bodyweight movements**: Weighted Pull-up is the main exercise only for Advanced users. For everyone else the main exercise is the bodyweight version (Pull-up, Neutral-Grip Pull-up or Chin-up), with Weighted Pull-up and Assisted Pull-up listed as its alternatives, so the lifter picks whichever lands inside the rep range. Do not order blocks so that the loaded version comes before the unloaded one.
 - **Duration honest**: Calculate total workout time including rest and report it transparently. Only flag if sessions exceed 2 hours — otherwise duration is whatever the user's volume and rest preferences produce.
 
 ---
