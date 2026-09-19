@@ -48,9 +48,13 @@ When generating workout programs, you MUST:
 
 Treat Back as a single muscle group (lats, mid-back, upper back combined). Splitting into separate "Lats" and "Upper Back" with full back-volume ranges each would double-count work from rows, pulldowns, and pull-ups. Lat vs. mid-back emphasis is handled through exercise selection within the combined back volume budget.
 
+**Counting sets toward Back.** The exercise library tags Lats and Upper Back separately, and most back exercises tag one as Primary and the other as Secondary. For the Back row a set counts ONCE: 1.0 if either Lats or Upper Back is Primary, 0.5 if one of them appears only as Secondary. Never add the Primary and the Secondary contribution of the same set together. A 4-set row is 4.0 toward Back, not 6.0. Tags in the program and in the JSON stay exactly as the library writes them (Lats, Upper Back). Only the volume row is combined, so the per-muscle target table has one Back row and no separate Lats or Upper Back rows.
+
+**Lats or Upper Back as a priority muscle.** If the user names Lats or Upper Back as a priority, the Back row takes the priority range, and at least 60% of Back sets must come from exercises whose Primary tag is the named muscle. With no back priority, vertical pulls make up at least one-third of Back sets.
+
 ### Note on Traps
 
-The Traps numbers above assume effective-set (fractional) counting, where heavy rows and deadlifts contribute 0.5 effective sets to traps. Stay consistent with the fractional convention across the program.
+The Traps numbers above describe what the traps tolerate. They are not a floor to fill. Rows, deadlift variants and lateral raises all load the traps, but the exercise library tags prime movers only and leaves stabilisers untagged, so a tag-based count reads Traps as 0 on a program that loads them several times a week. Do not add shrugs to close that gap. Traps get direct work only when the user names Traps as a priority or auxiliary muscle.
 
 ## Tier Mapping (Volume Preference × Experience)
 
@@ -145,11 +149,23 @@ If the user has selected an auxiliary muscle (Neck, Obliques, Lower Back, Hip Ab
 
 ## Priority Muscles (User-Specified)
 
-If a muscle is flagged as priority, target MAV-high to MRV (top of the muscle's productive range). Reduce non-priority muscles toward their MEV to keep total stress recoverable.
+If a muscle is flagged as priority, target MAV-high to MRV (top of the muscle's productive range).
+
+Non-priority muscles step DOWN from the user's tier position to keep total stress recoverable. Use this ladder and these EXACT steps. Both Prompt 1 and Prompt 2 must produce identical numbers from the same input.
+
+Ladder, low to high: MEV → MAV-low → MAV-mid → MAV-high. For stepping, read "MAV-high to MRV" as MAV-high and "MEV to MAV-low" as MAV-low.
+
+- 1 or 2 priority muscles → non-priority muscles move ONE step down the ladder.
+- 3 or more priority muscles → non-priority muscles move TWO steps down the ladder.
+- Never below MEV. A user already at MEV stays at MEV.
+
+Worked example: High Volume + Intermediate = MAV-high. With 5 priority muscles, non-priority muscles move two steps to MAV-low (Quads 12–14, Triceps 10–11). With 1 priority muscle they move one step to MAV-mid (Quads 14–16, Triceps 11–13).
+
+The step applies to non-priority, non-exempt muscles only. Auxiliary muscles and exempt-from-floor muscles are not moved by it.
 
 ## Exempt-from-Floor Muscles
 
-Some muscles get sufficient volume from compounds and don't need direct work to clear MEV:
+Some muscles are trained as a by-product of compounds chosen for other muscles:
 - Front Delts (heavy indirect from pressing)
 - Traps (indirect from rows, deadlifts)
 - Rear Delts (indirect from rows, face pulls)
@@ -157,7 +173,13 @@ Some muscles get sufficient volume from compounds and don't need direct work to 
 - Glutes (heavy indirect from squats and hinges)
 - Forearms (indirect from grip-loaded pulling)
 
-These can show 0 direct sets if compound contributions cover MEV. They are NOT exempt from MRV — going over the ceiling still causes problems.
+These muscles have NO floor. They can show 0 direct sets, and a total below any landmark is not a violation. Do not add direct work to bring one of them up to MEV. The exercise library tags prime movers only, so stabiliser work (traps and lower back on rows, squats and hinges) never appears in a tag-based count. A low number here usually means under-counted, not under-trained.
+
+They have NO target ceiling below MRV either. Write their row in the per-muscle target table as 0–[MRV − 1] (Front Delts 0–11, Traps 0–13). Do not restrict exercise selection to hold one of them under a lower number. Avoiding every press that tags Front Delts, for example, trades a real chest stimulus for a bookkeeping result.
+
+They are NOT exempt from MRV — going over the ceiling still causes problems.
+
+A muscle on this list that the user names as a priority or auxiliary muscle is no longer exempt. The priority or auxiliary rules apply to it instead.
 
 ## Volume Violation Handling
 
@@ -182,8 +204,8 @@ For each muscle, evaluate in this order:
 
 | Status | Action |
 |--------|--------|
-| Below target floor | Acceptable IF compound contributions cover MEV. No action needed. |
-| Above target ceiling, below MRV | Attempt fix first. Reduce a press only if doing so doesn't drop Chest, Front Delts (if direct), Triceps, Back, or any other affected muscle below their target floors. If reduction is impossible without violating another target, document the cascade and accept the overshoot. |
+| Below any landmark, including 0 | No action. These muscles have no floor. Do not add direct sets to reach MEV. |
+| Below MRV | In range, no action. There is no target ceiling below MRV. |
 | At or above MRV | Must fix — overtraining risk is real, even from indirect volume. Reduce pressing or split exercises across more days. |
 
 ### Priority Muscle (User-Selected)
