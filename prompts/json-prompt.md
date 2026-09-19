@@ -1,1318 +1,411 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050508">
-<title>The Lab: bulking to 90 kg on JSON.fit</title>
-<meta name="description" content="I built JSON.fit and I'm using it to get to 90 kg at 13% body fat. DEXA scans, the full planned route, standardised progress photos and every number, posted as they happen.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="The Lab: JSON.fit">
-<meta property="og:description" content="DEXA scans, the whole route to 90 kg at 13%, planned by the app I built. Every number, posted as it happens.">
-<meta property="og:image" content="https://json.fit/og-image.png">
-<meta property="og:url" content="https://json.fit/lab/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Lab: JSON.fit">
-<meta name="twitter:description" content="DEXA scans, the whole route to 90 kg at 13%, planned by the app I built. Every number.">
-<link rel="canonical" href="https://json.fit/lab/">
-<link rel="icon" type="image/x-icon" href="/favicon-3.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-3.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/icon-180-3.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  /* The Lab runs on violet, distinct from home (cyan) and nutrition (green) */
-  --violet:#a855f7;
-  --violet-bright:#c084fc;
-  --violet-soft:rgba(168,85,247,0.08);
-  --violet-glow:rgba(168,85,247,0.35);
-  --violet-border:rgba(168,85,247,0.16);
-  /* semantic deltas (direction, not brand) */
-  --up:#22c55e;
-  --down:#ef4444;
-  --flat:#9898a4;
-  --amber:#f59e0b;
-  /* shared shell, identical to the rest of the site */
-  --bg:#050508; --surface:#0a0a0f; --surface-2:#111116;
-  --border:rgba(255,255,255,0.06);
-  --text:#f0f0f2; --text-2:#9898a4; --text-3:#7a7a86;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{overflow-x:hidden;scroll-behavior:smooth;background:var(--bg)}
-body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px;overflow-x:hidden;
-  /* faint lab grid texture in the background for atmosphere */
-  background-image:linear-gradient(rgba(168,85,247,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.025) 1px,transparent 1px);
-  background-size:48px 48px;background-position:center top;
-}
-.violet{color:var(--violet)}
-.mono{font-family:'DM Mono',monospace}
-.container{max-width:1000px;margin:0 auto;padding:0 1.5rem}
-.section{padding:4.5rem 0 0}
-.label{font-family:'DM Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--violet);display:block;margin-bottom:1rem}
+# Generate Workout Program as JSON
 
-/* scroll animations, same engine as index.html */
-.sa{opacity:0;transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-.sa-up{transform:translateY(50px)}
-.sa.vis{opacity:1;transform:none}
-.section-line{width:0;height:1px;background:var(--violet-border);margin-bottom:1rem;transition:width .7s ease}
-.section-line.vis{width:48px}
-.count-up{display:inline-block}
+## FORMATTING RULES (CRITICAL)
 
-/* ── Nav ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
-.nav-left{display:flex;align-items:center;gap:.6rem}
-.nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.4rem}
-.nav-back{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(5,5,8,0.6);border:1px solid var(--border);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--text-3);text-decoration:none;transition:border-color .2s,color .2s;flex-shrink:0}
-.nav-back:hover{border-color:var(--violet-border);color:var(--violet)}
-.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
-.nav-links a{color:var(--text-3);text-decoration:none;font-size:.8rem;font-weight:500;transition:color .2s}
-.nav-links a:hover,.nav-links a.active{color:var(--text)}
-.nav-links a.active{color:var(--violet)}
-.nav-cta{background:var(--violet)!important;color:#0a0010!important;padding:.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:.78rem!important;transition:transform .2s,box-shadow .2s}
-.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--violet-glow)}
-.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px}
-.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all .3s}
+These rules govern what you WRITE IN CHAT. The JSON schema and examples further down this file are reference material for you — the user never sees them.
 
-/* ── Hero: specimen sheet ── */
-.hero{position:relative;padding:7.5rem 1.5rem 3.25rem;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-22%;left:70%;width:720px;height:720px;border-radius:50%;background:radial-gradient(circle,var(--violet-glow) 0%,transparent 65%);opacity:.09;filter:blur(80px);pointer-events:none}
-.hero-grid{position:relative;z-index:2;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:3.5rem;align-items:center}
-.h-ov{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);margin-bottom:1.15rem}
-.h-display{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(2.6rem,5.4vw,3.9rem);line-height:1.05;letter-spacing:-.01em}
-.h-display em{color:var(--violet);font-style:italic}
-.h-sub{font-size:.95rem;color:var(--text-2);max-width:440px;margin-top:1.15rem;line-height:1.75}
-.h-hair{width:min(320px,52vw);height:1px;background:rgba(255,255,255,.14);margin:1.5rem 0 0}
-.h-status{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:1.3rem;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
-.h-status b{color:var(--text);font-weight:500}
-.h-status .live{display:inline-flex;align-items:center;gap:.4rem;color:var(--up)}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--up);animation:pulse 1.6s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+Code blocks (triple backticks) in your chat response are RESERVED for the closing callout at the end. Never paste JSON, schema fragments, or code samples into your visible response. The JSON goes in the file, not in chat.
 
-/* specimen frame */
-.spec{display:flex;flex-direction:column;gap:.85rem}
-.spec-frame{position:relative;aspect-ratio:2/3;max-width:330px;width:100%;margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 30%,rgba(168,85,247,.08),#000 74%);touch-action:pan-y}
-.spec-frame:focus-visible{outline:2px solid var(--violet);outline-offset:3px}
-.spec-shot{position:absolute;inset:0;z-index:2;animation:vrfade .28s ease}
-.spec-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;cursor:zoom-in}
-.spec-cap{position:absolute;left:.65rem;bottom:.6rem;z-index:5;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.22rem .5rem;border-radius:4px;backdrop-filter:blur(6px)}
-/* viewfinder corner brackets */
-.spec-frame::before,.spec-frame::after,.spec-frame .bk::before,.spec-frame .bk::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--violet);border-style:solid;z-index:4;opacity:.85;pointer-events:none}
-.spec-frame::before{top:8px;left:8px;border-width:1.5px 0 0 1.5px;border-radius:3px 0 0 0}
-.spec-frame::after{top:8px;right:8px;border-width:1.5px 1.5px 0 0;border-radius:0 3px 0 0}
-.spec-frame .bk::before{bottom:8px;left:8px;border-width:0 0 1.5px 1.5px;border-radius:0 0 0 3px}
-.spec-frame .bk::after{bottom:8px;right:8px;border-width:0 1.5px 1.5px 0;border-radius:0 0 3px 0}
-/* angle cycling: edge chevrons + pills, plus swipe and arrow keys */
-.spec-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:rgba(5,5,8,.62);border:1px solid var(--violet-border);color:var(--text);cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  transition:border-color .18s,background .18s,transform .18s}
-.spec-nav:hover{border-color:var(--violet);background:rgba(5,5,8,.8)}
-.spec-nav:active{transform:translateY(-50%) scale(.92)}
-.spec-nav:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
-.spec-nav.prev{left:.55rem}
-.spec-nav.next{right:.55rem}
-.spec-angles{display:flex;gap:.35rem;justify-content:center;flex-wrap:wrap}
-.sa-pill{padding:.32rem .7rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-3);
-  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s}
-.sa-pill:hover{border-color:var(--violet-border);color:var(--text)}
-.sa-pill.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
-.sa-pill:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+Between your first word and the callout, keep the prose short: what this block covers, the volume summary where one is required, and nothing else. No preamble, no explanation of the schema, no description of what you are about to do.
 
-/* readout rail, now sitting under the protocol bar */
-.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--violet-border);border-radius:12px;overflow:hidden;max-width:560px;margin:0 auto;width:100%}
-.ro{background:var(--surface);padding:.85rem .5rem;text-align:center}
-.ro-l{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.35rem}
-.ro-v{font-family:'DM Mono',monospace;font-size:1.05rem;color:var(--text);line-height:1}
-.ro-v.hl{color:var(--violet)}
-.ro-u{font-size:.58rem;color:var(--text-3);margin-left:.1rem}
-.ro-d{font-family:'DM Mono',monospace;font-size:.55rem;margin-top:.32rem;color:var(--text-3)}
-.ro-d.up{color:var(--up)}
-.ro-d.down{color:var(--down)}
+---
 
-/* protocol bar under hero */
-.proto-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.012)}
-.proto-in{max-width:1000px;margin:0 auto;padding:.85rem 1.5rem;display:flex;justify-content:center;gap:2.2rem;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
-.proto-in b{color:var(--text-2);font-weight:500}
-.proto-in .k{color:var(--violet)}
+You are given a training plan above that has been reviewed and approved for quality. Generate the complete program as JSON files matching the schema below. Focus on accurate technical implementation rather than plan validation. Build directly to JSON — do not create markdown, documents, or any intermediate format.
 
-/* ── Section heads ── */
-.section-head{margin-bottom:2rem;text-align:center}
-.section-head .section-line{margin:0 auto 1rem}
-.section-head h2{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:.55rem}
-.section-head p{color:var(--text-2);font-size:.95rem;max-width:560px;margin:0 auto}
+This is a transcription step, not a planning step. Do not re-optimise the program, re-check it against volume targets, or revise exercise selections. The reviewed plan is final. Never write a search, solver, or enumeration here — your only job is to carry the plan across without altering it.
 
-/* ── Shared photo frame (used by the origin story) ── */
-.vr-frame{position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:radial-gradient(ellipse at 50% 32%,rgba(168,85,247,0.07),#000 72%)}
-.vr-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;animation:vrfade .35s ease;z-index:2}
-@keyframes vrfade{from{opacity:0}to{opacity:1}}
-.vr-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:var(--text-3);z-index:1}
-.vr-ph svg{opacity:.3}
-.vr-ph span{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase}
-/* empty-state for the static pre-tracker frames (no JS placeholder here) */
-.vr-frame.empty::after{content:'awaiting upload';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
-/* autoplaying turn video, fills the 2:3 frame exactly like the photos */
-.vr-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:2}
-/* crossfade stack: two stills fading back and forth on a loop */
-.vr-fade{position:absolute;inset:0;z-index:2}
-.vr-fade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:vrCross 7s infinite}
-.vr-fade img:nth-child(2){animation-delay:3.5s}
-@keyframes vrCross{0%{opacity:0}7%{opacity:1}43%{opacity:1}50%{opacity:0}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.vr-fade img{animation:none}.vr-fade img:nth-child(1){opacity:1}.spec-shot{animation:none}}
-/* before/after compare */
-.compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.25rem;max-width:620px;margin:0 auto}
-.compare .vr-frame{max-width:250px;width:100%;margin:0 auto}
-.cmp-tag{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:.6rem}
-.cmp-tag.latest{color:var(--violet)}
-.cmp-mid{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding-top:1.4rem}
-.cmp-arrow{color:var(--violet);font-size:1.1rem;line-height:1}
-.cmp-delta{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-3);text-align:center;letter-spacing:.04em;line-height:1.55}
-.cmp-delta b{display:block;font-size:.82rem;font-weight:500;color:var(--text-2)}
-.cmp-delta b.up{color:var(--up)}
-@media(max-width:620px){
-  .compare{grid-template-columns:1fr 1fr;gap:.7rem}
-  .cmp-mid{grid-column:1/-1;order:-1;flex-direction:row;justify-content:center;padding-top:0;gap:.6rem}
-  .cmp-arrow{transform:rotate(90deg)}
-}
+## Constraint Reference Block
 
-/* ── Route: planned line + logged scans ── */
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.25rem 1.1rem}
-.chart-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.35rem}
-.chart-card h3{font-size:.95rem;font-weight:700}
-.ch-sub{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);letter-spacing:.04em}
-.chart-svg{width:100%;height:auto;display:block;overflow:visible}
-.chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+Before generating, note from the plan:
+- Recommended split and session focus per day
+- Any re-entry protocol requirements
 
-/* view toggle */
-.toggle{display:flex;gap:.35rem}
-.tg{padding:.32rem .8rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--text-3);
-  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s}
-.tg:hover{border-color:var(--violet-border);color:var(--text)}
-.tg.active{background:var(--violet-soft);border-color:var(--violet-border);color:var(--violet)}
-.tg:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+Use these when validating day structure.
 
-/* legend */
-.legend{display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;margin-top:.9rem;
-  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
-.legend i{display:inline-block;width:18px;height:0;border-top:2px solid var(--violet);margin-right:.4rem;vertical-align:middle;font-style:normal}
-.legend i.plan{border-top-style:dashed;border-color:rgba(168,85,247,.55)}
-.legend i.band{height:8px;border:none;background:var(--violet-soft);border-top:1px solid var(--violet-border);border-bottom:1px solid var(--violet-border)}
-.legend i.dot{width:8px;height:8px;border:2px solid var(--violet);border-radius:50%;background:var(--bg)}
+## Output Instructions
 
-/* phase strip */
-.strip{display:flex;margin-top:1.1rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);height:26px}
-.seg{display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.53rem;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);overflow:hidden;white-space:nowrap;
-  border-right:1px solid var(--border)}
-.seg:last-child{border-right:none}
-.seg.cut{background:rgba(239,68,68,.10);color:#f08a8a}
-.seg.build{background:rgba(34,197,94,.09);color:#7fd6a0}
-.seg.reveal{background:var(--violet-soft);color:var(--violet-bright)}
-.seg.done{opacity:.42}
-.seg.gone{background:rgba(255,255,255,.04);color:#4a4a52}
+**Generate complete JSON files following the output instructions below.**
 
-/* current-phase card */
-.nowcard{margin-top:1.4rem;display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:var(--border);
-  border:1px solid var(--violet-border);border-radius:14px;overflow:hidden}
-.nc{background:var(--surface);padding:1.25rem 1.35rem}
-.nc-k{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:.5rem}
-.nc-title{font-size:1.15rem;font-weight:700;color:#fff;line-height:1.25}
-.nc-body{font-size:.86rem;color:var(--text-2);line-height:1.6;margin-top:.5rem}
-.nc-rows{display:flex;flex-direction:column;gap:.7rem}
-.nc-row{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem}
-.nc-l{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-3)}
-.nc-v{font-family:'DM Mono',monospace;font-size:.92rem;color:var(--text);text-align:right}
-.nc-v.hl{color:var(--violet)}
-.nc-v.dn{color:var(--down)} .nc-v.up{color:var(--up)}
-@media(max-width:700px){.nowcard{grid-template-columns:1fr}}
+**DO NOT output JSON to chat** — it will hit token limits for large programs.
 
-/* milestone rail */
-.miles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;margin-top:.9rem}
-.mi{background:var(--surface);padding:1.05rem .7rem;text-align:center}
-.mi-v{font-family:'DM Mono',monospace;font-size:1.15rem;color:var(--text);line-height:1}
-.mi-v.hl{color:var(--violet)}
-.mi-l{font-family:'DM Mono',monospace;font-size:.53rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.45rem;line-height:1.4}
-@media(max-width:600px){.miles{grid-template-columns:1fr 1fr}}
+**You MUST:**
 
-.routenote{max-width:760px;margin:1.5rem auto 0;padding:1rem 1.2rem;border-left:2px solid var(--violet-border);
-  background:var(--violet-soft);border-radius:0 8px 8px 0}
-.routenote p{font-size:.82rem;color:var(--text-2);line-height:1.65}
-.routenote b{color:var(--violet)}
-.routenote+.routenote{margin-top:.7rem}
+1. Create a file (use Code Interpreter on ChatGPT, or computer tool on Claude)
+2. **Name every file with a `.json` extension.** The extension is what lets the user's phone offer JSON.fit as an app to open the file with — a file saved without `.json` cannot be imported by tapping.
+3. Write the complete JSON structure to the file
+4. Never stop mid-block or mid-day
+5. When finished, present the file so the user can download it
 
-/* latest scan strip */
-.scan-kick{margin:1.6rem 0 .7rem;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
-.scan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.scan-cell{background:var(--surface);padding:1.15rem .8rem;text-align:center}
-.scan-val{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);line-height:1}
-.scan-val.hl{color:var(--violet)}
-.scan-lbl{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.45rem}
-@media(max-width:600px){.scan-grid{grid-template-columns:1fr 1fr}}
+**Multi-block programs — ONE cumulative file the user imports once.**
 
-/* the machine: looping scanner clip + cost facts */
-.machine{display:grid;grid-template-columns:1.1fr .9fr;gap:1.25rem;align-items:stretch;margin-top:1.6rem}
-.machine-vid{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:#000;aspect-ratio:16/10}
-.machine-vid video{width:100%;height:100%;object-fit:cover;display:block}
-.machine-vid.empty::after{content:'awaiting upload';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
-.machine-cap{position:absolute;left:.65rem;bottom:.6rem;z-index:3;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.22rem .5rem;border-radius:4px;backdrop-filter:blur(6px)}
-.machine-facts{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.mf{background:var(--surface);padding:.95rem 1.1rem;flex:1;display:flex;flex-direction:column;justify-content:center}
-.mf-v{font-family:'DM Mono',monospace;font-size:1rem;color:var(--text);line-height:1}
-.mf-v.hl{color:var(--violet)}
-.mf-k{font-size:.74rem;color:var(--text-3);margin-top:.3rem;line-height:1.4}
-@media(max-width:700px){.machine{grid-template-columns:1fr}}
+The user should only ever have to import a single file: the newest one. Each block you generate produces a NEW file that contains that block PLUS every block before it — the `blocks` array grows by one entry each turn. The user imports only the final file, and it holds the whole program.
 
-/* ── Disclosures: full data + the origin story ── */
-.ddata{max-width:760px;margin:0 auto;border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden}
-.ddata+.ddata{margin-top:.9rem}
-.ddata summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.35rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);transition:color .2s}
-.ddata summary::-webkit-details-marker{display:none}
-.ddata summary:hover{color:var(--text)}
-.ddata summary:focus-visible{outline:2px solid var(--violet);outline-offset:-2px}
-.ddata summary .chev{color:var(--violet);transition:transform .2s;font-size:.8rem}
-.ddata[open] summary .chev{transform:rotate(90deg)}
-.ddata[open] summary{border-bottom:1px solid var(--border);color:var(--text)}
-.dt-wrap{position:relative}
-.dt-wrap::after{content:'';position:absolute;top:0;bottom:0;right:0;width:34px;pointer-events:none;background:linear-gradient(270deg,var(--surface) 12%,transparent);opacity:0;transition:opacity .2s;z-index:3}
-.dt-wrap.can-right::after{opacity:1}
-.dt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-table.dt{width:100%;border-collapse:separate;border-spacing:0}
-.dt th:not(:first-child),.dt td:not(:first-child){min-width:76px}
-.dt th:first-child,.dt td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:inset -1px 0 0 var(--border)}
-.dt th:first-child{background:var(--surface-2)}
-.dt th,.dt td{padding:.7rem 1rem;text-align:right;font-family:'DM Mono',monospace;font-size:.78rem;border-bottom:1px solid var(--border)}
-.dt th{color:var(--text-3);font-weight:500;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2)}
-.dt th:first-child,.dt td:first-child{text-align:left;color:var(--text);font-family:'Outfit',sans-serif;font-weight:500;font-size:.86rem}
-.dt tr:last-child td{border-bottom:none}
-.dt td{color:var(--text-2)}
-.dt td.delta-up{color:var(--up)}
-.dt td.delta-down{color:var(--down)}
-.dt td.now{color:var(--violet);font-weight:500}
-.dt td.grp,.dt th.grp{color:var(--violet);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;background:var(--surface-2);padding:0}
-.dt td.grp .grp-in{position:sticky;left:0;display:inline-block;padding:.7rem 1rem}
-@media(max-width:620px){
-  .dt th,.dt td{padding:.6rem .65rem;font-size:.72rem}
-  .dt th{font-size:.56rem}
-  .dt th:first-child,.dt td:first-child{font-size:.78rem;min-width:112px;max-width:132px}
-  .dt th:not(:first-child),.dt td:not(:first-child){min-width:62px}
-}
-.ddata .d-note{padding:.9rem 1.35rem 1.1rem;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--text-3)}
+Generate one block at a time (this keeps each response within output limits), but each file is cumulative:
 
-/* bloods: pending state + rendered panel, inside its disclosure */
-.blood-in{padding:1.35rem 1.35rem 1.5rem}
-.blood-pending{display:flex;gap:1rem;align-items:flex-start}
-.blood-pending svg{color:var(--violet);flex-shrink:0;margin-top:3px;opacity:.7}
-.blood-pending p{font-size:.86rem;color:var(--text-2);line-height:1.65}
-.bgrp{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);margin:1.3rem 0 .5rem}
-.bgrp:first-child{margin-top:0}
-.brow{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
-.brow:last-child{border-bottom:none}
-.bname{font-size:.88rem;color:var(--text)}
-.bref{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);margin-top:.1rem}
-.bval{font-family:'DM Mono',monospace;font-size:.88rem;color:var(--text-2);flex-shrink:0;text-align:right}
+- **Block 1:** write a file whose `blocks` array holds block 1. Name it `workout-program-1-of-[Y]-blocks.json`.
+- **Block 2 (on "next"):** write a NEW file whose `blocks` array holds blocks 1 AND 2. Name it `workout-program-2-of-[Y]-blocks.json`.
+- **Block 3 (on "next"):** a new file holding blocks 1, 2 AND 3. Name it `workout-program-3-of-[Y]-blocks.json`.
+- ...and so on, until the last block.
+- **The final block:** the file holds every block, and it is named `workout-program-all-[Y]-blocks.json`. Not `[Y]-of-[Y]`.
 
-/* ── Origin story, inside its disclosure ── */
-.origin-in{padding:1.5rem 1.35rem 1.75rem}
-.origin-hyp{font-size:.98rem;line-height:1.75;color:var(--text-2)}
-.origin-hyp b{color:var(--violet);font-weight:600}
-.protocol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:1.4rem}
-.proto-cell{background:var(--surface-2);padding:1.1rem 1rem}
-.proto-k{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.4rem}
-.proto-v{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.35}
-@media(max-width:700px){.protocol-grid{grid-template-columns:1fr 1fr}}
-.vr-kicker{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);margin:1.75rem 0 1rem}
-.disclaimer{margin:1.75rem auto 0;padding:1.1rem 1.25rem;border-left:2px solid var(--violet-border);background:var(--violet-soft);border-radius:0 8px 8px 0}
-.disclaimer p{font-size:.82rem;color:var(--text-2);line-height:1.65}
+### Naming rule
 
-/* ── CTA ── */
-.cta-wrap{padding:4.5rem 0 5rem;display:flex;justify-content:center}
-.cta-card{max-width:520px;width:100%;background:var(--surface);border:1px solid var(--violet-border);border-radius:18px;padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden;margin:0 1.5rem}
-.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--violet),transparent)}
-.cta-card h2{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:1.9rem;letter-spacing:-.01em;line-height:1.15;margin-bottom:.6rem}
-.cta-card h2 em{color:var(--violet);font-style:italic}
-.cta-card p{color:var(--text-2);font-size:.92rem;line-height:1.65;margin-bottom:1.5rem}
-.cta-card p .v{color:var(--violet);font-weight:600}
-.cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem 2rem;border-radius:12px;font-size:.95rem;font-weight:700;text-decoration:none;background:var(--violet);color:#0a0010;transition:transform .25s,box-shadow .25s}
-.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--violet-glow)}
-.cta-foot{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--text-3);letter-spacing:.04em;margin-top:1.1rem}
+`workout-program-[N]-of-[Y]-blocks.json`, where **N is the number of blocks INSIDE this file** and **Y is the total number of blocks in the program**. On the final turn, `[N]-of-[Y]` becomes `all-[Y]`.
 
-/* ── Footer ── */
-footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center}
-.foot-l{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--text-3)}
-.foot-l a{color:var(--text-3);text-decoration:none;margin-left:1.25rem;transition:color .2s}
-.foot-l a:hover{color:var(--violet)}
-.foot-r{font-size:.7rem;color:var(--text-3)}
+Worked example for a 3-block program:
 
-/* ── Lightbox ── */
-.lightbox{position:fixed;inset:0;z-index:9999;background:rgba(5,5,8,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity .25s ease}
-.lightbox.open{opacity:1;pointer-events:all}
-.lightbox img{max-width:min(480px,92vw);max-height:90vh;border-radius:16px;border:1px solid var(--violet-border);box-shadow:0 32px 80px rgba(0,0,0,.8)}
+| Turn | Blocks inside the file | Filename |
+|---|---|---|
+| Block 1 | 1 | `workout-program-1-of-3-blocks.json` |
+| Block 2 | 1, 2 | `workout-program-2-of-3-blocks.json` |
+| Block 3 (final) | 1, 2, 3 | `workout-program-all-3-blocks.json` |
 
-@media(max-width:860px){
-  .nav-links{display:none;position:fixed;inset:0;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}
-  .nav-links.open{display:flex}
-  .nav-links a{font-size:1.1rem;color:var(--text-2)}
-  .nav-links .nav-cta{font-size:1rem!important;padding:.6rem 1.5rem}
-  .hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}
-  .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-  .hamburger.open span:nth-child(2){opacity:0}
-  .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-  .hero{padding:6.5rem 1.5rem 2.75rem}
-  .hero-grid{grid-template-columns:1fr;gap:2.25rem;text-align:center}
-  .h-sub{margin-left:auto;margin-right:auto}
-  .h-hair{margin:1.4rem auto 0}
-  .h-status{justify-content:center}
-  .spec-frame{max-width:270px}
-  .proto-in{gap:.9rem 1.6rem}
-}
-@media(prefers-reduced-motion:reduce){.live-dot{animation:none}}
-</style>
-    <script src="/analytics-web.js"
-            data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
-            data-app-version="web"
-            data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
-</head>
-<body>
+Three things about this scheme that matter more than they look:
 
-<!-- NAV -->
-<nav>
-  <div class="nav-left">
-    <a href="https://json.fit" class="nav-back" aria-label="Back" onclick="return window.navBack(event)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </a>
-    <a href="https://json.fit" class="nav-logo">
-      <svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#a855f7"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#a855f7"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#a855f7"/></svg>
-      JSON<span class="violet">.fit</span>
-    </a>
-  </div>
-  <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="https://json.fit/#meals">Meals</a></li>
-    <li><a href="https://json.fit/#programs">Programs</a></li>
-    <li><a href="https://json.fit/blog.html">Blog</a></li>
-    <li><a href="/lab/" class="active">The Lab</a></li>
-    <li><a href="https://json.fit/#download" class="nav-cta" onclick="gtag('event','view_download_options',{'button_location':'lab_nav'})">Download Free</a></li>
-  </ul>
-</nav>
+- **The word `blocks` goes last, so the number reads as a quantity and not an index.** `workout-program-2-of-3-blocks.json` says "2 of the 3 blocks are in this file". Never name a file `part-2`, `block-2`, or `blocks-2-of-3` — every one of those reads as "this is only block 2", which is the exact confusion this scheme exists to prevent. The file is cumulative and the name must say so.
+- **A single-block program is named `workout-program.json`.** No counts at all. Do not write `1-of-1`.
+- **Y comes from the plan.** The plan lays out the full block structure, so the total is always derivable. If the plan does not state a total in so many words, count the blocks it describes. Do not guess, and do not start naming files until you know Y.
 
-<script>
-// Back arrow: if the visitor arrived from another json.fit page, step back to it;
-// otherwise (shared link, direct visit, external referrer) follow the href to the homepage.
-window.navBack=function(e){
-  try{
-    var ref=document.referrer;
-    if(ref && new URL(ref).hostname.replace(/^www\./,'')==='json.fit' && window.history.length>1){
-      e.preventDefault();
-      window.history.back();
-      return false;
-    }
-  }catch(err){}
-  return true;
-};
-</script>
+**Mesocycle-based programs:** append the mesocycle at the END of the name, after the block count, and let the counts refer to blocks within THAT mesocycle:
 
-<!-- HERO: specimen sheet. Serif masthead left, latest capture right, cycling through every angle. -->
-<section class="hero">
-  <div class="hero-grid" id="heroGrid">
-    <div>
-      <div class="h-ov">The Lab &middot; <span class="violet">self-experiment</span> &middot; n = 1</div>
-      <h1 class="h-display">The bulk, <em>measured.</em></h1>
-      <p class="h-sub">I built JSON.fit. A DEXA scan put me at 23.8% body fat, so it's routing me down to 72.9&nbsp;kg first, then up to 90&nbsp;kg at 13%. Every scan, photo and number lands here as it happens, whether it's working or not.</p>
-      <div class="h-hair"></div>
-      <div class="h-status" id="heroStatus"></div>
-    </div>
-    <div class="spec">
-      <div class="spec-frame" id="specFrame">
-        <div class="bk"></div>
-        <div class="spec-shot" id="specShot"></div>
-        <button class="spec-nav prev" id="specPrev" aria-label="Previous angle" style="display:none">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button class="spec-nav next" id="specNext" aria-label="Next angle" style="display:none">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-        <span class="spec-cap" id="specCap"></span>
-      </div>
-      <div class="spec-angles" id="specAngles"></div>
-    </div>
-  </div>
-</section>
+- `workout-program-1-of-3-blocks-mesocycle-2.json`
+- `workout-program-all-3-blocks-mesocycle-2.json`
 
-<!-- protocol bar: rendered from DATA.plan.cells -->
-<div class="proto-bar"><div class="proto-in" id="protoBar"></div></div>
+This is what stops a later mesocycle's files from colliding with an earlier mesocycle's in the same conversation.
 
-<!-- readout rail: the four headline numbers, sitting under the protocol bar
-     so the hero photo carries the top of the page on its own -->
-<section class="section" style="padding-top:2.5rem">
-  <div class="container">
-    <div class="readout sa sa-up" id="readout"></div>
-  </div>
-</section>
+**It goes at the end for a reason. NEVER put two numbers next to each other in a filename.** `workout-program-mesocycle-2-1-of-3-blocks.json` is wrong, because `2-1` reads as a single number and the user sees "mesocycle 21 of 3 blocks". This rule applies to any future addition to the name as well: if a new element carries a number, it goes at the end, separated from the block count by a word.
 
-<!-- ════════════════════════════════════════════════════════════════════
-     THE ROUTE
-     The line here is generated output, not drawing: see the ROUTE object
-     in the script below and the comment above it.
-     ════════════════════════════════════════════════════════════════════ -->
-<section class="section">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">The route</span>
-      <h2>The whole plan, and where I am on it.</h2>
-      <p>The line is JSON.fit's planner run on my scan numbers. The dots are me.</p>
-    </div>
+After each block:
 
-    <div class="chart-card sa sa-up">
-      <div class="chart-top">
-        <h3 id="chTitle">Bodyweight</h3>
-        <div class="toggle">
-          <button class="tg active" data-v="w">Weight</button>
-          <button class="tg" data-v="b">Body fat</button>
-        </div>
-      </div>
-      <div class="chart-scroll"><div id="chartRoute"></div></div>
-      <div class="legend" id="legend"></div>
-      <div class="strip" id="strip"></div>
-    </div>
+1. Present the cumulative file for that turn.
+2. Output a brief **volume summary** for the block you just added (total primary-tagged sets per muscle group, training weeks not deload). This gives the user something to check against for the new block.
+3. End with **CALLOUT A** if more blocks remain, or **CALLOUT B** if this was the final block.
+4. **STOP and wait for user input.** Do not proceed to the next block until the user responds.
 
-    <div class="nowcard sa sa-up">
-      <div class="nc">
-        <div class="nc-k" id="ncPhase"></div>
-        <div class="nc-title" id="ncTitle"></div>
-        <div class="nc-body" id="ncBody"></div>
-      </div>
-      <div class="nc">
-        <div class="nc-rows" id="ncRows"></div>
-      </div>
-    </div>
+**When user says "next":**
 
-    <div class="sa sa-up">
-      <p class="scan-kick" id="scanKick"></p>
-      <div class="scan-grid" id="scanGrid"></div>
-    </div>
+1. Generate the next block, and write a new cumulative file containing all blocks so far (prior blocks copied across verbatim from what you already generated — do not regenerate or alter them).
+2. Present it, output the volume summary for the new block, and end with the correct callout.
+3. **STOP and wait for user input.**
 
-    <!-- ════════════════════════════════════════════════════════════════
-         THE MACHINE
-         Looping, muted clip of the scanner, plus what a scan actually costs.
-         VIDEO lives in the repo at /videos/Dexa Scan.mp4, so it serves from
-         https://json.fit/videos/Dexa%20Scan.mp4 — the %20 is the space and it
-         must stay encoded. If you rename the file to dexa-scan.mp4 the space
-         problem goes away; update the src here if you do.
-         No poster yet: add one at /videos/dexa-scan-poster.webp and put it
-         back on the <video> tag to avoid a black frame on slow connections.
-         Compress hard: this autoplays on mobile.
-         ════════════════════════════════════════════════════════════════ -->
-    <div class="machine sa sa-up">
-      <div class="machine-vid" id="machineVid">
-        <video src="/videos/Dexa%20Scan.mp4"
-               autoplay muted loop playsinline preload="metadata"
-               aria-label="The DEXA scanner mid-scan"
-               onerror="this.style.display='none';this.parentElement.classList.add('empty')"></video>
-        <span class="machine-cap">Garran Medical Imaging &middot; 18 Sep 2026</span>
-      </div>
-      <div class="machine-facts">
-        <div class="mf"><div class="mf-v hl">$150</div><div class="mf-k">per scan, out of pocket. No rebate.</div></div>
-        <div class="mf"><div class="mf-v">Referral required</div><div class="mf-k">A doctor has to order it. You can't just book one.</div></div>
-        <div class="mf"><div class="mf-v">~7 minutes</div><div class="mf-k">Flat on the table, fully still, fasted.</div></div>
-      </div>
-    </div>
+**If a cumulative file would be too large to write in one response** (long programs, typically 4+ blocks): STOP at the end of a complete block, tell the user in one line "this one was large — say **continue** and I'll finish writing the file", and complete the same file on the next turn. Never present a file that is cut off mid-structure.
 
-  </div>
-</section>
+**When user says "review":**
 
-<!-- THE DETAIL: full scan history, bloods, and the pre-tracker backstory -->
-<section class="section">
-  <div class="container">
-    <div class="section-head sa sa-up">
-      <div class="section-line"></div>
-      <span class="label">The detail</span>
-      <h2>Everything else, if you want it.</h2>
-      <p>The complete scan history, the blood work, and the decade before it, out of the way until you ask.</p>
-    </div>
+1. Read the workout program document from earlier in the conversation.
+2. Apply the embedded review checklist below to the most recent block.
+3. Write a corrected cumulative file (all blocks, with the fixes applied) and present it.
+4. End with **CALLOUT A**.
 
-    <details class="ddata sa sa-up">
-      <summary>Scan history &middot; every metric, every scan <span class="chev">&#9656;</span></summary>
-      <div class="dt-wrap" id="dtWrap"><div class="dt-scroll" id="dtScroll"><table class="dt" id="fullTable"></table></div></div>
-      <p class="d-note">// &Delta; is total change from baseline &middot; a column is added each scan &middot; "-" means not measured on that machine</p>
-    </details>
+### Embedded Review Checklist
 
-    <!-- ════════════════════════════════════════════════════════════════
-         BLOOD WORK
-         Renders from BLOODS in the script below. Null = pending panel.
-         ════════════════════════════════════════════════════════════════ -->
-    <details class="ddata sa sa-up">
-      <summary><span>Blood work &middot; <span id="bloodSum">drawn 18 Sep 2026</span></span> <span class="chev">&#9656;</span></summary>
-      <div class="blood-in" id="bloodSlot"></div>
-    </details>
+Re-read the workout plan document from earlier in the conversation. Compare your JSON output against the plan and fix any discrepancies in exercise names, set counts, muscle tags, superset pairings, or day structure.
 
-    <!-- ════════════════════════════════════════════════════════════════════
-         BEFORE THE TRACKER  (static, hand-written context section)
-         This sits OUTSIDE the measured record on purpose. Do NOT move any of
-         these old photos or numbers into DATA.checkins, or they will be pulled
-         into the chart and the full-data table and break them.
-         PHOTOS (root-absolute paths, leading slash), saved at /images/pre/ :
-           /images/pre/67kg-front.webp   (skinny, ~5 yrs ago)
-           /images/pre/82kg-a.webp       (first bulk peak, ~3.5 yrs ago,
-                                           relaxed garage shot, not the flex)
-         Leave the src as-is and the frame shows an "awaiting upload" placeholder.
-         ════════════════════════════════════════════════════════════════════ -->
-    <details class="ddata sa sa-up">
-      <summary>Before the tracker &middot; how I got to the start line <span class="chev">&#9656;</span></summary>
-      <div class="origin-in">
-        <p class="origin-hyp">
-          182&nbsp;cm and <b>under 60&nbsp;kg</b> right through my teens. <b>67&nbsp;kg</b> leaving uni. A first bulk got me to <b>82&nbsp;kg</b> in 18 months, but I did it the miserable way, the same meals every day, forced down, so it never stuck. Then a year out of the gym. That's why JSON.fit exists, and why this run is built to last.
-        </p>
-        <div class="protocol-grid">
-          <div class="proto-cell"><div class="proto-k">Teens</div><div class="proto-v">Under 60 kg</div></div>
-          <div class="proto-cell"><div class="proto-k">Uni</div><div class="proto-v">67 kg</div></div>
-          <div class="proto-cell"><div class="proto-k">First bulk &middot; ~2022</div><div class="proto-v">82 kg &middot; the hard way</div></div>
-          <div class="proto-cell"><div class="proto-k">A year off</div><div class="proto-v">80.6 kg &middot; 23.8% &middot; the restart</div></div>
-        </div>
+Each cumulative file has one routine_name, one description, one days_per_week, and a `blocks` array holding every block generated so far in order. Keep routine_name and description identical across every file you write — they are the same program at different stages of completion.
 
-        <span class="vr-kicker">Proof it worked &middot; but the method didn't last</span>
-        <div class="compare">
-          <div class="cmp-col">
-            <span class="cmp-tag">67 kg &middot; the skinny one</span>
-            <div class="vr-frame">
-              <video src="/images/pre/67kg-turn.mp4"
-                     poster="/images/pre/67kg-front.webp"
-                     autoplay muted loop playsinline
-                     onerror="this.style.display='none';this.parentElement.classList.add('empty')"></video>
-            </div>
-          </div>
-          <div class="cmp-mid">
-            <span class="cmp-arrow">&#8594;</span>
-            <div class="cmp-delta">~18 months<b class="up">+15 kg</b>didn't stick</div>
-          </div>
-          <div class="cmp-col">
-            <span class="cmp-tag latest">82 kg &middot; previous peak</span>
-            <div class="vr-frame">
-              <div class="vr-fade">
-                <img src="/images/pre/82kg-a.webp" alt="82 kg, first bulk peak"
-                     onerror="this.style.display='none';this.parentElement.parentElement.classList.add('empty')">
-                <img src="/images/pre/82kg-b.webp" alt="82 kg, first bulk peak, second angle">
-              </div>
-            </div>
-          </div>
-        </div>
+**Long programs (5+ blocks):** Continue generating blocks in this same conversation. Do not suggest starting a fresh chat.
 
-        <div class="disclaimer">
-          <p>Everything on the page above is measured, and nothing gets published unless it was measured. The 1 July baseline is an Evolt&nbsp;360 bioimpedance scan; from 18&nbsp;September onward it's DEXA, which is a different and more accurate method, so the two are not perfectly comparable and the switch is marked in the table. The route line is the one thing on this page that isn't a measurement: it's generated by the app's planner from my scan numbers, and it's shown dashed for exactly that reason. The two old phone photos are the other deliberate exception, included for context.</p>
-        </div>
-      </div>
-    </details>
-  </div>
-</section>
+**Mesocycle-based programs:** If the plan states this is Mesocycle [X] of [N], after generating and delivering the FINAL block of this mesocycle:
 
-<!-- CTA -->
-<section class="cta-wrap">
-  <div class="cta-card sa sa-up">
-    <h2>Same app. <em>Your numbers.</em></h2>
-    <p>The route, the program, the meal plan and the tracking on this page all come out of <span class="v">JSON.fit</span>. Same free app, same tools.</p>
-    <div style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;">
-      <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'lab_cta','platform':'ios'})">
-        <svg width="15" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="currentColor"/></svg>
-        Download on the App Store
-      </a>
-      <a href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" class="cta-btn" style="background:#0a0a0f;color:var(--text);border:1px solid var(--border);" onclick="gtag('event','download_click',{'button_location':'lab_cta','platform':'android'})">
-        Get it on Google Play
-      </a>
-    </div>
-    <p class="cta-foot">$0 &middot; no subscription &middot; no accounts</p>
-  </div>
-</section>
+If X < N:
 
-<!-- FOOTER -->
-<footer>
-  <div class="foot-l">JSON<span class="violet">.fit</span>
-    <a href="https://json.fit">Home</a>
-    <a href="https://json.fit/meals.html">Meals</a>
-    <a href="https://json.fit/privacy-policy.html">Privacy</a>
-  </div>
-  <div class="foot-r">&copy; 2026 JSON.fit</div>
-</footer>
+1. Output a Mesocycle [X] Summary:
+   - Phase name and training emphasis
+   - Split structure used
+   - Rep range focus
+   - Volume per muscle group (sets/week from your volume summaries)
+   - Key exercises used across all blocks
+2. Add one line in your prose, before the callout: "When you're ready for Mesocycle [X+1], just ask — I'll use the roadmap and summary above."
+3. Then end with **CALLOUT C**. Do NOT give import instructions here, and do not describe the file as something to import yet. Import steps are what tell a user the job is done, and the callout is the only part of the response most users read — a mesocycle summary sitting above it does not cancel out a callout that hands over import steps.
 
-<div class="lightbox" id="lightbox"><img id="lbImg" src="" alt=""></div>
+If X equals N, add one line in your prose noting the program is complete, then end with **CALLOUT B**.
 
-<script>
-"use strict";
-/* ════════════════════════════════════════════════════════════════════
-   THE ROUTE: the app's own output, re-derived from the DEXA scan.
+For a mesocycle-based program, CALLOUT B is used ONCE, after the final block of the final mesocycle. Every earlier mesocycle ends with CALLOUT C.
 
-   Produced by JSON.fit's planner on this profile:
-       currentWeightKg 80.6, currentBodyFatPct 23.8, heightCm 182,
-       sex male, ageYears 28, goalWeightKg 90, goalBodyFatPct 13,
-       operating band 16-18%, phaseOrder 'cut_first', wayIn 'cut'
-   Generated 2026-09-19 from the scan of 18 Sep 2026.
+The plan is fully self-contained: it lists all exercise pools, block structures, and periodization details. You do not need conversation history from prior blocks to generate any block correctly. Always reference the plan — never rely on memory of prior blocks in the conversation.
 
-   `nodes` are the seven phase boundaries the app returned, and they are
-   the authoritative part of this object. The drawn line is INTERPOLATED
-   between them by curvePoints() below rather than pasted in as a fixed
-   array, so the line can never drift out of agreement with the nodes it
-   claims to join. Edit the nodes, never the line.
+---
 
-   Month positions: phase 1 carries the engine's own [2.8, 4.6] estimate
-   and sits at its midpoint. The later phases are spaced using the app's
-   prescribed rates (build 0.19 %BW/wk, trim 0.6 %BW/wk) applied to each
-   phase's own weight change, which is how the engine derives them. They
-   move when the next scan re-runs the route, which is the point.
-   ════════════════════════════════════════════════════════════════════ */
-var ROUTE = {
-  generated:"2026-09-19",
-  /* Months since DATA.startDate (1 Jul 2026) at which this projection begins. */
-  startMonth:2.6,
-  start:{weightKg:80.6,bodyFatPct:23.8},
-  goal:{weightKg:90,bodyFatPct:13},
-  band:{bottom:16,top:18},
-  estYears:[3.2,4.4],
-  planMonths:44.8,
-  totalMonths:47.4,
-  nodes:[
-    {month:2.6 , weightKg:80.6, bodyFatPct:23.8, kind:"start"},
-    {month:6.3 , weightKg:72.9, bodyFatPct:16  , kind:"trim"},
-    {month:21.2, weightKg:82.4, bodyFatPct:18  , kind:"build"},
-    {month:22.1, weightKg:80.4, bodyFatPct:16  , kind:"trim"},
-    {month:37.0, weightKg:90.9, bodyFatPct:18  , kind:"build"},
-    {month:38.0, weightKg:88.7, bodyFatPct:16  , kind:"trim"},
-    {month:45.5, weightKg:94.4, bodyFatPct:17  , kind:"build"},
-    {month:47.4, weightKg:90  , bodyFatPct:13  , kind:"reveal"}
-  ],
-  /* One entry per phase occurrence, in order. `months` is the engine's own
-     [lo, hi] estimate where it gave one. `macros` on the current phase is the
-     app's computeMacrosPhaseAware output for this profile. */
-  phases:[
-    {kind:"trim",   from:2.6 , to:6.3 , rate:-0.5 , endKg:72.9, endBf:16, months:[2.8,4.6], label:"Cut &middot; 16%", macros:{kcal:1780,protein:155,carbs:151,fat:59}},
-    {kind:"build",  from:6.3 , to:21.2, rate:0.19 , endKg:82.4, endBf:18, months:null, label:"Build &middot; 18%"},
-    {kind:"trim",   from:21.2, to:22.1, rate:-0.6 , endKg:80.4, endBf:16, months:null, label:"Cut"},
-    {kind:"build",  from:22.1, to:37.0, rate:0.19 , endKg:90.9, endBf:18, months:null, label:"Build"},
-    {kind:"trim",   from:37.0, to:38.0, rate:-0.6 , endKg:88.7, endBf:16, months:null, label:"Cut"},
-    {kind:"build",  from:38.0, to:45.5, rate:0.19 , endKg:94.4, endBf:17, months:null, label:"Build"},
-    {kind:"reveal", from:45.5, to:47.4, rate:null , endKg:90, endBf:13, months:null, label:"Reveal &middot; 13%"}
-  ]
-};
+## Translation Principles
 
-/* Interpolate the drawn line from the nodes. Cuts fall fast then flatten as
-   there is less fat to give; builds climb fast then flatten as headroom
-   shrinks. Both are eased the same way the app's planCurve shapes them. */
-ROUTE.points = (function(nodes){
-  var pts=[], STEPS=16;
-  for(var i=0;i<nodes.length-1;i++){
-    var a=nodes[i], b=nodes[i+1];
-    var falling=(b.weightKg<a.weightKg);
-    for(var s=0;s<STEPS;s++){
-      var t=s/STEPS;
-      var e=falling ? (1-Math.pow(1-t,1.45)) : Math.pow(t,0.80);
-      pts.push([
-        +(a.month+(b.month-a.month)*t).toFixed(2),
-        +(a.weightKg+(b.weightKg-a.weightKg)*e).toFixed(2),
-        +(a.bodyFatPct+(b.bodyFatPct-a.bodyFatPct)*e).toFixed(2)
-      ]);
-    }
-  }
-  var last=nodes[nodes.length-1];
-  pts.push([last.month,last.weightKg,last.bodyFatPct]);
-  return pts;
-})(ROUTE.nodes);
+1. **The plan is authoritative for structure; the exercise library is authoritative for tags** — use the exercise names, sets, superset pairings, and day structure exactly as specified from the plan. However, before finalizing any JSON, verify every exercise's primaryMuscles and secondaryMuscles tags against the canonical exercise library at https://json.fit/exercises.md. If the plan's tags differ from the library, use the library's tags (the library is authoritative). Do not add, remove, or rename exercises. If the plan declares a mesocycle structure, append the mesocycle name to routine_name in every JSON file. The reviewed plan's set counts are final — do not adjust them based on your own volume recalculation.
+2. **Treat exercise names as identifiers** — use the exact same string for the same exercise across all blocks, days, notes, and superset references. Never vary naming.
+3. **Design what the plan doesn't specify** — you are responsible for alternative exercises and technique notes. For rep progressions: follow the plan's scheme if stated, otherwise use the defaults below. You are NOT responsible for rest periods — see the Rest Periods section.
+4. **Only program working sets** — do not include warm-up sets.
 
-/* Wording lifted from phaseIntentFor() in src/utils/phaseIntent.ts, so the
-   site and the phone say the same thing about what a phase asks for. */
-var PHASE_INTENT = {
-  build: {title:"Gain weight on purpose",
-          detail:"I eat above maintenance, so the scale climbs. Some of that is fat, and that is the trade: muscle goes on faster this way.",
-          dir:"up", word:"Rising"},
-  trim:  {title:"Lose fat, keep the muscle",
-          detail:"I eat below maintenance and keep lifting hard. The scale falls, and the job is making sure what leaves is fat.",
-          dir:"down", word:"Falling"},
-  recomp:{title:"Hold your weight",
-          detail:"Muscle up, fat down, the scale roughly still. It is the one phase where both move at once.",
-          dir:"flat", word:"Steady"},
-  reveal:{title:"Bring it down to the finish",
-          detail:"The last stretch. Fat comes off and what is built underneath shows.",
-          dir:"down", word:"Falling"}
-};
+---
 
-/* ════════════════════════════════════════════════════════════════════
-   BLOOD WORK
-   Set BLOODS to null until the results land; the disclosure shows a
-   pending panel. To publish, set BLOOD_DATE and fill BLOODS with groups.
-   Example shape is commented below.
-   ════════════════════════════════════════════════════════════════════ */
-var BLOOD_DATE = null;   // e.g. "2026-09-18"
-var BLOODS = null;
-/*
-BLOOD_DATE = "2026-09-18";
-BLOODS = [
-  { group:"Hormones", markers:[
-    { name:"Total testosterone", value:"", unit:"nmol/L", ref:"8.6 - 29.0" },
-    { name:"SHBG",               value:"", unit:"nmol/L", ref:"" }
-  ]},
-  { group:"Metabolic", markers:[
-    { name:"Fasting glucose", value:"", unit:"mmol/L", ref:"3.0 - 5.4" },
-    { name:"HbA1c",           value:"", unit:"%",      ref:"" }
-  ]},
-  { group:"Lipids", markers:[
-    { name:"Total cholesterol", value:"", unit:"mmol/L", ref:"" },
-    { name:"HDL",               value:"", unit:"mmol/L", ref:"" },
-    { name:"LDL",               value:"", unit:"mmol/L", ref:"" },
-    { name:"Triglycerides",     value:"", unit:"mmol/L", ref:"" }
-  ]}
-];
-*/
+## Exercise Programming Details
 
-/* ════════════════════════════════════════════════════════════════════
-   THE LAB: single source of truth for MEASURED data.
-   Update this object each scan and the whole page re-renders.
-   - `machine` on each check-in decides which scan fields render. Evolt 360
-     gives skeletal muscle / waist / WHR / body water / bio age; DEXA gives
-     bone mineral / T-score / Z-score / lean soft tissue. Anything the
-     machine didn't measure stays null and renders as "-".
-   - lean_mass_kg is FAT-FREE MASS (lean soft tissue + bone) on both
-     machines, so the column compares like with like.
-   - photos: create a subfolder per check-in under /images/lab/ and point to
-     the files with a LEADING SLASH (root-absolute, so paths resolve correctly
-     from inside the /lab/ folder), e.g.
-       front:"/images/lab/2026-09/front.webp"
-     leave "" to show the "awaiting capture" placeholder.
-   - segments_kg is per-limb lean mass. Keys are shared across machines so
-     the table lines up; the DEXA torso figure is ribs + spine + pelvis.
-   Never publish a number that wasn't measured.
-   NOTE: the "Before the tracker" disclosure in the HTML above is intentionally
-   NOT part of this data. Keep old, un-scanned photos out of `checkins`.
-   NOTE: ROUTE above is the one PROJECTED thing on the page. Keep the two
-   apart: measured goes here, generated goes there.
-   ════════════════════════════════════════════════════════════════════ */
-var DATA = {
-  startDate: "2026-07-01",
-  target: { weight_kg: 90, label: "Route target" },
-  plan: {
-    summary: "Baselined on DEXA at <b>80.6&nbsp;kg</b> and <b>23.8%</b> body fat. The app routes me down to <b>72.9&nbsp;kg at 16%</b> first, then cycles 16 to 18% up to <b>90&nbsp;kg at 13%</b>. Plan, program and meals all from JSON.fit.",
-    cells: [
-      { k: "Baselined", v: "18 Sep 2026 · DEXA" },
-      { k: "Now", v: "80.6 kg · 23.8% · cutting" },
-      { k: "Phase 1 ends", v: "72.9 kg at 16%" },
-      { k: "Target", v: "90 kg at 13% · 7 phases" }
-    ]
-  },
-  // angle order used by the photo rig + the hero cycle
-  angles: ["front","right","back","left"],
-  checkins: [
+### Rep Progressions
+
+For each exercise, design a weekly rep progression across the block. Since the app doesn't track weight, progressions are expressed entirely through rep targets — the user manages their own load increases.
+
+**Starting point rule:**
+Start at the TOP of the prescribed range in Week 1, reduce across the block. The rep ceiling is Week 1; the floor is the final training week before deload. This signals increasing load week over week.
+
+**Linear progression (default for all exercises):**
+Maintain rep targets in early weeks. Slight rep reduction in later weeks signals that the lifter should be using heavier loads.
+Example (5-week block, 4 sets): Week 1: "10, 10, 10, 8" → Week 2: "10, 10, 8, 8" → Week 3: "8, 8, 8, 8" → Week 4: "8, 8, 6, 6" → Week 5 (deload): "12, 12"
+
+`reps_weekly` values must be comma-separated rep targets per set (e.g., "10, 10, 10, 8"), not shorthand like "4x10".
+
+**rir_weekly field — REQUIRED whenever the exercise has reps_weekly populated.**
+
+If an exercise prescribes weekly reps, it must also prescribe weekly RIR. This applies to all resistance training exercises (compound lifts, machines, isolation work). It does NOT apply to cardio, flexibility, or mobility work — those don't have RIR.
+
+Structure: identical to reps_weekly. An object with week numbers as keys ("1", "2", "3", "4") and a comma-separated string of per-set RIR values for each week.
+
+Translation rules:
+
+1. The number of comma-separated values per week must match the exercise's set count for that week (matches reps_weekly)
+2. Source the values from the exercise's notes field, which contains the RIR progression (e.g., "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4")
+3. The week-level target from the notes is the middle-set value. Apply within-exercise progression:
+   - Set 1: target + 1 (one rep further from failure)
+   - Middle sets: target
+   - Last set: target - 1 (one rep closer to failure, never below 0)
+4. Values can be single integers ("3", "2", "1", "0") or ranges ("0-1", "1-2")
+5. If the plan notes specify exact per-set values (e.g., "Set 1: 3 RIR. Set 2: 2 RIR. Set 3: 1 RIR."), use those exact values rather than re-deriving
+
+Example: for an exercise with 3 sets per week and notes "RIR 3 W1 → 2 W2 → 1 W3 → 0-1 W4", rir_weekly is an object mapping week "1" to "4, 3, 2", week "2" to "3, 2, 1", week "3" to "2, 1, 0", and week "4" to "1-2, 0-1, 0".
+
+Floor: never go below RIR 0. If within-exercise math produces a negative value, clamp to 0.
+
+Do not regenerate RIR guidance from scratch — translate from the plan notes that already include the RIR progression.
+
+**reps_weekly and rir_weekly are load-bearing beyond rep display.** The app derives each exercise's rest period from them: first-set reps plus first-set RIR give an estimated RM, and that decides whether a compound is treated as a heavy set or a moderate one. A missing or malformed rir_weekly does not just lose the RIR display, it makes the app guess at the load. Populate both accurately for every resistance exercise.
+
+**Match progressions to the plan's rep range focus.** If the plan says "Block B: Strength — 5-8 reps," your compound progressions should work within that range. Isolation exercises can run 2-4 reps higher than the block's stated range (e.g., 8-12 isolation reps in a "5-8" strength block is fine).
+
+### Rest Periods
+
+**Do not design rest periods. The app calculates them.**
+
+JSON.fit resolves rest at runtime from the exercise's category, how heavily it is loaded in the current block (read from `reps_weekly` and `rir_weekly`), whether the week is a deload, and whether the exercise is part of a superset. It resolves all three rest tiers for every exercise, and the user chooses between them — including mid-workout. Nothing you write into the file is used for timing.
+
+Set the `rest` field to a plain integer number of seconds anyway. It is a compatibility fallback for users on app versions that predate runtime resolution, and it is ignored by current versions. A sensible category default is enough — 180 for free-weight compounds, 120 for machine compounds and large-muscle isolation, 90 for small-muscle isolation. Do not spend effort tuning it, do not derive a second reduced value from it, and do not give superset members a special value.
+
+**One thing you DO carry across: which pace the user starts on.**
+
+The app resolves all three tiers, but it has to pick one as the selected pace when the program is imported. That choice comes from the plan, in the root `default_pace` field.
+
+The plan states its rest summary in one named pace. Read the pace from the plan and write it to `default_pace` at the root of the JSON, **lowercase**.
+
+**Where to read it from, in this order:**
+
+1. **Preferred.** The plan contains a line reading `Default rest pace: optimal` (or `moderate`, or `minimal`). Copy that value verbatim. It is already in the correct casing and needs no translation.
+2. **Fallback, for older plans that have no such line.** The rest summary names the pace in a line shaped like `Rest (OPTIMAL pace): around ...`. Translate it:
+
+| Pace named in the plan | `default_pace` value |
+|---|---|
+| OPTIMAL / Optimal / Full | `"optimal"` |
+| MODERATE / Moderate / Balanced | `"moderate"` |
+| MINIMAL / Minimal / Quick | `"minimal"` |
+
+Rules:
+
+- Lowercase only. `"OPTIMAL"` is not a valid value and the app will ignore it, silently leaving the user on the middle pace.
+- Emit `default_pace` once, at the root, alongside `routine_name`. Never on a block, a day, or an exercise.
+- If the plan's rest summary does not name a pace at all, write `"moderate"`. Do not guess a pace from the program's goal, its rep ranges, or the rest numbers quoted in the summary.
+- This sets the starting pace only. The user can change it in the app at any time, and the app will not override a pace they have already chosen for themselves.
+
+### Alternative Exercises
+
+Each exercise must include 2 alternatives (1 for bodyweight-only programs). Alternatives should target the same primary muscles, use different equipment or movement variations, and include their own primaryMuscles and secondaryMuscles tags.
+
+### Notes
+
+Only include non-obvious technique tips or specific setup instructions. Do not add notes for standard exercises performed in standard ways. If the plan includes notes for an exercise, carry them through.
+
+### Supersets
+
+Place superset exercises adjacent in the exercises array. Include "Superset with [exact exercise name]" in both exercises' notes field. Add "superset_group": "ss1" (or "ss2", "ss3" etc.) to both exercises in the pair — use the same string value for both. The plan marks supersets with SS[n]a/SS[n]b notation — translate these to adjacent array entries with matching superset_group values.
+
+`superset_group` is what tells the app to apply superset rest timing, so getting the pairing and the matching group string right matters more than it used to. Adjacency plus a matching group value is the whole contract.
+
+---
+
+## Muscle Taxonomy
+
+Before generating JSON, read the canonical exercise library at https://json.fit/exercises.md to get authoritative muscle tags. Every exercise in your JSON must use primaryMuscles and secondaryMuscles tags that exactly match what's in that library. Do not use generic terms like "Shoulders", "Back", "Arms", or "Legs". If an exercise is not found in the library, do not include it in the JSON — flag it as an error requiring replacement.
+
+Exercise names must also match the library exactly. The app looks up each exercise by name to determine its rest category, so a renamed or invented exercise falls back to a generic default rest instead of the right one.
+
+---
+
+## JSON Schema
+
+```
+{
+  "routine_name": "string",
+  "description": "string",
+  "days_per_week": "number — count of TRAINING days per week (4 for a 4-day split). NOT 7, and NOT the length of the days array",
+  "default_pace": "optimal | moderate | minimal (lowercase — the rest pace named in the plan's rest summary)",
+  "blocks": [
     {
-      label:"Baseline", date:"2026-07-01", machine:"Evolt 360",
-      weight_kg:77.3, bodyfat_pct:20.4, lean_mass_kg:61.5, fat_mass_kg:15.8,
-      photos:{
-        front:"/images/lab/2026-07/front.webp",
-        right:"/images/lab/2026-07/right.webp",
-        back:"/images/lab/2026-07/back.webp",
-        left:"/images/lab/2026-07/left.webp"
-      },
-      segments_kg:{ "Arm (L)":3.27,"Arm (R)":3.31,"Torso":26.46,"Leg (L)":9.14,"Leg (R)":9.25 },
-      lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
-      scan:{ type:"Evolt 360", skeletal_muscle_kg:34.2, waist_cm:86.9, visceral_fat_area:68, whr:0.84, bmr_kcal:1698, tee_kcal:2614, body_water_pct:57, bio_age:28,
-             bone_mineral_kg:null, lean_soft_tissue_kg:null, t_score:null, z_score:null, bmd:null, fmi:null, lmi:null },
-      notes:"Day zero. First Evolt 360 scan on the books: 77.3 kg at 20.4% body fat. Bioimpedance body-fat % runs loose in absolute terms, so I treated that number as a trend anchor rather than gospel. This is the line everything else got measured against, until DEXA replaced it.",
-      video:null
-    },
-    {
-      /* First DEXA. Different machine from the baseline, and more accurate:
-         the jump in body-fat % is mostly method, not a real change. The
-         route is re-derived from these numbers. */
-      label:"DEXA 01", date:"2026-09-18", machine:"DEXA",
-      weight_kg:80.6, bodyfat_pct:23.8, lean_mass_kg:61.4, fat_mass_kg:19.2,
-      photos:{ front:"", right:"", back:"", left:"" },
-      segments_kg:{ "Arm (L)":3.76,"Arm (R)":3.85,"Torso":29.14,"Leg (L)":8.84,"Leg (R)":9.37 },
-      lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
-      scan:{ type:"DEXA · Medix DR", skeletal_muscle_kg:null, waist_cm:null, visceral_fat_area:60, whr:null, bmr_kcal:1808, tee_kcal:null, body_water_pct:null, bio_age:null,
-             bone_mineral_kg:3.05, lean_soft_tissue_kg:58.3, t_score:1.5, z_score:0.2, bmd:1.332, fmi:5.8, lmi:17.6 },
-      notes:"First DEXA, at Garran Medical Imaging. 80.6 kg, 23.8% body fat, 19.2 kg of fat and 61.4 kg of fat-free mass. The honest read: not skinny and not muscular. Lean mass index 17.6 sits just under the 18 to 21 male range, and the fat is trunk-dominant at a 1.72 trunk-to-legs ratio. Visceral fat is 60 cm² against a 99 threshold, so it's subcutaneous, not packed around the organs. Bone came back dense: T-score +1.5, 124% of the young adult reference. This is why the app opens with a cut.",
-      video:null
-    }
-  ]
-};
-
-(function(){
-  var cks=DATA.checkins;
-  var latest=cks[cks.length-1], base=cks[0];
-  var prev=cks.length>1?cks[cks.length-2]:base;
-  /* Scans the route calls for: baseline plus one a quarter across the plan. */
-  var TOTAL_SCANS=Math.ceil(ROUTE.totalMonths/3)+1;
-
-  function fmt(n,d){ if(n==null) return "-"; return (d!=null)?Number(n).toFixed(d):String(n); }
-  function delta(cur,prevV,d){ if(cur==null||prevV==null) return null; return +(cur-prevV).toFixed(d==null?1:d); }
-  function fmtDate(s){ var dt=new Date(s+"T00:00:00"); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); }
-  /* Fractional months, for placing a scan or today's marker on the route. */
-  function monthsSinceStart(iso){
-    var a=new Date(DATA.startDate+"T00:00:00"), b=new Date(iso+"T00:00:00");
-    return (b-a)/(1000*60*60*24*30.4375);
-  }
-
-  /* ── Hero status line ── */
-  var _start=new Date(DATA.startDate+"T00:00:00");
-  var _now=new Date();
-  var _today=new Date(_now.getFullYear(),_now.getMonth(),_now.getDate());
-  var _dayOfBulk=Math.max(0,Math.round((_today-_start)/86400000));
-  var TODAY_M=Math.max(0,monthsSinceStart(_today.toISOString().slice(0,10)));
-  function nextCaptureLabel(){
-    var d=new Date(latest.date+"T00:00:00");
-    d=new Date(d.getFullYear(),d.getMonth()+3,1);
-    return d.toLocaleDateString('en-AU',{month:'short',year:'numeric'});
-  }
-  var scanned=cks.filter(function(c){ return !c.estimate; });
-  document.getElementById('heroStatus').innerHTML=
-    '<span class="live"><span class="live-dot"></span>Day '+_dayOfBulk+'</span>'+
-    '<span>Scan <b>'+scanned.length+' of '+TOTAL_SCANS+'</b></span>'+
-    '<span>Next scan <b>'+nextCaptureLabel()+'</b></span>';
-
-  /* ── Specimen frame: latest captured check-in, cycling through its angles ── */
-  var PH='<div class="vr-ph">'+
-    '<svg width="56" height="106" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>'+
-    '<span>awaiting capture</span></div>';
-  function hasShots(ck){ if(!ck||!ck.photos) return false; for(var k in ck.photos){ if(ck.photos[k]) return true; } return false; }
-  function shotHTML(ck,ang){
-    var src=ck&&ck.photos&&ck.photos[ang];
-    if(src) return PH+'<img src="'+src+'" alt="'+ck.label+' '+ang+'" onclick="window.__lb(this.src,this.alt)" onerror="this.style.display=\'none\'">';
-    return PH;
-  }
-
-  var specCk=null;
-  for(var si=cks.length-1;si>=0;si--){ if(hasShots(cks[si])){ specCk=cks[si]; break; } }
-  var specAngles=specCk?DATA.angles.filter(function(a){ return !!specCk.photos[a]; }):[];
-  var specIdx=0;
-  var specFrame=document.getElementById('specFrame');
-  var specShot=document.getElementById('specShot');
-  var specCap=document.getElementById('specCap');
-  var specPills=document.getElementById('specAngles');
-  var specPrev=document.getElementById('specPrev');
-  var specNext=document.getElementById('specNext');
-
-  function renderSpec(){
-    if(!specCk||!specAngles.length){
-      specShot.innerHTML=PH;
-      specCap.style.display='none';
-      return;
-    }
-    var ang=specAngles[specIdx];
-    specShot.innerHTML=shotHTML(specCk,ang);
-    specShot.style.animation='none'; void specShot.offsetWidth; specShot.style.animation='';
-    specCap.innerHTML=specCk.label+' &middot; '+fmtDate(specCk.date)+' &middot; '+ang;
-    var btns=specPills.querySelectorAll('.sa-pill');
-    for(var n=0;n<btns.length;n++){ btns[n].classList.toggle('active',n===specIdx); }
-  }
-  function specStep(d){
-    if(specAngles.length<2) return;
-    specIdx=(specIdx+d+specAngles.length)%specAngles.length;
-    renderSpec();
-  }
-  if(specAngles.length>1){
-    specPrev.style.display='flex';
-    specNext.style.display='flex';
-    specPills.innerHTML=specAngles.map(function(a,n){
-      return '<button class="sa-pill" data-i="'+n+'" aria-label="Show '+a+' angle">'+a+'</button>';
-    }).join('');
-    specPills.querySelectorAll('.sa-pill').forEach(function(b){
-      b.addEventListener('click',function(){ specIdx=+b.dataset.i; renderSpec(); });
-    });
-    specPrev.addEventListener('click',function(){ specStep(-1); });
-    specNext.addEventListener('click',function(){ specStep(1); });
-    specFrame.setAttribute('tabindex','0');
-    specFrame.addEventListener('keydown',function(e){
-      if(e.key==='ArrowLeft'){ e.preventDefault(); specStep(-1); }
-      if(e.key==='ArrowRight'){ e.preventDefault(); specStep(1); }
-    });
-    var _x0=null;
-    specFrame.addEventListener('touchstart',function(e){ _x0=e.touches[0].clientX; },{passive:true});
-    specFrame.addEventListener('touchend',function(e){
-      if(_x0==null) return;
-      var dx=e.changedTouches[0].clientX-_x0;
-      if(Math.abs(dx)>40) specStep(dx<0?1:-1);
-      _x0=null;
-    },{passive:true});
-  }
-  renderSpec();
-
-  /* ── Readout rail ── */
-  function roCell(lbl,val,unit,d,dUnit,hl,startSub){
-    var sub;
-    if(cks.length===1){ sub='<div class="ro-d">'+(startSub||'start')+'</div>'; }
-    else if(d==null){ sub='<div class="ro-d">'+(startSub||'&nbsp;')+'</div>'; }
-    else if(d>0){ sub='<div class="ro-d up">&#9650; +'+fmt(d,1)+' '+(dUnit||'')+'</div>'; }
-    else if(d<0){ sub='<div class="ro-d down">&#9660; '+fmt(d,1)+' '+(dUnit||'')+'</div>'; }
-    else { sub='<div class="ro-d">- '+(dUnit||'')+'</div>'; }
-    return '<div class="ro"><div class="ro-l">'+lbl+'</div>'+
-      '<div class="ro-v'+(hl?' hl':'')+'">'+(val==null?'<span>-</span>':'<span class="count-up" data-target="'+val+'" data-decimals="1">'+fmt(val,1)+'</span>')+'<span class="ro-u">'+(unit||'')+'</span></div>'+
-      sub+'</div>';
-  }
-  /* Body fat and lean carry no delta across the machine change: an Evolt
-     bioimpedance % and a DEXA % are not the same measurement, and showing
-     a difference between them would read as a real change. */
-  var machineChanged=(cks.length>1 && prev.machine!==latest.machine);
-  document.getElementById('readout').innerHTML=
-    roCell('Weight',latest.weight_kg,'kg',cks.length>1?delta(latest.weight_kg,prev.weight_kg):null,'kg',true,'start')+
-    roCell('Body fat',latest.bodyfat_pct,'%',machineChanged?null:(cks.length>1?delta(latest.bodyfat_pct,prev.bodyfat_pct):null),'pt',false,machineChanged?'DEXA baseline':'start')+
-    roCell('Fat-free',latest.lean_mass_kg,'kg',machineChanged?null:(cks.length>1?delta(latest.lean_mass_kg,prev.lean_mass_kg):null),'kg',true,machineChanged?'DEXA baseline':'start')+
-    roCell('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false,'of '+DATA.target.weight_kg);
-
-  /* ── Protocol bar ── */
-  document.getElementById('protoBar').innerHTML=DATA.plan.cells.map(function(c){
-    return '<span><span class="k">'+c.k+'</span> <b>'+c.v+'</b></span>';
-  }).join('');
-
-  /* ════════════════════════════════════════════════════════════════
-     ROUTE CHART
-     Two views over the same x axis: weight against the goal line, or body
-     fat against the operating band. The plan is DASHED and the measured
-     scans are SOLID, deliberately: nothing here should let a projection
-     read as data.
-     ════════════════════════════════════════════════════════════════ */
-  var VIEW='w';
-
-  var SEL=null;
-  (function(){ var li=-1; cks.forEach(function(c,i){ if(c.weight_kg!=null) li=i; }); if(li>=0) SEL={t:'ck',i:li}; })();
-  function monthToLabel(m){
-    var d=new Date(DATA.startDate+'T00:00:00'); d.setDate(d.getDate()+Math.round(m*30.4375));
-    return d.toLocaleDateString('en-AU',{month:'short',year:'numeric'});
-  }
-  var NODE_WORD={trim:'End of cut',build:'End of build',recomp:'End of hold',reveal:'Goal',start:'Route starts'};
-  function flagText(){
-    if(!SEL) return null;
-    if(SEL.t==='ck'){
-      var c=cks[SEL.i]; if(!c) return null;
-      return fmtDate(c.date)+' \u00b7 '+fmt(c.weight_kg,1)+' kg \u00b7 '+fmt(c.bodyfat_pct,1)+'%'+(c.machine?(' \u00b7 '+c.machine):'');
-    }
-    var n=ROUTE.nodes[SEL.i]; if(!n) return null;
-    return (NODE_WORD[n.kind]||n.kind)+' \u00b7 '+monthToLabel(n.month)+' \u00b7 '+n.weightKg+' kg \u00b7 '+n.bodyFatPct+'%';
-  }
-  function flagAnchor(isW){
-    if(!SEL) return null;
-    if(SEL.t==='ck'){ var c=cks[SEL.i]; if(!c) return null; return {m:monthsSinceStart(c.date), v:isW?c.weight_kg:c.bodyfat_pct}; }
-    var n=ROUTE.nodes[SEL.i]; if(!n) return null; return {m:n.month, v:isW?n.weightKg:n.bodyFatPct};
-  }
-
-  function drawRoute(){
-    var W=680,H=250,pad={t:26,r:18,b:34,l:42};
-    var isW=(VIEW==='w');
-    var el=document.getElementById('chartRoute');
-
-    var vals=ROUTE.points.map(function(p){ return isW?p[1]:p[2]; });
-    var lo=Math.min.apply(null,vals), hi=Math.max.apply(null,vals);
-    if(!isW){ lo=Math.min(lo,ROUTE.band.bottom); hi=Math.max(hi,ROUTE.band.top); }
-    cks.forEach(function(c){
-      var v=isW?c.weight_kg:c.bodyfat_pct;
-      if(v==null) return;
-      lo=Math.min(lo,v); hi=Math.max(hi,v);
-    });
-    var sp=(hi-lo)||1; lo-=sp*0.14; hi+=sp*0.14;
-
-    function X(m){ return pad.l+(m/ROUTE.totalMonths)*(W-pad.l-pad.r); }
-    function Y(v){ return pad.t+(1-(v-lo)/(hi-lo))*(H-pad.t-pad.b); }
-
-    var s='';
-    for(var k=0;k<=3;k++){
-      var gy=pad.t+k*(H-pad.t-pad.b)/3;
-      var gv=hi-(k/3)*(hi-lo);
-      s+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.05)"/>';
-      s+='<text x="'+(pad.l-8)+'" y="'+(gy+3)+'" text-anchor="end" font-family="DM Mono" font-size="9" fill="#5b5b62">'+gv.toFixed(isW?0:1)+(isW?'':'%')+'</text>';
-    }
-
-    if(!isW){
-      var by1=Y(ROUTE.band.top), by2=Y(ROUTE.band.bottom);
-      s+='<rect x="'+pad.l+'" y="'+by1.toFixed(1)+'" width="'+(W-pad.l-pad.r)+'" height="'+(by2-by1).toFixed(1)+'" fill="rgba(168,85,247,0.07)"/>';
-      s+='<line x1="'+pad.l+'" y1="'+by1.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+by1.toFixed(1)+'" stroke="rgba(168,85,247,0.2)"/>';
-      s+='<line x1="'+pad.l+'" y1="'+by2.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+by2.toFixed(1)+'" stroke="rgba(168,85,247,0.2)"/>';
-      s+='<text x="'+(W-pad.r-4)+'" y="'+(by1-5).toFixed(1)+'" text-anchor="end" font-family="DM Mono" font-size="8.5" fill="#a855f7">operating band '+ROUTE.band.bottom+'&#8211;'+ROUTE.band.top+'%</text>';
-    } else {
-      var ty=Y(ROUTE.goal.weightKg);
-      s+='<line x1="'+pad.l+'" y1="'+ty.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+ty.toFixed(1)+'" stroke="rgba(168,85,247,0.4)" stroke-dasharray="4 4"/>';
-      s+='<text x="'+(W-pad.r)+'" y="'+(ty-6).toFixed(1)+'" text-anchor="end" font-family="DM Mono" font-size="9.5" fill="#a855f7">goal '+ROUTE.goal.weightKg+' kg</text>';
-    }
-
-    for(var yr=12;yr<ROUTE.totalMonths;yr+=12){
-      s+='<line x1="'+X(yr).toFixed(1)+'" y1="'+pad.t+'" x2="'+X(yr).toFixed(1)+'" y2="'+(H-pad.b)+'" stroke="rgba(255,255,255,0.05)"/>';
-      s+='<text x="'+(X(yr)+4).toFixed(1)+'" y="'+(pad.t+10)+'" font-family="DM Mono" font-size="8.5" fill="#4a4a52">'+(yr/12)+'y</text>';
-    }
-
-    var d=ROUTE.points.map(function(p,i){ return (i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(isW?p[1]:p[2]).toFixed(1); }).join(' ');
-    s+='<path d="'+d+'" fill="none" stroke="rgba(168,85,247,0.5)" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>';
-
-    ROUTE.nodes.forEach(function(n,i){
-      if(i===0) return;
-      var on=SEL&&SEL.t==='node'&&SEL.i===i;
-      s+='<circle cx="'+X(n.month).toFixed(1)+'" cy="'+Y(isW?n.weightKg:n.bodyFatPct).toFixed(1)+'" r="'+(on?4:3)+'" fill="'+(on?'#a855f7':'#0a0a0f')+'" stroke="rgba(168,85,247,'+(on?'1':'0.55')+')" stroke-width="1.5"/>';
-      s+='<circle cx="'+X(n.month).toFixed(1)+'" cy="'+Y(isW?n.weightKg:n.bodyFatPct).toFixed(1)+'" r="14" fill="transparent" data-node="'+i+'" style="cursor:pointer"/>';
-    });
-
-    s+='<line x1="'+X(TODAY_M).toFixed(1)+'" y1="'+pad.t+'" x2="'+X(TODAY_M).toFixed(1)+'" y2="'+(H-pad.b)+'" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 3" opacity="0.7"/>';
-    s+='<text x="'+(X(TODAY_M)+5).toFixed(1)+'" y="'+(H-pad.b-6)+'" font-family="DM Mono" font-size="8.5" fill="#c084fc">today</text>';
-
-    var logged=cks.filter(function(c){ return (isW?c.weight_kg:c.bodyfat_pct)!=null; });
-    /* The two measured points come from different machines, so they are NOT
-       joined by a line: a segment between an Evolt reading and a DEXA reading
-       would draw a change that is mostly method. Once there are two DEXA
-       scans, they join. */
-    var dexa=logged.filter(function(c){ return c.machine===latest.machine; });
-    if(dexa.length>=2){
-      var ad=dexa.map(function(c,i){
-        return (i?'L':'M')+X(monthsSinceStart(c.date)).toFixed(1)+' '+Y(isW?c.weight_kg:c.bodyfat_pct).toFixed(1);
-      }).join(' ');
-      s+='<path d="'+ad+'" fill="none" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
-    }
-    logged.forEach(function(c){
-      var x=X(monthsSinceStart(c.date)), y=Y(isW?c.weight_kg:c.bodyfat_pct);
-      var ci=cks.indexOf(c), on=SEL&&SEL.t==='ck'&&SEL.i===ci;
-      var older=(c.machine!==latest.machine);
-      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5" fill="'+(on?'#a855f7':'#0a0a0f')+'" stroke="#a855f7" stroke-width="2.5"'+(older&&!on?' stroke-dasharray="2.5 2.5" opacity="0.65"':'')+'/>';
-      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="16" fill="transparent" data-ck="'+ci+'" style="cursor:pointer"/>';
-    });
-    var lastC=SEL?null:logged[logged.length-1];
-    if(lastC){
-      var lx=X(monthsSinceStart(lastC.date)), ly=Y(isW?lastC.weight_kg:lastC.bodyfat_pct);
-      var anchor=(monthsSinceStart(lastC.date)>ROUTE.totalMonths*0.85)?'end':'start';
-      s+='<text x="'+(lx+(anchor==='end'?-9:9)).toFixed(1)+'" y="'+(ly-9).toFixed(1)+'" text-anchor="'+anchor+'" font-family="DM Mono" font-size="10" fill="#c084fc">'+
-        (isW?(lastC.weight_kg+' kg'):(lastC.bodyfat_pct+'%'))+'</text>';
-    }
-
-    for(var m=0;m<=ROUTE.totalMonths;m+=6){
-      s+='<text x="'+X(m).toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#5b5b62">'+(m===0?'start':'m'+m)+'</text>';
-    }
-
-    var ft=flagText(), fa=flagAnchor(isW);
-    if(ft&&fa&&fa.v!=null){
-      var fx=X(fa.m), fy=Y(fa.v);
-      var fw=Math.min(W-pad.l-pad.r, ft.length*6.1+20), fh=19, fyTop=4;
-      var bx=Math.min(Math.max(fx-fw/2,pad.l),W-pad.r-fw);
-      s+='<line x1="'+fx.toFixed(1)+'" y1="'+(fyTop+fh)+'" x2="'+fx.toFixed(1)+'" y2="'+(fy-7).toFixed(1)+'" stroke="#a855f7" stroke-width="1" opacity="0.45"/>';
-      s+='<rect x="'+bx.toFixed(1)+'" y="'+fyTop+'" width="'+fw.toFixed(1)+'" height="'+fh+'" rx="'+(fh/2)+'" fill="#0a0a0f" stroke="rgba(168,85,247,0.45)"/>';
-      s+='<text x="'+(bx+fw/2).toFixed(1)+'" y="'+(fyTop+13)+'" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#e8e8ea">'+ft+'</text>';
-    }
-
-    el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+s+'</svg>';
-    var cands=[];
-    logged.forEach(function(c){ cands.push({t:'ck',i:cks.indexOf(c),x:X(monthsSinceStart(c.date)),y:Y(isW?c.weight_kg:c.bodyfat_pct)}); });
-    ROUTE.nodes.forEach(function(n,i){ if(i>0) cands.push({t:'node',i:i,x:X(n.month),y:Y(isW?n.weightKg:n.bodyFatPct)}); });
-    el.onclick=function(e){
-      var svg=el.querySelector('svg'); if(!svg||!svg.getScreenCTM) return;
-      var ctm=svg.getScreenCTM(); if(!ctm) return;
-      var pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
-      var u=pt.matrixTransform(ctm.inverse());
-      var reach=36/ctm.a;
-      var best=null, bd=Infinity;
-      cands.forEach(function(c){ var dd=Math.hypot(c.x-u.x,c.y-u.y); if(dd<bd){ bd=dd; best=c; } });
-      if(!best||bd>reach) return;
-      var next={t:best.t,i:best.i};
-      SEL=(SEL&&SEL.t===next.t&&SEL.i===next.i)?null:next;
-      drawRoute();
-    };
-    document.getElementById('chTitle').textContent=isW?'Bodyweight':'Body fat';
-    document.getElementById('legend').innerHTML=
-      '<span><i class="plan"></i>the plan</span>'+
-      '<span><i class="dot"></i>me, measured</span>'+
-      (isW?'':'<span><i class="band"></i>operating band</span>');
-  }
-
-  /* ── Phase strip: widths proportional to real duration ── */
-  document.getElementById('strip').innerHTML=
-    '<div class="seg gone" style="width:'+(ROUTE.startMonth/ROUTE.totalMonths*100).toFixed(2)+'%" title="Before the route was derived"></div>'+
-    ROUTE.phases.map(function(p){
-    var w=((p.to-p.from)/ROUTE.totalMonths*100).toFixed(2);
-    var cls=(p.kind==='trim')?'cut':((p.kind==='reveal')?'reveal':'build');
-    var done=(p.to<=TODAY_M)?' done':'';
-    var txt=((p.to-p.from)/ROUTE.totalMonths>0.07)?p.label:'';
-    return '<div class="seg '+cls+done+'" style="width:'+w+'%" title="'+p.label.replace(/&middot;/g,'-')+'">'+txt+'</div>';
-  }).join('');
-
-  /* ── Current-phase card: derived from where today falls on the route ── */
-  (function(){
-    var idx=0;
-    for(var i=0;i<ROUTE.phases.length;i++){ if(TODAY_M>=ROUTE.phases[i].from) idx=i; }
-    var ph=ROUTE.phases[idx];
-    var intent=PHASE_INTENT[ph.kind]||PHASE_INTENT.recomp;
-    var dirCls=(intent.dir==='down')?'dn':((intent.dir==='up')?'up':'');
-    var dirGlyph=(intent.dir==='down')?'\u25bc':((intent.dir==='up')?'\u25b2':'\u2014');
-
-    document.getElementById('ncPhase').textContent='Right now \u00b7 phase '+(idx+1)+' of '+ROUTE.phases.length;
-    document.getElementById('ncTitle').textContent=ph.label.replace(/&middot;/g,'\u00b7').replace(/^Cut \u00b7 /,'Cutting to ').replace(/^Build \u00b7 /,'Building to ').replace(/^Reveal \u00b7 /,'Revealing at ');
-    document.getElementById('ncBody').textContent=intent.detail;
-
-    function endWindow(){
-      if(!ph.months) return null;
-      var b=new Date(ROUTE.generated+'T00:00:00');
-      function plus(mo){ var dd=new Date(b); dd.setDate(dd.getDate()+Math.round(mo*30.4375)); return dd.toLocaleDateString('en-AU',{month:'short',year:'2-digit'}); }
-      var a=plus(ph.months[0]), c=plus(ph.months[1]);
-      return a===c?a:(a+' \u2013 '+c);
-    }
-    var rows=[
-      ['Scale','<span class="nc-v '+dirCls+'">'+dirGlyph+' '+intent.word+'</span>']
-    ];
-    if(ph.macros){
-      rows.push(['Eating','<span class="nc-v">'+ph.macros.kcal.toLocaleString('en-AU')+' kcal \u00b7 '+ph.macros.protein+'p \u00b7 '+ph.macros.carbs+'c \u00b7 '+ph.macros.fat+'f</span>']);
-    }
-    if(ph.months){
-      var win=endWindow();
-      rows.push(['Done by','<span class="nc-v">'+(win||(ph.months[0]+'\u2013'+ph.months[1]+' months'))+'</span>']);
-    }
-    rows.push(['Ends at','<span class="nc-v hl">'+ph.endKg+' kg \u00b7 '+ph.endBf+'%</span>']);
-    document.getElementById('ncRows').innerHTML=rows.map(function(r){
-      return '<div class="nc-row"><span class="nc-l">'+r[0]+'</span>'+r[1]+'</div>';
-    }).join('');
-  })();
-
-  document.querySelectorAll('.tg').forEach(function(b){
-    b.addEventListener('click',function(){
-      document.querySelectorAll('.tg').forEach(function(x){ x.classList.remove('active'); });
-      b.classList.add('active');
-      VIEW=b.dataset.v;
-      drawRoute();
-    });
-  });
-  drawRoute();
-
-  /* ── Latest scan strip: four headline metrics, chosen by machine.
-     Everything else lives in the scan-history table so this row stays
-     scannable. ── */
-  var sc=latest.scan||{};
-  document.getElementById('scanKick').innerHTML='Latest scan &middot; '+(sc.type||'')+' &middot; '+fmtDate(latest.date);
-  var scanCells = (latest.machine==='DEXA')
-    ? [
-        {v:fmt(latest.fat_mass_kg,1),l:'Fat mass · kg',hl:true},
-        {v:fmt(sc.bone_mineral_kg,2),l:'Bone mineral · kg'},
-        {v:fmt(sc.visceral_fat_area,0),l:'Visceral fat · cm²'},
-        {v:(sc.t_score==null?'-':((sc.t_score>0?'+':'')+fmt(sc.t_score,1))),l:'Bone T-score'}
+      "block_name": "string",
+      "weeks": "string (e.g. '1-6')",
+      "structure": "string (e.g. 'Push Pull Legs Upper Lower')",
+      "weekly_schedule": [
+        {
+          "day_number": "number",
+          "type": "training | rest",
+          "day_name": "string (e.g. 'Push', 'Pull', 'REST DAY')"
+        }
+      ],
+      "deload_weeks": "[number] (optional — include only if block has deloads)",
+      "days": [
+        {
+          "day_name": "string",
+          "estimated_duration": "number (minutes)",
+          "exercises": "[Exercise]"
+        },
+        {
+          "day_name": "REST DAY",
+          "estimated_duration": 0,
+          "exercises": []
+        }
       ]
-    : [
-        {v:fmt(sc.skeletal_muscle_kg,1),l:'Skeletal muscle · kg',hl:true},
-        {v:fmt(sc.waist_cm,1),l:'Waist · cm'},
-        {v:fmt(sc.visceral_fat_area,0),l:'Visceral fat · cm²'},
-        {v:fmt(sc.whr,2),l:'Waist-to-hip'}
-      ];
-  document.getElementById('scanGrid').innerHTML=scanCells.map(function(c){
-    return '<div class="scan-cell"><div class="scan-val'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="scan-lbl">'+c.l+'</div></div>';
-  }).join('');
-
-  /* ── Blood work ── */
-  (function(){
-    var slot=document.getElementById('bloodSlot'), sum=document.getElementById('bloodSum');
-    if(!slot) return;
-    if(!BLOODS||!BLOODS.length){
-      slot.innerHTML='<div class="blood-pending">'+
-        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'+
-        '<p>Bloods were drawn fasted alongside the first DEXA. The full panel goes up here as soon as it comes back, and every re-test lands beside it. A cut changes more than the scale, and this is where that shows.</p>'+
-        '</div>';
-      return;
     }
-    if(sum&&BLOOD_DATE) sum.textContent=fmtDate(BLOOD_DATE);
-    slot.innerHTML=BLOODS.map(function(g){
-      return (g.group?'<div class="bgrp">'+g.group+'</div>':'')+
-        (g.markers||[]).map(function(m){
-          return '<div class="brow"><div><div class="bname">'+m.name+'</div>'+
-            (m.ref?'<div class="bref">ref '+m.ref+'</div>':'')+'</div>'+
-            '<div class="bval">'+(m.value||'-')+(m.unit?(' '+m.unit):'')+'</div></div>';
-        }).join('');
-    }).join('');
-  })();
-
-  /* ── Full data table: every metric + segmental panel, one column per scan ── */
-  var ROWS=[
-    {n:'Weight · kg',d:1,g:function(c){return c.weight_kg;}},
-    {n:'Body fat · %',d:1,g:function(c){return c.bodyfat_pct;}},
-    {n:'Fat-free mass · kg',d:1,g:function(c){return c.lean_mass_kg;}},
-    {n:'Fat mass · kg',d:1,g:function(c){return c.fat_mass_kg;}},
-    {n:'Lean soft tissue · kg',d:1,g:function(c){return c.scan?c.scan.lean_soft_tissue_kg:null;}},
-    {n:'Bone mineral · kg',d:2,g:function(c){return c.scan?c.scan.bone_mineral_kg:null;}},
-    {n:'Bone density · g/cm²',d:3,g:function(c){return c.scan?c.scan.bmd:null;}},
-    {n:'Bone T-score',d:1,g:function(c){return c.scan?c.scan.t_score:null;}},
-    {n:'Bone Z-score',d:1,g:function(c){return c.scan?c.scan.z_score:null;}},
-    {n:'Visceral fat · cm²',d:0,g:function(c){return c.scan?c.scan.visceral_fat_area:null;}},
-    {n:'Fat mass index',d:1,g:function(c){return c.scan?c.scan.fmi:null;}},
-    {n:'Lean mass index',d:1,g:function(c){return c.scan?c.scan.lmi:null;}},
-    {n:'BMR · kcal',d:0,g:function(c){return c.scan?c.scan.bmr_kcal:null;}},
-    {n:'Skeletal muscle · kg',d:1,g:function(c){return c.scan?c.scan.skeletal_muscle_kg:null;}},
-    {n:'Waist · cm',d:1,g:function(c){return c.scan?c.scan.waist_cm:null;}},
-    {n:'Waist-to-hip',d:2,g:function(c){return c.scan?c.scan.whr:null;}},
-    {n:'TEE · kcal',d:0,g:function(c){return c.scan?c.scan.tee_kcal:null;}},
-    {n:'Body water · %',d:0,g:function(c){return c.scan?c.scan.body_water_pct:null;}},
-    {n:'Bio age',d:0,g:function(c){return c.scan?c.scan.bio_age:null;}}
-  ];
-  function segRow(name){
-    return {n:name+' · lean kg',d:2,g:function(c){return c.segments_kg?c.segments_kg[name]:null;}};
+  ],
+  "_metadata": {
+    "isSamplePlan": "true (for sample plans only — prevents contaminating user exercise preferences)"
   }
-  var segNames=Object.keys(base.segments_kg||{});
-  /* Δ only where the same machine measured both ends. Across a machine
-     change the difference is method, not progress, so it renders "-". */
-  var deltaOK=(cks.length>1 && base.machine===latest.machine);
-  function rowHTML(r){
-    var first=r.g(base), last=r.g(latest);
-    var dd=(deltaOK&&first!=null&&last!=null)?+(last-first).toFixed(r.d):null;
-    var dcls=(dd!=null)?(dd>0?'delta-up':(dd<0?'delta-down':'')):'';
-    var tds=cks.map(function(c,i){ var v=r.g(c); return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(v==null?'-':fmt(v,r.d))+'</td>'; }).join('');
-    return '<tr><td>'+r.n+'</td>'+tds+'<td class="'+dcls+'">'+(dd==null?'-':(dd>0?'+':'')+dd)+'</td></tr>';
-  }
-  var colspan=cks.length+2;
-  var head='<thead><tr><th>Metric</th>'+cks.map(function(c){return '<th>'+c.label+'</th>';}).join('')+'<th>&Delta; base</th></tr></thead>';
-  var machineRow='<tr><td>Machine</td>'+cks.map(function(c,i){return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(c.machine||'-')+'</td>';}).join('')+'<td>-</td></tr>';
-  var body='<tbody>'+machineRow+ROWS.map(rowHTML).join('')+
-    (segNames.length?'<tr><td class="grp" colspan="'+colspan+'"><span class="grp-in">Segmental lean mass</span></td></tr>'+segNames.map(function(nm){return rowHTML(segRow(nm));}).join(''):'')+
-    '</tbody>';
-  document.getElementById('fullTable').innerHTML=head+body;
+}
+```
 
-  /* ── Table scroll affordance: right fade while more columns exist ── */
-  var dtWrap=document.getElementById('dtWrap'), dtScroll=document.getElementById('dtScroll');
-  function dtFades(){ if(!dtScroll||!dtWrap) return; var max=dtScroll.scrollWidth-dtScroll.clientWidth; dtWrap.classList.toggle('can-right', max>2 && dtScroll.scrollLeft<max-2); }
-  if(dtScroll){
-    dtScroll.addEventListener('scroll',dtFades,{passive:true});
-    window.addEventListener('resize',dtFades);
-    var _dd=dtWrap.closest('.ddata'); if(_dd) _dd.addEventListener('toggle',dtFades);
-    dtFades();
-  }
+**For sample plan generation only:** Include `"_metadata": {"isSamplePlan": true}` at the root level to prevent the plan from overwriting users' saved exercise preferences when imported.
 
-  /* ── Lightbox ── */
-  var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
-  window.__lb=function(src,alt){ lbImg.src=src; lbImg.alt=alt||''; lb.classList.add('open'); document.body.style.overflow='hidden'; };
-  lb.addEventListener('click',function(){ lb.classList.remove('open'); document.body.style.overflow=''; });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ lb.classList.remove('open'); document.body.style.overflow=''; } });
+### Strength Exercise
 
-  /* ── Mobile menu ── */
-  var burger=document.getElementById('burger'), navLinks=document.getElementById('navLinks');
-  burger.addEventListener('click',function(e){ e.stopPropagation(); burger.classList.toggle('open'); navLinks.classList.toggle('open'); });
-  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ burger.classList.remove('open'); navLinks.classList.remove('open'); }); });
+```
+{
+  "type": "strength",
+  "exercise": "string",
+  "sets": "number",
+  "reps": "string",
+  "rest": "number (seconds — compatibility fallback only; current app versions ignore it and resolve rest at runtime)",
+  "primaryMuscles": ["from taxonomy"],
+  "secondaryMuscles": ["from taxonomy, or empty array"],
+  "superset_group": "string (optional — e.g. 'ss1'; same value on two exercises links them as a superset)",
+  "reps_weekly": { "1": "string", "2": "string" },
+  "rir_weekly": { "1": "string", "2": "string" },
+  "sets_weekly": { "1": "number", "2": "number" },
+  "notes": "string (form cues, RIR guidance, or other coaching notes — multiple notes allowed)",
+  "alternatives": [
+    { "exercise": "string", "primaryMuscles": ["..."], "secondaryMuscles": ["..."] }
+  ]
+}
+```
 
-  /* ── Scroll animations + count-ups ── */
-  function fireEl(el){
-    el.classList.add('vis');
-    var line=el.querySelector('.section-line'); if(line) setTimeout(function(){line.classList.add('vis');},80);
-    el.querySelectorAll('.count-up').forEach(function(n){
-      var target=parseFloat(n.getAttribute('data-target')), dec=parseInt(n.getAttribute('data-decimals')||'0');
-      var dur=1200,start=null;
-      function step(ts){ if(!start)start=ts; var pr=Math.min((ts-start)/dur,1); var e=1-Math.pow(1-pr,3); var val=target*e;
-        n.textContent=dec>0?val.toFixed(dec):Math.round(val).toLocaleString(); if(pr<1)requestAnimationFrame(step); }
-      requestAnimationFrame(step);
-    });
-  }
-  var obs=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ fireEl(e.target); obs.unobserve(e.target);} }); },{threshold:0.12,rootMargin:'0px 0px -5% 0px'});
-  document.querySelectorAll('.sa').forEach(function(el){ obs.observe(el); });
-})();
-</script>
+---
 
-<script>
-(function(){
-  document.addEventListener('click',function(e){
-    var a=e.target;
-    while(a&&a.tagName!=='A')a=a.parentElement;
-    if(!a||!a.href)return;
-    try{
-      var h=new URL(a.href).hostname;
-      if(!h||h===location.hostname)return;
-      var label;
-      if(h==='apps.apple.com')label='app_store';
-      else if(h==='www.youtube.com'||h==='youtu.be')label='youtube';
-      else{var p=h.replace(/^www\./,'').split('.');var s=p[p.length-2]||p[0];label=s==='nih'?'pubmed':s;}
-      if(window.track)window.track('outbound_click',{url:label});
-    }catch(err){}
-  },true);
-})();
-</script>
-</body>
-</html>
+## Schema Rules
+
+1. **Block-relative keys** — weekly progression keys always start from "1" within each block. Block B (weeks 7-12) uses "1", "2", "3"... not "7", "8", "9".
+2. **Deload tagging** — if a block has deload weeks, include a `deload_weeks` array with the block-relative week numbers (e.g., [5] for a 5-week block with deload on week 5). The app also reads this to lengthen rest during deload weeks, so an omitted deload_weeks costs more than a missing label.
+3. **Empty arrays** — if an exercise has no secondary muscles, use `[]`. Do not omit the field.
+4. **Estimated duration** — ALWAYS recalculate using this duration formula instead of trusting plan estimates: `Straight sets: (sets × 45s) + (sets × rest_seconds) | Superset pairs: (pairs × 90s) + (pairs × rest_seconds) + (pairs × 150s) | Total: exercise_count × 150s + 300s warmup`. Use the same category defaults given under Rest Periods for `rest_seconds`. This figure is an estimate shown before import; the app recomputes it live from the user's actual rest pace, so do not agonise over it. Duration has been pre-approved in the review stage.
+5. **sets vs sets_weekly** — `sets` is the default set count for training weeks (used for display). `sets_weekly` must be specified for every week in the block: training weeks should match `sets`, and deload weeks should show reduced values. Both fields are required for every strength exercise.
+6. **deload_weeks optionality** — omit `deload_weeks` entirely for blocks without deloads. Do not include an empty array.
+7. **weekly_schedule** — create a 7-day schedule showing training and rest days. For each day 1-7, specify: day_number, type ("training" or "rest"), and day_name (e.g., "Push", "Pull", "REST DAY"). Training days must match the day_name values in the days array. Example for 5-day program: Day 1 training "Push", Day 2 training "Pull", Day 3 rest "REST DAY", Days 4 and 5 training, Day 6 rest, Day 7 training.
+8. **REST DAY entries in `days`** — every block's `days` array must hold the full 7-day week: one object per training day plus one `{ "day_name": "REST DAY", "estimated_duration": 0, "exercises": [] }` per rest day, ordered exactly as weekly_schedule orders the week. The app renders `days` and only `days` — weekly_schedule never reaches the screen — and it renders the array in order, so a rest day's position in the array IS its position in the user's week. A 6-day program therefore ships 7 day objects, one of them REST DAY. Do not collapse consecutive rest days into a single entry; two rest days are two objects.
+9. **Sample plan protection** — for sample plans only, include `"_metadata": {"isSamplePlan": true}` at the root level to prevent overwriting users' exercise preferences during import.
+10. **RIR** — carry RIR guidance from the approved plan into each exercise's notes field. Do not regenerate or modify RIR values — the plan is authoritative.
+11. **default_pace** — include `default_pace` at the root, lowercase, as one of `"optimal"`, `"moderate"` or `"minimal"`, read from the pace named in the plan's rest summary (see Rest Periods). Fall back to `"moderate"` only when the plan names no pace. This is the one rest-related value you carry from the plan into the file.
+
+---
+
+## Pre-Delivery Self-Check
+
+Before presenting each block, silently verify:
+
+- [ ] Every exercise from the plan appears in JSON with correct set counts
+- [ ] Exercise names are identical everywhere (across days, notes, superset references) AND match the canonical library exactly
+- [ ] Superset exercises are adjacent with matching superset_group values and cross-referenced in notes
+- [ ] Rep progressions trend flat-to-decreasing across weeks (not identical every week)
+- [ ] RIR guidance from the plan carried through to every exercise's notes
+- [ ] rir_weekly field populated for every exercise that has reps_weekly (matching structure and set counts)
+- [ ] Deload weeks show reduced sets_weekly (~40-50%) and increased reps, and the block carries a `deload_weeks` array
+- [ ] Every block's `days` array totals 7 objects — training days plus REST DAY entries — ordered to match its weekly_schedule
+- [ ] `days_per_week` at the root is the count of TRAINING days, not 7 and not the length of the `days` array (a 4-day split says 4 while its `days` array holds 7 objects)
+- [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
+- [ ] Block-relative week keys start from "1"
+- [ ] `default_pace` is present at the root, lowercase, and matches the pace named in the plan's rest summary
+- [ ] Session durations are recalculated using the duration formula
+- [ ] The filename ends in `.json` and follows the naming rule: `workout-program-[N]-of-[Y]-blocks.json` while blocks remain, `workout-program-all-[Y]-blocks.json` on the final turn, `workout-program.json` for a single-block program. N is the number of blocks actually inside the file, and the `blocks` array really does contain all N of them (every prior block copied across unchanged, newest block added). The word `blocks` is last and there is no `part-` anywhere in the name
+
+Fix any issues before presenting.
+
+---
+
+## IF THE USER SAYS THEY CAN'T IMPORT (reference only)
+
+This section is for LATER messages, after you have already delivered a file and its callout. Do not volunteer any of it in your conversion response.
+
+If the user comes back saying the import isn't working:
+
+- The working route is: tap the file, tap the ••• button, tap Share or Download, then choose JSON.fit from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
+- If JSON.fit doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open JSON.fit and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
+- Multi-block programs are delivered as cumulative files, each holding every block up to that point. The user only needs the last one, `workout-program-all-[Y]-blocks.json` — it holds the whole program on its own. If they've been importing along the way, the newest file supersedes the earlier ones; re-importing that final file gives them everything. If they ask why the earlier files are numbered, the number is how many blocks are inside that file, not which single block it holds.
+- If the import screen reports a format error, ask them to paste the exact error text. Do not guess at the cause.
+- Do not invent other routes. There is no import link, no QR code, and no share URL for an AI-generated program. The website's share links only exist for programs already saved in someone's app.
+- If they ask for changes to the program instead, make the change and hand back a fresh file.
+
+---
+
+## END YOUR RESPONSE WITH ONE OF THESE EXACT CALLOUTS
+
+Every response you make in this stage ends with a callout, formatted as a code block (triple backticks, no language identifier). It comes AFTER the file. Do not add anything after it. Choose the correct one:
+
+### CALLOUT A — use when more blocks are still to come
+
+Reproduce verbatim, substituting the real numbers for [X] and [Y]. [X] is the number of blocks inside the file you just presented, and [Y] is the total number of blocks in the program:
+
+```
+📦 [X] of [Y] blocks built — this file contains every block so far, not just the newest.
+
+▶ Say "next" and I'll add the following block.
+🔍 Or say "review" to check this block first.
+```
+
+Do not give import instructions here. The user waits until the whole program is built and imports the final file only. Telling them to import now would just be replaced by the next, more complete file.
+
+### CALLOUT B — use after the final block
+
+If you know the user's first name, put it on its own line as the FIRST line inside the code block, followed by a colon (e.g. `Ryan:`). If you do not know it, omit that line entirely and start the block at the checkmark. Never write a placeholder, a bracket, or a guessed name. That first-name line is the ONLY part you may change — every line from the checkmark down is reproduced verbatim.
+
+```
+✅ That's your whole program — it's all in this last file.
+
+1. Tap the file that was just created.
+2. Tap ••• or Share.
+3. Tap "Save as JSON" or "Share a copy" — whichever you see.
+4. Choose JSON.fit from the list of apps.
+
+No JSON.fit in the list? Save or copy the file, then import it in the app.
+```
+
+(The `Ryan:` line is an EXAMPLE — replace it with the actual user's first name, or drop the line if you don't know it.)
+
+The file this callout refers to is the final one, `workout-program-all-[Y]-blocks.json` — the file that contains every block. Do not tell the user to import any of the earlier files; this one supersedes them all. For a single-block program there is just one file, `workout-program.json`, and CALLOUT B is the only callout you use.
+
+### CALLOUT C — use after the final block of a mesocycle when more mesocycles remain
+
+Same first-name rule as CALLOUT B. Substitute the real numbers for [X], [N], [K] and the week ranges; every other line is reproduced verbatim. There are deliberately no import steps here — the program is not finished, and the user should wait until it is.
+
+```
+Ryan:
+
+📦 Mesocycle [X] of [N] built — program weeks [A] to [B].
+
+Still to come: Mesocycle [X+1], blocks 1 to [K], weeks [C] to [D].
+
+▶ Say "mesocycle [X+1]" and I'll build the next set of blocks.
+```
+
+(The `Ryan:` line is an EXAMPLE — replace it with the actual user's first name, or drop the line if you don't know it.)
+
+[X] is the mesocycle just finished and [N] the total number of mesocycles in the program. [A] to [B] is the absolute program week range this mesocycle covers, and [C] to [D] the next one's. [K] is the number of blocks in the NEXT mesocycle. All of these come from the plan's block roadmap.
+
+Do not give import instructions here, and do not call the file complete, final, or ready. The user is mid-program and should wait for the remaining mesocycles before importing anything. The mesocycle summary in your prose above this callout is not a substitute — most users read only the callout, so the callout itself has to carry the "not finished yet" message.
