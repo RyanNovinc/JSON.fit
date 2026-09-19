@@ -25,11 +25,13 @@ Use these exact phrases. Do not paraphrase or substitute.
 
 Classify every exercise as one of:
 
-- `barbell_compound` — back squat, deadlift, bench press, OHP, barbell row, front squat
-- `machine_compound` — leg press, hack squat, chest press machine, lat pulldown, cable row, smith machine, hip thrust, glute bridge, chest-supported t-bar row, hex bar deadlift
+- `barbell_compound` — back squat, deadlift, bench press, OHP, barbell row, front squat, Romanian deadlift and stiff-leg deadlift (barbell or dumbbell), pull-up, chin-up
+- `machine_compound` — leg press, hack squat, chest press machine, lat pulldown, cable row, smith machine, hip thrust, glute bridge, chest-supported t-bar row, hex bar deadlift, bench-supported dumbbell presses (flat, incline, seated shoulder press)
 - `isolation` — curls, lateral raises, tricep extensions, leg curls, leg extensions, flyes, calf raises
 - `unilateral_compound` — Bulgarian split squat, single-leg RDL, single-arm DB row, lunges, step-ups
 - `high_skill` — power clean, snatch, conventional deadlift, complex Olympic-derivative
+
+**Category here is for RIR only.** The rep band comes from rep-range-guidance.md, which sorts exercises differently. A Romanian deadlift takes the `barbell_compound` RIR ladder from this file and the 10–15 band from that one. That split is intended: the ladder follows how costly a missed rep is, the band follows what the movement tolerates.
 
 **Classification rule:** Classification is based on stability and skill demand, not equipment. A barbell movement that is supported (chest-supported, fixed-path, or pad-stabilised) or has minimal balance/technique demand classifies as `machine_compound`, not `barbell_compound`. When in doubt: high stability + low skill = `machine_compound`. Free-standing + high skill = `barbell_compound` or `high_skill`.
 
