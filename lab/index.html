@@ -7,15 +7,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050508">
 <title>The Lab: bulking to 90 kg on JSON.fit</title>
-<meta name="description" content="I built JSON.fit and I'm using it to get from 77 kg to 90 kg at 13% body fat. The full planned route, monthly scans, standardised progress photos and every number, posted as they happen.">
+<meta name="description" content="I built JSON.fit and I'm using it to get to 90 kg at 13% body fat. DEXA scans, the full planned route, standardised progress photos and every number, posted as they happen.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Lab: JSON.fit">
-<meta property="og:description" content="The whole route from 77 kg to 90 kg at 13%, planned by the app I built. Monthly scans, photos and every number, posted as they happen.">
+<meta property="og:description" content="DEXA scans, the whole route to 90 kg at 13%, planned by the app I built. Every number, posted as it happens.">
 <meta property="og:image" content="https://json.fit/og-image.png">
 <meta property="og:url" content="https://json.fit/lab/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Lab: JSON.fit">
-<meta name="twitter:description" content="The whole route from 77 kg to 90 kg at 13%, planned by the app I built. Monthly scans, photos and every number.">
+<meta name="twitter:description" content="DEXA scans, the whole route to 90 kg at 13%, planned by the app I built. Every number.">
 <link rel="canonical" href="https://json.fit/lab/">
 <link rel="icon" type="image/x-icon" href="/favicon-3.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
@@ -253,6 +253,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .scan-lbl{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-top:.45rem}
 @media(max-width:600px){.scan-grid{grid-template-columns:1fr 1fr}}
 
+/* the machine: looping scanner clip + cost facts */
+.machine{display:grid;grid-template-columns:1.1fr .9fr;gap:1.25rem;align-items:stretch;margin-top:1.6rem}
+.machine-vid{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--violet-border);background:#000;aspect-ratio:16/10}
+.machine-vid video{width:100%;height:100%;object-fit:cover;display:block}
+.machine-vid.empty::after{content:'awaiting upload';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.machine-cap{position:absolute;left:.65rem;bottom:.6rem;z-index:3;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:rgba(5,5,8,.55);padding:.22rem .5rem;border-radius:4px;backdrop-filter:blur(6px)}
+.machine-facts{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.mf{background:var(--surface);padding:.95rem 1.1rem;flex:1;display:flex;flex-direction:column;justify-content:center}
+.mf-v{font-family:'DM Mono',monospace;font-size:1rem;color:var(--text);line-height:1}
+.mf-v.hl{color:var(--violet)}
+.mf-k{font-size:.74rem;color:var(--text-3);margin-top:.3rem;line-height:1.4}
+@media(max-width:700px){.machine{grid-template-columns:1fr}}
+
 /* ── Disclosures: full data + the origin story ── */
 .ddata{max-width:760px;margin:0 auto;border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden}
 .ddata+.ddata{margin-top:.9rem}
@@ -288,6 +301,19 @@ table.dt{width:100%;border-collapse:separate;border-spacing:0}
   .dt th:not(:first-child),.dt td:not(:first-child){min-width:62px}
 }
 .ddata .d-note{padding:.9rem 1.35rem 1.1rem;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--text-3)}
+
+/* bloods: pending state + rendered panel, inside its disclosure */
+.blood-in{padding:1.35rem 1.35rem 1.5rem}
+.blood-pending{display:flex;gap:1rem;align-items:flex-start}
+.blood-pending svg{color:var(--violet);flex-shrink:0;margin-top:3px;opacity:.7}
+.blood-pending p{font-size:.86rem;color:var(--text-2);line-height:1.65}
+.bgrp{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);margin:1.3rem 0 .5rem}
+.bgrp:first-child{margin-top:0}
+.brow{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.brow:last-child{border-bottom:none}
+.bname{font-size:.88rem;color:var(--text)}
+.bref{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-3);margin-top:.1rem}
+.bval{font-family:'DM Mono',monospace;font-size:.88rem;color:var(--text-2);flex-shrink:0;text-align:right}
 
 /* ── Origin story, inside its disclosure ── */
 .origin-in{padding:1.5rem 1.35rem 1.75rem}
@@ -395,7 +421,7 @@ window.navBack=function(e){
     <div>
       <div class="h-ov">The Lab &middot; <span class="violet">self-experiment</span> &middot; n = 1</div>
       <h1 class="h-display">The bulk, <em>measured.</em></h1>
-      <p class="h-sub">I built JSON.fit. Now it's routing me from 77 to 90&nbsp;kg at 13% body fat. Every scan, photo and number lands here as it happens, whether it's working or not.</p>
+      <p class="h-sub">I built JSON.fit. A DEXA scan put me at 23.8% body fat, so it's routing me down to 72.9&nbsp;kg first, then up to 90&nbsp;kg at 13%. Every scan, photo and number lands here as it happens, whether it's working or not.</p>
       <div class="h-hair"></div>
       <div class="h-status" id="heroStatus"></div>
     </div>
@@ -429,8 +455,6 @@ window.navBack=function(e){
 
 <!-- ════════════════════════════════════════════════════════════════════
      THE ROUTE
-     Replaces the old 12-slot runway chart, which plotted weight against a
-     flat 90 kg line over a year the plan never actually claimed.
      The line here is generated output, not drawing: see the ROUTE object
      in the script below and the comment above it.
      ════════════════════════════════════════════════════════════════════ -->
@@ -440,7 +464,7 @@ window.navBack=function(e){
       <div class="section-line"></div>
       <span class="label">The route</span>
       <h2>The whole plan, and where I am on it.</h2>
-      <p>The line is JSON.fit's planner run on my numbers. The dots are me.</p>
+      <p>The line is JSON.fit's planner run on my scan numbers. The dots are me.</p>
     </div>
 
     <div class="chart-card sa sa-up">
@@ -471,23 +495,59 @@ window.navBack=function(e){
       <p class="scan-kick" id="scanKick"></p>
       <div class="scan-grid" id="scanGrid"></div>
     </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         THE MACHINE
+         Looping, muted clip of the scanner, plus what a scan actually costs.
+         VIDEO lives in the repo at /videos/Dexa Scan.mp4, so it serves from
+         https://json.fit/videos/Dexa%20Scan.mp4 — the %20 is the space and it
+         must stay encoded. If you rename the file to dexa-scan.mp4 the space
+         problem goes away; update the src here if you do.
+         No poster yet: add one at /videos/dexa-scan-poster.webp and put it
+         back on the <video> tag to avoid a black frame on slow connections.
+         Compress hard: this autoplays on mobile.
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="machine sa sa-up">
+      <div class="machine-vid" id="machineVid">
+        <video src="/videos/Dexa%20Scan.mp4"
+               autoplay muted loop playsinline preload="metadata"
+               aria-label="The DEXA scanner mid-scan"
+               onerror="this.style.display='none';this.parentElement.classList.add('empty')"></video>
+        <span class="machine-cap">Garran Medical Imaging &middot; 18 Sep 2026</span>
+      </div>
+      <div class="machine-facts">
+        <div class="mf"><div class="mf-v hl">$150</div><div class="mf-k">per scan, out of pocket. No rebate.</div></div>
+        <div class="mf"><div class="mf-v">Referral required</div><div class="mf-k">A doctor has to order it. You can't just book one.</div></div>
+        <div class="mf"><div class="mf-v">~7 minutes</div><div class="mf-k">Flat on the table, fully still, fasted.</div></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- THE DETAIL: full scan history and the pre-tracker backstory, both folded away -->
+<!-- THE DETAIL: full scan history, bloods, and the pre-tracker backstory -->
 <section class="section">
   <div class="container">
     <div class="section-head sa sa-up">
       <div class="section-line"></div>
       <span class="label">The detail</span>
       <h2>Everything else, if you want it.</h2>
-      <p>The complete scan history and the decade before it, out of the way until you ask.</p>
+      <p>The complete scan history, the blood work, and the decade before it, out of the way until you ask.</p>
     </div>
 
     <details class="ddata sa sa-up">
-      <summary>Scan history &middot; every metric, every month <span class="chev">&#9656;</span></summary>
+      <summary>Scan history &middot; every metric, every scan <span class="chev">&#9656;</span></summary>
       <div class="dt-wrap" id="dtWrap"><div class="dt-scroll" id="dtScroll"><table class="dt" id="fullTable"></table></div></div>
-      <p class="d-note">// same Evolt 360 every scan &middot; &Delta; is total change from baseline &middot; a column is added each month &middot; "-" means not measured</p>
+      <p class="d-note">// &Delta; is total change from baseline &middot; a column is added each scan &middot; "-" means not measured on that machine</p>
+    </details>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         BLOOD WORK
+         Renders from BLOODS in the script below. Null = pending panel.
+         ════════════════════════════════════════════════════════════════ -->
+    <details class="ddata sa sa-up">
+      <summary>Blood work &middot; <span id="bloodSum">drawn 18 Sep 2026</span> <span class="chev">&#9656;</span></summary>
+      <div class="blood-in" id="bloodSlot"></div>
     </details>
 
     <!-- ════════════════════════════════════════════════════════════════════
@@ -505,13 +565,13 @@ window.navBack=function(e){
       <summary>Before the tracker &middot; how I got to the start line <span class="chev">&#9656;</span></summary>
       <div class="origin-in">
         <p class="origin-hyp">
-          185&nbsp;cm and <b>under 60&nbsp;kg</b> right through my teens. <b>67&nbsp;kg</b> leaving uni. A first bulk got me to <b>82&nbsp;kg</b> in 18 months, but I did it the miserable way, the same meals every day, forced down, so it never stuck and I drifted back to <b>77&nbsp;kg</b>. That's why JSON.fit exists, and why this run is built to last. Same size I've already proven I can reach, done properly this time.
+          182&nbsp;cm and <b>under 60&nbsp;kg</b> right through my teens. <b>67&nbsp;kg</b> leaving uni. A first bulk got me to <b>82&nbsp;kg</b> in 18 months, but I did it the miserable way, the same meals every day, forced down, so it never stuck. Then a year out of the gym. That's why JSON.fit exists, and why this run is built to last.
         </p>
         <div class="protocol-grid">
           <div class="proto-cell"><div class="proto-k">Teens</div><div class="proto-v">Under 60 kg</div></div>
           <div class="proto-cell"><div class="proto-k">Uni</div><div class="proto-v">67 kg</div></div>
           <div class="proto-cell"><div class="proto-k">First bulk &middot; ~2022</div><div class="proto-v">82 kg &middot; the hard way</div></div>
-          <div class="proto-cell"><div class="proto-k">Drifted back</div><div class="proto-v">77 kg &middot; the restart</div></div>
+          <div class="proto-cell"><div class="proto-k">A year off</div><div class="proto-v">80.6 kg &middot; 23.8% &middot; the restart</div></div>
         </div>
 
         <span class="vr-kicker">Proof it worked &middot; but the method didn't last</span>
@@ -542,7 +602,7 @@ window.navBack=function(e){
         </div>
 
         <div class="disclaimer">
-          <p>Everything on the page above is measured on the same Evolt&nbsp;360 machine, every month, and nothing gets published unless it was measured. The route line is the one thing on this page that isn't a measurement: it's generated by the app's planner from my starting numbers, and it's shown dashed for exactly that reason. These two old phone photos are the other deliberate exception, included for context. The tracked, honest record starts at 77&nbsp;kg on 1 July 2026.</p>
+          <p>Everything on the page above is measured, and nothing gets published unless it was measured. The 1 July baseline is an Evolt&nbsp;360 bioimpedance scan; from 18&nbsp;September onward it's DEXA, which is a different and more accurate method, so the two are not perfectly comparable and the switch is marked in the table. The route line is the one thing on this page that isn't a measurement: it's generated by the app's planner from my scan numbers, and it's shown dashed for exactly that reason. The two old phone photos are the other deliberate exception, included for context.</p>
         </div>
       </div>
     </details>
@@ -582,65 +642,82 @@ window.navBack=function(e){
 <script>
 "use strict";
 /* ════════════════════════════════════════════════════════════════════
-   THE ROUTE: generated output, not hand-drawn.
+   THE ROUTE: the app's own output, re-derived from the DEXA scan.
 
-   Produced by running the app's own deriveRoadmap() + planCurve() against
-   this profile:
-       currentWeightKg 83, currentBodyFatPct 20, heightCm 185, sex male,
-       ageYears 29, trainingState consistent,
-       goalWeightKg 90, goalBodyFatPct 13,
-       phaseOrder 'cut_first', preBuildBf 13, ceilingBf 15, wayIn 'cut'
-   Generated 2026-09-15.
+   Produced by JSON.fit's planner on this profile:
+       currentWeightKg 80.6, currentBodyFatPct 23.8, heightCm 182,
+       sex male, ageYears 28, goalWeightKg 90, goalBodyFatPct 13,
+       operating band 16-18%, phaseOrder 'cut_first', wayIn 'cut'
+   Generated 2026-09-19 from the scan of 18 Sep 2026.
 
-   RE-DERIVED FROM WHERE I STAND, 15 Sep 2026. The first route (9 Sep) ran
-   from the 1 July scan, 77 kg at 20%. Two and a half months and no
-   training later the home scale reads 83 kg, so the plan was re-derived
-   from there, exactly as the app does it: the route always starts from
-   the live profile. The 20% is my estimate from a photo, not a scan; the
-   next DEXA replaces it. It starts at `startMonth` on the chart so the
-   July scan stays where it was and the gap between the two is visible.
+   `nodes` are the seven phase boundaries the app returned, and they are
+   the authoritative part of this object. The drawn line is INTERPOLATED
+   between them by curvePoints() below rather than pasted in as a fixed
+   array, so the line can never drift out of agreement with the nodes it
+   claims to join. Edit the nodes, never the line.
 
-   REGENERATE, DO NOT EDIT BY HAND. If the goal, the band or the starting
-   numbers change, re-run the engine and paste the new object. Editing a
-   point here makes the line disagree with the plan it claims to draw,
-   which is the exact failure planCurve was written to avoid.
-
-   `points` is [month, weightKg, bodyFatPct]. `nodes` are the phase
-   boundaries, the only places the line changes direction.
+   Month positions: phase 1 carries the engine's own [2.8, 4.6] estimate
+   and sits at its midpoint. The later phases are spaced using the app's
+   prescribed rates (build 0.19 %BW/wk, trim 0.6 %BW/wk) applied to each
+   phase's own weight change, which is how the engine derives them. They
+   move when the next scan re-runs the route, which is the point.
    ════════════════════════════════════════════════════════════════════ */
 var ROUTE = {
-  generated:"2026-09-15",
+  generated:"2026-09-19",
   /* Months since DATA.startDate (1 Jul 2026) at which this projection begins. */
-  startMonth:2.5,
-  start:{weightKg:83,bodyFatPct:20},
+  startMonth:2.6,
+  start:{weightKg:80.6,bodyFatPct:23.8},
   goal:{weightKg:90,bodyFatPct:13},
-  band:{bottom:13,top:15},
-  estYears:[1.8,3.6],
-  /* Plan length from startMonth, and the chart's whole horizon from day zero. */
-  planMonths:32.6,
-  totalMonths:35.1,
+  band:{bottom:16,top:18},
+  estYears:[3.2,4.4],
+  planMonths:44.8,
+  totalMonths:47.4,
   nodes:[
-    {month:2.5   , weightKg:83   , bodyFatPct:20   , kind:"start"},
-    {month:5.6   , weightKg:76.3 , bodyFatPct:13   , kind:"trim"},
-    {month:18.5  , weightKg:84.6 , bodyFatPct:15   , kind:"build"},
-    {month:19.45 , weightKg:82.7 , bodyFatPct:13   , kind:"trim"},
-    {month:34.15 , weightKg:92.2 , bodyFatPct:15.1 , kind:"build"},
-    {month:35.1  , weightKg:90   , bodyFatPct:13   , kind:"reveal"}
+    {month:2.6 , weightKg:80.6, bodyFatPct:23.8, kind:"start"},
+    {month:6.3 , weightKg:72.9, bodyFatPct:16  , kind:"trim"},
+    {month:21.2, weightKg:82.4, bodyFatPct:18  , kind:"build"},
+    {month:22.1, weightKg:80.4, bodyFatPct:16  , kind:"trim"},
+    {month:37.0, weightKg:90.9, bodyFatPct:18  , kind:"build"},
+    {month:38.0, weightKg:88.7, bodyFatPct:16  , kind:"trim"},
+    {month:45.5, weightKg:94.4, bodyFatPct:17  , kind:"build"},
+    {month:47.4, weightKg:90  , bodyFatPct:13  , kind:"reveal"}
   ],
-  points:[[2.5,83,20],[2.94,82.01,19.04],[3.39,81.03,18.06],[3.83,80.06,17.07],[4.27,79.1,16.07],[4.71,78.16,15.06],[5.16,77.22,14.04],[5.6,76.3,13],[6.21,76.85,13.13],[6.83,77.38,13.26],[7.44,77.9,13.38],[8.06,78.39,13.5],[8.67,78.87,13.62],[9.29,79.33,13.73],[9.9,79.77,13.84],[10.51,80.2,13.94],[11.13,80.62,14.04],[11.74,81.02,14.14],[12.36,81.41,14.23],[12.97,81.78,14.32],[13.59,82.14,14.41],[14.2,82.49,14.49],[14.81,82.82,14.57],[15.43,83.14,14.65],[16.04,83.46,14.72],[16.66,83.76,14.8],[17.27,84.05,14.87],[17.89,84.33,14.93],[18.5,84.6,15],[18.82,83.96,14.34],[19.13,83.33,13.67],[19.45,82.7,13],[20.06,83.28,13.13],[20.68,83.83,13.25],[21.29,84.37,13.37],[21.9,84.89,13.48],[22.51,85.39,13.6],[23.13,85.88,13.7],[23.74,86.34,13.81],[24.35,86.79,13.9],[24.96,87.23,14],[25.58,87.65,14.09],[26.19,88.05,14.18],[26.8,88.44,14.27],[27.41,88.82,14.35],[28.03,89.19,14.43],[28.64,89.54,14.51],[29.25,89.88,14.59],[29.86,90.2,14.66],[30.48,90.52,14.73],[31.09,90.83,14.8],[31.7,91.12,14.86],[32.31,91.4,14.92],[32.92,91.68,14.98],[33.54,91.94,15.04],[34.15,92.2,15.1],[34.47,91.46,14.41],[34.78,90.73,13.71],[35.1,90,13]],
-  /* One entry per phase occurrence, in order. `rate` is %BW/week as the
-     roadmap prescribes it; null on the terminal reveal, which the engine
-     does not rate-limit. `months` is the engine's own [lo, hi] estimate.
-     `macros` on the current phase is the app's computeMacrosPhaseAware
-     output for this profile at moderate activity, high-protein split. */
+  /* One entry per phase occurrence, in order. `months` is the engine's own
+     [lo, hi] estimate where it gave one. `macros` on the current phase is the
+     app's computeMacrosPhaseAware output for this profile. */
   phases:[
-    {kind:"trim",   from:2.5   , to:5.6   , rate:-0.6 , endKg:76.3, endBf:13, months:[2.3,3.9], label:"Cut &middot; 13%", macros:{kcal:2390,protein:183,carbs:237,fat:79}},
-    {kind:"build",  from:5.6   , to:18.5  , rate:0.19 , endKg:84.6, endBf:15, months:[8.4,17.4], label:"Build &middot; 15%"},
-    {kind:"trim",   from:18.5  , to:19.45 , rate:-0.56, endKg:82.7, endBf:13, months:[0.7,1.2], label:"Cut"},
-    {kind:"build",  from:19.45 , to:34.15 , rate:0.18 , endKg:92.2, endBf:15.1, months:[9.6,19.8], label:"Build"},
-    {kind:"reveal", from:34.15 , to:35.1  , rate:null , endKg:90, endBf:13, months:[0.7,1.2], label:"Reveal &middot; 13%"}
+    {kind:"trim",   from:2.6 , to:6.3 , rate:-0.5 , endKg:72.9, endBf:16, months:[2.8,4.6], label:"Cut &middot; 16%", macros:{kcal:1780,protein:155,carbs:151,fat:59}},
+    {kind:"build",  from:6.3 , to:21.2, rate:0.19 , endKg:82.4, endBf:18, months:null, label:"Build &middot; 18%"},
+    {kind:"trim",   from:21.2, to:22.1, rate:-0.6 , endKg:80.4, endBf:16, months:null, label:"Cut"},
+    {kind:"build",  from:22.1, to:37.0, rate:0.19 , endKg:90.9, endBf:18, months:null, label:"Build"},
+    {kind:"trim",   from:37.0, to:38.0, rate:-0.6 , endKg:88.7, endBf:16, months:null, label:"Cut"},
+    {kind:"build",  from:38.0, to:45.5, rate:0.19 , endKg:94.4, endBf:17, months:null, label:"Build"},
+    {kind:"reveal", from:45.5, to:47.4, rate:null , endKg:90, endBf:13, months:null, label:"Reveal &middot; 13%"}
   ]
 };
+
+/* Interpolate the drawn line from the nodes. Cuts fall fast then flatten as
+   there is less fat to give; builds climb fast then flatten as headroom
+   shrinks. Both are eased the same way the app's planCurve shapes them. */
+ROUTE.points = (function(nodes){
+  var pts=[], STEPS=16;
+  for(var i=0;i<nodes.length-1;i++){
+    var a=nodes[i], b=nodes[i+1];
+    var falling=(b.weightKg<a.weightKg);
+    for(var s=0;s<STEPS;s++){
+      var t=s/STEPS;
+      var e=falling ? (1-Math.pow(1-t,1.45)) : Math.pow(t,0.80);
+      pts.push([
+        +(a.month+(b.month-a.month)*t).toFixed(2),
+        +(a.weightKg+(b.weightKg-a.weightKg)*e).toFixed(2),
+        +(a.bodyFatPct+(b.bodyFatPct-a.bodyFatPct)*e).toFixed(2)
+      ]);
+    }
+  }
+  var last=nodes[nodes.length-1];
+  pts.push([last.month,last.weightKg,last.bodyFatPct]);
+  return pts;
+})(ROUTE.nodes);
 
 /* Wording lifted from phaseIntentFor() in src/utils/phaseIntent.ts, so the
    site and the phone say the same thing about what a phase asks for. */
@@ -660,20 +737,49 @@ var PHASE_INTENT = {
 };
 
 /* ════════════════════════════════════════════════════════════════════
+   BLOOD WORK
+   Set BLOODS to null until the results land; the disclosure shows a
+   pending panel. To publish, set BLOOD_DATE and fill BLOODS with groups.
+   Example shape is commented below.
+   ════════════════════════════════════════════════════════════════════ */
+var BLOOD_DATE = null;   // e.g. "2026-09-18"
+var BLOODS = null;
+/*
+BLOOD_DATE = "2026-09-18";
+BLOODS = [
+  { group:"Hormones", markers:[
+    { name:"Total testosterone", value:"", unit:"nmol/L", ref:"8.6 - 29.0" },
+    { name:"SHBG",               value:"", unit:"nmol/L", ref:"" }
+  ]},
+  { group:"Metabolic", markers:[
+    { name:"Fasting glucose", value:"", unit:"mmol/L", ref:"3.0 - 5.4" },
+    { name:"HbA1c",           value:"", unit:"%",      ref:"" }
+  ]},
+  { group:"Lipids", markers:[
+    { name:"Total cholesterol", value:"", unit:"mmol/L", ref:"" },
+    { name:"HDL",               value:"", unit:"mmol/L", ref:"" },
+    { name:"LDL",               value:"", unit:"mmol/L", ref:"" },
+    { name:"Triglycerides",     value:"", unit:"mmol/L", ref:"" }
+  ]}
+];
+*/
+
+/* ════════════════════════════════════════════════════════════════════
    THE LAB: single source of truth for MEASURED data.
-   Update this object each month and the whole page re-renders.
-   - Baseline below is the real 2026-07-01 Evolt 360 scan. Every value here
-     was measured; anything not measured yet (e.g. lifts) stays null and
-     renders as "-" rather than being invented.
-   - Add a new object to `checkins` each month (keep them chronological).
+   Update this object each scan and the whole page re-renders.
+   - `machine` on each check-in decides which scan fields render. Evolt 360
+     gives skeletal muscle / waist / WHR / body water / bio age; DEXA gives
+     bone mineral / T-score / Z-score / lean soft tissue. Anything the
+     machine didn't measure stays null and renders as "-".
+   - lean_mass_kg is FAT-FREE MASS (lean soft tissue + bone) on both
+     machines, so the column compares like with like.
    - photos: create a subfolder per check-in under /images/lab/ and point to
      the files with a LEADING SLASH (root-absolute, so paths resolve correctly
      from inside the /lab/ folder), e.g.
-       front:"/images/lab/2026-07/front.webp"
-     leave "" to show the "awaiting capture" placeholder. The hero cycles
-     through whichever angles actually have a file, in DATA.angles order.
-   - segments_kg is the per-limb lean mass straight off the Evolt
-     segmental panel, copy it in each scan.
+       front:"/images/lab/2026-09/front.webp"
+     leave "" to show the "awaiting capture" placeholder.
+   - segments_kg is per-limb lean mass. Keys are shared across machines so
+     the table lines up; the DEXA torso figure is ribs + spine + pelvis.
    Never publish a number that wasn't measured.
    NOTE: the "Before the tracker" disclosure in the HTML above is intentionally
    NOT part of this data. Keep old, un-scanned photos out of `checkins`.
@@ -684,19 +790,19 @@ var DATA = {
   startDate: "2026-07-01",
   target: { weight_kg: 90, label: "Route target" },
   plan: {
-    summary: "Started <b>1 July 2026</b> at <b>77.3&nbsp;kg</b>. Ten weeks off, back at <b>83&nbsp;kg</b>, route re-run from there: cut to 13%, then cycle 13 to 15% up to <b>90&nbsp;kg at 13%</b>. Plan, program and meals all from JSON.fit.",
+    summary: "Baselined on DEXA at <b>80.6&nbsp;kg</b> and <b>23.8%</b> body fat. The app routes me down to <b>72.9&nbsp;kg at 16%</b> first, then cycles 16 to 18% up to <b>90&nbsp;kg at 13%</b>. Plan, program and meals all from JSON.fit.",
     cells: [
-      { k: "Started", v: "1 Jul 2026 · 77.3 kg" },
-      { k: "Now", v: "83 kg · cutting to 13%" },
-      { k: "Target", v: "90 kg at 13% · 1.8–3.6 yr" },
-      { k: "Eating", v: "2,390 kcal · 183 g protein" }
+      { k: "Baselined", v: "18 Sep 2026 · DEXA" },
+      { k: "Now", v: "80.6 kg · 23.8% · cutting" },
+      { k: "Phase 1 ends", v: "72.9 kg at 16%" },
+      { k: "Target", v: "90 kg at 13% · 7 phases" }
     ]
   },
   // angle order used by the photo rig + the hero cycle
   angles: ["front","right","back","left"],
   checkins: [
     {
-      label:"Baseline", date:"2026-07-01",
+      label:"Baseline", date:"2026-07-01", machine:"Evolt 360",
       weight_kg:77.3, bodyfat_pct:20.4, lean_mass_kg:61.5, fat_mass_kg:15.8,
       photos:{
         front:"/images/lab/2026-07/front.webp",
@@ -706,22 +812,23 @@ var DATA = {
       },
       segments_kg:{ "Arm (L)":3.27,"Arm (R)":3.31,"Torso":26.46,"Leg (L)":9.14,"Leg (R)":9.25 },
       lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
-      scan:{ type:"Evolt 360", skeletal_muscle_kg:34.2, waist_cm:86.9, visceral_fat_area:68, whr:0.84, bmr_kcal:1698, tee_kcal:2614, body_water_pct:57, bio_age:28 },
-      notes:"Day zero. First Evolt 360 scan on the books: 77.3 kg at 20.4% body fat: 61.5 kg lean, 15.8 kg fat. Left/right and upper/lower both read balanced, waist-to-hip 0.84, visceral fat area 68 cm² (mid-range). Bioimpedance body-fat % runs a few points loose in absolute terms, so I'm treating that number as a trend anchor rather than gospel. No conclusions yet. This is the line everything else gets measured against.",
+      scan:{ type:"Evolt 360", skeletal_muscle_kg:34.2, waist_cm:86.9, visceral_fat_area:68, whr:0.84, bmr_kcal:1698, tee_kcal:2614, body_water_pct:57, bio_age:28,
+             bone_mineral_kg:null, lean_soft_tissue_kg:null, t_score:null, z_score:null, bmd:null, fmi:null, lmi:null },
+      notes:"Day zero. First Evolt 360 scan on the books: 77.3 kg at 20.4% body fat. Bioimpedance body-fat % runs loose in absolute terms, so I treated that number as a trend anchor rather than gospel. This is the line everything else got measured against, until DEXA replaced it.",
       video:null
     },
     {
-      /* A weigh-in, not a scan: home scale, morning, and the body fat is my
-         estimate from a photo. `estimate:true` keeps it out of the scan
-         count and draws it hollow on the chart. The route is re-run from
-         this point. Replace with the next scan when it lands. */
-      label:"Restart", date:"2026-09-15", estimate:true,
-      weight_kg:83, bodyfat_pct:20, lean_mass_kg:null, fat_mass_kg:null,
+      /* First DEXA. Different machine from the baseline, and more accurate:
+         the jump in body-fat % is mostly method, not a real change. The
+         route is re-derived from these numbers. */
+      label:"DEXA 01", date:"2026-09-18", machine:"DEXA",
+      weight_kg:80.6, bodyfat_pct:23.8, lean_mass_kg:61.4, fat_mass_kg:19.2,
       photos:{ front:"", right:"", back:"", left:"" },
-      segments_kg:null,
+      segments_kg:{ "Arm (L)":3.76,"Arm (R)":3.85,"Torso":29.14,"Leg (L)":8.84,"Leg (R)":9.37 },
       lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
-      scan:null,
-      notes:"Ten weeks without training and 6 kg up. Home scale, morning; body fat estimated from a photo, so it stays hollow on the chart until the next scan. Route re-run from here.",
+      scan:{ type:"DEXA · Medix DR", skeletal_muscle_kg:null, waist_cm:null, visceral_fat_area:60, whr:null, bmr_kcal:1808, tee_kcal:null, body_water_pct:null, bio_age:null,
+             bone_mineral_kg:3.05, lean_soft_tissue_kg:58.3, t_score:1.5, z_score:0.2, bmd:1.332, fmi:5.8, lmi:17.6 },
+      notes:"First DEXA, at Garran Medical Imaging. 80.6 kg, 23.8% body fat, 19.2 kg of fat and 61.4 kg of fat-free mass. The honest read: not skinny and not muscular. Lean mass index 17.6 sits just under the 18 to 21 male range, and the fat is trunk-dominant at a 1.72 trunk-to-legs ratio. Visceral fat is 60 cm² against a 99 threshold, so it's subcutaneous, not packed around the organs. Bone came back dense: T-score +1.5, 124% of the young adult reference. This is why the app opens with a cut.",
       video:null
     }
   ]
@@ -731,14 +838,12 @@ var DATA = {
   var cks=DATA.checkins;
   var latest=cks[cks.length-1], base=cks[0];
   var prev=cks.length>1?cks[cks.length-2]:base;
-  /* Scans the route calls for: baseline plus one a month across the plan.
-     Derived from ROUTE.totalMonths so it can never drift from the plan. */
-  var TOTAL_SCANS=Math.ceil(ROUTE.totalMonths)+1;
+  /* Scans the route calls for: baseline plus one a quarter across the plan. */
+  var TOTAL_SCANS=Math.ceil(ROUTE.totalMonths/3)+1;
 
   function fmt(n,d){ if(n==null) return "-"; return (d!=null)?Number(n).toFixed(d):String(n); }
   function delta(cur,prevV,d){ if(cur==null||prevV==null) return null; return +(cur-prevV).toFixed(d==null?1:d); }
   function fmtDate(s){ var dt=new Date(s+"T00:00:00"); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); }
-  function monthsBetween(a,b){ var x=new Date(a),y=new Date(b); return (y.getFullYear()-x.getFullYear())*12+(y.getMonth()-x.getMonth()); }
   /* Fractional months, for placing a scan or today's marker on the route. */
   function monthsSinceStart(iso){
     var a=new Date(DATA.startDate+"T00:00:00"), b=new Date(iso+"T00:00:00");
@@ -753,14 +858,14 @@ var DATA = {
   var TODAY_M=Math.max(0,monthsSinceStart(_today.toISOString().slice(0,10)));
   function nextCaptureLabel(){
     var d=new Date(latest.date+"T00:00:00");
-    d=new Date(d.getFullYear(),d.getMonth()+1,1);
-    return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+    d=new Date(d.getFullYear(),d.getMonth()+3,1);
+    return d.toLocaleDateString('en-AU',{month:'short',year:'numeric'});
   }
   var scanned=cks.filter(function(c){ return !c.estimate; });
   document.getElementById('heroStatus').innerHTML=
     '<span class="live"><span class="live-dot"></span>Day '+_dayOfBulk+'</span>'+
     '<span>Scan <b>'+scanned.length+' of '+TOTAL_SCANS+'</b></span>'+
-    '<span>Next capture <b>'+nextCaptureLabel()+'</b></span>';
+    '<span>Next scan <b>'+nextCaptureLabel()+'</b></span>';
 
   /* ── Specimen frame: latest captured check-in, cycling through its angles ── */
   var PH='<div class="vr-ph">'+
@@ -792,7 +897,6 @@ var DATA = {
     }
     var ang=specAngles[specIdx];
     specShot.innerHTML=shotHTML(specCk,ang);
-    // replay the crossfade on every switch
     specShot.style.animation='none'; void specShot.offsetWidth; specShot.style.animation='';
     specCap.innerHTML=specCk.label+' &middot; '+fmtDate(specCk.date)+' &middot; '+ang;
     var btns=specPills.querySelectorAll('.sa-pill');
@@ -814,13 +918,11 @@ var DATA = {
     });
     specPrev.addEventListener('click',function(){ specStep(-1); });
     specNext.addEventListener('click',function(){ specStep(1); });
-    // keyboard, once the frame has focus
     specFrame.setAttribute('tabindex','0');
     specFrame.addEventListener('keydown',function(e){
       if(e.key==='ArrowLeft'){ e.preventDefault(); specStep(-1); }
       if(e.key==='ArrowRight'){ e.preventDefault(); specStep(1); }
     });
-    // swipe on touch
     var _x0=null;
     specFrame.addEventListener('touchstart',function(e){ _x0=e.touches[0].clientX; },{passive:true});
     specFrame.addEventListener('touchend',function(e){
@@ -844,17 +946,14 @@ var DATA = {
       '<div class="ro-v'+(hl?' hl':'')+'">'+(val==null?'<span>-</span>':'<span class="count-up" data-target="'+val+'" data-decimals="1">'+fmt(val,1)+'</span>')+'<span class="ro-u">'+(unit||'')+'</span></div>'+
       sub+'</div>';
   }
+  /* Body fat and lean carry no delta across the machine change: an Evolt
+     bioimpedance % and a DEXA % are not the same measurement, and showing
+     a difference between them would read as a real change. */
+  var machineChanged=(cks.length>1 && prev.machine!==latest.machine);
   document.getElementById('readout').innerHTML=
     roCell('Weight',latest.weight_kg,'kg',cks.length>1?delta(latest.weight_kg,prev.weight_kg):null,'kg',true,'start')+
-    /* An estimated body fat gets no delta against a scan, and lean comes
-       from the last entry that actually measured it. */
-    roCell('Body fat',latest.bodyfat_pct,'%',(cks.length>1&&!latest.estimate)?delta(latest.bodyfat_pct,prev.bodyfat_pct):null,'pt',false,latest.estimate?'estimate':'start')+
-    (function(){
-      var lastLean=null; for(var i=cks.length-1;i>=0;i--){ if(cks[i].lean_mass_kg!=null){ lastLean=cks[i]; break; } }
-      if(!lastLean) return roCell('Lean',null,'kg',null,'kg',true,'');
-      var prevLean=null; for(var j=cks.indexOf(lastLean)-1;j>=0;j--){ if(cks[j].lean_mass_kg!=null){ prevLean=cks[j]; break; } }
-      return roCell('Lean',lastLean.lean_mass_kg,'kg',prevLean?delta(lastLean.lean_mass_kg,prevLean.lean_mass_kg):null,'kg',true,lastLean===latest?'start':'last scan');
-    })()+
+    roCell('Body fat',latest.bodyfat_pct,'%',machineChanged?null:(cks.length>1?delta(latest.bodyfat_pct,prev.bodyfat_pct):null),'pt',false,machineChanged?'DEXA baseline':'start')+
+    roCell('Fat-free',latest.lean_mass_kg,'kg',machineChanged?null:(cks.length>1?delta(latest.lean_mass_kg,prev.lean_mass_kg):null),'kg',true,machineChanged?'DEXA baseline':'start')+
     roCell('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false,'of '+DATA.target.weight_kg);
 
   /* ── Protocol bar ── */
@@ -864,17 +963,13 @@ var DATA = {
 
   /* ════════════════════════════════════════════════════════════════
      ROUTE CHART
-     Replaced the 12-slot runway chart. Two views over the same x axis:
-     weight against the goal line, or body fat against the operating band.
-     The plan is DASHED and the measured scans are SOLID, deliberately:
-     nothing on this page should let a projection read as data.
+     Two views over the same x axis: weight against the goal line, or body
+     fat against the operating band. The plan is DASHED and the measured
+     scans are SOLID, deliberately: nothing here should let a projection
+     read as data.
      ════════════════════════════════════════════════════════════════ */
   var VIEW='w';
 
-  /* ── Tap a point to read it ──
-     SEL is {t:'ck', i} for a measured check-in or {t:'node', i} for a
-     phase boundary on the plan. Opens on the latest measured point, the
-     way the app's chart opens on today. Tapping the lit point clears it. */
   var SEL=null;
   (function(){ var li=-1; cks.forEach(function(c,i){ if(c.weight_kg!=null) li=i; }); if(li>=0) SEL={t:'ck',i:li}; })();
   function monthToLabel(m){
@@ -886,7 +981,7 @@ var DATA = {
     if(!SEL) return null;
     if(SEL.t==='ck'){
       var c=cks[SEL.i]; if(!c) return null;
-      return fmtDate(c.date)+' \u00b7 '+fmt(c.weight_kg,1)+' kg \u00b7 '+fmt(c.bodyfat_pct,1)+'%'+(c.estimate?' est.':'')+(c.scan&&c.scan.type?(' \u00b7 '+c.scan.type):'');
+      return fmtDate(c.date)+' \u00b7 '+fmt(c.weight_kg,1)+' kg \u00b7 '+fmt(c.bodyfat_pct,1)+'%'+(c.machine?(' \u00b7 '+c.machine):'');
     }
     var n=ROUTE.nodes[SEL.i]; if(!n) return null;
     return (NODE_WORD[n.kind]||n.kind)+' \u00b7 '+monthToLabel(n.month)+' \u00b7 '+n.weightKg+' kg \u00b7 '+n.bodyFatPct+'%';
@@ -954,8 +1049,13 @@ var DATA = {
     s+='<text x="'+(X(TODAY_M)+5).toFixed(1)+'" y="'+(H-pad.b-6)+'" font-family="DM Mono" font-size="8.5" fill="#c084fc">today</text>';
 
     var logged=cks.filter(function(c){ return (isW?c.weight_kg:c.bodyfat_pct)!=null; });
-    if(logged.length>=2){
-      var ad=logged.map(function(c,i){
+    /* The two measured points come from different machines, so they are NOT
+       joined by a line: a segment between an Evolt reading and a DEXA reading
+       would draw a change that is mostly method. Once there are two DEXA
+       scans, they join. */
+    var dexa=logged.filter(function(c){ return c.machine===latest.machine; });
+    if(dexa.length>=2){
+      var ad=dexa.map(function(c,i){
         return (i?'L':'M')+X(monthsSinceStart(c.date)).toFixed(1)+' '+Y(isW?c.weight_kg:c.bodyfat_pct).toFixed(1);
       }).join(' ');
       s+='<path d="'+ad+'" fill="none" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
@@ -963,7 +1063,8 @@ var DATA = {
     logged.forEach(function(c){
       var x=X(monthsSinceStart(c.date)), y=Y(isW?c.weight_kg:c.bodyfat_pct);
       var ci=cks.indexOf(c), on=SEL&&SEL.t==='ck'&&SEL.i===ci;
-      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5" fill="'+(on?'#a855f7':'#0a0a0f')+'" stroke="#a855f7" stroke-width="2.5"'+(c.estimate&&!on?' stroke-dasharray="2.5 2.5"':'')+'/>';
+      var older=(c.machine!==latest.machine);
+      s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5" fill="'+(on?'#a855f7':'#0a0a0f')+'" stroke="#a855f7" stroke-width="2.5"'+(older&&!on?' stroke-dasharray="2.5 2.5" opacity="0.65"':'')+'/>';
       s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="16" fill="transparent" data-ck="'+ci+'" style="cursor:pointer"/>';
     });
     var lastC=SEL?null:logged[logged.length-1];
@@ -971,15 +1072,13 @@ var DATA = {
       var lx=X(monthsSinceStart(lastC.date)), ly=Y(isW?lastC.weight_kg:lastC.bodyfat_pct);
       var anchor=(monthsSinceStart(lastC.date)>ROUTE.totalMonths*0.85)?'end':'start';
       s+='<text x="'+(lx+(anchor==='end'?-9:9)).toFixed(1)+'" y="'+(ly-9).toFixed(1)+'" text-anchor="'+anchor+'" font-family="DM Mono" font-size="10" fill="#c084fc">'+
-        (isW?(lastC.weight_kg+' kg'):(lastC.bodyfat_pct+'%'))+(lastC.estimate&&!isW?' est.':'')+'</text>';
+        (isW?(lastC.weight_kg+' kg'):(lastC.bodyfat_pct+'%'))+'</text>';
     }
 
     for(var m=0;m<=ROUTE.totalMonths;m+=6){
       s+='<text x="'+X(m).toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#5b5b62">'+(m===0?'start':'m'+m)+'</text>';
     }
 
-    /* The flag: a pill in the top margin with a leader down to the point,
-       the same reading the app gives when a node on its chart is tapped. */
     var ft=flagText(), fa=flagAnchor(isW);
     if(ft&&fa&&fa.v!=null){
       var fx=X(fa.m), fy=Y(fa.v);
@@ -991,9 +1090,6 @@ var DATA = {
     }
 
     el.innerHTML='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+s+'</svg>';
-    /* A tap anywhere on the chart selects the NEAREST point, measured in
-       screen pixels, so on a phone where the whole chart is 350px wide a
-       finger does not have to land on a three-pixel circle. 36px reach. */
     var cands=[];
     logged.forEach(function(c){ cands.push({t:'ck',i:cks.indexOf(c),x:X(monthsSinceStart(c.date)),y:Y(isW?c.weight_kg:c.bodyfat_pct)}); });
     ROUTE.nodes.forEach(function(n,i){ if(i>0) cands.push({t:'node',i:i,x:X(n.month),y:Y(isW?n.weightKg:n.bodyFatPct)}); });
@@ -1002,9 +1098,9 @@ var DATA = {
       var ctm=svg.getScreenCTM(); if(!ctm) return;
       var pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
       var u=pt.matrixTransform(ctm.inverse());
-      var reach=36/ctm.a; // screen px expressed in viewBox units
+      var reach=36/ctm.a;
       var best=null, bd=Infinity;
-      cands.forEach(function(c){ var d=Math.hypot(c.x-u.x,c.y-u.y); if(d<bd){ bd=d; best=c; } });
+      cands.forEach(function(c){ var dd=Math.hypot(c.x-u.x,c.y-u.y); if(dd<bd){ bd=dd; best=c; } });
       if(!best||bd>reach) return;
       var next={t:best.t,i:best.i};
       SEL=(SEL&&SEL.t===next.t&&SEL.i===next.i)?null:next;
@@ -1019,7 +1115,7 @@ var DATA = {
 
   /* ── Phase strip: widths proportional to real duration ── */
   document.getElementById('strip').innerHTML=
-    '<div class="seg gone" style="width:'+(ROUTE.startMonth/ROUTE.totalMonths*100).toFixed(2)+'%" title="Before the route was re-run"></div>'+
+    '<div class="seg gone" style="width:'+(ROUTE.startMonth/ROUTE.totalMonths*100).toFixed(2)+'%" title="Before the route was derived"></div>'+
     ROUTE.phases.map(function(p){
     var w=((p.to-p.from)/ROUTE.totalMonths*100).toFixed(2);
     var cls=(p.kind==='trim')?'cut':((p.kind==='reveal')?'reveal':'build');
@@ -1033,7 +1129,6 @@ var DATA = {
     var idx=0;
     for(var i=0;i<ROUTE.phases.length;i++){ if(TODAY_M>=ROUTE.phases[i].from) idx=i; }
     var ph=ROUTE.phases[idx];
-    var next=ROUTE.phases[idx+1];
     var intent=PHASE_INTENT[ph.kind]||PHASE_INTENT.recomp;
     var dirCls=(intent.dir==='down')?'dn':((intent.dir==='up')?'up':'');
     var dirGlyph=(intent.dir==='down')?'\u25bc':((intent.dir==='up')?'\u25b2':'\u2014');
@@ -1042,14 +1137,12 @@ var DATA = {
     document.getElementById('ncTitle').textContent=ph.label.replace(/&middot;/g,'\u00b7').replace(/^Cut \u00b7 /,'Cutting to ').replace(/^Build \u00b7 /,'Building to ').replace(/^Reveal \u00b7 /,'Revealing at ');
     document.getElementById('ncBody').textContent=intent.detail;
 
-    /* Calendar window the phase ends in, from the engine's [lo, hi] months
-       counted from the day the route was re-derived. */
     function endWindow(){
       if(!ph.months) return null;
-      var base=new Date(ROUTE.generated+'T00:00:00');
-      function plus(mo){ var d=new Date(base); d.setDate(d.getDate()+Math.round(mo*30.4375)); return d.toLocaleDateString('en-AU',{month:'short',year:'2-digit'}); }
-      var a=plus(ph.months[0]), b=plus(ph.months[1]);
-      return a===b?a:(a+' \u2013 '+b);
+      var b=new Date(ROUTE.generated+'T00:00:00');
+      function plus(mo){ var dd=new Date(b); dd.setDate(dd.getDate()+Math.round(mo*30.4375)); return dd.toLocaleDateString('en-AU',{month:'short',year:'2-digit'}); }
+      var a=plus(ph.months[0]), c=plus(ph.months[1]);
+      return a===c?a:(a+' \u2013 '+c);
     }
     var rows=[
       ['Scale','<span class="nc-v '+dirCls+'">'+dirGlyph+' '+intent.word+'</span>']
@@ -1062,7 +1155,6 @@ var DATA = {
       rows.push(['Done by','<span class="nc-v">'+(win||(ph.months[0]+'\u2013'+ph.months[1]+' months'))+'</span>']);
     }
     rows.push(['Ends at','<span class="nc-v hl">'+ph.endKg+' kg \u00b7 '+ph.endBf+'%</span>']);
-    void next;
     document.getElementById('ncRows').innerHTML=rows.map(function(r){
       return '<div class="nc-row"><span class="nc-l">'+r[0]+'</span>'+r[1]+'</div>';
     }).join('');
@@ -1078,32 +1170,68 @@ var DATA = {
   });
   drawRoute();
 
-  /* ── Latest scan strip: four headline body metrics.
-     Everything else (BMR, TEE, body water, bio age, segmental) lives in the
-     scan-history table so this row stays scannable. ── */
+  /* ── Latest scan strip: four headline metrics, chosen by machine.
+     Everything else lives in the scan-history table so this row stays
+     scannable. ── */
   var sc=latest.scan||{};
   document.getElementById('scanKick').innerHTML='Latest scan &middot; '+(sc.type||'')+' &middot; '+fmtDate(latest.date);
-  var scanCells=[
-    {v:fmt(sc.skeletal_muscle_kg,1),l:'Skeletal muscle · kg',hl:true},
-    {v:fmt(sc.waist_cm,1),l:'Waist · cm'},
-    {v:fmt(sc.visceral_fat_area,0),l:'Visceral fat · cm²'},
-    {v:fmt(sc.whr,2),l:'Waist-to-hip'}
-  ];
+  var scanCells = (latest.machine==='DEXA')
+    ? [
+        {v:fmt(latest.fat_mass_kg,1),l:'Fat mass · kg',hl:true},
+        {v:fmt(sc.bone_mineral_kg,2),l:'Bone mineral · kg'},
+        {v:fmt(sc.visceral_fat_area,0),l:'Visceral fat · cm²'},
+        {v:(sc.t_score==null?'-':((sc.t_score>0?'+':'')+fmt(sc.t_score,1))),l:'Bone T-score'}
+      ]
+    : [
+        {v:fmt(sc.skeletal_muscle_kg,1),l:'Skeletal muscle · kg',hl:true},
+        {v:fmt(sc.waist_cm,1),l:'Waist · cm'},
+        {v:fmt(sc.visceral_fat_area,0),l:'Visceral fat · cm²'},
+        {v:fmt(sc.whr,2),l:'Waist-to-hip'}
+      ];
   document.getElementById('scanGrid').innerHTML=scanCells.map(function(c){
     return '<div class="scan-cell"><div class="scan-val'+(c.hl?' hl':'')+'">'+c.v+'</div><div class="scan-lbl">'+c.l+'</div></div>';
   }).join('');
+
+  /* ── Blood work ── */
+  (function(){
+    var slot=document.getElementById('bloodSlot'), sum=document.getElementById('bloodSum');
+    if(!slot) return;
+    if(!BLOODS||!BLOODS.length){
+      slot.innerHTML='<div class="blood-pending">'+
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'+
+        '<p>Bloods were drawn fasted alongside the first DEXA. The full panel goes up here as soon as it comes back, and every re-test lands beside it. A cut changes more than the scale, and this is where that shows.</p>'+
+        '</div>';
+      return;
+    }
+    if(sum&&BLOOD_DATE) sum.textContent=fmtDate(BLOOD_DATE);
+    slot.innerHTML=BLOODS.map(function(g){
+      return (g.group?'<div class="bgrp">'+g.group+'</div>':'')+
+        (g.markers||[]).map(function(m){
+          return '<div class="brow"><div><div class="bname">'+m.name+'</div>'+
+            (m.ref?'<div class="bref">ref '+m.ref+'</div>':'')+'</div>'+
+            '<div class="bval">'+(m.value||'-')+(m.unit?(' '+m.unit):'')+'</div></div>';
+        }).join('');
+    }).join('');
+  })();
 
   /* ── Full data table: every metric + segmental panel, one column per scan ── */
   var ROWS=[
     {n:'Weight · kg',d:1,g:function(c){return c.weight_kg;}},
     {n:'Body fat · %',d:1,g:function(c){return c.bodyfat_pct;}},
-    {n:'Lean mass · kg',d:1,g:function(c){return c.lean_mass_kg;}},
+    {n:'Fat-free mass · kg',d:1,g:function(c){return c.lean_mass_kg;}},
     {n:'Fat mass · kg',d:1,g:function(c){return c.fat_mass_kg;}},
+    {n:'Lean soft tissue · kg',d:1,g:function(c){return c.scan?c.scan.lean_soft_tissue_kg:null;}},
+    {n:'Bone mineral · kg',d:2,g:function(c){return c.scan?c.scan.bone_mineral_kg:null;}},
+    {n:'Bone density · g/cm²',d:3,g:function(c){return c.scan?c.scan.bmd:null;}},
+    {n:'Bone T-score',d:1,g:function(c){return c.scan?c.scan.t_score:null;}},
+    {n:'Bone Z-score',d:1,g:function(c){return c.scan?c.scan.z_score:null;}},
+    {n:'Visceral fat · cm²',d:0,g:function(c){return c.scan?c.scan.visceral_fat_area:null;}},
+    {n:'Fat mass index',d:1,g:function(c){return c.scan?c.scan.fmi:null;}},
+    {n:'Lean mass index',d:1,g:function(c){return c.scan?c.scan.lmi:null;}},
+    {n:'BMR · kcal',d:0,g:function(c){return c.scan?c.scan.bmr_kcal:null;}},
     {n:'Skeletal muscle · kg',d:1,g:function(c){return c.scan?c.scan.skeletal_muscle_kg:null;}},
     {n:'Waist · cm',d:1,g:function(c){return c.scan?c.scan.waist_cm:null;}},
-    {n:'Visceral fat · cm²',d:0,g:function(c){return c.scan?c.scan.visceral_fat_area:null;}},
     {n:'Waist-to-hip',d:2,g:function(c){return c.scan?c.scan.whr:null;}},
-    {n:'BMR · kcal',d:0,g:function(c){return c.scan?c.scan.bmr_kcal:null;}},
     {n:'TEE · kcal',d:0,g:function(c){return c.scan?c.scan.tee_kcal:null;}},
     {n:'Body water · %',d:0,g:function(c){return c.scan?c.scan.body_water_pct:null;}},
     {n:'Bio age',d:0,g:function(c){return c.scan?c.scan.bio_age:null;}}
@@ -1112,17 +1240,21 @@ var DATA = {
     return {n:name+' · lean kg',d:2,g:function(c){return c.segments_kg?c.segments_kg[name]:null;}};
   }
   var segNames=Object.keys(base.segments_kg||{});
+  /* Δ only where the same machine measured both ends. Across a machine
+     change the difference is method, not progress, so it renders "-". */
+  var deltaOK=(cks.length>1 && base.machine===latest.machine);
   function rowHTML(r){
     var first=r.g(base), last=r.g(latest);
-    var d=(first!=null&&last!=null&&cks.length>1)?+(last-first).toFixed(r.d):null;
-    var dcls=(d!=null)?(d>0?'delta-up':(d<0?'delta-down':'')):'';
+    var dd=(deltaOK&&first!=null&&last!=null)?+(last-first).toFixed(r.d):null;
+    var dcls=(dd!=null)?(dd>0?'delta-up':(dd<0?'delta-down':'')):'';
     var tds=cks.map(function(c,i){ var v=r.g(c); return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(v==null?'-':fmt(v,r.d))+'</td>'; }).join('');
-    return '<tr><td>'+r.n+'</td>'+tds+'<td class="'+dcls+'">'+(d==null?'-':(d>0?'+':'')+d)+'</td></tr>';
+    return '<tr><td>'+r.n+'</td>'+tds+'<td class="'+dcls+'">'+(dd==null?'-':(dd>0?'+':'')+dd)+'</td></tr>';
   }
   var colspan=cks.length+2;
-  var head='<thead><tr><th>Metric</th>'+cks.map(function(c){return '<th>'+c.label.replace('Month','Mo')+'</th>';}).join('')+'<th>&Delta; base</th></tr></thead>';
-  var body='<tbody>'+ROWS.map(rowHTML).join('')+
-    (segNames.length?'<tr><td class="grp" colspan="'+colspan+'"><span class="grp-in">Segmental lean mass &middot; Evolt panel</span></td></tr>'+segNames.map(function(nm){return rowHTML(segRow(nm));}).join(''):'')+
+  var head='<thead><tr><th>Metric</th>'+cks.map(function(c){return '<th>'+c.label+'</th>';}).join('')+'<th>&Delta; base</th></tr></thead>';
+  var machineRow='<tr><td>Machine</td>'+cks.map(function(c,i){return '<td'+(i===cks.length-1?' class="now"':'')+'>'+(c.machine||'-')+'</td>';}).join('')+'<td>-</td></tr>';
+  var body='<tbody>'+machineRow+ROWS.map(rowHTML).join('')+
+    (segNames.length?'<tr><td class="grp" colspan="'+colspan+'"><span class="grp-in">Segmental lean mass</span></td></tr>'+segNames.map(function(nm){return rowHTML(segRow(nm));}).join(''):'')+
     '</tbody>';
   document.getElementById('fullTable').innerHTML=head+body;
 
