@@ -67,7 +67,9 @@ Adjustments:
 - Joints flaring under added load → rep-only progression
 - Two sessions stalled with no RIR change → abandon double progression
 
-**Band floors are hard.** Where a block steps reps down week to week, the descent stops at the category floor. It does not cross it. If the plan needs a lower rep target than the floor allows, the exercise is wrong for that block — change the exercise, not the floor.
+**How this is written into a program.** Weekly rep targets start at the band floor in Week 1 and climb one rep per week at a fixed load, while RIR falls per rir-guidance.md. The deload week returns to the Week 1 target at the same load.
+
+**Band edges are hard.** The climb stops at the category ceiling. It does not cross it — a lifter who reaches the ceiling adds load and returns to the floor. No target, deload included, goes under the floor. If the plan needs a rep target outside the band, the exercise is wrong for that block — change the exercise, not the band.
 
 ## Volume Counting (Fractional Sets)
 
