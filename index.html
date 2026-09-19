@@ -167,6 +167,9 @@
         .fh-trust { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; color: var(--text-3); margin-top: 0.35rem; }
         .fh-trust .st { color: #f59e0b; }
         .fh-trust b { color: var(--text); font-weight: 500; }
+        .fh-trust .fh-lab { color: var(--violet); text-decoration: none; transition: color 0.2s; }
+        .fh-trust .fh-lab b { color: inherit; }
+        .fh-trust .fh-lab:hover { color: #c084fc; }
         .ai-strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; }
         .ai-strip span { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); letter-spacing:0.04em; }
         .ai-strip .ai-lbl { color:var(--text-2); font-weight:500; }
@@ -801,7 +804,7 @@
                 </a>
             </div>
             <a class="fh-browse" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'hero'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals_hero'})">Browse all 81 meals &#8594;</a>
-            <div class="fh-trust"><b>Bulking 77 to 90 kg</b> in public &middot; <span class="st">&#9733;</span> <b>5.0</b> App Store &middot; No ads<span class="fh-tx"> &middot; No account</span></div>
+            <div class="fh-trust"><a class="fh-lab" href="/lab" onclick="gtag('event','view_lab',{'button_location':'hero_trust'})"><b>Bulking 77 to 90 kg</b> in public</a> &middot; <span class="st">&#9733;</span> <b>5.0</b> App Store &middot; No ads<span class="fh-tx"> &middot; No account</span></div>
         </div>
     </div>
 </section>
@@ -813,12 +816,12 @@
             <span class="label" style="text-align:center;">Built for skinny guys with full-time jobs</span>
             <h2 style="text-align:center;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:2rem;">Hitting your macros around a full-time job. <span class="cyan">Made easy.</span></h2>
             <div class="ledger">
-                <div class="ld-row"><span class="ld-n">01</span><span class="ld-t"><b>You're full three bites</b> before the plate is.</span></div>
-                <div class="ld-row"><span class="ld-n">04</span><span class="ld-t"><b>Six meals a day</b>, fitted around a nine to five.</span></div>
-                <div class="ld-row"><span class="ld-n">02</span><span class="ld-t"><b>Not hungry again</b>, and the next meal's already due.</span></div>
-                <div class="ld-row"><span class="ld-n">05</span><span class="ld-t"><b>Sunday disappears</b> into prep, or the week falls apart.</span></div>
-                <div class="ld-row"><span class="ld-n">03</span><span class="ld-t"><b>3,300 calories</b> of chicken and rice is a mountain.</span></div>
-                <div class="ld-row"><span class="ld-n">06</span><span class="ld-t"><b>Every bulking guide</b> assumes you have time to cook.</span></div>
+                <div class="ld-row"><span class="ld-n">01</span><span class="ld-t"><b>You're full</b> with half the plate still to go.</span></div>
+                <div class="ld-row"><span class="ld-n">04</span><span class="ld-t"><b>The shopping list, the macros, the prep order.</b> A second job before any of it gets made.</span></div>
+                <div class="ld-row"><span class="ld-n">02</span><span class="ld-t"><b>Not hungry</b>, and the next meal's already due.</span></div>
+                <div class="ld-row"><span class="ld-n">05</span><span class="ld-t"><b>No prep last night</b>, so it's a bought lunch again today.</span></div>
+                <div class="ld-row"><span class="ld-n">03</span><span class="ld-t"><b>Plain chicken and rice</b> twice a day is a chore, not a meal.</span></div>
+                <div class="ld-row"><span class="ld-n">06</span><span class="ld-t"><b>Every meal cooked from scratch</b>, one at a time, all week.</span></div>
             </div>
             <p style="text-align:center;color:var(--text-2);margin:1.5rem auto 0;max-width:560px;">Not more food. Denser food, with the shopping and prep already done.</p>
         </div>
