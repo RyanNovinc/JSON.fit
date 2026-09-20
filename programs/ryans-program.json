@@ -1,6 +1,6 @@
 {
   "routine_name": "Ryan's Program",
-  "description": "The program Ryan, the creator of JSON.fit, trains on. Four days a week, Upper/Lower run twice, so three days stay free. The trade is long, hard sessions: high volume, about 16 to 20 sets a week for side delts, lats, chest, biceps and glutes and 10 to 13 for everything else, at roughly two hours a session. 52 weeks in nine blocks and three phases: hypertrophy (heavy compounds 6-10, moderate 8-12), strength-hypertrophy (5-8 and 6-10), then higher-rep work (6-10 and 10-15). Isolation stays 10-15, weekly volume holds all year and exercises rotate every block. Training is the same whether you are bulking or cutting; food does that part. Needs a full gym and suits intermediate lifters.",
+  "description": "What Ryan, the creator of JSON.fit, trains on. Four days a week, so three stay free. The trade is long, hard, high-volume sessions of about two hours. Needs a full gym.",
   "days_per_week": 4,
   "default_pace": "optimal",
   "blocks": [
