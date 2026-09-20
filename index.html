@@ -357,7 +357,10 @@
             .fh-l1 { display:block; }
             .fh-display { font-size:2.85rem; }
             .fh-row { flex-direction:column; gap:0.85rem; }
-            .fh-tx { display:none; }
+            /* trust line: "No ads · No account" drops to its own level instead of wrapping mid-phrase */
+            .fh-tsep { display:none; }
+            .fh-t1, .fh-t2 { display:block; }
+            .fh-t2 { margin-top:0.4rem; }
             .proof-grid { grid-template-columns:1fr; }
             .ledger { grid-template-columns:1fr; gap:0; }
             /* meal strip mobile: horizontal swipe */
@@ -390,6 +393,19 @@
             .proof-card { padding:1.5rem; }
             .qual { padding:2rem 1.25rem; }
         }
+        /* Creator's own program: featured above the three standard cards */
+        .prog-feature { position:relative; overflow:hidden; display:grid; grid-template-columns:auto 1fr auto; gap:1.5rem; align-items:center; background:var(--surface); border:1px solid var(--border-cyan); border-radius:16px; padding:1.5rem 1.6rem; margin-bottom:1rem; text-decoration:none; color:inherit; transition:border-color 0.2s, transform 0.2s; }
+        .prog-feature.sa { transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1), border-color 0.2s; }
+        .prog-feature::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
+        .prog-feature:hover { border-color:rgba(34,211,238,0.45); }
+        .prog-feature:hover .prog-open { gap:0.55rem; }
+        .pf-ava { width:68px; height:68px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--border-cyan); background:linear-gradient(150deg,#14141a,#0a0a0f); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:1.05rem; color:var(--cyan); }
+        .pf-ava img { width:100%; height:100%; object-fit:cover; display:block; }
+        .pf-body { display:flex; flex-direction:column; gap:0.5rem; min-width:0; }
+        .pf-body h3 { font-size:1.3rem; font-weight:800; letter-spacing:-0.02em; line-height:1.2; }
+        .pf-body p { font-size:0.88rem; color:var(--text-2); line-height:1.55; max-width:620px; }
+        .pf-row { display:flex; flex-wrap:wrap; align-items:center; gap:0.6rem 0.9rem; margin-top:0.15rem; }
+        .prog-feature .pf-cta { white-space:nowrap; font-size:0.72rem; margin-top:0; }
         .prog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
         .prog-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.4rem; text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:0.6rem; transition:border-color 0.2s, transform 0.2s; }
         .prog-card:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-3px); }
@@ -404,7 +420,13 @@
         .prog-meta { display:flex; flex-wrap:wrap; gap:0.35rem; }
         .prog-chip { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-2); padding:0.18rem 0.45rem; border:1px solid var(--border); border-radius:4px; }
         .prog-open { margin-top:auto; font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--cyan); display:flex; align-items:center; gap:0.3rem; transition:gap 0.2s; }
-        @media (max-width:860px) { .prog-grid { grid-template-columns:1fr; } }
+        @media (max-width:860px) {
+            .prog-grid { grid-template-columns:1fr; }
+            .prog-feature { grid-template-columns:auto 1fr; gap:1rem 1.1rem; padding:1.35rem 1.25rem; align-items:start; }
+            .pf-ava { width:52px; height:52px; font-size:0.85rem; }
+            .pf-body h3 { font-size:1.12rem; }
+            .pf-cta { grid-column:1 / -1; }
+        }
         @media (prefers-reduced-motion: reduce) { .f-track { animation:none; } .px-con i { animation:none; display:none; } .pl-flow.vis .pl-step, .pl-flow.vis .px-bub { animation:none; } }
 
         /* Free cookbook capture */
@@ -804,7 +826,7 @@
                 </a>
             </div>
             <a class="fh-browse" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'hero'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals_hero'})">Browse all 81 meals &#8594;</a>
-            <div class="fh-trust"><a class="fh-lab" href="/lab" onclick="gtag('event','view_lab',{'button_location':'hero_trust'})"><b>Bulking 77 to 90 kg</b> in public</a> &middot; <span class="st">&#9733;</span> <b>5.0</b> App Store &middot; No ads<span class="fh-tx"> &middot; No account</span></div>
+            <div class="fh-trust"><span class="fh-t1"><a class="fh-lab" href="/lab" onclick="gtag('event','view_lab',{'button_location':'hero_trust'})"><b>Bulking 77 to 90 kg</b> in public</a> &middot; <span class="st">&#9733;</span> <b>5.0</b> App Store</span><span class="fh-tsep"> &middot; </span><span class="fh-t2">No ads &middot; No account</span></div>
         </div>
     </div>
 </section>
@@ -1232,6 +1254,19 @@
             <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
             <p style="margin:0 auto;">Built the same way as the meals: your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
         </div>
+        <a class="prog-feature sa sa-up" href="/programs/?program=creator-52-week-cut" onclick="gtag('event','view_program',{'program':'creator-52-week-cut','button_location':'programs_feature'})">
+            <div class="pf-ava"><img src="images/me/founder.webp" alt="" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='RN';"></div>
+            <div class="pf-body">
+                <span class="prog-split">What I'm running right now</span>
+                <h3>The exact program I train on.</h3>
+                <p>Built with the same three steps, imported as one file. Side delts, lats, chest, biceps and glutes pushed hardest.</p>
+                <div class="pf-row">
+                    <div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span></div>
+                    <div class="prog-meta"><span class="prog-chip">Upper / Lower</span><span class="prog-chip">52 weeks</span><span class="prog-chip">4 days</span><span class="prog-chip">High volume</span></div>
+                </div>
+            </div>
+            <span class="prog-open pf-cta">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
         <div class="prog-grid sa-stagger">
             <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
                 <span class="prog-split">Upper / Lower</span><h3>Beginner Foundation</h3>
