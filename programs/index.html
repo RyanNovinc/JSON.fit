@@ -160,6 +160,10 @@ main{flex:1;padding:2.25rem 0 3rem}
 .phone-cap{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-top:.6rem}
 .shots-note{flex:1;min-width:200px;color:var(--text-2);font-size:.85rem;line-height:1.7}
 .shots-note strong{color:var(--text);font-weight:600}
+.built{max-width:560px;margin:0 auto;color:var(--text-2);font-size:.88rem;line-height:1.7}
+.built strong{color:var(--text);font-weight:600}
+.built-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem;margin:1.1rem auto 0;max-width:560px}
+.built-chip{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.03em;color:var(--cyan);border:1px solid rgba(34,211,238,.18);background:rgba(34,211,238,.06);padding:.22rem .55rem;border-radius:5px}
 
 .foot-cta{text-align:center;padding:2.5rem 0 1rem}
 .foot-cta .import-btn{margin:0 auto}
@@ -469,6 +473,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
             + '<div class="phone"><div class="phone-frame"><picture><source srcset="/images/programs/'+slug+'-week.webp" type="image/webp"><img class="phone-img" src="/images/programs/'+slug+'-week.png" alt="Weekly plan in the JSON.fit app" loading="lazy" onerror="this.parentNode.parentNode.parentNode.style.display=\'none\'"></picture></div><div class="phone-cap">Your week</div></div>'
             + '<p class="shots-note">Once imported, every exercise comes with a <strong>form demo</strong>, set/rep/RIR targets, rest timers and swap options. The full '+weeks+' weeks live in the app. This page is the preview.</p>'
             + '</div></div>';
+
+      // ---- how it was built (centred block) ----
+      html += '<div class="block centered"><div class="block-lbl">How it was built</div><h3>Every number comes from the research</h3>'
+            + '<p class="built">Nothing here is guessed. Each of these is set from <strong>published training research</strong>, then checked twice before the file is written.</p>'
+            + '<div class="built-chips"><span class="built-chip">Weekly sets per muscle</span><span class="built-chip">Reps in reserve</span><span class="built-chip">Rep ranges</span><span class="built-chip">Rest per exercise</span><span class="built-chip">Deload weeks</span></div>'
+            + '</div>';
 
       // ---- footer import ----
       html += '<div class="foot-cta"><button class="import-btn" id="importBottom">'
