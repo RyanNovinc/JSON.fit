@@ -751,10 +751,11 @@
         .own-ava { width:72px; height:72px; border-radius:50%; overflow:hidden; border:1px solid var(--border-cyan); background:#14141a; }
         .own-ava img { width:100%; height:100%; object-fit:cover; display:block; }
         .own-q { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1.22rem; line-height:1.5; }
-        .own-no { color:var(--text-2); margin-bottom:0.8rem; }
+        .own-no { color:var(--text-2); margin-bottom:0.45rem; }
         .own-yes { color:#fff; }
+        .own-yes + .own-no { margin-top:1.3rem; }
         .own-yes .cyan { font-style:italic; }
-        .own-sign { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); margin-top:0.9rem; letter-spacing:0.03em; }
+        .own-sign { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); margin-top:1rem; letter-spacing:0.03em; }
         @media (max-width:600px) { .own-in { grid-template-columns:1fr; gap:1rem; } .own-ava { width:60px; height:60px; } .own-q { font-size:1.08rem; } }
 
         /* === Problem ledger === */
@@ -851,8 +852,10 @@
         <div class="own-in sa sa-up">
             <div class="own-ava"><img src="images/me/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.parentElement.style.display='none'"></div>
             <div>
-                <p class="own-q own-no">I'm not a chef. I've always hated cooking, and I hate the grocery store. I'm not a trained PT either.</p>
-                <p class="own-q own-yes">What I'm good at is picking meals that taste good, cook fast and hit the macros, then turning them into a system: <span class="cyan">one grocery list, one prep session, every meal decided.</span> The training runs on published research, not my opinion.</p>
+                <p class="own-q own-no">I'm not a chef. I hate cooking, and I hate the grocery store.</p>
+                <p class="own-q own-yes">So every meal here is built to cook as little as possible: <span class="cyan">one grocery list, one prep session, every meal decided.</span></p>
+                <p class="own-q own-no">I'm not a PT either.</p>
+                <p class="own-q own-yes">So I don't write the training. It runs on published research, not my opinion.</p>
                 <p class="own-sign">Ryan, solo founder</p>
             </div>
         </div>
