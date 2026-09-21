@@ -162,6 +162,34 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 .vr-fade img:nth-child(2){animation-delay:3.5s}
 @keyframes vrCross{0%{opacity:0}7%{opacity:1}43%{opacity:1}50%{opacity:0}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.vr-fade img{animation:none}.vr-fade img:nth-child(1){opacity:1}.spec-shot{animation:none}}
+/* ── Month by month: progress photos, any two months side by side ── */
+.mm-head h2 em{font-family:Georgia,'Times New Roman',serif;font-weight:400;color:var(--violet)}
+.mm-tabs{display:flex;width:max-content;max-width:100%;overflow-x:auto;margin:0 auto 1.4rem;border:1px solid var(--border);border-radius:100px;padding:4px;background:var(--surface);scrollbar-width:none}
+.mm-tabs::-webkit-scrollbar{display:none}
+.mm-tab{border:none;background:transparent;color:var(--text-2);font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.04em;padding:.45rem 1rem;border-radius:100px;cursor:pointer;white-space:nowrap;text-transform:capitalize}
+.mm-tab.on{background:var(--violet);color:#1a0a2e;font-weight:500}
+.mm-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;max-width:560px;margin:0 auto}
+.mm-side{display:flex;flex-direction:column;gap:.55rem;min-width:0}
+.mm-cap{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.mm-cap b{color:var(--text);font-weight:500;letter-spacing:.04em}
+.mm-cap .kg{color:var(--violet-bright);text-transform:none;letter-spacing:.02em;white-space:nowrap}
+.vr-frame.wait{border-style:dashed;border-color:rgba(255,255,255,.1);background:transparent}
+.vr-frame.wait .vr-ph span{text-align:center;line-height:1.8}
+.mm-strip{display:flex;gap:.6rem;overflow-x:auto;padding:.25rem .1rem .5rem;margin:1.6rem auto 0;max-width:560px;scrollbar-width:none}
+.mm-strip::-webkit-scrollbar{display:none}
+.mm-m{flex:0 0 78px;display:flex;flex-direction:column;gap:.35rem;align-items:center;background:none;border:none;cursor:pointer;color:inherit;padding:0;font:inherit}
+.mm-thumb{position:relative;width:78px;aspect-ratio:2/3;border-radius:9px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
+.mm-thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.7}
+.mm-m.on .mm-thumb{border-color:var(--violet)}
+.mm-m.on .mm-thumb img{opacity:1}
+.mm-pin{position:absolute;top:5px;left:5px;font-family:'DM Mono',monospace;font-size:.5rem;font-weight:500;padding:1px 5px;border-radius:4px;background:var(--violet);color:#1a0a2e}
+.mm-mlabel{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--text-2);letter-spacing:.04em;white-space:nowrap}
+.mm-scan{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--violet-bright);min-height:.8rem}
+.mm-m.next{cursor:default}
+.mm-m.next .mm-thumb{border-style:dashed;border-color:rgba(255,255,255,.12);background:transparent;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:1.1rem}
+.mm-help{text-align:center;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-3);letter-spacing:.04em;margin-top:.6rem}
+@media (max-width:600px){ .mm-pair{gap:.6rem} .mm-cap{font-size:.55rem;flex-direction:column;gap:0} }
+
 /* before/after compare */
 .compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.25rem;max-width:620px;margin:0 auto}
 .compare .vr-frame{max-width:250px;width:100%;margin:0 auto}
@@ -525,6 +553,31 @@ window.navBack=function(e){
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════════════════════════════
+     MONTH BY MONTH
+     Rendered from DATA.photos. Adding a month = one folder of four photos
+     + one line in DATA.photos. Nothing in here needs editing.
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="photos">
+  <div class="container">
+    <div class="section-head mm-head sa sa-up">
+      <div class="section-line"></div>
+      <span class="label">Progress photos</span>
+      <h2>Month by <em>month.</em></h2>
+      <p>Same spot, same light, same shorts, every month. Pick any two months to put side by side.</p>
+    </div>
+    <div class="sa sa-up">
+      <div class="mm-tabs" id="mmTabs" role="tablist"></div>
+      <div class="mm-pair">
+        <div class="mm-side"><div class="mm-cap" id="mmCapA"></div><div class="vr-frame" id="mmFrA"></div></div>
+        <div class="mm-side"><div class="mm-cap" id="mmCapB"></div><div class="vr-frame" id="mmFrB"></div></div>
+      </div>
+      <div class="mm-strip" id="mmStrip"></div>
+      <p class="mm-help" id="mmHelp"></p>
+    </div>
+  </div>
+</section>
+
 <!-- THE DETAIL: full scan history, bloods, and the pre-tracker backstory -->
 <section class="section">
   <div class="container">
@@ -773,11 +826,12 @@ BLOODS = [
      machine didn't measure stays null and renders as "-".
    - lean_mass_kg is FAT-FREE MASS (lean soft tissue + bone) on both
      machines, so the column compares like with like.
-   - photos: create a subfolder per check-in under /images/lab/ and point to
-     the files with a LEADING SLASH (root-absolute, so paths resolve correctly
-     from inside the /lab/ folder), e.g.
-       front:"/images/lab/2026-09/front.webp"
-     leave "" to show the "awaiting capture" placeholder.
+   - PHOTOS live in DATA.photos, not on the check-ins: photos are monthly,
+     scans are quarterly. Each month is a folder /images/lab/YYYY-MM/ holding
+     front.webp, right.webp, back.webp, left.webp (2:3, head to mid-thigh,
+     1080x1620). Add one line to DATA.photos and the hero + Month by month
+     section pick it up. `scan` links the month to a check-in label so its
+     weight shows; a photo-only month can carry its own measured weight_kg.
    - segments_kg is per-limb lean mass. Keys are shared across machines so
      the table lines up; the DEXA torso figure is ribs + spine + pelvis.
    Never publish a number that wasn't measured.
@@ -800,16 +854,16 @@ var DATA = {
   },
   // angle order used by the photo rig + the hero cycle
   angles: ["front","right","back","left"],
+  // progress photos, oldest first. One line per month:
+  //   { month:"YYYY-MM", date:"YYYY-MM-DD", scan:"DEXA 01" }        (month with a scan)
+  //   { month:"YYYY-MM", date:"YYYY-MM-DD", weight_kg:78.4 }        (photo-only month)
+  photos: [
+    { month:"2026-09", date:"2026-09-19", scan:"DEXA 01" }
+  ],
   checkins: [
     {
       label:"Baseline", date:"2026-07-01", machine:"Evolt 360",
       weight_kg:77.3, bodyfat_pct:20.4, lean_mass_kg:61.5, fat_mass_kg:15.8,
-      photos:{
-        front:"/images/lab/2026-07/front.webp",
-        right:"/images/lab/2026-07/right.webp",
-        back:"/images/lab/2026-07/back.webp",
-        left:"/images/lab/2026-07/left.webp"
-      },
       segments_kg:{ "Arm (L)":3.27,"Arm (R)":3.31,"Torso":26.46,"Leg (L)":9.14,"Leg (R)":9.25 },
       lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
       scan:{ type:"Evolt 360", skeletal_muscle_kg:34.2, waist_cm:86.9, visceral_fat_area:68, whr:0.84, bmr_kcal:1698, tee_kcal:2614, body_water_pct:57, bio_age:28,
@@ -823,7 +877,6 @@ var DATA = {
          route is re-derived from these numbers. */
       label:"DEXA 01", date:"2026-09-18", machine:"DEXA",
       weight_kg:80.6, bodyfat_pct:23.8, lean_mass_kg:61.4, fat_mass_kg:19.2,
-      photos:{ front:"", right:"", back:"", left:"" },
       segments_kg:{ "Arm (L)":3.76,"Arm (R)":3.85,"Torso":29.14,"Leg (L)":8.84,"Leg (R)":9.37 },
       lifts:{ "Squat":null,"Bench":null,"Deadlift":null,"OHP":null,"Weighted pull-up (+kg)":null },
       scan:{ type:"DEXA · Medix DR", skeletal_muscle_kg:null, waist_cm:null, visceral_fat_area:60, whr:null, bmr_kcal:1808, tee_kcal:null, body_water_pct:null, bio_age:null,
@@ -878,8 +931,14 @@ var DATA = {
     return PH;
   }
 
+  /* Latest month in DATA.photos drives the hero. */
   var specCk=null;
-  for(var si=cks.length-1;si>=0;si--){ if(hasShots(cks[si])){ specCk=cks[si]; break; } }
+  var _ps=DATA.photos||[];
+  if(_ps.length){
+    var _lp=_ps[_ps.length-1], _sh={};
+    DATA.angles.forEach(function(a){ _sh[a]='/images/lab/'+_lp.month+'/'+a+'.webp'; });
+    specCk={ label:_lp.scan||'Photos', date:_lp.date, photos:_sh };
+  }
   var specAngles=specCk?DATA.angles.filter(function(a){ return !!specCk.photos[a]; }):[];
   var specIdx=0;
   var specFrame=document.getElementById('specFrame');
@@ -1293,6 +1352,72 @@ var DATA = {
   }
   var obs=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ fireEl(e.target); obs.unobserve(e.target);} }); },{threshold:0.12,rootMargin:'0px 0px -5% 0px'});
   document.querySelectorAll('.sa').forEach(function(el){ obs.observe(el); });
+})();
+</script>
+
+<script>
+/* ── Month by month: any two photo months side by side ── */
+(function(){
+  var ms=(window.DATA&&DATA.photos)||[];
+  var tabs=document.getElementById('mmTabs');
+  if(!tabs||!ms.length){ var sec=document.getElementById('photos'); if(sec) sec.style.display='none'; return; }
+  var ANG=DATA.angles, ang=ANG[0], a=0, b=ms.length-1, turn='a';
+  var FIG='<svg width="44" height="84" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>';
+  function src(m,an){ return '/images/lab/'+m.month+'/'+an+'.webp'; }
+  function mLabel(m){ var d=new Date(m.month+'-01T00:00:00'); return d.toLocaleDateString('en-AU',{month:'short',year:'numeric'}); }
+  function dLabel(m){ var d=new Date(m.date+'T00:00:00'); return d.toLocaleDateString('en-AU',{day:'numeric',month:'short'}); }
+  function weight(m){
+    if(m.weight_kg!=null) return m.weight_kg;
+    if(m.scan){ for(var i=0;i<DATA.checkins.length;i++){ if(DATA.checkins[i].label===m.scan) return DATA.checkins[i].weight_kg; } }
+    return null;
+  }
+  var last=ms[ms.length-1], nd=new Date(last.month+'-01T00:00:00');
+  nd=new Date(nd.getFullYear(),nd.getMonth()+1,1);
+  var NEXT=nd.toLocaleDateString('en-AU',{month:'short',year:'numeric'});
+
+  tabs.innerHTML=ANG.map(function(x,i){ return '<button class="mm-tab'+(i?'':' on')+'" role="tab" data-a="'+x+'">'+x+'</button>'; }).join('');
+  tabs.querySelectorAll('.mm-tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.querySelectorAll('.mm-tab').forEach(function(x){ x.classList.remove('on'); });
+      t.classList.add('on'); ang=t.getAttribute('data-a'); render();
+    });
+  });
+
+  function frame(el,m){
+    el.classList.toggle('wait',!m);
+    if(!m){ el.innerHTML='<div class="vr-ph">'+FIG+'<span>'+NEXT+'<br>awaiting capture</span></div>'; return; }
+    el.innerHTML='<img src="'+src(m,ang)+'" alt="'+mLabel(m)+' '+ang+'" onclick="window.__lb&&window.__lb(this.src,this.alt)" onerror="this.style.display=\'none\'">';
+  }
+  function cap(el,m,tag){
+    if(!m){ el.innerHTML='<span>'+tag+' &middot; <b>'+NEXT+'</b></span>'; return; }
+    var w=weight(m);
+    el.innerHTML='<span>'+tag+' &middot; <b>'+dLabel(m)+'</b></span>'+(w!=null?'<span class="kg">'+Number(w).toFixed(1)+' kg</span>':'');
+  }
+  function render(){
+    var single=ms.length===1, A=ms[a], B=single?null:ms[b];
+    frame(document.getElementById('mmFrA'),A); cap(document.getElementById('mmCapA'),A,single?'Now':'Then');
+    frame(document.getElementById('mmFrB'),B); cap(document.getElementById('mmCapB'),B,single?'Next':'Now');
+    var h='';
+    ms.forEach(function(m,i){
+      var on=(i===a)||(!single&&i===b);
+      var pin=i===a?(single?'NOW':'THEN'):(on?'NOW':'');
+      h+='<button class="mm-m'+(on?' on':'')+'" data-i="'+i+'" aria-label="'+mLabel(m)+'"><div class="mm-thumb"><img src="'+src(m,'front')+'" alt="" loading="lazy">'+(pin?'<span class="mm-pin">'+pin+'</span>':'')+'</div><span class="mm-mlabel">'+mLabel(m)+'</span><span class="mm-scan">'+(m.scan||'')+'</span></button>';
+    });
+    h+='<div class="mm-m next" aria-hidden="true"><div class="mm-thumb">+</div><span class="mm-mlabel">'+NEXT+'</span><span class="mm-scan"></span></div>';
+    var strip=document.getElementById('mmStrip'); strip.innerHTML=h;
+    document.getElementById('mmHelp').textContent=single?'One month so far. Next month lands beside it.':'Tap a month to swap it in. Defaults to first vs latest.';
+    strip.querySelectorAll('.mm-m[data-i]').forEach(function(el){
+      el.addEventListener('click',function(){
+        if(single) return;
+        var i=+el.getAttribute('data-i');
+        if(i===a||i===b) return;
+        if(turn==='a'){ a=i; turn='b'; } else { b=i; turn='a'; }
+        if(a>b){ var t=a; a=b; b=t; }
+        render();
+      });
+    });
+  }
+  render();
 })();
 </script>
 
