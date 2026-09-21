@@ -163,6 +163,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 @keyframes vrCross{0%{opacity:0}7%{opacity:1}43%{opacity:1}50%{opacity:0}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.vr-fade img{animation:none}.vr-fade img:nth-child(1){opacity:1}.spec-shot{animation:none}}
 /* ── Month by month: progress photos, any two months side by side ── */
+/* photos anchor to the top so a tall original keeps the head in frame */
+.spec-shot img,#mmFrA img,#mmFrB img,.mm-thumb img{object-position:50% 0}
 .mm-head h2 em{font-family:Georgia,'Times New Roman',serif;font-weight:400;color:var(--violet)}
 .mm-tabs{display:flex;width:max-content;max-width:100%;overflow-x:auto;margin:0 auto 1.4rem;border:1px solid var(--border);border-radius:100px;padding:4px;background:var(--surface);scrollbar-width:none}
 .mm-tabs::-webkit-scrollbar{display:none}
@@ -857,8 +859,16 @@ var DATA = {
   // progress photos, oldest first. One line per month:
   //   { month:"YYYY-MM", date:"YYYY-MM-DD", scan:"DEXA 01" }        (month with a scan)
   //   { month:"YYYY-MM", date:"YYYY-MM-DD", weight_kg:78.4 }        (photo-only month)
+  // Optional `files` points each angle at an exact file instead of
+  // /images/lab/YYYY-MM/<angle>.webp. Spaces must be %20 and + must be %2B.
   photos: [
-    { month:"2026-09", date:"2026-09-19", scan:"DEXA 01" }
+    { month:"2026-09", date:"2026-09-19", scan:"DEXA 01",
+      files:{
+        front:"/lab/Progress%20pics%20%2B%20Vids/19th%20Sept%20-%20Front_1.1.1.png",
+        right:"/lab/Progress%20pics%20%2B%20Vids/19th%20Sept%20Right_1.4.1.png",
+        back:"/lab/Progress%20pics%20%2B%20Vids/19th%20Sept%20Back_1.3.1.png",
+        left:"/lab/Progress%20pics%20%2B%20Vids/19th%20Sept%20Left_1.2.1.png"
+      } }
   ],
   checkins: [
     {
@@ -936,7 +946,7 @@ var DATA = {
   var _ps=DATA.photos||[];
   if(_ps.length){
     var _lp=_ps[_ps.length-1], _sh={};
-    DATA.angles.forEach(function(a){ _sh[a]='/images/lab/'+_lp.month+'/'+a+'.webp'; });
+    DATA.angles.forEach(function(a){ _sh[a]=(_lp.files&&_lp.files[a])||('/images/lab/'+_lp.month+'/'+a+'.webp'); });
     specCk={ label:_lp.scan||'Photos', date:_lp.date, photos:_sh };
   }
   var specAngles=specCk?DATA.angles.filter(function(a){ return !!specCk.photos[a]; }):[];
@@ -1363,7 +1373,7 @@ var DATA = {
   if(!tabs||!ms.length){ var sec=document.getElementById('photos'); if(sec) sec.style.display='none'; return; }
   var ANG=DATA.angles, ang=ANG[0], a=0, b=ms.length-1, turn='a';
   var FIG='<svg width="44" height="84" viewBox="0 0 80 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="22" r="14"/><path d="M40 36 v50 M40 50 l-22 14 M40 50 l22 14 M40 86 l-14 50 M40 86 l14 50"/></svg>';
-  function src(m,an){ return '/images/lab/'+m.month+'/'+an+'.webp'; }
+  function src(m,an){ return (m.files&&m.files[an])||('/images/lab/'+m.month+'/'+an+'.webp'); }
   function mLabel(m){ var d=new Date(m.month+'-01T00:00:00'); return d.toLocaleDateString('en-AU',{month:'short',year:'numeric'}); }
   function dLabel(m){ var d=new Date(m.date+'T00:00:00'); return d.toLocaleDateString('en-AU',{day:'numeric',month:'short'}); }
   function weight(m){
