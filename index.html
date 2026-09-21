@@ -212,6 +212,8 @@
         .comp-row div:nth-child(2) { color:var(--cyan); font-weight:600; border-left:1px solid var(--border); border-right:1px solid var(--border); background:rgba(34,211,238,0.02); }
         .comp-row div:nth-child(4), .comp-row div:nth-child(5) { border-left:1px solid var(--border); }
         .comp-x { color:var(--red) !important; }
+        .comp-win { color:var(--green) !important; }
+        .comp-note { font-family:'DM Mono',monospace; font-size:0.66rem; color:var(--text-3); letter-spacing:0.02em; margin-top:0.9rem; text-align:center; }
         .cta-wrap { padding:3rem 0 5rem; display:flex; justify-content:center; }
         .cta-card { max-width:480px; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2.5rem 2rem; position:relative; overflow:hidden; text-align:center; }
         .cta-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
@@ -376,8 +378,9 @@
             .flow-arrow .fa-h { display:none; }
             .flow-arrow .fa-v { display:block; }
             .qual-grid { grid-template-columns:1fr; }
-            .comp-head, .comp-row { grid-template-columns:1.3fr 0.85fr 0.75fr 0.75fr 0.75fr; }
-            .comp-head div, .comp-row div { padding:0.6rem 0.4rem; font-size:0.7rem; }
+            .comp { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+            .comp-head, .comp-row { grid-template-columns:1.3fr 0.85fr 0.85fr 0.85fr 0.9fr; min-width:660px; }
+            .comp-head div, .comp-row div { padding:0.6rem 0.5rem; font-size:0.72rem; }
             footer { grid-template-columns:1fr; justify-items:center; gap:1rem; text-align:center; }
             .foot-l, .foot-social, .foot-r { justify-self:center; }
             .foot-l a { margin-left:0; margin:0 0.6rem; }
@@ -386,8 +389,7 @@
         }
         @media (max-width: 480px) {
             .fh-display { font-size:2.6rem; }
-            .comp { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-            .comp-head, .comp-row { min-width:560px; }
+            .comp-head, .comp-row { min-width:660px; }
             .ai-strip span { font-size:0.62rem; }
             .cta-card { padding:2rem 1.25rem; }
             .proof-card { padding:1.5rem; }
@@ -743,6 +745,18 @@
         .ph-card .ph-screen img, .ph-card figcaption { transition:opacity 0.2s ease; }
         .ph-card.swapping .ph-screen img, .ph-card.swapping figcaption { opacity:0; }
 
+        /* === Honest note under the hero === */
+        .own { padding:3.5rem 0 0; }
+        .own-in { max-width:720px; margin:0 auto; display:grid; grid-template-columns:auto 1fr; gap:1.4rem; align-items:start; }
+        .own-ava { width:72px; height:72px; border-radius:50%; overflow:hidden; border:1px solid var(--border-cyan); background:#14141a; }
+        .own-ava img { width:100%; height:100%; object-fit:cover; display:block; }
+        .own-q { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1.22rem; line-height:1.5; }
+        .own-no { color:var(--text-2); margin-bottom:0.8rem; }
+        .own-yes { color:#fff; }
+        .own-yes .cyan { font-style:italic; }
+        .own-sign { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); margin-top:0.9rem; letter-spacing:0.03em; }
+        @media (max-width:600px) { .own-in { grid-template-columns:1fr; gap:1rem; } .own-ava { width:60px; height:60px; } .own-q { font-size:1.08rem; } }
+
         /* === Problem ledger === */
         .pains { max-width:900px; margin:0 auto; }
         .ledger { max-width:860px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:0 3.5rem; }
@@ -827,6 +841,20 @@
             </div>
             <a class="fh-browse" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'hero'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals_hero'})">Browse all 81 meals &#8594;</a>
             <div class="fh-trust"><span class="fh-t1"><a class="fh-lab" href="/lab" onclick="gtag('event','view_lab',{'button_location':'hero_trust'})"><b>Bulking 77 to 90 kg</b> in public</a> &middot; <span class="st">&#9733;</span> <b>5.0</b> App Store</span><span class="fh-tsep"> &middot; </span><span class="fh-t2">No ads &middot; No account</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- Honest note: what I'm not, then what I am -->
+<section class="own">
+    <div class="container">
+        <div class="own-in sa sa-up">
+            <div class="own-ava"><img src="images/me/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.parentElement.style.display='none'"></div>
+            <div>
+                <p class="own-q own-no">I'm not a chef. I've always hated cooking, and I hate the grocery store. I'm not a trained PT either.</p>
+                <p class="own-q own-yes">What I'm good at is picking meals that taste good, cook fast and hit the macros, then turning them into a system: <span class="cyan">one grocery list, one prep session, every meal decided.</span> The training runs on published research, not my opinion.</p>
+                <p class="own-sign">Ryan, solo founder</p>
+            </div>
         </div>
     </div>
 </section>
@@ -1295,18 +1323,20 @@
         <div class="section-head sa sa-up" style="text-align:center;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Compare</span>
-            <h2>What you've <span class="cyan">already tried.</span></h2>
-            <p style="margin:0 auto;">Same goal. What each one costs you, and whether you kept going.</p>
+            <h2>What it costs to do this <span class="cyan">any other way.</span></h2>
+            <p style="margin:0 auto;">Same job: meals to your macros, a shopping list, prep and training.</p>
         </div>
         <div class="comp sa sa-up">
-            <div class="comp-head"><div></div><div>JSON.fit</div><div>Mass gainer</div><div>Sunday prep</div><div>Tracking app</div></div>
-            <div class="comp-row"><div>Cost</div><div>Free</div><div>A tub a fortnight</div><div>Free</div><div>$10&ndash;20 a month</div></div>
-            <div class="comp-row"><div>Time each week</div><div>One shop, one short prep</div><div>Minutes</div><div class="comp-x">A whole Sunday</div><div class="comp-x">Logging every meal</div></div>
-            <div class="comp-row"><div>Calories per plate</div><div>Dense</div><div class="comp-x">Liquid, sits heavy</div><div class="comp-x">Chicken and rice</div><div class="comp-x">Just the number</div></div>
-            <div class="comp-row"><div>Still eating it in week three</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
-            <div class="comp-row"><div>Shopping list written for you</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
-            <div class="comp-row"><div>Prep steps written for you</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-head"><div></div><div>JSON.fit</div><div>MyFitnessPal+</div><div>Eat This Much</div><div>My Muscle Chef</div></div>
+            <div class="comp-row"><div>Cost to use it fully</div><div>Free</div><div class="comp-x">$99.99 a year</div><div class="comp-x">~$60 a year</div><div class="comp-x">$350&ndash;490 a week</div></div>
+            <div class="comp-row"><div>Meals built for gaining</div><div>&#10003;</div><div class="comp-x">&#10007; tracker only</div><div class="comp-x">Recipes lean light</div><div>&#10003;</div></div>
+            <div class="comp-row"><div>One weekly shopping list</div><div>&#10003;</div><div>&#10003; on Premium+</div><div>&#10003; on Premium</div><div>n/a</div></div>
+            <div class="comp-row"><div>One batch prep session</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007; per recipe</div><div>n/a &mdash; reheat</div></div>
+            <div class="comp-row"><div>Training program included</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>No cooking required</div><div class="comp-x">&#10007; cook once a week</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-win">&#10003; delivery wins here</div></div>
+            <div class="comp-row"><div>No account, no subscription, no ads</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
         </div>
+        <p class="comp-note sa sa-up">App prices USD, delivery AUD, checked September 2026.</p>
     </div>
 </section>
 
