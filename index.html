@@ -752,14 +752,24 @@
         .own-q { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1.22rem; line-height:1.5; text-wrap:balance; }
         .own-no { color:var(--text-2); margin-bottom:0.45rem; }
         .own-yes { color:#fff; }
-        .own-yes + .own-no { margin-top:1.3rem; }
+        .own-beat + .own-beat { margin-top:1.3rem; }
         .own-yes .cyan { font-style:italic; }
         .own-ln { display:block; }
         .own-who { display:flex; align-items:center; gap:0.8rem; margin-top:0.8rem; }
         .own-ava { width:40px; height:40px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--border-cyan); background:#14141a; }
         .own-ava img { width:100%; height:100%; object-fit:cover; display:block; }
         .own-sign { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-3); letter-spacing:0.03em; }
-        @media (max-width:600px) { .own-bub { padding:1.3rem 1.25rem; } .own-q { font-size:1.08rem; } }
+        /* phone: centred, each weakness running into its own payoff on one line */
+        @media (max-width:600px) {
+            .own-bub { padding:1.15rem 1.05rem; border-radius:18px; text-align:center; }
+            .own-q { font-size:0.97rem; line-height:1.42; }
+            .own-no, .own-yes, .own-ln { display:inline; }
+            .own-no { margin-bottom:0; }
+            .own-beat + .own-beat { margin-top:0.7rem; }
+            .own-who { justify-content:center; margin-top:0.65rem; gap:0.6rem; }
+            .own-ava { width:32px; height:32px; }
+            .own-sign { font-size:0.66rem; }
+        }
 
         /* === Problem ledger === */
         .pains { max-width:900px; margin:0 auto; }
@@ -854,10 +864,14 @@
     <div class="container">
         <div class="own-in sa sa-up">
             <div class="own-bub">
-                <p class="own-q own-no">I'm not a chef. I hate cooking, and I hate the grocery store.</p>
-                <p class="own-q own-yes"><span class="own-ln">So every meal here is built to cook as little as possible:</span><span class="own-ln cyan">one grocery list, one prep session, every meal decided.</span></p>
-                <p class="own-q own-no">I'm not a PT either.</p>
-                <p class="own-q own-yes"><span class="own-ln">So I don't write the training.</span><span class="own-ln">It runs on published research, not my opinion.</span></p>
+                <div class="own-beat">
+                    <p class="own-q own-no">I'm not a chef. I hate cooking, and I hate the grocery store.</p>
+                    <p class="own-q own-yes"><span class="own-ln">So every meal here is built to cook as little as possible:</span><span class="own-ln cyan">one grocery list, one prep session, every meal decided.</span></p>
+                </div>
+                <div class="own-beat">
+                    <p class="own-q own-no">I'm not a PT either.</p>
+                    <p class="own-q own-yes"><span class="own-ln">So I don't write the training.</span><span class="own-ln">It runs on published research, not my opinion.</span></p>
+                </div>
             </div>
             <div class="own-who">
                 <div class="own-ava"><img src="images/me/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.parentElement.style.display='none'"></div>
