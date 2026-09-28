@@ -211,7 +211,11 @@ Rules:
 
 ### Alternative Exercises
 
-Each exercise must include 2 alternatives (1 for bodyweight-only programs). Alternatives should target the same primary muscles, use different equipment or movement variations, and include their own primaryMuscles and secondaryMuscles tags.
+Each exercise carries UP TO 2 alternatives (up to 1 for bodyweight-only programs). Fewer is correct whenever the library has fewer, and an empty `alternatives` array is correct when the library has nothing else for that muscle; the app imports an empty array cleanly.
+
+An alternative must share the exercise's PRIMARY tags exactly: the same primary muscle or muscles, a different piece of equipment or movement variation, and its own primaryMuscles and secondaryMuscles copied from the library. Never pad the list with an exercise for a different muscle to reach 2. A wrong-muscle alternative does harm: the user swaps to it in the gym and the app logs the wrong muscle in that slot.
+
+Flexion is never an alternative to extension. Neck Flexors and Neck Extensors are different muscles, and so are Forearm Flexors and Forearm Extensors. Plate Neck Flexion's only alternative is Neck Harness Flexion; Reverse Wrist Curl is the only Forearm Extensors exercise in the library, so it has none.
 
 ### Notes
 
@@ -332,6 +336,8 @@ Before presenting each block, silently verify:
 - [ ] Every block's `days` array totals 7 objects — training days plus REST DAY entries — ordered to match its weekly_schedule
 - [ ] `days_per_week` at the root is the count of TRAINING days, not 7 and not the length of the `days` array (a 4-day split says 4 while its `days` array holds 7 objects)
 - [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
+- [ ] No exercise carries the retired tags `Forearms` or `Neck`; neck and wrist exercises carry the library's flexor or extensor tag
+- [ ] Every alternative shares its exercise's primary tags exactly, at most 2 per exercise, with an empty array where the library has no same-muscle option
 - [ ] Block-relative week keys start from "1"
 - [ ] `default_pace` is present at the root, lowercase, and matches the pace named in the plan's rest summary
 - [ ] Session durations are recalculated using the duration formula
