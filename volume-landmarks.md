@@ -143,6 +143,14 @@ Then compute the target ranges (both bounds inclusive, all integers):
 
 The SAME user gets DIFFERENT, deterministically-calculated ranges per muscle — calibrated to that muscle's recovery capacity AND positioned consistently across muscles for balance. The deterministic formulas guarantee that any two AI runs with the same inputs produce the same numbers.
 
+### Note on Forearms and Neck
+
+Each of these rows covers an antagonist pair that the exercise library tags separately: **Forearms** = Forearm Flexors + Forearm Extensors, **Neck** = Neck Flexors + Neck Extensors. The landmark numbers above are for the row, not for either half, and no half has landmarks of its own.
+
+**Counting.** Same rule as Back: a set counts ONCE toward the row, 1.0 if either half is Primary, 0.5 if either half appears only as Secondary. A 3-set Reverse Wrist Curl is 3.0 toward Forearms. Tags in the program and in the JSON stay exactly as the library writes them; only the volume row is combined, so the per-muscle target table has one Forearms row and one Neck row, never a row per half.
+
+**Splitting the direct sets.** The two halves are opposite muscles, so a row covered entirely by one half leaves the other untrained while the total reads as met. When the user has requested direct work for the group, the direct sets (sets whose Primary tag is one half or the other; secondaries do not count) are split as evenly as the total allows: with an even total, half each; with an odd total, the two halves differ by one set. No trial favours one half of either pair, so the even split is the default with nothing to lean against. Grip already loads the flexors on every pull day; the extensors get nothing unless a set is written for them. Without a request, neither half gets direct work, and secondary contributions alone are fine at any split.
+
 ## Auxiliary Muscles (Opt-In)
 
 If the user has selected an auxiliary muscle (Neck, Obliques, Lower Back, Hip Abductors, Hip Adductors, Serratus Anterior, Shins, Forearms direct work), use that muscle's MAV-low range as the floor — typically 4–6 effective sets.
