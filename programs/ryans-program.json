@@ -507,7 +507,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -887,49 +887,86 @@
             {
               "type": "strength",
               "exercise": "Plate Neck Extension",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "14, 14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "3, 2, 2, 1",
-                "3": "2, 1, 1, 0",
-                "4": "1-2, 0-1, 0-1, 0",
-                "5": "1, 0, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 4,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Neck Harness Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Plate Neck Flexion",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Plate Neck Flexion",
+                  "exercise": "Neck Harness Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -1463,7 +1500,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -1586,7 +1623,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -1619,7 +1656,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -1628,7 +1665,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -1854,53 +1891,82 @@
             {
               "type": "strength",
               "exercise": "Barbell Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "3, 2, 1",
-                "3": "2, 1, 0",
-                "4": "1-2, 0-1, 0",
-                "5": "1, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 3,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Dumbbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
-                  "exercise": "Reverse Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
               ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Reverse Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": []
             },
             {
               "type": "strength",
@@ -2470,7 +2536,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -2850,49 +2916,86 @@
             {
               "type": "strength",
               "exercise": "Plate Neck Flexion",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "14, 14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "3, 2, 2, 1",
-                "3": "2, 1, 1, 0",
-                "4": "1-2, 0-1, 0-1, 0",
-                "5": "1, 0, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 4,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Neck Harness Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Plate Neck Extension",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Plate Neck Extension",
+                  "exercise": "Neck Harness Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -3428,7 +3531,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -3551,7 +3654,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -3584,7 +3687,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -3593,7 +3696,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -3819,49 +3922,78 @@
             {
               "type": "strength",
               "exercise": "Reverse Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "3, 2, 1",
-                "3": "2, 1, 0",
-                "4": "1-2, 0-1, 0",
-                "5": "1, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 3,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": []
+            },
+            {
+              "type": "strength",
+              "exercise": "Dumbbell Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Barbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
-                  "exercise": "Dumbbell Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -4436,7 +4568,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -4816,49 +4948,86 @@
             {
               "type": "strength",
               "exercise": "Neck Harness Extension",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "14, 14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "3, 2, 2, 1",
-                "3": "2, 1, 1, 0",
-                "4": "1-2, 0-1, 0-1, 0",
-                "5": "1, 0, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 4,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Plate Neck Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Neck Harness Flexion",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Neck Harness Flexion",
+                  "exercise": "Plate Neck Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -5392,7 +5561,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -5515,7 +5684,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -5548,7 +5717,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -5557,7 +5726,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -5783,53 +5952,82 @@
             {
               "type": "strength",
               "exercise": "Barbell Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "3, 2, 1",
-                "3": "2, 1, 0",
-                "4": "1-2, 0-1, 0",
-                "5": "1, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 3,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
-                  "exercise": "Reverse Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
                   "exercise": "Dumbbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
               ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Reverse Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": []
             },
             {
               "type": "strength",
@@ -6400,7 +6598,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -6780,49 +6978,86 @@
             {
               "type": "strength",
               "exercise": "Plate Neck Extension",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "14, 14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "3, 2, 2, 1",
-                "3": "2, 1, 1, 0",
-                "4": "1-2, 0-1, 0-1, 0",
-                "5": "1, 0, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 4,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Neck Harness Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Plate Neck Flexion",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Plate Neck Flexion",
+                  "exercise": "Neck Harness Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -7356,7 +7591,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -7479,7 +7714,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -7512,7 +7747,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -7521,7 +7756,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -7747,53 +7982,82 @@
             {
               "type": "strength",
               "exercise": "Barbell Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "3, 2, 1",
-                "3": "2, 1, 0",
-                "4": "1-2, 0-1, 0",
-                "5": "1, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 3,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
-                  "exercise": "Reverse Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
                   "exercise": "Dumbbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
               ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Reverse Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": []
             },
             {
               "type": "strength",
@@ -8363,7 +8627,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -8743,49 +9007,86 @@
             {
               "type": "strength",
               "exercise": "Plate Neck Flexion",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "14, 14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "3, 2, 2, 1",
-                "3": "2, 1, 1, 0",
-                "4": "1-2, 0-1, 0-1, 0",
-                "5": "1, 0, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 4,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Neck Harness Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Plate Neck Extension",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Plate Neck Extension",
+                  "exercise": "Neck Harness Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -9319,7 +9620,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -9442,7 +9743,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -9475,7 +9776,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -9484,7 +9785,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -9710,49 +10011,78 @@
             {
               "type": "strength",
               "exercise": "Reverse Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "3, 2, 1",
-                "3": "2, 1, 0",
-                "4": "1-2, 0-1, 0",
-                "5": "1, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 3,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": []
+            },
+            {
+              "type": "strength",
+              "exercise": "Dumbbell Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Barbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
-                  "exercise": "Dumbbell Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -10327,7 +10657,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -10707,49 +11037,86 @@
             {
               "type": "strength",
               "exercise": "Neck Harness Extension",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "14, 14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "3, 2, 2, 1",
-                "3": "2, 1, 1, 0",
-                "4": "1-2, 0-1, 0-1, 0",
-                "5": "1, 0, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 4,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Plate Neck Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Neck Harness Flexion",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Neck Harness Flexion",
+                  "exercise": "Plate Neck Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -11283,7 +11650,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -11406,7 +11773,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -11439,7 +11806,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -11448,7 +11815,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -11674,53 +12041,82 @@
             {
               "type": "strength",
               "exercise": "Barbell Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "3, 2, 1",
-                "3": "2, 1, 0",
-                "4": "1-2, 0-1, 0",
-                "5": "1, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 3,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
-                  "exercise": "Reverse Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
                   "exercise": "Dumbbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
               ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Reverse Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": []
             },
             {
               "type": "strength",
@@ -12291,7 +12687,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -12671,49 +13067,86 @@
             {
               "type": "strength",
               "exercise": "Plate Neck Extension",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "14, 14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "3, 2, 2, 1",
-                "3": "2, 1, 1, 0",
-                "4": "1-2, 0-1, 0-1, 0",
-                "5": "1, 0, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 4,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
                   "exercise": "Neck Harness Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Plate Neck Flexion",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Plate Neck Flexion",
+                  "exercise": "Neck Harness Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -13247,7 +13680,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -13370,7 +13803,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -13403,7 +13836,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -13412,7 +13845,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -13638,53 +14071,82 @@
             {
               "type": "strength",
               "exercise": "Barbell Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "14, 14, 14",
-                "6": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "3, 2, 1",
-                "3": "2, 1, 0",
-                "4": "1-2, 0-1, 0",
-                "5": "1, 0, 0",
-                "6": "3, 3"
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 3,
-                "6": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
               },
               "alternatives": [
                 {
-                  "exercise": "Reverse Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
                   "exercise": "Dumbbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
               ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Reverse Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "14, 14",
+                "6": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "3, 1",
+                "3": "2, 0",
+                "4": "1-2, 0",
+                "5": "1, 0",
+                "6": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 2,
+                "6": 1
+              },
+              "alternatives": []
             },
             {
               "type": "strength",
@@ -14229,7 +14691,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -14588,46 +15050,80 @@
             {
               "type": "strength",
               "exercise": "Plate Neck Flexion",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "2, 1, 1, 0",
-                "3": "1-2, 0-1, 0-1, 0",
-                "4": "1, 0, 0, 0",
-                "5": "3, 3"
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
               },
               "alternatives": [
                 {
                   "exercise": "Neck Harness Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Plate Neck Extension",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Plate Neck Extension",
+                  "exercise": "Neck Harness Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -15134,7 +15630,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -15251,7 +15747,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -15281,7 +15777,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -15290,7 +15786,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -15504,46 +16000,72 @@
             {
               "type": "strength",
               "exercise": "Reverse Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "2, 1, 0",
-                "3": "1-2, 0-1, 0",
-                "4": "1, 0, 0",
-                "5": "3, 3"
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
+              },
+              "alternatives": []
+            },
+            {
+              "type": "strength",
+              "exercise": "Dumbbell Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
               },
               "alternatives": [
                 {
                   "exercise": "Barbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
-                  "exercise": "Dumbbell Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -16091,7 +16613,7 @@
         },
         {
           "day_name": "Lower A: Quads & Glutes",
-          "estimated_duration": 126,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -16450,46 +16972,80 @@
             {
               "type": "strength",
               "exercise": "Neck Harness Extension",
-              "sets": 4,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Neck"
+                "Neck Extensors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10, 10",
-                "2": "11, 11, 11, 11",
-                "3": "12, 12, 12, 12",
-                "4": "13, 13, 13, 13",
-                "5": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 2, 1",
-                "2": "2, 1, 1, 0",
-                "3": "1-2, 0-1, 0-1, 0",
-                "4": "1, 0, 0, 0",
-                "5": "3, 3"
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
               },
               "sets_weekly": {
-                "1": 4,
-                "2": 4,
-                "3": 4,
-                "4": 4,
-                "5": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
               },
               "alternatives": [
                 {
                   "exercise": "Plate Neck Extension",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Extensors"
                   ],
                   "secondaryMuscles": []
-                },
+                }
+              ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Neck Harness Flexion",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Neck Flexors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
+              },
+              "alternatives": [
                 {
-                  "exercise": "Neck Harness Flexion",
+                  "exercise": "Plate Neck Flexion",
                   "primaryMuscles": [
-                    "Neck"
+                    "Neck Flexors"
                   ],
                   "secondaryMuscles": []
                 }
@@ -16996,7 +17552,7 @@
         },
         {
           "day_name": "Lower B: Hamstrings & Glutes",
-          "estimated_duration": 123,
+          "estimated_duration": 128,
           "exercises": [
             {
               "type": "strength",
@@ -17113,7 +17669,7 @@
                 "Biceps"
               ],
               "secondaryMuscles": [
-                "Forearms"
+                "Forearm Extensors"
               ],
               "reps_weekly": {
                 "1": "10, 10, 10",
@@ -17143,7 +17699,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 },
                 {
@@ -17152,7 +17708,7 @@
                     "Biceps"
                   ],
                   "secondaryMuscles": [
-                    "Forearms"
+                    "Forearm Extensors"
                   ]
                 }
               ]
@@ -17366,50 +17922,76 @@
             {
               "type": "strength",
               "exercise": "Barbell Wrist Curl",
-              "sets": 3,
+              "sets": 2,
               "reps": "10-15",
               "rest": 90,
               "primaryMuscles": [
-                "Forearms"
+                "Forearm Flexors"
               ],
               "secondaryMuscles": [],
               "reps_weekly": {
-                "1": "10, 10, 10",
-                "2": "11, 11, 11",
-                "3": "12, 12, 12",
-                "4": "13, 13, 13",
-                "5": "10, 10"
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
               },
               "rir_weekly": {
-                "1": "3, 2, 1",
-                "2": "2, 1, 0",
-                "3": "1-2, 0-1, 0",
-                "4": "1, 0, 0",
-                "5": "3, 3"
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
               },
               "sets_weekly": {
-                "1": 3,
-                "2": 3,
-                "3": 3,
-                "4": 3,
-                "5": 2
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
               },
               "alternatives": [
                 {
-                  "exercise": "Reverse Wrist Curl",
-                  "primaryMuscles": [
-                    "Forearms"
-                  ],
-                  "secondaryMuscles": []
-                },
-                {
                   "exercise": "Dumbbell Wrist Curl",
                   "primaryMuscles": [
-                    "Forearms"
+                    "Forearm Flexors"
                   ],
                   "secondaryMuscles": []
                 }
               ]
+            },
+            {
+              "type": "strength",
+              "exercise": "Reverse Wrist Curl",
+              "sets": 2,
+              "reps": "10-15",
+              "rest": 90,
+              "primaryMuscles": [
+                "Forearm Extensors"
+              ],
+              "secondaryMuscles": [],
+              "reps_weekly": {
+                "1": "10, 10",
+                "2": "11, 11",
+                "3": "12, 12",
+                "4": "13, 13",
+                "5": "10"
+              },
+              "rir_weekly": {
+                "1": "3, 1",
+                "2": "2, 0",
+                "3": "1-2, 0",
+                "4": "1, 0",
+                "5": "3"
+              },
+              "sets_weekly": {
+                "1": 2,
+                "2": 2,
+                "3": 2,
+                "4": 2,
+                "5": 1
+              },
+              "alternatives": []
             },
             {
               "type": "strength",
