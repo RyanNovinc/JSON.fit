@@ -16,7 +16,9 @@ When generating workout programs for JSON.fit users, you MUST:
 
 Valid muscle tags (use exactly these names):
 
-Chest, Front Delts, Side Delts, Rear Delts, Lats, Upper Back, Traps, Biceps, Triceps, Forearms, Quads, Hamstrings, Glutes, Calves, Core, Lower Back, Neck, Obliques, Serratus Anterior, Hip Abductors, Hip Adductors, Shins
+Chest, Front Delts, Side Delts, Rear Delts, Lats, Upper Back, Traps, Biceps, Triceps, Forearm Flexors, Forearm Extensors, Quads, Hamstrings, Glutes, Calves, Core, Lower Back, Neck Flexors, Neck Extensors, Obliques, Serratus Anterior, Hip Abductors, Hip Adductors, Shins
+
+**Retired tags: `Forearms` and `Neck`.** Until September 2026 each was one tag covering an antagonist pair (wrist flexors and extensors; neck flexors and extensors). Because a flexion exercise and an extension exercise shared a tag, the rules offered them as alternatives for each other, and four sets on one side satisfied a target meant for both. Each is now split into a flexor tag and an extensor tag. Never write `Forearms` or `Neck` as a tag; the app accepts them only on programs generated before the split. The volume rows do not change: Forearm Flexors and Forearm Extensors count into one Forearms row, and Neck Flexors and Neck Extensors into one Neck row, each set counted once (see volume-landmarks.md, Note on Forearms and Neck).
 
 ## Tagging Philosophy
 
@@ -368,13 +370,13 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 
 ### Hammer Curl
 - Primary: Biceps
-- Secondary: Forearms
+- Secondary: Forearm Extensors
 - Equipment: Dumbbells
 - Category: Isolation
 
 ### Cable Hammer Curl
 - Primary: Biceps
-- Secondary: Forearms
+- Secondary: Forearm Extensors
 - Equipment: Cable Machine, Rope Attachment
 - Category: Isolation
 
@@ -386,7 +388,7 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 
 ### Reverse Curl
 - Primary: Biceps
-- Secondary: Forearms
+- Secondary: Forearm Extensors
 - Equipment: Barbell or EZ Bar
 - Category: Isolation
 
@@ -554,19 +556,19 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 
 ### Conventional Deadlift
 - Primary: Glutes
-- Secondary: Hamstrings, Lower Back, Quads, Upper Back, Forearms
+- Secondary: Hamstrings, Lower Back, Quads, Upper Back, Forearm Flexors
 - Equipment: Barbell
 - Category: Compound
 
 ### Sumo Deadlift
 - Primary: Glutes
-- Secondary: Quads, Hamstrings, Lower Back, Forearms
+- Secondary: Quads, Hamstrings, Lower Back, Forearm Flexors
 - Equipment: Barbell
 - Category: Compound
 
 ### Trap Bar Deadlift
 - Primary: Glutes
-- Secondary: Quads, Hamstrings, Lower Back, Upper Back, Forearms
+- Secondary: Quads, Hamstrings, Lower Back, Upper Back, Forearm Flexors
 - Equipment: Trap Bar
 - Category: Compound
 
@@ -753,25 +755,25 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 ## NECK
 
 ### Plate Neck Flexion
-- Primary: Neck
+- Primary: Neck Flexors
 - Secondary: (none)
 - Equipment: Weight Plate, Towel, Bench
 - Category: Isolation
 
 ### Plate Neck Extension
-- Primary: Neck
+- Primary: Neck Extensors
 - Secondary: (none)
 - Equipment: Weight Plate, Towel, Bench
 - Category: Isolation
 
 ### Neck Harness Flexion
-- Primary: Neck
+- Primary: Neck Flexors
 - Secondary: (none)
 - Equipment: Neck Harness, Weight Plates
 - Category: Isolation
 
 ### Neck Harness Extension
-- Primary: Neck
+- Primary: Neck Extensors
 - Secondary: (none)
 - Equipment: Neck Harness, Weight Plates
 - Category: Isolation
@@ -781,25 +783,25 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 ## FOREARMS
 
 ### Barbell Wrist Curl
-- Primary: Forearms
+- Primary: Forearm Flexors
 - Secondary: (none)
 - Equipment: Barbell, Bench
 - Category: Isolation
 
 ### Dumbbell Wrist Curl
-- Primary: Forearms
+- Primary: Forearm Flexors
 - Secondary: (none)
 - Equipment: Dumbbells, Bench
 - Category: Isolation
 
 ### Reverse Wrist Curl
-- Primary: Forearms
+- Primary: Forearm Extensors
 - Secondary: (none)
 - Equipment: Barbell or Dumbbells, Bench
 - Category: Isolation
 
 ### Farmer's Walk
-- Primary: Forearms
+- Primary: Forearm Flexors
 - Secondary: Traps, Core
 - Equipment: Heavy Dumbbells or Farmer's Handles
 - Category: Compound
