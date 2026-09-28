@@ -95,7 +95,7 @@ This audit is the most important check in this review. Volume calculations downs
 
 **Step 1: Fetch the library.** Read https://json.fit/exercises.md so you have the canonical tags in context.
 
-**Step 2: Check EVERY exercise in the program** — its primary tags, its secondary tags, and its name — against the library. Do this for all of them, without exception. Compare the exact muscle lists, not a paraphrase or an abbreviation.
+**Step 2: Check EVERY exercise in the program** — its primary tags, its secondary tags, and its name — against the library. Do this for all of them, without exception. Compare the exact muscle lists, not a paraphrase or an abbreviation. The retired tags `Forearms` and `Neck` are mismatches wherever they appear: the library tags each of those exercises as Forearm Flexors, Forearm Extensors, Neck Flexors or Neck Extensors. Correct them to the library tag.
 
 **Step 3: Report only the MISMATCHES.** Do not print a row for an exercise that matches. Give the count of exercises checked, then a table of mismatches only:
 
@@ -119,7 +119,7 @@ Checking every exercise is not optional. Only the REPORTING is trimmed to failur
 
 **Step 6: Other library checks.**
 - Every exercise name must appear EXACTLY in the library (no variants, no abbreviations)
-- Alternative exercises must also be from the library
+- Alternative exercises must also be from the library, share the exercise's primary tags exactly, and number at most 2 per exercise. An alternative for a different muscle (a neck extension offered for a neck flexion, a Reverse Wrist Curl for a wrist curl) is a FAIL: remove it, and leave the list shorter or empty rather than pad it
 - If any exercise is not in the library, replace it with a library entry that fits the movement pattern
 
 **Do not proceed to volume enumeration until every tag matches.** Wrong tags will produce wrong volume numbers, and the user will see different numbers in the app than what you tell them here.
@@ -143,7 +143,7 @@ The volume enumeration tables in the next section need correct per-muscle target
 - **Priority muscles** (named in the profile): MAV-high to MRV.
 - **Non-priority, non-exempt muscles:** the position from Step 3. If the profile names any priority muscles, step that position down using the step rule in the landmarks file's Priority Muscles section (one step for 1-2 priority muscles, two steps for 3 or more, never below MEV).
 - **Exempt-from-floor muscles** not named as priority or auxiliary: 0–[MRV − 1]. No floor, and no ceiling below MRV.
-- **Auxiliary muscles:** MAV-low as the floor, MRV as the ceiling.
+- **Auxiliary muscles:** MAV-low as the floor, MRV as the ceiling. **Forearms and Neck are ONE row each** (Forearm Flexors + Forearm Extensors; Neck Flexors + Neck Extensors), per the landmarks file's Note on Forearms and Neck. Never a row per half.
 - **Back is ONE row** (Lats + Upper Back combined), per the landmarks file's Note on Back. If the profile names Lats or Upper Back as a priority, the Back row takes the priority range.
 
 | Muscle | Target Range (effective sets/week) |
@@ -238,6 +238,8 @@ For each muscle, list:
 
 **Back is one table.** List every exercise that tags Lats OR Upper Back. Each set counts ONCE toward Back: 1.0 if either tag is Primary, 0.5 if one of them appears only as Secondary. Never add a set's Primary and Secondary contributions together — a 4-set row is 4.0 toward Back, not 6.0. Under the Back total, state the lat-primary share. Count it in RAW sets, not effective sets: sets whose Primary tag is Lats ÷ all sets whose Primary tag is Lats or Upper Back. Exercises that tag them only as Secondary (Face Pull, for example) are left out of both numbers. If the profile names Lats or Upper Back as a priority, that muscle's share must be at least 60%. With no back priority, vertical pulls must be at least one-third on the same count.
 
+**Forearms and Neck are one table each, counted the same way.** List every exercise that tags either half; each set counts once toward the row, 1.0 if either half is Primary, 0.5 if either half appears only as Secondary. Under the total, when the profile requested direct work for the group, state the split of DIRECT sets (Primary-tagged sets only) between the two halves, e.g. "Neck: 2 Neck Flexors + 2 Neck Extensors".
+
 After enumerating all contributing exercises for a muscle, sum the contributions to get the effective volume.
 
 Format each muscle as a table like this:
@@ -284,7 +286,8 @@ Do not claim a fix works without showing the recount tables for every affected m
   - **Triceps:** if the week has only one direct triceps exercise, it must be an overhead extension (Overhead Cable Triceps Extension or Overhead Dumbbell Triceps Extension). If it has two or more, at least one must be overhead.
   - **Hamstrings:** if the week has only one leg curl, it must be Seated Leg Curl, not Lying Leg Curl.
   - **Calves:** straight-knee raises (Standing Calf Raise, Smith Machine Calf Raise, Leg Press Calf Raise, Single-Leg Dumbbell Calf Raise) must carry at least half of the weekly calf sets.
-  A miss is a FAIL. Fix it by swapping the exercise and keeping its sets, reps and RIR. Every exercise named here carries the same tags as the one it replaces, so no volume total changes. Skip a check only when the user's equipment rules the favoured exercise out or the profile lists it as disliked, and say so in one line.
+  - **Forearms and Neck, when the profile requests direct work:** the direct sets whose Primary tag is one half and those whose Primary tag is the other half must differ by at most one set per week (secondaries do not count). 4 neck sets are 2 + 2; 5 forearm sets are 3 + 2 either way; 4 + 0 is a FAIL. Fix by swapping an exercise for its opposite-half counterpart (Plate Neck Flexion for Plate Neck Extension, Barbell Wrist Curl for Reverse Wrist Curl), keeping its sets, reps and RIR. The row total is unchanged, because both halves count into the same row.
+  A miss is a FAIL. Fix it by swapping the exercise and keeping its sets, reps and RIR. Every exercise named in the first three checks carries the same tags as the one it replaces, so no volume total changes; the fourth changes a tag but not a row total. Skip a check only when the user's equipment rules the favoured exercise out or the profile lists it as disliked, and say so in one line.
 
 ### Programming Logic Review
 
