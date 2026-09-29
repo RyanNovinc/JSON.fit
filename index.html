@@ -588,13 +588,6 @@
         .pp-rail i { display:block; width:4px; height:26px; border-radius:2px; background:var(--border); transition:background .25s; }
         .pp-rail i.on { background:var(--cyan); }
         .pp-vis { position:relative; height:min(78vh,640px); perspective:1400px; }
-        /* The glow used to be a two-stop gradient under a 40px blur. Dark gradients band on most phone screens, and a
-           big blurred element can composite in visible tiles. Now: many gentle stops, no blur, and a faint grain on top
-           that breaks the remaining bands. */
-        .pp-glow { position:absolute; left:50%; top:50%; width:560px; height:560px; transform:translate(-50%,-50%); border-radius:50%; pointer-events:none; opacity:1;
-            background:radial-gradient(circle at 50% 50%, rgba(34,211,238,.105) 0%, rgba(34,211,238,.09) 12%, rgba(34,211,238,.07) 22%, rgba(34,211,238,.05) 32%, rgba(34,211,238,.034) 42%, rgba(34,211,238,.021) 52%, rgba(34,211,238,.011) 62%, rgba(34,211,238,.004) 72%, rgba(34,211,238,0) 82%); }
-        .pp-glow::after { content:''; position:absolute; inset:0; border-radius:50%; opacity:.05; mix-blend-mode:screen; pointer-events:none;
-            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
         .pp-obj { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); will-change:transform,opacity; }
         .pp-q { width:340px; box-shadow:0 30px 80px rgba(0,0,0,.6); }
         .pp-q .px-kv b { opacity:0; transform:translateX(10px); }
@@ -616,7 +609,7 @@
             .pp-copy { height:150px; } .pp-beat { justify-content:flex-start; gap:.5rem; } .pp-beat h3 { font-size:1.75rem; } .pp-beat p { font-size:.9rem; max-width:none; }
             .pp-rail { display:none; }
             .pp-vis { height:auto; min-height:420px; align-self:center; width:100%; }
-            .pp-q { width:300px; } .pp-chat { width:min(340px,92vw); } .pp-phone { width:210px; }  .pp-glow { width:360px; height:360px; }
+            .pp-q { width:300px; } .pp-chat { width:min(340px,92vw); } .pp-phone { width:210px; }  
         }
         @media (prefers-reduced-motion:reduce) {
             .pp-pin { height:auto; } .pp-stage { position:static; height:auto; padding:2rem; display:block; }
@@ -1209,7 +1202,6 @@
                 <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit imports</span><h3>Import. Eat.</h3><p>Macros, groceries and the week's prep, handled. Every meal decided.</p></div>
             </div>
             <div class="pp-vis">
-                <div class="pp-glow"></div>
                 <div class="pp-obj pp-q px-win">
                     <div class="px-grab"></div>
                     <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
@@ -1239,7 +1231,6 @@
                 <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit imports</span><h3>Import. Train.</h3><p>Every set, every rest timer, every deload for 52 weeks, ready in the app.</p></div>
             </div>
             <div class="pp-vis">
-                <div class="pp-glow"></div>
                 <div class="pp-obj pp-q px-win">
                     <div class="px-grab"></div>
                     <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
