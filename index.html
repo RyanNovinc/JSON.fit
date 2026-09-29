@@ -593,7 +593,6 @@
         .pp-q { width:340px; box-shadow:0 30px 80px rgba(0,0,0,.6); }
         .pp-q .px-kv b { opacity:0; transform:translateX(10px); }
         .pp-q .px-btn { margin-top:14px; opacity:.25; transform:scale(.97); }
-        .pp-chip { width:300px; background:rgba(34,211,238,.08); border:1px solid var(--border-cyan); border-radius:14px; padding:12px 14px; opacity:0; box-shadow:0 20px 60px rgba(34,211,238,.12); }
         .pp-chat { width:380px; box-shadow:0 30px 80px rgba(0,0,0,.6); opacity:0; }
         .pp-chat .px-cb { min-height:250px; }
         .pp-chat .px-bub { opacity:0; transform:translateY(10px); }
@@ -603,9 +602,6 @@
         .pp-phone { width:250px; aspect-ratio:9/19.3; background:linear-gradient(150deg,#202027,#0c0c11 46%,#050507); border-radius:40px; padding:10px; box-shadow:0 30px 80px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.16),inset 0 1px 1px rgba(255,255,255,.1); opacity:0; }
         .pp-scr { position:relative; width:100%; height:100%; border-radius:31px; overflow:hidden; background:#0a0a0b; }
         .pp-scr img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; opacity:0; }
-        .pp-import { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:20px; text-align:center; }
-        .pp-import .ring { width:64px; height:64px; border-radius:50%; border:2px dashed var(--border-cyan); display:flex; align-items:center; justify-content:center; color:var(--cyan); font-family:'DM Mono',monospace; font-size:.9rem; }
-        .pp-import b { font-size:.9rem; } .pp-import span { font-family:'DM Mono',monospace; font-size:.6rem; color:var(--text-3); letter-spacing:.06em; }
         .pp-pill { position:absolute; left:50%; top:26px; transform:translate(-50%,-8px); font-family:'DM Mono',monospace; font-size:.56rem; letter-spacing:.1em; color:var(--green); background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.4); border-radius:100px; padding:4px 10px; opacity:0; backdrop-filter:blur(6px); white-space:nowrap; }
         .pp-flow { display:contents; }
         .pp-stage[data-flow="meal"] .pp-flow-train, .pp-stage[data-flow="train"] .pp-flow-meal { display:none; }
@@ -614,7 +610,7 @@
             .pp-copy { height:150px; } .pp-beat { justify-content:flex-start; gap:.5rem; } .pp-beat h3 { font-size:1.75rem; } .pp-beat p { font-size:.9rem; max-width:none; }
             .pp-rail { display:none; }
             .pp-vis { height:auto; min-height:420px; align-self:center; width:100%; }
-            .pp-q { width:300px; } .pp-chat { width:min(340px,92vw); } .pp-phone { width:210px; } .pp-chip { width:260px; } .pp-glow { width:360px; height:360px; }
+            .pp-q { width:300px; } .pp-chat { width:min(340px,92vw); } .pp-phone { width:210px; }  .pp-glow { width:360px; height:360px; }
         }
         @media (prefers-reduced-motion:reduce) {
             .pp-pin { height:auto; } .pp-stage { position:static; height:auto; padding:2rem; display:block; }
@@ -1214,7 +1210,6 @@
                     <div class="px-kv"><span>Goal</span><b>Weight gain</b></div><div class="px-kv"><span>Target</span><b>90kg</b></div><div class="px-kv"><span>Meals</span><b>6 per day</b></div><div class="px-kv"><span>Training</span><b>4 days/week</b></div>
                     <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
                 </div>
-                <div class="pp-obj pp-chip"><div class="px-ptag">Pasted from JSON.fit</div><div class="px-ptxt">You are a sports nutritionist. Build a 7-day meal plan for an 82 kg male targeting 90 kg: 3,311 kcal, 239 g protein, 6 meals a day, built from the favourites listed below&hellip;</div></div>
                 <div class="pp-obj pp-chat px-win">
                     <div class="px-ch"><span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span><div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div></div>
                     <div class="px-cb">
@@ -1225,7 +1220,6 @@
                 </div>
                 <div class="pp-obj pp-fly px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">meal-plan.json</div><div class="px-fs">3,311 kcal &middot; 239 g protein &middot; valid</div></div></div>
                 <div class="pp-obj pp-phone"><div class="pp-scr">
-                    <div class="pp-import"><div class="ring">{&hairsp;}</div><b>Import meal plan</b><span>DROP THE FILE HERE</span></div>
                     <img src="images/Success_import2.webp" alt="" loading="lazy">
                     <div class="pp-pill">&#10003; IMPORTED &middot; 7 DAYS</div>
                 </div></div>
@@ -1246,7 +1240,6 @@
                     <div class="px-kv"><span>Goal</span><b>Build muscle</b></div><div class="px-kv"><span>Days</span><b>4 per week</b></div><div class="px-kv"><span>Equipment</span><b>Full gym</b></div><div class="px-kv"><span>Length</span><b>52 weeks</b></div>
                     <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
                 </div>
-                <div class="pp-obj pp-chip"><div class="px-ptag">Pasted from JSON.fit</div><div class="px-ptxt">You are a strength coach. Program 52 weeks of upper/lower for 4 days a week in a full gym, with progressive overload and scheduled deloads&hellip;</div></div>
                 <div class="pp-obj pp-chat px-win">
                     <div class="px-ch"><span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span><div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div></div>
                     <div class="px-cb">
@@ -1257,8 +1250,7 @@
                 </div>
                 <div class="pp-obj pp-fly px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">workout-program.json</div><div class="px-fs">52 weeks &middot; 4 days/week &middot; valid</div></div></div>
                 <div class="pp-obj pp-phone"><div class="pp-scr">
-                    <div class="pp-import"><div class="ring">{&hairsp;}</div><b>Import program</b><span>DROP THE FILE HERE</span></div>
-                    <img src="images/Training_Week.webp" alt="" loading="lazy">
+                    <img src="images/Workout_Log.webp" alt="" loading="lazy">
                     <div class="pp-pill">&#10003; IMPORTED &middot; 52 WEEKS</div>
                 </div></div>
             </div>
@@ -1858,7 +1850,7 @@
     return {
       beats: root.querySelectorAll('.pp-beat'), rails: root.querySelectorAll('.pp-rail i'),
       sheet: q('.pp-q'), kvs: root.querySelectorAll('.pp-q .px-kv b'), btn: q('.pp-q .px-btn'),
-      chip: q('.pp-chip'), chat: q('.pp-chat'), bubYou: q('.pp-chat .px-bub.you'), dots: q('.pp-dots'), bubAi: q('.pp-chat .px-bub.ai'),
+      chat: q('.pp-chat'), bubYou: q('.pp-chat .px-bub.you'), dots: q('.pp-dots'), bubAi: q('.pp-chat .px-bub.ai'),
       fly: q('.pp-fly'), phone: q('.pp-phone'), shot: q('.pp-scr img'), pill: q('.pp-pill')
     };
   }
@@ -1875,8 +1867,6 @@
     for (var k=0;k<e.kvs.length;k++){ var t=easeOut(seg(p,.03+k*.055,.09+k*.055)); e.kvs[k].style.opacity=t; e.kvs[k].style.transform='translateX('+((1-t)*10)+'px)'; }
     var lit=easeOut(seg(p,.25,.30)); e.btn.style.opacity=.25+.75*lit; e.btn.style.transform='scale('+(.97+.03*lit)+')';
     var qOut=ease(seg(p,.32,.42)); place(e.sheet, -qOut*(mobile?0:120), qOut*(mobile?40:0), 1-.12*qOut, 1-qOut, -qOut*18);
-    var c1=easeOut(seg(p,.30,.36)), c2=ease(seg(p,.36,.44));
-    place(e.chip, mobile?0:60*c2, -40*c1 + (mobile? -60*c2 : 30*c2), .9+.1*c1-.3*c2, c1*(1-c2));
     var chIn=easeOut(seg(p,.38,.46)), chOut=ease(seg(p,.64,.72));
     place(e.chat, (mobile?0:40)*(1-chIn), 30*(1-chIn), .92+.08*chIn-.1*chOut, chIn*(1-chOut), (1-chIn)*12);
     var yb=easeOut(seg(p,.44,.49)); e.bubYou.style.opacity=yb; e.bubYou.style.transform='translateY('+((1-yb)*10)+'px)';
@@ -1885,7 +1875,7 @@
     var f1=easeOut(seg(p,.66,.71)), f2=ease(seg(p,.71,.82));
     place(e.fly, (mobile?0:-40)*(1-f1)+(mobile?0:40)*f2, (mobile?90:60)*(1-f1) + (mobile? -40:20)*f2, 1-.55*f2, f1*(1-seg(p,.80,.84)));
     var phIn=easeOut(seg(p,.68,.78)); place(e.phone, (mobile?0:60)*(1-phIn), 40*(1-phIn), .9+.1*phIn, phIn, 0);
-    e.shot.style.opacity = easeOut(seg(p,.83,.90));
+    e.shot.style.opacity = easeOut(seg(p,.70,.80));
     var pl=easeOut(seg(p,.90,.96)); e.pill.style.opacity=pl; e.pill.style.transform='translate(-50%,'+((1-pl)*-8)+'px)';
   }
 
