@@ -68,9 +68,9 @@ h1{font-size:clamp(2rem,4.6vw,3.2rem);font-weight:800;letter-spacing:-.03em;line
 .meta{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--text-3);letter-spacing:.04em;margin-top:auto}
 .empty{grid-column:1/-1;text-align:center;color:var(--text-3);font-family:'DM Mono',monospace;font-size:.75rem;padding:3rem 0}
 /* detail sheet */
-.sheet{position:fixed;inset:0;z-index:200;background:rgba(5,5,8,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center}
+.sheet{position:fixed;inset:0;z-index:200;background:rgba(5,5,8,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;overscroll-behavior:contain}
 .sheet.open{display:flex}
-.panel{position:relative;width:100%;max-width:760px;max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:0 0 2rem;scrollbar-width:none;-ms-overflow-style:none}
+.panel{position:relative;width:100%;max-width:760px;max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:0 0 2rem;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .panel::-webkit-scrollbar{display:none}
 @media(min-width:760px){.sheet{align-items:center;padding:1rem}.panel{border-radius:18px}}
 .panel .anim{border-radius:18px 18px 0 0}
@@ -204,13 +204,16 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       + '<div class="sec"><div class="lbl">How the app treats it</div><div class="box rule"><div class="k">Rest &middot; Full / Balanced / Quick</div><div class="v">' + e.rest.map(esc).join(' / ') + '</div><div class="n">' + esc(e.tier) + '. The timer sets this itself.</div></div><p class="note">Sets, reps and reps in reserve are not fixed per exercise. The app sets them for you, per program and per week.</p></div>'
       + '<div class="sec"><div class="lbl">How to do it</div>' + cues + '</div>'
       + '<button class="share" id="share" type="button">Copy link to this exercise</button></div>';
-    sheet.classList.add('open'); document.body.style.overflow = 'hidden'; panel.scrollTop = 0;
+    sheet.classList.add('open'); lockPage(); panel.scrollTop = 0;
     document.getElementById('close').onclick = closeSheet;
     document.getElementById('share').onclick = function(){ var u = location.origin + location.pathname + '#' + e.slug; if (navigator.clipboard) navigator.clipboard.writeText(u); this.textContent = 'Copied'; };
     if (push) history.replaceState(null, '', '#' + e.slug);
     if (window.gtag) gtag('event', 'exercise_opened', { 'exercise': e.slug });
   }
-  function closeSheet(){ sheet.classList.remove('open'); document.body.style.overflow = ''; history.replaceState(null, '', location.pathname); }
+  var lockedY = 0, locked = false;
+  function lockPage(){ if (locked) return; locked = true; lockedY = window.scrollY; document.body.style.position = 'fixed'; document.body.style.top = (-lockedY) + 'px'; document.body.style.left = '0'; document.body.style.right = '0'; document.body.style.overflow = 'hidden'; }
+  function unlockPage(){ if (!locked) return; locked = false; document.body.style.position = ''; document.body.style.top = ''; document.body.style.left = ''; document.body.style.right = ''; document.body.style.overflow = ''; window.scrollTo(0, lockedY); }
+  function closeSheet(){ if (!sheet.classList.contains('open')) return; sheet.classList.remove('open'); unlockPage(); history.replaceState(null, '', location.pathname); }
   sheet.addEventListener('click', function(ev){ if (ev.target === sheet) closeSheet(); });
   document.addEventListener('keydown', function(ev){ if (ev.key === 'Escape') closeSheet(); });
 
