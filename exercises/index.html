@@ -70,7 +70,8 @@ h1{font-size:clamp(2rem,4.6vw,3.2rem);font-weight:800;letter-spacing:-.03em;line
 /* detail sheet */
 .sheet{position:fixed;inset:0;z-index:200;background:rgba(5,5,8,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center}
 .sheet.open{display:flex}
-.panel{position:relative;width:100%;max-width:760px;max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:0 0 2rem}
+.panel{position:relative;width:100%;max-width:760px;max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:0 0 2rem;scrollbar-width:none;-ms-overflow-style:none}
+.panel::-webkit-scrollbar{display:none}
 @media(min-width:760px){.sheet{align-items:center;padding:1rem}.panel{border-radius:18px}}
 .panel .anim{border-radius:18px 18px 0 0}
 .panel .close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:.9rem;z-index:2}
