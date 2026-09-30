@@ -577,6 +577,26 @@
             .px-con i { left:50%; top:-8px; margin-left:-3.5px; margin-top:0; animation-name:pxdashv; }
         }
 
+        /* === Exercise library strip (links to /exercises/) === */
+        .exl-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:.8rem; margin-top:2.2rem; }
+        .exl { display:block; background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; text-decoration:none; color:var(--text); transition:border-color .2s,transform .2s; }
+        .exl:hover { border-color:var(--border-cyan); transform:translateY(-3px); }
+        .exl-pic { position:relative; width:100%; height:0; padding-top:56.25%; background:#000; overflow:hidden; }
+        .exl-pic img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:opacity .45s ease; }
+        .exl-pic img.b { opacity:0; }
+        .exl.go .exl-pic img.b { opacity:1; }
+        .exl-body { padding:.65rem .75rem .75rem; }
+        .exl-name { font-weight:600; font-size:.82rem; line-height:1.25; }
+        .exl-tag { display:inline-block; margin-top:.4rem; font-family:'DM Mono',monospace; font-size:.56rem; letter-spacing:.02em; padding:.15rem .45rem; border-radius:4px; border:1px solid var(--border-cyan); color:var(--cyan); background:var(--cyan-soft); }
+        .exl-cta { display:flex; justify-content:center; margin-top:1.8rem; }
+        .exl-cta a { display:inline-flex; align-items:center; gap:.5rem; border:1px solid var(--border-cyan); background:var(--cyan-soft); color:var(--cyan); text-decoration:none; font-weight:600; font-size:.9rem; padding:.75rem 1.4rem; border-radius:10px; transition:background .2s; }
+        .exl-cta a:hover { background:rgba(34,211,238,.14); }
+        .exl-facts { display:flex; justify-content:center; gap:1.6rem; margin-top:1.1rem; flex-wrap:wrap; }
+        .exl-facts span { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); }
+        .exl-facts span b { color:var(--text); font-weight:500; }
+        @media (max-width:900px) { .exl-grid { grid-template-columns:repeat(3,1fr); gap:.6rem; } }
+        @media (max-width:480px) { .exl-grid { grid-template-columns:repeat(2,1fr); } .exl-name { font-size:.78rem; } }
+
         /* === Pinned pipeline (scroll-driven "how your plan gets built") === */
         .pp-pin { position:relative; height:420vh; }
         .pp-stage { position:sticky; top:0; height:100vh; overflow:hidden; display:grid; grid-template-columns:minmax(280px,1fr) minmax(0,1.4fr); gap:2rem; align-items:center; max-width:1180px; margin:0 auto; padding:0 2rem; }
@@ -866,6 +886,7 @@
         <li><a href="#meals" class="nav-meals">Meals</a></li>
         <li><a href="#how">How It Works</a></li>
         <li><a href="#programs">Programs</a></li>
+        <li><a href="/exercises/">Exercises</a></li>
         <li><a href="#compare">Compare</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="/lab" class="nav-lab">The Lab</a></li>
@@ -1323,6 +1344,28 @@
                 <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
             </a>
         </div>
+    </div>
+</section>
+
+<!-- Exercise library strip: six animating tiles that lead to /exercises/ -->
+<section class="section" id="exercises" style="padding-top:2rem;">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">The exercise library</span>
+            <h2>129 exercises. <span class="cyan">Every one earns its place.</span></h2>
+            <p style="margin:0 auto;">Every exercise in the app, animated, tagged by the muscles it trains and helps, with the rest the app gives it and how to do it. Free to browse.</p>
+        </div>
+        <div class="exl-grid sa sa-up" id="exlGrid">
+            <a class="exl" href="/exercises/#barbell-back-squat"><div class="exl-pic"><img src="images/exercises/barbell-back-squat/blue/start.webp" alt="Barbell Back Squat" loading="lazy"><img class="b" src="images/exercises/barbell-back-squat/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Barbell Back Squat</div><span class="exl-tag">Quads</span></div></a>
+            <a class="exl" href="/exercises/#pull-up"><div class="exl-pic"><img src="images/exercises/pull-up/blue/start.webp" alt="Pull-up" loading="lazy"><img class="b" src="images/exercises/pull-up/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Pull-up</div><span class="exl-tag">Lats</span></div></a>
+            <a class="exl" href="/exercises/#barbell-bench-press"><div class="exl-pic"><img src="images/exercises/barbell-bench-press/blue/start.webp" alt="Barbell Bench Press" loading="lazy"><img class="b" src="images/exercises/barbell-bench-press/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Barbell Bench Press</div><span class="exl-tag">Chest</span></div></a>
+            <a class="exl" href="/exercises/#romanian-deadlift"><div class="exl-pic"><img src="images/exercises/romanian-deadlift/blue/start.webp" alt="Romanian Deadlift" loading="lazy"><img class="b" src="images/exercises/romanian-deadlift/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Romanian Deadlift</div><span class="exl-tag">Hamstrings</span></div></a>
+            <a class="exl" href="/exercises/#dumbbell-lateral-raise"><div class="exl-pic"><img src="images/exercises/dumbbell-lateral-raise/blue/start.webp" alt="Dumbbell Lateral Raise" loading="lazy"><img class="b" src="images/exercises/dumbbell-lateral-raise/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Dumbbell Lateral Raise</div><span class="exl-tag">Side Delts</span></div></a>
+            <a class="exl" href="/exercises/#bulgarian-split-squat"><div class="exl-pic"><img src="images/exercises/bulgarian-split-squat/blue/start.webp" alt="Bulgarian Split Squat" loading="lazy"><img class="b" src="images/exercises/bulgarian-split-squat/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Bulgarian Split Squat</div><span class="exl-tag">Quads</span></div></a>
+        </div>
+        <div class="exl-facts sa sa-up"><span><b>129</b> exercises</span><span><b>24</b> muscles tagged</span><span><b>man &amp; woman</b> demos</span><span><b>sources</b> on every cue</span></div>
+        <div class="exl-cta sa sa-up"><a href="/exercises/" onclick="gtag('event','view_exercises',{'button_location':'home_strip'})">Browse all 129 exercises <span aria-hidden="true">&rarr;</span></a></div>
     </div>
 </section>
 
@@ -1814,6 +1857,15 @@
     var onmq = function(e){ if (e.matches) centerDemo(); };
     if (mq.addEventListener) mq.addEventListener('change', onmq);
   }
+})();
+</script>
+
+<!-- Exercise library strip: crossfade start/end frames, staggered -->
+<script>
+(function(){
+  var tiles = document.querySelectorAll('#exlGrid .exl'); if (!tiles.length) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(function(){ var t = Date.now() / 1000; tiles.forEach(function(el, i){ el.classList.toggle('go', (t + i * 0.4) % 2.4 < 1.2); }); }, 120);
 })();
 </script>
 
