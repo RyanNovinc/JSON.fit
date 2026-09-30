@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exercise library · JSON.fit</title>
-<meta name="description" content="All 129 exercises in JSON.fit, animated, with the muscles each one trains and helps, the rest the app gives it, and how to do it. Free.">
+<meta name="description" content="130+ exercises in JSON.fit, animated, with the muscles each one trains and helps, the rest the app gives it, and how to do it. Free.">
 <link rel="icon" type="image/x-icon" href="/favicon-3.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/icon-180-3.png">
@@ -121,7 +121,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 <main>
   <header class="head wrap">
     <span class="label">The exercise library</span>
-    <h1><span id="hCount">129</span> exercises. <span class="cyan">Every one earns its place.</span></h1>
+    <h1>130+ exercises. <span class="cyan">Every one earns its place.</span></h1>
     <p class="sub">Each exercise was chosen for a muscle. Tap one to see what it trains, what it helps, how long the app rests it, and how to do it.</p>
     <div class="stats"><div class="stat"><b id="sTotal">–</b><span>exercises</span></div><div class="stat"><b id="sMuscles">–</b><span>muscles tagged</span></div><div class="stat"><b id="sComp">–</b><span>compound</span></div><div class="stat"><b id="sIso">–</b><span>isolation</span></div></div>
   </header>
@@ -170,7 +170,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     grid.innerHTML = list.length ? list.map(function(e, i){
       return '<div class="card" role="button" tabindex="0" data-slug="' + e.slug + '"><div class="anim">' + animHTML(e, i < 8) + '<span class="cat">' + esc(e.category) + '</span></div><div class="body"><div class="name">' + esc(e.name) + '</div><div class="tags">' + tagsHTML(e) + '</div><div class="meta">' + esc(e.tier) + ' &middot; ' + esc(e.equipment.split(',')[0]) + '</div></div></div>';
     }).join('') : '<div class="empty">Nothing matches. Try another muscle or a shorter search.</div>';
-    count.textContent = list.length + ' of ' + EX.length;
+    count.textContent = (muscle === 'All' && !q) ? '' : list.length + ' shown';
     grid.querySelectorAll('.card').forEach(function(c){ c.onclick = function(){ openSheet(c.dataset.slug, true); }; c.onkeydown = function(ev){ if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openSheet(c.dataset.slug, true); } }; });
     watch();
   }
@@ -220,7 +220,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   fetch('/exercises/exercises.json').then(function(r){ return r.json(); }).then(function(d){
     EX = d.exercises;
     var tagged = new Set(); EX.forEach(function(e){ e.primary.concat(e.secondary).forEach(function(t){ tagged.add(t); }); });
-    document.getElementById('hCount').textContent = EX.length; document.getElementById('sTotal').textContent = EX.length; document.getElementById('sMuscles').textContent = tagged.size;
+    document.getElementById('sTotal').textContent = '130+'; document.getElementById('sMuscles').textContent = tagged.size;
     document.getElementById('sComp').textContent = EX.filter(function(e){ return e.category === 'Compound'; }).length; document.getElementById('sIso').textContent = EX.filter(function(e){ return e.category !== 'Compound'; }).length;
     render();
     var h = location.hash.replace('#',''); if (h) openSheet(h, false);
