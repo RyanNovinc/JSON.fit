@@ -650,7 +650,7 @@
         .phone-notch { position:absolute; top:11px; left:50%; transform:translateX(-50%); width:88px; height:22px; background:#000; border-radius:0 0 14px 14px; z-index:20; }
         .screen { width:100%; height:100%; border-radius:33px; overflow:hidden; background:#0a0a0b; position:relative; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; }
         .sb { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 1.1rem 0.2rem; font-size:0.62rem; font-weight:600; color:#fff; position:absolute; top:0; left:0; right:0; z-index:15; pointer-events:none; }
-        .scr { position:absolute; inset:0; padding:0; opacity:0; transform:translateX(8px); pointer-events:none; transition:opacity 0.28s ease, transform 0.28s ease; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+        .scr { position:absolute; inset:0; padding:0; opacity:0; transform:translateX(8px); pointer-events:none; transition:opacity 0.28s ease, transform 0.28s ease; overscroll-behavior:contain; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
         .scr::-webkit-scrollbar { display:none; }
         .scr.on { opacity:1; transform:none; pointer-events:auto; }
         .scr[data-accent="cyan"] { --ac:#22d3ee; }
@@ -735,7 +735,7 @@
         .wl-add { display:flex; align-items:center; justify-content:center; gap:5px; padding:9px 0 2px; color:#9898a4; font-family:'DM Mono',monospace; font-size:11px; }
         .wl-bottom { display:flex; align-items:center; gap:9px; padding:11px 14px 14px; border-top:1px solid rgba(255,255,255,0.04); background:#0a0a0b; flex-shrink:0; }
         #scr-workout { display:flex; flex-direction:column; overflow:hidden; }
-        .wl-scroll { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+        .wl-scroll { flex:1; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
         .wl-scroll::-webkit-scrollbar { display:none; }
         .wl-upnext { padding:13px 14px 10px; border-top:1px solid rgba(255,255,255,0.05); margin-top:11px; }
         .wl-upnext-h { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1.6px; color:#55555f; margin:0 0 9px 2px; }
