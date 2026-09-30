@@ -451,7 +451,7 @@ window.navBack=function(e){
     <div>
       <div class="h-ov">The Lab &middot; <span class="violet">self-experiment</span> &middot; n = 1</div>
       <h1 class="h-display">The bulk, <em>measured.</em></h1>
-      <p class="h-sub">I built JSON.fit. A DEXA scan put me at 23.8% body fat, so it's routing me down to 72.9&nbsp;kg first, then up to 90&nbsp;kg at 13%. Every scan, photo and number lands here as it happens, whether it's working or not.</p>
+      <p class="h-sub">I built JSON.fit. It's running on me: 80.6&nbsp;kg at 23.8% body fat, down to 72.9 first, then up to 90 at 13%. Every scan lands here, working or not.</p>
       <div class="h-hair"></div>
       <div class="h-status" id="heroStatus"></div>
     </div>
@@ -926,8 +926,8 @@ var DATA = {
   }
   var scanned=cks.filter(function(c){ return !c.estimate; });
   document.getElementById('heroStatus').innerHTML=
-    '<span class="live"><span class="live-dot"></span>Day '+_dayOfBulk+'</span>'+
-    '<span>Scan <b>'+scanned.length+' of '+TOTAL_SCANS+'</b></span>'+
+    '<span class="live"><span class="live-dot"></span>Day '+_dayOfBulk+' <span style="color:var(--text-3)">since '+fmtDate(DATA.startDate)+'</span></span>'+
+    '<span>Scan <b>'+scanned.length+'</b></span>'+
     '<span>Next scan <b>'+nextCaptureLabel()+'</b></span>';
 
   /* ── Specimen frame: latest captured check-in, cycling through its angles ── */
@@ -1008,8 +1008,8 @@ var DATA = {
     var sub;
     if(cks.length===1){ sub='<div class="ro-d">'+(startSub||'start')+'</div>'; }
     else if(d==null){ sub='<div class="ro-d">'+(startSub||'&nbsp;')+'</div>'; }
-    else if(d>0){ sub='<div class="ro-d up">&#9650; +'+fmt(d,1)+' '+(dUnit||'')+'</div>'; }
-    else if(d<0){ sub='<div class="ro-d down">&#9660; '+fmt(d,1)+' '+(dUnit||'')+'</div>'; }
+    else if(d>0){ sub='<div class="ro-d up">&#9650; +'+fmt(d,1)+' '+(dUnit||'')+(startSub?' <span style="color:var(--text-3)">'+startSub+'</span>':'')+'</div>'; }
+    else if(d<0){ sub='<div class="ro-d down">&#9660; '+fmt(d,1)+' '+(dUnit||'')+(startSub?' <span style="color:var(--text-3)">'+startSub+'</span>':'')+'</div>'; }
     else { sub='<div class="ro-d">- '+(dUnit||'')+'</div>'; }
     return '<div class="ro"><div class="ro-l">'+lbl+'</div>'+
       '<div class="ro-v'+(hl?' hl':'')+'">'+(val==null?'<span>-</span>':'<span class="count-up" data-target="'+val+'" data-decimals="1">'+fmt(val,1)+'</span>')+'<span class="ro-u">'+(unit||'')+'</span></div>'+
@@ -1020,10 +1020,17 @@ var DATA = {
      a difference between them would read as a real change. */
   var machineChanged=(cks.length>1 && prev.machine!==latest.machine);
   document.getElementById('readout').innerHTML=
-    roCell('Weight',latest.weight_kg,'kg',cks.length>1?delta(latest.weight_kg,prev.weight_kg):null,'kg',true,'start')+
+    roCell('Weight',latest.weight_kg,'kg',cks.length>1?delta(latest.weight_kg,prev.weight_kg):null,'kg',true,cks.length>1?'since '+fmtDate(prev.date):'start')+
     roCell('Body fat',latest.bodyfat_pct,'%',machineChanged?null:(cks.length>1?delta(latest.bodyfat_pct,prev.bodyfat_pct):null),'pt',false,machineChanged?'DEXA baseline':'start')+
     roCell('Fat-free',latest.lean_mass_kg,'kg',machineChanged?null:(cks.length>1?delta(latest.lean_mass_kg,prev.lean_mass_kg):null),'kg',true,machineChanged?'DEXA baseline':'start')+
-    roCell('To target',+(DATA.target.weight_kg-latest.weight_kg).toFixed(1),'kg',null,'',false,'of '+DATA.target.weight_kg);
+    (function(){
+      /* The route cuts first, so "kg to 90" would be the wrong arithmetic. Show the
+         phase we're in, and keep the final goal as the footnote. */
+      var ph=null; for(var i=0;i<ROUTE.phases.length;i++){ if(TODAY_M>=ROUTE.phases[i].from && TODAY_M<ROUTE.phases[i].to){ ph=ROUTE.phases[i]; break; } }
+      if(!ph) ph=ROUTE.phases[0];
+      var dist=+Math.abs(latest.weight_kg-ph.endKg).toFixed(1);
+      return roCell('This phase',dist,'kg',null,'',false,(latest.weight_kg>ph.endKg?'down to ':'up to ')+ph.endKg+' kg &middot; then '+DATA.target.weight_kg);
+    })();
 
   /* ── Protocol bar ── */
   document.getElementById('protoBar').innerHTML=DATA.plan.cells.map(function(c){
@@ -1177,7 +1184,7 @@ var DATA = {
     };
     document.getElementById('chTitle').textContent=isW?'Bodyweight':'Body fat';
     document.getElementById('legend').innerHTML=
-      '<span><i class="plan"></i>the plan</span>'+
+      '<span><i class="plan"></i>projection, redrawn each scan</span>'+
       '<span><i class="dot"></i>me, measured</span>'+
       (isW?'':'<span><i class="band"></i>operating band</span>');
   }
@@ -1217,7 +1224,7 @@ var DATA = {
       ['Scale','<span class="nc-v '+dirCls+'">'+dirGlyph+' '+intent.word+'</span>']
     ];
     if(ph.macros){
-      rows.push(['Eating','<span class="nc-v">'+ph.macros.kcal.toLocaleString('en-AU')+' kcal \u00b7 '+ph.macros.protein+'p \u00b7 '+ph.macros.carbs+'c \u00b7 '+ph.macros.fat+'f</span>']);
+      rows.push(['My targets','<span class="nc-v">'+ph.macros.kcal.toLocaleString('en-AU')+' kcal \u00b7 '+ph.macros.protein+'p \u00b7 '+ph.macros.carbs+'c \u00b7 '+ph.macros.fat+'f</span>']);
     }
     if(ph.months){
       var win=endWindow();
