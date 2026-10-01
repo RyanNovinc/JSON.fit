@@ -56,7 +56,7 @@ h1{font-size:clamp(2rem,4.6vw,3.2rem);font-weight:800;letter-spacing:-.03em;line
 .card:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .card:hover{border-color:var(--border-cyan);transform:translateY(-3px)}
 .anim{position:relative;width:100%;height:0;padding-top:56.25%;background:#000;overflow:hidden}
-.anim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .45s ease}
+.anim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .anim img.b{opacity:0}
 .anim.go img.b{opacity:1}
 .cat{position:absolute;top:10px;left:10px;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);background:rgba(0,0,0,.55);border:1px solid var(--border);padding:3px 8px;border-radius:100px}
@@ -102,7 +102,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .foot-l a:hover{color:var(--cyan)}
 @media(max-width:700px){.chips{flex:1 1 100%;order:3}.search{flex:1 1 auto;width:auto;min-width:0}.count{order:2}}
 @media(max-width:600px){.musc{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr;gap:.7rem}.name{font-size:.88rem}.body{padding:.7rem .75rem .8rem;gap:.4rem}.tag{font-size:.55rem}.meta{font-size:.52rem}.cat{display:none}}
-@media(prefers-reduced-motion:reduce){.anim img{transition:none}.anim.go img.b{opacity:0}}
+@media(prefers-reduced-motion:reduce){.anim.go img.b{opacity:0}}
 </style>
 </head>
 <body>
@@ -184,8 +184,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     var t = Date.now() / 1000;
     var targets = io ? visible : grid.querySelectorAll('.anim');
     var i = 0;
-    targets.forEach(function(a){ a.classList.toggle('go', (t + i * 0.37) % 2.4 < 1.2); i++; });
-    var big = panel.querySelector('.anim'); if (big && sheet.classList.contains('open')) big.classList.toggle('go', t % 2.4 < 1.2);
+    targets.forEach(function(a){ a.classList.toggle('go', (t + i * 0.37) % 2.0 < 1.0); i++; });
+    var big = panel.querySelector('.anim'); if (big && sheet.classList.contains('open')) big.classList.toggle('go', t % 2.0 < 1.0);
   }, 120);
 
   function openSheet(slug, push){
