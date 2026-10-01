@@ -582,7 +582,7 @@
         .exl { display:block; background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; text-decoration:none; color:var(--text); transition:border-color .2s,transform .2s; }
         .exl:hover { border-color:var(--border-cyan); transform:translateY(-3px); }
         .exl-pic { position:relative; width:100%; height:0; padding-top:56.25%; background:#000; overflow:hidden; }
-        .exl-pic img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:opacity .45s ease; }
+        .exl-pic img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
         .exl-pic img.b { opacity:0; }
         .exl.go .exl-pic img.b { opacity:1; }
         .exl-body { padding:.65rem .75rem .75rem; }
@@ -1865,7 +1865,7 @@
 (function(){
   var tiles = document.querySelectorAll('#exlGrid .exl'); if (!tiles.length) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  setInterval(function(){ var t = Date.now() / 1000; tiles.forEach(function(el, i){ el.classList.toggle('go', (t + i * 0.4) % 2.4 < 1.2); }); }, 120);
+  setInterval(function(){ var t = Date.now() / 1000; tiles.forEach(function(el, i){ el.classList.toggle('go', (t + i * 0.4) % 2.0 < 1.0); }); }, 120);
 })();
 </script>
 
