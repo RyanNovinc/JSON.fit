@@ -155,7 +155,7 @@
         .fh-sub b { font-family: Georgia, serif; font-style: normal; font-weight: 400; font-size: 1.06rem; color: #e6e6e8; display: inline-block; text-align: right; }
         .fh-sub b.tick-p { min-width: 2em; }
         .fh-sub b.tick-k { min-width: 3.1em; }
-        .fh-hair { width: min(420px, 62vw); height: 1px; background: rgba(255,255,255,0.16); margin: 1.35rem auto 0; animation: heroFadeUp 0.7s ease 0.18s both; }
+        .fh-hair { display:none; width: min(420px, 62vw); height: 1px; background: rgba(255,255,255,0.16); margin: 1.35rem auto 0; animation: heroFadeUp 0.7s ease 0.18s both; }
         .fh-cta { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; margin-top: 1.9rem; animation: heroFadeUp 0.7s ease 0.24s both; }
         .fh-row { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; justify-content: center; }
         .fh-store { display: block; border-radius: 9px; }
@@ -498,7 +498,7 @@
         }
 
         /* === Pipeline: how your plan gets built === */
-        .pl-toggle { display:flex; width:max-content; margin:1.5rem auto 0; border:1px solid var(--border); border-radius:100px; padding:4px; background:var(--surface); }
+        .pl-toggle { display:none !important; } .pl-toggle-x { display:flex; width:max-content; margin:1.5rem auto 0; border:1px solid var(--border); border-radius:100px; padding:4px; background:var(--surface); }
         .pl-tg { border:none; background:transparent; color:var(--text-2); font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.04em; padding:0.5rem 1.15rem; border-radius:100px; cursor:pointer; transition:all 0.18s; }
         .pl-tg:hover { color:var(--text); }
         .pl-tg.active { background:var(--cyan); color:#001318; font-weight:500; }
@@ -576,6 +576,34 @@
             .px-conl { top:50%; left:calc(50% + 28px); transform:translateY(-50%); }
             .px-con i { left:50%; top:-8px; margin-left:-3.5px; margin-top:0; animation-name:pxdashv; }
         }
+
+        /* === Hero founder note: a chip that opens a popover, replacing the note section === */
+        .fh-note { display:inline-flex; align-items:center; gap:.6rem; margin:1.1rem auto 0; padding:.4rem .85rem .4rem .4rem; border-radius:100px; border:1px solid rgba(255,255,255,0.12); background:rgba(10,10,15,0.7); color:var(--text-2); font-family:'Outfit',sans-serif; font-size:.8rem; cursor:pointer; animation:heroFadeUp 0.7s ease 0.16s both; max-width:100%; }
+        .fh-note:hover { border-color:var(--border-cyan); color:var(--text); }
+        .fh-note-ava { width:26px; height:26px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--border-cyan); }
+        .fh-note-ava img { width:100%; height:100%; object-fit:cover; display:block; }
+        .fh-note-txt { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:.92rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .fh-note-more { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); white-space:nowrap; }
+        .fh-note-pop { position:absolute; left:50%; top:100%; transform:translate(-50%,10px); width:min(640px, calc(100vw - 2rem)); z-index:5; background:var(--surface); border:1px solid rgba(255,255,255,0.12); border-radius:22px; padding:1.4rem 1.6rem 1.2rem; text-align:left; box-shadow:0 30px 80px rgba(0,0,0,.7); }
+        .fh-note-pop[hidden] { display:none; }
+        .fh-note-wrap { position:relative; display:inline-block; }
+        .fh-note-x { position:absolute; top:10px; right:10px; width:30px; height:30px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--text-2); cursor:pointer; font-size:.8rem; }
+        .fh-note-x:hover { color:var(--text); border-color:var(--border-cyan); }
+        .fh-note-pop .own-q { font-size:1.08rem; }
+        .fh-note-pop .own-who { margin-top:1rem; }
+        @media (max-width:600px) { .fh-note { font-size:.74rem; } .fh-note-txt { font-size:.84rem; } .fh-note-pop { padding:1.1rem 1.1rem 1rem; } .fh-note-pop .own-q { font-size:.98rem; } }
+
+        /* === Meals / Training tabs: one page, two tracks === */
+        .trk { position:sticky; top:56px; z-index:40; display:flex; justify-content:center; padding:.8rem 1rem; background:rgba(5,5,8,0.85); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
+        .trk-seg { display:flex; border:1px solid var(--border); border-radius:100px; padding:3px; background:var(--surface); }
+        .trk-seg button { border:none; background:none; color:var(--text-2); font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; padding:.55rem 1.3rem; border-radius:100px; cursor:pointer; transition:color .2s; }
+        .trk-seg button.on { background:var(--cyan); color:#001318; font-weight:500; }
+        body[data-tab="meal"] [data-track="train"], body[data-tab="train"] [data-track="meal"] { display:none !important; }
+        .fh-only-train, body[data-tab="train"] .fh-only-meal { display:none; }
+        body[data-tab="train"] .fh-only-train { display:block; }
+        body[data-tab="train"] #fWall { display:none; }
+        #tWall { display:none; }
+        body[data-tab="train"] #tWall { display:flex; }
 
         /* === Exercise library strip (links to /exercises/) === */
         .exl-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:.8rem; margin-top:2.2rem; }
@@ -897,11 +925,35 @@
 <!-- HERO: drifting meal wall + serif masthead -->
 <section class="fhero">
     <div class="f-wall" id="fWall" data-rings="true" aria-hidden="true"></div>
+    <div class="f-wall" id="tWall" aria-hidden="true"></div>
     <div class="f-scrim"></div>
     <div class="fh-fg">
         <span class="fh-ov">For skinny guys who can't gain weight</span>
-        <h1 class="fh-display"><span class="fh-l1">Eating big,</span> <span class="cyan">made easy.</span></h1>
-        <p class="fh-sub"><b class="tick-p">180</b>g protein &middot; <b class="tick-k">3,311</b> kcal &middot; your numbers, handled</p>
+        <h1 class="fh-display fh-only-meal"><span class="fh-l1">Eating big,</span> <span class="cyan">made easy.</span></h1>
+        <h1 class="fh-display fh-only-train"><span class="fh-l1">Lifting big,</span> <span class="cyan">made simple.</span></h1>
+        <div class="fh-note-wrap">
+            <button class="fh-note" id="fhNote" type="button" aria-expanded="false" aria-controls="fhNotePop">
+                <span class="fh-note-ava"><img src="images/me/founder.webp" alt="" onerror="this.parentElement.style.display='none'"></span>
+                <span class="fh-note-txt fh-only-meal">I'm not a chef. I hate cooking.</span>
+                <span class="fh-note-txt fh-only-train">I'm not a PT. I don't write the training.</span>
+                <span class="fh-note-more">Read why</span>
+            </button>
+            <div class="fh-note-pop" id="fhNotePop" hidden>
+                <button class="fh-note-x" id="fhNoteX" type="button" aria-label="Close">&#10005;</button>
+                <div class="own-beat">
+                    <p class="own-q own-no">I'm not a chef. I hate cooking, and I hate the grocery store.</p>
+                    <p class="own-q own-yes"><span class="own-ln">So every meal here is built to cook as little as possible:</span> <span class="own-ln cyan">one grocery list, one prep session, every meal decided.</span></p>
+                </div>
+                <div class="own-beat">
+                    <p class="own-q own-no">I'm not a PT either.</p>
+                    <p class="own-q own-yes"><span class="own-ln">So I don't write the training.</span> <span class="own-ln">It runs on <a href="/research/" style="color:inherit;border-bottom:1px solid var(--border-cyan);">published research</a>, not my opinion.</span></p>
+                </div>
+                <div class="own-who">
+                    <div class="own-ava"><img src="images/me/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.parentElement.style.display='none'"></div>
+                    <p class="own-sign">Ryan, solo founder</p>
+                </div>
+            </div>
+        </div>
         <div class="fh-hair"></div>
         <div class="fh-cta">
             <div class="fh-row" style="flex-direction:column;gap:1.1rem;">
@@ -913,41 +965,25 @@
                         <img src="en_badge_web_generic.png" alt="Get it on Google Play" height="68" class="fh-store" style="margin: -11px 0;">
                     </a>
                 </div>
-                <a class="fh-watch" id="heroVideo" href="https://www.youtube.com/shorts/LjniPp6Qg88" target="_blank" rel="noopener" onclick="gtag('event','video_click',{'button_location':'hero'})">
-                    <span class="play"><svg width="9" height="9" viewBox="0 0 24 24" fill="#050508"><polygon points="5,3 19,12 5,21"/></svg></span>
-                    <span><b>Watch how it works</b> &middot; 30 seconds</span>
-                </a>
             </div>
-            <a class="fh-browse" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'hero'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals_hero'})">Browse all 81 meals &#8594;</a>
-            <div class="fh-trust"><span class="fh-t1"><a class="fh-lab" href="/lab" onclick="gtag('event','view_lab',{'button_location':'hero_trust'})"><b>Bulking 77 to 90 kg</b> in public</a> &middot; <span class="st">&#9733;</span> <b>5.0</b> App Store</span><span class="fh-tsep"> &middot; </span><span class="fh-t2">No ads &middot; No account</span></div>
+            <div class="fh-trust"><span class="fh-t1"><a class="fh-lab" href="/lab" onclick="gtag('event','view_lab',{'button_location':'hero_trust'})"><b>Bulking 77 to 90 kg</b> in public</a></span><span class="fh-tsep"> &middot; </span><span class="fh-t2">No ads &middot; No account</span></div>
         </div>
     </div>
 </section>
 
 <!-- Honest note: what I'm not, then what I am -->
-<section class="own">
-    <div class="container">
-        <div class="own-in sa sa-up">
-            <div class="own-bub">
-                <div class="own-beat">
-                    <p class="own-q own-no">I'm not a chef. I hate cooking, and I hate the grocery store.</p>
-                    <p class="own-q own-yes"><span class="own-ln">So every meal here is built to cook as little as possible:</span> <span class="own-ln cyan">one grocery list, one prep session, every meal decided.</span></p>
-                </div>
-                <div class="own-beat">
-                    <p class="own-q own-no">I'm not a PT either.</p>
-                    <p class="own-q own-yes"><span class="own-ln">So I don't write the training.</span> <span class="own-ln">It runs on <a href="/research/" style="color:inherit;border-bottom:1px solid var(--border-cyan);">published research</a>, not my opinion.</span></p>
-                </div>
-            </div>
-            <div class="own-who">
-                <div class="own-ava"><img src="images/me/founder.webp" alt="Ryan, founder of JSON.fit" onerror="this.parentElement.style.display='none'"></div>
-                <p class="own-sign">Ryan, solo founder</p>
-            </div>
-        </div>
+
+
+<!-- Meals / Training tracks: the page shows one at a time -->
+<div class="trk" id="trk">
+    <div class="trk-seg" role="tablist">
+        <button type="button" role="tab" data-tab="meal" class="on" aria-selected="true">Meals</button>
+        <button type="button" role="tab" data-tab="train" aria-selected="false">Training</button>
     </div>
-</section>
+</div>
 
 <!-- Problem-stacking: name the pain before the solution -->
-<section class="section" style="padding-top:4rem;padding-bottom:0;">
+<section class="section" data-track="meal" style="padding-top:4rem;padding-bottom:0;">
     <div class="container">
         <div class="pains sa sa-up">
             <span class="label" style="text-align:center;">Built for skinny guys with full-time jobs</span>
@@ -965,7 +1001,7 @@
     </div>
 </section>
 
-<section class="section" id="meals" style="padding-top:4rem;padding-bottom:2.5rem;">
+<section class="section" id="meals" data-track="meal" style="padding-top:4rem;padding-bottom:2.5rem;">
     <div class="container">
         <div class="strip-head sa sa-up">
             <div>
@@ -993,7 +1029,7 @@
         <div class="strip-linkrow"><a class="strip-link" href="meals.html" onclick="gtag('event','view_meals',{'button_location':'meal_strip'});if(window.track)window.track('cta_clicked',{cta_id:'browse_meals'})">Browse all meals &#8594;</a></div>
     </div>
 </section>
-<section class="cap">
+<section class="cap" data-track="meal">
     <div class="container">
         <div class="cap-card">
             <div class="cap-cover">
@@ -1026,6 +1062,95 @@
     </div>
 </section>
 
+<section class="section" id="compare" data-track="meal">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">Compare</span>
+            <h2>What it costs to do this <span class="cyan">any other way.</span></h2>
+            <p style="margin:0 auto;">Same job: meals to your macros, a shopping list, prep and training.</p>
+        </div>
+        <div class="comp sa sa-up">
+            <div class="comp-head"><div></div><div>JSON.fit</div><div>MyFitnessPal+</div><div>Eat This Much</div><div>My Muscle Chef</div></div>
+            <div class="comp-row"><div>Cost to use it fully</div><div>Free</div><div class="comp-x">$99.99 a year</div><div class="comp-x">~$60 a year</div><div class="comp-x">$350&ndash;490 a week</div></div>
+            <div class="comp-row"><div>Meals built for gaining</div><div>&#10003;</div><div class="comp-x">&#10007; tracker only</div><div class="comp-x">Recipes lean light</div><div>&#10003;</div></div>
+            <div class="comp-row"><div>One weekly shopping list</div><div>&#10003;</div><div>&#10003; on Premium+</div><div>&#10003; on Premium</div><div>n/a</div></div>
+            <div class="comp-row"><div>One batch prep session</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007; per recipe</div><div>n/a &mdash; reheat</div></div>
+            <div class="comp-row"><div>Training program included</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>No cooking required</div><div class="comp-x">&#10007; cook once a week</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-win">&#10003; delivery wins here</div></div>
+            <div class="comp-row"><div>No account, no subscription, no ads</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+        </div>
+        <p class="comp-note sa sa-up">App prices USD, delivery AUD, checked September 2026.</p>
+    </div>
+</section>
+
+<section class="section" id="programs" data-track="train">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">Free Training Programs</span>
+            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
+            <p style="margin:0 auto;">Built the same way as the meals: your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
+        </div>
+        <a class="prog-feature sa sa-up" href="/programs/?program=ryans-program" onclick="gtag('event','view_program',{'program':'ryans-program','button_location':'programs_feature'})">
+            <div class="pf-ava"><img src="images/me/founder.webp" alt="" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='RN';"></div>
+            <div class="pf-body">
+                <span class="prog-split">What I'm running right now</span>
+                <h3>The exact program I train on.</h3>
+                <p>Four days a week, so three stay free. The trade: long, hard sessions at high volume. Side delts, lats, chest, biceps and glutes pushed hardest.</p>
+                <div class="pf-row">
+                    <div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span></div>
+                    <div class="prog-meta"><span class="prog-chip">Upper / Lower</span><span class="prog-chip">52 weeks</span><span class="prog-chip">4 days</span><span class="prog-chip">~2 h sessions</span></div>
+                </div>
+            </div>
+            <span class="prog-open pf-cta">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <div class="prog-grid sa-stagger">
+            <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
+                <span class="prog-split">Upper / Lower</span><h3>Beginner Foundation</h3>
+                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd"></span></div><div class="wd-cap">4 training days &middot; 3 rest</div></div>
+                <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Beginner</span></div>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+            <a class="prog-card" href="/programs/?program=ppl-upper-lower" onclick="gtag('event','view_program',{'program':'ppl-upper-lower'})">
+                <span class="prog-split">PPL + Upper/Lower</span><h3>Intermediate Hybrid</h3>
+                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">5 training days &middot; 2 rest</div></div>
+                <div class="prog-meta"><span class="prog-chip">54 weeks</span><span class="prog-chip">Intermediate</span></div>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+            <a class="prog-card" href="/programs/?program=ppl-advanced" onclick="gtag('event','view_program',{'program':'ppl-advanced'})">
+                <span class="prog-split">Push / Pull / Legs &times;2</span><h3>Advanced High-Volume</h3>
+                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">6 training days &middot; 1 rest</div></div>
+                <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Advanced</span></div>
+                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Exercise library strip: six animating tiles that lead to /exercises/ -->
+<section class="section" id="exercises" data-track="train" style="padding-top:2rem;">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">The exercise library</span>
+            <h2>130+ exercises. <span class="cyan">Every one earns its place.</span></h2>
+            <p style="margin:0 auto;">Every exercise in the app, animated, tagged by the muscles it trains and helps, with the rest the app gives it and how to do it. Free to browse.</p>
+        </div>
+        <div class="exl-grid sa sa-up" id="exlGrid">
+            <a class="exl" href="/exercises/#barbell-back-squat"><div class="exl-pic"><img src="images/exercises/barbell-back-squat/blue/start.webp" alt="Barbell Back Squat" loading="lazy"><img class="b" src="images/exercises/barbell-back-squat/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Barbell Back Squat</div><span class="exl-tag">Quads</span></div></a>
+            <a class="exl" href="/exercises/#pull-up"><div class="exl-pic"><img src="images/exercises/pull-up/blue/start.webp" alt="Pull-up" loading="lazy"><img class="b" src="images/exercises/pull-up/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Pull-up</div><span class="exl-tag">Lats</span></div></a>
+            <a class="exl" href="/exercises/#barbell-bench-press"><div class="exl-pic"><img src="images/exercises/barbell-bench-press/blue/start.webp" alt="Barbell Bench Press" loading="lazy"><img class="b" src="images/exercises/barbell-bench-press/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Barbell Bench Press</div><span class="exl-tag">Chest</span></div></a>
+            <a class="exl" href="/exercises/#romanian-deadlift"><div class="exl-pic"><img src="images/exercises/romanian-deadlift/blue/start.webp" alt="Romanian Deadlift" loading="lazy"><img class="b" src="images/exercises/romanian-deadlift/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Romanian Deadlift</div><span class="exl-tag">Hamstrings</span></div></a>
+            <a class="exl" href="/exercises/#dumbbell-lateral-raise"><div class="exl-pic"><img src="images/exercises/dumbbell-lateral-raise/blue/start.webp" alt="Dumbbell Lateral Raise" loading="lazy"><img class="b" src="images/exercises/dumbbell-lateral-raise/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Dumbbell Lateral Raise</div><span class="exl-tag">Side Delts</span></div></a>
+            <a class="exl" href="/exercises/#bulgarian-split-squat"><div class="exl-pic"><img src="images/exercises/bulgarian-split-squat/blue/start.webp" alt="Bulgarian Split Squat" loading="lazy"><img class="b" src="images/exercises/bulgarian-split-squat/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Bulgarian Split Squat</div><span class="exl-tag">Quads</span></div></a>
+        </div>
+        <div class="exl-facts sa sa-up"><span><b>130+</b> exercises</span><span><b>24</b> muscles tagged</span><span><b>man &amp; woman</b> demos</span><span><b>sources</b> on every cue</span></div>
+        <div class="exl-cta sa sa-up"><a href="/exercises/" onclick="gtag('event','view_exercises',{'button_location':'home_strip'})">Browse the library <span aria-hidden="true">&rarr;</span></a></div>
+    </div>
+</section>
+
+
 <!-- See It Working: real app screens from an imported plan -->
 <section class="section" style="padding-bottom:2rem;">
     <div class="container">
@@ -1046,7 +1171,7 @@
                 <figcaption id="swCapL">One priced shopping list. A week of food in a single trip.</figcaption>
             </figure>
             <div class="sw-demo is-green" id="swDemo">
-                <div class="phone" id="swPhone" role="button" tabindex="0" aria-label="App preview. Activate to switch between the nutrition and workout screens.">
+                <div class="phone" id="swPhone" aria-label="App preview">
                     <div class="phone-notch"></div>
                     <div class="screen">
                         <div class="sb"><span id="sbTime">9:41</span></div>
@@ -1170,10 +1295,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="poke">
-                    <svg class="poke-arrow" width="22" height="26" viewBox="0 0 22 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="11" y1="23" x2="11" y2="4"/><polyline points="4 11 11 4 18 11"/></svg>
-                    <span class="poke-label">Tap to switch</span>
                 </div>
             </div>
             <figure class="ph-card" id="swCardR">
@@ -1303,93 +1424,8 @@
     </div>
 </section>
 
-<section class="section" id="programs" style="padding-top:2rem;">
-    <div class="container">
-        <div class="section-head sa sa-up" style="text-align:center;">
-            <div class="section-line" style="margin:0 auto 1rem;"></div>
-            <span class="label">Free Training Programs</span>
-            <h2 style="font-size:clamp(2.2rem,4vw,3.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;">Eating big adds the weight.<br><span class="cyan"><span style="text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:0.15em;">Training</span> makes it muscle.</span></h2>
-            <p style="margin:0 auto;">Built the same way as the meals: your split, your equipment, up to a year long. Or import one of these, periodised and ready today.</p>
-        </div>
-        <a class="prog-feature sa sa-up" href="/programs/?program=ryans-program" onclick="gtag('event','view_program',{'program':'ryans-program','button_location':'programs_feature'})">
-            <div class="pf-ava"><img src="images/me/founder.webp" alt="" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='RN';"></div>
-            <div class="pf-body">
-                <span class="prog-split">What I'm running right now</span>
-                <h3>The exact program I train on.</h3>
-                <p>Four days a week, so three stay free. The trade: long, hard sessions at high volume. Side delts, lats, chest, biceps and glutes pushed hardest.</p>
-                <div class="pf-row">
-                    <div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd"></span></div>
-                    <div class="prog-meta"><span class="prog-chip">Upper / Lower</span><span class="prog-chip">52 weeks</span><span class="prog-chip">4 days</span><span class="prog-chip">~2 h sessions</span></div>
-                </div>
-            </div>
-            <span class="prog-open pf-cta">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
-        </a>
-        <div class="prog-grid sa-stagger">
-            <a class="prog-card" href="/programs/?program=upper-lower-beginner" onclick="gtag('event','view_program',{'program':'upper-lower-beginner'})">
-                <span class="prog-split">Upper / Lower</span><h3>Beginner Foundation</h3>
-                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd"></span></div><div class="wd-cap">4 training days &middot; 3 rest</div></div>
-                <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Beginner</span></div>
-                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
-            </a>
-            <a class="prog-card" href="/programs/?program=ppl-upper-lower" onclick="gtag('event','view_program',{'program':'ppl-upper-lower'})">
-                <span class="prog-split">PPL + Upper/Lower</span><h3>Intermediate Hybrid</h3>
-                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">5 training days &middot; 2 rest</div></div>
-                <div class="prog-meta"><span class="prog-chip">54 weeks</span><span class="prog-chip">Intermediate</span></div>
-                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
-            </a>
-            <a class="prog-card" href="/programs/?program=ppl-advanced" onclick="gtag('event','view_program',{'program':'ppl-advanced'})">
-                <span class="prog-split">Push / Pull / Legs &times;2</span><h3>Advanced High-Volume</h3>
-                <div class="wd-block"><div class="week-dots"><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd"></span></div><div class="wd-cap">6 training days &middot; 1 rest</div></div>
-                <div class="prog-meta"><span class="prog-chip">52 weeks</span><span class="prog-chip">Advanced</span></div>
-                <span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
-            </a>
-        </div>
-    </div>
-</section>
 
-<!-- Exercise library strip: six animating tiles that lead to /exercises/ -->
-<section class="section" id="exercises" style="padding-top:2rem;">
-    <div class="container">
-        <div class="section-head sa sa-up" style="text-align:center;">
-            <div class="section-line" style="margin:0 auto 1rem;"></div>
-            <span class="label">The exercise library</span>
-            <h2>130+ exercises. <span class="cyan">Every one earns its place.</span></h2>
-            <p style="margin:0 auto;">Every exercise in the app, animated, tagged by the muscles it trains and helps, with the rest the app gives it and how to do it. Free to browse.</p>
-        </div>
-        <div class="exl-grid sa sa-up" id="exlGrid">
-            <a class="exl" href="/exercises/#barbell-back-squat"><div class="exl-pic"><img src="images/exercises/barbell-back-squat/blue/start.webp" alt="Barbell Back Squat" loading="lazy"><img class="b" src="images/exercises/barbell-back-squat/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Barbell Back Squat</div><span class="exl-tag">Quads</span></div></a>
-            <a class="exl" href="/exercises/#pull-up"><div class="exl-pic"><img src="images/exercises/pull-up/blue/start.webp" alt="Pull-up" loading="lazy"><img class="b" src="images/exercises/pull-up/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Pull-up</div><span class="exl-tag">Lats</span></div></a>
-            <a class="exl" href="/exercises/#barbell-bench-press"><div class="exl-pic"><img src="images/exercises/barbell-bench-press/blue/start.webp" alt="Barbell Bench Press" loading="lazy"><img class="b" src="images/exercises/barbell-bench-press/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Barbell Bench Press</div><span class="exl-tag">Chest</span></div></a>
-            <a class="exl" href="/exercises/#romanian-deadlift"><div class="exl-pic"><img src="images/exercises/romanian-deadlift/blue/start.webp" alt="Romanian Deadlift" loading="lazy"><img class="b" src="images/exercises/romanian-deadlift/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Romanian Deadlift</div><span class="exl-tag">Hamstrings</span></div></a>
-            <a class="exl" href="/exercises/#dumbbell-lateral-raise"><div class="exl-pic"><img src="images/exercises/dumbbell-lateral-raise/blue/start.webp" alt="Dumbbell Lateral Raise" loading="lazy"><img class="b" src="images/exercises/dumbbell-lateral-raise/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Dumbbell Lateral Raise</div><span class="exl-tag">Side Delts</span></div></a>
-            <a class="exl" href="/exercises/#bulgarian-split-squat"><div class="exl-pic"><img src="images/exercises/bulgarian-split-squat/blue/start.webp" alt="Bulgarian Split Squat" loading="lazy"><img class="b" src="images/exercises/bulgarian-split-squat/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Bulgarian Split Squat</div><span class="exl-tag">Quads</span></div></a>
-        </div>
-        <div class="exl-facts sa sa-up"><span><b>130+</b> exercises</span><span><b>24</b> muscles tagged</span><span><b>man &amp; woman</b> demos</span><span><b>sources</b> on every cue</span></div>
-        <div class="exl-cta sa sa-up"><a href="/exercises/" onclick="gtag('event','view_exercises',{'button_location':'home_strip'})">Browse the library <span aria-hidden="true">&rarr;</span></a></div>
-    </div>
-</section>
 
-<section class="section" id="compare">
-    <div class="container">
-        <div class="section-head sa sa-up" style="text-align:center;">
-            <div class="section-line" style="margin:0 auto 1rem;"></div>
-            <span class="label">Compare</span>
-            <h2>What it costs to do this <span class="cyan">any other way.</span></h2>
-            <p style="margin:0 auto;">Same job: meals to your macros, a shopping list, prep and training.</p>
-        </div>
-        <div class="comp sa sa-up">
-            <div class="comp-head"><div></div><div>JSON.fit</div><div>MyFitnessPal+</div><div>Eat This Much</div><div>My Muscle Chef</div></div>
-            <div class="comp-row"><div>Cost to use it fully</div><div>Free</div><div class="comp-x">$99.99 a year</div><div class="comp-x">~$60 a year</div><div class="comp-x">$350&ndash;490 a week</div></div>
-            <div class="comp-row"><div>Meals built for gaining</div><div>&#10003;</div><div class="comp-x">&#10007; tracker only</div><div class="comp-x">Recipes lean light</div><div>&#10003;</div></div>
-            <div class="comp-row"><div>One weekly shopping list</div><div>&#10003;</div><div>&#10003; on Premium+</div><div>&#10003; on Premium</div><div>n/a</div></div>
-            <div class="comp-row"><div>One batch prep session</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007; per recipe</div><div>n/a &mdash; reheat</div></div>
-            <div class="comp-row"><div>Training program included</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
-            <div class="comp-row"><div>No cooking required</div><div class="comp-x">&#10007; cook once a week</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-win">&#10003; delivery wins here</div></div>
-            <div class="comp-row"><div>No account, no subscription, no ads</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
-        </div>
-        <p class="comp-note sa sa-up">App prices USD, delivery AUD, checked September 2026.</p>
-    </div>
-</section>
 
 <section class="section" style="padding-bottom:0;">
     <div class="container">
@@ -1414,7 +1450,7 @@
 
 <section class="cta-wrap" id="download">
     <div class="cta-card sa sa-scale">
-        <div class="cta-badge" style="color:var(--cyan)">No subscription</div>
+        <div class="cta-badge" style="color:var(--cyan)"><span class="st">&#9733;</span> 5.0 on the App Store &middot; No subscription</div>
         <h2>Everything in the app is free. <em>No ads, no account.</em></h2>
         <div class="cta-price"><span class="big">$0</span><span class="unit">to use</span></div>
         <div class="cta-checks">
@@ -1797,27 +1833,11 @@
     idx = order.indexOf(name);
   }
 
-  phone.addEventListener('click', function(){
-    stopped = true;
-    if(timer){ clearInterval(timer); timer = null; }
-    var next = order[(idx + 1) % order.length];
-    setScreen(next);
-    if (window.gtag) gtag('event', 'demo_screen_switched', { 'button_location': 'see_it_working', 'view': next });
-    if (window.track) window.track('cta_clicked', { cta_id: 'demo_phone_' + next });
-  });
-  phone.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
-      e.preventDefault();
-      phone.click();
-    }
-  });
-
-  if(!reduce){
-    timer = setInterval(function(){
-      if(stopped){ clearInterval(timer); timer = null; return; }
-      setScreen(order[(idx + 1) % order.length]);
-    }, 5000);
-  }
+  window.jfSetScreen = setScreen;
+  /* The Meals / Training tab at the top of the page picks this phone's screen
+     (via window.jfSetScreen). No tap-to-switch and no auto-rotate, so the phone
+     never flips to the other track on its own. */
+  phone.style.cursor = 'default';
 
   var fa = document.getElementById('wl-frame-a'),
       fb = document.getElementById('wl-frame-b'),
@@ -1857,6 +1877,70 @@
     var onmq = function(e){ if (e.matches) centerDemo(); };
     if (mq.addEventListener) mq.addEventListener('change', onmq);
   }
+})();
+</script>
+
+<!-- Hero founder note popover -->
+<script>
+(function(){
+  var btn=document.getElementById('fhNote'), pop=document.getElementById('fhNotePop'), x=document.getElementById('fhNoteX');
+  if(!btn||!pop) return;
+  function open(){ pop.hidden=false; btn.setAttribute('aria-expanded','true'); if(window.gtag) gtag('event','founder_note_opened',{'button_location':'hero'}); }
+  function close(){ pop.hidden=true; btn.setAttribute('aria-expanded','false'); }
+  btn.addEventListener('click', function(){ pop.hidden ? open() : close(); });
+  x.addEventListener('click', close);
+  document.addEventListener('click', function(e){ if(!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+
+<!-- Meals / Training tabs -->
+<script>
+(function(){
+  var body=document.body, seg=document.getElementById('trk');
+  if(!seg) return;
+  var TRAIN_WALL=['barbell-back-squat','pull-up','barbell-bench-press','romanian-deadlift','dumbbell-lateral-raise','bulgarian-split-squat','barbell-row','barbell-overhead-press','hanging-leg-raise','cable-crossover','leg-press','seated-cable-row','dumbbell-bench-press','chin-up','barbell-hip-thrust','incline-dumbbell-bench-press','hammer-curl','lat-pulldown','dips-chest-focus','conventional-deadlift','face-pull','cable-lateral-raise','leg-extension','seated-leg-curl','walking-lunge','preacher-curl','overhead-cable-triceps-extension','machine-chest-press'];
+  var wallBuilt=false;
+  function buildTrainWall(){
+    if(wallBuilt) return; wallBuilt=true;
+    var wall=document.getElementById('tWall'); if(!wall) return;
+    var cols=6, per=7, k=0;
+    for(var c=0;c<cols;c++){
+      var col=document.createElement('div'); col.className=(c%2?'f-col rev':'f-col');
+      var track=document.createElement('div'); track.className='f-track'; track.style.setProperty('--fdrift-duration',(44+c*5)+'s');
+      var set=[]; for(var i=0;i<per;i++){ set.push(TRAIN_WALL[k%TRAIN_WALL.length]); k++; }
+      set.concat(set).forEach(function(slug,i){
+        var card=document.createElement('div'); card.className='f-card';
+        var img=document.createElement('img'); img.alt=''; img.decoding='async'; if(i>=3) img.loading='lazy';
+        img.src='/images/exercises/'+slug+'/blue/'+((i%2)?'end':'start')+'.webp';
+        img.addEventListener('load',function(){ img.classList.add('ld'); });
+        card.appendChild(img); track.appendChild(card);
+      });
+      col.appendChild(track); wall.appendChild(col);
+    }
+  }
+  function setTab(k, push){
+    body.setAttribute('data-tab', k);
+    seg.querySelectorAll('button').forEach(function(b){ var on=b.getAttribute('data-tab')===k; b.classList.toggle('on',on); b.setAttribute('aria-selected',on?'true':'false'); });
+    if(k==='train') buildTrainWall();
+    var pl=document.querySelector('.pl-tg[data-flow="'+k+'"]'); if(pl && !pl.classList.contains('active')) pl.click();
+    if(window.jfSetScreen) try{ window.jfSetScreen(k==='train'?'workout':'nutrition'); }catch(e){}
+    if(push) history.replaceState(null,'', k==='train'?'#training':'#meals');
+    if(window.gtag) gtag('event','track_tab',{'view':k});
+  }
+  seg.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ setTab(b.getAttribute('data-tab'), true); }); });
+  // A link into a hidden section switches the tab first, then scrolls.
+  function revealTarget(){
+    var h=location.hash.replace('#',''); if(!h) return;
+    if(h==='training'){ setTab('train',false); window.scrollTo(0,0); return; }
+    if(h==='meals' && !document.getElementById('meals')){ setTab('meal',false); return; }
+    var el=document.getElementById(h); if(!el) return;
+    var sec=el.closest('[data-track]');
+    if(sec && body.getAttribute('data-tab')!==sec.getAttribute('data-track')){ setTab(sec.getAttribute('data-track'),false); setTimeout(function(){ el.scrollIntoView(); },50); }
+  }
+  setTab(location.hash==='#training'?'train':'meal', false);
+  window.addEventListener('hashchange', revealTarget);
+  revealTarget();
 })();
 </script>
 
