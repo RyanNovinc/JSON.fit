@@ -128,7 +128,9 @@
         .soon-pill { font-family: 'DM Mono', monospace; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.4; color: var(--violet); background: var(--violet-soft); border: 1px solid var(--violet-border); padding: 0.1rem 0.4rem; border-radius: 100px; }
         /* === HERO: food wall + serif masthead === */
         @keyframes heroFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-        .fhero { position: relative; display: flex; overflow: hidden; min-height: 100vh; min-height: 100svh; padding-top: 56px; }
+        /* Not a full screen: the Meals / Training bar and the top of the next section show below it, so the
+           first screen never looks finished (NN/g's "illusion of completeness"). */
+        .fhero { position: relative; display: flex; overflow: hidden; min-height: 88vh; min-height: 88svh; padding-top: 56px; }
         .f-wall { position: absolute; inset: -14%; display: flex; gap: 20px; justify-content: center; transform: rotate(-7deg) scale(1.18); pointer-events: none; }
         .f-col { display: flex; flex-direction: column; width: 250px; flex-shrink: 0; overflow: hidden; }
         .f-track { display: flex; flex-direction: column; gap: 20px; animation: fdrift linear infinite; animation-duration: var(--fdrift-duration, 48s); }
@@ -989,7 +991,7 @@
 </div>
 
 <!-- Problem-stacking: name the pain before the solution -->
-<section class="section" data-track="meal" style="padding-top:4rem;padding-bottom:0;">
+<section class="section" data-track="meal" style="padding-top:4rem;padding-bottom:1rem;">
     <div class="container">
         <div class="pains sa sa-up">
             <span class="label" style="text-align:center;">Built for skinny guys with full-time jobs</span>
@@ -1004,6 +1006,86 @@
             </div>
             <p style="text-align:center;color:var(--text-2);margin:1.5rem auto 0;max-width:560px;">Not more food. Denser food, with the shopping and prep already done.</p>
         </div>
+    </div>
+</section>
+
+<section class="section engine" id="how">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">How your plan gets built</span>
+            <h2>A week of meals <span class="cyan">in three steps.</span></h2>
+            <p style="margin:0 auto;">AI writes the plan. JSON.fit runs it.</p>
+            <div class="pl-toggle" role="tablist">
+                <button class="pl-tg active" data-flow="meal" role="tab" aria-selected="true">Meal plan</button>
+                <button class="pl-tg" data-flow="train" role="tab" aria-selected="false">Training program</button>
+            </div>
+        </div>
+    </div>
+    <div class="pp-pin" id="ppPin">
+        <div class="pp-stage" id="ppStage" data-flow="meal">
+        <div class="pp-flow pp-flow-meal" data-key="meal">
+            <div class="pp-copy">
+                <div class="pp-rail"><i class="on"></i><i></i><i></i></div>
+                <div class="pp-beat"><span class="pp-tag">01 &middot; You answer</span><h3>A few quick questions.</h3><p>Your goal, stats and favourite meals become a research-packed prompt. One tap to copy.</p></div>
+                <div class="pp-beat"><span class="pp-tag">02 &middot; Any AI writes</span><h3>Paste it into your AI.</h3><p>ChatGPT, Claude, Gemini. It hands back a file. That is the easy part.</p></div>
+                <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit runs it</span><h3>Now the part a chat can't.</h3><p>In the aisle, ticking off the list. At the stove, one step at a time with timers. Every meal logged as you eat it, macros counted, pantry updated.</p></div>
+            </div>
+            <div class="pp-vis">
+                <div class="pp-obj pp-q px-win">
+                    <div class="px-grab"></div>
+                    <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
+                    <div class="px-kv"><span>Goal</span><b>Weight gain</b></div><div class="px-kv"><span>Target</span><b>90kg</b></div><div class="px-kv"><span>Meals</span><b>6 per day</b></div><div class="px-kv"><span>Training</span><b>4 days/week</b></div>
+                    <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
+                </div>
+                <div class="pp-obj pp-chat px-win">
+                    <div class="px-ch"><span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span><div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div></div>
+                    <div class="px-cb">
+                        <div class="px-bub you"><div class="px-ptag">Pasted from JSON.fit</div><div class="px-ptxt">You are a sports nutritionist. Build a 7-day meal plan for an 82 kg male targeting 90 kg: 3,311 kcal, 180 g protein, 6 meals a day, built from the favourites listed below&hellip;</div><span class="px-more">+ 1,240 more words</span></div>
+                        <div class="pp-dots"><i></i><i></i><i></i></div>
+                        <div class="px-bub ai"><div class="px-line">Done. Your week is attached.</div><div class="px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">meal-plan.json</div><div class="px-fs">3,311 kcal &middot; 180 g protein &middot; valid</div></div></div></div>
+                    </div>
+                </div>
+                <div class="pp-obj pp-fly px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">meal-plan.json</div><div class="px-fs">3,311 kcal &middot; 180 g protein &middot; valid</div></div></div>
+                <div class="pp-obj pp-phone"><div class="pp-scr">
+                    <img src="images/Success_import2.webp" alt="" loading="lazy">
+                    <div class="pp-pill">&#10003; IMPORTED &middot; 7 DAYS</div>
+                </div></div>
+            </div>
+        </div>
+        <div class="pp-flow pp-flow-train" data-key="train">
+            <div class="pp-copy">
+                <div class="pp-rail"><i class="on"></i><i></i><i></i></div>
+                <div class="pp-beat"><span class="pp-tag">01 &middot; You answer</span><h3>A few quick questions.</h3><p>Your split, equipment and schedule become a research-packed prompt. One tap to copy.</p></div>
+                <div class="pp-beat"><span class="pp-tag">02 &middot; Any AI writes</span><h3>Paste it into your AI.</h3><p>ChatGPT, Claude, Gemini. It hands back a file. That is the easy part.</p></div>
+                <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit runs it</span><h3>Now the part a chat can't.</h3><p>Rest timers that run themselves. Sets logged, loads carried into next week, a swap when the rack's taken, deloads landing on the right day.</p></div>
+            </div>
+            <div class="pp-vis">
+                <div class="pp-obj pp-q px-win">
+                    <div class="px-grab"></div>
+                    <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
+                    <div class="px-kv"><span>Goal</span><b>Build muscle</b></div><div class="px-kv"><span>Days</span><b>4 per week</b></div><div class="px-kv"><span>Equipment</span><b>Full gym</b></div><div class="px-kv"><span>Length</span><b>52 weeks</b></div>
+                    <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
+                </div>
+                <div class="pp-obj pp-chat px-win">
+                    <div class="px-ch"><span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span><div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div></div>
+                    <div class="px-cb">
+                        <div class="px-bub you"><div class="px-ptag">Pasted from JSON.fit</div><div class="px-ptxt">You are a strength coach. Program 52 weeks of upper/lower for 4 days a week in a full gym, with progressive overload and scheduled deloads&hellip;</div><span class="px-more">+ 1,180 more words</span></div>
+                        <div class="pp-dots"><i></i><i></i><i></i></div>
+                        <div class="px-bub ai"><div class="px-line">Done. Your year is attached.</div><div class="px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">workout-program.json</div><div class="px-fs">52 weeks &middot; 4 days/week &middot; valid</div></div></div></div>
+                    </div>
+                </div>
+                <div class="pp-obj pp-fly px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">workout-program.json</div><div class="px-fs">52 weeks &middot; 4 days/week &middot; valid</div></div></div>
+                <div class="pp-obj pp-phone"><div class="pp-scr">
+                    <img src="images/Workout_Log.webp" alt="" loading="lazy">
+                    <div class="pp-pill">&#10003; IMPORTED &middot; 52 WEEKS</div>
+                </div></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="container">
+        <p class="science-tag sa sa-up"><span class="sci-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Built on peer-reviewed training and nutrition science</span></span></p>
     </div>
 </section>
 
@@ -1068,27 +1150,6 @@
     </div>
 </section>
 
-<section class="section" id="compare" data-track="meal">
-    <div class="container">
-        <div class="section-head sa sa-up" style="text-align:center;">
-            <div class="section-line" style="margin:0 auto 1rem;"></div>
-            <span class="label">Compare</span>
-            <h2>What it costs to do this <span class="cyan">any other way.</span></h2>
-            <p style="margin:0 auto;">Same job: meals to your macros, a shopping list, prep and training.</p>
-        </div>
-        <div class="comp sa sa-up">
-            <div class="comp-head"><div></div><div>JSON.fit</div><div>MyFitnessPal+</div><div>Eat This Much</div><div>My Muscle Chef</div></div>
-            <div class="comp-row"><div>Cost to use it fully</div><div>Free</div><div class="comp-x">$99.99 a year</div><div class="comp-x">~$60 a year</div><div class="comp-x">$350&ndash;490 a week</div></div>
-            <div class="comp-row"><div>Meals built for gaining</div><div>&#10003;</div><div class="comp-x">&#10007; tracker only</div><div class="comp-x">Recipes lean light</div><div>&#10003;</div></div>
-            <div class="comp-row"><div>One weekly shopping list</div><div>&#10003;</div><div>&#10003; on Premium+</div><div>&#10003; on Premium</div><div>n/a</div></div>
-            <div class="comp-row"><div>One batch prep session</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007; per recipe</div><div>n/a &mdash; reheat</div></div>
-            <div class="comp-row"><div>Training program included</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
-            <div class="comp-row"><div>No cooking required</div><div class="comp-x">&#10007; cook once a week</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-win">&#10003; delivery wins here</div></div>
-            <div class="comp-row"><div>No account, no subscription, no ads</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
-        </div>
-        <p class="comp-note sa sa-up">App prices USD, delivery AUD, checked September 2026.</p>
-    </div>
-</section>
 
 <section class="section" id="programs" data-track="train">
     <div class="container">
@@ -1328,85 +1389,6 @@
     </div>
 </section>
 
-<section class="section engine" id="how">
-    <div class="container">
-        <div class="section-head sa sa-up" style="text-align:center;">
-            <div class="section-line" style="margin:0 auto 1rem;"></div>
-            <span class="label">How your plan gets built</span>
-            <h2>A week of meals <span class="cyan">in three steps.</span></h2>
-            <p style="margin:0 auto;">AI can write you a meal plan. JSON.fit turns it into a week you can actually follow.</p>
-            <div class="pl-toggle" role="tablist">
-                <button class="pl-tg active" data-flow="meal" role="tab" aria-selected="true">Meal plan</button>
-                <button class="pl-tg" data-flow="train" role="tab" aria-selected="false">Training program</button>
-            </div>
-        </div>
-    </div>
-    <div class="pp-pin" id="ppPin">
-        <div class="pp-stage" id="ppStage" data-flow="meal">
-        <div class="pp-flow pp-flow-meal" data-key="meal">
-            <div class="pp-copy">
-                <div class="pp-rail"><i class="on"></i><i></i><i></i></div>
-                <div class="pp-beat"><span class="pp-tag">01 &middot; You answer</span><h3>A few quick questions.</h3><p>Your goal, stats and favourite meals become a research-packed prompt. One tap to copy.</p></div>
-                <div class="pp-beat"><span class="pp-tag">02 &middot; Any AI writes</span><h3>Paste it into your AI.</h3><p>ChatGPT, Claude, Gemini. It hands back a file. That is the easy part.</p></div>
-                <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit does the week</span><h3>Now the part AI can't do.</h3><p>One grocery list, priced. One prep session in cooking order. Every meal timed, tracked and ticked off as you go.</p></div>
-            </div>
-            <div class="pp-vis">
-                <div class="pp-obj pp-q px-win">
-                    <div class="px-grab"></div>
-                    <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
-                    <div class="px-kv"><span>Goal</span><b>Weight gain</b></div><div class="px-kv"><span>Target</span><b>90kg</b></div><div class="px-kv"><span>Meals</span><b>6 per day</b></div><div class="px-kv"><span>Training</span><b>4 days/week</b></div>
-                    <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
-                </div>
-                <div class="pp-obj pp-chat px-win">
-                    <div class="px-ch"><span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span><div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div></div>
-                    <div class="px-cb">
-                        <div class="px-bub you"><div class="px-ptag">Pasted from JSON.fit</div><div class="px-ptxt">You are a sports nutritionist. Build a 7-day meal plan for an 82 kg male targeting 90 kg: 3,311 kcal, 180 g protein, 6 meals a day, built from the favourites listed below&hellip;</div><span class="px-more">+ 1,240 more words</span></div>
-                        <div class="pp-dots"><i></i><i></i><i></i></div>
-                        <div class="px-bub ai"><div class="px-line">Done. Your week is attached.</div><div class="px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">meal-plan.json</div><div class="px-fs">3,311 kcal &middot; 180 g protein &middot; valid</div></div></div></div>
-                    </div>
-                </div>
-                <div class="pp-obj pp-fly px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">meal-plan.json</div><div class="px-fs">3,311 kcal &middot; 180 g protein &middot; valid</div></div></div>
-                <div class="pp-obj pp-phone"><div class="pp-scr">
-                    <img src="images/Success_import2.webp" alt="" loading="lazy">
-                    <div class="pp-pill">&#10003; IMPORTED &middot; 7 DAYS</div>
-                </div></div>
-            </div>
-        </div>
-        <div class="pp-flow pp-flow-train" data-key="train">
-            <div class="pp-copy">
-                <div class="pp-rail"><i class="on"></i><i></i><i></i></div>
-                <div class="pp-beat"><span class="pp-tag">01 &middot; You answer</span><h3>A few quick questions.</h3><p>Your split, equipment and schedule become a research-packed prompt. One tap to copy.</p></div>
-                <div class="pp-beat"><span class="pp-tag">02 &middot; Any AI writes</span><h3>Paste it into your AI.</h3><p>ChatGPT, Claude, Gemini. It hands back a file. That is the easy part.</p></div>
-                <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit runs the year</span><h3>Now the part AI can't do.</h3><p>Every set logged, every rest timed, swaps when the rack is taken, deloads on schedule for 52 weeks.</p></div>
-            </div>
-            <div class="pp-vis">
-                <div class="pp-obj pp-q px-win">
-                    <div class="px-grab"></div>
-                    <div class="px-sh"><span class="t">A few quick questions</span><span class="px-loc">JSON.fit</span></div>
-                    <div class="px-kv"><span>Goal</span><b>Build muscle</b></div><div class="px-kv"><span>Days</span><b>4 per week</b></div><div class="px-kv"><span>Equipment</span><b>Full gym</b></div><div class="px-kv"><span>Length</span><b>52 weeks</b></div>
-                    <div class="px-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>COPY PROMPT</div>
-                </div>
-                <div class="pp-obj pp-chat px-win">
-                    <div class="px-ch"><span class="px-ava"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span><div><div class="t">Your AI</div><div class="s">ChatGPT &middot; Claude &middot; Gemini &middot; any AI</div></div></div>
-                    <div class="px-cb">
-                        <div class="px-bub you"><div class="px-ptag">Pasted from JSON.fit</div><div class="px-ptxt">You are a strength coach. Program 52 weeks of upper/lower for 4 days a week in a full gym, with progressive overload and scheduled deloads&hellip;</div><span class="px-more">+ 1,180 more words</span></div>
-                        <div class="pp-dots"><i></i><i></i><i></i></div>
-                        <div class="px-bub ai"><div class="px-line">Done. Your year is attached.</div><div class="px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">workout-program.json</div><div class="px-fs">52 weeks &middot; 4 days/week &middot; valid</div></div></div></div>
-                    </div>
-                </div>
-                <div class="pp-obj pp-fly px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">workout-program.json</div><div class="px-fs">52 weeks &middot; 4 days/week &middot; valid</div></div></div>
-                <div class="pp-obj pp-phone"><div class="pp-scr">
-                    <img src="images/Workout_Log.webp" alt="" loading="lazy">
-                    <div class="pp-pill">&#10003; IMPORTED &middot; 52 WEEKS</div>
-                </div></div>
-            </div>
-        </div>
-        </div>
-    </div>
-    <div class="container">
-        <p class="science-tag sa sa-up"><span class="sci-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Built on peer-reviewed training and nutrition science</span></span></p>
-    </div>
-</section>
 <!-- Founder: why I built this -->
 <section class="section" id="founder">
     <div class="container">
@@ -1451,6 +1433,28 @@
             <div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="review-title">Awesome app, fitness plans</div><p class="review-body">Created me a 12 week fitness plan for all my personal priorities. Was even able to add additional preferences via AI.</p><div class="review-meta">Rory@TVX &middot; 23 May &middot; Australia</div></div>
             <div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="review-title">Replaced my $30/month PT app</div><p class="review-body">Was paying for an AI trainer that was just GPT under the hood anyway. This app lets me use ChatGPT myself to build my program and just handles the tracking. Workouts are completely free too which I wasn't expecting.</p><div class="review-meta">ReeceAdam &middot; 31 Mar &middot; Australia</div></div>
         </div>
+    </div>
+</section>
+
+<section class="section" id="compare" data-track="meal">
+    <div class="container">
+        <div class="section-head sa sa-up" style="text-align:center;">
+            <div class="section-line" style="margin:0 auto 1rem;"></div>
+            <span class="label">Compare</span>
+            <h2>What it costs to do this <span class="cyan">any other way.</span></h2>
+            <p style="margin:0 auto;">Same job: meals to your macros, a shopping list, prep and training.</p>
+        </div>
+        <div class="comp sa sa-up">
+            <div class="comp-head"><div></div><div>JSON.fit</div><div>MyFitnessPal+</div><div>Eat This Much</div><div>My Muscle Chef</div></div>
+            <div class="comp-row"><div>Cost to use it fully</div><div>Free</div><div class="comp-x">$99.99 a year</div><div class="comp-x">~$60 a year</div><div class="comp-x">$350&ndash;490 a week</div></div>
+            <div class="comp-row"><div>Meals built for gaining</div><div>&#10003;</div><div class="comp-x">&#10007; tracker only</div><div class="comp-x">Recipes lean light</div><div>&#10003;</div></div>
+            <div class="comp-row"><div>One weekly shopping list</div><div>&#10003;</div><div>&#10003; on Premium+</div><div>&#10003; on Premium</div><div>n/a</div></div>
+            <div class="comp-row"><div>One batch prep session</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007; per recipe</div><div>n/a &mdash; reheat</div></div>
+            <div class="comp-row"><div>Training program included</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+            <div class="comp-row"><div>No cooking required</div><div class="comp-x">&#10007; cook once a week</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-win">&#10003; delivery wins here</div></div>
+            <div class="comp-row"><div>No account, no subscription, no ads</div><div>&#10003;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div><div class="comp-x">&#10007;</div></div>
+        </div>
+        <p class="comp-note sa sa-up">App prices USD, delivery AUD, checked September 2026.</p>
     </div>
 </section>
 
@@ -1897,6 +1901,25 @@
   x.addEventListener('click', close);
   document.addEventListener('click', function(e){ if(!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) close(); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+
+<!-- Scroll depth, per tab: 25 / 50 / 75 / 100, sent once each per page view -->
+<script>
+(function(){
+  var marks = [25, 50, 75, 100], sent = {};
+  function check(){
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight; if (max <= 0) return;
+    var pct = Math.round((window.scrollY / max) * 100);
+    var tab = document.body.getAttribute('data-tab') || 'meal';
+    marks.forEach(function(m){
+      var key = tab + ':' + m;
+      if (pct >= m && !sent[key]) { sent[key] = true; if (window.gtag) gtag('event', 'scroll_depth', { 'percent': m, 'view': tab }); }
+    });
+  }
+  var t = null;
+  window.addEventListener('scroll', function(){ if (t) return; t = setTimeout(function(){ t = null; check(); }, 250); }, { passive: true });
 })();
 </script>
 
