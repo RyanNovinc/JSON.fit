@@ -70,7 +70,7 @@ h1{font-size:clamp(2rem,4.6vw,3.2rem);font-weight:800;letter-spacing:-.03em;line
 /* detail sheet */
 .sheet{position:fixed;inset:0;z-index:200;background:rgba(5,5,8,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;overscroll-behavior:contain}
 .sheet.open{display:flex}
-.panel{position:relative;width:100%;max-width:760px;max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:0 0 2rem;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.panel{position:relative;width:100%;max-width:760px;max-height:92vh;max-height:92svh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:0 0 2rem;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .panel::-webkit-scrollbar{display:none}
 @media(min-width:760px){.sheet{align-items:center;padding:1rem}.panel{border-radius:18px}}
 .panel .anim{border-radius:18px 18px 0 0}
@@ -103,6 +103,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 @media(max-width:700px){.chips{flex:1 1 100%;order:3}.search{flex:1 1 auto;width:auto;min-width:0}.count{order:2}}
 @media(max-width:600px){.musc{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr;gap:.7rem}.name{font-size:.88rem}.body{padding:.7rem .75rem .8rem;gap:.4rem}.tag{font-size:.55rem}.meta{font-size:.52rem}.cat{display:none}}
 @media(prefers-reduced-motion:reduce){.anim.go img.b{opacity:0}}
+/* Phones: the sheet fits the small viewport (iOS measures vh with the toolbar hidden), and the X is pinned to the screen so it stays reachable. */
+@media(max-width:759px){.panel{max-height:88svh;padding-bottom:calc(2rem + env(safe-area-inset-bottom,0px))}.panel .close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;z-index:210}}
 </style>
 </head>
 <body>
