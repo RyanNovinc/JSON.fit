@@ -82,6 +82,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56p
 
 /* ── Document card ── */
 .doc-wrap{padding:2.25rem 0 4rem}
+.doc-wrap[hidden]{display:none}
+/* Evidence grid */
+.stats{display:flex;gap:1.8rem;flex-wrap:wrap;margin-top:1.6rem}
+.stat b{display:block;font-family:'DM Mono',monospace;font-size:1.7rem;font-weight:500;color:#fff;line-height:1}
+.stat span{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.ev-wrap{padding:1.5rem 0 3rem}
+.ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.ev{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.25rem 1.1rem;display:flex;flex-direction:column;gap:.7rem}
+.ev-top{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem}
+.ev h3{font-size:1.05rem;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.ev-n{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);white-space:nowrap}
+.ev-rule{font-size:.9rem;color:var(--text);line-height:1.5}
+.ev-papers{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin-top:.1rem}
+.ev-papers a{display:flex;justify-content:space-between;gap:.6rem;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-2);text-decoration:none;line-height:1.4}
+.ev-papers a:hover{color:var(--cyan)}
+.ev-papers a span:first-child{white-space:nowrap}
+.ev-papers a span:last-child{color:var(--text-3);text-align:right}
+.ev-all{margin-top:auto;padding-top:.5rem;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);text-decoration:none}
+.ev-all:hover{color:var(--cyan-bright)}
+.ev-note{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-3);line-height:1.7;margin-top:1.4rem;max-width:620px}
+.ev-note a{color:var(--text-2)}
+.reader-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem}
+.reader-head h2{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;font-size:1.6rem}
+.reader-head h2 em{color:var(--cyan)}
+.reader-close{font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);text-decoration:none;border:1px solid var(--border);border-radius:100px;padding:.35rem .8rem}
+.reader-close:hover{color:var(--cyan);border-color:var(--cyan-border)}
 .doc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem 2rem 2.25rem}
 .doc-meta{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:1.5rem;padding-bottom:1.1rem;border-bottom:1px solid var(--border);display:flex;gap:1.25rem;flex-wrap:wrap}
 .doc-meta a{color:var(--text-3);text-decoration:none;border-bottom:1px solid var(--border)}
@@ -180,17 +206,26 @@ window.navBack=function(e){
 <!-- HERO -->
 <section class="hero">
   <div class="hero-in">
-    <div class="h-ov">The research &middot; <span class="cyan">every number, cited</span></div>
-    <h1 class="h-display" id="docTitle">Showing <em>the working.</em></h1>
-    <p class="h-sub" id="docBlurb">Every number JSON.fit prescribes comes from somewhere. This is where.</p>
-    <div class="topics" id="topics"></div>
+    <div class="h-ov">The evidence &middot; <span class="cyan">every number, cited</span></div>
+    <h1 class="h-display">Every number in the app <em>has a paper behind it.</em></h1>
+    <p class="h-sub">Nine decisions the app makes for you, each one set from the research below. You don't have to read any of it. That's the point.</p>
+    <div class="stats"><div class="stat"><b>9</b><span>decisions</span></div><div class="stat"><b id="stSources">&ndash;</b><span>sources cited</span></div><div class="stat"><b>Sep 2026</b><span>last reviewed</span></div></div>
+  </div>
+</section>
+
+<!-- EVIDENCE GRID -->
+<section class="ev-wrap">
+  <div class="container" style="max-width:1100px">
+    <div class="ev-grid" id="evGrid"></div>
+    <p class="ev-note">These are the same files the app's AI reads when it writes your program. Not a copy. Edit one and the program and this page change together. <a href="https://json.fit/exercises/">Exercise cues</a> carry their own sources on each card.</p>
   </div>
 </section>
 
 <!-- DOCUMENT -->
-<section class="doc-wrap">
+<section class="doc-wrap" id="reader" hidden>
   <div class="container">
     <div class="doc">
+      <div class="reader-head"><h2 id="docTitle"></h2><a class="reader-close" href="/research/">Close</a></div>
       <div class="doc-meta" id="docMeta"></div>
       <div class="md" id="docBody"><div class="state">Loading…</div></div>
     </div>
@@ -228,74 +263,86 @@ window.navBack=function(e){
    ════════════════════════════════════════════════════════════════════ */
 
 var TOPICS = [
-  {
-    key: 'rest',
-    label: 'Rest periods',
-    file: 'https://json.fit/rest-references.md',
-    title: 'How long to <em>rest.</em>',
-    blurb: 'Rest is a secondary lever behind volume, load and how close you train to failure. These are the studies that set every number the timer counts down.'
-  },
-  {
-    key: 'reps',
-    label: 'Rep ranges',
-    file: 'https://json.fit/rep-range-references.md',
-    title: 'How many <em>reps.</em>',
-    blurb: 'Muscle grows across roughly 5 to 30 reps when effort and weekly sets are matched. What changes with the number is which exercises can carry it.'
-  },
-  {
-    key: 'volume',
-    label: 'Training volume',
-    file: 'https://json.fit/volume-references.md',
-    title: 'How many <em>sets.</em>',
-    blurb: 'Weekly sets per muscle is the dial that drives growth. Every muscle gets its own range, and these are the meta-analyses behind them.'
-  }
+  { key:'volume',  label:'Weekly sets per muscle', file:'https://json.fit/volume-references.md', title:'How many <em>sets.</em>',
+    rule:'Each muscle gets its own weekly range, counted as effective sets. Programs build from the floor and never pass the ceiling.',
+    papers:[['Pelland 2025','meta-regression, 67 studies','https://pubmed.ncbi.nlm.nih.gov/41343037/'],['Schoenfeld 2017','dose-response meta-analysis','https://pubmed.ncbi.nlm.nih.gov/27433992/'],['Krieger 2010','meta-analysis','https://pubmed.ncbi.nlm.nih.gov/20300012/']] },
+  { key:'rest',    label:'Rest between sets', file:'https://json.fit/rest-references.md', title:'How long to <em>rest.</em>',
+    rule:'Heavy compounds never rest under 2 minutes. Isolation gets 60 to 120 seconds. The timer sets it per exercise and pace.',
+    papers:[['Schoenfeld 2016','randomised trial, 1 vs 3 min','https://pubmed.ncbi.nlm.nih.gov/26605807/'],['Singer 2024','Bayesian meta-analysis','https://pubmed.ncbi.nlm.nih.gov/39205815/'],['Grgic 2018','systematic review','https://pubmed.ncbi.nlm.nih.gov/28933024/']] },
+  { key:'reps',    label:'Rep ranges', file:'https://json.fit/rep-range-references.md', title:'How many <em>reps.</em>',
+    rule:'Muscle grows anywhere from 5 to 30 reps at matched effort. Compounds sit at 5 to 10, isolation at 10 to 15, and reps climb at a held load.',
+    papers:[['Schoenfeld 2017','meta-analysis, load and hypertrophy','https://pubmed.ncbi.nlm.nih.gov/28834797/'],['Schoenfeld 2021','loading recommendations review','https://pubmed.ncbi.nlm.nih.gov/33671664/'],['Morton 2016','randomised trial, trained men','https://pubmed.ncbi.nlm.nih.gov/27174923/']] },
+  { key:'deload',  label:'Deloads', file:'https://json.fit/deload-references.md', title:'When to <em>back off.</em>',
+    rule:'Planned as the last week of every block: volume cut hard, load held, effort eased. A week like that costs nothing.',
+    papers:[['Bickel 2011','maintenance volume keeps gains','https://pubmed.ncbi.nlm.nih.gov/21131862/'],['Bosquet 2007','taper meta-analysis, 27 studies','https://pubmed.ncbi.nlm.nih.gov/17762369/'],['Bell 2023','deloading recommendations','https://link.springer.com/article/10.1186/s40798-023-00633-0']] },
+  { key:'protein', label:'Protein', file:'https://json.fit/protein-references.md', title:'How much <em>protein.</em>',
+    rule:'1.6 to 2.2 g per kg a day, with a floor of 0.4 g per kg at each main meal across 3 to 5 meals.',
+    papers:[['Moore 2009','per-meal dose response','https://pubmed.ncbi.nlm.nih.gov/19056590/'],['Witard 2014','20 vs 40 g after training','https://pubmed.ncbi.nlm.nih.gov/24257722/'],['Trommelen 2023','100 g single-meal study','https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(23)00490-7']] },
+  { key:'timing',  label:'Meal timing', file:'https://json.fit/meal-timing-references.md', title:'When to <em>eat.</em>',
+    rule:'Total intake decides results; timing is the smaller lever. Last full meal kept clear of bed, caffeine cut off early, a pre-sleep protein feed allowed.',
+    papers:[['Iao 2022','late eating and sleep','https://pubmed.ncbi.nlm.nih.gov/34511160/'],['Crispim 2011','meal timing and sleep quality','https://pubmed.ncbi.nlm.nih.gov/22171206/'],['Gu 2020','late dinner and metabolism','https://pubmed.ncbi.nlm.nih.gov/32525525/']] },
+  { key:'fibre',   label:'Fibre', file:'https://json.fit/fiber-references.md', title:'How much <em>fibre.</em>',
+    rule:'35 to 45 g a day on a bulk, held there rather than scaled with calories, so fibre never crowds out the food.',
+    papers:[['IOM 2005','Dietary Reference Intakes','https://nap.nationalacademies.org/catalog/10490/dietary-reference-intakes-for-energy-carbohydrate-fiber-fat-fatty-acids-cholesterol-protein-and-amino-acids'],['WHO 2023','carbohydrate intake guideline','https://www.who.int/publications/i/item/9789240073593'],['EFSA 2010','dietary reference values','https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2010.1462']] },
+  { key:'goal',    label:'Goal weight', file:'https://json.fit/lean-mass-targets-references.md', title:'What the goal <em>really is.</em>',
+    rule:'Goals are set as lean mass, not scale weight. Hit the lean-mass target, then take off the excess fat.',
+    papers:[['Hall 2007','Forbes\u2019 theory revisited','https://doi.org/10.1017/S0007114507691946'],['Method comparison','BIA vs DEXA','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9347159/'],['Gatterer','DEXA measurement error','https://www.dexalytics.com/news/higher-values-dxa/']] },
+  { key:'phase',   label:'Bulk, cut or recomp', file:'https://json.fit/phase-selection-references.md', title:'Which <em>phase.</em>',
+    rule:'The phase comes from body fat, not preference. Cut first above the band, bulk inside it, recomp in between. Surplus about +10%, deficit about 500 kcal.',
+    papers:[['Morton 2018','protein and lean mass meta-analysis','https://pmc.ncbi.nlm.nih.gov/articles/PMC5867436/'],['Garthe 2011','rate of loss and lean mass','https://pubmed.ncbi.nlm.nih.gov/21558571/'],['Slater 2019','surplus size and muscle gain','https://pubmed.ncbi.nlm.nih.gov/31482093/']] }
 ];
 
 (function(){
   var params = new URLSearchParams(location.search);
-  var key = params.get('topic') || 'rest';
-  var topic = TOPICS.filter(function(t){ return t.key === key; })[0] || TOPICS[0];
+  var key = params.get('topic');
+  var topic = TOPICS.filter(function(t){ return t.key === key; })[0] || null;
 
-  document.getElementById('docTitle').innerHTML = topic.title;
-  document.getElementById('docBlurb').textContent = topic.blurb;
-  document.title = topic.label + ' — the research behind JSON.fit';
-
-  document.getElementById('topics').innerHTML = TOPICS.map(function(t){
-    return '<a class="topic' + (t.key === topic.key ? ' active' : '') +
-           '" href="?topic=' + t.key + '">' + t.label + '</a>';
+  /* The grid: one card per decision. */
+  var grid = document.getElementById('evGrid');
+  grid.innerHTML = TOPICS.map(function(t){
+    return '<div class="ev" id="ev-' + t.key + '">' +
+      '<div class="ev-top"><h3>' + t.label + '</h3><span class="ev-n" data-count="' + t.key + '">&hellip;</span></div>' +
+      '<p class="ev-rule">' + t.rule + '</p>' +
+      '<ul class="ev-papers">' + t.papers.map(function(p){ return '<li><a href="' + p[2] + '" target="_blank" rel="noopener noreferrer"><span>' + p[0] + '</span><span>' + p[1] + '</span></a></li>'; }).join('') + '</ul>' +
+      '<a class="ev-all" href="?topic=' + t.key + '#reader">All sources &rarr;</a>' +
+    '</div>';
   }).join('');
 
+  /* Live source counts: every external link in each file, counted once. The total goes in the hero. */
+  var total = 0, done = 0;
+  TOPICS.forEach(function(t){
+    fetch(t.file, { cache: 'no-cache' }).then(function(r){ return r.ok ? r.text() : ''; }).then(function(md){
+      var seen = {}, n = 0;
+      (md.match(/https?:\/\/[^\s)>\]]+/g) || []).forEach(function(u){ if (u.indexOf('json.fit') === -1 && !seen[u]) { seen[u] = 1; n++; } });
+      var el = document.querySelector('[data-count="' + t.key + '"]'); if (el) el.textContent = n ? n + ' sources' : '';
+      total += n; done++;
+      if (done === TOPICS.length) document.getElementById('stSources').textContent = total;
+    }).catch(function(){ done++; if (done === TOPICS.length) document.getElementById('stSources').textContent = total; });
+  });
+
+  /* The reader: the full file, only when a card asks for it. */
+  var reader = document.getElementById('reader');
+  if (!topic) return;
+  reader.hidden = false;
+  document.getElementById('docTitle').innerHTML = topic.title;
+  document.title = topic.label + ' \u2014 the research behind JSON.fit';
   document.getElementById('docMeta').innerHTML =
     '<span>Source &middot; <a href="' + topic.file + '">' + topic.file.replace('https://json.fit/','') + '</a></span>' +
     '<span>Read by the app when it writes your program</span>';
-
   var body = document.getElementById('docBody');
-
-  // A CDN failure must not leave a blank page. Every failure path ends with a
-  // working link to the raw file, which is the thing the visitor came for.
-  function fallback(msg){
-    body.innerHTML = '<div class="state">' + msg +
-      '<br><br><a href="' + topic.file + '">Open the raw file &rarr;</a></div>';
-  }
-
+  function fallback(msg){ body.innerHTML = '<div class="state">' + msg + '<br><br><a href="' + topic.file + '">Open the raw file &rarr;</a></div>'; }
   if (typeof marked === 'undefined') { fallback('Could not load the renderer'); return; }
-
   fetch(topic.file, { cache: 'no-cache' })
     .then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
     .then(function(md){
       body.innerHTML = marked.parse(md);
-      // Every citation here points off-site to PubMed and friends. Open them in
-      // a new tab so a visitor reading the list does not lose their place, and
-      // set rel to stop the target page reaching back into this one.
-      body.querySelectorAll('a[href^="http"]').forEach(function(a){
-        if (a.hostname !== location.hostname) {
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-        }
-      });
+      body.querySelectorAll('a[href^="http"]').forEach(function(a){ if (a.hostname !== location.hostname) { a.target = '_blank'; a.rel = 'noopener noreferrer'; } });
+      if (location.hash === '#reader') reader.scrollIntoView();
     })
     .catch(function(){ fallback('Could not load the document'); });
+})();
 
+(function(){
   /* ── Mobile menu ── */
   var burger = document.getElementById('burger'), navLinks = document.getElementById('navLinks');
   burger.addEventListener('click', function(e){ e.stopPropagation(); burger.classList.toggle('open'); navLinks.classList.toggle('open'); });
