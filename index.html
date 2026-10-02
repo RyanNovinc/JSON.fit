@@ -593,8 +593,14 @@
         .fh-note-pop .own-who { margin-top:1rem; }
         @media (max-width:600px) { .fh-note { font-size:.74rem; } .fh-note-txt { font-size:.84rem; } .fh-note-pop { padding:1.1rem 1.1rem 1rem; } .fh-note-pop .own-q { font-size:.98rem; } }
 
+        /* === Nav hides on scroll down, returns on scroll up; the tab bar stays and moves up to top:0 === */
+        nav { transition: transform .28s ease; }
+        body.nav-hidden nav { transform: translateY(-100%); }
+        body.nav-hidden .nav-links.open { transform: none; }
+
         /* === Meals / Training tabs: one page, two tracks === */
-        .trk { position:sticky; top:56px; z-index:40; display:flex; justify-content:center; padding:.8rem 1rem; background:rgba(5,5,8,0.85); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
+        .trk { position:sticky; top:56px; z-index:40; transition:top .28s ease; display:flex; justify-content:center; padding:.8rem 1rem; background:rgba(5,5,8,0.85); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
+        body.nav-hidden .trk { top:0; }
         .trk-seg { display:flex; border:1px solid var(--border); border-radius:100px; padding:3px; background:var(--surface); }
         .trk-seg button { border:none; background:none; color:var(--text-2); font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; padding:.55rem 1.3rem; border-radius:100px; cursor:pointer; transition:color .2s; }
         .trk-seg button.on { background:var(--cyan); color:#001318; font-weight:500; }
@@ -1891,6 +1897,23 @@
   x.addEventListener('click', close);
   document.addEventListener('click', function(e){ if(!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) close(); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+
+<!-- Nav: hide on scroll down, show on scroll up -->
+<script>
+(function(){
+  var lastY = window.scrollY, ticking = false, body = document.body;
+  var navLinks = document.getElementById('navLinks');
+  function update(){
+    var y = window.scrollY;
+    var menuOpen = navLinks && navLinks.classList.contains('open');
+    if (menuOpen || y < 80) body.classList.remove('nav-hidden');
+    else if (y > lastY + 6) body.classList.add('nav-hidden');
+    else if (y < lastY - 6) body.classList.remove('nav-hidden');
+    lastY = y; ticking = false;
+  }
+  window.addEventListener('scroll', function(){ if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
 })();
 </script>
 
