@@ -1975,6 +1975,7 @@
   var navLinks = document.getElementById('navLinks');
   function update(){
     var y = window.scrollY;
+    if (window.__jfJumping && Date.now() - window.__jfJumping < 400) { lastY = y; ticking = false; return; }
     var menuOpen = navLinks && navLinks.classList.contains('open');
     if (menuOpen || y < 80) body.classList.remove('nav-hidden');
     else if (y > lastY + 6) body.classList.add('nav-hidden');
@@ -2033,7 +2034,11 @@
     if (!el || el.offsetParent === null) return;
     jump(el.getBoundingClientRect().top + window.scrollY - a.vy);
   }
-  function jump(y){ var h = document.documentElement; var prev = h.style.scrollBehavior; h.style.scrollBehavior = 'auto'; window.scrollTo(0, y); h.style.scrollBehavior = prev; }
+  function jump(y){
+    var h = document.documentElement; var prev = h.style.scrollBehavior; h.style.scrollBehavior = 'auto';
+    window.__jfJumping = Date.now();   /* the nav-hide script leaves the nav alone for scrolls the page does itself */
+    window.scrollTo(0, y); h.style.scrollBehavior = prev;
+  }
   function setTab(k, push){
     var a = push ? anchorNow() : null;
     body.setAttribute('data-tab', k);
