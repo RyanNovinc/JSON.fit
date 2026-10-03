@@ -225,7 +225,7 @@
         .cta-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
         .cta-card > * { position:relative; z-index:1; }
         .cta-badge { display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--cyan); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
-        .cta-card h2 { font-family:'Outfit',sans-serif; font-weight:800; color:#fff; font-size:1.9rem; letter-spacing:-0.01em; line-height:1.15; margin-bottom:0.75rem; }
+        .cta-card h2 { font-family:'Outfit',sans-serif; font-weight:800; color:#fff; font-size:1.75rem; letter-spacing:-0.02em; line-height:1.15; margin-bottom:1.6rem; }
         .cta-card h2 em { color:var(--cyan); font-style:normal; }
         .cta-price { display:flex; align-items:baseline; justify-content:center; gap:0.4rem; margin-bottom:0.25rem; }
         .cta-price .big { font-family:'DM Mono',monospace; font-size:2.5rem; font-weight:500; color:var(--cyan); }
@@ -398,7 +398,7 @@
             .fh-display { font-size:2.6rem; }
             .comp-head, .comp-row { min-width:660px; }
             .ai-strip span { font-size:0.62rem; }
-            .cta-card { padding:2rem 1.25rem; }
+            .cta-card { padding:2rem 1.25rem; } .cta-card h2 { font-size:1.5rem; }
             .proof-card { padding:1.5rem; }
             .qual { padding:2rem 1.25rem; }
         }
@@ -1231,7 +1231,7 @@
         <div class="section-head sa sa-up" style="text-align:center;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">The exercise library</span>
-            <h2>130+ exercises. <span class="cyan">Every one earns its place.</span></h2>
+            <h2>130+ exercises.<br><span class="cyan">Every one earns its place.</span></h2>
         </div>
         <div class="exl-grid sa sa-up" id="exlGrid">
             <a class="exl" href="/exercises/#barbell-back-squat"><div class="exl-pic"><img src="images/exercises/barbell-back-squat/blue/start.webp" alt="Barbell Back Squat" loading="lazy"><img class="b" src="images/exercises/barbell-back-squat/blue/end.webp" alt="" loading="lazy"></div><div class="exl-body"><div class="exl-name">Barbell Back Squat</div><span class="exl-tag">Quads</span></div></a>
@@ -1457,7 +1457,6 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Compare</span>
             <h2>What it costs to do this <span class="cyan">any other way.</span></h2>
-            <p style="margin:0 auto;">Same job: meals to your macros, a shopping list, prep and training.</p>
         </div>
         <div class="comp sa sa-up">
             <div class="comp-head"><div></div><div>JSON.fit</div><div>MyFitnessPal+</div><div>Eat This Much</div><div>My Muscle Chef</div></div>
@@ -1479,7 +1478,6 @@
             <div class="section-line" style="margin:0 auto 1rem;"></div>
             <span class="label">Compare</span>
             <h2>What it costs to do this <span class="cyan">any other way.</span></h2>
-            <p style="margin:0 auto;">Same job: a program built on the research, then run in the gym.</p>
         </div>
         <div class="comp sa sa-up">
             <div class="comp-head"><div></div><div>JSON.fit</div><div>Hevy</div><div>RP Hypertrophy</div><div>Online coach</div></div>
@@ -1499,8 +1497,7 @@
 <section class="cta-wrap" id="download">
     <div class="cta-card sa sa-scale">
         <div class="cta-badge" style="color:var(--cyan)"><span class="st">&#9733;</span> 5.0 on the App Store</div>
-        <h2>Everything in the app is free. <em>No ads, no account.</em></h2>
-        <div class="cta-price"><span class="big">$0</span><span class="unit">to use &middot; no subscription</span></div>
+        <h2>Everything in the app is free.<br><em>No ads, no account.</em></h2>
         
         <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'cta','platform':'ios'})">
             <svg width="15" height="18" viewBox="0 0 18 22" fill="none"><path d="M14.94 11.58c-.02-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.78-1.39-.14-2.72.82-3.43.82-.71 0-1.81-.8-2.98-.78-1.53.02-2.95.89-3.74 2.27-1.59 2.77-.41 6.87 1.15 9.11.76 1.1 1.66 2.34 2.85 2.29 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.27 1.23-2.51 1.25-2.57-.03-.01-2.4-.92-2.42-3.66zm-2.27-6.73C13.32 4.09 13.78 3 13.65 1.9c-.93.04-2.06.62-2.73 1.4-.6.7-1.12 1.81-.98 2.87 1.04.08 2.1-.53 2.73-1.32z" fill="currentColor"/></svg>
