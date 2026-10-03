@@ -123,6 +123,8 @@
         .nav-soon:hover { opacity: 1; }
         .nav-links a.nav-meals { color: var(--green); }
         .nav-links a.nav-meals:hover { color: #4ade80; }
+        .nav-links a.nav-ex { color: var(--cyan); }
+        .nav-links a.nav-ex:hover { color: var(--cyan-bright, #67e8f9); }
         .nav-links a.nav-lab { color: var(--violet); }
         .nav-links a.nav-lab:hover { color: #c084fc; }
         .soon-pill { font-family: 'DM Mono', monospace; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.4; color: var(--violet); background: var(--violet-soft); border: 1px solid var(--violet-border); padding: 0.1rem 0.4rem; border-radius: 100px; }
@@ -223,8 +225,8 @@
         .cta-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
         .cta-card > * { position:relative; z-index:1; }
         .cta-badge { display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--cyan); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
-        .cta-card h2 { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#fff; font-size:1.9rem; letter-spacing:-0.01em; line-height:1.15; margin-bottom:0.75rem; }
-        .cta-card h2 em { color:var(--cyan); font-style:italic; }
+        .cta-card h2 { font-family:'Outfit',sans-serif; font-weight:800; color:#fff; font-size:1.9rem; letter-spacing:-0.01em; line-height:1.15; margin-bottom:0.75rem; }
+        .cta-card h2 em { color:var(--cyan); font-style:normal; }
         .cta-price { display:flex; align-items:baseline; justify-content:center; gap:0.4rem; margin-bottom:0.25rem; }
         .cta-price .big { font-family:'DM Mono',monospace; font-size:2.5rem; font-weight:500; color:var(--cyan); }
         .cta-price .unit { font-size:0.85rem; color:var(--text-2); }
@@ -968,8 +970,8 @@
     <ul class="nav-links" id="navLinks">
         <li><a href="#meals" class="nav-meals">Meals</a></li>
         <li><a href="#how">How It Works</a></li>
-        <li><a href="#programs">Programs</a></li>
-        <li><a href="/exercises/">Exercises</a></li>
+        <li><a href="/programs/">Programs</a></li>
+        <li><a href="/exercises/" class="nav-ex">Exercises</a></li>
         <li><a href="#compare">Compare</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="/lab" class="nav-lab">The Lab</a></li>
@@ -1476,18 +1478,10 @@
 
 <section class="cta-wrap" id="download">
     <div class="cta-card sa sa-scale">
-        <div class="cta-badge" style="color:var(--cyan)"><span class="st">&#9733;</span> 5.0 on the App Store &middot; No subscription</div>
+        <div class="cta-badge" style="color:var(--cyan)"><span class="st">&#9733;</span> 5.0 on the App Store</div>
         <h2>Everything in the app is free. <em>No ads, no account.</em></h2>
-        <div class="cta-price"><span class="big">$0</span><span class="unit">to use</span></div>
-        <div class="cta-checks">
-            <div class="cta-check"><span class="ic ic-g">&#10003;</span> Full bulking meal library, step-by-step</div>
-            <div class="cta-check"><span class="ic ic-c">&#10003;</span> AI meal plans built around your macros</div>
-            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Free year-long training programs</div>
-            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Priced grocery list and a one-session prep plan</div>
-            <div class="cta-check"><span class="ic ic-c">&#10003;</span> Meals dense enough to finish, prepped in one session</div>
-            <hr class="cta-div">
-            <div class="cta-check"><span class="ic ic-g">&#10003;</span> No ads and no account. The whole app, as it is today.</div>
-        </div>
+        <div class="cta-price"><span class="big">$0</span><span class="unit">to use &middot; no subscription</span></div>
+        
         <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="cta-btn" onclick="gtag('event','download_click',{'button_location':'cta','platform':'ios'})">
             <svg width="15" height="18" viewBox="0 0 18 22" fill="none"><path d="M14.94 11.58c-.02-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.78-1.39-.14-2.72.82-3.43.82-.71 0-1.81-.8-2.98-.78-1.53.02-2.95.89-3.74 2.27-1.59 2.77-.41 6.87 1.15 9.11.76 1.1 1.66 2.34 2.85 2.29 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.27 1.23-2.51 1.25-2.57-.03-.01-2.4-.92-2.42-3.66zm-2.27-6.73C13.32 4.09 13.78 3 13.65 1.9c-.93.04-2.06.62-2.73 1.4-.6.7-1.12 1.81-.98 2.87 1.04.08 2.1-.53 2.73-1.32z" fill="currentColor"/></svg>
             Download on the App Store
@@ -1508,16 +1502,15 @@
             <h2>Common questions.</h2>
         </div>
         <div class="faq sa sa-up">
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">I'm full after half a plate. Does this help?</button><div class="faq-a">The meals are built dense, so a plate you can finish carries more calories and protein than a plate you can't. It doesn't make you hungrier. It makes every meal you do eat count for more.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">I tried Sunday prep and quit. How is this different?</button><div class="faq-a">Every meal defaults to the fast version: jar sauce, minimal steps, real times. Most of the week's food comes off one shop and a short prep session, not an afternoon.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Does this work if I've got a full-time job?</button><div class="faq-a">That's exactly who it's built for. You answer a few questions once, import the plan, then cook in batches off a single grocery list. Most of the week's food gets handled in one prep session, so eating enough fits around work instead of taking it over.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much time does this take each week?</button><div class="faq-a">Building or importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go. The whole point is to hit your macros without bulking turning into a second job.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How does it actually work?</button><div class="faq-a">Three steps:<br>1. Answer a few quick questions.<br>2. Paste the prompt JSON.fit makes into any AI like ChatGPT, Claude or Gemini.<br>3. Import the meal plan it builds and start tracking.<br><br>The same flow builds your training program too.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">How much does JSON.fit cost?</button><div class="faq-a">It's completely free. Workouts <em>and</em> nutrition are all free: meal plans, macro tracking, grocery lists, meal prep and pantry intelligence. No subscription, no paywall, no in-app purchases.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">If it's free, what's the catch?</button><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20/month because they run AI on their own servers. JSON.fit uses the AI you already have, so there are no server costs to pass on. There are no ads, and nothing is sold. Your workouts, meals and health data stay on your device, and like most apps and websites JSON.fit collects anonymous, non-identifying usage analytics to help improve it. The app is simply free.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Do I need to pay for AI separately?</button><div class="faq-a">Most AI chatbots have a free tier that works perfectly. ChatGPT, Gemini and others all offer free access. If you're already paying for a premium AI subscription, even better. Either way, JSON.fit itself has no AI costs to pass on to you.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">What AI does it work with?</button><div class="faq-a">Any AI that can generate structured text, like ChatGPT, Claude, Gemini and DeepSeek. You're not locked into one provider. Use whatever you prefer.</div></div>
-            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Is my data private?</button><div class="faq-a">Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. Full details are in the <a href="privacy-policy.html" style="color:var(--cyan);text-decoration:none;">Privacy Policy</a>.</div></div>
+            <div class="faq-item" data-track="meal"><button class="faq-q" type="button" aria-expanded="false">I struggle to eat enough. How is this any different?</button><div class="faq-a">Every meal here is built dense, so the plate you can finish carries the calories, and most of the week's food comes off one shop and one prep session. You stop having to cook your way to 3,000 calories every night.</div></div>
+            <div class="faq-item" data-track="meal"><button class="faq-q" type="button" aria-expanded="false">How do I know this will work for me?</button><div class="faq-a">Because I built it for the same problem. I can't gain weight, I work full time, and I'd rather cook once a week than every night. Every meal and every number in the app is what I use on my own bulk, and the scans are public in <a href="/lab">The Lab</a>. If it's working on me, you'll see it there before you download anything.</div></div>
+            <div class="faq-item" data-track="meal"><button class="faq-q" type="button" aria-expanded="false">How much time does this take each week?</button><div class="faq-a">Importing a plan takes a few minutes. After that it's one shop and one prep session for most of your meals, then quick logging as you go.</div></div>
+            <div class="faq-item" data-track="train"><button class="faq-q" type="button" aria-expanded="false">Why would I trust a program an AI wrote?</button><div class="faq-a">Because the AI doesn't set the rules. The prompt carries the set ranges per muscle, the rep bands, the rest and the reps in reserve from the studies on the <a href="/research/">research page</a>, and a second pass checks the file against them before you import it. The AI only fills in the exercises for your equipment and your week.</div></div>
+            <div class="faq-item" data-track="train"><button class="faq-q" type="button" aria-expanded="false">How do I know this will work for me?</button><div class="faq-a">It isn't for powerlifters chasing a total, or for anyone who wants a coach to talk to. It's for lifters who want a program built on the evidence, laid out for a year, and tracked without thinking about it. I run my own training from it, and the scans are in <a href="/lab">The Lab</a>.</div></div>
+            <div class="faq-item" data-track="train"><button class="faq-q" type="button" aria-expanded="false">What if the equipment I need is taken?</button><div class="faq-a">Every exercise comes with alternatives that hit the same muscle. Swap it mid-session and the sets, reps and rest carry over.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">If it's free, what's the catch?</button><div class="faq-a">There isn't one. Most fitness apps charge $10&ndash;20 a month because they run AI on their own servers. JSON.fit uses the AI you already have, so there's no server cost to pass on. No ads, nothing sold. Your data stays on your device; the app only collects anonymous usage analytics to improve it.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Do I need to pay for AI separately?</button><div class="faq-a">The free tiers of ChatGPT, Claude and Gemini all work. If you already pay for one, even better. JSON.fit itself has no AI costs to pass on.</div></div>
+            <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">Is my data private?</button><div class="faq-a">Yes. Your workouts, meals and health data stay on your device and are never uploaded. There are no accounts. Like most apps, it uses anonymous, non-identifying analytics to see how it's used. Full details are in the <a href="privacy-policy.html">Privacy Policy</a>.</div></div>
         </div>
     </div>
 </section>
@@ -2026,8 +2019,23 @@
     var sec=el.closest('[data-track]');
     if(sec && body.getAttribute('data-tab')!==sec.getAttribute('data-track')){ setTab(sec.getAttribute('data-track'),false); setTimeout(function(){ el.scrollIntoView(); },50); }
   }
+  /* Coming back from a program, the library or a post: land on the same tab at the same scroll. */
+  var KEY = 'jf:home';
+  function save(){ try { sessionStorage.setItem(KEY, JSON.stringify({ tab: body.getAttribute('data-tab') || 'meal', y: window.scrollY })); } catch(e){} }
+  var st = null; window.addEventListener('scroll', function(){ if (st) return; st = setTimeout(function(){ st = null; save(); }, 200); }, { passive: true });
+  window.addEventListener('pagehide', save);
+  function navType(){ try { var n = performance.getEntriesByType('navigation')[0]; return n ? n.type : ''; } catch(e){ return ''; } }
+  function restore(){
+    var t = navType(); if (t !== 'back_forward' && t !== 'reload') return false;
+    var saved = null; try { saved = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch(e){}
+    if (!saved) return false;
+    setTab(saved.tab, false);
+    var tries = 0; (function go(){ window.scrollTo(0, saved.y); if (++tries < 6) setTimeout(go, 120); })();
+    return true;
+  }
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   /* The pipeline and demo-phone scripts sit later in the page, so the first setTab waits for them. */
-  function init(){ setTab(location.hash==='#training'?'train':'meal', false); revealTarget(); }
+  function init(){ if (restore()) return; setTab(location.hash==='#training'?'train':'meal', false); revealTarget(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   window.addEventListener('hashchange', revealTarget);
 })();
