@@ -674,6 +674,7 @@
         @media (min-width:769px) { .pp-stage .pp-copy, .pp-stage .pp-vis { align-self:start; } .pp-stage .pp-copy { margin-top:2.5rem; } }
         .pp-head .pain-h { font-size:clamp(1.6rem,3.6vw,2.4rem); }
         .pp-stage > .pp-flow { display:contents; }
+        .pains-m { display:none; }
         .pp-how { display:block; color:var(--text-3); margin-bottom:.35rem; }
         .pp-lead { font-size:.92rem; color:var(--text-2); margin:0 0 -.4rem; }
         @media (max-width:768px) { .pp-lead { font-size:.84rem; } }
@@ -709,8 +710,11 @@
         .pp-flow { display:contents; }
         .pp-stage[data-flow="meal"] .pp-flow-train, .pp-stage[data-flow="train"] .pp-flow-meal { display:none; }
         @media (max-width:860px) {
-            .pp-stage { grid-template-columns:1fr; grid-template-rows:auto auto 1fr; gap:.5rem; padding:7.5rem 1.25rem 1.5rem; align-items:start; } /* clears nav + tab bar */
-            .pp-head { margin-bottom:0; } .pp-head .pain-h { font-size:clamp(1.3rem,5.4vw,1.6rem); }
+            .pp-stage { grid-template-columns:1fr; grid-template-rows:auto auto; gap:1.25rem; padding:7.5rem 1.25rem 1.5rem; align-items:start; align-content:center; } /* clears nav + tab bar; content centred in what's left */
+            .pp-stage .pp-head { display:none; }
+            .pains-m { display:block; padding:4.5rem 1.25rem 2.5rem; }
+            .pains-m .pain-h { font-size:clamp(1.5rem,6.4vw,1.9rem); }
+            .pp-beat { gap:.6rem; } .pp-beat h3 { font-size:1.65rem; }
             .pp-copy { height:224px; transition:height .3s ease; } .pp-beat { justify-content:flex-start; gap:.5rem; } .pp-beat h3 { font-size:1.75rem; } .pp-beat p { font-size:.9rem; max-width:none; }
             .pp-rail { display:none; }
             .pp-vis { height:auto; min-height:400px; align-self:start; width:100%; }
@@ -1049,6 +1053,12 @@
 </div>
 
 <!-- Problem-stacking: name the pain before the solution -->
+
+<!-- Phones: the problem headline stands on its own before the pinned steps -->
+<section class="pains-m" id="pains-m">
+            <h2 class="pain-h fh-only-meal">The hard part isn't lifting.<br>It's <span class="rot" data-rot><span class="rot-track"><span>eating enough.</span><span>cooking every night.</span><span>the shopping list.</span></span></span></h2>
+            <h2 class="pain-h fh-only-train">A program should tell you<br><span class="rot" data-rot><span class="rot-track"><span>how many sets.</span><span>how long to rest.</span><span>how many reps.</span><span>what weight.</span><span>how close to failure.</span><span>what to swap in.</span><span>the whole year.</span></span></span></h2>
+</section>
 
 <section class="section engine" id="how" style="padding-top:0;margin-top:-1rem;">
     <div class="pl-toggle" role="tablist">
