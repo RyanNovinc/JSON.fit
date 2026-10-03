@@ -47,7 +47,10 @@ main{flex:1;padding:2.25rem 0 3rem}
 
 /* detail */
 .d-split{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:.5rem}
-#title{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#fff;font-size:clamp(2rem,5vw,3rem);letter-spacing:-.01em;line-height:1.08;margin-bottom:.4rem}
+#title{font-family:'Outfit',sans-serif;font-weight:800;color:#fff;font-size:clamp(1.9rem,4.6vw,2.7rem);letter-spacing:-.02em;line-height:1.1;margin-bottom:.4rem}
+#desc{color:var(--text-2);font-size:.95rem;line-height:1.6;margin:0 0 .4rem}
+.built-line{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-3);margin:0 0 1.1rem}
+.built-line a{color:var(--cyan);text-decoration:none;border-bottom:1px solid var(--border-cyan)}
 #subtitle{color:var(--text-3);font-family:'DM Mono',monospace;font-size:.72rem;margin-bottom:1rem}
 .d-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
 .d-tag{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--cyan);padding:.25rem .6rem;border:1px solid var(--border-cyan);border-radius:5px;background:var(--cyan-soft)}
@@ -66,6 +69,18 @@ main{flex:1;padding:2.25rem 0 3rem}
 .list-head{margin-bottom:1.9rem}
 .list-head #desc{margin-bottom:0;max-width:620px}
 .plist{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.list-head{margin-bottom:1.4rem}
+.prog-list{max-width:760px;display:flex;flex-direction:column;gap:.6rem}
+.prog-row{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s}
+.prog-row:hover{border-color:var(--border-cyan);transform:translateY(-2px)}
+.prog-row-feature{border-color:var(--border-cyan);background:linear-gradient(180deg,rgba(34,211,238,.06),var(--surface-2))}
+.prog-row .pf-ava{width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1px solid var(--border-cyan)}
+.prog-row .pf-ava img{width:100%;height:100%;object-fit:cover;display:block}
+.pr-body{flex:1;min-width:0}
+.prog-row h3{font-size:1.05rem;font-weight:700;letter-spacing:-.01em;margin:0 0 .2rem}
+.pr-meta{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-3);letter-spacing:.02em}
+.prog-row .prog-open{flex-shrink:0;margin:0;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--cyan);display:inline-flex;align-items:center;gap:.35rem;font-weight:500}
+@media(max-width:600px){.prog-row{flex-wrap:wrap}.prog-row .prog-open{width:100%;margin-top:.2rem}.pr-meta{font-size:.64rem}}
 .pcard{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem;transition:border-color .2s,transform .2s}
 .pcard:hover{border-color:var(--border-cyan);transform:translateY(-3px)}
 .pc-title{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin:.15rem 0 .9rem;line-height:1.12}
@@ -146,7 +161,9 @@ main{flex:1;padding:2.25rem 0 3rem}
 .day-name{font-size:.92rem;font-weight:700}
 .day-num{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--text-3)}
 .day-ex{list-style:none;display:flex;flex-direction:column;gap:.3rem}
-.day-ex li{font-size:.78rem;color:var(--text-2);display:flex;justify-content:space-between;gap:.5rem}
+.day-ex li{font-size:.78rem;color:var(--text-2);display:flex;align-items:center;gap:.55rem}
+.day-ex li .exn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--text-2)}
+.day-ex li img{width:44px;height:25px;border-radius:4px;object-fit:cover;background:#000;flex-shrink:0;border:1px solid var(--border)}
 .day-ex li span{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--cyan);flex-shrink:0}
 .day-more{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-3)}
 
@@ -238,8 +255,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   // Detail view goes back to the listing; the listing goes back to the homepage.
   var backEl = document.querySelector('.nav-back');
   if(backEl){
-    backEl.setAttribute('href', slug ? '/programs' : '/');
-    backEl.setAttribute('aria-label', slug ? 'Back to all programs' : 'Back to JSON.fit');
+    backEl.setAttribute('href', '/');
+    backEl.setAttribute('aria-label', 'Back');
+    /* If you came from another json.fit page, go back to it at the same scroll; otherwise the homepage. */
+    backEl.addEventListener('click', function(e){
+      if (document.referrer && document.referrer.indexOf(location.origin) === 0 && history.length > 1) { e.preventDefault(); history.back(); }
+    });
   }
 
   function showError(msg){
@@ -346,21 +367,43 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       if(weeks) html += '<span class="d-tag">'+weeks+' weeks</span>';
       if(dpw) html += '<span class="d-tag">'+esc(dpw)+' days/week</span>';
       if(level) html += '<span class="d-tag">'+esc(level)+'</span>';
-      html += '<span class="d-tag">'+blocks.length+' blocks</span>';
       html += '</div>';
-      // Description starts clamped to 3 lines with a "Read more" toggle so it
-      // doesn't hit the reader as a wall of text on load.
+      // One sentence of description. The file's full text is in the app.
       if(data.description){
-        html += '<div class="desc-wrap"><p id="desc" class="clamped">'+esc(data.description)+'</p>'
-              + '<button class="desc-toggle" id="descToggle" type="button" aria-expanded="false">'
-              + '<span id="descToggleLabel">Read more</span>'
-              + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>'
-              + '</button></div>';
+        var first = String(data.description).split(/(?<=\.)\s+/)[0];
+        html += '<p id="desc">'+esc(first)+'</p>';
       }
+      html += '<p class="built-line">Every number set from <a href="/research/">published research</a>.</p>';
       var importNote = 'free · opens straight in the app';
       html += '<div class="import-row"><button class="import-btn" id="importTop">'
             + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
             + 'Import this program</button><span class="import-note">'+importNote+'</span></div>';
+
+      // ---- sample week ----
+      var b1 = firstTrainingBlock(blocks);
+      var days = Array.isArray(b1.days) ? b1.days : [];
+      html += '<div class="block"><div class="block-lbl">Sample week</div><h3>One week, as you\'d train it</h3><div class="week">';
+      days.forEach(function(d,i){
+        if(!d){ return; }
+        var isRest = (d.day_name === 'REST DAY') || !Array.isArray(d.exercises) || d.exercises.length===0;
+        if(isRest){
+          html += '<div class="day rest"><div class="day-top"><span class="day-name">Rest</span><span class="day-num">Day '+(i+1)+'</span></div></div>';
+          return;
+        }
+        html += '<div class="day"><div class="day-top"><span class="day-name">'+esc(d.day_name||('Day '+(i+1)))+'</span><span class="day-num">Day '+(i+1)+'</span></div><ul class="day-ex">';
+        var show = d.exercises.slice(0,4);
+        show.forEach(function(ex){
+          var wk = firstWeekKey(ex);
+          var sets = (ex.sets_weekly && wk!=null && ex.sets_weekly[wk]!=null) ? ex.sets_weekly[wk] : (ex.sets||'');
+          var reps = ex.reps || '';
+          var sl = String(ex.exercise||'').toLowerCase().replace(/[^\w\s-]/g,'').trim().replace(/[\s_]+/g,'-');
+          html += '<li><img src="/images/exercises/'+sl+'/blue/start.webp" alt="" loading="lazy" onerror="this.style.display=\'none\'"><span class="exn">'+esc(ex.exercise||'Exercise')+'</span><span>'+esc(sets)+(reps?(' × '+esc(reps)):'')+'</span></li>';
+        });
+        html += '</ul>';
+        if(d.exercises.length>4) html += '<span class="day-more">+ '+(d.exercises.length-4)+' more</span>';
+        html += '</div>';
+      });
+      html += '</div></div>';
 
       // ---- periodization timeline (grouped into mesocycle phases) ----
       // 9 blocks render as 9 cramped boxes; they're really 3 mesocycles of 3 blocks.
@@ -427,58 +470,16 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
         // Heading row now uses .vol-head so the title sits beside the info button.
         html += '<div class="block"><div class="block-lbl">Weekly volume</div>';
         html += '<div class="vol-head">';
-        html +=   '<h3>Effective sets per muscle<span class="sub">a working week</span></h3>';
-        html +=   '<button class="vol-info-btn" id="vol-info-btn" type="button" aria-expanded="false" aria-controls="vol-panel">';
-        html +=     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
-        html +=     'Why these numbers?';
-        html +=   '</button>';
+        html +=   '<h3>Sets per muscle, each week</h3>';
         html += '</div>';
-        // The expandable science panel — closed by default. Sits between the heading
-        // and the bars so the user reads the science before re-reading the numbers.
-        html += volSciencePanelHTML();
         html += '<div class="vol">';
-        rows.forEach(function(r){
+        var shown = rows.slice(0, 8), hidden = rows.length - shown.length;
+        shown.forEach(function(r){
           var sets = Math.round(r.v*10)/10;
           html += '<div class="vol-row"><span class="vol-name">'+esc(r.m)+'</span><div class="vol-wrap"><div class="vol-bar" style="width:'+(r.v/mx*100)+'%"></div></div><span class="vol-sets">'+sets+' sets</span></div>';
         });
-        html += '</div><div class="vol-note">Effective sets = primary muscles ×1 + secondary ×0.5. Reflects '+(b1.block_name?esc(String(b1.block_name).replace(/—.*/,'').trim()):'block 1')+', week '+(wkUsed||'1')+'.</div></div>';
+        html += '</div>'+(hidden>0?'<div class="vol-note">+ '+hidden+' more muscles, all inside their researched range.</div>':'')+'<div class="vol-note" hidden>Effective sets = primary muscles ×1 + secondary ×0.5. Reflects '+(b1.block_name?esc(String(b1.block_name).replace(/—.*/,'').trim()):'block 1')+', week '+(wkUsed||'1')+'.</div></div>';
       }
-
-      // ---- sample week ----
-      html += '<div class="block"><div class="block-lbl">A sample week</div><h3>One week from the program<span class="sub">full set/rep/RIR targets in the app</span></h3><div class="week">';
-      days.forEach(function(d,i){
-        if(!d){ return; }
-        var isRest = (d.day_name === 'REST DAY') || !Array.isArray(d.exercises) || d.exercises.length===0;
-        if(isRest){
-          html += '<div class="day rest"><div class="day-top"><span class="day-name">Rest</span><span class="day-num">Day '+(i+1)+'</span></div></div>';
-          return;
-        }
-        html += '<div class="day"><div class="day-top"><span class="day-name">'+esc(d.day_name||('Day '+(i+1)))+'</span><span class="day-num">Day '+(i+1)+'</span></div><ul class="day-ex">';
-        var show = d.exercises.slice(0,4);
-        show.forEach(function(ex){
-          var wk = firstWeekKey(ex);
-          var sets = (ex.sets_weekly && wk!=null && ex.sets_weekly[wk]!=null) ? ex.sets_weekly[wk] : (ex.sets||'');
-          var reps = ex.reps || '';
-          html += '<li>'+esc(ex.exercise||'Exercise')+'<span>'+esc(sets)+(reps?(' × '+esc(reps)):'')+'</span></li>';
-        });
-        html += '</ul>';
-        if(d.exercises.length>4) html += '<span class="day-more">+ '+(d.exercises.length-4)+' more</span>';
-        html += '</div>';
-      });
-      html += '</div></div>';
-
-      // ---- in-app screenshots (centred block) ----
-      html += '<div class="block centered"><div class="block-lbl">How it looks in the app</div><h3>Train it set-by-set</h3><div class="shots">'
-            + '<div class="phone"><div class="phone-frame"><picture><source srcset="/images/programs/'+slug+'-exercise.webp" type="image/webp"><img class="phone-img" src="/images/programs/'+slug+'-exercise.png" alt="Exercise view in the JSON.fit app" loading="lazy" onerror="this.parentNode.parentNode.parentNode.style.display=\'none\'"></picture></div><div class="phone-cap">Exercise view</div></div>'
-            + '<div class="phone"><div class="phone-frame"><picture><source srcset="/images/programs/'+slug+'-week.webp" type="image/webp"><img class="phone-img" src="/images/programs/'+slug+'-week.png" alt="Weekly plan in the JSON.fit app" loading="lazy" onerror="this.parentNode.parentNode.parentNode.style.display=\'none\'"></picture></div><div class="phone-cap">Your week</div></div>'
-            + '<p class="shots-note">Once imported, every exercise comes with a <strong>form demo</strong>, set/rep/RIR targets, rest timers and swap options. The full '+weeks+' weeks live in the app. This page is the preview.</p>'
-            + '</div></div>';
-
-      // ---- how it was built (centred block) ----
-      html += '<div class="block centered"><div class="block-lbl">How it was built</div><h3>Every number comes from the research</h3>'
-            + '<p class="built">Nothing here is guessed. Each of these is set from <strong>published training research</strong>, then checked twice before the file is written.</p>'
-            + '<div class="built-chips"><span class="built-chip">Weekly sets per muscle</span><span class="built-chip">Reps in reserve</span><span class="built-chip">Rep ranges</span><span class="built-chip">Rest per exercise</span><span class="built-chip">Deload weeks</span></div>'
-            + '</div>';
 
       // ---- footer import ----
       html += '<div class="foot-cta"><button class="import-btn" id="importBottom">'
@@ -574,29 +575,23 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   }
 
   function renderList(){
-    var cards = PROGRAMS.map(function(p){
-      return '<a class="pcard" href="/programs/?program='+p.slug+'">'
-        + '<div class="d-split">'+esc(p.split)+'</div>'
-        + '<h3 class="pc-title">'+esc(p.name)+'</h3>'
-        + '<div class="pc-bar"><span class="pseg"></span><span class="pseg"></span><span class="pseg"></span></div>'
-        + '<div class="pc-tags">'
-          + '<span class="d-tag">'+p.weeks+' weeks</span>'
-          + '<span class="d-tag">'+p.days+' days/week</span>'
-          + '<span class="d-tag">'+esc(p.level)+'</span>'
-        + '</div>'
-        + '<span class="pc-open">View program <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>'
+    var rows = PROGRAMS.map(function(p, i){
+      var meta = (i===0 ? 'The one I train on &middot; ' : '') + esc(p.split) + ' &middot; ' + p.days + ' days &middot; ' + p.weeks + ' weeks';
+      return '<a class="prog-row'+(i===0?' prog-row-feature':'')+'" href="/programs/?program='+p.slug+'">'
+        + (i===0 ? '<div class="pf-ava"><img src="/images/me/founder.webp" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>' : '')
+        + '<div class="pr-body"><h3>'+esc(p.name)+'</h3><span class="pr-meta">'+meta+'</span></div>'
+        + '<span class="prog-open">Preview &amp; import <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>'
         + '</a>';
     }).join('');
     contentEl.innerHTML =
         '<div class="list-head">'
-          + '<div class="d-split">Free training programs</div>'
-          + '<h1 id="title">A full year of training.</h1>'
-          + '<p id="desc">Complete, periodised programs, beginner to advanced. Pick one, import it into JSON.fit, and follow it week by week. Free, no AI step needed.</p>'
+          + '<h1 id="title">Free training programs.</h1>'
+          + '<p id="desc">Pick one and import it. No AI step needed.</p>'
         + '</div>'
-        + '<div class="plist">'+cards+'</div>';
+        + '<div class="prog-list">'+rows+'</div>';
     loadingEl.style.display='none';
     contentEl.style.display='block';
-    document.title = 'Training programs · JSON.fit';
+    document.title = 'Training programs \u2014 JSON.fit';
   }
 
   if(!slug){ renderList(); return; }
