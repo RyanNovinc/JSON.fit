@@ -48,6 +48,8 @@ main{flex:1;padding:2.25rem 0 3rem}
 /* detail */
 .d-split{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:.5rem}
 #title{font-family:'Outfit',sans-serif;font-weight:800;color:#fff;font-size:clamp(1.9rem,4.6vw,2.7rem);letter-spacing:-.02em;line-height:1.1;margin-bottom:.4rem}
+.d-head{text-align:center;max-width:640px;margin:0 auto}
+.d-head .d-tags{justify-content:center}
 #desc{color:var(--text-2);font-size:.95rem;line-height:1.6;margin:0 0 .4rem}
 .built-line{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-3);margin:0 0 1.1rem}
 .built-line a{color:var(--cyan);text-decoration:none;border-bottom:1px solid var(--border-cyan)}
@@ -358,7 +360,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       if(!dpw && data.days_per_week && data.days_per_week < 7) dpw = data.days_per_week;
 
       var html = '';
-      // ---- header ----
+      // ---- header (centred) ----
+      html += '<div class="d-head">';
       html += '<div class="d-split">'+esc(split)+'</div>';
       html += '<h1 id="title">'+esc(tp.title)+'</h1>';
       if(tp.sub) html += '<div id="subtitle">'+esc(tp.sub)+'</div>';
@@ -378,6 +381,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       html += '<div class="import-row"><button class="import-btn" id="importTop">'
             + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
             + 'Import this program</button><span class="import-note">'+importNote+'</span></div>';
+      html += '</div>';
 
       // ---- sample week ----
       var b1 = firstTrainingBlock(blocks);
