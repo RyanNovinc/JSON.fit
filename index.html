@@ -2012,19 +2012,26 @@
   }
   /* Where am I: the visible section under the top bars, and how far into it. */
   var TWIN = { 'compare':'compare-train', 'compare-train':'compare', 'meals':'programs', 'programs':'meals', 'cap':'exercises', 'exercises':'cap' };
+  var SHARED = { how:1, demo:1, founder:1, reviews:1, download:1, faq:1 };
+  /* Anchor to a section that exists on both tabs and keep it at the same place on screen. If the top of the
+     screen is inside a track-only section, use the next shared section below it, so what you can see holds still. */
   function anchorNow(){
     var top = window.scrollY + 120, secs = Array.from(document.querySelectorAll('section[id]')).filter(function(el){ return el.offsetParent !== null; });
-    var cur = null; secs.forEach(function(el){ var y = el.getBoundingClientRect().top + window.scrollY; if (y <= top) cur = el; });
+    var cur = null; secs.forEach(function(el){ if (el.getBoundingClientRect().top + window.scrollY <= top) cur = el; });
     if (!cur) return null;
-    return { id: cur.id, off: top - (cur.getBoundingClientRect().top + window.scrollY) };
+    if (!SHARED[cur.id]) {
+      var next = null; secs.forEach(function(el){ if (!next && SHARED[el.id] && el.getBoundingClientRect().top + window.scrollY > top) next = el; });
+      if (next) return { id: next.id, vy: next.getBoundingClientRect().top };
+      return { id: cur.id, vy: cur.getBoundingClientRect().top };
+    }
+    return { id: cur.id, vy: cur.getBoundingClientRect().top };
   }
   function restoreAnchor(a){
     if (!a) return;
     var el = document.getElementById(a.id);
     if (!el || el.offsetParent === null) el = document.getElementById(TWIN[a.id] || '');
     if (!el || el.offsetParent === null) return;
-    var off = Math.min(a.off, Math.max(0, el.offsetHeight - 200));
-    jump(el.getBoundingClientRect().top + window.scrollY + off - 120);
+    jump(el.getBoundingClientRect().top + window.scrollY - a.vy);
   }
   function jump(y){ var h = document.documentElement; var prev = h.style.scrollBehavior; h.style.scrollBehavior = 'auto'; window.scrollTo(0, y); h.style.scrollBehavior = prev; }
   function setTab(k, push){
