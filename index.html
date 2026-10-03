@@ -604,7 +604,14 @@
         .fh-note-pop .fh-only-train, body[data-tab="train"] .fh-note-pop .fh-only-meal { display:none; }
         body[data-tab="train"] .fh-note-pop .fh-only-train { display:inline; }
         .fh-note-pop .own-who { margin-top:1rem; }
-        @media (max-width:600px) { .fh-note { font-size:.74rem; } .fh-note-txt { font-size:.84rem; } .fh-note-pop { padding:1.1rem 1.1rem 1rem; } .fh-note-pop .own-q { font-size:.98rem; } }
+        @media (max-width:600px) {
+            .fh-note { font-size:.74rem; } .fh-note-txt { font-size:.84rem; }
+            /* The hero clips its overflow, so on phones the note floats over the page instead of hanging off the chip. */
+            .fh-note-pop { position:fixed; left:1rem; right:1rem; top:50%; transform:translateY(-50%); width:auto; max-height:calc(100svh - 2rem); overflow:auto; z-index:1200; padding:1.1rem 1.1rem 1rem; }
+            .fh-note-pop .own-q { font-size:.98rem; }
+            .fh-note-dim { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:1199; }
+            .fh-note-dim[hidden] { display:none; }
+        }
 
         /* === Nav hides on scroll down, returns on scroll up; the tab bar stays and moves up to top:0 === */
         nav { transition: transform .28s ease; }
@@ -703,10 +710,11 @@
         .pp-stage[data-flow="meal"] .pp-flow-train, .pp-stage[data-flow="train"] .pp-flow-meal { display:none; }
         @media (max-width:860px) {
             .pp-stage { grid-template-columns:1fr; grid-template-rows:auto auto 1fr; gap:.5rem; padding:7.5rem 1.25rem 1.5rem; align-items:start; } /* clears nav + tab bar */
-            .pp-head { margin-bottom:.2rem; } .pp-head .pain-h { font-size:clamp(1.45rem,6vw,1.8rem); }
-            .pp-copy { height:224px; } .pp-beat { justify-content:flex-start; gap:.5rem; } .pp-beat h3 { font-size:1.75rem; } .pp-beat p { font-size:.9rem; max-width:none; }
+            .pp-head { margin-bottom:0; } .pp-head .pain-h { font-size:clamp(1.3rem,5.4vw,1.6rem); }
+            .pp-copy { height:224px; transition:height .3s ease; } .pp-beat { justify-content:flex-start; gap:.5rem; } .pp-beat h3 { font-size:1.75rem; } .pp-beat p { font-size:.9rem; max-width:none; }
             .pp-rail { display:none; }
-            .pp-vis { height:auto; min-height:420px; align-self:center; width:100%; }
+            .pp-vis { height:auto; min-height:400px; align-self:start; width:100%; }
+            .pp-obj { top:0; transform:translate(-50%,0); }
             .pp-q { width:300px; } .pp-chat { width:min(340px,92vw); } .pp-phone { width:210px; }  
         }
         @media (prefers-reduced-motion:reduce) {
@@ -995,6 +1003,7 @@
                 <span class="fh-note-txt fh-only-train">I'm not a PT. I don't write the training.</span>
                 <span class="fh-note-more">Read why</span>
             </button>
+            <div class="fh-note-dim" id="fhNoteDim" hidden></div>
             <div class="fh-note-pop" id="fhNotePop" hidden>
                 <button class="fh-note-x" id="fhNoteX" type="button" aria-label="Close">&#10005;</button>
                 <div class="own-beat own-beat-meal">
@@ -1227,7 +1236,7 @@
 
 
 <!-- See It Working: real app screens from an imported plan -->
-<section class="section" style="padding-bottom:2rem;">
+<section class="section" id="demo" style="padding-bottom:2rem;">
     <div class="container">
         <div class="section-head sa sa-up" style="text-align:center;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
@@ -1410,7 +1419,7 @@
 
 
 
-<section class="section" style="padding-bottom:0;">
+<section class="section" id="reviews" style="padding-bottom:0;">
     <div class="container">
         <div class="section-head sa sa-up" style="text-align:center; margin-bottom:2rem;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
@@ -1494,7 +1503,7 @@
         <p class="cta-foot" style="margin-top:0.4rem;">&#128241; iPhone &amp; Android</p>
     </div>
 </section>
-<section class="section">
+<section class="section" id="faq">
     <div class="container">
         <div class="section-head sa sa-up" style="text-align:center;margin-bottom:2.5rem;">
             <div class="section-line" style="margin:0 auto 1rem;"></div>
@@ -1928,10 +1937,11 @@
 <!-- Hero founder note popover -->
 <script>
 (function(){
-  var btn=document.getElementById('fhNote'), pop=document.getElementById('fhNotePop'), x=document.getElementById('fhNoteX');
+  var btn=document.getElementById('fhNote'), pop=document.getElementById('fhNotePop'), x=document.getElementById('fhNoteX'), dim=document.getElementById('fhNoteDim');
   if(!btn||!pop) return;
-  function open(){ pop.hidden=false; btn.setAttribute('aria-expanded','true'); if(window.gtag) gtag('event','founder_note_opened',{'button_location':'hero'}); }
-  function close(){ pop.hidden=true; btn.setAttribute('aria-expanded','false'); }
+  function open(){ pop.hidden=false; if(dim) dim.hidden=false; btn.setAttribute('aria-expanded','true'); if(window.gtag) gtag('event','founder_note_opened',{'button_location':'hero'}); }
+  function close(){ pop.hidden=true; if(dim) dim.hidden=true; btn.setAttribute('aria-expanded','false'); }
+  if(dim) dim.addEventListener('click', close);
   btn.addEventListener('click', function(){ pop.hidden ? open() : close(); });
   x.addEventListener('click', close);
   document.addEventListener('click', function(e){ if(!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) close(); });
@@ -2000,13 +2010,32 @@
       col.appendChild(track); wall.appendChild(col);
     }
   }
+  /* Where am I: the visible section under the top bars, and how far into it. */
+  var TWIN = { 'compare':'compare-train', 'compare-train':'compare', 'meals':'programs', 'programs':'meals', 'cap':'exercises', 'exercises':'cap' };
+  function anchorNow(){
+    var top = window.scrollY + 120, secs = Array.from(document.querySelectorAll('section[id]')).filter(function(el){ return el.offsetParent !== null; });
+    var cur = null; secs.forEach(function(el){ var y = el.getBoundingClientRect().top + window.scrollY; if (y <= top) cur = el; });
+    if (!cur) return null;
+    return { id: cur.id, off: top - (cur.getBoundingClientRect().top + window.scrollY) };
+  }
+  function restoreAnchor(a){
+    if (!a) return;
+    var el = document.getElementById(a.id);
+    if (!el || el.offsetParent === null) el = document.getElementById(TWIN[a.id] || '');
+    if (!el || el.offsetParent === null) return;
+    var off = Math.min(a.off, Math.max(0, el.offsetHeight - 200));
+    jump(el.getBoundingClientRect().top + window.scrollY + off - 120);
+  }
+  function jump(y){ var h = document.documentElement; var prev = h.style.scrollBehavior; h.style.scrollBehavior = 'auto'; window.scrollTo(0, y); h.style.scrollBehavior = prev; }
   function setTab(k, push){
+    var a = push ? anchorNow() : null;
     body.setAttribute('data-tab', k);
     seg.querySelectorAll('button').forEach(function(b){ var on=b.getAttribute('data-tab')===k; b.classList.toggle('on',on); b.setAttribute('aria-selected',on?'true':'false'); });
     if(k==='train') buildTrainWall();
     var pl=document.querySelector('.pl-tg[data-flow="'+k+'"]'); if(pl && !pl.classList.contains('active')) pl.click();
     if(window.jfSetScreen) try{ window.jfSetScreen(k==='train'?'workout':'nutrition'); }catch(e){}
     if(push) history.replaceState(null,'', k==='train'?'#training':'#meals');
+    if (a) { restoreAnchor(a); requestAnimationFrame(function(){ restoreAnchor(a); }); }
     if(window.gtag) gtag('event','track_tab',{'view':k});
   }
   seg.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ setTab(b.getAttribute('data-tab'), true); }); });
@@ -2030,7 +2059,7 @@
     var saved = null; try { saved = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch(e){}
     if (!saved) return false;
     setTab(saved.tab, false);
-    var tries = 0; (function go(){ window.scrollTo(0, saved.y); if (++tries < 6) setTimeout(go, 120); })();
+    var tries = 0; (function go(){ jump(saved.y); if (++tries < 6) setTimeout(go, 120); })();
     return true;
   }
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -2073,8 +2102,8 @@
   function seg(p,a,b){ return clamp((p-a)/(b-a),0,1); }
   function ease(t){ return t<.5 ? 2*t*t : -1+(4-2*t)*t; }
   function easeOut(t){ return 1-Math.pow(1-t,3); }
-  function place(el,x,y,s,o,rot){ el.style.transform='translate(-50%,-50%) translate('+x+'px,'+y+'px) scale('+s+') rotateY('+(rot||0)+'deg)'; el.style.opacity=o; }
   var mobile = window.innerWidth <= 860;
+  function place(el,x,y,s,o,rot){ el.style.transform='translate(-50%,'+(mobile?'0':'-50%')+') translate('+x+'px,'+y+'px) scale('+s+') rotateY('+(rot||0)+'deg)'; el.style.opacity=o; }
 
   function bind(root){
     var q = function(sel){ return root.querySelector(sel); };
@@ -2094,6 +2123,10 @@
       var fin = i===0 ? 1 : easeOut(seg(p,a,a+.06)), fout = i===2 ? 0 : seg(p,z-.05,z);
       e.beats[i].style.opacity = fin*(1-fout); e.beats[i].style.transform = 'translateY('+((1-fin)*24 - fout*24)+'px)';
       e.rails[i].classList.toggle('on', p>=a && p<z);
+    }
+    if (mobile) { /* the beat fills its box, so measure its content, first child to last */
+      var cur = p<.34?0:(p<.68?1:2), bt = e.beats[cur], kids = bt.children, copy = bt.parentNode;
+      if (kids.length) { var hh = Math.ceil(kids[kids.length-1].getBoundingClientRect().bottom - kids[0].getBoundingClientRect().top) + 8; if (hh > 40 && copy.style.height !== hh+'px') copy.style.height = hh+'px'; }
     }
     for (var k=0;k<e.kvs.length;k++){ var t=easeOut(seg(p,.03+k*.055,.09+k*.055)); e.kvs[k].style.opacity=t; e.kvs[k].style.transform='translateX('+((1-t)*10)+'px)'; }
     var lit=easeOut(seg(p,.25,.30)); e.btn.style.opacity=.25+.75*lit; e.btn.style.transform='scale('+(.97+.03*lit)+')';
