@@ -11,6 +11,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON.fit: Bulking meals, step-by-step. Free.</title>
+    <link rel="preload" as="image" href="images/Workout_A.webp">
+    <link rel="preload" as="image" href="images/Workout_B.webp">
     <meta name="description" content="Calorie-dense bulking meals, every step written, for skinny guys who work full time and can't eat enough. One shop, one short prep session. Free.">
     <meta property="og:title" content="JSON.fit: Bulking meals, step-by-step. Free.">
     <meta property="og:description" content="Calorie-dense bulking meals, every step written, for skinny guys who work full time and can't eat enough. One shop, one short prep session. Free.">
@@ -707,6 +709,8 @@
         .pp-phone { width:250px; background:linear-gradient(150deg,#202027,#0c0c11 46%,#050507); border-radius:40px; padding:10px; box-shadow:0 0 0 1px rgba(255,255,255,.16),inset 0 1px 1px rgba(255,255,255,.1); opacity:0; }
         .pp-scr { position:relative; width:100%; aspect-ratio:1179/2556; border-radius:31px; overflow:hidden; background:#0a0a0b; isolation:isolate; -webkit-mask-image:-webkit-radial-gradient(white, black); }
         .pp-scr img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; opacity:0; }
+        .pp-scr img.shot-b { visibility:hidden; }
+        .pp-phone.alt .pp-scr img.shot-b { visibility:visible; }
         .pp-pill { position:absolute; left:50%; top:26px; transform:translate(-50%,-8px); font-family:'DM Mono',monospace; font-size:.56rem; letter-spacing:.1em; color:var(--green); background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.4); border-radius:100px; padding:4px 10px; opacity:0; backdrop-filter:blur(6px); white-space:nowrap; }
         .pp-flow { display:contents; }
         .pp-stage[data-flow="meal"] .pp-flow-train, .pp-stage[data-flow="train"] .pp-flow-meal { display:none; }
@@ -1125,7 +1129,8 @@
                 </div>
                 <div class="pp-obj pp-fly px-file"><span class="px-fic">{&hairsp;}</span><div><div class="px-fn">workout-program.json</div><div class="px-fs">52 weeks &middot; 4 days/week &middot; valid</div></div></div>
                 <div class="pp-obj pp-phone"><div class="pp-scr">
-                    <img src="images/Workout_Log.webp" alt="" loading="lazy">
+                    <img src="images/Workout_A.webp" alt="" loading="eager" decoding="async">
+                    <img class="shot-b" src="images/Workout_B.webp" alt="" loading="eager" decoding="async">
                     <div class="pp-pill">&#10003; IMPORTED &middot; 52 WEEKS</div>
                 </div></div>
             </div>
@@ -2087,6 +2092,18 @@
 })();
 </script>
 
+<!-- Pinned stage: the training phone's figure does the rep, one frame a second, while the section is on screen -->
+<script>
+(function(){
+  var pin = document.getElementById('ppPin'), phones = document.querySelectorAll('.pp-phone'); if (!pin || !phones.length) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var timer = null;
+  function start(){ if (timer) return; timer = setInterval(function(){ var on = Math.floor(Date.now()/1000) % 2 === 1; phones.forEach(function(ph){ ph.classList.toggle('alt', on); }); }, 250); }
+  function stop(){ if (timer) { clearInterval(timer); timer = null; } }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ es.forEach(function(x){ x.isIntersecting ? start() : stop(); }); }).observe(pin); else start();
+})();
+</script>
+
 <!-- Exercise library strip: crossfade start/end frames, staggered -->
 <script>
 (function(){
@@ -2129,7 +2146,7 @@
       beats: root.querySelectorAll('.pp-beat'), rails: root.querySelectorAll('.pp-rail i'),
       sheet: q('.pp-q'), kvs: root.querySelectorAll('.pp-q .px-kv b'), btn: q('.pp-q .px-btn'),
       chat: q('.pp-chat'), bubYou: q('.pp-chat .px-bub.you'), dots: q('.pp-dots'), bubAi: q('.pp-chat .px-bub.ai'),
-      fly: q('.pp-fly'), phone: q('.pp-phone'), shot: q('.pp-scr img'), pill: q('.pp-pill')
+      fly: q('.pp-fly'), phone: q('.pp-phone'), shot: q('.pp-scr img'), shotB: q('.pp-scr img.shot-b'), pill: q('.pp-pill')
     };
   }
   var flows = Array.prototype.map.call(document.querySelectorAll('.pp-flow'), function(root){ return { key: root.getAttribute('data-key'), el: bind(root) }; });
@@ -2162,7 +2179,7 @@
     var f1=easeOut(seg(p,.66,.71)), f2=ease(seg(p,.71,.82));
     place(e.fly, (mobile?0:-40)*(1-f1)+(mobile?0:40)*f2, (mobile?90:60)*(1-f1) + (mobile? -10:20)*f2, 1-.55*f2, f1*(1-seg(p,.80,.84)));
     var phIn=easeOut(seg(p,.68,.78)); place(e.phone, (mobile?0:60)*(1-phIn), 40*(1-phIn), .9+.1*phIn, phIn, 0);
-    e.shot.style.opacity = easeOut(seg(p,.70,.80));
+    e.shot.style.opacity = easeOut(seg(p,.70,.80)); if (e.shotB) e.shotB.style.opacity = e.shot.style.opacity;
     var pl=easeOut(seg(p,.90,.96)); e.pill.style.opacity=pl; e.pill.style.transform='translate(-50%,'+((1-pl)*-8)+'px)';
   }
 
