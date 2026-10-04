@@ -2059,7 +2059,7 @@
     if(k==='train') buildTrainWall();
     var pl=document.querySelector('.pl-tg[data-flow="'+k+'"]'); if(pl && !pl.classList.contains('active')) pl.click();
     if(window.jfSetScreen) try{ window.jfSetScreen(k==='train'?'workout':'nutrition'); }catch(e){}
-    if(push) history.replaceState(null,'', k==='train'?'#training':'#meals');
+    if(push) history.replaceState(null,'', k==='train'?'#training':location.pathname);   /* Meals is the default: no hash */
     if (a) { restoreAnchor(a); requestAnimationFrame(function(){ restoreAnchor(a); }); }
     if(window.gtag) gtag('event','track_tab',{'view':k});
   }
@@ -2074,8 +2074,8 @@
     if(sec && body.getAttribute('data-tab')!==sec.getAttribute('data-track')){ setTab(sec.getAttribute('data-track'),false); setTimeout(function(){ el.scrollIntoView(); },50); }
   }
   /* Coming back from a program, the library or a post: land on the same tab at the same scroll. */
-  var KEY = 'jf:home';
-  function save(){ try { sessionStorage.setItem(KEY, JSON.stringify({ tab: body.getAttribute('data-tab') || 'meal', y: window.scrollY })); } catch(e){} }
+  var KEY = 'jf:home', armed = false;   /* no saving until the restore has had its turn, or a load-time scroll to 0 clobbers the record */
+  function save(){ if (!armed) return; try { sessionStorage.setItem(KEY, JSON.stringify({ tab: body.getAttribute('data-tab') || 'meal', y: window.scrollY })); } catch(e){} }
   var st = null; window.addEventListener('scroll', function(){ if (st) return; st = setTimeout(function(){ st = null; save(); }, 200); }, { passive: true });
   window.addEventListener('pagehide', save);
   function navType(){ try { var n = performance.getEntriesByType('navigation')[0]; return n ? n.type : ''; } catch(e){ return ''; } }
@@ -2084,12 +2084,15 @@
     var saved = null; try { saved = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch(e){}
     if (!saved) return false;
     setTab(saved.tab, false);
-    var tries = 0; (function go(){ jump(saved.y); if (++tries < 6) setTimeout(go, 120); })();
+    /* keep landing on the spot while the page grows (lazy images), then arm saving */
+    var t0 = Date.now();
+    (function go(){ jump(saved.y); if (Math.abs(window.scrollY - saved.y) > 2 && Date.now() - t0 < 3000) setTimeout(go, 150); else setTimeout(function(){ armed = true; }, 300); })();
+    window.addEventListener('load', function(){ if (Math.abs(window.scrollY - saved.y) > 2) jump(saved.y); });
     return true;
   }
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   /* The pipeline and demo-phone scripts sit later in the page, so the first setTab waits for them. */
-  function init(){ if (restore()) return; setTab(location.hash==='#training'?'train':'meal', false); revealTarget(); }
+  function init(){ if (restore()) return; setTab(location.hash==='#training'?'train':'meal', false); revealTarget(); setTimeout(function(){ armed = true; }, 300); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   window.addEventListener('hashchange', revealTarget);
 })();
