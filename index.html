@@ -1992,9 +1992,8 @@
     var y = window.scrollY;
     if (window.__jfJumping && Date.now() - window.__jfJumping < 400) { lastY = y; ticking = false; return; }
     var menuOpen = navLinks && navLinks.classList.contains('open');
-    if (menuOpen || y < 80) body.classList.remove('nav-hidden');
-    else if (y > lastY + 6) body.classList.add('nav-hidden');
-    else if (y < lastY - 6) body.classList.remove('nav-hidden');
+    /* The nav lives at the top of the page only: shown there, hidden once you've scrolled past it. */
+    if (menuOpen || y < 80) body.classList.remove('nav-hidden'); else body.classList.add('nav-hidden');
     lastY = y; ticking = false;
   }
   window.addEventListener('scroll', function(){ if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
