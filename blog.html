@@ -390,6 +390,66 @@
 
     <div class="post-list">
 <!-- BLOG-LIST:START -->
+        <a href="blog/sets-or-effort.html" class="post-link">
+            <div class="post-meta">
+                <span class="post-date">September 30, 2026</span>
+                <span class="post-meta-sep">&middot;</span>
+                <span class="post-read">4 min read</span>
+            </div>
+            <div class="post-title">Volume or Effort? What Actually Builds Muscle</div>
+            <div class="post-desc">Volume is the dial and effort is what makes a set count. The research supports both camps because they're describing one rule from opposite ends.</div>
+        </a>
+
+        <a href="blog/five-to-thirty-reps.html" class="post-link">
+            <div class="post-meta">
+                <span class="post-date">September 23, 2026</span>
+                <span class="post-meta-sep">&middot;</span>
+                <span class="post-read">4 min read</span>
+            </div>
+            <div class="post-title">5 to 30 Reps: The Range Is Wide, the Rule Is Narrow</div>
+            <div class="post-desc">Muscle grows anywhere from about 5 to 30 reps when sets are taken close to failure. The rep count is almost free. The effort isn't, and some exercises need high reps just to hit the right muscle.</div>
+        </a>
+
+        <a href="blog/more-protein-on-a-cut.html" class="post-link">
+            <div class="post-meta">
+                <span class="post-date">September 16, 2026</span>
+                <span class="post-meta-sep">&middot;</span>
+                <span class="post-read">3 min read</span>
+            </div>
+            <div class="post-title">You Need More Protein On a Cut</div>
+            <div class="post-desc">1.6 g per kilo is the number for building. In a deficit, protein's job changes from building to protecting, and the research says 2.2 to 3 g per kilo, higher the leaner you are.</div>
+        </a>
+
+        <a href="blog/cut-first-or-bulk-first.html" class="post-link">
+            <div class="post-meta">
+                <span class="post-date">September 9, 2026</span>
+                <span class="post-meta-sep">&middot;</span>
+                <span class="post-read">4 min read</span>
+            </div>
+            <div class="post-title">Cut First or Bulk First? Same Finish Line</div>
+            <div class="post-desc">The partitioning argument is dead, the arithmetic says the order costs about two weeks either way, and the only real rule is to stay inside a healthy body-fat band.</div>
+        </a>
+
+        <a href="blog/cutting-fast-versus-slow.html" class="post-link">
+            <div class="post-meta">
+                <span class="post-date">September 2, 2026</span>
+                <span class="post-meta-sep">&middot;</span>
+                <span class="post-read">4 min read</span>
+            </div>
+            <div class="post-title">Cutting Fast Doesn't Cost What You Think</div>
+            <div class="post-desc">A fast cut doesn't strip your muscle for good. It costs you the gains a slow cut leaves room for, and it costs you adherence. And the leaner you are, the slower you physically have to go.</div>
+        </a>
+
+        <a href="blog/training-doesnt-change-with-your-diet.html" class="post-link">
+            <div class="post-meta">
+                <span class="post-date">August 26, 2026</span>
+                <span class="post-meta-sep">&middot;</span>
+                <span class="post-read">4 min read</span>
+            </div>
+            <div class="post-title">Cutting Doesn't Change Your Training</div>
+            <div class="post-desc">Weekly hard sets build muscle. Food decides your fat. The phase you're in should move where you sit inside each muscle's range, and nothing else.</div>
+        </a>
+
         <a href="blog/why-fasted-cardio-matters.html" class="post-link">
             <div class="post-meta">
                 <span class="post-date">July 29, 2026</span>
@@ -649,13 +709,12 @@
 })();
 </script>
 <script>
-/* Back arrow: if you came from another json.fit page, go back to it (same tab, same scroll); otherwise the homepage. */
+/* Back to home: go back in history only if the homepage is where you came from; from a post, go to the homepage directly (no loop). */
 window.navBack=function(e){
   try{
-    var ref=document.referrer;
-    if(ref && new URL(ref).hostname.replace(/^www\./,'')==='json.fit' && window.history.length>1){
-      e.preventDefault(); window.history.back(); return false;
-    }
+    var ref=document.referrer; if(!ref) return true;
+    var u=new URL(ref); var home = u.hostname.replace(/^www\./,'')==='json.fit' && (u.pathname==='/' || u.pathname==='/index.html');
+    if(home && window.history.length>1){ e.preventDefault(); window.history.back(); return false; }
   }catch(err){}
   return true;
 };
