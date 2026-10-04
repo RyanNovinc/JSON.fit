@@ -2177,15 +2177,23 @@
     for (var k=0;k<e.kvs.length;k++){ var t=easeOut(seg(p,.03+k*.055,.09+k*.055)); e.kvs[k].style.opacity=t; e.kvs[k].style.transform='translateX('+((1-t)*10)+'px)'; }
     var lit=easeOut(seg(p,.25,.30)); e.btn.style.opacity=.25+.75*lit; e.btn.style.transform='scale('+(.97+.03*lit)+')';
     var qOut=ease(seg(p,.32,.42)); place(e.sheet, -qOut*(mobile?0:120), qOut*(mobile?40:0), 1-.12*qOut, 1-qOut, -qOut*18);
-    var chIn=easeOut(seg(p,.38,.46)), chOut=ease(seg(p,.64,.72));
+    var chIn=easeOut(seg(p,.38,.46)), chOut=ease(seg(p, mobile?.62:.64, mobile?.69:.72));
     place(e.chat, (mobile?0:40)*(1-chIn), 30*(1-chIn), .92+.08*chIn-.1*chOut, chIn*(1-chOut), (1-chIn)*12);
     var yb=easeOut(seg(p,.44,.49)); e.bubYou.style.opacity=yb; e.bubYou.style.transform='translateY('+((1-yb)*10)+'px)';
     var dt=seg(p,.49,.56); e.dots.style.opacity = (dt>0 && dt<1) ? 1 : 0;
     var ab=easeOut(seg(p,.56,.61)); e.bubAi.style.opacity=ab; e.bubAi.style.transform='translateY('+((1-ab)*10)+'px)';
-    var f1=easeOut(seg(p,.66,.71)), f2=ease(seg(p,.71,.82));
-    place(e.fly, (mobile?0:-40)*(1-f1)+(mobile?0:40)*f2, (mobile?90:60)*(1-f1) + (mobile? -10:20)*f2, 1-.55*f2, f1*(1-seg(p,.80,.84)));
-    var phIn=easeOut(seg(p,.68,.78)); place(e.phone, (mobile?0:60)*(1-phIn), 40*(1-phIn), .9+.1*phIn, phIn, 0);
-    e.shot.style.opacity = easeOut(seg(p,.70,.80)); if (e.shotB) e.shotB.style.opacity = e.shot.style.opacity;
+    if (mobile) {
+      /* Phones: one thing at a time. Chat leaves, the file chip shows and shrinks away, then the app screen comes in. */
+      var m1=easeOut(seg(p,.66,.71)), m2=ease(seg(p,.72,.78));
+      place(e.fly, 0, 40*(1-m1) + 20*m2, 1-.5*m2, m1*(1-m2));
+      var phM=easeOut(seg(p,.79,.88)); place(e.phone, 0, 30*(1-phM), .92+.08*phM, phM, 0);
+      e.shot.style.opacity = easeOut(seg(p,.81,.90)); if (e.shotB) e.shotB.style.opacity = e.shot.style.opacity;
+    } else {
+      var f1=easeOut(seg(p,.66,.71)), f2=ease(seg(p,.71,.82));
+      place(e.fly, -40*(1-f1)+40*f2, 60*(1-f1) + 20*f2, 1-.55*f2, f1*(1-seg(p,.80,.84)));
+      var phIn=easeOut(seg(p,.68,.78)); place(e.phone, 60*(1-phIn), 40*(1-phIn), .9+.1*phIn, phIn, 0);
+      e.shot.style.opacity = easeOut(seg(p,.70,.80)); if (e.shotB) e.shotB.style.opacity = e.shot.style.opacity;
+    }
     var pl=easeOut(seg(p,.90,.96)); e.pill.style.opacity=pl; e.pill.style.transform='translate(-50%,'+((1-pl)*-8)+'px)';
   }
 
