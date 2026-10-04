@@ -159,5 +159,17 @@
   },true);
 })();
 </script>
+<script>
+/* Back arrow: if you came from another json.fit page, go back to it (same tab, same scroll); otherwise the blog index. */
+window.navBack=function(e){
+  try{
+    var ref=document.referrer;
+    if(ref && new URL(ref).hostname.replace(/^www\./,'')==='json.fit' && window.history.length>1){
+      e.preventDefault(); window.history.back(); return false;
+    }
+  }catch(err){}
+  return true;
+};
+</script>
 </body>
 </html>
