@@ -2177,17 +2177,17 @@
     for (var k=0;k<e.kvs.length;k++){ var t=easeOut(seg(p,.03+k*.055,.09+k*.055)); e.kvs[k].style.opacity=t; e.kvs[k].style.transform='translateX('+((1-t)*10)+'px)'; }
     var lit=easeOut(seg(p,.25,.30)); e.btn.style.opacity=.25+.75*lit; e.btn.style.transform='scale('+(.97+.03*lit)+')';
     var qOut=ease(seg(p,.32,.42)); place(e.sheet, -qOut*(mobile?0:120), qOut*(mobile?40:0), 1-.12*qOut, 1-qOut, -qOut*18);
-    var chIn=easeOut(seg(p,.38,.46)), chOut=ease(seg(p, mobile?.62:.64, mobile?.69:.72));
-    place(e.chat, (mobile?0:40)*(1-chIn), 30*(1-chIn), .92+.08*chIn-.1*chOut, chIn*(1-chOut), (1-chIn)*12);
+    var chIn=easeOut(seg(p,.38,.46)), chOut=ease(seg(p,.64,.72));
+    if (mobile) { var cC=ease(seg(p,.64,.78)); place(e.chat, 0, 30*(1-chIn) + 40*cC, (.92+.08*chIn)*(1-.35*cC), chIn*(1-cC), (1-chIn)*12); }   /* phones: the chat shrinks into the phone's place */
+    else place(e.chat, 40*(1-chIn), 30*(1-chIn), .92+.08*chIn-.1*chOut, chIn*(1-chOut), (1-chIn)*12);
     var yb=easeOut(seg(p,.44,.49)); e.bubYou.style.opacity=yb; e.bubYou.style.transform='translateY('+((1-yb)*10)+'px)';
     var dt=seg(p,.49,.56); e.dots.style.opacity = (dt>0 && dt<1) ? 1 : 0;
     var ab=easeOut(seg(p,.56,.61)); e.bubAi.style.opacity=ab; e.bubAi.style.transform='translateY('+((1-ab)*10)+'px)';
     if (mobile) {
-      /* Phones: one thing at a time. Chat leaves, the file chip shows and shrinks away, then the app screen comes in. */
-      var m1=easeOut(seg(p,.66,.71)), m2=ease(seg(p,.72,.78));
-      place(e.fly, 0, 40*(1-m1) + 20*m2, 1-.5*m2, m1*(1-m2));
-      var phM=easeOut(seg(p,.79,.88)); place(e.phone, 0, 30*(1-phM), .92+.08*phM, phM, 0);
-      e.shot.style.opacity = easeOut(seg(p,.81,.90)); if (e.shotB) e.shotB.style.opacity = e.shot.style.opacity;
+      /* Phones: the chat shrinks into the phone's place and the phone takes over from it. No file chip. */
+      place(e.fly, 0, 0, 1, 0);
+      var phC=easeOut(seg(p,.66,.80)); place(e.phone, 0, 0, .82+.18*phC, phC, 0);
+      e.shot.style.opacity = easeOut(seg(p,.72,.84)); if (e.shotB) e.shotB.style.opacity = e.shot.style.opacity;
     } else {
       var f1=easeOut(seg(p,.66,.71)), f2=ease(seg(p,.71,.82));
       place(e.fly, -40*(1-f1)+40*f2, 60*(1-f1) + 20*f2, 1-.55*f2, f1*(1-seg(p,.80,.84)));
