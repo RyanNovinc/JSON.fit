@@ -152,6 +152,28 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .cap-success .tick{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--green);color:#001b08;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
 @media(max-width:700px){.cap{padding:0 1.5rem 1rem}.cap-card{grid-template-columns:1fr;gap:2rem;padding:2rem 1.5rem;text-align:center}.cap-body p{margin-left:auto;margin-right:auto}.cap-label{text-align:center}.cap-form{flex-direction:column;margin:0 auto}.cap-success{margin:0 auto;text-align:left}}
 @media(prefers-reduced-motion:reduce){.book{animation:none}.cap-btn:hover{transform:none}}
+
+/* — Site nav: the same links on every page — */
+.nav-links{display:flex;align-items:center;gap:1.6rem;list-style:none;margin:0;padding:0}
+.nav-links a{color:var(--text-3);text-decoration:none;font-size:.8rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.nav-meals{color:#22c55e}.nav-links a.nav-ex{color:#22d3ee}.nav-links a.nav-lab{color:#a855f7}
+.nav-links a.active{color:#fff;font-weight:600}
+.nav-links a.nav-cta{color:#06161a!important;font-weight:600}
+.nav-links a.nav-meals.active{color:#4ade80}.nav-links a.nav-ex.active{color:#67e8f9}.nav-links a.nav-lab.active{color:#c084fc}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all .3s}
+@media(max-width:860px){
+  .nav-links{display:none;position:fixed;inset:0;height:100vh;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:1.1rem}
+  .nav-links .nav-cta{font-size:1rem!important;padding:.6rem 1.5rem}
+  .hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}
+  .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+  nav .nav-cta.nav-cta-top{display:none}
+}
 </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -173,7 +195,15 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       JSON<span class="green">.fit</span>
     </a>
   </div>
-  <a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'meals_nav'})">Get the app</a>
+  <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="https://json.fit/meals.html" class="nav-meals active">Meals</a></li>
+    <li><a href="https://json.fit/programs/">Programs</a></li>
+    <li><a href="https://json.fit/exercises/" class="nav-ex">Exercises</a></li>
+    <li><a href="https://json.fit/blog.html">Blog</a></li>
+    <li><a href="https://json.fit/lab/" class="nav-lab">The Lab</a></li>
+    <li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'meals_nav'})">Download Free</a></li>
+  </ul>
 </nav>
 
 <script>
@@ -611,6 +641,13 @@ window.navBack=function(e){
   }catch(err){}
   return true;
 };
+</script>
+<script>
+(function(){
+  var burger=document.getElementById('burger'), navLinks=document.getElementById('navLinks'); if(!burger||!navLinks) return;
+  burger.addEventListener('click',function(e){ e.stopPropagation(); burger.classList.toggle('open'); navLinks.classList.toggle('open'); });
+  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ burger.classList.remove('open'); navLinks.classList.remove('open'); }); });
+})();
 </script>
 </body>
 </html>
