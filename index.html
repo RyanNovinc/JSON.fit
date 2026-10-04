@@ -684,6 +684,9 @@
         .pp-list { list-style:none; display:flex; flex-direction:column; gap:.3rem; margin:0; padding:0; }
         .pp-list li { position:relative; padding-left:1.1rem; font-size:.92rem; color:var(--text-2); line-height:1.45; }
         .pp-list li::before { content:'\203A'; position:absolute; left:0; top:-1px; color:var(--cyan); font-weight:700; }
+        .pp-link { color:var(--cyan); text-decoration:underline; text-decoration-color:var(--border-cyan); text-underline-offset:3px; }
+        .pp-link:hover { text-decoration-color:var(--cyan); }
+        .pp-link::after { content:' \2197'; font-size:.75em; }
         @media (max-width:768px) { .pp-list li { font-size:.84rem; line-height:1.4; } .pp-list { gap:.2rem; } }
         /* Short desktop windows: tighten the top and shrink the visual so it never crops */
         @media (max-height: 800px) and (min-width: 769px) { .pp-stage { padding-top:6.5rem; gap:1rem 2rem; } .pp-vis { transform:scale(.84); transform-origin:top center; } }
@@ -1110,7 +1113,7 @@
                 <div class="pp-rail"><i class="on"></i><i></i><i></i></div>
                 <div class="pp-beat"><span class="pp-tag"><span class="pp-how">How it works</span>01 &middot; You answer</span><h3>A few quick questions.</h3></div>
                 <div class="pp-beat"><span class="pp-tag">02 &middot; Your AI, not ours</span><h3>Paste it into your own AI.</h3></div>
-                <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit runs it</span><h3>Import and <span class="cyan">train:</span></h3><p class="pp-lead">All of it from the latest research:</p><ul class="pp-list"><li>Alternate exercises for each movement</li><li>Rest between sets, timed for you</li><li>Reps, weight and reps in reserve</li><li>52 weeks of blocks, laid out</li><li>Sets per muscle</li></ul></div>
+                <div class="pp-beat"><span class="pp-tag">03 &middot; JSON.fit runs it</span><h3>Import and <span class="cyan">train:</span></h3><p class="pp-lead">All of it from the latest research:</p><ul class="pp-list"><li>Alternate exercises for each movement</li><li>Rest between sets, timed for you</li><li>Reps, weight and reps in reserve</li><li>52 weeks of blocks, laid out</li><li><a href="blog/why-volume-counting-matters.html" class="pp-link">Effective sets</a> per muscle</li></ul></div>
             </div>
             <div class="pp-vis">
                 <div class="pp-obj pp-q px-win">
@@ -2023,7 +2026,7 @@
   }
   /* Where am I: the visible section under the top bars, and how far into it. */
   var TWIN = { 'compare':'compare-train', 'compare-train':'compare', 'meals':'programs', 'programs':'meals', 'cap':'exercises', 'exercises':'cap' };
-  var SHARED = { how:1, demo:1, founder:1, reviews:1, download:1, faq:1 };
+  var SHARED = { 'pains-m':1, how:1, demo:1, founder:1, reviews:1, download:1, faq:1 };
   /* Anchor to a section that exists on both tabs and keep it at the same place on screen. If the top of the
      screen is inside a track-only section, use the next shared section below it, so what you can see holds still. */
   function anchorNow(){
