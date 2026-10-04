@@ -981,7 +981,8 @@
             data-app-version="web"
             data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
 </head>
-<body>
+<body data-tab="meal">
+<script>/* pick the tab before anything renders, so the page never lays out twice */(function(){ try { var t = location.hash === '#training' ? 'train' : 'meal'; var saved = (performance.getEntriesByType('navigation')[0]||{}).type; if (saved === 'back_forward' || saved === 'reload') { var j = JSON.parse(sessionStorage.getItem('jf:home')||'null'); if (j && j.tab) t = j.tab; } document.body.setAttribute('data-tab', t); } catch(e){} })();</script>
 
 <nav>
     <a href="#" class="nav-logo">
