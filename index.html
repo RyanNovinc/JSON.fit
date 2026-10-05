@@ -755,40 +755,46 @@
         .scr[data-accent="cyan"] { --ac:#22d3ee; }
         .scr[data-accent="green"] { --ac:#22c55e; }
         .nd { padding:30px 0 16px; }
-        .nd-top { display:flex; align-items:center; justify-content:space-between; padding:0 16px 2px; }
-        .nd-top .chev { color:#fff; font-size:18px; line-height:1; }
-        .nd-top .plus { color:var(--ac); font-size:20px; line-height:1; }
-        .nd-top .date { flex:1; text-align:center; font-size:8px; letter-spacing:2.3px; color:#6a6a70; font-weight:600; text-transform:uppercase; }
-        .nd-head { text-align:center; padding:8px 22px 16px; }
-        .nd-day { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:27px; color:#fff; line-height:1.05; }
-        .nd-cal { display:flex; align-items:baseline; justify-content:center; gap:5px; margin-top:10px; margin-bottom:11px; }
-        .nd-cal .fig { font-family:Georgia,serif; font-size:22px; color:#fff; line-height:1; }
+        /* Mirrors MealPlanDayScreen (app, Oct 2026) at ~0.75 scale: day header,
+           then compact meal rows; the next uneaten meal leads with a photo. */
+        .nd-head { text-align:center; padding:12px 20px 16px; border-bottom:1px solid #18181c; }
+        .nd-over { font-size:7.5px; letter-spacing:1.6px; color:#8a8a90; font-weight:600; text-transform:uppercase; margin-bottom:4px; }
+        .nd-over.today { color:var(--ac); }
+        .nd-day { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:25px; color:#fff; line-height:1.1; }
+        .nd-cal { display:flex; align-items:baseline; justify-content:center; gap:5px; margin-top:9px; margin-bottom:10px; }
+        .nd-cal .fig { font-family:Georgia,serif; font-size:24px; color:#fff; line-height:1; }
         .nd-cal .of { font-size:10.5px; color:#8a8a90; }
-        .nd-macros { display:flex; gap:11px; padding:16px 0 0; }
+        .nd-macros { display:flex; gap:12px; padding:15px 0 0; }
         .nd-mcol { flex:1; text-align:left; }
-        .nd-mlabel { font-size:7.5px; letter-spacing:1.2px; color:#8a8a90; font-weight:600; text-transform:uppercase; margin-bottom:5px; }
-        .nd-mfig { font-family:Georgia,serif; font-size:12.5px; color:#e8e8ea; margin-bottom:6px; line-height:1; }
-        .nd-mfig i { font-style:normal; font-size:9px; color:#8a8a90; }
+        .nd-mlabel { font-size:7.5px; letter-spacing:1.1px; color:#8a8a90; font-weight:600; text-transform:uppercase; margin-bottom:5px; }
+        .nd-mfig { font-family:Georgia,serif; font-size:13px; color:#e8e8ea; margin-bottom:7px; line-height:1; }
+        .nd-mfig i { font-style:normal; font-family:Georgia,serif; font-size:9px; color:#8a8a90; }
         .nd-mtrack { height:2px; background:#1c1c22; overflow:hidden; }
         .nd-mfill { height:100%; background:var(--ac); }
-        .nd-track { height:4px; background:#1c1c22; border-radius:2px; margin:0 16px; overflow:hidden; }
+        .nd-track { height:3px; background:#1c1c22; border-radius:2px; overflow:hidden; }
         .nd-fill { height:100%; border-radius:2px; background:var(--ac); width:40%; }
-        .nd-eaten { text-align:center; font-size:8.5px; letter-spacing:1.4px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-top:15px; }
-        .nd-tl { font-size:9px; letter-spacing:1.8px; color:#6a6a70; font-weight:600; text-transform:uppercase; padding:14px 16px 10px; }
-        .nd-cards { padding:0 16px; }
-        .nd-card { margin-bottom:15px; }
-        .nd-photo { position:relative; height:108px; border-radius:16px; overflow:hidden; background:#121216; }
-        .nd-photo img { width:100%; height:100%; object-fit:cover; display:block; }
-        .nd-scrim { position:absolute; inset:0; background:rgba(8,8,10,0.6); }
-        .nd-chip { position:absolute; top:9px; left:9px; background:rgba(0,0,0,0.55); padding:3px 8px; border-radius:10px; font-size:8px; letter-spacing:1.1px; color:#e8e8ea; font-weight:600; }
-        .nd-vh { position:absolute; bottom:8px; right:8px; width:22px; height:22px; border-radius:11px; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:#e8e8ea; font-size:12px; }
-        .nd-mbody { display:flex; align-items:center; gap:10px; padding:9px 2px 0; }
-        .nd-ring { width:20px; height:20px; border-radius:10px; border:1.5px solid #5a5a60; flex-shrink:0; }
-        .nd-ring.done { border-color:var(--ac); background:var(--ac); position:relative; }
-        .nd-ring.done::after { content:''; position:absolute; left:6px; top:3px; width:4px; height:8px; border:solid #06262b; border-width:0 1.5px 1.5px 0; transform:rotate(45deg); }
-        .nd-name { font-family:Georgia,serif; font-size:14.5px; color:#fff; line-height:1.2; }
+        .nd-eaten { text-align:center; font-size:7.5px; letter-spacing:1.2px; color:#6a6a70; font-weight:600; text-transform:uppercase; margin-top:15px; }
+        .nd-row { border-bottom:1px solid #18181c; }
+        .nd-row:last-child { border-bottom:0; }
+        .nd-row.next { background:rgba(34,197,94,0.08); }
+        .nd-hero { position:relative; margin:10px 12px 0; height:137px; border-radius:12px; overflow:hidden; background:#121216; }
+        .nd-hero img { width:100%; height:100%; object-fit:cover; display:block; }
+        .nd-chip { position:absolute; top:9px; left:9px; background:rgba(0,0,0,0.6); padding:4px 7px; border-radius:9px; font-size:7px; letter-spacing:1.1px; color:#fff; font-weight:600; }
+        .nd-body { display:flex; align-items:center; padding:0 12px 0 4px; }
+        .nd-tick { width:32px; height:32px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+        .nd-ring { width:16px; height:16px; border-radius:50%; border:1.5px solid #5a5a60; box-sizing:border-box; position:relative; }
+        .nd-ring.done { border:0; background:var(--ac); }
+        .nd-ring.done::after { content:''; position:absolute; left:5.5px; top:2.5px; width:3.5px; height:7.5px; border:solid #0a0a0b; border-width:0 1.6px 1.6px 0; transform:rotate(45deg); }
+        .nd-main { flex:1; min-width:0; display:flex; align-items:center; padding:9px 0; }
+        .nd-txt { flex:1; min-width:0; }
+        .nd-name { font-family:Georgia,serif; font-size:12px; line-height:15px; color:#e8e8ea; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
         .nd-name.done { color:#8a8a90; text-decoration:line-through; }
-        .nd-macro { font-size:10px; color:#8a8a90; margin-top:3px; }
+        .nd-meta { font-size:7.5px; letter-spacing:0.8px; color:#8a8a90; margin-top:3px; }
+        .nd-meta.ac { color:var(--ac); }
+        .nd-macro { font-size:9px; color:#8a8a90; margin-top:3px; }
+        .nd-thumb { width:40px; height:40px; margin-left:9px; flex-shrink:0; border-radius:9px; overflow:hidden; background:#121216; }
+        .nd-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+        .nd-thumb.done { opacity:0.45; }
         .wl-img { position:relative; width:100%; aspect-ratio:16/9; border-bottom-left-radius:18px; border-bottom-right-radius:18px; overflow:hidden; background:#000; }
         .wl-img .frame { position:absolute; inset:32px 0 0; width:100%; height:calc(100% - 32px); object-fit:contain; opacity:0; transition:opacity 0.25s ease; }
         .wl-img .frame.show { opacity:1; }
@@ -885,9 +891,12 @@
             .sw-row .nd-mlabel { font-size:7px; letter-spacing:0.9px; }
             .sw-row .nd-mfig { font-size:11px; }
             .sw-row .nd-mfig i { font-size:8px; }
-            .sw-row .nd-day { font-size:23px; }
-            .sw-row .nd-cal .fig { font-size:19px; }
+            .sw-row .nd-day { font-size:22px; }
+            .sw-row .nd-cal .fig { font-size:20px; }
             .sw-row .nd-cal .of { font-size:9.5px; }
+            .sw-row .nd-hero { height:118px; }
+            .sw-row .nd-name { font-size:11px; line-height:14px; }
+            .sw-row .nd-thumb { width:36px; height:36px; }
         }
         @media (max-width:900px) {
             .sw-row { display:flex; align-items:center; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:0.25rem 1.5rem 0.75rem; margin:0 -1.5rem; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
@@ -1281,11 +1290,11 @@
                         <div class="sb"><span id="sbTime">9:41</span></div>
                         <div class="scr on" data-accent="green" id="scr-nutrition">
                             <div class="nd">
-                                <div class="nd-top"><span class="chev">&#8249;</span><span class="date">JUN 9</span><span class="plus">+</span></div>
                                 <div class="nd-head">
+                                    <div class="nd-over today">Today &middot; Day 2</div>
                                     <div class="nd-day">Tuesday</div>
                                     <div class="nd-cal"><span class="fig">1,580</span><span class="of">of 3,311 kcal</span></div>
-                                    <div class="nd-track" style="margin:0;"><div class="nd-fill" style="width:48%"></div></div>
+                                    <div class="nd-track"><div class="nd-fill" style="width:48%"></div></div>
                                     <div class="nd-macros">
                                         <div class="nd-mcol">
                                             <div class="nd-mlabel">Protein</div>
@@ -1305,27 +1314,21 @@
                                     </div>
                                     <div class="nd-eaten">2 of 5 eaten</div>
                                 </div>
-                                <div class="nd-tl">Timeline</div>
-                                <div class="nd-cards">
-                                    <div class="nd-card">
-                                        <div class="nd-photo"><img src="images/meals/protein-pancakes.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/protein-pancakes.png'"><div class="nd-scrim"></div><div class="nd-chip">6:00 AM &middot; BREAKFAST</div><div class="nd-vh">&#8250;</div></div>
-                                        <div class="nd-mbody"><div class="nd-ring done"></div><div><div class="nd-name done">Protein Pancakes</div><div class="nd-macro">760 kcal &middot; P52 C74 F27</div></div></div>
+                                <div class="nd-list">
+                                    <div class="nd-row">
+                                        <div class="nd-body"><div class="nd-tick"><div class="nd-ring done"></div></div><div class="nd-main"><div class="nd-txt"><div class="nd-name done">Protein Pancakes</div><div class="nd-meta ac">6:00 AM &middot; EATEN</div><div class="nd-macro">760 kcal &middot; P52 C74 F27</div></div><div class="nd-thumb done"><img src="images/meals/protein-pancakes.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/protein-pancakes.png'"></div></div></div>
                                     </div>
-                                    <div class="nd-card">
-                                        <div class="nd-photo"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/steak-and-eggs.png'"><div class="nd-scrim"></div><div class="nd-chip">9:00 AM &middot; BRUNCH</div><div class="nd-vh">&#8250;</div></div>
-                                        <div class="nd-mbody"><div class="nd-ring done"></div><div><div class="nd-name done">Steak &amp; Eggs</div><div class="nd-macro">820 kcal &middot; P65 C37 F44</div></div></div>
+                                    <div class="nd-row">
+                                        <div class="nd-body"><div class="nd-tick"><div class="nd-ring done"></div></div><div class="nd-main"><div class="nd-txt"><div class="nd-name done">Steak &amp; Eggs</div><div class="nd-meta ac">9:00 AM &middot; EATEN</div><div class="nd-macro">820 kcal &middot; P65 C37 F44</div></div><div class="nd-thumb done"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/steak-and-eggs.png'"></div></div></div>
                                     </div>
-                                    <div class="nd-card">
-                                        <div class="nd-photo"><img src="images/meals/massaman.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/massaman.png'"><div class="nd-chip">12:30 PM &middot; LUNCH</div><div class="nd-vh">&#8250;</div></div>
-                                        <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">Slow-Cooked Massaman Beef Curry</div><div class="nd-macro">890 kcal &middot; P52 C42 F58</div></div></div>
+                                    <div class="nd-row next"><div class="nd-hero"><img src="images/meals/massaman.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/massaman.png'"><div class="nd-chip">UP NEXT</div></div>
+                                        <div class="nd-body"><div class="nd-tick"><div class="nd-ring"></div></div><div class="nd-main"><div class="nd-txt"><div class="nd-name">Slow-Cooked Massaman Beef Curry</div><div class="nd-meta ac">12:30 PM &middot; LUNCH</div><div class="nd-macro">890 kcal &middot; P52 C42 F58</div></div></div></div>
                                     </div>
-                                    <div class="nd-card">
-                                        <div class="nd-photo"><img src="images/meals/king-kong-chocolate.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/king-kong-chocolate.png'"><div class="nd-chip">4:00 PM &middot; SNACK</div><div class="nd-vh">&#8250;</div></div>
-                                        <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">King Kong Chocolate</div><div class="nd-macro">1418 kcal &middot; P85 C93 F79</div></div></div>
+                                    <div class="nd-row">
+                                        <div class="nd-body"><div class="nd-tick"><div class="nd-ring"></div></div><div class="nd-main"><div class="nd-txt"><div class="nd-name">King Kong Chocolate</div><div class="nd-meta">4:00 PM &middot; SNACK</div><div class="nd-macro">1418 kcal &middot; P85 C93 F79</div></div><div class="nd-thumb"><img src="images/meals/king-kong-chocolate.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/king-kong-chocolate.png'"></div></div></div>
                                     </div>
-                                    <div class="nd-card">
-                                        <div class="nd-photo"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/pulled-pork.png'"><div class="nd-chip">7:30 PM &middot; DINNER</div><div class="nd-vh">&#8250;</div></div>
-                                        <div class="nd-mbody"><div class="nd-ring"></div><div><div class="nd-name">Slow-Cooked BBQ Pulled Pork</div><div class="nd-macro">610 kcal &middot; P48 C28 F32</div></div></div>
+                                    <div class="nd-row">
+                                        <div class="nd-body"><div class="nd-tick"><div class="nd-ring"></div></div><div class="nd-main"><div class="nd-txt"><div class="nd-name">Slow-Cooked BBQ Pulled Pork</div><div class="nd-meta">7:30 PM &middot; DINNER</div><div class="nd-macro">610 kcal &middot; P48 C28 F32</div></div><div class="nd-thumb"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/meals/pulled-pork.png'"></div></div></div>
                                     </div>
                                 </div>
                             </div>
