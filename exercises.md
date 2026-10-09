@@ -106,6 +106,18 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Equipment: Dumbbells, Incline Bench
 - Category: Isolation
 
+### Push-Up
+- Primary: Chest
+- Secondary: Front Delts, Triceps
+- Equipment: None
+- Category: Compound
+
+### Incline Push-Up
+- Primary: Chest
+- Secondary: Front Delts, Triceps
+- Equipment: Bench or Box
+- Category: Compound
+
 ---
 
 ## BACK (LATS, UPPER BACK)
@@ -224,6 +236,24 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Equipment: Dumbbell, Bench
 - Category: Isolation
 
+### Inverted Row
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
+- Equipment: Sturdy Table or Low Bar
+- Category: Compound
+
+### Band Row
+- Primary: Upper Back
+- Secondary: Lats, Biceps, Rear Delts
+- Equipment: Resistance Band
+- Category: Compound
+
+### Band Lat Pulldown
+- Primary: Lats
+- Secondary: Biceps
+- Equipment: Resistance Band, Door Anchor
+- Category: Compound
+
 ---
 
 ## SHOULDERS
@@ -304,6 +334,18 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Primary: Rear Delts
 - Secondary: (none)
 - Equipment: Dumbbells
+- Category: Isolation
+
+### Pike Push-Up
+- Primary: Front Delts
+- Secondary: Triceps, Side Delts
+- Equipment: None
+- Category: Compound
+
+### Band Pull-Apart
+- Primary: Rear Delts
+- Secondary: Upper Back
+- Equipment: Resistance Band
 - Category: Isolation
 
 ---
@@ -450,6 +492,18 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Equipment: Dumbbell or Cable
 - Category: Isolation
 
+### Close-Grip Push-Up
+- Primary: Triceps
+- Secondary: Chest, Front Delts
+- Equipment: None
+- Category: Compound
+
+### Diamond Push-Up
+- Primary: Triceps
+- Secondary: Chest, Front Delts
+- Equipment: None
+- Category: Compound
+
 ---
 
 ## QUADS
@@ -532,6 +586,24 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Equipment: Sissy Squat Bench (optional)
 - Category: Isolation
 
+### Bodyweight Squat
+- Primary: Quads
+- Secondary: Glutes
+- Equipment: None
+- Category: Compound
+
+### Goblet Squat
+- Primary: Quads
+- Secondary: Glutes
+- Equipment: Dumbbell
+- Category: Compound
+
+### Pistol Squat
+- Primary: Quads
+- Secondary: Glutes
+- Equipment: None
+- Category: Compound
+
 ---
 
 ## HAMSTRINGS
@@ -602,6 +674,12 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Equipment: Barbell
 - Category: Compound
 
+### Single-Leg Romanian Deadlift
+- Primary: Hamstrings
+- Secondary: Glutes
+- Equipment: Bodyweight or Dumbbell
+- Category: Compound
+
 ---
 
 ## GLUTES
@@ -660,6 +738,12 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Equipment: Reverse Hyper Machine or GHD
 - Category: Isolation
 
+### Glute Bridge
+- Primary: Glutes
+- Secondary: Hamstrings
+- Equipment: Mat (optional)
+- Category: Compound
+
 ---
 
 ## CALVES
@@ -692,6 +776,12 @@ Tagging decisions follow ExRx.net biomechanical classification where applicable,
 - Primary: Calves
 - Secondary: (none)
 - Equipment: Dumbbell, Platform
+- Category: Isolation
+
+### Single-Leg Calf Raise
+- Primary: Calves
+- Secondary: (none)
+- Equipment: Step (optional)
 - Category: Isolation
 
 ---

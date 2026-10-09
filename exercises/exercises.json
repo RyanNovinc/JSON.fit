@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-01T22:25:53.990Z",
- "count": 129,
+ "generated": "2026-10-09T22:55:21.716Z",
+ "count": 144,
  "exercises": [
   {
    "name": "Barbell Bench Press",
@@ -536,6 +536,96 @@
      "https://www.barbellmedicine.com/blog/best-chest-and-triceps-exercises/"
     ],
     "confidence": "medium"
+   }
+  },
+  {
+   "name": "Push-Up",
+   "slug": "push-up",
+   "primary": [
+    "Chest"
+   ],
+   "secondary": [
+    "Front Delts",
+    "Triceps"
+   ],
+   "equipment": "None",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Chest, with front delts and triceps assisting",
+    "setup": [
+     "Hands a little wider than the shoulders and directly under them; feet together, body in one line.",
+     "Brace as if about to be punched in the stomach so the hips do not sag."
+    ],
+    "execution": [
+     "Lower until the chest touches the floor, elbows tucking to about 45 degrees from the body.",
+     "Press back up until the arms are straight, pushing the floor away.",
+     "Lower for two to three seconds; the floor stops you before the chest is fully stretched."
+    ],
+    "feel": "Chest working most in the bottom half; the top of the rep is the easy part.",
+    "mistake": "Hips sagging or piking up; keep a straight line from head to heels.",
+    "quickCue": "Straight line, chest to floor, push away",
+    "why": "Bodyweight is hard to add to, so reps run high; slow lowering, a pause at the bottom, or hands on blocks adds difficulty.",
+    "sources": [
+     "https://www.youtube.com/watch?v=fGm-ef-4PVk",
+     "https://www.barbellmedicine.com/blog/best-chest-exercises/",
+     "https://www.strongerbyscience.com/no-gym/",
+     "https://rpstrength.com/blogs/articles/chest-hypertrophy-training-tips"
+    ],
+    "confidence": "high"
+   }
+  },
+  {
+   "name": "Incline Push-Up",
+   "slug": "incline-push-up",
+   "primary": [
+    "Chest"
+   ],
+   "secondary": [
+    "Front Delts",
+    "Triceps"
+   ],
+   "equipment": "Bench or Box",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Chest, with front delts and triceps assisting",
+    "setup": [
+     "Hands on a sturdy bench or box, a little wider than the shoulders; walk the feet back.",
+     "Body in one straight line from head to heels, abs lightly braced as if bracing for a punch."
+    ],
+    "execution": [
+     "Lower under control until the chest touches the edge, elbows tucking to about 45 degrees.",
+     "Press the bench away until the arms are straight, keeping the body rigid the whole way.",
+     "A lower surface makes it harder; drop the height as it gets easy before moving to the floor."
+    ],
+    "feel": "Chest and the front of the shoulders working as you press off the edge, triceps finishing the rep.",
+    "mistake": "Hips sagging or piking up so the body bends; keep the straight line from head to heels.",
+    "quickCue": "Straight line, chest to the edge, push away",
+    "why": "Raising the hands takes some bodyweight off, so it is the push-up regression; lower the surface rather than chasing endless reps.",
+    "sources": [
+     "https://www.strengthlog.com/incline-push-up/",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "high"
    }
   },
   {
@@ -1444,6 +1534,139 @@
    }
   },
   {
+   "name": "Inverted Row",
+   "slug": "inverted-row",
+   "primary": [
+    "Upper Back"
+   ],
+   "secondary": [
+    "Lats",
+    "Biceps",
+    "Rear Delts"
+   ],
+   "equipment": "Sturdy Table or Low Bar",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Upper back, with lats, biceps and rear delts assisting",
+    "setup": [
+     "Lie under a low bar or a sturdy table edge; grip it overhand, slightly wider than shoulder width.",
+     "Heels on the floor, body straight from shoulders to heels, glutes and abs tight."
+    ],
+    "execution": [
+     "Pull the chest up to the bar or edge, driving the elbows back and squeezing the shoulder blades.",
+     "Keep the body rigid as one plank; hips rise with the chest, never trailing behind.",
+     "Lower under control to straight arms, letting the shoulder blades spread at the bottom."
+    ],
+    "feel": "Mid and upper back squeezing hard at the top, with the arms helping rather than leading.",
+    "mistake": "Hips sagging so the body bends in the middle and the chest never reaches the bar.",
+    "quickCue": "Body like a plank, chest to the bar",
+    "why": "A more upright body makes it easier, feet raised makes it harder; adjust the angle instead of cutting range.",
+    "sources": [
+     "https://www.strengthlog.com/inverted-row/",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "high"
+   }
+  },
+  {
+   "name": "Band Row",
+   "slug": "band-row",
+   "primary": [
+    "Upper Back"
+   ],
+   "secondary": [
+    "Lats",
+    "Biceps",
+    "Rear Delts"
+   ],
+   "equipment": "Resistance Band",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Upper back, with lats, biceps and rear delts assisting",
+    "setup": [
+     "Sit on the floor, legs out, knees slightly bent, band looped around the soles of your feet.",
+     "Hold one end in each hand, sit tall with a neutral spine, shoulders relaxed."
+    ],
+    "execution": [
+     "Pull the hands to the lower ribs, elbows close to the body, squeezing the shoulder blades together.",
+     "Keep the torso still; the arms and shoulder blades move, not the lower back.",
+     "Return slowly to straight arms, resisting the band rather than letting it snap you forward."
+    ],
+    "feel": "Squeeze between the shoulder blades at the finish, with the lats working as elbows pass the ribs.",
+    "mistake": "Leaning back to stretch the band moves the work from the back to the hips and lower back.",
+    "quickCue": "Sit tall, elbows to the ribs, slow return",
+    "why": "Bands get harder as they stretch, so the finish is the hard part; choke up or use a thicker band to progress.",
+    "sources": [
+     "https://www.sweat.com/exercises/seated-resistance-band-row",
+     "https://www.healthline.com/health/resistance-band-row-exercise",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
+   "name": "Band Lat Pulldown",
+   "slug": "band-lat-pulldown",
+   "primary": [
+    "Lats"
+   ],
+   "secondary": [
+    "Biceps"
+   ],
+   "equipment": "Resistance Band, Door Anchor",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Lats, with biceps assisting",
+    "setup": [
+     "Anchor the band high, such as a door anchor at the top of a closed door.",
+     "Kneel or sit facing it, arms reaching up toward the anchor, slightly wider than shoulders."
+    ],
+    "execution": [
+     "Pull the shoulder blades down, then drive the elbows down to your sides toward the upper chest.",
+     "Chest up and abs braced; the torso stays still rather than leaning back.",
+     "Let the arms rise back toward the anchor slowly, feeling the lats stretch at the top."
+    ],
+    "feel": "Lats pulling the elbows down along your sides, with a stretch under the arms on the way up.",
+    "mistake": "Yanking with the arms or rocking the torso instead of driving the elbows down to the sides.",
+    "quickCue": "Shoulders down, elbows to your sides",
+    "why": "",
+    "sources": [
+     "https://motra.com/exercises/resistanceBandLatPulldown"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
    "name": "Barbell Overhead Press",
    "slug": "barbell-overhead-press",
    "primary": [
@@ -2007,6 +2230,92 @@
      "https://www.youtube.com/shorts/zEuseRjS7vg"
     ],
     "confidence": "high"
+   }
+  },
+  {
+   "name": "Pike Push-Up",
+   "slug": "pike-push-up",
+   "primary": [
+    "Front Delts"
+   ],
+   "secondary": [
+    "Triceps",
+    "Side Delts"
+   ],
+   "equipment": "None",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Front delts, with triceps and side delts assisting",
+    "setup": [
+     "From a high plank, hands about shoulder width, walk the feet in and lift the hips high.",
+     "Body forms an upside-down V; legs as straight as your hamstrings allow, neck neutral."
+    ],
+    "execution": [
+     "Bend the elbows and lower the head forward and down to a spot just ahead of the hands.",
+     "Keep elbows tucked toward the body rather than flared straight out to the sides.",
+     "Press back up to straight arms under control, keeping the hips high throughout."
+    ],
+    "feel": "Shoulders doing the pressing, like an overhead press, with the triceps finishing at the top.",
+    "mistake": "Letting the hips drop toward a plank turns it back into a regular push-up and off the shoulders.",
+    "quickCue": "Hips high, head forward of the hands, press",
+    "why": "It is the bodyweight overhead press; raising the feet onto a box makes it more vertical and harder.",
+    "sources": [
+     "https://www.garagegymreviews.com/how-to-do-pike-push-ups",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
+   "name": "Band Pull-Apart",
+   "slug": "band-pull-apart",
+   "primary": [
+    "Rear Delts"
+   ],
+   "secondary": [
+    "Upper Back"
+   ],
+   "equipment": "Resistance Band",
+   "category": "Isolation",
+   "tier": "Low-cost isolation",
+   "rest": [
+    "90 s",
+    "75 s",
+    "60 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Rear delts, with the upper back assisting",
+    "setup": [
+     "Stand tall holding a light band in front at shoulder height, arms straight, hands about shoulder width."
+    ],
+    "execution": [
+     "Pull the band apart by moving the arms out to the sides until it touches the chest.",
+     "Keep arms straight and shoulders down; the movement is out to the sides, not down.",
+     "Return under control to the start rather than letting the band snap back."
+    ],
+    "feel": "The backs of the shoulders and between the shoulder blades working as the band reaches your chest.",
+    "mistake": "Bending the elbows or shrugging, which turns it into a row and moves work off the rear delts.",
+    "quickCue": "Straight arms, pull apart to the chest",
+    "why": "Rear delts are small, so a light band with strict form works better than a heavy band you cannot finish.",
+    "sources": [
+     "https://www.strengthlog.com/band-pull-apart/",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "medium"
    }
   },
   {
@@ -2950,6 +3259,96 @@
    }
   },
   {
+   "name": "Close-Grip Push-Up",
+   "slug": "close-grip-push-up",
+   "primary": [
+    "Triceps"
+   ],
+   "secondary": [
+    "Chest",
+    "Front Delts"
+   ],
+   "equipment": "None",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Triceps, with chest and front delts assisting",
+    "setup": [
+     "Hands under your shoulders or slightly narrower, fingers forward, body straight from head to heels.",
+     "Squeeze glutes and brace your abs as if about to be punched."
+    ],
+    "execution": [
+     "Lower your chest to the floor with elbows tucked close, brushing your ribs.",
+     "Push the floor away until elbows lock; hips and shoulders rise as one unit.",
+     "Lower under control for two to three seconds, then press all the way up."
+    ],
+    "feel": "Triceps taking more of the push than a normal push-up, especially through the last half of lockout.",
+    "mistake": "Letting the elbows flare out wide, which hands the work back to the chest and shoulders.",
+    "quickCue": "Elbows tucked, chest to the floor, full lockout.",
+    "why": "",
+    "sources": [
+     "https://exrx.net/WeightExercises/Triceps/BWCloseGripPushup",
+     "https://rpstrength.com/blogs/articles/triceps-hypertrophy-training-tips",
+     "https://mennohenselmans.com/these-optimized-exercises-blow-up-your-arms/"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
+   "name": "Diamond Push-Up",
+   "slug": "diamond-push-up",
+   "primary": [
+    "Triceps"
+   ],
+   "secondary": [
+    "Chest",
+    "Front Delts"
+   ],
+   "equipment": "None",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Triceps, with chest and front delts assisting",
+    "setup": [
+     "Thumbs and index fingers touch under your chest in a diamond; body straight, glutes squeezed.",
+     "Narrower than a close-grip push-up, so expect fewer reps and more triceps demand."
+    ],
+    "execution": [
+     "Lower until your chest touches your hands, elbows tracking back along your ribs.",
+     "Press to full lockout and squeeze the triceps hard at the top.",
+     "Lower under control for two to three seconds every rep."
+    ],
+    "feel": "Triceps working through the whole rep with a strong squeeze at lockout; inner chest joins near the top.",
+    "mistake": "Flaring the elbows out to the sides, which shifts the load to the chest and shoulders.",
+    "quickCue": "Hands in a diamond, elbows back, lock out hard.",
+    "why": "",
+    "sources": [
+     "https://exrx.net/WeightExercises/Triceps/BWCloseGripPushup",
+     "https://rpstrength.com/blogs/articles/triceps-hypertrophy-training-tips",
+     "https://mennohenselmans.com/these-optimized-exercises-blow-up-your-arms/"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
    "name": "Barbell Back Squat",
    "slug": "barbell-back-squat",
    "primary": [
@@ -3522,6 +3921,136 @@
    }
   },
   {
+   "name": "Bodyweight Squat",
+   "slug": "bodyweight-squat",
+   "primary": [
+    "Quads"
+   ],
+   "secondary": [
+    "Glutes"
+   ],
+   "equipment": "None",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Quads, with glutes assisting",
+    "setup": [
+     "Feet about shoulder width, toes turned out slightly, weight spread over the whole foot.",
+     "Arms reach forward or hands together at the chest to help balance."
+    ],
+    "execution": [
+     "Sit down between the knees as deep as you can control, knees following the toes.",
+     "Chest stays up and heels stay down through the bottom of the squat.",
+     "Stand by driving the floor away until the hips and knees are straight."
+    ],
+    "feel": "The front of the thighs doing most of the work, glutes helping as you rise from the bottom.",
+    "mistake": "Knees caving inward or heels lifting, which shifts the load and costs balance and depth.",
+    "quickCue": "Sit between your knees, heels down",
+    "why": "Bodyweight is light for the legs, so slow lowering, a pause at the bottom, or a single-leg version adds difficulty.",
+    "sources": [
+     "https://www.strengthlog.com/air-squat/",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "high"
+   }
+  },
+  {
+   "name": "Goblet Squat",
+   "slug": "goblet-squat",
+   "primary": [
+    "Quads"
+   ],
+   "secondary": [
+    "Glutes"
+   ],
+   "equipment": "Dumbbell",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Quads, same pattern as a front squat, with glutes assisting",
+    "setup": [
+     "Hold one dumbbell or kettlebell vertically against your chest with both hands, elbows tucked under it.",
+     "Feet shoulder width or slightly wider, toes turned out a little, weight spread over the whole foot."
+    ],
+    "execution": [
+     "Sit straight down between your knees, chest high, knees pointing the same way as your toes.",
+     "Lower under control until thighs pass parallel; the front load keeps your torso upright.",
+     "Stand by driving the floor away, keeping the weight glued to your chest the whole way up."
+    ],
+    "feel": "Quads doing the work at the bottom and through the rise, torso stacked and steady over midfoot.",
+    "mistake": "Letting the weight drift away from your chest tips you forward and turns it into an arm and back exercise.",
+    "quickCue": "Weight on chest, sit deep, stay tall.",
+    "why": "",
+    "sources": [
+     "https://exrx.net/WeightExercises/Kettlebell/KBGobletSquat",
+     "https://www.youtube.com/watch?v=kIXcoivzGf8",
+     "https://www.youtube.com/watch?v=v-mQm_droHg"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
+   "name": "Pistol Squat",
+   "slug": "pistol-squat",
+   "primary": [
+    "Quads"
+   ],
+   "secondary": [
+    "Glutes"
+   ],
+   "equipment": "None",
+   "category": "Compound",
+   "tier": "Unilateral compound",
+   "rest": [
+    "90 s–2 min a side",
+    "75–90 s a side",
+    "60 s a side"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Standing-leg quads and glutes, with the outer hip stabilising",
+    "setup": [
+     "Stand on one foot, other leg held straight out in front, arms reaching forward as a counterweight.",
+     "Whole foot flat; holding a rail or squatting to a box are fair ways to make it easier."
+    ],
+    "execution": [
+     "Sit down as far as you can under control, knee tracking over the toes, heel staying down.",
+     "Reach the arms and free leg forward as you descend so your weight stays over the foot.",
+     "Drive the floor away to stand, finishing with the hip and knee fully straight."
+    ],
+    "feel": "The standing quad loaded hard at the bottom with the outer hip working to keep you steady.",
+    "mistake": "Knee collapsing inward or the heel lifting shifts the load off the quad and costs your balance.",
+    "quickCue": "Heel down, knee over toes, reach forward for balance.",
+    "why": "",
+    "sources": [
+     "https://exrx.net/WeightExercises/Quadriceps/BWSingleLegSquat",
+     "https://www.youtube.com/watch?v=kIXcoivzGf8"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
    "name": "Romanian Deadlift",
    "slug": "romanian-deadlift",
    "primary": [
@@ -4015,6 +4544,49 @@
    }
   },
   {
+   "name": "Single-Leg Romanian Deadlift",
+   "slug": "single-leg-romanian-deadlift",
+   "primary": [
+    "Hamstrings"
+   ],
+   "secondary": [
+    "Glutes"
+   ],
+   "equipment": "Bodyweight or Dumbbell",
+   "category": "Compound",
+   "tier": "Unilateral compound",
+   "rest": [
+    "90 s–2 min a side",
+    "75–90 s a side",
+    "60 s a side"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Hamstrings and glutes of the standing leg",
+    "setup": [
+     "Stand on one leg with a soft knee, bodyweight or one dumbbell held in the hands.",
+     "Brace the abs and keep the hips square to the floor, not rotating open."
+    ],
+    "execution": [
+     "Hinge at the hip, chest lowering as the free leg reaches straight back in line with the torso.",
+     "Back flat, weight in the mid-foot; go as far as the hamstring stretch allows without rounding.",
+     "Drive the hip forward to stand tall, squeezing the glute of the standing leg."
+    ],
+    "feel": "A strong stretch in the back of the standing thigh at the bottom, then that glute bringing you up.",
+    "mistake": "Opening the hips toward the ceiling or rounding the back to reach lower.",
+    "quickCue": "Hips square, reach the back leg long",
+    "why": "Balance limits the load before the hamstring does; light toe contact on the floor behind you is a fair way to steady it.",
+    "sources": [
+     "https://www.strengthlog.com/single-leg-romanian-deadlift/",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "medium"
+   }
+  },
+  {
    "name": "Barbell Hip Thrust",
    "slug": "barbell-hip-thrust",
    "primary": [
@@ -4416,6 +4988,49 @@
    }
   },
   {
+   "name": "Glute Bridge",
+   "slug": "glute-bridge",
+   "primary": [
+    "Glutes"
+   ],
+   "secondary": [
+    "Hamstrings"
+   ],
+   "equipment": "Mat (optional)",
+   "category": "Compound",
+   "tier": "Moderate compound",
+   "rest": [
+    "2.5–3 min",
+    "2 min",
+    "75–90 s"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "Glutes, with hamstrings assisting",
+    "setup": [
+     "Lie on your back, knees bent, feet flat on the floor about hip width.",
+     "Arms on the floor by your sides; tuck the pelvis slightly to set the glutes."
+    ],
+    "execution": [
+     "Squeeze the glutes to lift the hips until shoulders, hips and knees form a straight line.",
+     "Ribs down and chin tucked so the hips finish without arching the lower back.",
+     "Pause and squeeze at the top, then lower under control to the floor."
+    ],
+    "feel": "A strong squeeze in the glutes at the top; hamstrings help, but the lower back should stay quiet.",
+    "mistake": "Pushing the hips so high the lower back arches, taking the finish away from the glutes.",
+    "quickCue": "Squeeze glutes to a straight line, ribs down",
+    "why": "Bodyweight is light for the glutes, so a pause at the top or a single-leg version adds difficulty.",
+    "sources": [
+     "https://www.strengthlog.com/glute-bridge/",
+     "https://www.strongerbyscience.com/no-gym/"
+    ],
+    "confidence": "high"
+   }
+  },
+  {
    "name": "Standing Calf Raise",
    "slug": "standing-calf-raise",
    "primary": [
@@ -4629,6 +5244,48 @@
      "https://www.youtube.com/watch?v=-qsRtp_PbVM",
      "https://www.youtube.com/watch?v=Xa18jxyeSnM",
      "https://www.youtube.com/watch?v=__qfDhdByMY"
+    ],
+    "confidence": "high"
+   }
+  },
+  {
+   "name": "Single-Leg Calf Raise",
+   "slug": "single-leg-calf-raise",
+   "primary": [
+    "Calves"
+   ],
+   "secondary": [],
+   "equipment": "Step (optional)",
+   "category": "Isolation",
+   "tier": "Unilateral compound",
+   "rest": [
+    "90 s–2 min a side",
+    "75–90 s a side",
+    "60 s a side"
+   ],
+   "sexes": [
+    "blue",
+    "pink"
+   ],
+   "cue": {
+    "target": "One calf at a time, mainly the gastrocnemius",
+    "setup": [
+     "Ball of one foot on the edge of a step, heel hanging off, other foot lifted.",
+     "Hold a rail or wall for balance; keep the working knee straight."
+    ],
+    "execution": [
+     "Lower under control until the heel drops as far as it can, and pause in the stretch.",
+     "Press through the ball of the foot and rise as high as possible.",
+     "Squeeze briefly at the top, then lower slowly again without bouncing."
+    ],
+    "feel": "A deep stretch in the calf at the bottom and a hard squeeze at the top.",
+    "mistake": "Bouncing out of the bottom or cutting the range short at either end.",
+    "quickCue": "Hold the rail, full stretch, pause, rise high",
+    "why": "The step lets the heel drop below the toes for a longer range; holding on keeps balance from limiting the calf.",
+    "sources": [
+     "https://www.strongerbyscience.com/no-gym/",
+     "https://www.youtube.com/watch?v=__qfDhdByMY",
+     "https://www.youtube.com/watch?v=Xa18jxyeSnM"
     ],
     "confidence": "high"
    }
