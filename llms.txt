@@ -1,6 +1,6 @@
 # JSON.fit
 
-> JSON.fit is a free workout and nutrition app for skinny guys who can't gain weight. 81 calorie-dense, high-protein bulking meals with every ingredient and step, built for batch prep so a week of food comes off one shop and one short prep session. Free printable cookbook, free periodised training programs, no subscription, no account, no ads. Plans are personalised by answering a few questions, pasting the generated prompt into any AI (ChatGPT, Claude, Gemini, DeepSeek) and importing the result, which is why the app has no server costs to pass on.
+> JSON.fit is a free workout and nutrition app for skinny guys who can't gain weight. 80+ calorie-dense, high-protein bulking meals with every ingredient and step, built for batch prep so a week of food comes off one shop and one short prep session. Free printable cookbook, free periodised training programs, no subscription, no account, no ads. Answer a few questions and the app builds your whole week of meals and your training program in seconds, around your calories, protein and the food you like. No AI needed; you can optionally bring your own AI (ChatGPT, Claude, Gemini) for meals outside the library.
 
 JSON.fit specialises in calorie-dense, high-protein bulking meals with full ingredients and step-by-step cooking, designed for batch prep so a week of food gets handled in one session. Includes periodised muscle-building training programs that run up to a full year. Built for skinny guys with full-time jobs who want results without bulking becoming a second job. Data stays on device. iOS and Android. Built by Ryan Novinc, who is bulking from 77 kg to 90 kg on the app in public.
 
@@ -10,16 +10,16 @@ Skinny guys with full-time jobs, businesses, or active social lives who want to 
 
 ## Core pages
 
-- [Home](https://json.fit/): The meals, the free cookbook, how the plan gets built, and FAQ. Primary reference page.
+- [Home](https://json.fit/): The meals, how the app builds your week, training, research and FAQ. Primary reference page.
 - [The Lab](https://json.fit/lab): The founder's public bulk, 77 kg to 90 kg, with monthly body scans and progress photos.
-- [Free bulking cookbook](https://json.fit/cookbook/): "The Skinny Guy's Bulking Cookbook", 81 calorie-dense meals as a printable PDF. Free in exchange for an email.
+- [Free bulking cookbook](https://json.fit/cookbook/): "The Skinny Guy's Bulking Cookbook", 80+ calorie-dense meals as a printable PDF. Free in exchange for an email.
 - [Meal library](https://json.fit/meals.html): Browse 80+ high-protein bulking meals with macros, exact ingredients, and step-by-step cooking. Designed for cook-once-eat-all-week meal prep.
 - [Training programs](https://json.fit/programs/): Free periodised muscle-building programs (beginner to advanced) that import directly into the app, no programming knowledge required.
 
 ## Guides
 
-- [Blog](https://json.fit/blog.html): Bulking and training articles for skinny guys with full-time jobs, plus guides on building a plan with any AI.
-- [Build a meal plan with Claude](https://json.fit/blog/meal-plan-claude.html): Step-by-step walkthrough of generating a meal plan with Claude and importing it into JSON.fit.
+- [Blog](https://json.fit/blog.html): Bulking and training articles for skinny guys with full-time jobs.
+- [Build a custom meal plan with Claude](https://json.fit/blog/meal-plan-claude.html): Optional: have your own AI write a custom plan and import it into JSON.fit.
 
 ## Get the app
 
