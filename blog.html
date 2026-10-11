@@ -6,10 +6,10 @@
     <title>Bulking Articles for Skinny Guys | JSON.fit</title>
     <meta name="description" content="Bulking and training articles for skinny guys who want results without making the gym their life.">
     <link rel="canonical" href="https://json.fit/blog.html">
-<link rel="icon" type="image/x-icon" href="favicon-3.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="icon-32-3.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192-3.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180-3.png">
+<link rel="icon" type="image/x-icon" href="/favicon-3.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180-3.png">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -263,7 +263,7 @@
         {
             "@type": "BlogPosting",
             "headline": "How to Create a Personalised Meal Plan with Claude",
-            "description": "Use Claude to write a custom meal plan and import it into JSON.fit. (The app now builds plans itself; this is the optional AI route.)",
+            "description": "Generate a macro-perfect meal plan, import it, and get grocery lists and meal prep instructions, all for $9.99 once.",
             "url": "https://json.fit/blog/meal-plan-claude.html",
             "datePublished": "2026-03-14",
             "author": {
@@ -286,98 +286,16 @@
 }
     </script>
     <!-- BLOG-SCHEMA:END -->
-
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <meta name="theme-color" content="#0b0b0e">
     <style>
-        :root { --cyan:#22d3ee; --cyan-soft:rgba(34,211,238,0.08); --cyan-glow:rgba(34,211,238,0.35); --violet:#a855f7; --violet-soft:rgba(168,85,247,0.08); --violet-border:rgba(168,85,247,0.16); --green:#22c55e; --bg:#050508; --surface:#0a0a0f; --border:rgba(255,255,255,0.06); --text:#f0f0f2; --text-2:#9898a4; --text-3:#55555f; }
-        *{margin:0;padding:0;box-sizing:border-box}
-        html{scroll-behavior:smooth}
-        body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.7;font-size:16px}
-        body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:10000}
-        .cyan{color:var(--cyan)}
-        a{color:var(--cyan);text-decoration:none;transition:opacity 0.2s}a:hover{opacity:0.8}
-
-        nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,8,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-        .nav-logo{font-family:'DM Mono',monospace;font-weight:500;font-size:1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:0.4rem}
-        .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
-        .nav-links a{color:var(--text-3);text-decoration:none;font-size:0.8rem;font-weight:500;transition:color 0.2s;letter-spacing:0.01em}
-        .nav-links a:hover{color:var(--text);opacity:1}
-        .nav-cta{background:var(--cyan);color:#000!important;padding:0.4rem 1rem;border-radius:8px;font-weight:600!important;font-size:0.78rem!important;transition:transform 0.2s,box-shadow 0.2s}
-        .nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--cyan-glow)}
-        .nav-links a.nav-meals{color:var(--green)}
-        .nav-links a.nav-meals:hover{color:#4ade80}.nav-links a.nav-lab{color:var(--violet)}.nav-links a.nav-lab:hover{color:#c084fc}
-        .nav-soon{color:var(--violet);font-size:0.8rem;font-weight:500;letter-spacing:0.01em;cursor:default;opacity:0.85;display:inline-flex;align-items:center;gap:0.4rem;transition:opacity 0.2s}
-        .nav-soon:hover{opacity:1}
-        .soon-pill{font-family:'DM Mono',monospace;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;line-height:1.4;color:var(--violet);background:var(--violet-soft);border:1px solid var(--violet-border);padding:0.1rem 0.4rem;border-radius:100px}
-        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;position:relative}
-        .hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all 0.3s}
-
-        .container{max-width:680px;margin:0 auto;padding:0 1.5rem}
-
-        .back{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-2);display:inline-block;padding-top:5rem;text-decoration:none;letter-spacing:0.03em}.back:hover{color:var(--cyan);opacity:1}
-
-        .page-header{padding:2rem 0 3rem;text-align:center}
-        .page-header .h-ov{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-2);display:block;margin-bottom:1rem}
-        .page-header h1{font-family:'Outfit',sans-serif;font-weight:800;color:#fff;font-size:clamp(2.1rem,4.6vw,3rem);letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.6rem}
-        .page-header h1 em{color:var(--cyan);font-style:normal;display:block}
-        .page-header p{color:var(--text-2);font-size:1rem}
-
-        .post-list{padding:0 0 5rem}
-        .post-link{display:block;padding:1.75rem 0;border-bottom:1px solid var(--border);text-decoration:none;transition:all 0.2s}
-        .post-link:first-child{border-top:1px solid var(--border)}
-        .post-link:hover{opacity:1}
-        .post-link:hover .post-title{color:var(--cyan)}
-        .post-meta{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem}
-        .post-date{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
-        .post-meta-sep{font-size:0.65rem;color:var(--text-3)}
-        .post-read{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-3);letter-spacing:0.04em}
-        .post-title{font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:0.35rem;transition:color 0.2s;letter-spacing:-0.01em}
-        .post-desc{font-size:0.88rem;color:var(--text-2);line-height:1.6}
-
-        footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;max-width:1000px;margin:0 auto}
-        .footer-left{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--text-3)}
-        .footer-left a{color:var(--text-3);text-decoration:none;margin-left:1.25rem}
-        .footer-left a:hover{color:var(--cyan)}
-        .footer-right{font-size:0.7rem;color:var(--text-3)}
-
-        @media(max-width:860px){
-            .nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100vh;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}
-            .nav-links.open{display:flex}
-            .nav-links a{font-size:1.1rem;color:var(--text-2)}
-            .nav-links .nav-soon{font-size:1.1rem}
-            .nav-links .nav-cta{font-size:1rem!important;padding:0.6rem 1.5rem}
-            .hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}
-            .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-            .hamburger.open span:nth-child(2){opacity:0}
-            .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-            footer{flex-direction:column;gap:0.75rem;text-align:center}
-            .footer-left a{margin-left:0;margin:0 0.6rem}
-        }
-    
-/* — Site nav: the same links on every page — */
-.nav-links{display:flex;align-items:center;gap:1.6rem;list-style:none;margin:0;padding:0}
-.nav-links a{color:var(--text-3);text-decoration:none;font-size:.8rem;font-weight:500;transition:color .2s}
-.nav-links a:hover{color:var(--text)}
-.nav-links a.nav-meals{color:#22c55e}.nav-links a.nav-ex{color:#22d3ee}.nav-links a.nav-lab{color:#a855f7}
-.nav-links a.active{color:#fff;font-weight:600}
-.nav-links a.nav-cta{color:#06161a!important;font-weight:600}
-.nav-links a.nav-meals.active{color:#4ade80}.nav-links a.nav-ex.active{color:#67e8f9}.nav-links a.nav-lab.active{color:#c084fc}
-.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px}
-.hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:all .3s}
-@media(max-width:860px){
-  .nav-links{display:none;position:fixed;inset:0;height:100vh;height:100dvh;background:#050508;flex-direction:column;justify-content:center;align-items:center;gap:2rem;z-index:9998}
-  .nav-links.open{display:flex}
-  .nav-links a{font-size:1.1rem}
-  .nav-links .nav-cta{font-size:1rem!important;padding:.6rem 1.5rem}
-  .hamburger{display:block;position:fixed;top:16px;right:16px;z-index:9999}
-  .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-  .hamburger.open span:nth-child(2){opacity:0}
-  .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-  nav .nav-cta.nav-cta-top{display:none}
-}
-</style>
+        .blog-hero .sub{margin-top:18px}
+        .post-list{margin-top:8px;padding-bottom:30px}
+    </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
             data-app-version="web"
@@ -385,32 +303,31 @@
 </head>
 <body>
 
-<nav>
-  <div class="nav-left">
-    <a href="./" class="nav-logo">
-        <svg width="18" height="12" viewBox="0 0 22 14" fill="none"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
-        JSON<span class="cyan">.fit</span>
-    </a>
-  </div>
-  <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+<nav class="site-nav" aria-label="Main">
+  <a href="/" class="logo" aria-label="JSON.fit home">
+    <svg width="20" height="13" viewBox="0 0 22 14" fill="none" aria-hidden="true"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
+    <span>JSON<span class="cyan">.fit</span></span>
+  </a>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="navLinks">
-    <li><a href="https://json.fit/meals.html" class="nav-meals">Meals</a></li>
-    <li><a href="https://json.fit/programs/">Programs</a></li>
-    <li><a href="https://json.fit/exercises/" class="nav-ex">Exercises</a></li>
-    <li><a href="https://json.fit/blog.html" class="active">Blog</a></li>
-    <li><a href="https://json.fit/lab/" class="nav-lab">The Lab</a></li>
-    <li><a href="https://apps.apple.com/au/app/json-fit/id6758357834" class="nav-cta" onclick="gtag('event','download_click',{'button_location':'blog_nav'})">Download Free</a></li>
+    <li><a href="/meals.html" class="m">Meals</a></li>
+    <li><a href="/programs/">Programs</a></li>
+    <li><a href="/exercises/" class="e">Exercises</a></li>
+    <li><a href="/research/">Research</a></li>
+    <li><a href="/blog.html" aria-current="page">Blog</a></li>
+    <li><a href="/lab" class="l">The Lab</a></li>
+    <li><a href="#download" class="nav-cta" data-loc="nav">Get the app</a></li>
   </ul>
 </nav>
 
-<div class="container">
-    <a href="./" class="back" onclick="return window.navBack(event)">&larr; Back to home</a>
-    <div class="page-header">
-        <span class="h-ov">The Blog</span>
-        <h1>Notes on <em>getting big.</em></h1>
-        <p>Bulking and training for skinny guys with full-time jobs.</p>
-    </div>
-
+<main>
+<header class="page-hero blog-hero">
+  <div class="inner">
+    <p class="label">The blog</p>
+    <h1>Notes on<span class="cyan">getting big.</span></h1>
+    <p class="sub">Bulking and training for skinny guys with full-time jobs.</p>
+  </div>
+</header>
     <div class="post-list">
 <!-- BLOG-LIST:START -->
         <a href="blog/why-fasted-cardio-matters.html" class="post-link">
@@ -620,7 +537,7 @@
                 <span class="post-read">5 min read</span>
             </div>
             <div class="post-title">How to Create a Personalised Meal Plan with Claude</div>
-            <div class="post-desc">Use Claude to write a custom meal plan and import it into JSON.fit. (The app now builds plans itself; this is the optional AI route.)</div>
+            <div class="post-desc">Generate a macro-perfect meal plan, import it, and get grocery lists and meal prep instructions, all for $9.99 once.</div>
         </a>
 
         <a href="blog/chatgpt-hypertrophy-program.html" class="post-link">
@@ -630,28 +547,45 @@
                 <span class="post-read">6 min read</span>
             </div>
             <div class="post-title">How to Generate a 12-Week Hypertrophy Program with ChatGPT</div>
-            <div class="post-desc">Use ChatGPT to write a custom program and import it into JSON.fit. (The app now builds programs itself; this is the optional AI route.)</div>
+            <div class="post-desc">A step-by-step tutorial walking through the full workflow, from setup to AI prompt to imported program, ready to track.</div>
         </a>
     <!-- BLOG-LIST:END -->
     </div>
-</div>
+<section class="final" id="download" aria-labelledby="dl-h">
+  <p class="label">JSON.fit for iPhone and Android</p>
+  <h2 id="dl-h">Eat big.<br><span class="cyan">Lift big.</span></h2>
+  <p>Your week of meals and your program, built in seconds.</p>
+  <div class="badges">
+    <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="blog_footer">
+      <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+      <div><small>Download on the</small><span>App Store</span></div>
+    </a>
+    <a class="badge ghost" href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" data-loc="blog_footer">
+      <svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+      <div><small>Get it on</small><span>Google Play</span></div>
+    </a>
+  </div>
+</section>
+</main>
 
-<footer>
-    <div class="footer-left">
-        JSON<span class="cyan">.fit</span>
-        <a href="mailto:support@json.fit">Support</a>
-        <a href="privacy-policy.html">Privacy</a>
-        <a href="terms-of-service.html">Terms</a>
+<footer class="site-foot">
+  <div class="foot">
+    <a href="/" class="logo"><span>JSON<span class="cyan">.fit</span></span></a>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="/meals.html">Meals</a><a href="/cookbook/">Free cookbook</a><a href="/programs/">Programs</a><a href="/exercises/">Exercises</a>
+      <a href="/research/">Research</a><a href="/blog.html">Blog</a><a href="/lab">The Lab</a>
+      <a href="#" id="supportLink" rel="nofollow">Support</a><a href="/privacy-policy.html">Privacy</a><a href="/terms-of-service.html">Terms</a>
+    </nav>
+    <div class="social">
+      <a href="https://www.instagram.com/ryan.novinc" target="_blank" rel="noopener" aria-label="Ryan on Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.16 15.58 2.16 15.2 2.16 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.16 8.8 2.16 12 2.16Zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg></a>
+      <a href="https://www.tiktok.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.08-.14 1.62.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+      <a href="https://www.youtube.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5 31.1 31.1 0 0 0 0 12a31.1 31.1 0 0 0 .5 5.5 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.1 31.1 0 0 0 24 12a31.1 31.1 0 0 0-.5-5.5ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"/></svg></a>
     </div>
-    <div class="footer-right">&copy; 2026 JSON.fit</div>
+    <div class="copy-r">&copy; 2026 JSON.fit</div>
+  </div>
 </footer>
 
-<script>
-    var burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');
-    burger.addEventListener('click',function(e){e.stopPropagation();burger.classList.toggle('open');navLinks.classList.toggle('open')});
-    navLinks.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){burger.classList.remove('open');navLinks.classList.remove('open')})});
-    document.addEventListener('click',function(e){if(!navLinks.contains(e.target)&&!burger.contains(e.target)){burger.classList.remove('open');navLinks.classList.remove('open')}});
-</script>
+<script src="/assets/site.js"></script>
 
 <script>
 (function(){
@@ -670,17 +604,6 @@
     }catch(err){}
   },true);
 })();
-</script>
-<script>
-/* Back to home: go back in history only if the homepage is where you came from; from a post, go to the homepage directly (no loop). */
-window.navBack=function(e){
-  try{
-    var ref=document.referrer; if(!ref) return true;
-    var u=new URL(ref); var home = u.hostname.replace(/^www\./,'')==='json.fit' && (u.pathname==='/' || u.pathname==='/index.html');
-    if(home && window.history.length>1){ e.preventDefault(); window.history.back(); return false; }
-  }catch(err){}
-  return true;
-};
 </script>
 </body>
 </html>
