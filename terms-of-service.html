@@ -5,206 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terms of Service — JSON.fit</title>
     <meta name="description" content="JSON.fit Terms of Service.">
-<link rel="icon" type="image/x-icon" href="favicon-3.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="icon-32-3.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192-3.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180-3.png">
+<link rel="icon" type="image/x-icon" href="/favicon-3.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180-3.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --cyan: #22d3ee;
-            --cyan-dim: rgba(34, 211, 238, 0.15);
-            --bg: #000000;
-            --card: #0a0a0b;
-            --card-border: #18181b;
-            --text: #ffffff;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 1.25rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(34, 211, 238, 0.08);
-        }
-
-        .nav-logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
-            font-size: 1.25rem;
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        .nav-logo span { color: var(--cyan); }
-
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 7rem 2rem 4rem;
-        }
-
-        .back {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            display: inline-block;
-            padding-bottom: 1.5rem;
-            text-decoration: none;
-            letter-spacing: 0.03em;
-        }
-
-        .back:hover {
-            color: var(--cyan);
-        }
-
-        .page-header {
-            margin-bottom: 3rem;
-        }
-
-        .page-header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            margin-bottom: 0.75rem;
-        }
-
-        .page-header .updated {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        section {
-            margin-bottom: 2.5rem;
-        }
-
-        section h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            color: var(--text);
-        }
-
-        section p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 0.75rem;
-        }
-
-        section strong {
-            color: var(--cyan);
-            font-weight: 600;
-        }
-
-        section a {
-            color: var(--cyan);
-            text-decoration: none;
-        }
-
-        section a:hover { text-decoration: underline; }
-
-        ul {
-            list-style: none;
-            padding-left: 0;
-            margin-bottom: 1rem;
-        }
-
-        ul li {
-            color: var(--text-secondary);
-            font-size: 0.92rem;
-            line-height: 1.7;
-            padding-left: 1.25rem;
-            position: relative;
-            margin-bottom: 0.25rem;
-        }
-
-        ul li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--text-muted);
-        }
-
-        .warning-box {
-            display: flex;
-            gap: 0.75rem;
-            padding: 1rem 1.25rem;
-            border-radius: 12px;
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            margin: 1rem 0 1.5rem;
-        }
-
-        .warning-box-icon {
-            color: #ef4444;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .warning-box p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
-
-        footer {
-            border-top: 1px solid var(--card-border);
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-logo span { color: var(--cyan); }
-
-        footer p {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        footer a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        footer a:hover { color: var(--cyan); }
-
-        @media (max-width: 768px) {
-            .container { padding: 6rem 1.25rem 3rem; }
-            .page-header h1 { font-size: 2rem; }
-            nav { padding: 1rem 1.25rem; }
-        }
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <meta name="theme-color" content="#0b0b0e">
+<style>
+        .legal .page-header{margin-bottom:36px}
+        .legal .page-header h1{margin-bottom:14px}
+        .legal .subtitle{color:var(--text);font-size:1.12rem}
+        .legal .updated{margin-top:10px;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+        .legal section{padding-top:4px}
+        .legal .sub-heading{color:#fff;font-weight:700;margin:1.4rem 0 .5rem}
+        .legal .info-box,.legal .warning-box{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:22px;background:var(--surface);padding:22px;margin:0 0 1.5rem}
+        .legal .info-box{border-color:rgba(34,211,238,.3);background:var(--cyan-soft)}
+        .legal .warning-box{border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.07)}
+        .legal .info-box p,.legal .warning-box p{margin:0;color:var(--text)}
+        .legal .info-box-icon,.legal .warning-box-icon{font-size:1.3rem;line-height:1.4}
     </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -212,19 +34,25 @@
             data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
 </head>
 <body>
-    <nav>
-        <a href="index.html" class="nav-logo">
-            <svg style="display:inline-block;vertical-align:middle;margin-right:0.4rem;" width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/>
-                <rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/>
-                <rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/>
-            </svg>
-            JSON<span>.fit</span>
-        </a>
-    </nav>
+    <nav class="site-nav" aria-label="Main">
+  <a href="/" class="logo" aria-label="JSON.fit home">
+    <svg width="20" height="13" viewBox="0 0 22 14" fill="none" aria-hidden="true"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
+    <span>JSON<span class="cyan">.fit</span></span>
+  </a>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/meals.html" class="m">Meals</a></li>
+    <li><a href="/programs/">Programs</a></li>
+    <li><a href="/exercises/" class="e">Exercises</a></li>
+    <li><a href="/research/">Research</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/lab" class="l">The Lab</a></li>
+    <li><a href="#download" class="nav-cta" data-loc="nav">Get the app</a></li>
+  </ul>
+</nav>
 
-    <div class="container">
-        <a href="index.html" class="back" onclick="if(history.length>1){history.back();return false;}">← Back</a>
+    <main class="prose legal">
+        <a href="/" class="back" onclick="if(history.length>1){history.back();return false;}">← Back</a>
         <div class="page-header">
             <h1>Terms of Service</h1>
             <div class="updated">Last Updated: October 2026</div>
@@ -304,17 +132,24 @@
             <h2>11. Contact</h2>
             <p>Questions about these Terms? Email us at <a href="mailto:support@json.fit">support@json.fit</a>.</p>
         </section>
-    </div>
+    </main>
 
-    <footer>
-        <div class="footer-logo">JSON<span>.fit</span></div>
-        <p>
-            <a href="index.html">Home</a> ·
-            <a href="privacy-policy.html">Privacy Policy</a> ·
-            <a href="mailto:support@json.fit">Support</a>
-        </p>
-        <p style="margin-top: 0.75rem;">© 2026 JSON.fit. All rights reserved.</p>
-    </footer>
+<footer class="site-foot">
+  <div class="foot">
+    <a href="/" class="logo"><span>JSON<span class="cyan">.fit</span></span></a>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="/meals.html">Meals</a><a href="/cookbook/">Free cookbook</a><a href="/programs/">Programs</a><a href="/exercises/">Exercises</a>
+      <a href="/research/">Research</a><a href="/blog.html">Blog</a><a href="/lab">The Lab</a>
+      <a href="#" id="supportLink" rel="nofollow">Support</a><a href="/privacy-policy.html">Privacy</a><a href="/terms-of-service.html">Terms</a>
+    </nav>
+    <div class="social">
+      <a href="https://www.instagram.com/ryan.novinc" target="_blank" rel="noopener" aria-label="Ryan on Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.16 15.58 2.16 15.2 2.16 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.16 8.8 2.16 12 2.16Zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg></a>
+      <a href="https://www.tiktok.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.08-.14 1.62.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+      <a href="https://www.youtube.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5 31.1 31.1 0 0 0 0 12a31.1 31.1 0 0 0 .5 5.5 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.1 31.1 0 0 0 24 12a31.1 31.1 0 0 0-.5-5.5ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"/></svg></a>
+    </div>
+    <div class="copy-r">&copy; 2026 JSON.fit</div>
+  </div>
+</footer>
 
 <script>
 (function(){
@@ -334,5 +169,6 @@
   },true);
 })();
 </script>
+<script src="/assets/site.js"></script>
 </body>
 </html>
