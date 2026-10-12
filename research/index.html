@@ -5,107 +5,107 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The research behind JSON.fit</title>
-<meta name="description" content="Every number JSON.fit prescribes, with the peer-reviewed study behind it. Rest periods, rep ranges and training volume, cited in full.">
+<title>How we know: the research behind every number in JSON.fit</title>
+<meta name="description" content="The 25 decisions JSON.fit makes about your route, your training and your food, what the studies found, how confident we are, and the 42 sources, each checked by hand.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="The research behind JSON.fit">
-<meta property="og:description" content="Every number JSON.fit prescribes, with the study behind it.">
+<meta property="og:title" content="Every number in the app traces to a paper">
+<meta property="og:description" content="25 decisions, 42 sources, each opened and checked by hand. Where the evidence is thin, the app says so.">
 <meta property="og:image" content="https://json.fit/og-image.png">
 <meta property="og:url" content="https://json.fit/research/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The research behind JSON.fit">
-<meta name="twitter:description" content="Every number JSON.fit prescribes, with the study behind it.">
+<meta name="twitter:title" content="Every number in the app traces to a paper">
+<meta name="twitter:description" content="25 decisions, 42 sources, each checked by hand.">
 <link rel="canonical" href="https://json.fit/research/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://json.fit/" },
+    { "@type": "ListItem", "position": 2, "name": "How we know", "item": "https://json.fit/research/" }
+  ]
+}
+</script>
 <link rel="icon" type="image/x-icon" href="/favicon-3.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/icon-32-3.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192-3.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/icon-180-3.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@1,9..144,500..700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <style>
-/* Research runs on cyan: the app showing its working. Shared shell is /assets/site.css. */
-:root{--cyan-bright:#67e8f9;--cyan-border:rgba(34,211,238,.2)}
-.container{max-width:820px;margin:0 auto;padding:0 20px}
-
-/* hero */
-.page-hero .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:720px;margin:40px auto 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.page-hero .stat{padding:22px 8px;text-align:center;border-right:1px solid var(--line)}
-.page-hero .stat:last-child{border-right:0}
-.page-hero .stat b{display:block;font-size:clamp(1.7rem,4vw,2.5rem);font-weight:900;line-height:1;color:#fff}
-.page-hero .stat span{display:block;margin-top:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--text-2);text-transform:uppercase}
-
-/* evidence grid */
-.ev-wrap{padding:24px 0 80px}
-.ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
-.ev{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px 24px 22px;display:flex;flex-direction:column;gap:12px;transition:background .2s}
-.ev:hover{background:var(--surface-2)}
-.ev-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.ev h3{font-family:var(--serif);font-style:italic;font-weight:700;font-size:1.45rem;letter-spacing:-.01em;line-height:1.15}
-.ev-n{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);white-space:nowrap}
-.ev-rule{font-size:.98rem;color:var(--text-2);line-height:1.55}
-.ev-papers{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:2px;padding-top:12px;border-top:1px solid var(--line)}
-.ev-papers a{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);text-decoration:none;line-height:1.4}
-.ev-papers a:hover{color:var(--cyan)}
-.ev-papers a span:first-child{white-space:nowrap;color:var(--text)}
-.ev-papers a span:last-child{color:var(--text-3);text-align:right}
-.ev-all{margin-top:auto;padding-top:8px;font-weight:700;font-size:.95rem;color:var(--cyan);text-decoration:none}
-.ev-all:hover{color:var(--cyan-bright)}
-.ev-note{font-size:.95rem;color:var(--text-3);line-height:1.7;margin-top:28px;max-width:640px}
-.ev-note a{color:var(--text-2)}
-
-/* reader */
-.doc-wrap{padding:0 0 90px}
+/* How we know: the app showing its working. One row per decision, expandable; the full reference files below. */
+.khero{padding:calc(60px + 44px) 0 32px;background:linear-gradient(180deg,var(--studio-top) 0%,#121318 55%,var(--bg) 100%)}
+@media(min-width:760px){.khero{padding:calc(60px + 72px) 0 40px}}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.decs{display:grid}
+.dec{border-top:1px solid var(--hair);min-width:0}
+.dec:first-child{border-top:0}
+.dec[hidden]{display:none}
+.dec summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 0}
+.dec summary::-webkit-details-marker{display:none}
+.dec summary>div{display:grid;gap:4px;min-width:0}
+.dec summary .kicker{font-size:.62rem}
+.dec summary b{font-weight:600;font-size:1.05rem;line-height:1.3}
+.dec summary small{color:var(--text-2);font-size:.92rem}
+.dec summary .chip{align-self:start;margin-top:4px}
+.dec .body{padding:4px 0 24px;display:grid;gap:8px;max-width:70ch}
+.dec .body>p{color:var(--text-2);font-size:.98rem;line-height:1.6}
+.dec .body .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-top:10px}
+.dec .body .k:first-child{margin-top:0}
+.ex{color:#fff;border-bottom:1px dotted var(--text-3);cursor:help}
+.srcs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.srcs a{display:grid;gap:2px;text-decoration:none;color:inherit;background:var(--surface);border-radius:14px;padding:12px 14px;min-width:0}
+.srcs a:hover{background:var(--surface-2)}
+.srcs a b{font-weight:600;font-size:.95rem}
+.srcs a span{color:var(--text-2);font-size:.9rem;line-height:1.4}
+.srcs a small{font-family:var(--mono);font-size:.66rem;color:var(--text-3);letter-spacing:.02em;overflow-wrap:anywhere}
+.dec .ref{font-family:var(--mono);font-size:.68rem;color:var(--text-3);overflow-wrap:anywhere;margin-top:6px}
+.dec .ref code{color:var(--text-2)}
+.exnote{font-family:var(--mono);font-size:.68rem;color:var(--text-3);letter-spacing:.04em;margin-top:14px}
+/* reference files */
+.files{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px}
+.file{background:var(--surface);border-radius:18px;padding:18px;text-decoration:none;color:inherit;display:grid;gap:6px;min-width:0}
+.file:hover{background:var(--surface-2)}
+.file b{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.25rem;letter-spacing:-.01em}
+.file b em{color:var(--cyan-t)}
+.file span{color:var(--text-2);font-size:.9rem;line-height:1.45}
+.file small{font-family:var(--mono);font-size:.64rem;color:var(--text-3);letter-spacing:.06em;text-transform:uppercase}
 .doc-wrap[hidden]{display:none}
 .reader-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px}
-.reader-head h2{font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(1.8rem,4vw,2.4rem);letter-spacing:-.02em;line-height:1.05}
-.reader-head h2 em{color:var(--cyan)}
+.reader-head h2{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(1.8rem,4vw,2.4rem);letter-spacing:-.02em;line-height:1.05}
+.reader-head h2 em{color:var(--cyan-t)}
 .reader-close{font-weight:600;font-size:.88rem;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:.45rem 1rem;flex-shrink:0}
-.reader-close:hover{border-color:#fff}
-.doc{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:32px 32px 36px}
+.doc{background:var(--surface);border-radius:22px;padding:32px 32px 36px;max-width:860px;margin:0 auto}
 .doc-meta{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--line);display:flex;gap:20px;flex-wrap:wrap}
 .doc-meta a{color:var(--text-3);text-decoration:none;border-bottom:1px solid var(--line)}
-.doc-meta a:hover{color:var(--cyan);border-bottom-color:var(--cyan-border)}
-
-/* rendered markdown */
-.md h1{display:none} /* the reader head already carries the title */
+.md h1{display:none}
 .md h2{font-size:1.4rem;font-weight:800;letter-spacing:-.01em;color:#fff;margin:40px 0 14px;padding-top:28px;border-top:1px solid var(--line)}
 .md > h2:first-of-type{margin-top:0;padding-top:0;border-top:none}
 .md h3{font-size:1.05rem;font-weight:700;color:var(--cyan);margin:28px 0 8px}
 .md p{color:var(--text-2);font-size:1rem;line-height:1.75;margin-bottom:14px}
-.md p em{color:var(--text-3);font-style:italic}
 .md strong{color:var(--text);font-weight:600}
-.md a{color:var(--cyan);text-decoration:none;border-bottom:1px solid var(--cyan-border);transition:border-color .2s;overflow-wrap:anywhere}
-.md a:hover{border-bottom-color:var(--cyan)}
+.md a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(34,211,238,.2);overflow-wrap:anywhere}
 .md ul,.md ol{margin:0 0 18px 20px;color:var(--text-2)}
-.md li{font-size:.98rem;line-height:1.7;margin-bottom:7px;padding-left:3px}
+.md li{font-size:.98rem;line-height:1.7;margin-bottom:7px}
 .md li::marker{color:var(--cyan)}
 .md hr{border:none;border-top:1px solid var(--line);margin:34px 0}
-.md code{font-family:var(--mono);font-size:.85em;background:var(--surface-2);padding:.12rem .38rem;border-radius:4px;color:var(--cyan-bright)}
+.md code{font-family:var(--mono);font-size:.85em;background:var(--surface-2);padding:.12rem .38rem;border-radius:4px;color:#67e8f9}
 .md blockquote{border-left:3px solid var(--cyan);background:var(--cyan-soft);border-radius:0 14px 14px 0;padding:16px 20px;margin:22px 0}
-.md blockquote p:last-child{margin-bottom:0}
 .md table{width:100%;border-collapse:separate;border-spacing:0;margin:20px 0;font-size:.9rem;display:block;overflow-x:auto}
 .md th,.md td{padding:.65rem .85rem;text-align:left;border-bottom:1px solid var(--line);color:var(--text-2)}
 .md th{color:var(--text-3);font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2)}
-.md tr:last-child td{border-bottom:none}
-
-/* states */
 .state{padding:48px 16px;text-align:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
 .state a{color:var(--cyan);text-decoration:none}
-
-@media(max-width:700px){
-  .doc{padding:22px 18px 26px}
-  .md h2{font-size:1.2rem}
-  .page-hero .stat span{font-size:.62rem;letter-spacing:.04em}
-}
+@media(max-width:700px){.doc{padding:22px 18px 26px}.md h2{font-size:1.2rem}}
 </style>
 <script src="/analytics-web.js"
   data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
   data-app-version="web"
   data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
 </head>
-<body>
+<body class="v2">
 
 <nav class="site-nav" aria-label="Main">
   <a href="/" class="logo" aria-label="JSON.fit home">
@@ -115,36 +115,279 @@
   <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="navLinks">
     <li><a href="/meals.html" class="m">Meals</a></li>
-    <li><a href="/programs/">Programs</a></li>
-    <li><a href="/exercises/" class="e">Exercises</a></li>
-    <li><a href="/research/" aria-current="page">Research</a></li>
+    <li><a href="/training/" class="e">Training</a></li>
+    <li><a href="/research/" aria-current="page">How we know</a></li>
+    <li><a href="/lab/" class="l">The Lab</a></li>
     <li><a href="/blog.html">Blog</a></li>
-    <li><a href="/lab" class="l">The Lab</a></li>
     <li><a href="#download" class="nav-cta" data-loc="nav">Get the app</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="page-hero">
-  <div class="inner">
-    <p class="label c">The evidence &middot; every number, cited</p>
-    <h1>Every number in the app <em>has a paper behind it.</em></h1>
-    <p class="sub">Nine decisions the app makes for you, each one set from the research below. You don't have to read any of it. That's the point.</p>
-    <div class="stats"><div class="stat"><b>9</b><span>decisions</span></div><div class="stat"><b id="stSources">&ndash;</b><span>sources cited</span></div><div class="stat"><b>Sep 2026</b><span>last reviewed</span></div></div>
+<main>
+<header class="khero">
+  <div class="wrap">
+    <div class="head" style="max-width:720px;margin-bottom:0">
+      <p class="kicker c">How we know &middot; 25 decisions &middot; 42 sources</p>
+      <h1 class="d">Every number in the app <em>traces to a paper.</em></h1>
+      <p class="lede">This is the list of things the app decides for you, why, what the studies found, and how sure we are. Each source was opened and checked by hand. Where the evidence is thin, the app gives you a range and says "best estimate" instead of a number.</p>
+      <div class="legend"><span class="chip c">Strong &middot; several good trials agree</span><span class="chip g">Good &middot; solid but with gaps</span><span class="chip a">Estimate &middot; few trials, expert consensus</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="sec2" style="border-top:0;padding-top:24px" aria-labelledby="dec-h">
+  <div class="wrap">
+    <h2 id="dec-h" class="sr-only">The decisions</h2>
+    <div class="filters" id="areaFilters" style="margin-bottom:8px">
+      <button type="button" data-area="all" aria-pressed="true">All 25</button>
+      <button type="button" data-area="route" aria-pressed="false">Your route &middot; 12</button>
+      <button type="button" data-area="training" aria-pressed="false">Training &middot; 7</button>
+      <button type="button" data-area="meals" aria-pressed="false">Meals &middot; 6</button>
+    </div>
+    <div class="decs" id="decs">
+<details class="dec" id="route-loss-rate" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Lose about <span class="ex" title="Example value; the app fills in yours">0.5</span>% of your weight a week</b><small>Losing slowly keeps more muscle. In one trial, athletes who lost slowly even added some.</small></div><span class="chip c">Strong</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Elite athletes who lost about 0.7% of their weight a week gained 2.1% lean mass and lost 31% of their fat. Those losing 1.4% a week lost 21% of their fat and their lean mass did not change. Across training studies, an energy deficit held back lean-mass gains, though strength still improved.</p>
+    <p class="k">What it means for you</p><p><span class="ex" title="Example value; the app fills in yours">0.4</span> kg a week is <span class="ex" title="Example value; the app fills in yours">0.5</span>% of your <span class="ex" title="Example value; the app fills in yours">77</span> kg, inside the 0.5 to 1% a week these studies and contest-prep guidance support.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1123/ijsnem.21.2.97" target="_blank" rel="noopener noreferrer"><b>Garthe et al. 2011</b> <span>Effect of two different weight-loss rates on body composition and strength and power-related performance in elite athletes</span><small>Int J Sport Nutr Exerc Metab &middot; RCT, 24 elite athletes &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1111/sms.14075" target="_blank" rel="noopener noreferrer"><b>Murphy &amp; Koehler 2022</b> <span>Energy deficiency impairs resistance training gains in lean mass but not strength: A meta-analysis and meta-regression</span><small>Scand J Med Sci Sports &middot; meta-analysis and meta-regression of RCTs &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1186/1550-2783-11-20" target="_blank" rel="noopener noreferrer"><b>Helms et al. 2014</b> <span>Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation</span><small>J Int Soc Sports Nutr &middot; narrative review &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/roadmap.ts FAT_LOSS_FRACTION_BW_PER_WEEK</code></p>
+  </div>
+</details>
+<details class="dec" id="route-fast-gate" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>The faster pace needs fat to spare</b><small>Fat stores can only release so much energy a day. Diet harder than that and the gap comes out of muscle.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>A model built from underfeeding studies puts the most the fat store can supply at about 290 kJ (69 kcal) per kg of fat per day, and says a deficit beyond that takes fat-free mass straight away. It is a model, not a trial, so we plan under it, at 48.5 kcal per kg of fat.</p>
+    <p class="k">What it means for you</p><p>With the fat you carry, the deepest deficit we plan is about <span class="ex" title="Example value; the app fills in yours">650</span> kcal a day, so the fastest pace offered to you is <span class="ex" title="Example value; the app fills in yours">0.5</span>% a week.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1016/j.jtbi.2004.08.029" target="_blank" rel="noopener noreferrer"><b>Alpert 2005</b> <span>A limit on the energy transfer rate from the human fat store in hypophagia</span><small>J Theor Biol &middot; theoretical model from published underfeeding data &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/lossRate.ts FAT_ENERGY_RELEASE_KCAL_PER_KG_PER_DAY</code></p>
+  </div>
+</details>
+<details class="dec" id="route-recomp-deficit" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Recomp keeps the deficit under 500 kcal</b><small>In training studies, a deficit of about 500 kcal a day was enough to stop muscle gains.</small></div><span class="chip c">Strong</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>A meta-regression of resistance-training trials found an energy deficit of about 500 kcal a day prevented lean-mass gains, and the authors advise against deficits larger than that when muscle is the goal. Strength gains were not affected by the deficit.</p>
+    <p class="k">What it means for you</p><p>Your recomp runs about <span class="ex" title="Example value; the app fills in yours">450</span> kcal under maintenance, below that line, so building muscle while losing fat is still realistic.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1111/sms.14075" target="_blank" rel="noopener noreferrer"><b>Murphy &amp; Koehler 2022</b> <span>Energy deficiency impairs resistance training gains in lean mass but not strength: A meta-analysis and meta-regression</span><small>Scand J Med Sci Sports &middot; meta-analysis and meta-regression of RCTs &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/roadmap.ts RECOMP_DEFICIT_CEILING_KCAL_PER_DAY</code></p>
+  </div>
+</details>
+<details class="dec" id="route-ease" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Ease in at about <span class="ex" title="Example value; the app fills in yours">0.5</span>% a week</b><small>If you already train, a small deficit can trim fat while your muscle keeps growing.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>In a 10-week trial of 30 trained people on high protein, a moderate deficit lost 2.9 kg of fat and gained 1.0 kg of lean mass, while eating at maintenance lost 1.4 kg of fat and gained the same lean mass. The fat-loss difference between the two groups was not statistically significant.</p>
+    <p class="k">What it means for you</p><p>You chose to ease in, so the scale moves about <span class="ex" title="Example value; the app fills in yours">0.4</span> kg a week. This is one small trial, so treat the pace as a best estimate.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1007/s00421-026-06209-6" target="_blank" rel="noopener noreferrer"><b>Vargas-Molina et al. 2026</b> <span>Comparison of two nutritional protocols in body re-composition of resistance-trained participants</span><small>Eur J Appl Physiol &middot; RCT, 30 resistance-trained participants &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/roadmap.ts EASE_FRACTION_BW_PER_WEEK</code></p>
+  </div>
+</details>
+<details class="dec" id="route-attractive-bf" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>For men, 10 to 15% body fat is the sweet spot</b><small>Raters liked men at moderate leanness and muscle best. The very leanest bodies did not score highest.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Across six studies, men with moderate muscularity were rated most attractive. When observers set fat and muscle on male bodies themselves, they chose levels within the healthy range. A 2025 study of 283 raters in three countries, using real DXA scans, reportedly found the peak at about 13 to 14% body fat.</p>
+    <p class="k">What it means for you</p><p>Your goal of <span class="ex" title="Example value; the app fills in yours">13</span>% is measured against that band. These are ratings of photos by mostly Western raters, not a promise about real life.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1177/0146167207303022" target="_blank" rel="noopener noreferrer"><b>Frederick &amp; Haselton 2007</b> <span>Why is muscularity sexy? Tests of the fitness indicator hypothesis</span><small>Pers Soc Psychol Bull &middot; six studies of rated attractiveness &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1371/journal.pone.0156722" target="_blank" rel="noopener noreferrer"><b>Brierley et al. 2016</b> <span>The Body and the Beautiful: Health, Attractiveness and Body Composition in Men&#x27;s and Women&#x27;s Bodies</span><small>PLoS One &middot; 63 observers adjusting fat and muscle on body images &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1016/j.paid.2025.113240" target="_blank" rel="noopener noreferrer"><b>Xia et al. 2025</b> <span>The relationship between body fatness and physical attractiveness in males</span><small>Pers Individ Dif &middot; 283 raters, 15 male DXA scans, three countries &middot; via a secondary source</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/attractivenessTargets.ts ATTRACTIVE_BF_RANGE</code></p>
+  </div>
+</details>
+<details class="dec" id="route-ffmi-ceiling" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Natural muscle tops out near an FFMI of 25</b><small>In one study, drug-free athletes topped out at a muscle-for-height score of about 25, so goals past it are flagged.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Among 157 male athletes, the 74 who did not use steroids had fat-free mass indexes reaching a well-defined limit of 25.0, while many users went past it. The authors called the limit preliminary, and some people exceed it naturally.</p>
+    <p class="k">What it means for you</p><p>Your goal works out to an FFMI of about <span class="ex" title="Example value; the app fills in yours">22.4</span>. Near or past 25 we show it as uncommon, not impossible.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1097/00042752-199510000-00003" target="_blank" rel="noopener noreferrer"><b>Kouri et al. 1995</b> <span>Fat-free mass index in users and nonusers of anabolic-androgenic steroids</span><small>Clin J Sport Med &middot; cross-sectional, 157 male athletes &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/roadmap.ts FFMI_CEILING</code></p>
+  </div>
+</details>
+<details class="dec" id="route-build-rate" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Build about <span class="ex" title="Example value; the app fills in yours">0.10</span> kg of muscle a week</b><small>Muscle grows slowly and slows each year you train, and people differ, so the time is a range.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>In 49 trials, resistance training alone added about 1.1 kg of lean mass over roughly 13 weeks, and extra protein added about 0.3 kg more. Men gain more muscle in absolute terms, but women gain about the same relative to the muscle they start with. How fast gains slow over the years is our assumption, not a measurement.</p>
+    <p class="k">What it means for you</p><p>From your training history and frame, about <span class="ex" title="Example value; the app fills in yours">0.10</span> kg a week, give or take about a third.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1136/bjsports-2017-097608" target="_blank" rel="noopener noreferrer"><b>Morton et al. 2018</b> <span>A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults</span><small>Br J Sports Med &middot; meta-analysis, 49 RCTs, 1,863 participants &middot; full text checked</small></a></li><li><a href="https://doi.org/10.7717/peerj.19042" target="_blank" rel="noopener noreferrer"><b>Refalo et al. 2025</b> <span>Sex differences in absolute and relative changes in muscle size following resistance training in healthy adults: a systematic review with Bayesian meta-analysis</span><small>PeerJ &middot; meta-analysis, 29 studies &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1519/JSC.0000000000003521" target="_blank" rel="noopener noreferrer"><b>Roberts et al. 2020</b> <span>Sex Differences in Resistance Training: A Systematic Review and Meta-Analysis</span><small>J Strength Cond Res &middot; meta-analysis &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/roadmap.ts GAIN_DECAY_K, RATE_SPREAD, FFMI_UNTRAINED</code></p>
+  </div>
+</details>
+<details class="dec" id="route-operating-band" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Build up to <span class="ex" title="Example value; the app fills in yours">18</span>%, trim back to <span class="ex" title="Example value; the app fills in yours">12</span>%</b><small>This range is your choice of how lean to stay. No study shows one range builds more muscle than another.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>When 34 men overate by 40% for 8 weeks, those who started with more body fat gained more weight and more fat. In a trial of 61 trained adults, dieting in blocks with breaks and dieting straight through kept the same lean mass and strength, and the block dieters felt less hungry.</p>
+    <p class="k">What it means for you</p><p>You chose the <span class="ex" title="Example value; the app fills in yours">balanced</span> way, so you build up to about <span class="ex" title="Example value; the app fills in yours">18</span>% and trim back to <span class="ex" title="Example value; the app fills in yours">12</span>%.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1210/clinem/dgaf247" target="_blank" rel="noopener noreferrer"><b>Galgani et al. 2025</b> <span>Baseline Body Fat Percentage Is Associated to Weight and Fat Mass Gain From High-Fat Overfeeding Over 8 Weeks</span><small>J Clin Endocrinol Metab &middot; overfeeding trial, 34 men &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1249/MSS.0000000000002636" target="_blank" rel="noopener noreferrer"><b>Peos et al. 2021</b> <span>Continuous versus Intermittent Dieting for Fat Loss and Fat-Free Mass Retention in Resistance-trained Adults: The ICECAP Trial</span><small>Med Sci Sports Exerc &middot; RCT, 61 resistance-trained adults &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/operatingBands.ts OPERATING_BANDS</code></p>
+  </div>
+</details>
+<details class="dec" id="route-female-floor" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Women&#x27;s plans stop at 22% body fat</b><small>Very lean women risk losing their period, so plans keep a safety margin above that point.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Female physique athletes measured off-season averaged 23.4% body fat by DXA. Among those not on hormonal contraception, 27% had no periods, against none of the regular gym-goers. The study is small and cross-sectional, so 22% is a safety margin, not a proven threshold.</p>
+    <p class="k">What it means for you</p><p>The leanest your plan takes you is <span class="ex" title="Example value; the app fills in yours">12</span>%.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.3390/nu15020382" target="_blank" rel="noopener noreferrer"><b>Mursu et al. 2023</b> <span>Dietary Intake, Serum Hormone Concentrations, Amenorrhea and Bone Mineral Density of Physique Athletes and Active Gym Enthusiasts</span><small>Nutrients &middot; cross-sectional, 89 athletes and gym-goers &middot; full text checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/operatingBands.ts OPERATING_BANDS (female floors), leanStopFor</code></p>
+  </div>
+</details>
+<details class="dec" id="route-build-fat" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Expect some fat with the muscle</b><small>Even a planned surplus adds fat alongside muscle. A bigger one adds more fat, not more muscle.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Elite athletes given a planned surplus gained more weight than those eating freely, but the extra was fat: fat mass rose 15% against 3%, and lean mass gains did not differ. An off-season review advises a surplus of about 10 to 20% and slower gains for advanced lifters.</p>
+    <p class="k">What it means for you</p><p>Your plan assumes about <span class="ex" title="Example value; the app fills in yours">0.5</span> kg of fat for every kg of muscle, so a build ends a little softer and the next trim takes it off.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1080/17461391.2011.643923" target="_blank" rel="noopener noreferrer"><b>Garthe et al. 2013</b> <span>Effect of nutritional intervention on body composition and performance in elite athletes</span><small>Eur J Sport Sci &middot; RCT, 39 elite athletes &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.3390/sports7070154" target="_blank" rel="noopener noreferrer"><b>Iraki et al. 2019</b> <span>Nutrition Recommendations for Bodybuilders in the Off-Season: A Narrative Review</span><small>Sports (Basel) &middot; narrative review &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/syntheticNutritionAnswers.ts FAT_PER_LEAN_KG</code></p>
+  </div>
+</details>
+<details class="dec" id="route-ends-on-weight" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Phases end on your weight, not a body-fat reading</b><small>Body-fat readings are too rough to see a few kilos of change. A weight trend can.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Even a DXA scan, repeated on consecutive days in 21 trained athletes, varied by about 1.3 kg of fat mass, and home body-fat scales are less precise still. In one man weighed daily for 26 years, weight varied by about 0.5% from one day to the next, small enough for a trend to show real change.</p>
+    <p class="k">What it means for you</p><p>This phase ends when your weight trend reaches about <span class="ex" title="Example value; the app fills in yours">73.6</span> kg. You still see body fat, it just does not decide.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1016/j.jocd.2018.10.005" target="_blank" rel="noopener noreferrer"><b>Zemski et al. 2019</b> <span>Same-Day Vs Consecutive-Day Precision Error of Dual-Energy X-Ray Absorptiometry for Interpreting Body Composition Change in Resistance-Trained Athletes</span><small>J Clin Densitom &middot; precision study, 21 resistance-trained athletes &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1080/0886022X.2023.2273421" target="_blank" rel="noopener noreferrer"><b>Schneditz et al. 2023</b> <span>Day-to-day variability in euvolemic body mass</span><small>Ren Fail &middot; one healthy man, 9,521 days of weigh-ins &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/phaseTransition.ts (weight-based detection), roadmap.ts exitWeightKg</code></p>
+  </div>
+</details>
+<details class="dec" id="route-trend-window" data-area="route">
+  <summary><div><span class="kicker">Your route</span><b>Decisions wait for a month of weigh-ins</b><small>A full month evens out water swings, including the menstrual cycle, before a phase is called done.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Across 612,613 menstrual cycles logged in an app, the average cycle was 29.3 days, so a 28-day average covers most of a cycle. On real smart-scale data, exponentially weighted averages were among the best ways to fill gaps between weigh-ins.</p>
+    <p class="k">What it means for you</p><p>We need at least three weigh-ins over a week before showing a trend, and phase decisions use your last 28 days.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1038/s41746-019-0152-7" target="_blank" rel="noopener noreferrer"><b>Bull et al. 2019</b> <span>Real-world menstrual cycle characteristics of more than 600,000 menstrual cycles</span><small>NPJ Digit Med &middot; app data, 612,613 cycles from 124,648 users &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.2196/17977" target="_blank" rel="noopener noreferrer"><b>Turicchi et al. 2020</b> <span>Data Imputation and Body Weight Variability Calculation Using Linear and Nonlinear Methods in Data Collected From Digital Smart Scales: Simulation and Validation Study</span><small>JMIR Mhealth Uhealth &middot; simulation and validation, 50 smart-scale users &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/phaseTransition.ts TREND_DECISION_DAYS, TREND_EWMA_DAYS, TREND_MIN_READINGS</code></p>
+  </div>
+</details>
+<details class="dec" id="training-volume" data-area="training">
+  <summary><div><span class="kicker">Training</span><b><span class="ex" title="Example value; the app fills in yours">16</span> hard sets a week for <span class="ex" title="Example value; the app fills in yours">side delts</span></b><small>More weekly sets grow more muscle, with smaller gains from each extra set at the top.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>A 2026 analysis of 67 studies found more weekly sets meant more muscle and strength, with returns tapering, more so for strength. Counting sets where a muscle only assists as half a set fitted the data best. An earlier analysis put each extra weekly set at about 0.4% more growth.</p>
+    <p class="k">What it means for you</p><p><span class="ex" title="Example value; the app fills in yours">16</span> sets a week is where your experience and choices put <span class="ex" title="Example value; the app fills in yours">side delts</span>. Sets where it only assists count as half.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1007/s40279-025-02344-w" target="_blank" rel="noopener noreferrer"><b>Pelland et al. 2026</b> <span>The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains</span><small>Sports Med &middot; meta-regression, 67 studies, 2,058 participants &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1080/02640414.2016.1210197" target="_blank" rel="noopener noreferrer"><b>Schoenfeld, Ogborn &amp; Krieger 2017</b> <span>Dose-response relationship between weekly resistance training volume and increases in muscle mass: A systematic review and meta-analysis</span><small>J Sports Sci &middot; meta-analysis, 15 studies &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/workoutGenerator/data/volume-landmarks.json, check.ts positionRange/targetsFor</code></p>
+  </div>
+</details>
+<details class="dec" id="training-frequency" data-area="training">
+  <summary><div><span class="kicker">Training</span><b>Each muscle about twice a week</b><small>Splitting the same weekly sets over two days grows muscle at least as well as one big day.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>An early analysis of 10 studies found training a muscle twice a week grew it more than once. A larger 2019 analysis of 25 studies found that with weekly sets matched, frequency made no meaningful difference. So frequency mainly helps you fit the sets in.</p>
+    <p class="k">What it means for you</p><p>Your <span class="ex" title="Example value; the app fills in yours">4</span>-day plan trains most muscles twice a week, which spreads the sets into sessions you can finish.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1007/s40279-016-0543-8" target="_blank" rel="noopener noreferrer"><b>Schoenfeld, Ogborn &amp; Krieger 2016</b> <span>Effects of Resistance Training Frequency on Measures of Muscle Hypertrophy: A Systematic Review and Meta-Analysis</span><small>Sports Med &middot; meta-analysis, 10 studies &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1080/02640414.2018.1555906" target="_blank" rel="noopener noreferrer"><b>Schoenfeld, Grgic &amp; Krieger 2019</b> <span>How many times per week should a muscle be trained to maximize muscle hypertrophy? A systematic review and meta-analysis of studies examining the effects of resistance training frequency</span><small>J Sports Sci &middot; meta-analysis, 25 studies &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1007/s40279-025-02344-w" target="_blank" rel="noopener noreferrer"><b>Pelland et al. 2026</b> <span>The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains</span><small>Sports Med &middot; meta-regression, 67 studies, 2,058 participants &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/workoutGenerator/generateProgram.ts TEMPLATES</code></p>
+  </div>
+</details>
+<details class="dec" id="training-rep-range" data-area="training">
+  <summary><div><span class="kicker">Training</span><b>Most sets in the 5 to 15 rep range</b><small>Light and heavy weights build similar muscle when sets are hard. Heavier sets build more top-end strength.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Across 21 studies with sets taken to failure, light loads (60% of max or less) and heavy loads built similar muscle, while heavy loads gave bigger one-rep-max gains.</p>
+    <p class="k">What it means for you</p><p>Big barbell lifts sit at 5 to 10 reps for strength and size; isolation moves sit at 10 to 15.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1519/JSC.0000000000002200" target="_blank" rel="noopener noreferrer"><b>Schoenfeld et al. 2017</b> <span>Strength and Hypertrophy Adaptations Between Low- vs. High-Load Resistance Training: A Systematic Review and Meta-analysis</span><small>J Strength Cond Res &middot; meta-analysis, 21 studies &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/workoutGenerator/data/rep-ranges.json</code></p>
+  </div>
+</details>
+<details class="dec" id="training-effort" data-area="training">
+  <summary><div><span class="kicker">Training</span><b>Stop most sets a rep or three short of failure</b><small>Muscle grows more as sets get close to failure, but going all the way adds little.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Muscle growth improved as sets ended closer to failure, while strength gains were similar across a wide range of effort, though the authors call this exploratory. A separate analysis of 15 studies found no evidence that training to true failure beats stopping short.</p>
+    <p class="k">What it means for you</p><p>Each block starts a few reps short of failure and edges closer each week, and any exercise done as a single set goes to failure.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1007/s40279-024-02069-2" target="_blank" rel="noopener noreferrer"><b>Robinson et al. 2024</b> <span>Exploring the Dose-Response Relationship Between Estimated Resistance Training Proximity to Failure, Strength Gain, and Muscle Hypertrophy: A Series of Meta-Regressions</span><small>Sports Med &middot; exploratory meta-regressions &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1007/s40279-022-01784-y" target="_blank" rel="noopener noreferrer"><b>Refalo et al. 2023</b> <span>Influence of Resistance Training Proximity-to-Failure on Skeletal Muscle Hypertrophy: A Systematic Review with Meta-analysis</span><small>Sports Med &middot; meta-analysis, 15 studies &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/workoutGenerator/data/rir.json</code></p>
+  </div>
+</details>
+<details class="dec" id="training-rest" data-area="training">
+  <summary><div><span class="kicker">Training</span><b><span class="ex" title="Example value; the app fills in yours">2 to 3</span> min rests on the big lifts</b><small>Resting more than a minute keeps your reps up. Past about 90 seconds, growth evens out.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>A meta-analysis of 9 studies found a small growth benefit to resting more than 60 seconds, and no clear difference past 90. In trained men, 3-minute rests built more strength and thigh muscle than 1-minute rests. For maximum strength in trained lifters, a review favours rests over 2 minutes.</p>
+    <p class="k">What it means for you</p><p>Your pace rests the big lifts for <span class="ex" title="Example value; the app fills in yours">2 to 3</span> minutes. A quicker pace trades a little growth for time.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.3389/fspor.2024.1429789" target="_blank" rel="noopener noreferrer"><b>Singer et al. 2024</b> <span>Give it a rest: a systematic review with Bayesian meta-analysis on the effect of inter-set rest interval duration on muscle hypertrophy</span><small>Front Sports Act Living &middot; Bayesian meta-analysis, 9 studies &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1519/JSC.0000000000001272" target="_blank" rel="noopener noreferrer"><b>Schoenfeld et al. 2016</b> <span>Longer Interset Rest Periods Enhance Muscle Strength and Hypertrophy in Resistance-Trained Men</span><small>J Strength Cond Res &middot; RCT, 21 resistance-trained men &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1007/s40279-017-0788-x" target="_blank" rel="noopener noreferrer"><b>Grgic et al. 2018</b> <span>Effects of Rest Interval Duration in Resistance Training on Measures of Muscular Strength: A Systematic Review</span><small>Sports Med &middot; systematic review, 23 studies, 491 participants &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/workoutGenerator/data/rest.json, src/data/restPaceCopy.ts</code></p>
+  </div>
+</details>
+<details class="dec" id="training-deload" data-area="training">
+  <summary><div><span class="kicker">Training</span><b>A lighter week every <span class="ex" title="Example value; the app fills in yours">5</span> weeks</b><small>A planned easier week lets fatigue clear. Coaches agree on it, but trials are few.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Expert coaches agree a deload is a planned stretch of reduced training to clear fatigue, and a practical review notes they are commonly placed every 4 to 8 weeks. In one trial, a full week off mid-programme did not change muscle growth but slightly reduced strength gains.</p>
+    <p class="k">What it means for you</p><p>Your lighter week is the last of each <span class="ex" title="Example value; the app fills in yours">5</span>-week block: about half the sets, same weights, more reps in reserve.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1186/s40798-023-00633-0" target="_blank" rel="noopener noreferrer"><b>Bell et al. 2023</b> <span>Integrating Deloading into Strength and Physique Sports Training Programmes: An International Delphi Consensus Approach</span><small>Sports Med Open &middot; Delphi consensus, 21 to 34 expert coaches &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1519/SSC.0000000000000910" target="_blank" rel="noopener noreferrer"><b>Bell et al. 2025</b> <span>A Practical Approach to Deloading: Recommendations and Considerations for Strength and Physique Sports</span><small>Strength Cond J &middot; practical review &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.7717/peerj.16777" target="_blank" rel="noopener noreferrer"><b>Coleman et al. 2024</b> <span>Gaining more from doing less? The effects of a one-week deload period during supervised resistance training on muscular adaptations</span><small>PeerJ &middot; RCT, 39 trained adults &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/workoutGenerator/data/deload.json, generateProgram.ts deloadSets</code></p>
+  </div>
+</details>
+<details class="dec" id="training-same-in-cut" data-area="training">
+  <summary><div><span class="kicker">Training</span><b>Your training stays the same while you cut</b><small>Cutting back sets during a diet did not help trained men keep muscle.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Trained men dieting for 6 weeks did either 5 or 3 sets per exercise. Thigh muscle thickness showed no difference between groups, and the small loss of lean mass was similar in both.</p>
+    <p class="k">What it means for you</p><p>Your sets are the same in every phase. Only the food changes.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1111/sms.14237" target="_blank" rel="noopener noreferrer"><b>Roth et al. 2023</b> <span>Resistance training volume does not influence lean mass preservation during energy restriction in trained males</span><small>Scand J Med Sci Sports &middot; RCT, 38 resistance-trained men &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/goalsProfile.ts phaseToVolumeTier</code></p>
+  </div>
+</details>
+<details class="dec" id="meals-protein" data-area="meals">
+  <summary><div><span class="kicker">Meals</span><b><span class="ex" title="Example value; the app fills in yours">170</span> g of protein a day</b><small>Protein helps muscle grow, and you need more when eating less, so cuts get the most.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Across 49 trials, protein added about 0.3 kg of lean mass to training, with no further gain above about 1.6 g per kg of body weight a day (the top of its confidence range was 2.2). When lean athletes cut calories, a review of 6 studies put needs higher, at 2.3 to 3.1 g per kg of lean mass.</p>
+    <p class="k">What it means for you</p><p><span class="ex" title="Example value; the app fills in yours">170</span> g is about <span class="ex" title="Example value; the app fills in yours">2.2</span> g per kg of your weight. It rises as you get leaner on a cut, and never goes down.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1136/bjsports-2017-097608" target="_blank" rel="noopener noreferrer"><b>Morton et al. 2018</b> <span>A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults</span><small>Br J Sports Med &middot; meta-analysis, 49 RCTs, 1,863 participants &middot; full text checked</small></a></li><li><a href="https://doi.org/10.1123/ijsnem.2013-0054" target="_blank" rel="noopener noreferrer"><b>Helms et al. 2014</b> <span>A systematic review of dietary protein during caloric restriction in resistance trained lean athletes: a case for higher intakes</span><small>Int J Sport Nutr Exerc Metab &middot; systematic review, 6 studies &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/nutritionMacros.ts phaseProteinGrams</code></p>
+  </div>
+</details>
+<details class="dec" id="meals-deficit" data-area="meals">
+  <summary><div><span class="kicker">Meals</span><b>Eat <span class="ex" title="Example value; the app fills in yours">2,180</span> kcal, about <span class="ex" title="Example value; the app fills in yours">450</span> under maintenance</b><small>A deficit big enough to lose fat, capped where studies saw muscle gains stop.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Across resistance-training trials, a deficit of about 500 kcal a day stopped lean-mass gains, while strength still improved. So no cut here asks for more than 500, and leaner people get less.</p>
+    <p class="k">What it means for you</p><p>Your deficit is about <span class="ex" title="Example value; the app fills in yours">450</span> kcal a day, which plans for about <span class="ex" title="Example value; the app fills in yours">0.4</span> kg a week.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1111/sms.14075" target="_blank" rel="noopener noreferrer"><b>Murphy &amp; Koehler 2022</b> <span>Energy deficiency impairs resistance training gains in lean mass but not strength: A meta-analysis and meta-regression</span><small>Scand J Med Sci Sports &middot; meta-analysis and meta-regression of RCTs &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/nutritionMacros.ts phaseCaloricTarget</code></p>
+  </div>
+</details>
+<details class="dec" id="meals-energy-floor" data-area="meals">
+  <summary><div><span class="kicker">Meals</span><b>Never below <span class="ex" title="Example value; the app fills in yours">1,950</span> kcal</b><small>Eating too little for your training disrupts hormones, so calories never drop under a floor set by your lean mass.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>In 29 regularly menstruating women, hormone pulses were normal at 30 kcal per kg of lean mass a day and disrupted below it. That study was small, short and in women who did not exercise, and the IOC 2023 consensus treats low energy availability as a health risk for athletes.</p>
+    <p class="k">What it means for you</p><p>Your floor is <span class="ex" title="Example value; the app fills in yours">1,950</span> kcal: 30 kcal per kg of your lean mass plus what your training burns. We apply it whatever your sex.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1210/jc.2002-020369" target="_blank" rel="noopener noreferrer"><b>Loucks &amp; Thuma 2003</b> <span>Luteinizing hormone pulsatility is disrupted at a threshold of energy availability in regularly menstruating women</span><small>J Clin Endocrinol Metab &middot; controlled trial, 29 women, 5 days per condition &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1136/bjsports-2023-106994" target="_blank" rel="noopener noreferrer"><b>Mountjoy et al. 2023</b> <span>2023 International Olympic Committee&#x27;s (IOC) consensus statement on Relative Energy Deficiency in Sport (REDs)</span><small>Br J Sports Med &middot; expert consensus statement &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/nutritionMacros.ts EA_FLOOR_KCAL_PER_KG_FFM</code></p>
+  </div>
+</details>
+<details class="dec" id="meals-maintenance" data-area="meals">
+  <summary><div><span class="kicker">Meals</span><b>Maintenance of about <span class="ex" title="Example value; the app fills in yours">2,630</span> kcal</b><small>Your burn is estimated from your size, age, daily activity and training, so treat it as a starting point.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>The Mifflin-St Jeor equation was built from measured resting energy in 498 adults. A systematic review found it predicted resting burn within 10% for more people than any other equation, but still with notable individual errors. Weight training is listed at 3.5 to 6.0 METs.</p>
+    <p class="k">What it means for you</p><p>About <span class="ex" title="Example value; the app fills in yours">2,630</span> kcal from your body, your day and your training sessions. Your weigh-ins show whether it is right for you.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1093/ajcn/51.2.241" target="_blank" rel="noopener noreferrer"><b>Mifflin et al. 1990</b> <span>A new predictive equation for resting energy expenditure in healthy individuals</span><small>Am J Clin Nutr &middot; measured resting energy expenditure, 498 adults &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1016/j.jada.2005.02.005" target="_blank" rel="noopener noreferrer"><b>Frankenfield et al. 2005</b> <span>Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review</span><small>J Am Diet Assoc &middot; systematic review &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.1016/j.jshs.2023.10.010" target="_blank" rel="noopener noreferrer"><b>Herrmann et al. 2024</b> <span>2024 Adult Compendium of Physical Activities: A third update of the energy costs of human activities</span><small>J Sport Health Sci &middot; systematic review, 701 papers &middot; full text checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/nutritionMacros.ts tdeeFor, LIFESTYLE_MULTIPLIERS, TRAINING_SESSION_METS</code></p>
+  </div>
+</details>
+<details class="dec" id="meals-surplus" data-area="meals">
+  <summary><div><span class="kicker">Meals</span><b>Eat about <span class="ex" title="Example value; the app fills in yours">5</span>% above maintenance</b><small>A small surplus feeds muscle growth. Eating more adds fat faster, not muscle.</small></div><span class="chip a">Estimate</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>Athletes given a bigger planned surplus gained more fat than those eating freely, with no difference in lean mass gained. An off-season review suggests about 10 to 20% over maintenance and gaining 0.25 to 0.5% of body weight a week, with advanced lifters going slower.</p>
+    <p class="k">What it means for you</p><p>Your <span class="ex" title="Example value; the app fills in yours">5</span>% sits at or below that range, because the more training you have behind you, the less extra food you can turn into muscle.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1080/17461391.2011.643923" target="_blank" rel="noopener noreferrer"><b>Garthe et al. 2013</b> <span>Effect of nutritional intervention on body composition and performance in elite athletes</span><small>Eur J Sport Sci &middot; RCT, 39 elite athletes &middot; abstract checked</small></a></li><li><a href="https://doi.org/10.3390/sports7070154" target="_blank" rel="noopener noreferrer"><b>Iraki et al. 2019</b> <span>Nutrition Recommendations for Bodybuilders in the Off-Season: A Narrative Review</span><small>Sports (Basel) &middot; narrative review &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/utils/nutritionMacros.ts phaseCaloricTarget (bulk, lean_bulk)</code></p>
+  </div>
+</details>
+<details class="dec" id="meals-usda-macros" data-area="meals">
+  <summary><div><span class="kicker">Meals</span><b>Macros worked out from weighed ingredients</b><small>Every recipe is added up from USDA values per 100 g of each ingredient, not guessed.</small></div><span class="chip g">Good</span></summary>
+  <div class="body">
+    <p class="k">What the studies found</p><p>USDA&#x27;s FoodData Central brings together lab-analysed foundation foods, the long-standing SR Legacy tables, survey foods and branded products, and aims to be reliable and transparent. Each ingredient here carries values per 100 g from it.</p>
+    <p class="k">What it means for you</p><p>Your plan converts every amount to grams first, then adds it up, so swapping a meal recalculates the day.</p>
+    <p class="k">Sources</p><ul class="srcs"><li><a href="https://doi.org/10.1093/ajcn/nqab397" target="_blank" rel="noopener noreferrer"><b>Fukagawa et al. 2022</b> <span>USDA&#x27;s FoodData Central: what is it and why is it needed today?</span><small>Am J Clin Nutr &middot; descriptive review of the database &middot; abstract checked</small></a></li></ul>
+    <p class="ref">In the code: <code>src/data/ingredients.ts macros_per_100g, src/utils/computeMacros.ts ingredientMacros</code></p>
+  </div>
+</details>
+    </div>
+    <p class="exnote">Numbers with a dotted underline are examples. In the app they're your own.</p>
   </div>
 </section>
 
-<!-- EVIDENCE GRID -->
-<section class="ev-wrap">
-  <div class="container" style="max-width:1100px">
-    <div class="ev-grid" id="evGrid"></div>
-    <p class="ev-note">These are the rules the app plans with, and the same files your own AI reads if you choose to build a plan with it. This page renders the files themselves, not a copy, so they can never drift apart. <a href="/exercises/">Exercise cues</a> carry their own sources on each card.</p>
+<section class="sec2" id="files" aria-labelledby="files-h">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="kicker c">The reference files</p>
+      <h2 id="files-h" class="d">The full working, <em>file by file.</em></h2>
+      <p class="lede">Nine reference documents, one per topic, with every source cited in full. These are the files the app's rules were written from. The page renders the files themselves, so they can never drift apart.</p>
+    </div>
+    <div class="files" id="evGrid"></div>
   </div>
 </section>
 
-<!-- DOCUMENT -->
-<section class="doc-wrap" id="reader" hidden>
-  <div class="container">
+<section class="doc-wrap sec2" id="reader" hidden>
+  <div class="wrap">
     <div class="doc">
       <div class="reader-head"><h2 id="docTitle"></h2><a class="reader-close" href="/research/">Close</a></div>
       <div class="doc-meta" id="docMeta"></div>
@@ -153,125 +396,84 @@
   </div>
 </section>
 
-<section class="final" id="download" aria-labelledby="dl-h">
-  <p class="label">JSON.fit for iPhone and Android</p>
-  <h2 id="dl-h">Eat big.<br><span class="cyan">Lift big.</span></h2>
-  <p>Your week of meals and your program, built in seconds.</p>
-  <div class="badges">
-    <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="footer_cta">
-      <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-      <div><small>Download on the</small><span>App Store</span></div>
-    </a>
-    <a class="badge ghost" href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" data-loc="footer_cta">
-      <svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
-      <div><small>Get it on</small><span>Google Play</span></div>
-    </a>
+<section class="final2" id="download" aria-labelledby="dl-h">
+  <div class="wrap in">
+    <p class="kicker">JSON.fit for iPhone and Android</p>
+    <h2 id="dl-h" class="d">The rules, <em>applied to you.</em></h2>
+    <p class="lede">Your route, your week of meals and your program, built from the research above in about a minute.</p>
+    <div class="badges">
+      <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="footer_cta">
+        <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        <div><small>Download on the</small><span>App Store</span></div>
+      </a>
+      <a class="badge play" href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" data-loc="footer_cta">
+        <svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+        <div><small>Get it on</small><span>Google Play</span></div>
+      </a>
+    </div>
+    <p class="trust"><b>Free</b> &middot; No ads &middot; No account</p>
   </div>
 </section>
+</main>
 
 <footer class="site-foot">
   <div class="foot">
     <a href="/" class="logo"><span>JSON<span class="cyan">.fit</span></span></a>
     <nav class="foot-links" aria-label="Footer">
-      <a href="/meals.html">Meals</a><a href="/cookbook/">Free cookbook</a><a href="/programs/">Programs</a><a href="/exercises/">Exercises</a>
-      <a href="/research/">Research</a><a href="/blog.html">Blog</a><a href="/lab">The Lab</a>
+      <a href="/meals.html">Meals</a><a href="/cookbook/">Free cookbook</a><a href="/training/">Training</a><a href="/programs/">Programs</a><a href="/exercises/">Exercises</a>
+      <a href="/research/">How we know</a><a href="/lab/">The Lab</a><a href="/blog.html">Blog</a>
       <a href="#" id="supportLink" rel="nofollow">Support</a><a href="/privacy-policy.html">Privacy</a><a href="/terms-of-service.html">Terms</a>
     </nav>
-    <div class="social">
-      <a href="https://www.instagram.com/ryan.novinc" target="_blank" rel="noopener" aria-label="Ryan on Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.16 15.58 2.16 15.2 2.16 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.16 8.8 2.16 12 2.16Zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg></a>
-      <a href="https://www.tiktok.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.08-.14 1.62.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
-      <a href="https://www.youtube.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5 31.1 31.1 0 0 0 0 12a31.1 31.1 0 0 0 .5 5.5 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.1 31.1 0 0 0 24 12a31.1 31.1 0 0 0-.5-5.5ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"/></svg></a>
-    </div>
     <div class="copy-r">&copy; 2026 JSON.fit</div>
   </div>
 </footer>
 
 <script src="/assets/site.js"></script>
-
+<script>
+/* Area filter for the decision rows. */
+(function(){
+  var bar=document.getElementById('areaFilters'); if(!bar) return;
+  bar.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var area=b.getAttribute('data-area');
+      bar.querySelectorAll('button').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});
+      document.querySelectorAll('.dec').forEach(function(d){ d.hidden=(area!=='all' && d.getAttribute('data-area')!==area); });
+      if(window.gtag) gtag('event','evidence_filter',{area:area});
+    });
+  });
+  // Deep link: /research/#route-loss-rate opens that decision.
+  var h=location.hash.replace('#',''); var t=h&&document.getElementById(h); if(t&&t.classList.contains('dec')){ t.open=true; }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script>
 "use strict";
-/* ════════════════════════════════════════════════════════════════════
-   THE RESEARCH PAGE
-
-   This page renders the SAME .md files the AI fetches when it builds a
-   program. It does not hold a copy of them. That is the entire point:
-   the moment a reference file is edited, the prompt chain and this page
-   change together, and there is no second version to forget about.
-
-   Add a topic by adding one entry to TOPICS. The file must already be
-   published at json.fit root, since that is where the prompt chain
-   expects it.
-
-   The markdown is fetched at an ABSOLUTE URL rather than a relative one
-   so this file also renders correctly when opened straight off disk for
-   review, before it is ever deployed.
-   ════════════════════════════════════════════════════════════════════ */
-
+/* The reference files: this renders the SAME .md files at the site root that the app's rules were written from.
+   Add a topic by adding one entry to TOPICS. Fetched at an absolute URL so the page also works opened off disk. */
 var TOPICS = [
-  { key:'volume',  label:'Weekly sets per muscle', file:'https://json.fit/volume-references.md', title:'How many <em>sets.</em>',
-    rule:'Each muscle gets its own weekly range, counted as effective sets. Programs build from the floor and never pass the ceiling.',
-    papers:[['Pelland 2025','meta-regression, 67 studies','https://pubmed.ncbi.nlm.nih.gov/41343037/'],['Schoenfeld 2017','dose-response meta-analysis','https://pubmed.ncbi.nlm.nih.gov/27433992/'],['Krieger 2010','meta-analysis','https://pubmed.ncbi.nlm.nih.gov/20300012/']] },
-  { key:'rest',    label:'Rest between sets', file:'https://json.fit/rest-references.md', title:'How long to <em>rest.</em>',
-    rule:'Heavy compounds never rest under 2 minutes. Isolation gets 60 to 120 seconds. The timer sets it per exercise and pace.',
-    papers:[['Schoenfeld 2016','randomised trial, 1 vs 3 min','https://pubmed.ncbi.nlm.nih.gov/26605807/'],['Singer 2024','Bayesian meta-analysis','https://pubmed.ncbi.nlm.nih.gov/39205815/'],['Grgic 2018','systematic review','https://pubmed.ncbi.nlm.nih.gov/28933024/']] },
-  { key:'reps',    label:'Rep ranges', file:'https://json.fit/rep-range-references.md', title:'How many <em>reps.</em>',
-    rule:'Muscle grows anywhere from 5 to 30 reps at matched effort. Compounds sit at 5 to 10, isolation at 10 to 15, and reps climb at a held load.',
-    papers:[['Schoenfeld 2017','meta-analysis, load and hypertrophy','https://pubmed.ncbi.nlm.nih.gov/28834797/'],['Schoenfeld 2021','loading recommendations review','https://pubmed.ncbi.nlm.nih.gov/33671664/'],['Morton 2016','randomised trial, trained men','https://pubmed.ncbi.nlm.nih.gov/27174923/']] },
-  { key:'deload',  label:'Deloads', file:'https://json.fit/deload-references.md', title:'When to <em>back off.</em>',
-    rule:'Planned as the last week of every block: volume cut hard, load held, effort eased. A week like that costs nothing.',
-    papers:[['Bickel 2011','maintenance volume keeps gains','https://pubmed.ncbi.nlm.nih.gov/21131862/'],['Bosquet 2007','taper meta-analysis, 27 studies','https://pubmed.ncbi.nlm.nih.gov/17762369/'],['Bell 2023','deloading recommendations','https://link.springer.com/article/10.1186/s40798-023-00633-0']] },
-  { key:'protein', label:'Protein', file:'https://json.fit/protein-references.md', title:'How much <em>protein.</em>',
-    rule:'1.6 to 2.2 g per kg a day, with a floor of 0.4 g per kg at each main meal across 3 to 5 meals.',
-    papers:[['Moore 2009','per-meal dose response','https://pubmed.ncbi.nlm.nih.gov/19056590/'],['Witard 2014','20 vs 40 g after training','https://pubmed.ncbi.nlm.nih.gov/24257722/'],['Trommelen 2023','100 g single-meal study','https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(23)00490-7']] },
-  { key:'timing',  label:'Meal timing', file:'https://json.fit/meal-timing-references.md', title:'When to <em>eat.</em>',
-    rule:'Total intake decides results; timing is the smaller lever. Last full meal kept clear of bed, caffeine cut off early, a pre-sleep protein feed allowed.',
-    papers:[['Iao 2022','late eating and sleep','https://pubmed.ncbi.nlm.nih.gov/34511160/'],['Crispim 2011','meal timing and sleep quality','https://pubmed.ncbi.nlm.nih.gov/22171206/'],['Gu 2020','late dinner and metabolism','https://pubmed.ncbi.nlm.nih.gov/32525525/']] },
-  { key:'fibre',   label:'Fibre', file:'https://json.fit/fiber-references.md', title:'How much <em>fibre.</em>',
-    rule:'35 to 45 g a day on a bulk, held there rather than scaled with calories, so fibre never crowds out the food.',
-    papers:[['IOM 2005','Dietary Reference Intakes','https://nap.nationalacademies.org/catalog/10490/dietary-reference-intakes-for-energy-carbohydrate-fiber-fat-fatty-acids-cholesterol-protein-and-amino-acids'],['WHO 2023','carbohydrate intake guideline','https://www.who.int/publications/i/item/9789240073593'],['EFSA 2010','dietary reference values','https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2010.1462']] },
-  { key:'goal',    label:'Goal weight', file:'https://json.fit/lean-mass-targets-references.md', title:'What the goal <em>really is.</em>',
-    rule:'Goals are set as lean mass, not scale weight. Hit the lean-mass target, then take off the excess fat.',
-    papers:[['Hall 2007','Forbes\u2019 theory revisited','https://doi.org/10.1017/S0007114507691946'],['Method comparison','BIA vs DEXA','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9347159/'],['Gatterer','DEXA measurement error','https://www.dexalytics.com/news/higher-values-dxa/']] },
-  { key:'phase',   label:'Bulk, cut or recomp', file:'https://json.fit/phase-selection-references.md', title:'Which <em>phase.</em>',
-    rule:'The phase comes from body fat, not preference. Cut first above the band, bulk inside it, recomp in between. Surplus about +10%, deficit about 500 kcal.',
-    papers:[['Morton 2018','protein and lean mass meta-analysis','https://pmc.ncbi.nlm.nih.gov/articles/PMC5867436/'],['Garthe 2011','rate of loss and lean mass','https://pubmed.ncbi.nlm.nih.gov/21558571/'],['Slater 2019','surplus size and muscle gain','https://pubmed.ncbi.nlm.nih.gov/31482093/']] }
+  { key:'volume',  label:'Weekly sets per muscle', file:'https://json.fit/volume-references.md', title:'How many <em>sets.</em>', rule:'Each muscle gets its own weekly range, counted as effective sets. Programs build from the floor and never pass the ceiling.' },
+  { key:'rest',    label:'Rest between sets', file:'https://json.fit/rest-references.md', title:'How long to <em>rest.</em>', rule:'Heavy compounds never rest under 2 minutes. Isolation gets 60 to 120 seconds. The timer sets it per exercise and pace.' },
+  { key:'reps',    label:'Rep ranges', file:'https://json.fit/rep-range-references.md', title:'How many <em>reps.</em>', rule:'Muscle grows anywhere from 5 to 30 reps at matched effort. Compounds sit at 5 to 10, isolation at 10 to 15, and reps climb at a held load.' },
+  { key:'deload',  label:'Deloads', file:'https://json.fit/deload-references.md', title:'When to <em>back off.</em>', rule:'Planned as the last week of every block: volume cut hard, load held, effort eased. A week like that costs nothing.' },
+  { key:'protein', label:'Protein', file:'https://json.fit/protein-references.md', title:'How much <em>protein.</em>', rule:'1.6 to 2.2 g per kg a day, with a floor of 0.4 g per kg at each main meal across 3 to 5 meals.' },
+  { key:'timing',  label:'Meal timing', file:'https://json.fit/meal-timing-references.md', title:'When to <em>eat.</em>', rule:'Total intake decides results; timing is the smaller lever. Last full meal kept clear of bed, caffeine cut off early, a pre-sleep protein feed allowed.' },
+  { key:'fibre',   label:'Fibre', file:'https://json.fit/fiber-references.md', title:'How much <em>fibre.</em>', rule:'35 to 45 g a day on a bulk, held there rather than scaled with calories, so fibre never crowds out the food.' },
+  { key:'goal',    label:'Goal weight', file:'https://json.fit/lean-mass-targets-references.md', title:'What the goal <em>really is.</em>', rule:'Goals are set as lean mass, not scale weight. Hit the lean-mass target, then take off the excess fat.' },
+  { key:'phase',   label:'Bulk, cut or recomp', file:'https://json.fit/phase-selection-references.md', title:'Which <em>phase.</em>', rule:'The phase comes from body fat, not preference. Cut first above the band, bulk inside it, recomp in between.' }
 ];
-
 (function(){
   var params = new URLSearchParams(location.search);
   var key = params.get('topic');
   var topic = TOPICS.filter(function(t){ return t.key === key; })[0] || null;
-
-  /* The grid: one card per decision. */
   var grid = document.getElementById('evGrid');
   grid.innerHTML = TOPICS.map(function(t){
-    return '<div class="ev" id="ev-' + t.key + '">' +
-      '<div class="ev-top"><h3>' + t.label + '</h3><span class="ev-n" data-count="' + t.key + '">&hellip;</span></div>' +
-      '<p class="ev-rule">' + t.rule + '</p>' +
-      '<ul class="ev-papers">' + t.papers.map(function(p){ return '<li><a href="' + p[2] + '" target="_blank" rel="noopener noreferrer"><span>' + p[0] + '</span><span>' + p[1] + '</span></a></li>'; }).join('') + '</ul>' +
-      '<a class="ev-all" href="?topic=' + t.key + '#reader">All sources &rarr;</a>' +
-    '</div>';
+    return '<a class="file" href="?topic=' + t.key + '#reader"><small>' + t.label + '</small><b>' + t.title + '</b><span>' + t.rule + '</span></a>';
   }).join('');
-
-  /* Live source counts: every external link in each file, counted once. The total goes in the hero. */
-  var total = 0, done = 0;
-  TOPICS.forEach(function(t){
-    fetch(t.file, { cache: 'no-cache' }).then(function(r){ return r.ok ? r.text() : ''; }).then(function(md){
-      var seen = {}, n = 0;
-      (md.match(/https?:\/\/[^\s)>\]]+/g) || []).forEach(function(u){ if (u.indexOf('json.fit') === -1 && !seen[u]) { seen[u] = 1; n++; } });
-      var el = document.querySelector('[data-count="' + t.key + '"]'); if (el) el.textContent = n ? n + ' sources' : '';
-      total += n; done++;
-      if (done === TOPICS.length) document.getElementById('stSources').textContent = total;
-    }).catch(function(){ done++; if (done === TOPICS.length) document.getElementById('stSources').textContent = total; });
-  });
-
-  /* The reader: the full file, only when a card asks for it. */
   var reader = document.getElementById('reader');
   if (!topic) return;
   reader.hidden = false;
   document.getElementById('docTitle').innerHTML = topic.title;
-  document.title = topic.label + ' \u2014 the research behind JSON.fit';
+  document.title = topic.label + ' — how we know — JSON.fit';
   document.getElementById('docMeta').innerHTML =
     '<span>Source &middot; <a href="' + topic.file + '">' + topic.file.replace('https://json.fit/','') + '</a></span>' +
     '<span>The rules the app plans with</span>';
@@ -287,9 +489,7 @@ var TOPICS = [
     })
     .catch(function(){ fallback('Could not load the document'); });
 })();
-
 </script>
-
 <script>
 (function(){
   document.addEventListener('click',function(e){
@@ -308,6 +508,5 @@ var TOPICS = [
   },true);
 })();
 </script>
-
 </body>
 </html>

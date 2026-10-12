@@ -1,0 +1,780 @@
+[
+ {
+  "id": "route-loss-rate",
+  "area": "route",
+  "title": "Lose about {ratePct}% of your weight a week",
+  "why": "Losing slowly keeps more muscle. In one trial, athletes who lost slowly even added some.",
+  "found": "Elite athletes who lost about 0.7% of their weight a week gained 2.1% lean mass and lost 31% of their fat. Those losing 1.4% a week lost 21% of their fat and their lean mass did not change. Across training studies, an energy deficit held back lean-mass gains, though strength still improved.",
+  "forYou": "{kgPerWeek} kg a week is {ratePct}% of your {weightKg} kg, inside the 0.5 to 1% a week these studies and contest-prep guidance support.",
+  "confidence": "strong",
+  "sources": [
+   {
+    "cite": "Garthe et al. 2011",
+    "title": "Effect of two different weight-loss rates on body composition and strength and power-related performance in elite athletes",
+    "journal": "Int J Sport Nutr Exerc Metab",
+    "design": "RCT, 24 elite athletes",
+    "doi": "10.1123/ijsnem.21.2.97",
+    "pmid": "21558571",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1123/ijsnem.21.2.97"
+   },
+   {
+    "cite": "Murphy & Koehler 2022",
+    "title": "Energy deficiency impairs resistance training gains in lean mass but not strength: A meta-analysis and meta-regression",
+    "journal": "Scand J Med Sci Sports",
+    "design": "meta-analysis and meta-regression of RCTs",
+    "doi": "10.1111/sms.14075",
+    "pmid": "34623696",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1111/sms.14075"
+   },
+   {
+    "cite": "Helms et al. 2014",
+    "title": "Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation",
+    "journal": "J Int Soc Sports Nutr",
+    "design": "narrative review",
+    "doi": "10.1186/1550-2783-11-20",
+    "pmid": "24864135",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1186/1550-2783-11-20"
+   }
+  ],
+  "codeRef": "src/utils/roadmap.ts FAT_LOSS_FRACTION_BW_PER_WEEK"
+ },
+ {
+  "id": "route-fast-gate",
+  "area": "route",
+  "title": "The faster pace needs fat to spare",
+  "why": "Fat stores can only release so much energy a day. Diet harder than that and the gap comes out of muscle.",
+  "found": "A model built from underfeeding studies puts the most the fat store can supply at about 290 kJ (69 kcal) per kg of fat per day, and says a deficit beyond that takes fat-free mass straight away. It is a model, not a trial, so we plan under it, at 48.5 kcal per kg of fat.",
+  "forYou": "With the fat you carry, the deepest deficit we plan is about {ceilingKcal} kcal a day, so the fastest pace offered to you is {ratePct}% a week.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Alpert 2005",
+    "title": "A limit on the energy transfer rate from the human fat store in hypophagia",
+    "journal": "J Theor Biol",
+    "design": "theoretical model from published underfeeding data",
+    "doi": "10.1016/j.jtbi.2004.08.029",
+    "pmid": "15615615",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1016/j.jtbi.2004.08.029"
+   }
+  ],
+  "codeRef": "src/utils/lossRate.ts FAT_ENERGY_RELEASE_KCAL_PER_KG_PER_DAY"
+ },
+ {
+  "id": "route-recomp-deficit",
+  "area": "route",
+  "title": "Recomp keeps the deficit under 500 kcal",
+  "why": "In training studies, a deficit of about 500 kcal a day was enough to stop muscle gains.",
+  "found": "A meta-regression of resistance-training trials found an energy deficit of about 500 kcal a day prevented lean-mass gains, and the authors advise against deficits larger than that when muscle is the goal. Strength gains were not affected by the deficit.",
+  "forYou": "Your recomp runs about {deficitKcal} kcal under maintenance, below that line, so building muscle while losing fat is still realistic.",
+  "confidence": "strong",
+  "sources": [
+   {
+    "cite": "Murphy & Koehler 2022",
+    "title": "Energy deficiency impairs resistance training gains in lean mass but not strength: A meta-analysis and meta-regression",
+    "journal": "Scand J Med Sci Sports",
+    "design": "meta-analysis and meta-regression of RCTs",
+    "doi": "10.1111/sms.14075",
+    "pmid": "34623696",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1111/sms.14075"
+   }
+  ],
+  "codeRef": "src/utils/roadmap.ts RECOMP_DEFICIT_CEILING_KCAL_PER_DAY"
+ },
+ {
+  "id": "route-ease",
+  "area": "route",
+  "title": "Ease in at about {ratePct}% a week",
+  "why": "If you already train, a small deficit can trim fat while your muscle keeps growing.",
+  "found": "In a 10-week trial of 30 trained people on high protein, a moderate deficit lost 2.9 kg of fat and gained 1.0 kg of lean mass, while eating at maintenance lost 1.4 kg of fat and gained the same lean mass. The fat-loss difference between the two groups was not statistically significant.",
+  "forYou": "You chose to ease in, so the scale moves about {kgPerWeek} kg a week. This is one small trial, so treat the pace as a best estimate.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Vargas-Molina et al. 2026",
+    "title": "Comparison of two nutritional protocols in body re-composition of resistance-trained participants",
+    "journal": "Eur J Appl Physiol",
+    "design": "RCT, 30 resistance-trained participants",
+    "doi": "10.1007/s00421-026-06209-6",
+    "pmid": "41940947",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1007/s00421-026-06209-6"
+   }
+  ],
+  "codeRef": "src/utils/roadmap.ts EASE_FRACTION_BW_PER_WEEK"
+ },
+ {
+  "id": "route-attractive-bf",
+  "area": "route",
+  "title": "For men, 10 to 15% body fat is the sweet spot",
+  "why": "Raters liked men at moderate leanness and muscle best. The very leanest bodies did not score highest.",
+  "found": "Across six studies, men with moderate muscularity were rated most attractive. When observers set fat and muscle on male bodies themselves, they chose levels within the healthy range. A 2025 study of 283 raters in three countries, using real DXA scans, reportedly found the peak at about 13 to 14% body fat.",
+  "forYou": "Your goal of {goalBf}% is measured against that band. These are ratings of photos by mostly Western raters, not a promise about real life.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Frederick & Haselton 2007",
+    "title": "Why is muscularity sexy? Tests of the fitness indicator hypothesis",
+    "journal": "Pers Soc Psychol Bull",
+    "design": "six studies of rated attractiveness",
+    "doi": "10.1177/0146167207303022",
+    "pmid": "17578932",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1177/0146167207303022"
+   },
+   {
+    "cite": "Brierley et al. 2016",
+    "title": "The Body and the Beautiful: Health, Attractiveness and Body Composition in Men's and Women's Bodies",
+    "journal": "PLoS One",
+    "design": "63 observers adjusting fat and muscle on body images",
+    "doi": "10.1371/journal.pone.0156722",
+    "pmid": "27257677",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1371/journal.pone.0156722"
+   },
+   {
+    "cite": "Xia et al. 2025",
+    "title": "The relationship between body fatness and physical attractiveness in males",
+    "journal": "Pers Individ Dif",
+    "design": "283 raters, 15 male DXA scans, three countries",
+    "doi": "10.1016/j.paid.2025.113240",
+    "checked": "secondary",
+    "url": "https://doi.org/10.1016/j.paid.2025.113240"
+   }
+  ],
+  "codeRef": "src/utils/attractivenessTargets.ts ATTRACTIVE_BF_RANGE"
+ },
+ {
+  "id": "route-ffmi-ceiling",
+  "area": "route",
+  "title": "Natural muscle tops out near an FFMI of 25",
+  "why": "In one study, drug-free athletes topped out at a muscle-for-height score of about 25, so goals past it are flagged.",
+  "found": "Among 157 male athletes, the 74 who did not use steroids had fat-free mass indexes reaching a well-defined limit of 25.0, while many users went past it. The authors called the limit preliminary, and some people exceed it naturally.",
+  "forYou": "Your goal works out to an FFMI of about {ffmi}. Near or past 25 we show it as uncommon, not impossible.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Kouri et al. 1995",
+    "title": "Fat-free mass index in users and nonusers of anabolic-androgenic steroids",
+    "journal": "Clin J Sport Med",
+    "design": "cross-sectional, 157 male athletes",
+    "doi": "10.1097/00042752-199510000-00003",
+    "pmid": "7496846",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1097/00042752-199510000-00003"
+   }
+  ],
+  "codeRef": "src/utils/roadmap.ts FFMI_CEILING"
+ },
+ {
+  "id": "route-build-rate",
+  "area": "route",
+  "title": "Build about {gainKgPerWeek} kg of muscle a week",
+  "why": "Muscle grows slowly and slows each year you train, and people differ, so the time is a range.",
+  "found": "In 49 trials, resistance training alone added about 1.1 kg of lean mass over roughly 13 weeks, and extra protein added about 0.3 kg more. Men gain more muscle in absolute terms, but women gain about the same relative to the muscle they start with. How fast gains slow over the years is our assumption, not a measurement.",
+  "forYou": "From your training history and frame, about {gainKgPerWeek} kg a week, give or take about a third.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Morton et al. 2018",
+    "title": "A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults",
+    "journal": "Br J Sports Med",
+    "design": "meta-analysis, 49 RCTs, 1,863 participants",
+    "doi": "10.1136/bjsports-2017-097608",
+    "pmid": "28698222",
+    "checked": "fulltext",
+    "url": "https://doi.org/10.1136/bjsports-2017-097608"
+   },
+   {
+    "cite": "Refalo et al. 2025",
+    "title": "Sex differences in absolute and relative changes in muscle size following resistance training in healthy adults: a systematic review with Bayesian meta-analysis",
+    "journal": "PeerJ",
+    "design": "meta-analysis, 29 studies",
+    "doi": "10.7717/peerj.19042",
+    "pmid": "40028215",
+    "checked": "abstract",
+    "url": "https://doi.org/10.7717/peerj.19042"
+   },
+   {
+    "cite": "Roberts et al. 2020",
+    "title": "Sex Differences in Resistance Training: A Systematic Review and Meta-Analysis",
+    "journal": "J Strength Cond Res",
+    "design": "meta-analysis",
+    "doi": "10.1519/JSC.0000000000003521",
+    "pmid": "32218059",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1519/JSC.0000000000003521"
+   }
+  ],
+  "codeRef": "src/utils/roadmap.ts GAIN_DECAY_K, RATE_SPREAD, FFMI_UNTRAINED"
+ },
+ {
+  "id": "route-operating-band",
+  "area": "route",
+  "title": "Build up to {ceilingBf}%, trim back to {floorBf}%",
+  "why": "This range is your choice of how lean to stay. No study shows one range builds more muscle than another.",
+  "found": "When 34 men overate by 40% for 8 weeks, those who started with more body fat gained more weight and more fat. In a trial of 61 trained adults, dieting in blocks with breaks and dieting straight through kept the same lean mass and strength, and the block dieters felt less hungry.",
+  "forYou": "You chose the {routeName} way, so you build up to about {ceilingBf}% and trim back to {floorBf}%.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Galgani et al. 2025",
+    "title": "Baseline Body Fat Percentage Is Associated to Weight and Fat Mass Gain From High-Fat Overfeeding Over 8 Weeks",
+    "journal": "J Clin Endocrinol Metab",
+    "design": "overfeeding trial, 34 men",
+    "doi": "10.1210/clinem/dgaf247",
+    "pmid": "40254560",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1210/clinem/dgaf247"
+   },
+   {
+    "cite": "Peos et al. 2021",
+    "title": "Continuous versus Intermittent Dieting for Fat Loss and Fat-Free Mass Retention in Resistance-trained Adults: The ICECAP Trial",
+    "journal": "Med Sci Sports Exerc",
+    "design": "RCT, 61 resistance-trained adults",
+    "doi": "10.1249/MSS.0000000000002636",
+    "pmid": "33587549",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1249/MSS.0000000000002636"
+   }
+  ],
+  "codeRef": "src/utils/operatingBands.ts OPERATING_BANDS"
+ },
+ {
+  "id": "route-female-floor",
+  "area": "route",
+  "title": "Women's plans stop at 22% body fat",
+  "why": "Very lean women risk losing their period, so plans keep a safety margin above that point.",
+  "found": "Female physique athletes measured off-season averaged 23.4% body fat by DXA. Among those not on hormonal contraception, 27% had no periods, against none of the regular gym-goers. The study is small and cross-sectional, so 22% is a safety margin, not a proven threshold.",
+  "forYou": "The leanest your plan takes you is {floorBf}%.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Mursu et al. 2023",
+    "title": "Dietary Intake, Serum Hormone Concentrations, Amenorrhea and Bone Mineral Density of Physique Athletes and Active Gym Enthusiasts",
+    "journal": "Nutrients",
+    "design": "cross-sectional, 89 athletes and gym-goers",
+    "doi": "10.3390/nu15020382",
+    "pmid": "36678253",
+    "checked": "fulltext",
+    "url": "https://doi.org/10.3390/nu15020382"
+   }
+  ],
+  "codeRef": "src/utils/operatingBands.ts OPERATING_BANDS (female floors), leanStopFor"
+ },
+ {
+  "id": "route-build-fat",
+  "area": "route",
+  "title": "Expect some fat with the muscle",
+  "why": "Even a planned surplus adds fat alongside muscle. A bigger one adds more fat, not more muscle.",
+  "found": "Elite athletes given a planned surplus gained more weight than those eating freely, but the extra was fat: fat mass rose 15% against 3%, and lean mass gains did not differ. An off-season review advises a surplus of about 10 to 20% and slower gains for advanced lifters.",
+  "forYou": "Your plan assumes about {fatPerLean} kg of fat for every kg of muscle, so a build ends a little softer and the next trim takes it off.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Garthe et al. 2013",
+    "title": "Effect of nutritional intervention on body composition and performance in elite athletes",
+    "journal": "Eur J Sport Sci",
+    "design": "RCT, 39 elite athletes",
+    "doi": "10.1080/17461391.2011.643923",
+    "pmid": "23679146",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1080/17461391.2011.643923"
+   },
+   {
+    "cite": "Iraki et al. 2019",
+    "title": "Nutrition Recommendations for Bodybuilders in the Off-Season: A Narrative Review",
+    "journal": "Sports (Basel)",
+    "design": "narrative review",
+    "doi": "10.3390/sports7070154",
+    "pmid": "31247944",
+    "checked": "abstract",
+    "url": "https://doi.org/10.3390/sports7070154"
+   }
+  ],
+  "codeRef": "src/utils/syntheticNutritionAnswers.ts FAT_PER_LEAN_KG"
+ },
+ {
+  "id": "route-ends-on-weight",
+  "area": "route",
+  "title": "Phases end on your weight, not a body-fat reading",
+  "why": "Body-fat readings are too rough to see a few kilos of change. A weight trend can.",
+  "found": "Even a DXA scan, repeated on consecutive days in 21 trained athletes, varied by about 1.3 kg of fat mass, and home body-fat scales are less precise still. In one man weighed daily for 26 years, weight varied by about 0.5% from one day to the next, small enough for a trend to show real change.",
+  "forYou": "This phase ends when your weight trend reaches about {exitWeightKg} kg. You still see body fat, it just does not decide.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Zemski et al. 2019",
+    "title": "Same-Day Vs Consecutive-Day Precision Error of Dual-Energy X-Ray Absorptiometry for Interpreting Body Composition Change in Resistance-Trained Athletes",
+    "journal": "J Clin Densitom",
+    "design": "precision study, 21 resistance-trained athletes",
+    "doi": "10.1016/j.jocd.2018.10.005",
+    "pmid": "30454952",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1016/j.jocd.2018.10.005"
+   },
+   {
+    "cite": "Schneditz et al. 2023",
+    "title": "Day-to-day variability in euvolemic body mass",
+    "journal": "Ren Fail",
+    "design": "one healthy man, 9,521 days of weigh-ins",
+    "doi": "10.1080/0886022X.2023.2273421",
+    "pmid": "37955103",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1080/0886022X.2023.2273421"
+   }
+  ],
+  "codeRef": "src/utils/phaseTransition.ts (weight-based detection), roadmap.ts exitWeightKg"
+ },
+ {
+  "id": "route-trend-window",
+  "area": "route",
+  "title": "Decisions wait for a month of weigh-ins",
+  "why": "A full month evens out water swings, including the menstrual cycle, before a phase is called done.",
+  "found": "Across 612,613 menstrual cycles logged in an app, the average cycle was 29.3 days, so a 28-day average covers most of a cycle. On real smart-scale data, exponentially weighted averages were among the best ways to fill gaps between weigh-ins.",
+  "forYou": "We need at least three weigh-ins over a week before showing a trend, and phase decisions use your last 28 days.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Bull et al. 2019",
+    "title": "Real-world menstrual cycle characteristics of more than 600,000 menstrual cycles",
+    "journal": "NPJ Digit Med",
+    "design": "app data, 612,613 cycles from 124,648 users",
+    "doi": "10.1038/s41746-019-0152-7",
+    "pmid": "31482137",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1038/s41746-019-0152-7"
+   },
+   {
+    "cite": "Turicchi et al. 2020",
+    "title": "Data Imputation and Body Weight Variability Calculation Using Linear and Nonlinear Methods in Data Collected From Digital Smart Scales: Simulation and Validation Study",
+    "journal": "JMIR Mhealth Uhealth",
+    "design": "simulation and validation, 50 smart-scale users",
+    "doi": "10.2196/17977",
+    "pmid": "32915155",
+    "checked": "abstract",
+    "url": "https://doi.org/10.2196/17977"
+   }
+  ],
+  "codeRef": "src/utils/phaseTransition.ts TREND_DECISION_DAYS, TREND_EWMA_DAYS, TREND_MIN_READINGS"
+ },
+ {
+  "id": "training-volume",
+  "area": "training",
+  "title": "{sets} hard sets a week for {muscle}",
+  "why": "More weekly sets grow more muscle, with smaller gains from each extra set at the top.",
+  "found": "A 2026 analysis of 67 studies found more weekly sets meant more muscle and strength, with returns tapering, more so for strength. Counting sets where a muscle only assists as half a set fitted the data best. An earlier analysis put each extra weekly set at about 0.4% more growth.",
+  "forYou": "{sets} sets a week is where your experience and choices put {muscle}. Sets where it only assists count as half.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Pelland et al. 2026",
+    "title": "The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains",
+    "journal": "Sports Med",
+    "design": "meta-regression, 67 studies, 2,058 participants",
+    "doi": "10.1007/s40279-025-02344-w",
+    "pmid": "41343037",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1007/s40279-025-02344-w"
+   },
+   {
+    "cite": "Schoenfeld, Ogborn & Krieger 2017",
+    "title": "Dose-response relationship between weekly resistance training volume and increases in muscle mass: A systematic review and meta-analysis",
+    "journal": "J Sports Sci",
+    "design": "meta-analysis, 15 studies",
+    "doi": "10.1080/02640414.2016.1210197",
+    "pmid": "27433992",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1080/02640414.2016.1210197"
+   }
+  ],
+  "codeRef": "src/utils/workoutGenerator/data/volume-landmarks.json, check.ts positionRange/targetsFor"
+ },
+ {
+  "id": "training-frequency",
+  "area": "training",
+  "title": "Each muscle about twice a week",
+  "why": "Splitting the same weekly sets over two days grows muscle at least as well as one big day.",
+  "found": "An early analysis of 10 studies found training a muscle twice a week grew it more than once. A larger 2019 analysis of 25 studies found that with weekly sets matched, frequency made no meaningful difference. So frequency mainly helps you fit the sets in.",
+  "forYou": "Your {daysPerWeek}-day plan trains most muscles twice a week, which spreads the sets into sessions you can finish.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Schoenfeld, Ogborn & Krieger 2016",
+    "title": "Effects of Resistance Training Frequency on Measures of Muscle Hypertrophy: A Systematic Review and Meta-Analysis",
+    "journal": "Sports Med",
+    "design": "meta-analysis, 10 studies",
+    "doi": "10.1007/s40279-016-0543-8",
+    "pmid": "27102172",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1007/s40279-016-0543-8"
+   },
+   {
+    "cite": "Schoenfeld, Grgic & Krieger 2019",
+    "title": "How many times per week should a muscle be trained to maximize muscle hypertrophy? A systematic review and meta-analysis of studies examining the effects of resistance training frequency",
+    "journal": "J Sports Sci",
+    "design": "meta-analysis, 25 studies",
+    "doi": "10.1080/02640414.2018.1555906",
+    "pmid": "30558493",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1080/02640414.2018.1555906"
+   },
+   {
+    "cite": "Pelland et al. 2026",
+    "title": "The Resistance Training Dose Response: Meta-Regressions Exploring the Effects of Weekly Volume and Frequency on Muscle Hypertrophy and Strength Gains",
+    "journal": "Sports Med",
+    "design": "meta-regression, 67 studies, 2,058 participants",
+    "doi": "10.1007/s40279-025-02344-w",
+    "pmid": "41343037",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1007/s40279-025-02344-w"
+   }
+  ],
+  "codeRef": "src/utils/workoutGenerator/generateProgram.ts TEMPLATES"
+ },
+ {
+  "id": "training-rep-range",
+  "area": "training",
+  "title": "Most sets in the 5 to 15 rep range",
+  "why": "Light and heavy weights build similar muscle when sets are hard. Heavier sets build more top-end strength.",
+  "found": "Across 21 studies with sets taken to failure, light loads (60% of max or less) and heavy loads built similar muscle, while heavy loads gave bigger one-rep-max gains.",
+  "forYou": "Big barbell lifts sit at 5 to 10 reps for strength and size; isolation moves sit at 10 to 15.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Schoenfeld et al. 2017",
+    "title": "Strength and Hypertrophy Adaptations Between Low- vs. High-Load Resistance Training: A Systematic Review and Meta-analysis",
+    "journal": "J Strength Cond Res",
+    "design": "meta-analysis, 21 studies",
+    "doi": "10.1519/JSC.0000000000002200",
+    "pmid": "28834797",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1519/JSC.0000000000002200"
+   }
+  ],
+  "codeRef": "src/utils/workoutGenerator/data/rep-ranges.json"
+ },
+ {
+  "id": "training-effort",
+  "area": "training",
+  "title": "Stop most sets a rep or three short of failure",
+  "why": "Muscle grows more as sets get close to failure, but going all the way adds little.",
+  "found": "Muscle growth improved as sets ended closer to failure, while strength gains were similar across a wide range of effort, though the authors call this exploratory. A separate analysis of 15 studies found no evidence that training to true failure beats stopping short.",
+  "forYou": "Each block starts a few reps short of failure and edges closer each week, and any exercise done as a single set goes to failure.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Robinson et al. 2024",
+    "title": "Exploring the Dose-Response Relationship Between Estimated Resistance Training Proximity to Failure, Strength Gain, and Muscle Hypertrophy: A Series of Meta-Regressions",
+    "journal": "Sports Med",
+    "design": "exploratory meta-regressions",
+    "doi": "10.1007/s40279-024-02069-2",
+    "pmid": "38970765",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1007/s40279-024-02069-2"
+   },
+   {
+    "cite": "Refalo et al. 2023",
+    "title": "Influence of Resistance Training Proximity-to-Failure on Skeletal Muscle Hypertrophy: A Systematic Review with Meta-analysis",
+    "journal": "Sports Med",
+    "design": "meta-analysis, 15 studies",
+    "doi": "10.1007/s40279-022-01784-y",
+    "pmid": "36334240",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1007/s40279-022-01784-y"
+   }
+  ],
+  "codeRef": "src/utils/workoutGenerator/data/rir.json"
+ },
+ {
+  "id": "training-rest",
+  "area": "training",
+  "title": "{restMin} min rests on the big lifts",
+  "why": "Resting more than a minute keeps your reps up. Past about 90 seconds, growth evens out.",
+  "found": "A meta-analysis of 9 studies found a small growth benefit to resting more than 60 seconds, and no clear difference past 90. In trained men, 3-minute rests built more strength and thigh muscle than 1-minute rests. For maximum strength in trained lifters, a review favours rests over 2 minutes.",
+  "forYou": "Your pace rests the big lifts for {restMin} minutes. A quicker pace trades a little growth for time.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Singer et al. 2024",
+    "title": "Give it a rest: a systematic review with Bayesian meta-analysis on the effect of inter-set rest interval duration on muscle hypertrophy",
+    "journal": "Front Sports Act Living",
+    "design": "Bayesian meta-analysis, 9 studies",
+    "doi": "10.3389/fspor.2024.1429789",
+    "pmid": "39205815",
+    "checked": "abstract",
+    "url": "https://doi.org/10.3389/fspor.2024.1429789"
+   },
+   {
+    "cite": "Schoenfeld et al. 2016",
+    "title": "Longer Interset Rest Periods Enhance Muscle Strength and Hypertrophy in Resistance-Trained Men",
+    "journal": "J Strength Cond Res",
+    "design": "RCT, 21 resistance-trained men",
+    "doi": "10.1519/JSC.0000000000001272",
+    "pmid": "26605807",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1519/JSC.0000000000001272"
+   },
+   {
+    "cite": "Grgic et al. 2018",
+    "title": "Effects of Rest Interval Duration in Resistance Training on Measures of Muscular Strength: A Systematic Review",
+    "journal": "Sports Med",
+    "design": "systematic review, 23 studies, 491 participants",
+    "doi": "10.1007/s40279-017-0788-x",
+    "pmid": "28933024",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1007/s40279-017-0788-x"
+   }
+  ],
+  "codeRef": "src/utils/workoutGenerator/data/rest.json, src/data/restPaceCopy.ts"
+ },
+ {
+  "id": "training-deload",
+  "area": "training",
+  "title": "A lighter week every {deloadEvery} weeks",
+  "why": "A planned easier week lets fatigue clear. Coaches agree on it, but trials are few.",
+  "found": "Expert coaches agree a deload is a planned stretch of reduced training to clear fatigue, and a practical review notes they are commonly placed every 4 to 8 weeks. In one trial, a full week off mid-programme did not change muscle growth but slightly reduced strength gains.",
+  "forYou": "Your lighter week is the last of each {deloadEvery}-week block: about half the sets, same weights, more reps in reserve.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Bell et al. 2023",
+    "title": "Integrating Deloading into Strength and Physique Sports Training Programmes: An International Delphi Consensus Approach",
+    "journal": "Sports Med Open",
+    "design": "Delphi consensus, 21 to 34 expert coaches",
+    "doi": "10.1186/s40798-023-00633-0",
+    "pmid": "37730925",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1186/s40798-023-00633-0"
+   },
+   {
+    "cite": "Bell et al. 2025",
+    "title": "A Practical Approach to Deloading: Recommendations and Considerations for Strength and Physique Sports",
+    "journal": "Strength Cond J",
+    "design": "practical review",
+    "doi": "10.1519/SSC.0000000000000910",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1519/SSC.0000000000000910"
+   },
+   {
+    "cite": "Coleman et al. 2024",
+    "title": "Gaining more from doing less? The effects of a one-week deload period during supervised resistance training on muscular adaptations",
+    "journal": "PeerJ",
+    "design": "RCT, 39 trained adults",
+    "doi": "10.7717/peerj.16777",
+    "pmid": "38274324",
+    "checked": "abstract",
+    "url": "https://doi.org/10.7717/peerj.16777"
+   }
+  ],
+  "codeRef": "src/utils/workoutGenerator/data/deload.json, generateProgram.ts deloadSets"
+ },
+ {
+  "id": "training-same-in-cut",
+  "area": "training",
+  "title": "Your training stays the same while you cut",
+  "why": "Cutting back sets during a diet did not help trained men keep muscle.",
+  "found": "Trained men dieting for 6 weeks did either 5 or 3 sets per exercise. Thigh muscle thickness showed no difference between groups, and the small loss of lean mass was similar in both.",
+  "forYou": "Your sets are the same in every phase. Only the food changes.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Roth et al. 2023",
+    "title": "Resistance training volume does not influence lean mass preservation during energy restriction in trained males",
+    "journal": "Scand J Med Sci Sports",
+    "design": "RCT, 38 resistance-trained men",
+    "doi": "10.1111/sms.14237",
+    "pmid": "36114738",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1111/sms.14237"
+   }
+  ],
+  "codeRef": "src/utils/goalsProfile.ts phaseToVolumeTier"
+ },
+ {
+  "id": "meals-protein",
+  "area": "meals",
+  "title": "{proteinG} g of protein a day",
+  "why": "Protein helps muscle grow, and you need more when eating less, so cuts get the most.",
+  "found": "Across 49 trials, protein added about 0.3 kg of lean mass to training, with no further gain above about 1.6 g per kg of body weight a day (the top of its confidence range was 2.2). When lean athletes cut calories, a review of 6 studies put needs higher, at 2.3 to 3.1 g per kg of lean mass.",
+  "forYou": "{proteinG} g is about {proteinPerKg} g per kg of your weight. It rises as you get leaner on a cut, and never goes down.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Morton et al. 2018",
+    "title": "A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults",
+    "journal": "Br J Sports Med",
+    "design": "meta-analysis, 49 RCTs, 1,863 participants",
+    "doi": "10.1136/bjsports-2017-097608",
+    "pmid": "28698222",
+    "checked": "fulltext",
+    "url": "https://doi.org/10.1136/bjsports-2017-097608"
+   },
+   {
+    "cite": "Helms et al. 2014",
+    "title": "A systematic review of dietary protein during caloric restriction in resistance trained lean athletes: a case for higher intakes",
+    "journal": "Int J Sport Nutr Exerc Metab",
+    "design": "systematic review, 6 studies",
+    "doi": "10.1123/ijsnem.2013-0054",
+    "pmid": "24092765",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1123/ijsnem.2013-0054"
+   }
+  ],
+  "codeRef": "src/utils/nutritionMacros.ts phaseProteinGrams"
+ },
+ {
+  "id": "meals-deficit",
+  "area": "meals",
+  "title": "Eat {calories} kcal, about {deficitKcal} under maintenance",
+  "why": "A deficit big enough to lose fat, capped where studies saw muscle gains stop.",
+  "found": "Across resistance-training trials, a deficit of about 500 kcal a day stopped lean-mass gains, while strength still improved. So no cut here asks for more than 500, and leaner people get less.",
+  "forYou": "Your deficit is about {deficitKcal} kcal a day, which plans for about {kgPerWeek} kg a week.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Murphy & Koehler 2022",
+    "title": "Energy deficiency impairs resistance training gains in lean mass but not strength: A meta-analysis and meta-regression",
+    "journal": "Scand J Med Sci Sports",
+    "design": "meta-analysis and meta-regression of RCTs",
+    "doi": "10.1111/sms.14075",
+    "pmid": "34623696",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1111/sms.14075"
+   }
+  ],
+  "codeRef": "src/utils/nutritionMacros.ts phaseCaloricTarget"
+ },
+ {
+  "id": "meals-energy-floor",
+  "area": "meals",
+  "title": "Never below {floorKcal} kcal",
+  "why": "Eating too little for your training disrupts hormones, so calories never drop under a floor set by your lean mass.",
+  "found": "In 29 regularly menstruating women, hormone pulses were normal at 30 kcal per kg of lean mass a day and disrupted below it. That study was small, short and in women who did not exercise, and the IOC 2023 consensus treats low energy availability as a health risk for athletes.",
+  "forYou": "Your floor is {floorKcal} kcal: 30 kcal per kg of your lean mass plus what your training burns. We apply it whatever your sex.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Loucks & Thuma 2003",
+    "title": "Luteinizing hormone pulsatility is disrupted at a threshold of energy availability in regularly menstruating women",
+    "journal": "J Clin Endocrinol Metab",
+    "design": "controlled trial, 29 women, 5 days per condition",
+    "doi": "10.1210/jc.2002-020369",
+    "pmid": "12519869",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1210/jc.2002-020369"
+   },
+   {
+    "cite": "Mountjoy et al. 2023",
+    "title": "2023 International Olympic Committee's (IOC) consensus statement on Relative Energy Deficiency in Sport (REDs)",
+    "journal": "Br J Sports Med",
+    "design": "expert consensus statement",
+    "doi": "10.1136/bjsports-2023-106994",
+    "pmid": "37752011",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1136/bjsports-2023-106994"
+   }
+  ],
+  "codeRef": "src/utils/nutritionMacros.ts EA_FLOOR_KCAL_PER_KG_FFM"
+ },
+ {
+  "id": "meals-maintenance",
+  "area": "meals",
+  "title": "Maintenance of about {tdee} kcal",
+  "why": "Your burn is estimated from your size, age, daily activity and training, so treat it as a starting point.",
+  "found": "The Mifflin-St Jeor equation was built from measured resting energy in 498 adults. A systematic review found it predicted resting burn within 10% for more people than any other equation, but still with notable individual errors. Weight training is listed at 3.5 to 6.0 METs.",
+  "forYou": "About {tdee} kcal from your body, your day and your training sessions. Your weigh-ins show whether it is right for you.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Mifflin et al. 1990",
+    "title": "A new predictive equation for resting energy expenditure in healthy individuals",
+    "journal": "Am J Clin Nutr",
+    "design": "measured resting energy expenditure, 498 adults",
+    "doi": "10.1093/ajcn/51.2.241",
+    "pmid": "2305711",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1093/ajcn/51.2.241"
+   },
+   {
+    "cite": "Frankenfield et al. 2005",
+    "title": "Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review",
+    "journal": "J Am Diet Assoc",
+    "design": "systematic review",
+    "doi": "10.1016/j.jada.2005.02.005",
+    "pmid": "15883556",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1016/j.jada.2005.02.005"
+   },
+   {
+    "cite": "Herrmann et al. 2024",
+    "title": "2024 Adult Compendium of Physical Activities: A third update of the energy costs of human activities",
+    "journal": "J Sport Health Sci",
+    "design": "systematic review, 701 papers",
+    "doi": "10.1016/j.jshs.2023.10.010",
+    "pmid": "38242596",
+    "checked": "fulltext",
+    "url": "https://doi.org/10.1016/j.jshs.2023.10.010"
+   }
+  ],
+  "codeRef": "src/utils/nutritionMacros.ts tdeeFor, LIFESTYLE_MULTIPLIERS, TRAINING_SESSION_METS"
+ },
+ {
+  "id": "meals-surplus",
+  "area": "meals",
+  "title": "Eat about {surplusPct}% above maintenance",
+  "why": "A small surplus feeds muscle growth. Eating more adds fat faster, not muscle.",
+  "found": "Athletes given a bigger planned surplus gained more fat than those eating freely, with no difference in lean mass gained. An off-season review suggests about 10 to 20% over maintenance and gaining 0.25 to 0.5% of body weight a week, with advanced lifters going slower.",
+  "forYou": "Your {surplusPct}% sits at or below that range, because the more training you have behind you, the less extra food you can turn into muscle.",
+  "confidence": "estimate",
+  "sources": [
+   {
+    "cite": "Garthe et al. 2013",
+    "title": "Effect of nutritional intervention on body composition and performance in elite athletes",
+    "journal": "Eur J Sport Sci",
+    "design": "RCT, 39 elite athletes",
+    "doi": "10.1080/17461391.2011.643923",
+    "pmid": "23679146",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1080/17461391.2011.643923"
+   },
+   {
+    "cite": "Iraki et al. 2019",
+    "title": "Nutrition Recommendations for Bodybuilders in the Off-Season: A Narrative Review",
+    "journal": "Sports (Basel)",
+    "design": "narrative review",
+    "doi": "10.3390/sports7070154",
+    "pmid": "31247944",
+    "checked": "abstract",
+    "url": "https://doi.org/10.3390/sports7070154"
+   }
+  ],
+  "codeRef": "src/utils/nutritionMacros.ts phaseCaloricTarget (bulk, lean_bulk)"
+ },
+ {
+  "id": "meals-usda-macros",
+  "area": "meals",
+  "title": "Macros worked out from weighed ingredients",
+  "why": "Every recipe is added up from USDA values per 100 g of each ingredient, not guessed.",
+  "found": "USDA's FoodData Central brings together lab-analysed foundation foods, the long-standing SR Legacy tables, survey foods and branded products, and aims to be reliable and transparent. Each ingredient here carries values per 100 g from it.",
+  "forYou": "Your plan converts every amount to grams first, then adds it up, so swapping a meal recalculates the day.",
+  "confidence": "good",
+  "sources": [
+   {
+    "cite": "Fukagawa et al. 2022",
+    "title": "USDA's FoodData Central: what is it and why is it needed today?",
+    "journal": "Am J Clin Nutr",
+    "design": "descriptive review of the database",
+    "doi": "10.1093/ajcn/nqab397",
+    "pmid": "34893796",
+    "checked": "abstract",
+    "url": "https://doi.org/10.1093/ajcn/nqab397"
+   }
+  ],
+  "codeRef": "src/data/ingredients.ts macros_per_100g, src/utils/computeMacros.ts ingredientMacros"
+ }
+]

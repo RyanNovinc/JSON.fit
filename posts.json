@@ -1,5 +1,47 @@
 [
   {
+    "slug": "sets-or-effort",
+    "title": "Volume or Effort? What Actually Builds Muscle",
+    "description": "Volume is the dial and effort is what makes a set count. The research supports both camps because they're describing one rule from opposite ends.",
+    "date": "2026-09-30",
+    "readTime": "4 min read"
+  },
+  {
+    "slug": "five-to-thirty-reps",
+    "title": "5 to 30 Reps: The Range Is Wide, the Rule Is Narrow",
+    "description": "Muscle grows anywhere from about 5 to 30 reps when sets are taken close to failure. The rep count is almost free. The effort isn't, and some exercises need high reps just to hit the right muscle.",
+    "date": "2026-09-23",
+    "readTime": "4 min read"
+  },
+  {
+    "slug": "more-protein-on-a-cut",
+    "title": "You Need More Protein On a Cut",
+    "description": "1.6 g per kilo is the number for building. In a deficit, protein's job changes from building to protecting, and the research says 2.2 to 3 g per kilo, higher the leaner you are.",
+    "date": "2026-09-16",
+    "readTime": "3 min read"
+  },
+  {
+    "slug": "cut-first-or-bulk-first",
+    "title": "Cut First or Bulk First? Same Finish Line",
+    "description": "The partitioning argument is dead, the arithmetic says the order costs about two weeks either way, and the only real rule is to stay inside a healthy body-fat band.",
+    "date": "2026-09-09",
+    "readTime": "4 min read"
+  },
+  {
+    "slug": "cutting-fast-versus-slow",
+    "title": "Cutting Fast Doesn't Cost What You Think",
+    "description": "A fast cut doesn't strip your muscle for good. It costs you the gains a slow cut leaves room for, and it costs you adherence. And the leaner you are, the slower you physically have to go.",
+    "date": "2026-09-02",
+    "readTime": "4 min read"
+  },
+  {
+    "slug": "training-doesnt-change-with-your-diet",
+    "title": "Cutting Doesn't Change Your Training",
+    "description": "Weekly hard sets build muscle. Food decides your fat. The phase you're in should move where you sit inside each muscle's range, and nothing else.",
+    "date": "2026-08-26",
+    "readTime": "4 min read"
+  },
+  {
     "slug": "why-fasted-cardio-matters",
     "title": "Fasted Cardio Doesn't Burn More Fat",
     "description": "Training on an empty stomach is sold as a fat-loss cheat code. Over a full day the difference disappears, and you may just be lifting worse for it.",
@@ -142,7 +184,7 @@
   {
     "slug": "meal-plan-claude",
     "title": "How to Create a Personalised Meal Plan with Claude",
-    "description": "Generate a macro-perfect meal plan, import it, and get grocery lists and meal prep instructions, all for $9.99 once.",
+    "description": "Optional: have your own AI write a custom meal plan and import it into JSON.fit for the grocery list and meal prep. The app does this itself now; this is for people who want their own AI involved.",
     "date": "2026-03-14",
     "readTime": "5 min read"
   },

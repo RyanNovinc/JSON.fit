@@ -1,25 +1,28 @@
 # JSON.fit
 
-> JSON.fit is a free workout and nutrition app for skinny guys who can't gain weight. 80+ calorie-dense, high-protein bulking meals with every ingredient and step, built for batch prep so a week of food comes off one shop and one short prep session. Free printable cookbook, free periodised training programs, no subscription, no account, no ads. Answer a few questions and the app builds your whole week of meals and your training program in seconds, around your calories, protein and the food you like. No AI needed; you can optionally bring your own AI (ChatGPT, Claude, Gemini) for meals outside the library.
+> JSON.fit is a free iOS and Android app for skinny guys who can't gain weight. It works out a goal weight, a body-fat range and a timeline from published research (a "route" with build and trim phases), then builds a week of calorie-dense, high-protein meals with every ingredient and step, one shopping list and one batch-prep session, plus a periodised training program with deload weeks. Everything is built in the app in about a minute from research-backed rules; there is no AI inside the app. Free, no ads, no account, data stays on the phone.
 
-JSON.fit specialises in calorie-dense, high-protein bulking meals with full ingredients and step-by-step cooking, designed for batch prep so a week of food gets handled in one session. Includes periodised muscle-building training programs that run up to a full year. Built for skinny guys with full-time jobs who want results without bulking becoming a second job. Data stays on device. iOS and Android. Built by Ryan Novinc, who is bulking from 77 kg to 90 kg on the app in public.
+JSON.fit's library has 81 meals: 15 over 1,000 kcal a plate, 35 with 50 g of protein or more, 36 ready in 15 minutes or less, every one photographed with exact ingredients and every step. Meals can be swapped and the day rebalances to the calorie and protein targets. Training programs run 1 to 6 days a week, at a gym, at home or bodyweight only, up to a year long, with 144 exercises. 25 decisions the app makes carry a confidence label (strong, good, best estimate) and link to 42 sources. Built in Canberra, Australia, by Ryan Novinc, who is using the app on himself in public: 77 kg at the July 2026 restart, 80.6 kg at 23.8% on the September DEXA, routed down to 72.9 kg at 16% and then up to 90 kg at 13%.
 
 ## Who this is for
 
-Skinny guys with full-time jobs, businesses, or active social lives who want to gain weight and build muscle without bulking taking over their week. The app is built around batch meal prep, one weekly shop, and minimal mental load, so eating in a surplus fits around real life instead of taking it over.
+Skinny guys, usually 19 to 30, who train but can't eat enough to gain weight, and who have been told to "just eat more". Students, first jobs, people who can't cook and don't want eating to become a second job. The app also serves cutting and recomp, but the core user is the skinny guy trying to put on weight without ending up skinny-fat.
 
 ## Core pages
 
-- [Home](https://json.fit/): The meals, how the app builds your week, training, research and FAQ. Primary reference page.
-- [The Lab](https://json.fit/lab): The founder's public bulk, 77 kg to 90 kg, with monthly body scans and progress photos.
-- [Free bulking cookbook](https://json.fit/cookbook/): "The Skinny Guy's Bulking Cookbook", 80+ calorie-dense meals as a printable PDF. Free in exchange for an email.
-- [Meal library](https://json.fit/meals.html): Browse 80+ high-protein bulking meals with macros, exact ingredients, and step-by-step cooking. Designed for cook-once-eat-all-week meal prep.
-- [Training programs](https://json.fit/programs/): Free periodised muscle-building programs (beginner to advanced) that import directly into the app, no programming knowledge required.
+- [Home](https://json.fit/): What the app does, the route, the meals, the week, the training, the evidence and FAQ. Primary reference page.
+- [Meals](https://json.fit/meals.html): All 81 meals with calories, protein and time per plate, filterable by over 1,000 kcal, 15 minutes or less, breakfast, shakes, mains, slow cooker, snacks and desserts.
+- [Recipe pages](https://json.fit/r/): One page per meal with ingredients, method and macros, e.g. https://json.fit/r/spaghetti_carbonara/
+- [Training](https://json.fit/training/): How the app programs training, the four free programs and the exercise library.
+- [Programs](https://json.fit/programs/): Free periodised programs (beginner to advanced) that import directly into the app.
+- [Exercises](https://json.fit/exercises/): 144 exercises with start and finish photos, what each trains and how to do it.
+- [How we know](https://json.fit/research/): The 25 decisions the app makes, what the studies found, the confidence level and the sources, plus the full reference files.
+- [The Lab](https://json.fit/lab/): The founder's own route on the app, with DEXA scans, the planned route and progress photos as they happen.
+- [Free bulking cookbook](https://json.fit/cookbook/free-cookbook): "The Skinny Guy's Bulking Cookbook", all 81 meals as a printable PDF, free in exchange for an email.
 
 ## Guides
 
-- [Blog](https://json.fit/blog.html): Bulking and training articles for skinny guys with full-time jobs.
-- [Build a custom meal plan with Claude](https://json.fit/blog/meal-plan-claude.html): Optional: have your own AI write a custom plan and import it into JSON.fit.
+- [Blog](https://json.fit/blog.html): Articles on bulking, cutting, protein, training volume, rep ranges, deloads and rest periods, each with its sources.
 
 ## Get the app
 

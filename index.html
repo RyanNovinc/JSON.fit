@@ -10,10 +10,10 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>JSON.fit: Eating big, made easy.</title>
-<meta name="description" content="Meals and training for skinny guys who can't gain weight. Answer a few questions and JSON.fit builds your week of meals and your training program in seconds, around your body. Every step written. Free.">
+<title>JSON.fit: the gym was never the hard part. Eating enough is.</title>
+<meta name="description" content="Meals and training for skinny guys who can't gain weight. JSON.fit works out your goal weight and timeline, then builds a week of calorie-dense meals you can finish and the training to match. Free, no ads, no account.">
 <meta property="og:title" content="JSON.fit: Eating big, made easy.">
-<meta property="og:description" content="Answer a few questions. JSON.fit builds your week of meals and your training program in seconds, around your body and your goal.">
+<meta property="og:description" content="For skinny guys who can't gain weight. Your goal weight, your timeline, a week of calorie-dense meals you can finish, and the training to match. About a minute, on your phone.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://json.fit/">
 <meta property="og:image" content="https://json.fit/og-cover.png">
@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="JSON.fit">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="JSON.fit: Eating big, made easy.">
-<meta name="twitter:description" content="Answer a few questions. JSON.fit builds your week of meals and your training program in seconds.">
+<meta name="twitter:description" content="For skinny guys who can't gain weight. A week of calorie-dense meals you can finish, and the training to match.">
 <meta name="twitter:image" content="https://json.fit/og-cover.png">
 <meta name="theme-color" content="#0b0b0e">
 <link rel="canonical" href="https://json.fit/">
@@ -30,9 +30,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32-3.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192-3.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180-3.png">
-<link rel="alternate" type="text/plain" href="https://json.fit/llms.txt" title="LLM-readable site summary">
-<link rel="preload" as="image" href="images/home/hero-2400.webp" media="(min-width: 901px)">
-<link rel="preload" as="image" href="images/home/hero-1200.webp" media="(max-width: 900px)">
+<link rel="preload" as="image" href="images/meals/spaghetti-carbonara.webp" fetchpriority="high">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -40,7 +38,7 @@
   "name": "JSON.fit",
   "operatingSystem": "iOS, Android",
   "applicationCategory": "HealthApplication",
-  "description": "Meal plans and training programs for skinny guys who can't gain weight. Answer a few questions and the app builds your week of meals and your program in seconds: 80+ calorie-dense meals with every step written, batch prep, shopping lists, and periodised training built from published research.",
+  "description": "Meals and training for skinny guys who can't gain weight. JSON.fit sets a goal weight and timeline from published research, then builds a week of calorie-dense, high-protein meals with every step written, one shopping list, one batch-prep session, and a periodised training program.",
   "url": "https://json.fit/",
   "downloadUrl": "https://apps.apple.com/au/app/json-fit/id6758357834",
   "author": { "@type": "Person", "name": "Ryan Novinc" },
@@ -52,542 +50,329 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "How does JSON.fit work?", "acceptedAnswer": {"@type": "Answer", "text": "Answer a few questions about your body, your goal, the days you can train, the kit you have and the meals you like. The app builds your week of meals and your training program in seconds, right on your phone."}},
-    {"@type": "Question", "name": "Do I need ChatGPT or another AI?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything is built in the app. If you like your own AI, you can still use it to customise a plan or to price your shopping list at your store, but both are optional."}},
+    {"@type": "Question", "name": "I'm full after half a plate. How does this help?", "acceptedAnswer": {"@type": "Answer", "text": "The meals are built dense, so a plate you can finish carries more calories and protein than one you can't. It doesn't make you hungrier. It makes every meal you do eat count for more, and shakes cover the gaps."}},
+    {"@type": "Question", "name": "I don't want to end up skinny-fat.", "acceptedAnswer": {"@type": "Answer", "text": "Your route has a body-fat cap. When you reach it the app switches you to a short trim phase, then back to building. You're never on an open-ended bulk."}},
+    {"@type": "Question", "name": "I can't afford to eat 3,500 calories a day.", "acceptedAnswer": {"@type": "Answer", "text": "One shop a week off a single list, batch-cooked, with the ingredients the meals share. If you want to know what it'll cost at your supermarket before you go, the list can be priced."}},
+    {"@type": "Question", "name": "I don't have time to cook.", "acceptedAnswer": {"@type": "Answer", "text": "36 of the 81 meals take 15 minutes or less, and every recipe defaults to its fast version. Most of the week's food comes off one prep session."}},
+    {"@type": "Question", "name": "Do I need ChatGPT or another AI?", "acceptedAnswer": {"@type": "Answer", "text": "No. There's no AI in the app. Your route, your program and your meals are built from published rules, on your phone, in about a minute."}},
     {"@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": {"@type": "Answer", "text": "JSON.fit is free: meal plans, training programs, shopping lists and meal prep, with no ads and no account."}},
-    {"@type": "Question", "name": "I'm full after half a plate. Does this help?", "acceptedAnswer": {"@type": "Answer", "text": "The meals are built dense, so a plate you can finish carries more calories and protein than a plate you can't. It doesn't make you hungrier. It makes every meal you do eat count for more."}},
-    {"@type": "Question", "name": "I tried Sunday prep and quit. How is this different?", "acceptedAnswer": {"@type": "Answer", "text": "Every meal defaults to the fast version: jar sauce, minimal steps, real times. Most of the week's food comes off one shop and a short prep session, not an afternoon, and the app tells you what goes in the fridge and what goes in the freezer."}},
-    {"@type": "Question", "name": "Does this work if I've got a full-time job?", "acceptedAnswer": {"@type": "Answer", "text": "That's exactly who it's built for. You answer a few questions once, the app builds the plan, then you cook in batches off a single shopping list. Eating enough fits around work instead of taking it over."}},
-    {"@type": "Question", "name": "Can I change the plan once it's built?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Swap any meal for another you like and the app re-balances that day so it still hits your calories and protein. You can also change your picks and rebuild the week in seconds."}},
-    {"@type": "Question", "name": "Can I train at home?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Programs are built for a full gym, a home gym, dumbbells and bands, or bodyweight only, from 1 to 6 days a week."}},
-    {"@type": "Question", "name": "Is my data private with JSON.fit?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn't collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it's used and improve it. See the Privacy Policy for full details."}}
+    {"@type": "Question", "name": "How long until I see something?", "acceptedAnswer": {"@type": "Answer", "text": "The app gives your route a timeline with a range, because the research gives ranges. The Lab shows one real run, scan by scan."}},
+    {"@type": "Question", "name": "Can I train at home?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Programs are built for a full gym, a home gym, dumbbells and bands, or bodyweight only, one to six days a week."}},
+    {"@type": "Question", "name": "Is my data private?", "acceptedAnswer": {"@type": "Answer", "text": "Your workouts, meals and body data stay on your device. No account, no personal data collected. Anonymous usage analytics only, as described in the privacy policy."}}
   ]
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@1,9..144,500..700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
-/* Layout: one long dark studio page, alternating copy and real app screens; food in green, training in cyan.
-   Same tokens as the rest of json.fit, styled after the Oct 2026 App Store set. */
-:root{
-  --bg:#08080b; --studio-top:#1d1f24; --surface:#101015; --surface-2:#16161c; --line:rgba(255,255,255,.08);
-  --text:#f2f2f4; --text-2:#a3a3ad; --text-3:#7a7a86;
-  --cyan:#22d3ee; --cyan-soft:rgba(34,211,238,.12); --green:#22c55e; --green-text:#4ade80; --green-soft:rgba(34,197,94,.12);
-  --amber:#f59e0b; --violet:#a855f7;
-  --serif: Georgia, 'Times New Roman', serif; --sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; --mono: 'DM Mono', ui-monospace, Menlo, monospace;
-  color-scheme: dark;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6;font-size:17px}
-img{max-width:100%;display:block}
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
-.mono{font-family:var(--mono)}
-.label{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-2)}
-.label.g{color:var(--green-text)} .label.c{color:var(--cyan)}
-.serif{font-family:var(--serif);font-style:italic;font-weight:700;letter-spacing:-.02em}
-.caps{font-weight:900;text-transform:uppercase;letter-spacing:-.01em;line-height:.98}
-.cyan{color:var(--cyan)} .green{color:var(--green-text)}
-:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
-
-/* nav */
-nav{position:fixed;inset:0 0 auto 0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;
-  background:rgba(8,8,11,.72);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--mono);font-weight:500;font-size:1rem}
-.nav-links{display:flex;align-items:center;gap:1.6rem;list-style:none}
-.nav-links a{text-decoration:none;color:var(--text-2);font-size:.88rem;font-weight:500;transition:color .2s}
-.nav-links a:hover{color:var(--text)}
-.nav-links a.m{color:var(--green-text)} .nav-links a.e{color:var(--cyan)} .nav-links a.l{color:var(--violet)}
-.nav-cta{background:#fff;color:#0a0a0b !important;padding:.5rem 1rem;border-radius:999px;font-weight:700 !important}
-.burger{display:none;background:none;border:0;padding:10px;cursor:pointer}
-.burger span{display:block;width:20px;height:2px;background:#fff;margin:4px 0;transition:transform .25s,opacity .25s}
-@media(max-width:900px){
-  .burger{display:block}
-  .nav-links{position:fixed;top:60px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(8,8,11,.97);border-bottom:1px solid var(--line);
-    padding:8px 20px 18px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
-  .nav-links.open{opacity:1;transform:none;pointer-events:auto}
-  .nav-links li a{display:block;padding:12px 0;font-size:1rem}
-  .nav-cta{display:inline-block !important;margin-top:8px;text-align:center}
-  .nav-links li a.nav-cta{padding:.7rem 1.2rem}
-}
-
-/* hero */
-.hero{position:relative;padding-top:60px;background:linear-gradient(180deg,var(--studio-top) 0%,#121318 46%,var(--bg) 100%);overflow:hidden}
-.hero-copy{text-align:center;padding:64px 20px 10px;position:relative;z-index:2}
-.tabs{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);margin-bottom:26px}
-.tabs button{border:0;background:none;color:var(--text-2);font:600 .9rem var(--sans);padding:.5rem 1.1rem;border-radius:999px;cursor:pointer}
-.tabs button[aria-selected="true"]{background:#fff;color:#0a0a0b}
-.hero h1{font-size:clamp(3rem,8.4vw,6.6rem);line-height:.98;color:#fff}
-.hero h1 .cyan{display:block}
-.hero .sub{max-width:40ch;margin:22px auto 0;color:var(--text-2);font-size:clamp(1.02rem,1.6vw,1.2rem)}
-.badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
-.badge{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 14px;border-radius:14px;background:#fff;color:#0a0a0b;text-decoration:none;font-weight:700;transition:transform .2s}
-.badge:hover{transform:translateY(-2px)}
-.badge small{display:block;font-size:.66rem;font-weight:600;opacity:.7;line-height:1}
-.badge span{display:block;line-height:1.1;font-size:1.05rem}
-.badge.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28)}
-.trust{margin-top:18px;font-family:var(--mono);font-size:.74rem;color:var(--text-3);letter-spacing:.04em}
-.trust .st{color:var(--amber)} .trust b{color:var(--text);font-weight:500}
-.hero-art{position:relative;margin:34px auto 0;max-width:1500px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 7%);mask-image:linear-gradient(to bottom,transparent 0,#000 7%)}
-.hero-art img{width:100%;height:auto}
-.hero-art .shot{display:block;transition:opacity .6s ease}
-.hero-art .shot.alt{position:absolute;inset:0;opacity:0}
-[data-tab="train"] .hero-art .shot.main{opacity:0}
-[data-tab="train"] .hero-art .shot.alt{opacity:1}
-@media(prefers-reduced-motion:reduce){.hero-art .shot{transition:none}}
-.hero-art::after{content:"";position:absolute;inset:auto 0 0 0;height:22%;background:linear-gradient(transparent,var(--bg))}
-@media(max-width:900px){
-  .hero-copy{padding-top:44px}
-  .hero-art{margin-top:24px}
-  .hero-art img{height:440px;width:auto;max-width:none;position:relative;left:50%;transform:translateX(-50%)}
-}
-[data-tab="train"] .only-meal, [data-tab="meal"] .only-train{display:none}
-
-/* sections */
-section{position:relative}
-.sec{padding:110px 0}
-.sec-head{max-width:760px}
-.sec-head h2{font-size:clamp(2.4rem,6vw,4.6rem);margin-top:14px}
-.sec-head p{margin-top:18px;color:var(--text-2);font-size:1.12rem;max-width:56ch}
-@media(max-width:700px){.sec{padding:78px 0}}
-
-/* how it builds */
-.build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:center;margin-top:56px}
-.steps{list-style:none;display:grid;gap:0}
-.steps li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;padding:22px 0;border-top:1px solid var(--line)}
-.steps li:last-child{border-bottom:1px solid var(--line)}
-.steps .n{font-family:var(--mono);font-size:.8rem;color:var(--text-3);padding-top:6px}
-.steps h3{font-size:1.35rem;font-weight:800}
-.steps p{color:var(--text-2);margin-top:6px;font-size:1rem}
-.phones{display:flex;gap:18px;justify-content:center;align-items:flex-start}
-.phone{width:min(46%,290px);aspect-ratio:1206/2622;border-radius:38px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 6px #0f0f13}
-.phone img{width:100%;height:100%;object-fit:cover}
-.phone.lift{margin-top:46px}
-.note{margin-top:26px;color:var(--text-3);font-size:.92rem}
-.note a{color:var(--text-2)}
-@media(max-width:900px){.build{grid-template-columns:minmax(0,1fr);gap:40px}}
-
-/* meal wall */
-.wall{margin-top:56px;display:grid;gap:14px;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.track{display:flex;gap:14px;width:max-content;animation:drift 70s linear infinite}
-.track.rev{animation-direction:reverse;animation-duration:84s}
-@keyframes drift{to{transform:translateX(-50%)}}
-.mcard{position:relative;width:220px;height:240px;border-radius:22px;overflow:hidden;background:#111}
-.mcard img{width:100%;height:100%;object-fit:cover}
-.mcard::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82),transparent 55%)}
-.mcard .t{position:absolute;left:14px;right:14px;bottom:12px;z-index:1;font-weight:700;font-size:.95rem;line-height:1.2}
-.mcard .k{display:block;font-family:var(--mono);font-size:.68rem;color:var(--green-text);margin-top:4px;font-weight:400}
-@media(prefers-reduced-motion:reduce){.track{animation:none}}
-
-/* feature rows */
-.feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center;padding:70px 0;border-top:1px solid var(--line)}
-.feat.flip .copy{order:2}
-.feat .copy h3{font-size:clamp(1.9rem,4vw,3rem);margin-top:12px}
-.feat .copy p{color:var(--text-2);margin-top:16px;font-size:1.06rem;max-width:48ch}
-.feat .copy p.label{margin-top:0;font-size:.7rem}
-.feat .copy p.label.g{color:var(--green-text)} .feat .copy p.label.c{color:var(--cyan)}
-.feat .copy ul{list-style:none;margin-top:22px;display:grid;gap:12px}
-.feat .copy li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;color:var(--text);font-size:1rem}
-.feat .copy li::before{content:"";width:8px;height:8px;border-radius:50%;margin-top:10px;background:var(--green)}
-.feat.t .copy li::before{background:var(--cyan)}
-.feat .art{display:flex;justify-content:center}
-.feat .art .phone{width:min(78%,320px)}
-@media(max-width:900px){.feat{grid-template-columns:minmax(0,1fr);gap:40px;padding:56px 0}.feat.flip .copy{order:0}}
-
-/* stats strip */
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:64px}
-.stat{padding:26px 10px;text-align:center;border-right:1px solid var(--line)}
-.stat:last-child{border-right:0}
-.stat b{display:block;font-size:clamp(2rem,4vw,2.8rem);font-weight:900;line-height:1}
-.stat span{display:block;margin-top:8px;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--text-2);text-transform:uppercase}
-@media(max-width:700px){.stat{padding:22px 6px}.stat span{font-size:.64rem;letter-spacing:.06em}}
-
-/* research */
-.rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-top:48px}
-.rcard{background:var(--surface);padding:26px 24px;text-decoration:none;transition:background .2s;display:block}
-.rcard:hover{background:var(--surface-2)}
-.rcard .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
-.rcard h4{font-family:var(--serif);font-style:italic;font-size:1.5rem;margin-top:8px}
-.rcard p{color:var(--text-2);font-size:.94rem;margin-top:8px}
-@media(max-width:900px){.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.rgrid{grid-template-columns:minmax(0,1fr)}}
-
-/* lab + review */
-.lab{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
-.lab img{border-radius:26px;width:100%;aspect-ratio:4/5;object-fit:cover}
-.lab h2{font-size:clamp(2.2rem,5vw,3.8rem);margin-top:14px}
-.lab p{color:var(--text-2);margin-top:16px;font-size:1.08rem;max-width:50ch}
-.link{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-weight:700;text-decoration:none;color:var(--violet)}
-.link.c{color:var(--cyan)} .link.g{color:var(--green-text)}
-.quote{margin-top:44px;padding:26px 26px 22px;border:1px solid var(--line);border-radius:22px;background:var(--surface)}
-.quote .st{color:var(--amber);letter-spacing:.1em}
-.quote blockquote{margin-top:10px;font-size:1.1rem;line-height:1.5}
-.quote blockquote b{display:block;margin-bottom:4px}
-.quote cite{display:block;margin-top:12px;font-style:normal;font-family:var(--mono);font-size:.74rem;color:var(--text-3)}
-@media(max-width:900px){.lab{grid-template-columns:minmax(0,1fr);gap:36px}.lab img{max-width:420px}}
-
-/* ai aside */
-.aside{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:44px}
-.acard{border:1px solid var(--line);border-radius:22px;padding:26px;background:var(--surface)}
-.acard h4{font-size:1.25rem;font-weight:800}
-.acard p{color:var(--text-2);margin-top:10px;font-size:1rem}
-@media(max-width:800px){.aside{grid-template-columns:minmax(0,1fr)}}
-
-/* faq */
-.faq{max-width:820px;margin-top:40px}
-.faq details{border-top:1px solid var(--line)}
-.faq details:last-child{border-bottom:1px solid var(--line)}
-.faq summary{list-style:none;cursor:pointer;padding:22px 40px 22px 0;font-size:1.15rem;font-weight:700;position:relative}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";position:absolute;right:4px;top:18px;font-size:1.6rem;font-weight:400;color:var(--text-3);transition:transform .2s}
-.faq details[open] summary::after{transform:rotate(45deg)}
-.faq .a{padding:0 0 22px;color:var(--text-2);font-size:1.02rem;max-width:66ch}
-
-/* final cta + footer */
-.final{text-align:center;padding:120px 20px;background:radial-gradient(ellipse at 50% 0%,#1c1e24,var(--bg) 70%)}
-.final h2{font-size:clamp(2.6rem,7vw,5.4rem);line-height:1}
-.final p{color:var(--text-2);margin-top:16px;font-size:1.12rem}
-.final p.label{font-size:.7rem;margin-top:0}
-footer{border-top:1px solid var(--line);padding:30px 20px 40px}
-.foot{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:18px 28px;align-items:center;justify-content:space-between}
-.foot nav{position:static;height:auto;background:none;border:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 22px;backdrop-filter:none;-webkit-backdrop-filter:none}
-.foot nav a{color:var(--text-2);text-decoration:none;font-size:.92rem}
-.foot nav a:hover{color:var(--text)}
-.social{display:flex;gap:14px}
-.social a{color:var(--text-2);width:20px;height:20px}
-.social a:hover{color:var(--text)}
-.copy-r{font-family:var(--mono);font-size:.74rem;color:var(--text-3)}
-
-/* reveal */
-.rv{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-.js .rv{opacity:0;transform:translateY(34px)}
-.js .rv.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none}}
+/* Home: one long page that reads as the answer to "I eat so much and nothing happens".
+   Food in green, training in cyan, The Lab in violet. Components live in /assets/site.css (v2 layer). */
+.hero2 .plates{max-width:560px;margin-inline:auto}
+@media(min-width:760px){.hero2 .plates{max-width:none}}
+.shots.two{grid-template-columns:1fr 1fr;max-width:460px;margin-inline:auto}
+.rlist .row:first-child{border-top:1px solid var(--hair)}
+@media(min-width:760px){.rlist .row:first-child{border-top:0}}
+.final2 .trust{margin-top:0}
 </style>
 <script src="/analytics-web.js"
         data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
         data-app-version="web"
         data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
 </head>
-<body data-tab="meal">
-<script>document.documentElement.classList.add('js');(function(){try{var t=location.hash==='#training'?'train':'meal';document.body.setAttribute('data-tab',t);}catch(e){}})();</script>
+<body class="v2">
 
-<nav aria-label="Main">
+<nav class="site-nav" aria-label="Main">
   <a href="/" class="logo" aria-label="JSON.fit home">
     <svg width="20" height="13" viewBox="0 0 22 14" fill="none" aria-hidden="true"><rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22d3ee"/><rect x="4" y="5" width="14" height="4" rx="2" fill="#22d3ee"/></svg>
     <span>JSON<span class="cyan">.fit</span></span>
   </a>
   <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="navLinks">
-    <li><a href="meals.html" class="m">Meals</a></li>
-    <li><a href="/programs/">Programs</a></li>
-    <li><a href="/exercises/" class="e">Exercises</a></li>
-    <li><a href="/research/">Research</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="/lab" class="l">The Lab</a></li>
+    <li><a href="/meals.html" class="m">Meals</a></li>
+    <li><a href="/training/" class="e">Training</a></li>
+    <li><a href="/research/">How we know</a></li>
+    <li><a href="/lab/" class="l">The Lab</a></li>
+    <li><a href="/blog.html">Blog</a></li>
     <li><a href="#download" class="nav-cta" data-loc="nav">Get the app</a></li>
   </ul>
 </nav>
 
 <main>
-<section class="hero" aria-labelledby="h1">
-  <div class="hero-copy">
-    <div class="tabs" role="tablist" aria-label="What you want help with">
-      <button role="tab" id="tab-meal" aria-selected="true" data-set="meal">Meals</button>
-      <button role="tab" id="tab-train" aria-selected="false" data-set="train">Training</button>
+<section class="hero2" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <p class="kicker c">For skinny guys who can't gain weight</p>
+        <h1 id="h1" class="d">The gym was never the <em>hard part.</em></h1>
+        <p class="lede">Eating enough is. JSON.fit works out your goal weight and timeline, then builds a week of calorie-dense meals you can actually finish, and the training to match. About a minute, on your phone.</p>
+        <div class="badges">
+          <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="hero">
+            <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+            <div><small>Download on the</small><span>App Store</span></div>
+          </a>
+          <a class="badge play" href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" data-loc="hero">
+            <svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+            <div><small>Get it on</small><span>Google Play</span></div>
+          </a>
+        </div>
+        <p class="trust"><b>Free</b> &middot; No ads &middot; No account &middot; Your data stays on your phone</p>
+      </div>
+      <div class="plates" aria-label="Three meals from the library">
+        <a class="plate big" href="/r/spaghetti_carbonara/"><img src="images/meals/spaghetti-carbonara.webp" width="1600" height="900" alt="Spaghetti carbonara on a black plate" fetchpriority="high"><div class="tag"><b>Spaghetti Carbonara</b><span class="num">1,094 kcal &middot; 55 g protein &middot; 15 min</span></div></a>
+        <a class="plate" href="/r/king_kong_chocolate/"><img src="images/home/meals/king-kong-chocolate.webp" width="800" height="450" alt="King Kong Chocolate shake"><div class="tag"><b>King Kong Chocolate</b><span class="num">1,370 kcal &middot; 85 g &middot; 5 min</span></div></a>
+        <a class="plate" href="/r/beef_bulgogi_bowl/"><img src="images/home/meals/beef-bulgogi-bowl.webp" width="800" height="450" alt="Beef bulgogi over rice"><div class="tag"><b>Beef Bulgogi Bowl</b><span class="num">743 kcal &middot; 53 g &middot; 25 min</span></div></a>
+      </div>
     </div>
-    <p class="label">For skinny guys who can't gain weight</p>
-    <h1 id="h1" class="serif" style="margin-top:14px">
-      <span class="only-meal">Eating big,<span class="cyan">made easy.</span></span>
-      <span class="only-train">Lifting big,<span class="cyan">made simple.</span></span>
-    </h1>
-    <p class="sub only-meal">Answer a few questions. JSON.fit builds your whole week of meals in seconds, around your calories, your protein and the food you like.</p>
-    <p class="sub only-train">Answer a few questions. JSON.fit builds your whole training program in seconds, around your days, your kit and your goal.</p>
+  </div>
+</section>
+
+<section class="sec2" aria-labelledby="fam-h">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="kicker">Sound familiar</p>
+      <h2 id="fam-h" class="d">You've been told to <em>just eat more.</em></h2>
+    </div>
+    <div class="voices rv">
+      <div class="voice"><q>Eating is a full time job. The struggle of it all!</q><cite>YouTube comment &middot; 5.7k likes</cite></div>
+      <div class="voice"><q>Many of the trackers I've tried don't work for gaining weight even though they pretend to.</q><cite>App Store review &middot; October 2026</cite></div>
+      <div class="voice"><q>I thought going to the gym regularly would be the hardest part. Nope, it's eating a whole lot more that is the real tough part.</q><cite>YouTube comment &middot; 6.5k likes</cite></div>
+    </div>
+    <p class="turn rv">Trackers tell you you're 900 calories short at ten at night. Meal planners hand you cucumber salad. Mass gainers come back up. <b>JSON.fit starts from the plate instead:</b> meals dense enough that the one you can finish counts for more, a week planned around them, and training that's already programmed.</p>
+  </div>
+</section>
+
+<section class="sec2" id="route" aria-labelledby="route-h">
+  <div class="wrap">
+    <div class="route">
+      <div>
+        <div class="head rv" style="margin-bottom:24px">
+          <p class="kicker c">Your route</p>
+          <h2 id="route-h" class="d">A number, a date, and the <em>phases</em> between.</h2>
+          <p class="lede">Answer a few questions and the app sets a goal weight, a body-fat range and a timeline from published research. Build phases, trim phases, and when to switch. Every number carries a range and a confidence label, because nobody can promise you 20 pounds in 20 weeks.</p>
+        </div>
+        <div class="rows rlist rv">
+          <div class="row"><b>Honest about the ceiling</b><p>How big a drug-free lifter can get, and how long it takes, from the studies that measured it.</p></div>
+          <div class="row"><b>A cap on the bulk</b><p>Your build phase ends at a body-fat number, not when you give up. No skinny-fat surprise.</p></div>
+          <div class="row"><b>Re-planned from your scans</b><p>Check in with a weight or a scan and the route redraws itself.</p></div>
+        </div>
+      </div>
+      <div class="rcard rv">
+        <p class="kicker c">Ryan's route &middot; from The Lab &middot; planned by the app</p>
+        <p class="big num">80.6 kg <span>&rarr;</span> 90 kg <span>at 13%</span></p>
+        <div class="phases">
+          <div class="phase"><i class="t"></i><div><b>Trim</b><small>80.6 kg at 23.8% down to 72.9 kg at 16%</small></div><span class="num">Phase 1</span></div>
+          <div class="phase"><i></i><div><b>Build</b><small>Up to 82.4 kg, until body fat reaches 18%</small></div><span class="num">Phase 2</span></div>
+          <div class="phase"><i class="t"></i><div><b>Trim</b><small>Back to 16%, keeping the muscle</small></div><span class="num">Phase 3</span></div>
+          <div class="phase"><i></i><div><b>Build, trim, build</b><small>Cycling 16 to 18% up to 94 kg</small></div><span class="num">Phases 4 to 6</span></div>
+          <div class="phase"><i class="r"></i><div><b>Reveal</b><small>A final cut to 90 kg at 13%</small></div><span class="num">Phase 7</span></div>
+        </div>
+        <div class="conf"><span class="chip c">Strong</span><span class="chip g">Good</span><span class="chip a">Estimate</span><span class="dim" style="font-size:.8rem">Every number shows one of these</span></div>
+        <a class="arrow v" href="/lab/">See the scans &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec2 g" id="meals" aria-labelledby="food-h">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="kicker g">The food</p>
+      <h2 id="food-h" class="d">Built so a plate you can finish <em>counts for more.</em></h2>
+      <p class="lede">81 meals, every one photographed, with exact ingredients and every step. Carbonara, bulgogi, massaman, pulled pork, and shakes that go down in a minute. 15 of them are over 1,000 kcal a plate. 36 take 15 minutes or less.</p>
+    </div>
+    <div class="mgrid rv">
+      <a class="mcard2" href="/r/big_breakfast_plate/"><img src="images/home/meals/big-breakfast-plate.webp" width="800" height="450" loading="lazy" alt="Big breakfast plate"><div class="mb"><b>Big Breakfast Plate</b><div class="mm"><b class="num">1,296 kcal</b><span class="num">65 g protein</span><span>25 min</span></div></div></a>
+      <a class="mcard2" href="/r/chicken_mac_and_cheese/"><img src="images/home/meals/chicken-mac-and-cheese.webp" width="800" height="450" loading="lazy" alt="Chicken mac and cheese"><div class="mb"><b>Chicken Mac and Cheese</b><div class="mm"><b class="num">932 kcal</b><span class="num">80 g protein</span><span>40 min</span></div></div></a>
+      <a class="mcard2" href="/r/spicy_chipotle_chicken_burrito/"><img src="images/home/meals/spicy-chipotle-chicken-burrito.webp" width="800" height="450" loading="lazy" alt="Spicy chipotle chicken burrito bowl"><div class="mb"><b>Chipotle Chicken Burrito Bowl</b><div class="mm"><b class="num">985 kcal</b><span class="num">60 g protein</span><span>25 min</span></div></div></a>
+      <a class="mcard2" href="/r/massaman/"><img src="images/home/meals/massaman.webp" width="800" height="450" loading="lazy" alt="Massaman beef curry with rice"><div class="mb"><b>Massaman Beef Curry</b><div class="mm"><b class="num">836 kcal</b><span class="num">44 g protein</span><span>slow cooker</span></div></div></a>
+      <a class="mcard2" href="/r/steak_and_eggs/"><img src="images/home/meals/steak-and-eggs.webp" width="800" height="450" loading="lazy" alt="Steak and eggs"><div class="mb"><b>Steak &amp; Eggs</b><div class="mm"><b class="num">795 kcal</b><span class="num">68 g protein</span><span>22 min</span></div></div></a>
+      <a class="mcard2" href="/r/teriyaki_chicken_rice_bowl/"><img src="images/home/meals/teriyaki-chicken-rice-bowl.webp" width="800" height="450" loading="lazy" alt="Teriyaki chicken rice bowl"><div class="mb"><b>Teriyaki Chicken Rice Bowl</b><div class="mm"><b class="num">792 kcal</b><span class="num">59 g protein</span><span>25 min</span></div></div></a>
+      <a class="mcard2" href="/r/pulled_pork/"><img src="images/home/meals/pulled-pork.webp" width="800" height="450" loading="lazy" alt="Slow-cooked BBQ pulled pork"><div class="mb"><b>Slow-Cooked BBQ Pulled Pork</b><div class="mm"><b class="num">772 kcal</b><span class="num">48 g protein</span><span>6 ways to serve</span></div></div></a>
+      <a class="mcard2" href="/r/banana_bulk/"><img src="images/home/meals/banana-bulk.webp" width="800" height="450" loading="lazy" alt="Banana Bulk shake"><div class="mb"><b>Banana Bulk</b><div class="mm"><b class="num">1,249 kcal</b><span class="num">65 g protein</span><span>5 min</span></div></div></a>
+    </div>
+    <div class="rows feat2 rv">
+      <div class="row"><b>Swap a meal, the day rebalances</b><p>Not feeling Tuesday's lunch? Pick another. Portions shift in small steps so the day still lands on your calories and protein, and the list updates.</p></div>
+      <div class="row"><b>Start with what's in the fridge</b><p>Tick the chicken, rice or eggs you already have. Meals that use them come first. Allergens are flagged before you pick.</p></div>
+      <div class="row"><b>Cook mode, step by step</b><p>Every step with its timer. The fast version by default: jar sauce, minimal steps, real times.</p></div>
+      <div class="row"><b>The free cookbook</b><p>All 81 meals as a printable PDF, free in exchange for an email, if you'd rather cook than download anything. <a class="arrow g" href="/cookbook/free-cookbook">Get the cookbook &rarr;</a></p></div>
+    </div>
+    <p class="rv" style="margin-top:28px"><a class="arrow g" href="/meals.html">Browse all 81 meals &rarr;</a></p>
+  </div>
+</section>
+
+<section class="sec2 g" id="week" aria-labelledby="week-h">
+  <div class="wrap">
+    <div class="weekrow">
+      <div>
+        <div class="head rv" style="margin-bottom:24px">
+          <p class="kicker g">The week</p>
+          <h2 id="week-h" class="d">One shop. One cook. <em>Seven days.</em></h2>
+          <p class="lede">The app decides which meals to batch-cook, what goes in the fridge, what goes in the freezer, and reminds you the night before to move tomorrow's food out to thaw. Eating enough fits around work instead of taking it over.</p>
+        </div>
+        <div class="steps2 rv">
+          <div class="step"><span class="d">Sat</span><div><b>Shop once</b><p>Every ingredient for the week, by aisle. Tick things off as they go in the trolley. Leftovers you already have are marked.</p></div></div>
+          <div class="step"><span class="d">Sun</span><div><b>Prep once</b><p>A short session, not an afternoon. The app tells you what to cook and where each portion goes.</p></div></div>
+          <div class="step"><span class="d">Mon</span><div><b>Eat the plan</b><p>Each day lands on your numbers. Swap anything; the day rebalances.</p></div></div>
+        </div>
+      </div>
+      <div class="shots rv">
+        <div class="shot"><img src="images/home/cap-grocery.webp" width="600" height="1304" loading="lazy" alt="App screenshot: the week's shopping list grouped by aisle"></div>
+        <div class="shot mid"><img src="images/home/cap-prep.webp" width="600" height="1304" loading="lazy" alt="App screenshot: the prep session, 17 meals to bank in about 40 minutes, with what goes in the freezer"></div>
+        <div class="shot"><img src="images/home/cap-day.webp" width="600" height="1304" loading="lazy" alt="App screenshot: a day of meals with calories, protein and a swap button"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec2 c" id="training" aria-labelledby="train-h">
+  <div class="wrap">
+    <div class="weekrow flip">
+      <div class="shots two rv">
+        <div class="shot"><img src="images/home/cap-workout-build.webp" width="600" height="1304" loading="lazy" alt="App screenshot: a 12-week upper lower program being built, 41 exercises and 108 sets a week"></div>
+        <div class="shot mid"><img src="images/home/cap-workout.webp" width="600" height="1402" loading="lazy" alt="App screenshot: logging an incline bench press set with last time's weight, target reps and reps in reserve"></div>
+      </div>
+      <div>
+        <div class="head rv" style="margin-bottom:24px">
+          <p class="kicker c">The training</p>
+          <h2 id="train-h" class="d">Already <em>programmed.</em> You just lift.</h2>
+          <p class="lede">Weekly sets for every muscle set to your level, reps that climb week by week, deloads where they belong. One to six days, at a gym, at home, or bodyweight only. Programs run up to a year.</p>
+        </div>
+        <div class="steps2 rv">
+          <div class="step"><span class="d">144</span><div><b>Exercises with start and finish photos</b><p>Cues for the setup and the lift, and the rest time for each.</p></div></div>
+          <div class="step"><span class="d">RIR</span><div><b>How hard to push today</b><p>What you lifted last time and how many reps to leave in the tank, on every set.</p></div></div>
+          <div class="step"><span class="d">PR</span><div><b>Records called out the moment you set them</b><p>Progress per lift, per muscle, per block.</p></div></div>
+        </div>
+        <div class="progs rv" style="margin-top:24px">
+          <a class="prog" href="/programs/?program=upper-lower-beginner"><img src="images/programs/covers/foundations.webp" width="900" height="507" loading="lazy" alt="Program cover: Foundations"><div class="tag"><b>Upper / Lower</b><span>Beginner &middot; 4 days &middot; 1 year</span></div></a>
+          <a class="prog" href="/programs/?program=ppl-advanced"><img src="images/programs/covers/mass.webp" width="900" height="507" loading="lazy" alt="Program cover: Mass"><div class="tag"><b>Push / Pull / Legs</b><span>Advanced &middot; 6 days &middot; 1 year</span></div></a>
+        </div>
+        <p class="rv" style="margin-top:22px"><a class="arrow c" href="/training/">See the training &rarr;</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec2" id="research" aria-labelledby="know-h">
+  <div class="wrap">
+    <div class="evgrid">
+      <div class="head rv" style="margin-bottom:0">
+        <p class="kicker">How we know</p>
+        <h2 id="know-h" class="d">Every number traces to <em>a paper.</em></h2>
+        <p class="lede">42 sources, each opened and checked by hand, behind 25 decisions the app makes about your route, your training and your food. Where the evidence is thin, the app says so and gives you a range.</p>
+        <a class="arrow" href="/research/">Read the sources &rarr;</a>
+      </div>
+      <div class="rows ev2 rv">
+        <div class="row"><div><b>How many sets a muscle needs each week</b><small>Pelland et al. 2026 &middot; meta-regression, 67 studies</small></div><span class="chip g">Good</span></div>
+        <div class="row"><div><b>How fast to lose fat without losing muscle</b><small>Garthe et al. 2011 &middot; RCT, 24 elite athletes</small></div><span class="chip c">Strong</span></div>
+        <div class="row"><div><b>How much protein a day</b><small>Morton et al. 2018 &middot; meta-analysis, 49 studies</small></div><span class="chip g">Good</span></div>
+        <div class="row"><div><b>When to take a lighter week</b><small>Bell et al. 2023, 2025 &middot; expert consensus, few trials</small></div><span class="chip a">Estimate</span></div>
+        <div class="row"><div><b>How big you can get drug-free</b><small>Kouri et al. 1995 &middot; FFMI in 157 athletes</small></div><span class="chip a">Estimate</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec2" id="lab" aria-labelledby="lab-h">
+  <div class="wrap">
+    <div class="lab2">
+      <div>
+        <div class="head rv" style="margin-bottom:20px">
+          <p class="kicker v">The Lab</p>
+          <h2 id="lab-h" class="d">I was <em class="v">the skinny one</em> too.</h2>
+          <p class="lede">182 cm and under 60 kg right through my teens. 67 kg leaving uni. When I finally focused on my eating I got to 82 kg in 18 months, but I did it the miserable way, the same meals every day, forced down, so it didn't stick. A year off and I was back to 77 kg. In July 2026 I restarted, this time on the app I built, and I post every scan, working or not.</p>
+        </div>
+        <div class="ryan rv"><img src="images/me/founder.webp" width="56" height="56" loading="lazy" alt="Ryan Novinc"><div><b>Ryan Novinc</b><span>Built JSON.fit &middot; DEXA scans and progress photos as they happen</span></div></div>
+        <p class="rv" style="margin-top:20px"><a class="arrow v" href="/lab/">See the scans &rarr;</a></p>
+      </div>
+      <div class="pics rv">
+        <div class="pic"><img src="images/pre/67kg-front.webp" width="720" height="1080" loading="lazy" alt="Ryan at 67 kg, leaving university"><div class="tag">Leaving uni<b>67 kg</b></div></div>
+        <div class="pic"><img src="images/pre/82kg-a.webp" width="1000" height="1333" loading="lazy" alt="Ryan at 82 kg after his first bulk"><div class="tag">First bulk, the hard way<b>82 kg</b></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec2" id="faq" aria-labelledby="faq-h">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="kicker">Questions</p>
+      <h2 id="faq-h" class="d">The things you're <em>already thinking.</em></h2>
+    </div>
+    <div class="faq2 rv">
+      <details open><summary>I'm full after half a plate. How does this help?</summary><div class="a">The meals are built dense, so a plate you can finish carries more calories and protein than one you can't. It doesn't make you hungrier. It makes every meal you do eat count for more, and shakes cover the gaps.</div></details>
+      <details><summary>I don't want to end up skinny-fat.</summary><div class="a">Your route has a body-fat cap. When you reach it the app switches you to a short trim phase, then back to building. You're never on an open-ended bulk.</div></details>
+      <details><summary>I can't afford to eat 3,500 calories a day.</summary><div class="a">One shop a week off a single list, batch-cooked, with the ingredients the meals share. If you want to know what it'll cost at your supermarket before you go, the list can be priced.</div></details>
+      <details><summary>I don't have time to cook.</summary><div class="a">36 of the 81 meals take 15 minutes or less, and every recipe defaults to its fast version. Most of the week's food comes off one prep session.</div></details>
+      <details><summary>Do I need ChatGPT or another AI?</summary><div class="a">No. There's no AI in the app. Your route, your program and your meals are built from published rules, on your phone, in about a minute.</div></details>
+      <details><summary>How much does JSON.fit cost?</summary><div class="a">JSON.fit is free: meal plans, training programs, shopping lists and meal prep, with no ads and no account.</div></details>
+      <details><summary>How long until I see something?</summary><div class="a">The app gives your route a timeline with a range, because the research gives ranges. <a href="/lab/">The Lab</a> shows one real run, scan by scan.</div></details>
+      <details><summary>Can I train at home?</summary><div class="a">Yes. Programs are built for a full gym, a home gym, dumbbells and bands, or bodyweight only, one to six days a week.</div></details>
+      <details><summary>Is my data private?</summary><div class="a">Your workouts, meals and body data stay on your device. No account, no personal data collected. Anonymous usage analytics only, as described in the <a href="/privacy-policy.html">privacy policy</a>.</div></details>
+    </div>
+  </div>
+</section>
+
+<section class="final2" id="download" aria-labelledby="dl-h">
+  <div class="wall2" aria-hidden="true">
+    <img src="images/home/meals/protein-pancakes.webp" alt="" loading="lazy"><img src="images/home/meals/beef-ragu-gnocchi.webp" alt="" loading="lazy"><img src="images/home/meals/shakshuka.webp" alt="" loading="lazy"><img src="images/home/meals/chicken-fajita-bowl.webp" alt="" loading="lazy"><img src="images/home/meals/smoked-salmon-bagel.webp" alt="" loading="lazy"><img src="images/home/meals/lamb-shanks.webp" alt="" loading="lazy">
+    <img src="images/home/meals/honey-soy-salmon-noodles.webp" alt="" loading="lazy"><img src="images/home/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy"><img src="images/home/meals/bolognese.webp" alt="" loading="lazy"><img src="images/home/meals/butter-chicken-with-rice.webp" alt="" loading="lazy"><img src="images/home/meals/chicken-schnitzel.webp" alt="" loading="lazy"><img src="images/home/meals/pulled-pork-tacos.webp" alt="" loading="lazy">
+  </div>
+  <div class="wrap in">
+    <p class="kicker">JSON.fit for iPhone and Android</p>
+    <h2 id="dl-h" class="d">Eating big, <em class="g">made easy.</em></h2>
+    <p class="lede">Your route, your week of meals and your program, built in about a minute.</p>
     <div class="badges">
-      <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="hero">
+      <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="footer_cta">
         <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
         <div><small>Download on the</small><span>App Store</span></div>
       </a>
-      <a class="badge ghost" href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" data-loc="hero">
+      <a class="badge play" href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" data-loc="footer_cta">
         <svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
         <div><small>Get it on</small><span>Google Play</span></div>
       </a>
     </div>
     <p class="trust"><b>Free</b> &middot; No ads &middot; No account</p>
-  </div>
-  <div class="hero-art">
-    <picture class="shot main" id="heroMeal">
-      <source media="(max-width: 900px)" srcset="images/home/hero-1200.webp">
-      <img src="images/home/hero-2400.webp" width="2400" height="1029" alt="A man eating a bowl of carbonara between two phones showing JSON.fit: a wall of meals and the Mains recipe list">
-    </picture>
-    <picture class="shot alt" id="heroTrain" aria-hidden="true">
-      <source media="(max-width: 900px)" srcset="images/home/hero-train-1200.webp">
-      <img src="images/home/hero-train-2400.webp" width="2400" height="1029" fetchpriority="low" alt="A man curling a pair of dumbbells between two phones showing JSON.fit: this week's workouts and an incline bench press being logged set by set">
-    </picture>
-  </div>
-</section>
-
-<section class="sec" id="how" aria-labelledby="how-h">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="label">How it works</p>
-      <h2 id="how-h" class="caps">Built in seconds.<br>Not by a chatbot.</h2>
-      <p>Nothing to set up, nothing to copy anywhere. The app does the planning itself, with the same rules a good coach would use, and shows you the work while it builds.</p>
-    </div>
-    <div class="build">
-      <ol class="steps rv">
-        <li><span class="n">01</span><div><h3>Answer a few questions.</h3><p>Your body, your goal, how many days you can train, the kit you've got, and the meals you actually like. A couple of minutes, once.</p></div></li>
-        <li><span class="n">02</span><div><h3>JSON.fit builds it.</h3><p>A week of meals that lands on your calories and protein every day, and a training program with the right sets for every muscle, deloads planned in.</p></div></li>
-        <li><span class="n">03</span><div><h3>Cook and train.</h3><p>Every meal written step by step. Every set logged, with what you lifted last time and how hard to push today.</p></div></li>
-      </ol>
-      <div class="phones rv">
-        <div class="phone"><img src="images/home/cap-meal-build.webp" width="600" height="1305" loading="lazy" alt="JSON.fit building a week of meals: a photo grid of seven days and steps like Placing 31 meals across 7 days and Hitting 2,320 kcal every day"></div>
-        <div class="phone lift"><img src="images/home/cap-workout-build.webp" width="600" height="1305" loading="lazy" alt="JSON.fit building a 12-week upper lower program: exercise photos for each day and steps like Choosing 41 exercises and 108 sets a week"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="meals" aria-labelledby="meals-h" style="padding-bottom:40px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="label g">The meals</p>
-      <h2 id="meals-h" class="caps">No more chicken<br>and rice.</h2>
-      <p>80+ calorie-dense meals you'll actually want to eat: carbonara, bulgogi, massaman, breakfast burritos, shakes that go down easy. Every one with exact ingredients and every step written.</p>
-    </div>
-  </div>
-  <div class="wall" aria-label="Some of the meals in JSON.fit">
-    <div class="track"><div class="mcard"><img src="images/meals/spaghetti-carbonara.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Carbonara<span class="k">1,094 kcal</span></span></div><div class="mcard"><img src="images/meals/king-kong-chocolate.webp" alt="" loading="lazy" width="220" height="240"><span class="t">King Kong Chocolate<span class="k">1,398 kcal</span></span></div><div class="mcard"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked BBQ Pulled Pork<span class="k">772 kcal</span></span></div><div class="mcard"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Steak &amp; Eggs<span class="k">795 kcal</span></span></div><div class="mcard"><img src="images/meals/banana-bulk.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Banana Bulk<span class="k">1,278 kcal</span></span></div><div class="mcard"><img src="images/meals/shakshuka.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shakshuka<span class="k">895 kcal</span></span></div><div class="mcard"><img src="images/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Freezer Breakfast Burrito<span class="k">741 kcal</span></span></div><div class="mcard"><img src="images/meals/smoked-salmon-bagel.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoked Salmon Bagel<span class="k">795 kcal</span></span></div><div class="mcard"><img src="images/meals/overnight-oats.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Overnight Oats<span class="k">797 kcal</span></span></div><div class="mcard"><img src="images/meals/bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Bolognese<span class="k">378 kcal</span></span></div><div class="mcard"><img src="images/meals/protein-ice-cream.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Ice Cream<span class="k">415 kcal</span></span></div><div class="mcard"><img src="images/meals/choc-muscle-maxx.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Choc Muscle MAXX<span class="k">1,119 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/spaghetti-carbonara.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Carbonara<span class="k">1,094 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/king-kong-chocolate.webp" alt="" loading="lazy" width="220" height="240"><span class="t">King Kong Chocolate<span class="k">1,398 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked BBQ Pulled Pork<span class="k">772 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Steak &amp; Eggs<span class="k">795 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/banana-bulk.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Banana Bulk<span class="k">1,278 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/shakshuka.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shakshuka<span class="k">895 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Freezer Breakfast Burrito<span class="k">741 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/smoked-salmon-bagel.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoked Salmon Bagel<span class="k">795 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/overnight-oats.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Overnight Oats<span class="k">797 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Bolognese<span class="k">378 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/protein-ice-cream.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Ice Cream<span class="k">415 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/choc-muscle-maxx.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Choc Muscle MAXX<span class="k">1,119 kcal</span></span></div></div>
-    <div class="track rev"><div class="mcard"><img src="images/meals/beef-bulgogi-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Bulgogi Bowl<span class="k">743 kcal</span></span></div><div class="mcard"><img src="images/meals/sheet-pan-salmon-potatoes.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Sheet-Pan Lemon-Garlic Salmon &amp; Potatoes<span class="k">746 kcal</span></span></div><div class="mcard"><img src="images/meals/chicken-fajita-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Fajita Bowl<span class="k">807 kcal</span></span></div><div class="mcard"><img src="images/meals/massaman.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Massaman Beef Curry<span class="k">836 kcal</span></span></div><div class="mcard"><img src="images/meals/teriyaki-chicken-rice-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Teriyaki Chicken Rice Bowl<span class="k">792 kcal</span></span></div><div class="mcard"><img src="images/meals/chilli-con-carne.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Chilli Con Carne<span class="k">505 kcal</span></span></div><div class="mcard"><img src="images/meals/beef-broccoli-stir-fry.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Broccoli Stir-Fry<span class="k">777 kcal</span></span></div><div class="mcard"><img src="images/meals/lamb-shanks.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Lamb Shanks<span class="k">580 kcal</span></span></div><div class="mcard"><img src="images/meals/spicy-chipotle-chicken-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spicy Chipotle Chicken Burrito<span class="k">985 kcal</span></span></div><div class="mcard"><img src="images/meals/egg-muffins.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Egg Muffins<span class="k">850 kcal</span></span></div><div class="mcard"><img src="images/meals/beef-stew.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Hearty Beef Stew<span class="k">630 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/beef-bulgogi-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Bulgogi Bowl<span class="k">743 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/sheet-pan-salmon-potatoes.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Sheet-Pan Lemon-Garlic Salmon &amp; Potatoes<span class="k">746 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/chicken-fajita-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Fajita Bowl<span class="k">807 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/massaman.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Massaman Beef Curry<span class="k">836 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/teriyaki-chicken-rice-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Teriyaki Chicken Rice Bowl<span class="k">792 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/chilli-con-carne.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Chilli Con Carne<span class="k">505 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/beef-broccoli-stir-fry.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Broccoli Stir-Fry<span class="k">777 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/lamb-shanks.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Lamb Shanks<span class="k">580 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/spicy-chipotle-chicken-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spicy Chipotle Chicken Burrito<span class="k">985 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/egg-muffins.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Egg Muffins<span class="k">850 kcal</span></span></div><div class="mcard" aria-hidden="true"><img src="images/meals/beef-stew.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Hearty Beef Stew<span class="k">630 kcal</span></span></div></div>
-  </div>
-  <div class="wrap">
-    <div class="stats rv">
-      <div class="stat"><b>80+</b><span>Real meals</span></div>
-      <div class="stat"><b>144</b><span>Exercises</span></div>
-      <div class="stat"><b>1</b><span>Shop a week</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" style="padding-top:20px" aria-label="Meal plan features">
-  <div class="wrap">
-    <div class="feat rv">
-      <div class="copy">
-        <p class="label g">Macros built around your body</p>
-        <h3 class="caps">Swap anything.<br>Your macros hold.</h3>
-        <p>Not feeling Tuesday's lunch? Swap it for another meal you like. The app re-balances that day's portions so it still lands on your calories and protein, and tells you what it changed.</p>
-        <ul>
-          <li>Only meals that keep the day on target are offered</li>
-          <li>Portions shift in small steps, never a different meal plan</li>
-          <li>Your shopping list updates with it</li>
-        </ul>
-      </div>
-      <div class="art"><div class="phone"><img src="images/home/cap-day.webp" width="600" height="1305" loading="lazy" alt="A day in a JSON.fit meal plan: Today, Day 1, with each meal's time, calories and a swap button"></div></div>
-    </div>
-
-    <div class="feat flip rv">
-      <div class="copy">
-        <p class="label g">Got food to use up?</p>
-        <h3 class="caps">Start with<br>what's in the fridge.</h3>
-        <p>Tick the chicken, rice or eggs you already have. Meals that use them come first, or let the app fill your week from them. Anything you won't eat, or can't, stays out of the way.</p>
-        <ul>
-          <li>Every food our meals use, by aisle, one tap each</li>
-          <li>Allergens flagged before you pick, foods you skip moved down</li>
-          <li>Your past picks a tap away: "Same as last week"</li>
-        </ul>
-      </div>
-      <div class="art"><div class="phone"><img src="images/home/cap-picker.webp" width="600" height="1305" loading="lazy" alt="The JSON.fit meal picker with Got food to use up? chips and a Picked before row"></div></div>
-    </div>
-
-    <div class="feat rv">
-      <div class="copy">
-        <p class="label g">Meal prep</p>
-        <h3 class="caps">A week's cooking,<br>done in one go.</h3>
-        <p>One shop, one prep session. The app plans which meals to batch-cook, what goes in the fridge, what goes in the freezer, and reminds you the night before to move tomorrow's food out to thaw.</p>
-        <ul>
-          <li>Cook mode with every step and timer</li>
-          <li>Fridge and freezer planned for every portion</li>
-          <li>A reminder the night before anything needs thawing</li>
-        </ul>
-      </div>
-      <div class="art"><div class="phone"><img src="images/home/cap-prep.webp" width="600" height="1305" loading="lazy" alt="JSON.fit meal prep: 17 meals to bank, about 40 minutes of hands-on work, with each dish and what goes in the freezer"></div></div>
-    </div>
-
-    <div class="feat flip rv">
-      <div class="copy">
-        <p class="label g">Shopping</p>
-        <h3 class="caps">One list.<br>Priced at your store.</h3>
-        <p>Every ingredient for the week on one list, grouped by aisle. Want to know what it'll cost? Send the list to your own AI and it comes back with the real products and prices at your store.</p>
-        <ul>
-          <li>Tick things off as they go in the trolley</li>
-          <li>Leftovers you already have are marked</li>
-          <li>Prices are optional, and so is the AI</li>
-        </ul>
-      </div>
-      <div class="art"><div class="phone"><img src="images/home/cap-grocery.webp" width="600" height="1305" loading="lazy" alt="The JSON.fit shopping list for the week with a See what this costs at your store card"></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="training" aria-labelledby="train-h" style="padding-top:40px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="label c">The training</p>
-      <h2 id="train-h" class="caps">Science-backed<br>training for size.</h2>
-      <p>I'm not a PT, so I don't write the training. The app builds it from published research: how many sets each muscle needs, how hard to push, when to back off.</p>
-    </div>
-    <div class="feat t rv" style="border-top:0">
-      <div class="copy">
-        <p class="label c">Programs up to a year long</p>
-        <h3 class="caps">The right sets,<br>every muscle.</h3>
-        <p>Weekly volume set for your level and your priorities, reps that climb week by week, and deloads where they belong. Train 1 to 6 days, at a gym, at home or with just your bodyweight.</p>
-        <ul>
-          <li>144 exercises, each with start and finish photos</li>
-          <li>In the workout: what you did last time and how many reps in reserve to aim for</li>
-          <li>Personal records called out the moment you set them</li>
-        </ul>
-        <a class="link c" href="/programs/">See the programs &rarr;</a>
-      </div>
-      <div class="art"><div class="phone"><img src="images/home/cap-workout.webp" width="600" height="1403" loading="lazy" alt="A JSON.fit workout in progress: Incline Barbell Bench Press with the target reps and reps in reserve for each set, last weights and a rest timer"></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="research" aria-labelledby="res-h" style="padding-top:20px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="label">Where the rules come from</p>
-      <h2 id="res-h" class="caps">Research,<br>not opinions.</h2>
-      <p>Every number the app plans with comes from published studies, and every source is open to read.</p>
-    </div>
-    <div class="rgrid rv">
-      <a class="rcard" href="/research/?topic=volume#reader"><span class="k">Training</span><h4>How many sets.</h4><p>Weekly sets per muscle, from minimum to maximum useful volume.</p></a>
-      <a class="rcard" href="/research/?topic=reps#reader"><span class="k">Training</span><h4>How many reps.</h4><p>Why 5 to 30 reps all build muscle, and where each range fits.</p></a>
-      <a class="rcard" href="/research/?topic=deload#reader"><span class="k">Training</span><h4>When to back off.</h4><p>Deloads planned in before fatigue piles up.</p></a>
-      <a class="rcard" href="/research/?topic=protein#reader"><span class="k">Nutrition</span><h4>How much protein.</h4><p>Grams per kilo for building muscle, and how to spread it.</p></a>
-      <a class="rcard" href="/research/?topic=phase#reader"><span class="k">Nutrition</span><h4>Which phase.</h4><p>Bulk, cut or recomp, chosen from where you're starting.</p></a>
-      <a class="rcard" href="/research/"><span class="k">All topics</span><h4>Read the sources.</h4><p>Rest, meal timing, fibre, goal weight and more.</p></a>
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="lab" aria-labelledby="lab-h">
-  <div class="wrap">
-    <div class="lab">
-      <img class="rv" src="images/me/founder.webp" alt="Ryan, who built JSON.fit" loading="lazy">
-      <div class="rv">
-        <p class="label" style="color:var(--violet)">The Lab</p>
-        <h2 id="lab-h" class="caps">I'm bulking<br>on it in public.</h2>
-        <p>I'm Ryan. I'm not a chef, I hate cooking, and I'm not a PT. I built JSON.fit because I'm a skinny guy who couldn't eat enough. The app is planning my own bulk, 77 kg to 90 kg, and I post a body scan every month so you can see whether it works.</p>
-        <a class="link" href="/lab">See the scans &rarr;</a>
-        <div class="quote">
-          <div class="st" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote><b>Awesome app, fitness plans</b>Created me a 12 week fitness plan for all my personal priorities. Was even able to add additional preferences via AI.</blockquote>
-          <cite>Rory@TVX &middot; App Store &middot; Australia</cite>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="your-ai" aria-labelledby="ai-h" style="padding-top:30px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="label">Still like your AI?</p>
-      <h2 id="ai-h" class="caps">Bring it if<br>you want to.</h2>
-      <p>You never need ChatGPT or Claude to use JSON.fit. If you like them, there are two places they still help.</p>
-    </div>
-    <div class="aside rv">
-      <div class="acard"><h4>Customise a plan</h4><p>Want meals outside our library, or something very specific? Send your answers to your own AI and import the plan it writes. The app checks it before it lands.</p></div>
-      <div class="acard"><h4>Price your shopping</h4><p>Your AI can look up real products and prices at your store for the week's list, and you share the file straight back into the app.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="faq" aria-labelledby="faq-h">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="label">FAQ</p>
-      <h2 id="faq-h" class="caps">Common questions.</h2>
-    </div>
-    <div class="faq">
-      <details><summary>How does JSON.fit work?</summary><div class="a">Answer a few questions about your body, your goal, the days you can train, the kit you have and the meals you like. The app builds your week of meals and your training program in seconds, right on your phone.</div></details>
-      <details><summary>Do I need ChatGPT or another AI?</summary><div class="a">No. Everything is built in the app. If you like your own AI, you can still use it to customise a plan or to price your shopping list at your store, but both are optional.</div></details>
-      <details><summary>How much does JSON.fit cost?</summary><div class="a">JSON.fit is free: meal plans, training programs, shopping lists and meal prep, with no ads and no account.</div></details>
-      <details><summary>I&#x27;m full after half a plate. Does this help?</summary><div class="a">The meals are built dense, so a plate you can finish carries more calories and protein than a plate you can&#x27;t. It doesn&#x27;t make you hungrier. It makes every meal you do eat count for more.</div></details>
-      <details><summary>I tried Sunday prep and quit. How is this different?</summary><div class="a">Every meal defaults to the fast version: jar sauce, minimal steps, real times. Most of the week&#x27;s food comes off one shop and a short prep session, not an afternoon, and the app tells you what goes in the fridge and what goes in the freezer.</div></details>
-      <details><summary>Does this work if I&#x27;ve got a full-time job?</summary><div class="a">That&#x27;s exactly who it&#x27;s built for. You answer a few questions once, the app builds the plan, then you cook in batches off a single shopping list. Eating enough fits around work instead of taking it over.</div></details>
-      <details><summary>Can I change the plan once it&#x27;s built?</summary><div class="a">Yes. Swap any meal for another you like and the app re-balances that day so it still hits your calories and protein. You can also change your picks and rebuild the week in seconds.</div></details>
-      <details><summary>Can I train at home?</summary><div class="a">Yes. Programs are built for a full gym, a home gym, dumbbells and bands, or bodyweight only, from 1 to 6 days a week.</div></details>
-      <details><summary>Is my data private with JSON.fit?</summary><div class="a">Yes. Your workouts, meals and health data stay on your device and are never uploaded. JSON.fit has no accounts and doesn&#x27;t collect personal information. Like most apps and websites, it uses anonymous, non-identifying usage analytics (such as Google Analytics) to see how it&#x27;s used and improve it. See the Privacy Policy for full details.</div></details>
-    </div>
-  </div>
-</section>
-
-<section class="final" id="download" aria-labelledby="dl-h">
-  <p class="label">JSON.fit for iPhone and Android</p>
-  <h2 id="dl-h" class="serif" style="margin-top:14px">Eat big.<br><span class="cyan">Lift big.</span></h2>
-  <p>Your week of meals and your program, built in seconds.</p>
-  <div class="badges">
-    <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="footer_cta">
-      <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-      <div><small>Download on the</small><span>App Store</span></div>
-    </a>
-    <a class="badge ghost" href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON" data-loc="footer_cta">
-      <svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
-      <div><small>Get it on</small><span>Google Play</span></div>
-    </a>
+    <div class="qr"><img src="images/qr-app.svg" width="88" height="88" alt="QR code linking to json.fit/app"><span>On a laptop? Point your<br>phone's camera here.</span></div>
   </div>
 </section>
 </main>
 
-<footer>
+<footer class="site-foot">
   <div class="foot">
     <a href="/" class="logo"><span>JSON<span class="cyan">.fit</span></span></a>
-    <nav aria-label="Footer">
-      <a href="meals.html">Meals</a><a href="/cookbook/">Free cookbook</a><a href="/programs/">Programs</a><a href="/exercises/">Exercises</a>
-      <a href="/research/">Research</a><a href="blog.html">Blog</a><a href="/lab">The Lab</a>
-      <a href="#" id="supportLink" rel="nofollow">Support</a><a href="privacy-policy.html">Privacy</a><a href="terms-of-service.html">Terms</a>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="/meals.html">Meals</a><a href="/cookbook/">Free cookbook</a><a href="/training/">Training</a><a href="/programs/">Programs</a><a href="/exercises/">Exercises</a>
+      <a href="/research/">How we know</a><a href="/lab/">The Lab</a><a href="/blog.html">Blog</a>
+      <a href="#" id="supportLink" rel="nofollow">Support</a><a href="/privacy-policy.html">Privacy</a><a href="/terms-of-service.html">Terms</a>
     </nav>
     <div class="social">
       <a href="https://www.instagram.com/ryan.novinc" target="_blank" rel="noopener" aria-label="Ryan on Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.16 15.58 2.16 15.2 2.16 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.16 8.8 2.16 12 2.16Zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg></a>
       <a href="https://www.tiktok.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.08-.14 1.62.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
       <a href="https://www.youtube.com/@ryannovinc" target="_blank" rel="noopener" aria-label="Ryan on YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5 31.1 31.1 0 0 0 0 12a31.1 31.1 0 0 0 .5 5.5 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.1 31.1 0 0 0 24 12a31.1 31.1 0 0 0-.5-5.5ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"/></svg></a>
     </div>
-    <div class="copy-r">&copy; 2026 JSON.fit &middot; Updated <span id="siteUpdated">October 2026</span></div>
+    <div class="copy-r">&copy; 2026 JSON.fit &middot; Built in Canberra</div>
   </div>
 </footer>
 
+<script src="/assets/site.js"></script>
 <script>
 (function(){
-  // Support address assembled at runtime (keeps it out of scrapers).
-  var s=document.getElementById('supportLink'); if(s) s.href='mailto:'+['support','json.fit'].join('@');
-  // Footer stamp from the visitor's clock.
-  var st=document.getElementById('siteUpdated'); if(st) st.textContent=new Date().toLocaleDateString([], {month:'long',year:'numeric'});
-  // Menu.
-  var b=document.getElementById('burger'), n=document.getElementById('navLinks');
-  b.addEventListener('click',function(e){e.stopPropagation();var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');});
-  n.addEventListener('click',function(e){if(e.target.closest('a')){n.classList.remove('open');b.setAttribute('aria-expanded','false');}});
-  document.addEventListener('click',function(){n.classList.remove('open');b.setAttribute('aria-expanded','false');});
-  // Meals / Training tabs (also: #training deep link).
-  function setTab(t){document.body.setAttribute('data-tab',t);var hm=document.getElementById('heroMeal'),ht=document.getElementById('heroTrain');if(hm&&ht){hm.setAttribute('aria-hidden',t==='train'?'true':'false');ht.setAttribute('aria-hidden',t==='train'?'false':'true');}['meal','train'].forEach(function(k){var el=document.getElementById('tab-'+k);if(el)el.setAttribute('aria-selected',k===t?'true':'false');});}
-  setTab(document.body.getAttribute('data-tab')||'meal');
-  document.querySelectorAll('.tabs button').forEach(function(btn){btn.addEventListener('click',function(){setTab(btn.getAttribute('data-set'));if(window.gtag)gtag('event','home_tab',{tab:btn.getAttribute('data-set')});});});
-  // Download clicks, and the Training tab's App Store links open the training custom product page.
-  var PPID='b08433ee-bbbe-4c5a-8066-4c6c2df76d44';
   document.addEventListener('click',function(e){
-    var a=e.target.closest&&e.target.closest('a'); if(!a) return;
-    if(a.href.indexOf('apps.apple.com')>-1){var u=new URL(a.href);if(document.body.getAttribute('data-tab')==='train')u.searchParams.set('ppid',PPID);else u.searchParams.delete('ppid');a.href=u.toString();}
-    if(a.dataset.loc&&window.gtag) gtag('event','download_click',{button_location:a.dataset.loc,store:a.href.indexOf('play.google')>-1?'play':'app_store'});
+    var a=e.target;
+    while(a&&a.tagName!=='A')a=a.parentElement;
+    if(!a||!a.href)return;
+    try{
+      var h=new URL(a.href).hostname;
+      if(!h||h===location.hostname)return;
+      var label;
+      if(h==='apps.apple.com')label='app_store';
+      else if(h==='www.youtube.com'||h==='youtu.be')label='youtube';
+      else{var p=h.replace(/^www\./,'').split('.');var s=p[p.length-2]||p[0];label=s==='nih'?'pubmed':s;}
+      if(window.track)window.track('outbound_click',{url:label});
+    }catch(err){}
   },true);
-  // Reveal on scroll; everything is visible without JS or with Reduce Motion.
-  var els=document.querySelectorAll('.rv');
-  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in');});return;}
-  var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:.08});
-  els.forEach(function(el){io.observe(el);});
 })();
 </script>
 </body>

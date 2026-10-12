@@ -87,7 +87,7 @@ const schema = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
   name: 'JSON.fit Blog',
-  description: 'Tutorials, guides, and thoughts on AI-powered fitness programming.',
+  description: 'Bulking and training articles for skinny guys who want results without making the gym their life.',
   url: `${SITE_URL}/blog.html`,
   publisher: { '@type': 'Organization', name: 'JSON.fit', url: SITE_URL },
   blogPost: live.map(p => ({

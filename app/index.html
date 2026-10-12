@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get JSON.fit</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Download JSON.fit for iPhone or Android.">
+<link rel="icon" type="image/x-icon" href="/favicon-3.ico">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3C38HP30JG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3C38HP30JG');</script>
+<script>
+/* /app/ is the QR-code and short-link landing: send phones straight to their store, everyone else to the download band on the homepage. */
+(function(){
+  var ua=navigator.userAgent||'';
+  var ios=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  var android=/Android/i.test(ua);
+  var to=ios?'https://apps.apple.com/au/app/json-fit/id6758357834':android?'https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON':'/#download';
+  try{ if(window.gtag) gtag('event','download_click',{button_location:'qr_app_link',store:ios?'app_store':android?'play':'web'}); }catch(e){}
+  setTimeout(function(){ location.replace(to); }, ios||android?150:0);
+})();
+</script>
+<style>body{margin:0;background:#08080b;color:#a3a3ad;font:16px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:20px}a{color:#22d3ee}</style>
+</head>
+<body>
+<p>Opening the store… <br><a href="https://apps.apple.com/au/app/json-fit/id6758357834">App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON">Google Play</a></p>
+</body>
+</html>
