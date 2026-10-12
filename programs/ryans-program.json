@@ -3,6 +3,7 @@
   "description": "What Ryan, the creator of JSON.fit, trains on. Four days a week, so three stay free. The trade is long, hard, high-volume sessions of about two hours. Needs a full gym.",
   "days_per_week": 4,
   "default_pace": "optimal",
+  "durations_measured": true,
   "blocks": [
     {
       "block_name": "Mesocycle 1, Block 1",
