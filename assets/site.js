@@ -21,6 +21,8 @@
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a'); if(!a||!a.href) return;
     if(train&&a.href.indexOf('apps.apple.com')>-1) a.href=withPpid(a.href);
+    // App Store install attribution: App Store Connect campaign link (provider 127775601), one campaign per button.
+    if(a.dataset.loc&&a.href.indexOf('apps.apple.com')>-1&&a.href.indexOf('pt=')<0){try{var au=new URL(a.href);au.searchParams.set('pt','127775601');au.searchParams.set('ct','website_'+a.dataset.loc);au.searchParams.set('mt','8');a.href=au.toString();}catch(e){}}
     // Play Store install attribution: Play Console reports installs by these UTM values.
     if(a.dataset.loc&&a.href.indexOf('play.google.com')>-1&&a.href.indexOf('referrer=')<0){try{var pu=new URL(a.href);pu.searchParams.set('referrer','utm_source=json.fit&utm_medium=web&utm_content='+a.dataset.loc);a.href=pu.toString();}catch(e){}}
     if(a.dataset.loc){var dl={button_location:a.dataset.loc,store:a.href.indexOf('play.google')>-1?'play':'app_store'};if(window.gtag) gtag('event','download_click',dl);if(window.track) window.track('download_click',dl);}
