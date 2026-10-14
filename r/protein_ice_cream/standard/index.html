@@ -43,10 +43,10 @@
   "recipeCuisine": "Dessert",
   "totalTime": "PT365M",
   "recipeIngredient": [
-    "Full-cream milk",
-    "Vanilla whey protein",
-    "Instant pudding mix",
-    "Vanilla extract"
+    "Full Cream Milk",
+    "Whey Protein Vanilla",
+    "Instant Pudding Mix",
+    "Vanilla Extract"
   ],
   "recipeInstructions": [
     {
@@ -189,7 +189,7 @@ main{flex:1;width:100%;max-width:760px;margin:0 auto;padding-bottom:6rem}
 .ing-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--border)}
 .ing-row:last-child{border-bottom:none}
 .ing-name{font-size:.9rem;color:var(--text)}
-.ing-amt{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text-3);flex-shrink:0}
+.ing-amt{font-family:'DM Mono',monospace;font-size:.85rem;color:var(--text-2);flex-shrink:0}
 
 /* Steps */
 .step-row{display:flex;gap:.9rem;margin-bottom:1.1rem;align-items:flex-start}
@@ -320,7 +320,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
 <div class="vmodal" id="vmodal"><button class="vmodal-close" aria-label="Close">&#10005;</button><div class="vmodal-slot"></div></div>
 
-<script>window.__ROUTES__=null;window.__RECIPE__={"slug":"protein_ice_cream","plateId":"standard","meal":{"slug":"protein_ice_cream","display_name":"Protein Ice Cream","cuisine":"dessert","primary_protein":"dairy","produces_servings":1,"eligible_slots":["dessert","snack","post_workout"],"min_scale":0.5,"max_scale":2,"flex_ingredient_id":"whey_protein_vanilla","contains_allergens":["Dairy"],"image_filename":"protein_ice_cream.png","meal_prep":{"strategy":"full","prep_note":"Freezer-set ahead by design — blend and freeze.","storage":{"freeze_months":3}},"plates":[{"id":"standard","display_name":"Protein Ice Cream","description":"Thick, creamy high-protein ice cream blended from milk, protein powder, and a little instant pudding mix, then frozen — no ice cream machine needed.","base_serving_multiplier":1,"additional_ingredients":[],"additional_instructions":[],"assembly_time_minutes":0,"plate_macros":{"kcal":415,"protein_g":39.9,"carbs_g":31,"fat_g":14.4,"fiber_g":0}}],"methods":[{"id":"freezer","display_name":"Blend & Freeze (no machine)","equipment_required":["blender","freezer"],"time_active_minutes":5,"time_total_minutes":365,"skill_min":1,"shortcut_level":"scratch","ingredients":[{"ingredient_id":"full_cream_milk","base_amount":360,"unit":"ml","scaling":"scales","notes":"Lite/skim for leaner macros, or high-protein milk for more protein.","display_name":"Full-cream milk"},{"ingredient_id":"whey_protein_vanilla","base_amount":35,"unit":"g","scaling":"flex","notes":"About 1 to 1.5 scoops. Vanilla or chocolate.","display_name":"Vanilla whey protein"},{"ingredient_id":"instant_pudding_mix","base_amount":12,"unit":"g","scaling":"scales","notes":"1 tablespoon — the anti-icy thickener.","display_name":"Instant pudding mix"},{"ingredient_id":"vanilla_extract","base_amount":1,"unit":"tsp","scaling":"fixed","display_name":"Vanilla extract"}],"instructions":[{"summary":"Blend the milk, protein powder, pudding mix, and vanilla until completely smooth.","substeps":["Blend the milk, protein powder, pudding mix, and vanilla until completely smooth."]},{"summary":"Pour into a shallow freezer-safe container and freeze for at least 4-6 hours until firm.","substeps":["Pour into a shallow freezer-safe container and freeze for at least 4-6 hours until firm."]},{"summary":"Let it sit at room temperature for 5-10 minutes to soften, then scoop and serve.","substeps":["Let it sit at room temperature for 5-10 minutes to soften, then scoop and serve."]}]}]}};</script>
+<script>window.__ROUTES__=null;window.__RECIPE__={"slug":"protein_ice_cream","plateId":"standard","meal":{"slug":"protein_ice_cream","display_name":"Protein Ice Cream","cuisine":"dessert","primary_protein":"dairy","produces_servings":1,"eligible_slots":["dessert","post_workout"],"min_scale":0.5,"max_scale":2,"flex_ingredient_id":"whey_protein_vanilla","contains_allergens":["Dairy"],"image_filename":"protein_ice_cream.png","meal_prep":{"strategy":"full","prep_note":"Freezer-set ahead by design — blend and freeze.","storage":{"freeze_months":3}},"plates":[{"id":"standard","display_name":"Protein Ice Cream","description":"Thick, creamy high-protein ice cream blended from milk, protein powder, and a little instant pudding mix, then frozen — no ice cream machine needed.","base_serving_multiplier":1,"additional_ingredients":[],"additional_instructions":[],"assembly_time_minutes":0,"plate_macros":{"kcal":415,"protein_g":39.9,"carbs_g":31,"fat_g":14.4,"fiber_g":0}}],"methods":[{"id":"freezer","display_name":"Blend & Freeze (no machine)","equipment_required":["blender","freezer"],"tools":["measuring_jug","measuring_spoons"],"time_active_minutes":5,"time_total_minutes":365,"skill_min":1,"shortcut_level":"scratch","ingredients":[{"ingredient_id":"full_cream_milk","base_amount":360,"unit":"ml","scaling":"scales","notes":"Lite/skim for leaner macros, or high-protein milk for more protein."},{"ingredient_id":"whey_protein_vanilla","base_amount":35,"unit":"g","scaling":"flex","notes":"About 1 to 1.5 scoops. Vanilla or chocolate."},{"ingredient_id":"instant_pudding_mix","base_amount":12,"unit":"g","scaling":"scales","notes":"1 tablespoon — the anti-icy thickener."},{"ingredient_id":"vanilla_extract","base_amount":1,"unit":"tsp","scaling":"fixed"}],"instructions":[{"summary":"Blend the milk, protein powder, pudding mix, and vanilla until completely smooth.","substeps":["Blend the milk, protein powder, pudding mix, and vanilla until completely smooth."]},{"summary":"Pour into a shallow freezer-safe container and freeze for at least 4-6 hours until firm.","substeps":["Pour into a shallow freezer-safe container and freeze for at least 4-6 hours until firm."]},{"summary":"Let it sit at room temperature for 5-10 minutes to soften, then scoop and serve.","phase":"day_of","substeps":["Let it sit at room temperature for 5-10 minutes to soften, then scoop and serve."]}]}]}};</script>
 
 <script>
 (function(){
@@ -409,16 +409,18 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   function ingName(ing){
     return ing.display_name || ing.name || titleCase(ing.ingredient_id || ing.id || 'Ingredient');
   }
-  // Nice fractions for counts and spoon units. Never renders a nonzero
-  // amount as 0 — 2 eggs across 5 servings shows \u2153, not 0.
+  // Plain-text fractions for counts and spoon units — "1 1/2", not the tiny
+  // unicode "\u00bd" glyphs, which are unreadable at ingredient-row size.
+  // Never renders a nonzero amount as 0 — 2 eggs across 5 servings shows 1/3, not 0.
   function niceFraction(n){
     var whole=Math.floor(n), frac=n-whole;
-    var table=[[0,''],[0.25,'\u00bc'],[1/3,'\u2153'],[0.5,'\u00bd'],[2/3,'\u2154'],[0.75,'\u00be'],[1,'']];
+    var table=[[0,''],[0.25,'1/4'],[1/3,'1/3'],[0.5,'1/2'],[2/3,'2/3'],[0.75,'3/4'],[1,'']];
     var best=table[0], bd=99;
     for(var i=0;i<table.length;i++){var d=Math.abs(frac-table[i][0]); if(d<bd){bd=d;best=table[i];}}
     if(best[0]===1){whole+=1; best=[0,''];}
     if(whole===0&&!best[1]) return n>0?String(Math.round(n*100)/100):'0';
-    return String(whole||!best[1]?whole:'')+(best[1]||'');
+    if(!best[1]) return String(whole);
+    return whole>0 ? whole+' '+best[1] : best[1];
   }
   function formatAmount(amt, unit){
     if(amt==null) return '';

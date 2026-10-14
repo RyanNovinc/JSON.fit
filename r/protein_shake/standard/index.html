@@ -43,8 +43,8 @@
   "recipeCuisine": "Snack",
   "totalTime": "PT1M",
   "recipeIngredient": [
-    "Vanilla whey protein",
-    "Full-cream milk"
+    "Whey Protein Vanilla",
+    "Full Cream Milk"
   ],
   "recipeInstructions": [
     {
@@ -179,7 +179,7 @@ main{flex:1;width:100%;max-width:760px;margin:0 auto;padding-bottom:6rem}
 .ing-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--border)}
 .ing-row:last-child{border-bottom:none}
 .ing-name{font-size:.9rem;color:var(--text)}
-.ing-amt{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text-3);flex-shrink:0}
+.ing-amt{font-family:'DM Mono',monospace;font-size:.85rem;color:var(--text-2);flex-shrink:0}
 
 /* Steps */
 .step-row{display:flex;gap:.9rem;margin-bottom:1.1rem;align-items:flex-start}
@@ -310,7 +310,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
 <div class="vmodal" id="vmodal"><button class="vmodal-close" aria-label="Close">&#10005;</button><div class="vmodal-slot"></div></div>
 
-<script>window.__ROUTES__=null;window.__RECIPE__={"slug":"protein_shake","plateId":"standard","meal":{"slug":"protein_shake","display_name":"Protein Shake","cuisine":"snack","primary_protein":"dairy","produces_servings":1,"eligible_slots":["snack","post_workout"],"min_scale":0.5,"max_scale":2,"flex_ingredient_id":"whey_protein_vanilla","contains_allergens":["Dairy"],"image_filename":"protein_shake.png","meal_prep":{"strategy":"none","reason":"Shake fresh so it does not separate or go gritty."},"plates":[{"id":"standard","display_name":"Protein Shake","description":"The fastest protein hit going — a scoop of protein powder shaken or blended with milk. The classic post-workout grab.","base_serving_multiplier":1,"additional_ingredients":[],"additional_instructions":[],"assembly_time_minutes":0,"plate_macros":{"kcal":364,"protein_g":39.5,"carbs_g":19.4,"fat_g":14,"fiber_g":0}}],"methods":[{"id":"no_cook","display_name":"Shake & Go","time_active_minutes":1,"time_total_minutes":1,"skill_min":1,"shortcut_level":"scratch","ingredients":[{"ingredient_id":"whey_protein_vanilla","base_amount":35,"unit":"g","scaling":"flex","notes":"About 1-1.5 scoops.","display_name":"Vanilla whey protein"},{"ingredient_id":"full_cream_milk","base_amount":350,"unit":"ml","scaling":"scales","notes":"Milk for more calories; water for a leaner shake.","display_name":"Full-cream milk"}],"instructions":[{"summary":"Add the protein powder and milk to a shaker, shake until smooth, and drink.","substeps":["Add the protein powder and milk to a shaker, shake until smooth, and drink."]}]}]}};</script>
+<script>window.__ROUTES__=null;window.__RECIPE__={"slug":"protein_shake","plateId":"standard","meal":{"slug":"protein_shake","display_name":"Protein Shake","cuisine":"snack","primary_protein":"dairy","produces_servings":1,"eligible_slots":["snack","post_workout"],"min_scale":0.5,"max_scale":2,"flex_ingredient_id":"whey_protein_vanilla","contains_allergens":["Dairy"],"image_filename":"protein_shake.png","meal_prep":{"strategy":"none","reason":"Shake fresh so it does not separate or go gritty."},"plates":[{"id":"standard","display_name":"Protein Shake","description":"The fastest protein hit going — a scoop of protein powder shaken or blended with milk. The classic post-workout grab.","base_serving_multiplier":1,"additional_ingredients":[],"additional_instructions":[],"assembly_time_minutes":0,"plate_macros":{"kcal":364,"protein_g":39.5,"carbs_g":19.4,"fat_g":14,"fiber_g":0}}],"methods":[{"id":"no_cook","tools":["measuring_jug"],"display_name":"Shake & Go","time_active_minutes":1,"time_total_minutes":1,"skill_min":1,"shortcut_level":"scratch","ingredients":[{"ingredient_id":"whey_protein_vanilla","base_amount":35,"unit":"g","scaling":"flex","notes":"About 1-1.5 scoops."},{"ingredient_id":"full_cream_milk","base_amount":350,"unit":"ml","scaling":"scales","notes":"Milk for more calories; water for a leaner shake."}],"instructions":[{"summary":"Add the protein powder and milk to a shaker, shake until smooth, and drink.","substeps":["Add the protein powder and milk to a shaker, shake until smooth, and drink."]}]}]}};</script>
 
 <script>
 (function(){
@@ -399,16 +399,18 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
   function ingName(ing){
     return ing.display_name || ing.name || titleCase(ing.ingredient_id || ing.id || 'Ingredient');
   }
-  // Nice fractions for counts and spoon units. Never renders a nonzero
-  // amount as 0 — 2 eggs across 5 servings shows \u2153, not 0.
+  // Plain-text fractions for counts and spoon units — "1 1/2", not the tiny
+  // unicode "\u00bd" glyphs, which are unreadable at ingredient-row size.
+  // Never renders a nonzero amount as 0 — 2 eggs across 5 servings shows 1/3, not 0.
   function niceFraction(n){
     var whole=Math.floor(n), frac=n-whole;
-    var table=[[0,''],[0.25,'\u00bc'],[1/3,'\u2153'],[0.5,'\u00bd'],[2/3,'\u2154'],[0.75,'\u00be'],[1,'']];
+    var table=[[0,''],[0.25,'1/4'],[1/3,'1/3'],[0.5,'1/2'],[2/3,'2/3'],[0.75,'3/4'],[1,'']];
     var best=table[0], bd=99;
     for(var i=0;i<table.length;i++){var d=Math.abs(frac-table[i][0]); if(d<bd){bd=d;best=table[i];}}
     if(best[0]===1){whole+=1; best=[0,''];}
     if(whole===0&&!best[1]) return n>0?String(Math.round(n*100)/100):'0';
-    return String(whole||!best[1]?whole:'')+(best[1]||'');
+    if(!best[1]) return String(whole);
+    return whole>0 ? whole+' '+best[1] : best[1];
   }
   function formatAmount(amt, unit){
     if(amt==null) return '';
