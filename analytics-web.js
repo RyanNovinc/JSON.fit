@@ -26,7 +26,8 @@
   // yourself from the data (?internal=0 to undo).
   if (params.get('internal') === '1') set('jsonfit_internal', '1');
   if (params.get('internal') === '0') { try { localStorage.removeItem('jsonfit_internal'); } catch (e) {} }
-  var IS_INTERNAL = get('jsonfit_internal') === '1';
+  // Headless browsers (screenshot runs, crawlers that execute JS) are marked internal too.
+  var IS_INTERNAL = get('jsonfit_internal') === '1' || !!navigator.webdriver;
 
   // Identity + new-vs-returning.
   var isFirstVisit = false;
@@ -75,7 +76,7 @@
     var now = Date.now();
     if (!sessionId) {
       var stored = get('jsonfit_session');
-      if (stored) { try { var p = JSON.parse(stored); if (now - p.t < SESSION_TIMEOUT) sessionId = p.id; } catch (e) {} }
+      if (stored) { try { var p = JSON.parse(stored); if (now - p.t < SESSION_TIMEOUT) { sessionId = p.id; lastActivity = p.t; } } catch (e) {} }
     }
     if (!sessionId || now - lastActivity > SESSION_TIMEOUT) { sessionId = uuid(); newSession = true; }
     lastActivity = now;
@@ -127,6 +128,7 @@
   if (newSession) {
     track('session_started', {
       is_first_visit: isFirstVisit,
+      user_agent: (navigator.userAgent || '').slice(0, 200),
       utm_source: cur.utm_source, utm_medium: cur.utm_medium, utm_campaign: cur.utm_campaign,
       utm_term: cur.utm_term, utm_content: cur.utm_content,
       referrer: cur.referrer, landing_page: cur.landing_page,

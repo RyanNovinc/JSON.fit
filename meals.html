@@ -333,7 +333,7 @@ function buildChips(){
     b.addEventListener('click',function(){
       activeFilter=b.getAttribute('data-f');
       chipsEl.querySelectorAll('button').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});
-      if(window.gtag) gtag('event','meals_filter',{filter:activeFilter});
+      if(window.gtag) gtag('event','meals_filter',{filter:activeFilter});if(window.track) window.track('meals_filter',{filter:activeFilter});
       render();
     });
   });
@@ -342,7 +342,7 @@ sortEl.querySelectorAll('button').forEach(function(b){
   b.addEventListener('click',function(){
     activeSort=b.getAttribute('data-sort');
     sortEl.querySelectorAll('button').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});
-    if(window.gtag) gtag('event','meals_sort',{sort:activeSort});
+    if(window.gtag) gtag('event','meals_sort',{sort:activeSort});if(window.track) window.track('meals_sort',{sort:activeSort});
     render();
   });
 });
