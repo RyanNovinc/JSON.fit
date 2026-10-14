@@ -288,7 +288,7 @@ if (process.argv.includes('--preview')) {
   const longest = meals.slice().sort((a, b) => b.methods[0].instructions.map((s) => s.summary).join(' ').length - a.methods[0].instructions.map((s) => s.summary).join(' ').length)[0];
   const pv = head + cover + contents + skim + startHere + divider(sections[1]) + [pick('spaghetti_carbonara'), pick('butter_chicken'), pick('pulled_pork'), longest, pick('king_kong_chocolate')].filter(Boolean).map(recipe).join('') + closing + '</body></html>';
   writeFileSync(path.join(OUT_DIR, 'preview.html'), pv);
-  const one = { cover, start: startHere, bolognese: recipe(pick('bolognese')), closing, mains: divider(sections[1]) };
+  const one = { cover, start: startHere, bolognese: recipe(pick('bolognese')), closing, mains: divider(sections[1]), 'page-breakfast': recipe(pick('maple_muscle_toast')), 'page-main': recipe(pick('spaghetti_carbonara')), 'page-dessert': recipe(pick(meals.find((m) => /cheesecake/i.test(m.display_name)).slug)) };
   for (const [k, v] of Object.entries(one)) writeFileSync(path.join(OUT_DIR, `preview-${k}.html`), head + v + '</body></html>');
   console.log('preview.html: cover, contents, skim x2, start, divider, 5 recipes (longest: ' + longest.slug + '), closing');
 }

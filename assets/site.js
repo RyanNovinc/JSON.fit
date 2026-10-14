@@ -27,6 +27,24 @@
     if(a.dataset.loc&&a.href.indexOf('play.google.com')>-1&&a.href.indexOf('referrer=')<0){try{var pu=new URL(a.href);pu.searchParams.set('referrer','utm_source=json.fit&utm_medium=web&utm_content='+a.dataset.loc);a.href=pu.toString();}catch(e){}}
     if(a.dataset.loc){var dl={button_location:a.dataset.loc,store:a.href.indexOf('play.google')>-1?'play':'app_store'};if(window.gtag) gtag('event','download_click',dl);if(window.track) window.track('download_click',dl);}
   },true);
+  // Behaviour events (first-party): which sections get seen, FAQ opens, meal and nav clicks.
+  if(window.track){
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a'); if(!a||!a.href) return;
+      var h=a.getAttribute('href')||'';
+      if(/^\/r\//.test(h)) window.track('meal_click',{meal:h.replace(/^\/r\//,'').replace(/\/.*$/,''),from:location.pathname});
+      else if(a.closest('nav.site-nav')) window.track('nav_click',{to:h});
+      else if(a.classList.contains('arrow')) window.track('link_click',{to:h,from:location.pathname});
+    },true);
+    document.addEventListener('toggle',function(e){
+      var d=e.target; if(d&&d.tagName==='DETAILS'&&d.open){var s=d.querySelector('summary'); window.track('faq_opened',{question:(s?s.textContent:'').trim().slice(0,80),page:location.pathname});}
+    },true);
+    if('IntersectionObserver' in window){
+      var seen={};
+      var so=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting&&!seen[x.target.id]){seen[x.target.id]=1;window.track('section_seen',{section:x.target.id,page:location.pathname});}});},{threshold:.4});
+      document.querySelectorAll('main section[id]').forEach(function(s){so.observe(s);});
+    }
+  }
   // Reveal on scroll; everything is visible without JS, without IntersectionObserver, or with Reduce Motion.
   var els=document.querySelectorAll('.rv');
   if(!els.length||!('IntersectionObserver' in window)) return;
