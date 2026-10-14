@@ -33,3 +33,7 @@ Skinny guys, usually 19 to 30, who train but can't eat enough to gain weight, an
 
 - [Privacy policy](https://json.fit/privacy-policy.html): No accounts, no personal-data collection. Data stays on device.
 - [Terms of service](https://json.fit/terms-of-service.html): Terms of use.
+
+## Full index
+
+- [llms-full.txt](https://json.fit/llms-full.txt): every meal with calories and protein, the 25 decisions with confidence labels, every blog post, the programs and the reference files, in one file.
