@@ -32,6 +32,16 @@ for d in days:
             if c.get('surface') != 'web' or c.get('is_internal'): continue
             ev.append(e)
 
+# Exact duplicates first: a browser that could not read the collector's response
+# re-sent the same batch every ten seconds (double CORS header, fixed 14 Oct 2026),
+# so one event could be stored hundreds of times. Later events carry event_id.
+seen_ev = set(); dedup = []
+for e in ev:
+    k = e.get('event_id') or (e.get('anon_id'), e.get('session_id'), e.get('event'), e.get('timestamp'), json.dumps(e.get('properties'), sort_keys=True))
+    if k in seen_ev: continue
+    seen_ev.add(k); dedup.append(e)
+DUPES = len(ev) - len(dedup); ev = dedup
+
 # Per-user facts for filtering.
 views = collections.Counter(e['anon_id'] for e in ev if e['event']=='page_viewed')
 ua, tz = {}, {}
@@ -72,7 +82,7 @@ def stats(E):
     s['home median seconds'] = round(statistics.median(eng)) if eng else 0
     return s
 T, L = stats(P['this']), stats(P['last'])
-print(f"json.fit — last {DAYS} days vs the {DAYS} before  (excluded {sum(1 for r in drop.values() if r=='bot')} bot ids, {sum(1 for r in drop.values() if r=='heavy')} heavy ids)")
+print(f"json.fit — last {DAYS} days vs the {DAYS} before  (dropped {DUPES} duplicate events; excluded {sum(1 for r in drop.values() if r=='bot')} bot ids, {sum(1 for r in drop.values() if r=='heavy')} heavy ids)")
 print(f"{'':28s}{'this':>8s}{'last':>8s}")
 for k in T: print(f"{k:28s}{T[k]:8d}{L[k]:8d}")
 E = P['this']

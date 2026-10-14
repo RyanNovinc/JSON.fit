@@ -101,6 +101,7 @@
   function track(event, properties) {
     rollSession();
     queue.push({
+      event_id: uuid(),
       event: event,
       timestamp: new Date().toISOString(),
       anon_id: anonId,
@@ -121,7 +122,14 @@
     var headers = { 'Content-Type': 'application/json' };
     if (SECRET) headers['x-analytics-key'] = SECRET;
     fetch(ENDPOINT, { method: 'POST', headers: headers, body: body, keepalive: true })
-      .catch(function () { queue = batch.concat(queue); });
+      .catch(function () {
+        // Retry a failed batch at most twice. A response the browser rejects
+        // (e.g. a CORS header problem) also lands here even though the server
+        // stored the batch, and an endless requeue sent the same events every
+        // ten seconds for as long as the tab stayed open (seen Oct 2026).
+        var retry = batch.filter(function (e) { e._retry = (e._retry || 0) + 1; return e._retry <= 2; });
+        if (retry.length) queue = retry.concat(queue);
+      });
   }
 
   // One session_started per session, carrying the rich attribution + context.
