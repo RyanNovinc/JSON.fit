@@ -13,7 +13,7 @@ Busy working adults, men and women, who want to eat right and train with the lea
 - [Home](https://json.fit/): What the app does, the route, the meals, the week, the training, the evidence and FAQ. Primary reference page.
 - [Meals](https://json.fit/meals.html): All 75 meals with calories, protein and hands-on time, filterable by batch meals, breakfast, desserts, backup meals, slow cooker, oven bakes, 10 minutes hands-on or less and 40 g+ protein.
 - [Recipe pages](https://json.fit/r/): One page per meal with ingredients, method, macros and how it keeps, e.g. https://json.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
-- [Training](https://json.fit/training/): How the app programs training, the four free programs and the exercise library.
+- [Exercises](https://json.fit/exercises/): All 144 exercises in the app, with start and finish photos.
 - [Programs](https://json.fit/programs/): Free periodised programs (beginner to advanced) that import directly into the app.
 - [Exercises](https://json.fit/exercises/): 144 exercises with start and finish photos, what each trains and how to do it.
 - [How we know](https://json.fit/research/): The 25 decisions the app makes, what the studies found, the confidence level and the sources, plus the full reference files.
