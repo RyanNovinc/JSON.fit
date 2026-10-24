@@ -40,6 +40,7 @@ const QUALITY_LADDER = [82, 76, 70, 64, 58, 52, 45];
 
 const FORCE = process.argv.includes('--force');
 const MEALS_ONLY = process.argv.includes('--meals-only');
+const APP_DIR = process.argv.includes('--app') ? process.argv[process.argv.indexOf('--app') + 1] : null;
 
 /* ---------- helpers ---------- */
 
@@ -113,7 +114,10 @@ const missing = [];
 for (const [slug, meal] of Object.entries(meals)) {
   if (!meal) continue;
 
-  const mealSrc = resolveSource(meal.image_filename);
+  // Batch mains (refresh-offered-meals.mjs) carry the app's photo name in app_image_filename;
+  // with --app <app dir> the card is cut from that full-size PNG instead of the 760 px webp.
+  const appPng = APP_DIR && meal.app_image_filename ? path.join(APP_DIR, 'src/assets/meals', meal.app_image_filename) : null;
+  const mealSrc = (appPng && existsSync(appPng)) ? appPng : resolveSource(meal.image_filename);
   if (mealSrc) jobs.push({ out: path.join(OUT_DIR, `${slug}.jpg`), src: mealSrc, label: `${slug}.jpg` });
   else missing.push(`${slug} (meal image "${meal.image_filename || '—'}")`);
 

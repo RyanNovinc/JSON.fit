@@ -30,6 +30,10 @@ import path from 'node:path';
 
 const SITE = 'https://json.fit';
 const MEALS_JSON = path.resolve('r/meals.json');
+// Meals the app no longer offers (scripts/refresh-offered-meals.mjs). Their pages are
+// still built, so inbound links keep working, with a note pointing to the meals page;
+// they stay out of the sitemap.
+const RETIRED_JSON = path.resolve('r/meals-retired.json');
 const TEMPLATE = path.resolve('r/index.html');
 const OUT_ROOT = path.resolve('r');
 const SITEMAP = path.resolve('sitemap.xml');
@@ -119,6 +123,13 @@ function heroImage(meal, plate) {
   return file ? `${SITE}/images/meals/${slugifyImage(file)}` : '';
 }
 
+const amountText = (i) => {
+  if (i.base_amount == null) return '';
+  const n = Math.round(i.base_amount * 100) / 100;
+  if (i.unit === 'g' || i.unit === 'ml') return `${n} ${i.unit}`;
+  if (!i.unit || i.unit === 'count' || i.unit === 'unit') return `${n}`;
+  return `${n} ${i.unit}`;
+};
 const ingName = (ing) => ing.display_name || ing.name || titleCase(ing.ingredient_id || ing.id || 'Ingredient');
 const stepText = (s) => (typeof s === 'string' ? s : (s && (s.summary || s.text)) || '');
 
@@ -131,7 +142,7 @@ function recipeSchema(meal, plate, url) {
 
   const ingredients = ((method && method.ingredients) || meal.ingredients || [])
     .concat(plate.additional_ingredients || [])
-    .map(ingName);
+    .map((i) => [amountText(i), ingName(i)].filter(Boolean).join(' '));
 
   const steps = ((method && method.instructions) || meal.instructions || [])
     .concat(plate.additional_instructions || [])
@@ -150,6 +161,9 @@ function recipeSchema(meal, plate, url) {
   if (meal.cuisine) data.recipeCuisine = titleCase(meal.cuisine);
   const mins = totalMinutes(meal, plate);
   if (mins > 0) data.totalTime = `PT${mins}M`;
+  if (method && num(method.time_active_minutes)) data.prepTime = `PT${method.time_active_minutes}M`;
+  if (meal.batch) data.recipeYield = `${meal.batch.tubs} tubs`;
+  else if ((meal.produces_servings || 1) > 1) data.recipeYield = `${meal.produces_servings} serves`;
   if (ingredients.length) data.recipeIngredient = ingredients;
   if (steps.length) data.recipeInstructions = steps;
 
@@ -162,6 +176,32 @@ function recipeSchema(meal, plate, url) {
   if (Object.keys(nut).length > 1) data.nutrition = nut;
 
   return data;
+}
+
+const minutes = (n) => {
+  n = Math.round(n || 0);
+  if (n < 60) return `${n} min`;
+  const h = Math.floor(n / 60), r = n % 60;
+  return r ? `${h} h ${r} min` : `${h} h`;
+};
+
+// The meta description. Plain facts from the app data, no claims beyond them.
+function describe(meal, plate, mealCount) {
+  if (meal.retired) {
+    return `This recipe is no longer in the JSON.fit meal list. See the ${mealCount} meals the app plans with now at json.fit/meals.html.`;
+  }
+  const b = meal.batch;
+  if (b) {
+    const st = (meal.meal_prep || {}).storage || {};
+    const keeps = [st.fridge_days ? `${st.fridge_days} days in the fridge` : '', st.freeze_months ? `${st.freeze_months} month${st.freeze_months === 1 ? '' : 's'} in the freezer` : ''].filter(Boolean).join(' and ');
+    return `One cook, ${b.tubs} tubs: ${b.hands_on_minutes} min hands-on, ${minutes(b.total_minutes)} in all. Keeps ${keeps}. Every ingredient, every step and the macros per tub.`;
+  }
+  const method = fastestMethod(meal) || {};
+  const active = num(method.time_active_minutes);
+  const lead = meal.site && meal.site.section === 'backup'
+    ? `Didn't get to a meal? Blend this in about ${active || 4} minutes.`
+    : `${active != null ? active + ' min hands-on' : minutes(totalMinutes(meal, plate))}, every ingredient and every step.`;
+  return `${lead} One of ${mealCount} meals in JSON.fit, with the macros per serve.`;
 }
 
 function buildHead(meal, plate, slug, mealCount) {
@@ -177,13 +217,11 @@ function buildHead(meal, plate, slug, mealCount) {
   if (m.protein_g != null) bits.push(`${Math.round(m.protein_g)}g protein`);
   const ogTitle = bits.join(' · ');
 
-  const description =
-    `On the table in ${totalMinutes(meal, plate)} minutes, every step written. ` +
-    `One of ${mealCount} bulking meals for skinny guys who struggle to eat big. Free.`;
+  const description = describe(meal, plate, mealCount);
 
   const schema = recipeSchema(meal, plate, url);
 
-  return `<title>${esc(name)} — JSON.fit</title>
+  return `<title>${esc(name)} | JSON.fit</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(url)}">
 <meta property="og:type" content="article">
@@ -240,9 +278,13 @@ try {
   process.exit(1);
 }
 
+const mealCount = Object.keys(meals).length; // the offered meals only
+if (existsSync(RETIRED_JSON)) {
+  const retired = JSON.parse(readFileSync(RETIRED_JSON, 'utf8'));
+  for (const [slug, meal] of Object.entries(retired)) if (!meals[slug]) meals[slug] = { ...meal, retired: true };
+}
 const template = readFileSync(TEMPLATE, 'utf8');
 const slugs = Object.keys(meals);
-const mealCount = slugs.length;
 
 const routes = {};
 const sitemapUrls = [];
@@ -276,7 +318,7 @@ for (const slug of slugs) {
     writeFileSync(path.join(outDir, 'index.html'), html, 'utf8');
 
     if (ogImage(slug, plate) === FALLBACK_OG_IMAGE) missingImages++;
-    sitemapUrls.push(url);
+    if (!meal.retired) sitemapUrls.push(url);
     pages++;
   }
 
@@ -291,7 +333,7 @@ for (const slug of slugs) {
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="${SITE}/r/${slug}/${canon.id}/">
 <meta http-equiv="refresh" content="0;url=/r/${slug}/${canon.id}/">
-<title>${esc(meal.display_name)} — JSON.fit</title>
+<title>${esc(meal.display_name)} | JSON.fit</title>
 </head>
 <body><script>location.replace('/r/${slug}/${canon.id}/');</script>
 <p>Redirecting to <a href="/r/${slug}/${canon.id}/">${esc(meal.display_name)}</a>.</p></body>
