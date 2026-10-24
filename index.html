@@ -91,8 +91,21 @@ img{display:block}
 .hero-art[data-shot="route"] .route-shot{opacity:1}
 .route.mini{width:min(480px,100%);text-align:left}
 .route.mini .k{color:var(--violet-text)}
-.route.mini .phase{padding:9px 0}
-@media(max-width:900px){.hero-art .route-shot{padding:24px 16px 80px}.route.mini{padding:18px}.route.mini .phase{padding:7px 0}.route.mini .phase small{display:none}.route.mini .big{font-size:1.5rem}}
+.rchart{display:block;width:100%;height:auto;margin-top:14px;overflow:visible}
+.rchart .g{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.rchart .ax{fill:var(--text-3);font:500 10px var(--mono)}
+.rchart .ln{fill:none;stroke:#c084fc;stroke-width:3;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
+.rchart .pt{fill:#c084fc} .rchart .end{fill:#fff;stroke:#a855f7;stroke-width:3}
+.rchart .nl{fill:#fff;font:700 12px var(--sans)} .rchart .nl.e{text-anchor:end}
+.rchart .pl{fill:var(--text-2);font:600 9px var(--mono);letter-spacing:.08em;text-anchor:middle}
+.rchart .pl.t{fill:#fbbf24} .rchart .pl.r{fill:#c084fc}
+.rnote{margin:10px 0 0;color:var(--text-3);font-size:.8rem;line-height:1.45}
+.hero-art[data-shot="route"] .rchart .ln{animation:rdraw 1.4s ease-out both}
+.hero-art[data-shot="route"] .rchart .ar{animation:rfade 1.4s ease-out both}
+@keyframes rdraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes rfade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.hero-art[data-shot="route"] .rchart .ln,.hero-art[data-shot="route"] .rchart .ar{animation:none}}
+@media(max-width:900px){.hero-art .route-shot{padding:24px 16px 80px}.route.mini{padding:18px}.route.mini .phase{padding:7px 0}.rnote{display:none}.route.mini .big{font-size:1.5rem}}
 .hero-art[data-shot="train"] .shot.main{opacity:0}
 .hero-art[data-shot="train"] .shot.alt{opacity:1}
 .shot-pick{position:absolute;z-index:2;left:50%;bottom:9%;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(10,10,11,.72);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
@@ -304,12 +317,17 @@ section{position:relative}
       <div class="route mini">
         <p class="k">Your route &middot; Ryan's, planned by the app</p>
         <p class="big">80.6 kg <span>&rarr;</span> 90 kg <span>at 13%</span></p>
-        <div class="phases">
-          <div class="phase"><i class="t"></i><div><b>Trim</b><small>Down to 16% body fat first</small></div><span class="num">Phase 1</span></div>
-          <div class="phase"><i></i><div><b>Build</b><small>Up to 82.4 kg, until 18%</small></div><span class="num">Phase 2</span></div>
-          <div class="phase"><i></i><div><b>Build, trim, build</b><small>Cycling 16 to 18% up to 94 kg</small></div><span class="num">Phases 3 to 6</span></div>
-          <div class="phase"><i class="r"></i><div><b>Reveal</b><small>A final cut to 90 kg at 13%</small></div><span class="num">Phase 7</span></div>
-        </div>
+        <svg class="rchart" viewBox="0 0 450 180" role="img" aria-label="Ryan's route as a line: body fat from 23.8% down to 16%, cycling between 16 and 18% while building, then a final cut to 13%">
+          <defs><linearGradient id="rfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a855f7" stop-opacity=".28"/><stop offset="1" stop-color="#a855f7" stop-opacity="0"/></linearGradient></defs>
+          <line x1="24" x2="416" y1="26.0" y2="26.0" class="g"/><text x="428" y="29.0" class="ax">24%</text><line x1="24" x2="416" y1="87.1" y2="87.1" class="g"/><text x="428" y="90.1" class="ax">18%</text><line x1="24" x2="416" y1="138.0" y2="138.0" class="g"/><text x="428" y="141.0" class="ax">13%</text>
+          <path d="M24.0 28.0 L80.0 107.5 L136.0 87.1 L192.0 107.5 L248.0 87.1 L304.0 107.5 L360.0 87.1 L416.0 138.0 L416 150 L24 150 Z" fill="url(#rfill)" class="ar"/>
+          <path d="M24.0 28.0 L80.0 107.5 L136.0 87.1 L192.0 107.5 L248.0 87.1 L304.0 107.5 L360.0 87.1 L416.0 138.0" class="ln" pathLength="1"/>
+          <circle cx="24.0" cy="28.0" r="5" class="pt"/><circle cx="80.0" cy="107.5" r="3" class="pt"/><circle cx="136.0" cy="87.1" r="3" class="pt"/><circle cx="192.0" cy="107.5" r="3" class="pt"/><circle cx="248.0" cy="87.1" r="3" class="pt"/><circle cx="304.0" cy="107.5" r="3" class="pt"/><circle cx="360.0" cy="87.1" r="3" class="pt"/><circle cx="416.0" cy="138.0" r="5" class="end"/>
+          <text x="32.0" y="32.0" class="nl">80.6 kg</text>
+          <text x="408.0" y="128.0" class="nl e">90 kg</text>
+          <text x="52.0" y="170" class="pl t">TRIM</text><text x="108.0" y="170" class="pl">BUILD</text><text x="164.0" y="170" class="pl t">TRIM</text><text x="220.0" y="170" class="pl">BUILD</text><text x="276.0" y="170" class="pl t">TRIM</text><text x="332.0" y="170" class="pl">BUILD</text><text x="388.0" y="170" class="pl r">REVEAL</text>
+        </svg>
+        <p class="rnote">Body fat over the phases. Trim first, then build in 16 to 18% cycles up to 94 kg, then reveal.</p>
       </div>
     </div>
     <div class="shot-pick" aria-label="Show">
