@@ -89,7 +89,6 @@ img{display:block}
 .hero-art .route-shot{position:absolute;inset:0;opacity:0;display:flex;align-items:center;justify-content:center;padding:40px 16px 70px}
 .hero-art[data-shot="route"] .shot.main{opacity:0}
 .hero-art[data-shot="route"] .route-shot{opacity:1}
-.big-route .k{color:var(--violet-text)}
 .feat .copy p.label.v{color:var(--violet-text)}
 .route.mini{width:min(480px,100%);text-align:left}
 .route.mini .k{color:var(--violet-text)}
@@ -186,6 +185,9 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .feat .copy li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;color:var(--text);font-size:1rem}
 .feat .copy li::before{content:"";width:8px;height:8px;border-radius:50%;margin-top:10px;background:var(--green)}
 .feat.t .copy li::before{background:var(--cyan)}
+.feat.rt .copy li::before{background:var(--violet-text)}
+.route.big-route .k{color:var(--violet-text)}
+.route.big-route .link{color:var(--violet-text)}
 .feat .art{display:flex;justify-content:center;min-width:0}
 .feat .art .phone{width:min(78%,320px)}
 .feat .links{display:flex;flex-wrap:wrap;gap:12px 26px;margin-top:24px}
@@ -452,7 +454,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 
 <section class="sec" id="route" style="padding-top:20px" aria-label="Your route and meal plan features">
   <div class="wrap">
-    <div class="feat t rv">
+    <div class="feat t rt rv">
       <div class="copy">
         <p class="label v">Your route</p>
         <h3 class="caps">When to cut.<br>When to bulk.</h3>
