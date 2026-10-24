@@ -197,8 +197,10 @@ section{position:relative}
 .perks{list-style:none;margin:0 auto;padding:0;max-width:1240px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .perks-sec{padding:0 20px;margin-top:10px;text-align:center}
 .perks-h{font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1;margin:34px auto 0;text-wrap:balance}
+.perks-label{margin:34px 0 14px;font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2)}
+.perk i{display:block;font-style:normal;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--cyan,#22d3ee);margin-bottom:10px}
 .perks-h .cyan{color:var(--cyan,#22d3ee)}
-.perks-sub{max-width:52ch;margin:16px auto 30px;color:var(--text-2);font-size:clamp(1rem,1.4vw,1.12rem);text-wrap:balance}
+.perks-sub{max-width:52ch;margin:16px auto 0;color:var(--text-2);font-size:clamp(1rem,1.4vw,1.12rem);text-wrap:balance}
 .perk{background:var(--bg);padding:26px 14px;text-align:center}
 .perk b{display:block;font-size:1.05rem;font-weight:800;line-height:1.2}
 .perk span{display:block;margin-top:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--text-2);text-transform:uppercase;line-height:1.5}
@@ -264,7 +266,7 @@ section{position:relative}
     <h1 id="h1" class="serif">
       Fitness,<span class="cyan">on autopilot.</span>
     </h1>
-    <p class="sub">Built to get you the most results for the least time. Short prep meals at your exact macros, and training where every set counts.</p>
+    <p class="sub">One grocery shop, one prep, and every day planned to your macros. Training where every set counts.</p>
     <div class="badges">
       <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="hero">
         <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -294,16 +296,17 @@ section{position:relative}
 </section>
 
 <section class="perks-sec" aria-labelledby="perks-h">
-  <h2 id="perks-h" class="perks-h caps">One grocery shop. One prep.<br><span class="cyan">Your macros hit all week.</span></h2>
-  <p class="perks-sub">No tracking app, no counting, no deciding. You're told exactly what to eat, and it adds up.</p>
-  <ul class="perks" role="list">
-    <li class="perk"><b>One grocery shop</b><span>Your grocery list, made for you</span></li>
-    <li class="perk"><b>One prep</b><span>Cook once, eat all week</span></li>
-    <li class="perk"><b>Built to batch</b><span>Meals chosen to cook in bulk with short prep</span></li>
-    <li class="perk"><b>No counting</b><span>Each day already lands on your calories and protein</span></li>
-    <li class="perk"><b>Health covered</b><span>Fibre and protein in every day, not just calories</span></li>
-    <li class="perk"><b>Every set counts</b><span>Sets and rest set by the research</span></li>
-  </ul>
+  <h2 id="perks-h" class="perks-h caps">Better results.<br><span class="cyan">A fraction of the time.</span></h2>
+  <p class="perks-sub">Your food and training, built on the science. Every hour you put in counts.</p>
+  <p class="perks-label">How your food works</p>
+  <ol class="perks" role="list">
+    <li class="perk"><i>01</i><b>Grocery list, made</b><span>Exactly what you'll eat this week, nothing extra</span></li>
+    <li class="perk"><i>02</i><b>Prep, step by step</b><span>What to cook, in what order, and what to freeze</span></li>
+    <li class="perk"><i>03</i><b>Built to batch</b><span>Every meal picked for short prep and big batches</span></li>
+    <li class="perk"><i>04</i><b>Each day planned</b><span>Open the app and eat what it says</span></li>
+    <li class="perk"><i>05</i><b>Macros hit</b><span>Every day lands on your calories and protein. Nothing to add yourself</span></li>
+    <li class="perk"><i>06</i><b>Health covered</b><span>Fibre and protein checked too, not just calories</span></li>
+  </ol>
 </section>
 
 <section class="sec" id="how" aria-labelledby="how-h">
