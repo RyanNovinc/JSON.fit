@@ -10,10 +10,10 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>JSON.fit: Eating big, made easy.</title>
-<meta name="description" content="Meals and training for skinny guys who can't gain weight. JSON.fit works out your goal weight and timeline, then builds a week of calorie-dense meals you can finish and the training to match. Free, no ads, no account.">
-<meta property="og:title" content="JSON.fit: Eating big, made easy.">
-<meta property="og:description" content="For skinny guys who can't gain weight. Your goal weight, your timeline, a week of calorie-dense meals you can finish, and the training to match. About a minute, on your phone.">
+<title>JSON.fit: Fitness on autopilot.</title>
+<meta name="description" content="Your training and food, decided. JSON.fit plans a week of meals around your calories and protein, writes the shopping list and builds your training program. Cook once a week, follow the plan, get on with your life. Free, no ads, no account.">
+<meta property="og:title" content="JSON.fit: Fitness on autopilot.">
+<meta property="og:description" content="Your training and food, decided. Cook once a week, follow the plan, get on with your life. Set up in about a minute, on your phone.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://json.fit/">
 <meta property="og:image" content="https://json.fit/og-cover.png">
@@ -21,8 +21,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="JSON.fit">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="JSON.fit: Eating big, made easy.">
-<meta name="twitter:description" content="For skinny guys who can't gain weight. A week of calorie-dense meals you can finish, and the training to match.">
+<meta name="twitter:title" content="JSON.fit: Fitness on autopilot.">
+<meta name="twitter:description" content="Your training and food, decided. Cook once a week, follow the plan, get on with your life.">
 <meta name="twitter:image" content="https://json.fit/og-cover.png">
 <meta name="theme-color" content="#0b0b0e">
 <link rel="canonical" href="https://json.fit/">
@@ -40,7 +40,7 @@
   "name": "JSON.fit",
   "operatingSystem": "iOS, Android",
   "applicationCategory": "HealthApplication",
-  "description": "Meals and training for skinny guys who can't gain weight. JSON.fit sets a goal weight and timeline from published research, then builds a week of calorie-dense, high-protein meals with every step written, one shopping list, one batch-prep session, and a periodised training program.",
+  "description": "Fitness on autopilot for busy people. JSON.fit sets a goal weight and timeline from published research, then plans a week of high-protein meals around your calories with every step written, one shopping list, one meal-prep session, and a periodised training program with sets, reps and rest already set.",
   "url": "https://json.fit/",
   "downloadUrl": "https://apps.apple.com/au/app/json-fit/id6758357834",
   "author": { "@type": "Person", "name": "Ryan Novinc" },
@@ -52,10 +52,10 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "I'm full after half a plate. How does this help?", "acceptedAnswer": {"@type": "Answer", "text": "The meals are built dense, so a plate you can finish carries more calories and protein than one you can't. It doesn't make you hungrier. It makes every meal you do eat count for more, and shakes cover the gaps."}},
-    {"@type": "Question", "name": "I don't want to end up skinny-fat.", "acceptedAnswer": {"@type": "Answer", "text": "Your route has a body-fat cap. When you reach it the app switches you to a short trim phase, then back to building. You're never on an open-ended bulk."}},
-    {"@type": "Question", "name": "I can't afford to eat 3,500 calories a day.", "acceptedAnswer": {"@type": "Answer", "text": "One shop a week off a single list, batch-cooked, with the ingredients the meals share. Add your own prices if you want to see what the shop will cost."}},
-    {"@type": "Question", "name": "I don't have time to cook.", "acceptedAnswer": {"@type": "Answer", "text": "34 of the 81 meals take 15 minutes or less, and every recipe defaults to its fast version. Most of the week's food comes off one prep session."}},
+    {"@type": "Question", "name": "I already train. My food is the mess.", "acceptedAnswer": {"@type": "Answer", "text": "Start with the meals. Pick the ones you like and the app plans the week around your calories and protein, writes the shopping list and plans one prep session. Each day shows what to eat and when."}},
+    {"@type": "Question", "name": "I don't have time to cook.", "acceptedAnswer": {"@type": "Answer", "text": "Most of the week's food comes off one prep session. 34 of the 81 meals take 15 minutes or less, and the app picks what goes in the fridge and what goes in the freezer."}},
+    {"@type": "Question", "name": "Won't I get sick of eating the same thing?", "acceptedAnswer": {"@type": "Answer", "text": "One cook covers different meals across the week, not one dish seven times. Swap any meal for another you like and the app re-balances the day so it still lands on your calories and protein."}},
+    {"@type": "Question", "name": "Is it only for building muscle?", "acceptedAnswer": {"@type": "Answer", "text": "No. It's for men and women who want to lose weight, build muscle or both. Your route sets a goal weight and a date, with the phases in between."}},
     {"@type": "Question", "name": "Do I need ChatGPT or another AI?", "acceptedAnswer": {"@type": "Answer", "text": "No. There's no AI in the app. Your route, your program and your meals are built from published rules, on your phone, in about a minute."}},
     {"@type": "Question", "name": "How much does JSON.fit cost?", "acceptedAnswer": {"@type": "Answer", "text": "JSON.fit is free: meal plans, training programs, shopping lists and meal prep, with no ads and no account."}}
   ]
@@ -190,6 +190,15 @@ section{position:relative}
 @media(max-width:900px){.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.rgrid{grid-template-columns:minmax(0,1fr)}}
 
+/* benefits row */
+.perks{list-style:none;margin:0 auto;padding:0;max-width:1240px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.perks-sec{padding:0 20px;margin-top:10px}
+.perk{background:var(--bg);padding:26px 14px;text-align:center}
+.perk b{display:block;font-size:1.05rem;font-weight:800;line-height:1.2}
+.perk span{display:block;margin-top:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--text-2);text-transform:uppercase;line-height:1.5}
+@media(max-width:1100px){.perks{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.perks{grid-template-columns:repeat(2,minmax(0,1fr))}.perk{padding:20px 10px}.perk b{font-size:.98rem}.perk span{font-size:.62rem}}
+
 /* lab */
 .lab{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
 .lab img{border-radius:26px;width:100%;aspect-ratio:4/5;object-fit:cover}
@@ -249,13 +258,12 @@ section{position:relative}
       <button role="tab" id="tab-meal" aria-selected="true" data-set="meal">Meals</button>
       <button role="tab" id="tab-train" aria-selected="false" data-set="train">Training</button>
     </div>
-    <p class="label">For skinny guys who can't gain weight</p>
+    <p class="label">For busy people who want results</p>
     <h1 id="h1" class="serif">
-      <span class="only-meal">Eating big,<span class="cyan">made easy.</span></span>
-      <span class="only-train">Lifting big,<span class="cyan">made simple.</span></span>
+      Fitness,<span class="cyan">on autopilot.</span>
     </h1>
-    <p class="sub only-meal">Answer a few questions. JSON.fit builds a week of calorie-dense meals you can actually finish, around your calories, your protein and the food you like.</p>
-    <p class="sub only-train">Answer a few questions. JSON.fit builds your whole training program, around your days, your kit and your goal.</p>
+    <p class="sub only-meal">Your training and food, decided. Short prep, your exact macros, meals you actually like.</p>
+    <p class="sub only-train">Your training and food, decided. Sets, reps, rest and progression set for you, around your days and your kit.</p>
     <div class="badges">
       <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="hero">
         <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -280,18 +288,29 @@ section{position:relative}
   </div>
 </section>
 
+<section class="perks-sec" aria-label="What you get">
+  <ul class="perks" role="list">
+    <li class="perk"><b>Short prep</b><span>Cook once, eat all week</span></li>
+    <li class="perk"><b>Your exact macros</b><span>Every day lands on your calories and protein</span></li>
+    <li class="perk"><b>Always a meal ready</b><span>So takeaway stops being the default</span></li>
+    <li class="perk"><b>Know what to eat, when</b><span>Each day planned</span></li>
+    <li class="perk"><b>Only food you like</b><span>You pick the meals</span></li>
+    <li class="perk"><b>Training decided</b><span>Sets, reps and rest set for you</span></li>
+  </ul>
+</section>
+
 <section class="sec" id="how" aria-labelledby="how-h">
   <div class="wrap">
     <div class="sec-head rv">
       <p class="label">How it works</p>
-      <h2 id="how-h" class="caps">Built in a minute.<br>Not by a chatbot.</h2>
-      <p>Nothing to set up and nothing to copy anywhere. The app plans it all on your phone, from published rules, and shows its working while it builds.</p>
+      <h2 id="how-h" class="caps">Set it up once.<br>Then it runs.</h2>
+      <p>Answer a few questions one time. The app plans your food and your training on your phone, from published rules, and shows its working while it builds. After that you just follow it.</p>
     </div>
     <div class="build">
       <ol class="steps rv">
         <li><span class="n">01</span><div><h3>Answer a few questions.</h3><p>Your body, your goal, the days you can train, the kit you've got and the meals you like. Once.</p></div></li>
-        <li><span class="n">02</span><div><h3>JSON.fit builds it.</h3><p>Your goal weight, a body-fat cap and a date. A week of meals that lands on your calories and protein every day. A program with the right sets for every muscle, deloads planned in.</p></div></li>
-        <li><span class="n">03</span><div><h3>Cook and train.</h3><p>Every meal written step by step. Every set logged, with what you lifted last time and how hard to push today.</p></div></li>
+        <li><span class="n">02</span><div><h3>JSON.fit decides.</h3><p>A week of meals that lands on your calories and protein every day, and the shopping list for it. A program with the right sets for every muscle, deloads planned in. Your goal weight and a date.</p></div></li>
+        <li><span class="n">03</span><div><h3>Cook once. Train. Live.</h3><p>One shop and one cook for the week. Each day shows what to eat. Each workout shows what you lifted last time and how hard to push today.</p></div></li>
       </ol>
       <div class="phones rv">
         <div class="phone"><img src="images/home/cap-meal-build.webp" width="600" height="1305" loading="lazy" alt="JSON.fit building a week of meals: a photo grid of seven days and steps like Placing 31 meals across 7 days"></div>
@@ -305,12 +324,12 @@ section{position:relative}
   <div class="wrap">
     <div class="sec-head rv">
       <p class="label g">The meals</p>
-      <h2 id="meals-h" class="caps">No more chicken<br>and rice.</h2>
-      <p>81 calorie-dense meals you'll actually want to eat: carbonara, bulgogi, massaman, breakfast burritos, shakes that go down easy. Every one photographed, with exact ingredients and every step written.</p>
+      <h2 id="meals-h" class="caps">One cook.<br>Seven days.</h2>
+      <p>Meal prep usually means the same box all week. Here one cook covers different meals across the week: curries, bowls, pasta, breakfasts that keep. 81 meals, every one photographed, with exact ingredients and every step written.</p>
     </div>
   </div>
   <div class="wall" aria-label="Some of the meals in JSON.fit">
-    <div class="track"><a class="mcard" href="/r/spaghetti_carbonara/"><img src="images/meals/spaghetti-carbonara.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Carbonara<span class="k">1,094 kcal</span></span></a><a class="mcard" href="/r/king_kong_chocolate/"><img src="images/meals/king-kong-chocolate.webp" alt="" loading="lazy" width="220" height="240"><span class="t">King Kong Chocolate<span class="k">1,398 kcal</span></span></a><a class="mcard" href="/r/pulled_pork/"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked BBQ Pulled Pork<span class="k">772 kcal</span></span></a><a class="mcard" href="/r/steak_and_eggs/"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Steak &amp; Eggs<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/banana_bulk/"><img src="images/meals/banana-bulk.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Banana Bulk<span class="k">1,278 kcal</span></span></a><a class="mcard" href="/r/shakshuka/"><img src="images/meals/shakshuka.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shakshuka<span class="k">895 kcal</span></span></a><a class="mcard" href="/r/freezer_breakfast_burrito/"><img src="images/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Freezer Breakfast Burrito<span class="k">741 kcal</span></span></a><a class="mcard" href="/r/smoked_salmon_bagel/"><img src="images/meals/smoked-salmon-bagel.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoked Salmon Bagel<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/overnight_oats/"><img src="images/meals/overnight-oats.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Overnight Oats<span class="k">797 kcal</span></span></a><a class="mcard" href="/r/big_breakfast_plate/"><img src="images/meals/big-breakfast-plate.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Big Breakfast Plate<span class="k">1,296 kcal</span></span></a><a class="mcard" href="/r/chicken_mac_and_cheese/"><img src="images/meals/chicken-mac-and-cheese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Mac and Cheese<span class="k">963 kcal</span></span></a><a class="mcard" href="/r/choc_muscle_maxx/"><img src="images/meals/choc-muscle-maxx.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Choc Muscle MAXX<span class="k">1,119 kcal</span></span></a><a class="mcard" href="/r/spaghetti_carbonara/" aria-hidden="true" tabindex="-1"><img src="images/meals/spaghetti-carbonara.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Carbonara<span class="k">1,094 kcal</span></span></a><a class="mcard" href="/r/king_kong_chocolate/" aria-hidden="true" tabindex="-1"><img src="images/meals/king-kong-chocolate.webp" alt="" loading="lazy" width="220" height="240"><span class="t">King Kong Chocolate<span class="k">1,398 kcal</span></span></a><a class="mcard" href="/r/pulled_pork/" aria-hidden="true" tabindex="-1"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked BBQ Pulled Pork<span class="k">772 kcal</span></span></a><a class="mcard" href="/r/steak_and_eggs/" aria-hidden="true" tabindex="-1"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Steak &amp; Eggs<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/banana_bulk/" aria-hidden="true" tabindex="-1"><img src="images/meals/banana-bulk.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Banana Bulk<span class="k">1,278 kcal</span></span></a><a class="mcard" href="/r/shakshuka/" aria-hidden="true" tabindex="-1"><img src="images/meals/shakshuka.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shakshuka<span class="k">895 kcal</span></span></a><a class="mcard" href="/r/freezer_breakfast_burrito/" aria-hidden="true" tabindex="-1"><img src="images/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Freezer Breakfast Burrito<span class="k">741 kcal</span></span></a><a class="mcard" href="/r/smoked_salmon_bagel/" aria-hidden="true" tabindex="-1"><img src="images/meals/smoked-salmon-bagel.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoked Salmon Bagel<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/overnight_oats/" aria-hidden="true" tabindex="-1"><img src="images/meals/overnight-oats.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Overnight Oats<span class="k">797 kcal</span></span></a><a class="mcard" href="/r/big_breakfast_plate/" aria-hidden="true" tabindex="-1"><img src="images/meals/big-breakfast-plate.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Big Breakfast Plate<span class="k">1,296 kcal</span></span></a><a class="mcard" href="/r/chicken_mac_and_cheese/" aria-hidden="true" tabindex="-1"><img src="images/meals/chicken-mac-and-cheese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Mac and Cheese<span class="k">963 kcal</span></span></a><a class="mcard" href="/r/choc_muscle_maxx/" aria-hidden="true" tabindex="-1"><img src="images/meals/choc-muscle-maxx.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Choc Muscle MAXX<span class="k">1,119 kcal</span></span></a></div>
+    <div class="track"><a class="mcard" href="/r/spaghetti_carbonara/"><img src="images/meals/spaghetti-carbonara.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Carbonara<span class="k">1,094 kcal</span></span></a><a class="mcard" href="/r/butter_chicken/"><img src="images/meals/butter-chicken-with-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Butter Chicken with Basmati Rice<span class="k">852 kcal</span></span></a><a class="mcard" href="/r/pulled_pork/"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked BBQ Pulled Pork<span class="k">772 kcal</span></span></a><a class="mcard" href="/r/steak_and_eggs/"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Steak &amp; Eggs<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/satay_chicken/"><img src="images/meals/satay-chicken.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Satay Chicken<span class="k">879 kcal</span></span></a><a class="mcard" href="/r/shakshuka/"><img src="images/meals/shakshuka.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shakshuka<span class="k">895 kcal</span></span></a><a class="mcard" href="/r/freezer_breakfast_burrito/"><img src="images/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Freezer Breakfast Burrito<span class="k">741 kcal</span></span></a><a class="mcard" href="/r/smoked_salmon_bagel/"><img src="images/meals/smoked-salmon-bagel.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoked Salmon Bagel<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/overnight_oats/"><img src="images/meals/overnight-oats.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Overnight Oats<span class="k">797 kcal</span></span></a><a class="mcard" href="/r/bolognese/"><img src="images/meals/bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Bolognese<span class="k">1,041 kcal</span></span></a><a class="mcard" href="/r/chicken_mac_and_cheese/"><img src="images/meals/chicken-mac-and-cheese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Mac and Cheese<span class="k">963 kcal</span></span></a><a class="mcard" href="/r/honey_soy_salmon_noodles/"><img src="images/meals/honey-soy-salmon-noodles.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Honey Soy Salmon Noodle Bowl<span class="k">800 kcal</span></span></a><a class="mcard" href="/r/spaghetti_carbonara/" aria-hidden="true" tabindex="-1"><img src="images/meals/spaghetti-carbonara.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Carbonara<span class="k">1,094 kcal</span></span></a><a class="mcard" href="/r/butter_chicken/" aria-hidden="true" tabindex="-1"><img src="images/meals/butter-chicken-with-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Butter Chicken with Basmati Rice<span class="k">852 kcal</span></span></a><a class="mcard" href="/r/pulled_pork/" aria-hidden="true" tabindex="-1"><img src="images/meals/pulled-pork.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked BBQ Pulled Pork<span class="k">772 kcal</span></span></a><a class="mcard" href="/r/steak_and_eggs/" aria-hidden="true" tabindex="-1"><img src="images/meals/steak-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Steak &amp; Eggs<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/satay_chicken/" aria-hidden="true" tabindex="-1"><img src="images/meals/satay-chicken.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Satay Chicken<span class="k">879 kcal</span></span></a><a class="mcard" href="/r/shakshuka/" aria-hidden="true" tabindex="-1"><img src="images/meals/shakshuka.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shakshuka<span class="k">895 kcal</span></span></a><a class="mcard" href="/r/freezer_breakfast_burrito/" aria-hidden="true" tabindex="-1"><img src="images/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Freezer Breakfast Burrito<span class="k">741 kcal</span></span></a><a class="mcard" href="/r/smoked_salmon_bagel/" aria-hidden="true" tabindex="-1"><img src="images/meals/smoked-salmon-bagel.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoked Salmon Bagel<span class="k">795 kcal</span></span></a><a class="mcard" href="/r/overnight_oats/" aria-hidden="true" tabindex="-1"><img src="images/meals/overnight-oats.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Protein Overnight Oats<span class="k">797 kcal</span></span></a><a class="mcard" href="/r/bolognese/" aria-hidden="true" tabindex="-1"><img src="images/meals/bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Bolognese<span class="k">1,041 kcal</span></span></a><a class="mcard" href="/r/chicken_mac_and_cheese/" aria-hidden="true" tabindex="-1"><img src="images/meals/chicken-mac-and-cheese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Mac and Cheese<span class="k">963 kcal</span></span></a><a class="mcard" href="/r/honey_soy_salmon_noodles/" aria-hidden="true" tabindex="-1"><img src="images/meals/honey-soy-salmon-noodles.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Honey Soy Salmon Noodle Bowl<span class="k">800 kcal</span></span></a></div>
     <div class="track rev"><a class="mcard" href="/r/beef_bulgogi_bowl/"><img src="images/meals/beef-bulgogi-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Bulgogi Bowl<span class="k">743 kcal</span></span></a><a class="mcard" href="/r/sheet_pan_salmon_potatoes/"><img src="images/meals/sheet-pan-salmon-potatoes.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Sheet-Pan Lemon-Garlic Salmon &amp; Potatoes<span class="k">746 kcal</span></span></a><a class="mcard" href="/r/chicken_fajita_bowl/"><img src="images/meals/chicken-fajita-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Fajita Bowl<span class="k">807 kcal</span></span></a><a class="mcard" href="/r/massaman/"><img src="images/meals/massaman.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Massaman Beef Curry<span class="k">836 kcal</span></span></a><a class="mcard" href="/r/teriyaki_chicken_rice_bowl/"><img src="images/meals/teriyaki-chicken-rice-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Teriyaki Chicken Rice Bowl<span class="k">792 kcal</span></span></a><a class="mcard" href="/r/chilli_con_carne/"><img src="images/meals/chilli-con-carne.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Chilli Con Carne<span class="k">505 kcal</span></span></a><a class="mcard" href="/r/beef_broccoli_stir_fry/"><img src="images/meals/beef-broccoli-stir-fry.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Broccoli Stir-Fry<span class="k">777 kcal</span></span></a><a class="mcard" href="/r/lamb_shanks/"><img src="images/meals/lamb-shanks.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Lamb Shanks<span class="k">580 kcal</span></span></a><a class="mcard" href="/r/spicy_chipotle_chicken_burrito/"><img src="images/meals/spicy-chipotle-chicken-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spicy Chipotle Chicken Burrito<span class="k">985 kcal</span></span></a><a class="mcard" href="/r/egg_muffins/"><img src="images/meals/egg-muffins.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Egg Muffins<span class="k">850 kcal</span></span></a><a class="mcard" href="/r/beef_stew/"><img src="images/meals/beef-stew.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Hearty Beef Stew<span class="k">630 kcal</span></span></a><a class="mcard" href="/r/beef_bulgogi_bowl/" aria-hidden="true" tabindex="-1"><img src="images/meals/beef-bulgogi-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Bulgogi Bowl<span class="k">743 kcal</span></span></a><a class="mcard" href="/r/sheet_pan_salmon_potatoes/" aria-hidden="true" tabindex="-1"><img src="images/meals/sheet-pan-salmon-potatoes.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Sheet-Pan Lemon-Garlic Salmon &amp; Potatoes<span class="k">746 kcal</span></span></a><a class="mcard" href="/r/chicken_fajita_bowl/" aria-hidden="true" tabindex="-1"><img src="images/meals/chicken-fajita-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Fajita Bowl<span class="k">807 kcal</span></span></a><a class="mcard" href="/r/massaman/" aria-hidden="true" tabindex="-1"><img src="images/meals/massaman.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Massaman Beef Curry<span class="k">836 kcal</span></span></a><a class="mcard" href="/r/teriyaki_chicken_rice_bowl/" aria-hidden="true" tabindex="-1"><img src="images/meals/teriyaki-chicken-rice-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Teriyaki Chicken Rice Bowl<span class="k">792 kcal</span></span></a><a class="mcard" href="/r/chilli_con_carne/" aria-hidden="true" tabindex="-1"><img src="images/meals/chilli-con-carne.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Simmered Chilli Con Carne<span class="k">505 kcal</span></span></a><a class="mcard" href="/r/beef_broccoli_stir_fry/" aria-hidden="true" tabindex="-1"><img src="images/meals/beef-broccoli-stir-fry.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Broccoli Stir-Fry<span class="k">777 kcal</span></span></a><a class="mcard" href="/r/lamb_shanks/" aria-hidden="true" tabindex="-1"><img src="images/meals/lamb-shanks.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Slow-Cooked Lamb Shanks<span class="k">580 kcal</span></span></a><a class="mcard" href="/r/spicy_chipotle_chicken_burrito/" aria-hidden="true" tabindex="-1"><img src="images/meals/spicy-chipotle-chicken-burrito.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spicy Chipotle Chicken Burrito<span class="k">985 kcal</span></span></a><a class="mcard" href="/r/egg_muffins/" aria-hidden="true" tabindex="-1"><img src="images/meals/egg-muffins.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Egg Muffins<span class="k">850 kcal</span></span></a><a class="mcard" href="/r/beef_stew/" aria-hidden="true" tabindex="-1"><img src="images/meals/beef-stew.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Hearty Beef Stew<span class="k">630 kcal</span></span></a></div>
   </div>
   <div class="wrap">
@@ -335,7 +354,7 @@ section{position:relative}
         <p>The app sets your goal weight, a body-fat cap and a date, then the build and trim phases in between. Check in with a weight or a scan and the route redraws itself.</p>
         <ul>
           <li>Honest about how big a drug-free lifter gets, and how long it takes</li>
-          <li>Your build phase ends at a body-fat number. No skinny-fat surprise</li>
+          <li>Lose weight, build muscle or both. Each phase ends at a number, not a feeling</li>
           <li>Every number shows how strong the evidence behind it is</li>
         </ul>
       </div>
@@ -358,9 +377,9 @@ section{position:relative}
 
     <div class="feat flip rv">
       <div class="copy">
-        <p class="label g">Macros built around your body</p>
+        <p class="label g">What to eat, every day</p>
         <h3 class="caps">Swap anything.<br>Your macros hold.</h3>
-        <p>Not feeling Tuesday's lunch? Swap it for another meal you like. The app re-balances that day's portions so it still lands on your calories and protein, and tells you what it changed.</p>
+        <p>Every day shows what to eat and when. Not feeling Tuesday's lunch? Swap it for another meal you like. The app re-balances that day's portions so it still lands on your calories and protein, and tells you what it changed.</p>
         <ul>
           <li>Only meals that keep the day on target are offered</li>
           <li>Portions shift in small steps, never a different meal plan</li>
@@ -387,7 +406,7 @@ section{position:relative}
     <div class="feat flip rv">
       <div class="copy">
         <p class="label g">Meal prep</p>
-        <h3 class="caps">One shop. One cook.<br>Seven days.</h3>
+        <h3 class="caps">Shopping list,<br>already done.</h3>
         <p>Every ingredient for the week on one list, by aisle. Then one prep session: the app picks what to cook, what goes in the fridge and what goes in the freezer, and reminds you the night before to thaw tomorrow's food.</p>
         <ul>
           <li>Cook mode with every step and its timer</li>
@@ -404,14 +423,14 @@ section{position:relative}
   <div class="wrap">
     <div class="sec-head rv">
       <p class="label c">The training</p>
-      <h2 id="train-h" class="caps">Science-backed<br>training for size.</h2>
-      <p>I'm not a PT, so I don't write the training. The app builds it from published research: how many sets each muscle needs, how hard to push, when to back off.</p>
+      <h2 id="train-h" class="caps">Your training,<br>already decided.</h2>
+      <p>I'm not a PT, so I don't write the training. The app builds it from published research: how many sets each muscle needs, how hard to push, how long to rest, when to back off.</p>
     </div>
     <div class="feat t rv" style="border-top:0">
       <div class="copy">
         <p class="label c">Already programmed</p>
         <h3 class="caps">The right sets,<br>every muscle.</h3>
-        <p>Weekly sets per muscle set to your level, reps that climb week by week, and deloads where they belong. Train one to six days, at a gym, at home or with just your bodyweight.</p>
+        <p>Sets, reps, rest times and progression already set to your level. Reps climb week by week and deloads land where they belong. Train one to six days, at a gym, at home or with just your bodyweight.</p>
         <ul>
           <li>144 exercises, each with start and finish photos</li>
           <li>In the workout: what you lifted last time and how many reps to leave in the tank</li>
@@ -451,8 +470,8 @@ section{position:relative}
       <img class="rv" src="images/me/founder.webp" alt="Ryan Novinc, who built JSON.fit" loading="lazy">
       <div class="rv">
         <p class="label v">The Lab</p>
-        <h2 id="lab-h" class="caps">I was the<br>skinny one too.</h2>
-        <p>I'm Ryan. 182 cm and under 60 kg through my teens, 67 kg leaving uni. I got to 82 kg the miserable way, the same meals every day, forced down, and it didn't stick. Back to 77. In July 2026 I restarted on the app I built. Every scan goes up, working or not.</p>
+        <h2 id="lab-h" class="caps">I built it<br>to run itself.</h2>
+        <p>I'm Ryan. My first go at getting in shape worked, then fell apart: the same meals every day, forced down, and a year out of the gym took me from 82 kg back to 77. In July 2026 I restarted on the app I built, so the plan does the deciding and I get on with my week. Every scan goes up, working or not.</p>
         <a class="link arrow" href="/lab/">See the scans &rarr;</a>
         <div class="quote">
           <blockquote>&ldquo;Many of the trackers I've tried don't work for gaining weight even though they pretend to.&rdquo;</blockquote>
@@ -470,10 +489,10 @@ section{position:relative}
       <h2 id="faq-h" class="caps">Common questions.</h2>
     </div>
     <div class="faq">
-      <details><summary>I'm full after half a plate. How does this help?</summary><div class="a">The meals are built dense, so a plate you can finish carries more calories and protein than one you can't. It doesn't make you hungrier. It makes every meal you do eat count for more, and shakes cover the gaps.</div></details>
-      <details><summary>I don't want to end up skinny-fat.</summary><div class="a">Your route has a body-fat cap. When you reach it the app switches you to a short trim phase, then back to building. You're never on an open-ended bulk.</div></details>
-      <details><summary>I can't afford to eat 3,500 calories a day.</summary><div class="a">One shop a week off a single list, batch-cooked, with ingredients the meals share. Add your own prices for a running total.</div></details>
-      <details><summary>I don't have time to cook.</summary><div class="a">34 of the 81 meals take 15 minutes or less. Most of the week's food comes off one prep session.</div></details>
+      <details><summary>I already train. My food is the mess.</summary><div class="a">Start with the meals. Pick the ones you like and the app plans the week around your calories and protein, writes the shopping list and plans one prep session. Each day shows what to eat and when.</div></details>
+      <details><summary>I don't have time to cook.</summary><div class="a">Most of the week's food comes off one prep session. 34 of the 81 meals take 15 minutes or less, and the app picks what goes in the fridge and what goes in the freezer.</div></details>
+      <details><summary>Won't I get sick of eating the same thing?</summary><div class="a">One cook covers different meals across the week, not one dish seven times. Swap any meal for another you like and the app re-balances the day so it still lands on your calories and protein.</div></details>
+      <details><summary>Is it only for building muscle?</summary><div class="a">No. It's for men and women who want to lose weight, build muscle or both. Your route sets a goal weight and a date, with the phases in between.</div></details>
       <details><summary>Do I need ChatGPT or another AI?</summary><div class="a">No. There's no AI in the app. Your route, your program and your meals are built from published rules, on your phone, in about a minute.</div></details>
       <details><summary>How much does JSON.fit cost?</summary><div class="a">JSON.fit is free: meal plans, training programs, shopping lists and meal prep, with no ads and no account.</div></details>
     </div>
@@ -482,8 +501,8 @@ section{position:relative}
 
 <section class="final" id="download" aria-labelledby="dl-h">
   <p class="label">JSON.fit for iPhone and Android</p>
-  <h2 id="dl-h" class="serif">Eat big.<br><span class="cyan">Lift big.</span></h2>
-  <p>Your route, your week of meals and your program, built in about a minute.</p>
+  <h2 id="dl-h" class="serif">Set it up once.<br><span class="cyan">Live your life.</span></h2>
+  <p>Your week of meals, your shopping list and your program, built in about a minute.</p>
   <div class="badges">
     <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="footer_cta">
       <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>

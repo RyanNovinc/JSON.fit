@@ -1,12 +1,12 @@
 # JSON.fit
 
-> JSON.fit is a free iOS and Android app for skinny guys who can't gain weight. It works out a goal weight, a body-fat range and a timeline from published research (a "route" with build and trim phases), then builds a week of calorie-dense, high-protein meals with every ingredient and step, one shopping list and one batch-prep session, plus a periodised training program with deload weeks. Everything is built in the app in about a minute from research-backed rules; there is no AI inside the app. Free, no ads, no account, data stays on the phone.
+> JSON.fit is a free iOS and Android app for fitness on autopilot: working adults, men and women, who want results with the least time. You set it up once, then it plans your training and your food. It works out a goal weight, a body-fat range and a timeline from published research (a "route" with build and trim phases), then builds a week of high-protein meals around your calories with every ingredient and step, one shopping list and one meal-prep session, plus a periodised training program with sets, reps, rest and deload weeks already set. Everything is built in the app in about a minute from research-backed rules; there is no AI inside the app. Free, no ads, no account, data stays on the phone.
 
 JSON.fit's library has 81 meals: 15 over 1,000 kcal a plate, 36 with 50 g of protein or more, 34 ready in 15 minutes or less, every one photographed with exact ingredients and every step. Meals can be swapped and the day rebalances to the calorie and protein targets. Training programs run 1 to 6 days a week, at a gym, at home or bodyweight only, up to a year long, with 144 exercises. 25 decisions the app makes carry a confidence label (strong, good, best estimate) and link to 42 sources. Built in Canberra, Australia, by Ryan Novinc, who is using the app on himself in public: 77 kg at the July 2026 restart, 80.6 kg at 23.8% on the September DEXA, routed down to 72.9 kg at 16% and then up to 90 kg at 13%.
 
 ## Who this is for
 
-Skinny guys, usually 19 to 30, who train but can't eat enough to gain weight, and who have been told to "just eat more". Students, first jobs, people who can't cook and don't want eating to become a second job. The app also serves cutting and recomp, but the core user is the skinny guy trying to put on weight without ending up skinny-fat.
+Busy working adults, men and women, who want to eat right and train with the least time. Often people who already go to the gym but whose food is a mess. Goals cover losing weight, building muscle and both; gaining weight is one goal option, not the whole app.
 
 ## Core pages
 
