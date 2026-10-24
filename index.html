@@ -198,6 +198,10 @@ section{position:relative}
 .perks-sec{padding:0 20px;margin-top:10px;text-align:center}
 .perks-h{font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1;margin:34px auto 0;text-wrap:balance}
 .perks-label{margin:34px 0 14px;font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2)}
+.perks-label.v{color:var(--violet-text)} .perks-label.g{color:var(--green-text)} .perks-label.c{color:var(--cyan)}
+.perks.v .perk i{color:var(--violet-text)} .perks.g .perk i{color:var(--green-text)}
+.perks.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.perks + .perks-label{margin-top:30px}
 .perk i{display:block;font-style:normal;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--cyan,#22d3ee);margin-bottom:10px}
 .perks-h .cyan{color:var(--cyan,#22d3ee)}
 .perks-sub{max-width:52ch;margin:16px auto 0;color:var(--text-2);font-size:clamp(1rem,1.4vw,1.12rem);text-wrap:balance}
@@ -205,7 +209,7 @@ section{position:relative}
 .perk b{display:block;font-size:1.05rem;font-weight:800;line-height:1.2}
 .perk span{display:block;margin-top:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--text-2);text-transform:uppercase;line-height:1.5}
 @media(max-width:1100px){.perks{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:600px){.perks{grid-template-columns:repeat(2,minmax(0,1fr))}.perk{padding:20px 10px}.perk b{font-size:.98rem}.perk span{font-size:.62rem}}
+@media(max-width:600px){.perks,.perks.three{grid-template-columns:repeat(2,minmax(0,1fr))}.perks.three .perk:last-child{grid-column:1/-1}.perk{padding:20px 10px}.perk b{font-size:.98rem}.perk span{font-size:.62rem}}
 
 /* lab */
 .lab{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
@@ -298,14 +302,26 @@ section{position:relative}
 <section class="perks-sec" aria-labelledby="perks-h">
   <h2 id="perks-h" class="perks-h caps">Better results.<br><span class="cyan">A fraction of the time.</span></h2>
   <p class="perks-sub">Your food and training, built on the science. Every hour you put in counts.</p>
-  <p class="perks-label">How your food works</p>
-  <ol class="perks" role="list">
+  <p class="perks-label v">Your route</p>
+  <ol class="perks three v" role="list">
+    <li class="perk"><i>01</i><b>Your end goal</b><span>A goal weight, a body fat and a date to hit them</span></li>
+    <li class="perk"><i>02</i><b>When to cut, when to bulk</b><span>Every phase in the right order to get you there</span></li>
+    <li class="perk"><i>03</i><b>Your way</b><span>You pick the pace and where to start. The science sets the limits</span></li>
+  </ol>
+  <p class="perks-label g">Your food</p>
+  <ol class="perks g" role="list">
     <li class="perk"><i>01</i><b>Grocery list, made</b><span>Exactly what to buy at the shops</span></li>
     <li class="perk"><i>02</i><b>Prep, step by step</b><span>What to cook, in what order, and how much</span></li>
     <li class="perk"><i>03</i><b>Built to batch</b><span>Curated meal list for short prep and big batches</span></li>
     <li class="perk"><i>04</i><b>Each day planned</b><span>Open the app and eat what it says</span></li>
     <li class="perk"><i>05</i><b>Macros hit</b><span>Every day lands exactly on your macros for your specific goal</span></li>
     <li class="perk"><i>06</i><b>Health covered</b><span>Fibre, sodium and key micronutrients all factored in</span></li>
+  </ol>
+  <p class="perks-label c">Your training</p>
+  <ol class="perks three c" role="list">
+    <li class="perk"><i>01</i><b>Exact sets</b><span>How many sets each muscle needs each week</span></li>
+    <li class="perk"><i>02</i><b>Rest times set</b><span>Tailored to each exercise, backed by the research</span></li>
+    <li class="perk"><i>03</i><b>How hard to push</b><span>How close to failure on every set, no junk volume</span></li>
   </ol>
 </section>
 
