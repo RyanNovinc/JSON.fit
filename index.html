@@ -195,7 +195,10 @@ section{position:relative}
 
 /* benefits row */
 .perks{list-style:none;margin:0 auto;padding:0;max-width:1240px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.perks-sec{padding:0 20px;margin-top:10px}
+.perks-sec{padding:0 20px;margin-top:10px;text-align:center}
+.perks-h{font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1;margin:34px auto 0;text-wrap:balance}
+.perks-h .cyan{color:var(--cyan,#22d3ee)}
+.perks-sub{max-width:52ch;margin:16px auto 30px;color:var(--text-2);font-size:clamp(1rem,1.4vw,1.12rem);text-wrap:balance}
 .perk{background:var(--bg);padding:26px 14px;text-align:center}
 .perk b{display:block;font-size:1.05rem;font-weight:800;line-height:1.2}
 .perk span{display:block;margin-top:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--text-2);text-transform:uppercase;line-height:1.5}
@@ -290,13 +293,15 @@ section{position:relative}
   </div>
 </section>
 
-<section class="perks-sec" aria-label="What you get">
+<section class="perks-sec" aria-labelledby="perks-h">
+  <h2 id="perks-h" class="perks-h caps">One shop. One prep.<br><span class="cyan">Your macros hit all week.</span></h2>
+  <p class="perks-sub">No tracking app, no counting, no deciding. You're told exactly what to eat, and it adds up.</p>
   <ul class="perks" role="list">
-    <li class="perk"><b>Short prep</b><span>Cook once, eat all week</span></li>
-    <li class="perk"><b>Your exact macros</b><span>Every day lands on your calories and protein</span></li>
-    <li class="perk"><b>Always a meal ready</b><span>So takeaway stops being the default</span></li>
-    <li class="perk"><b>Know what to eat, when</b><span>Each day planned</span></li>
-    <li class="perk"><b>Only food you like</b><span>You pick the meals</span></li>
+    <li class="perk"><b>One shop</b><span>The whole week on one list, by aisle</span></li>
+    <li class="perk"><b>One prep</b><span>Cook once, eat all week</span></li>
+    <li class="perk"><b>Built to batch</b><span>Meals chosen to cook in bulk with short prep</span></li>
+    <li class="perk"><b>No counting</b><span>Each day already lands on your calories and protein</span></li>
+    <li class="perk"><b>Health covered</b><span>Fibre and protein in every day, not just calories</span></li>
     <li class="perk"><b>Every set counts</b><span>Sets and rest set by the research</span></li>
   </ul>
 </section>
