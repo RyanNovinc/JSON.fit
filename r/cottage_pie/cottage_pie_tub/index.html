@@ -448,7 +448,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
   // Ingredient display name — prefer explicit names, fall back to title-cased id
   function ingName(ing){
-    return ing.display_name || ing.name || titleCase(ing.ingredient_id || ing.id || 'Ingredient');
+    // Just what the ingredient is: the part before any comma or bracket.
+    var n=String(ing.display_name || ing.name || titleCase(ing.ingredient_id || ing.id || 'Ingredient'));
+    var short=n.split(/[,(]/)[0].trim();
+    return short || n;
   }
   // Plain-text fractions for counts and spoon units — "1 1/2", not the tiny
   // unicode "\u00bd" glyphs, which are unreadable at ingredient-row size.
@@ -574,8 +577,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
     // Description
     var descSlot=document.getElementById('desc-slot');
-    if(plate.description){ descSlot.style.display=''; descSlot.querySelector('p').textContent=plate.description; }
-    else descSlot.style.display='none';
+    if(descSlot) descSlot.style.display='none';
 
     // Ingredients (base from method, plate extras) — only if present
     renderIngredients(plate, method);
@@ -614,11 +616,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     if(isBatch()){
       // Whole-pot amounts, exactly as the app lists them, with the shop pack under each.
       var b=meal.batch;
-      html+='<p class="ing-yield">For the whole pot: makes '+b.tubs+' tubs'+(b.tub_weight_g?' of about '+esc(b.tub_weight_g[0]===b.tub_weight_g[1]?b.tub_weight_g[0]:b.tub_weight_g[0]+' to '+b.tub_weight_g[1])+' g':'')+'.</p>';
       var brow=function(ing, each){
         var amt=formatAmount(ing.base_amount, ing.unit)+(each?' per tub':'');
         var pack=(ing.pack&&ing.pack!=='pantry')?ing.pack:'';
-        return '<div class="ing-row"><span class="ing-name">'+esc(ingName(ing))+(ing.pack==='pantry'?'<span class="pantry">pantry</span>':'')+(pack?'<small>Buy: '+esc(pack)+'</small>':'')+'</span><span class="ing-amt">'+esc(amt)+'</span></div>';
+        return '<div class="ing-row"><span class="ing-name">'+esc(ingName(ing))+(ing.pack==='pantry'?'<span class="pantry">pantry</span>':'')+'</span><span class="ing-amt">'+esc(amt)+'</span></div>';
       };
       html+=baseIngs.map(function(i){return brow(i,false);}).join('');
       if(plateIngs.length){
@@ -739,7 +740,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       else if((meal.produces_servings||1)>1) facts.push([String(meal.produces_servings),'Serves']);
       else facts.push([m0.display_name||'Cook','Method']);
       methodBlock = '<div class="section"><span class="eyebrow">Time</span><div class="facts">'+facts.map(function(f){return '<div class="fact"><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>'+
-        (meal.batch&&meal.batch.vessel?'<p class="single-time" style="margin-top:.7rem">'+esc(m0.display_name)+': '+esc(meal.batch.vessel)+'.</p>':'')+
         '<span id="single-time-val" data-mins="'+(m0.time_total_minutes||0)+'" hidden></span></div>';
     }
     var keepsBlock='';
@@ -782,7 +782,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
       methodBlock+
 
-      keepsBlock+
 
       // Ingredients
       '<div class="section" id="ing-section" style="display:none">'+
