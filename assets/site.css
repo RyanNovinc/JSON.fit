@@ -1,12 +1,12 @@
 /* json.fit shared styles: the homepage design system (Oct 2026), used by every page except the homepage,
-   which carries the same rules inline. Dark studio, Outfit + DM Mono + Georgia italic, food in green,
+   which carries its own layout rules inline. Dark studio, Outfit + DM Mono + Georgia italic, food in green,
    training in cyan, The Lab in violet. Page-specific rules stay in each page's own <style>. */
 :root{
   --bg:#08080b; --studio-top:#1d1f24; --surface:#101015; --surface-2:#16161c; --line:rgba(255,255,255,.08);
   --text:#f2f2f4; --text-2:#a3a3ad; --text-3:#7a7a86;
   --cyan:#22d3ee; --cyan-soft:rgba(34,211,238,.12); --green:#22c55e; --green-text:#4ade80; --green-soft:rgba(34,197,94,.12);
   --amber:#f59e0b; --violet:#a855f7; --violet-text:#c084fc; --violet-soft:rgba(168,85,247,.12); --red:#ef4444;
-  --serif: "Fraunces", Georgia, "Times New Roman", serif; --spring:cubic-bezier(.2,.9,.25,1.12); --sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; --mono: 'DM Mono', ui-monospace, Menlo, monospace;
+  --serif: Georgia, 'Times New Roman', serif; --spring:cubic-bezier(.2,.9,.25,1.12); --sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; --mono: 'DM Mono', ui-monospace, Menlo, monospace;
   /* aliases so older page rules keep resolving */
   --border:var(--line); --cyan-dim:var(--cyan-soft);
   color-scheme: dark;
@@ -373,3 +373,33 @@ a{color:inherit}
 .js .v2 .rv{transform:translateY(18px);transition:opacity .6s ease,transform .8s var(--spring)}
 .js .v2 .rv.in{transform:none}
 @media(prefers-reduced-motion:reduce){.v2 .plate,.v2 .mcard2,.v2 .prog{transition:none}.v2 .plate:hover,.v2 .mcard2:hover,.v2 .prog:hover{transform:none}.js .v2 .rv{transition:none}}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Old look (restored 24 Oct 2026). The pre-redesign site's type and cards,
+   applied over the v2 layer so the training, research and cookbook pages match
+   the home and meals pages: Georgia italic for page titles and download bands,
+   heavy condensed uppercase Outfit for section heads, outlined cards, phone
+   frames around app screens, cyan accent.
+   ─────────────────────────────────────────────────────────────────────────── */
+.v2 .serif,.v2 h1.d,.v2 .page-hero h1,.v2 .final h2,.v2 .final2 h2.d{font-family:var(--serif);font-style:italic;font-weight:700;letter-spacing:-.02em;line-height:1;font-variation-settings:normal}
+.v2 h1.d{font-size:clamp(2.6rem,7vw,5.2rem)}
+.v2 h1.d em,.v2 .final2 h2.d em{display:block;font-style:italic}
+.v2 h2.d{font-family:var(--sans);font-style:normal;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;line-height:.98;font-size:clamp(2.1rem,5.2vw,3.8rem);font-variation-settings:normal}
+.v2 h2.d em{font-style:normal}
+.v2 .kicker{font-size:.7rem;color:var(--text-2)}
+.v2 .lede{font-size:1.1rem}
+.v2 .sec2{padding-block:78px;border-top:1px solid var(--line)}
+@media(min-width:760px){.v2 .sec2{padding-block:110px}}
+.v2 .sec2.tight{padding-block:48px}
+.v2 .card2,.v2 .rcard,.v2 .cook,.v2 .mcard2,.v2 .plate,.v2 .prog,.v2 .pic{border:1px solid var(--line);border-radius:22px}
+.v2 .mcard2:hover,.v2 .prog:hover{border-color:rgba(255,255,255,.18)}
+.v2 .g .mcard2:hover,.v2.g .mcard2:hover{border-color:rgba(34,197,94,.28)}
+.v2 .shot{border-radius:34px;border:1px solid rgba(255,255,255,.12);background:#000;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 5px #0f0f13}
+.v2 .rcard .big{font-family:var(--sans);font-style:normal;font-weight:900;letter-spacing:-.01em}
+.v2 .pic .tag b{font-family:var(--sans);font-style:normal;font-weight:900}
+.v2 .voice q{font-family:var(--serif);font-style:italic;font-weight:700}
+.v2 .filters button{border:1px solid var(--line);background:rgba(255,255,255,.04)}
+.v2 .filters button[aria-pressed="true"]{border-color:#fff}
+.v2 .final2{background:radial-gradient(ellipse at 50% 0%,#1c1e24,var(--bg) 70%)}
+.v2 .final2 h2.d{font-size:clamp(2.6rem,7vw,5rem)}
+.v2 .hero2 h1.d{font-size:clamp(2.6rem,6.4vw,4.8rem)}
