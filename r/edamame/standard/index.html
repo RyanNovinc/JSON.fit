@@ -283,7 +283,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 <body>
 
 <nav>
-  <a href="https://json.fit" class="nav-logo">
+  <a href="/" class="nav-logo">
     <svg width="18" height="12" viewBox="0 0 22 14" fill="none">
       <rect x="0" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
       <rect x="18" y="3" width="4" height="8" rx="1.5" fill="#22c55e"/>
@@ -291,7 +291,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     </svg>
     JSON<span class="green">.fit</span>
   </a>
-  <a href="https://json.fit/#download" class="nav-cta" onclick="gtag('event','view_download_options',{'button_location':'recipe_nav'})">Get the app</a>
+  <a href="/#download" class="nav-cta" onclick="gtag('event','view_download_options',{'button_location':'recipe_nav'})">Get the app</a>
 </nav>
 
 <main>
@@ -308,7 +308,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       </div>
       <h2 id="error-title">Recipe not found</h2>
       <p id="error-msg">We couldn't find that meal. Browse the full library, or get JSON.fit to see every recipe.</p>
-      <a href="https://json.fit/meals.html" class="error-btn">Browse all meals
+      <a href="/meals.html" class="error-btn">Browse all meals
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
@@ -320,9 +320,9 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
 <footer>
   <div class="foot-l">
-    <a href="https://json.fit">json.fit</a>
-    <a href="https://json.fit/meals.html">Meals</a>
-    <a href="https://json.fit/privacy-policy.html">Privacy</a>
+    <a href="/">json.fit</a>
+    <a href="/meals.html">Meals</a>
+    <a href="/privacy-policy.html">Privacy</a>
   </div>
 </footer>
 
@@ -728,14 +728,14 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 
     var html =
     '<div class="hero">'+
-      '<a class="hero-back" href="https://json.fit/meals.html" aria-label="Back to meals"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></a>'+
+      '<a class="hero-back" href="/meals.html" aria-label="Back to meals"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></a>'+
       '<div id="hero-slot"></div>'+
     '</div>'+
     '<template id="hero-fallback"><div class="hero-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M6 11v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8"/></svg></div></template>'+
 
     '<div class="wrap">'+
       '<div class="title-block"><div class="cuisine" id="cuisine"></div><h1 class="title" id="title"></h1>'+
-        (meal.retired?'<p class="retired">This recipe is no longer in the JSON.fit meal list. The app now plans with batch meals you cook once for the week. <a href="https://json.fit/meals.html">See the meals in the app now</a>.</p>':'')+
+        (meal.retired?'<p class="retired">This recipe is no longer in the JSON.fit meal list. The app now plans with batch meals you cook once for the week. <a href="/meals.html">See the meals in the app now</a>.</p>':'')+
       '</div>'+
 
       plateSwitcher+
@@ -801,7 +801,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     if(!document.getElementById('cta-bar')){
       var bar=document.createElement('div');
       bar.className='cta-bar'; bar.id='cta-bar';
-      bar.innerHTML='<div class="cta-bar-inner"><div class="cta-bar-text"><strong id="cta-bar-title">Make this in JSON.fit</strong><span id="cta-bar-sub"></span></div><a class="cta-btn" href="https://json.fit/#download" onclick="gtag(\'event\',\'view_download_options\',{\'button_location\':\'recipe_sticky\'})">Get the app free</a></div>';
+      bar.innerHTML='<div class="cta-bar-inner"><div class="cta-bar-text"><strong id="cta-bar-title">Make this in JSON.fit</strong><span id="cta-bar-sub"></span></div><a class="cta-btn" href="/#download" onclick="gtag(\'event\',\'view_download_options\',{\'button_location\':\'recipe_sticky\'})">Get the app free</a></div>';
       document.body.appendChild(bar);
     }
 
