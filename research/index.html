@@ -443,6 +443,8 @@
   });
   // Deep link: /research/#route-loss-rate opens that decision.
   var h=location.hash.replace('#',''); var t=h&&document.getElementById(h); if(t&&t.classList.contains('dec')){ t.open=true; }
+  // Area links from the home page: /research/#area-route filters to that area.
+  var am=h.match(/^area-(route|training|meals)$/); if(am){ var fb=bar.querySelector('button[data-area="'+am[1]+'"]'); if(fb) fb.click(); }
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>

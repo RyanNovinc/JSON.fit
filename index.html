@@ -224,6 +224,24 @@ section{position:relative}
 .perks + .perks-label{margin-top:30px}
 .perk i{display:block;font-style:normal;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--cyan,#22d3ee);margin-bottom:10px}
 .perks-sub a.six{color:#fff;text-decoration:underline;text-decoration-color:var(--cyan);text-decoration-thickness:2px;text-underline-offset:4px}
+.pillars{max-width:1240px;margin:36px auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:left}
+.pillar{border:1px solid var(--line);border-radius:20px;background:var(--surface);padding:24px 24px 18px;border-top:3px solid var(--pc)}
+.pillar.v{--pc:var(--violet-text)} .pillar.g{--pc:var(--green-text)} .pillar.c{--pc:var(--cyan)}
+.pillar .pn{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;color:var(--pc);margin:0}
+.pillar h3{font-size:1.45rem;font-weight:800;margin:4px 0 12px;color:#fff}
+.pillar ul{list-style:none;margin:0;padding:0}
+.pillar li{position:relative;padding:11px 0 11px 26px;border-top:1px solid var(--line)}
+.pillar li::before{content:"";position:absolute;left:2px;top:15px;width:12px;height:7px;border-left:2px solid var(--pc);border-bottom:2px solid var(--pc);transform:rotate(-45deg)}
+.pillar li b{display:block;font-weight:700;font-size:1rem;color:#fff}
+.pillar li span{display:block;margin-top:2px;color:var(--text-2);font-size:.9rem;line-height:1.4}
+.pillar{display:flex;flex-direction:column}
+.pillar ul{flex:1}
+.pillar .sci{display:block;margin-top:8px;padding:12px 0 0 26px;position:relative;border-top:1px solid var(--line);color:var(--text-2);font-size:.85rem;text-decoration:none}
+.pillar .sci b{color:var(--pc)}
+.pillar .sci::before{content:"";position:absolute;left:0;top:13px;width:16px;height:16px;border-radius:50%;background:var(--pc);opacity:.18}
+.pillar .sci::after{content:"";position:absolute;left:5px;top:17px;width:6px;height:3px;border-left:2px solid var(--pc);border-bottom:2px solid var(--pc);transform:rotate(-45deg)}
+.pillar .sci:hover{color:#fff}
+@media(max-width:900px){.pillars{grid-template-columns:minmax(0,1fr)}}
 .perks-h .cyan{color:var(--cyan,#22d3ee)}
 .perks-sub{max-width:52ch;margin:16px auto 0;color:var(--text-2);font-size:clamp(1rem,1.4vw,1.12rem);text-wrap:balance}
 .perk{background:var(--bg);padding:26px 14px;text-align:center}
@@ -340,27 +358,41 @@ section{position:relative}
 <section class="perks-sec" aria-labelledby="perks-h">
   <h2 id="perks-h" class="perks-h caps">Better results.<br><span class="cyan">A fraction of the time.</span></h2>
   <p class="perks-sub">Save <a class="six" href="/time/" title="See how we worked it out">6 hours a week</a> on food alone.</p>
-  <p class="perks-label v">Your route</p>
-  <ol class="perks three v" role="list">
-    <li class="perk"><i>01</i><b>Your end goal</b><span>A goal weight, a body fat and a date to hit them</span></li>
-    <li class="perk"><i>02</i><b>When to cut, when to bulk</b><span>Every phase in the right order to get you there</span></li>
-    <li class="perk"><i>03</i><b>Your way</b><span>You pick the pace and where to start. The science sets the limits</span></li>
-  </ol>
-  <p class="perks-label g">Your food</p>
-  <ol class="perks g" role="list">
-    <li class="perk"><i>01</i><b>Grocery list, made</b><span>Exactly what to buy at the shops</span></li>
-    <li class="perk"><i>02</i><b>Prep, step by step</b><span>What to cook, in what order, and how much</span></li>
-    <li class="perk"><i>03</i><b>Built to batch</b><span>Curated meal list for short prep and big batches</span></li>
-    <li class="perk"><i>04</i><b>Each day planned</b><span>Open the app and eat what it says</span></li>
-    <li class="perk"><i>05</i><b>Macros hit</b><span>Every day lands exactly on your macros for your specific goal</span></li>
-    <li class="perk"><i>06</i><b>Health covered</b><span>Fibre, sodium and key micronutrients all factored in</span></li>
-  </ol>
-  <p class="perks-label c">Your training</p>
-  <ol class="perks three c" role="list">
-    <li class="perk"><i>01</i><b>Exact sets</b><span>How many sets each muscle needs each week</span></li>
-    <li class="perk"><i>02</i><b>Rest times set</b><span>Tailored to each exercise, backed by the research</span></li>
-    <li class="perk"><i>03</i><b>How hard to push</b><span>How close to failure on every set, no junk volume</span></li>
-  </ol>
+  <div class="pillars">
+    <article class="pillar v">
+      <p class="pn">01</p>
+      <h3>Your route</h3>
+      <ul>
+        <li><b>Your end goal</b><span>A goal weight, a body fat and a date</span></li>
+        <li><b>When to cut, when to bulk</b><span>Every phase in the right order</span></li>
+        <li><b>Your way</b><span>You pick the pace. The science sets the limits</span></li>
+      </ul>
+      <a class="sci" href="/research/#area-route"><b>Backed by science</b> &middot; 12 sourced decisions &rarr;</a>
+    </article>
+    <article class="pillar g">
+      <p class="pn">02</p>
+      <h3>Your food</h3>
+      <ul>
+        <li><b>Grocery list, made</b><span>Exactly what to buy at the shops</span></li>
+        <li><b>Prep, step by step</b><span>What to cook, in what order, and how much</span></li>
+        <li><b>Built to batch</b><span>Meals curated for short prep and big batches</span></li>
+        <li><b>Each day planned</b><span>Open the app and eat what it says</span></li>
+        <li><b>Macros hit</b><span>Every day on your macros for your goal</span></li>
+        <li><b>Health covered</b><span>Fibre, sodium and key micronutrients</span></li>
+      </ul>
+      <a class="sci" href="/research/#area-meals"><b>Backed by science</b> &middot; 6 sourced decisions &rarr;</a>
+    </article>
+    <article class="pillar c">
+      <p class="pn">03</p>
+      <h3>Your training</h3>
+      <ul>
+        <li><b>Exact sets</b><span>What each muscle needs each week</span></li>
+        <li><b>Rest times set</b><span>Tailored to each exercise, from the research</span></li>
+        <li><b>How hard to push</b><span>How close to failure on every set</span></li>
+      </ul>
+      <a class="sci" href="/research/#area-training"><b>Backed by science</b> &middot; 7 sourced decisions &rarr;</a>
+    </article>
+  </div>
 </section>
 
 <section class="sec" id="how" aria-labelledby="how-h">
