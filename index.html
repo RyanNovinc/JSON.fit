@@ -86,10 +86,17 @@ img{display:block}
 .hero-art img{width:100%;height:auto}
 .hero-art .shot{display:block;transition:opacity .6s ease}
 .hero-art .shot.alt{position:absolute;inset:0;opacity:0}
+.hero-art .route-shot{position:absolute;inset:0;opacity:0;display:flex;align-items:center;justify-content:center;padding:40px 16px 70px}
+.hero-art[data-shot="route"] .shot.main{opacity:0}
+.hero-art[data-shot="route"] .route-shot{opacity:1}
+.route.mini{width:min(480px,100%);text-align:left}
+.route.mini .k{color:var(--violet-text)}
+.route.mini .phase{padding:9px 0}
+@media(max-width:900px){.hero-art .route-shot{padding:24px 16px 80px}.route.mini{padding:18px}.route.mini .phase{padding:7px 0}.route.mini .phase small{display:none}.route.mini .big{font-size:1.5rem}}
 .hero-art[data-shot="train"] .shot.main{opacity:0}
 .hero-art[data-shot="train"] .shot.alt{opacity:1}
 .shot-pick{position:absolute;z-index:2;left:50%;bottom:9%;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(10,10,11,.72);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.shot-pick button{border:0;background:none;color:var(--text-2);font:600 .85rem var(--sans);padding:.45rem 1rem;border-radius:999px;cursor:pointer}
+.shot-pick button{white-space:nowrap;border:0;background:none;color:var(--text-2);font:600 .85rem var(--sans);padding:.45rem 1rem;border-radius:999px;cursor:pointer}
 .shot-pick button[aria-pressed="true"]{background:#fff;color:#0a0a0b}
 .shot-pick button:focus-visible{outline:2px solid var(--cyan,#22d3ee);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.hero-art .shot{transition:none}}
@@ -292,16 +299,29 @@ section{position:relative}
       <source media="(max-width: 900px)" srcset="images/home/hero-train-1200.webp">
       <img src="images/home/hero-train-2400.webp" width="2400" height="1029" fetchpriority="low" alt="A man curling a pair of dumbbells between two phones showing JSON.fit: this week's workouts and an incline bench press being logged set by set">
     </picture>
+    <div class="shot route-shot" id="heroRoute" aria-hidden="true">
+      <div class="route mini">
+        <p class="k">Your route &middot; Ryan's, planned by the app</p>
+        <p class="big">80.6 kg <span>&rarr;</span> 90 kg <span>at 13%</span></p>
+        <div class="phases">
+          <div class="phase"><i class="t"></i><div><b>Trim</b><small>Down to 16% body fat first</small></div><span class="num">Phase 1</span></div>
+          <div class="phase"><i></i><div><b>Build</b><small>Up to 82.4 kg, until 18%</small></div><span class="num">Phase 2</span></div>
+          <div class="phase"><i></i><div><b>Build, trim, build</b><small>Cycling 16 to 18% up to 94 kg</small></div><span class="num">Phases 3 to 6</span></div>
+          <div class="phase"><i class="r"></i><div><b>Reveal</b><small>A final cut to 90 kg at 13%</small></div><span class="num">Phase 7</span></div>
+        </div>
+      </div>
+    </div>
     <div class="shot-pick" aria-label="Show">
-      <button type="button" data-shot="meal" aria-pressed="true">Meals</button>
-      <button type="button" data-shot="train" aria-pressed="false">Training</button>
+      <button type="button" data-shot="route" aria-pressed="false">01 Route</button>
+      <button type="button" data-shot="meal" aria-pressed="true">02 Food</button>
+      <button type="button" data-shot="train" aria-pressed="false">03 Training</button>
     </div>
   </div>
 </section>
 
 <section class="perks-sec" aria-labelledby="perks-h">
   <h2 id="perks-h" class="perks-h caps">Better results.<br><span class="cyan">A fraction of the time.</span></h2>
-  <p class="perks-sub">Your food and training, built on the science. Every hour you put in counts.</p>
+  <p class="perks-sub">Save about 5 hours a week on food alone.<br><a class="link c" href="/time/">See how we worked it out&nbsp;&rarr;</a></p>
   <p class="perks-label v">Your route</p>
   <ol class="perks three v" role="list">
     <li class="perk"><i>01</i><b>Your end goal</b><span>A goal weight, a body fat and a date to hit them</span></li>
@@ -568,10 +588,11 @@ section{position:relative}
   var PPID='b08433ee-bbbe-4c5a-8066-4c6c2df76d44';
   // Hero photo: rotates between meals and training on its own; the pills on the photo pick one (and stop the rotation).
   var art=document.getElementById('heroArt'),timer=null;
-  function show(k){if(!art)return;art.setAttribute('data-shot',k);document.getElementById('heroMeal').setAttribute('aria-hidden',k==='meal'?'false':'true');document.getElementById('heroTrain').setAttribute('aria-hidden',k==='train'?'false':'true');art.querySelectorAll('.shot-pick button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-shot')===k?'true':'false');});}
-  show(document.body.getAttribute('data-tab')==='train'?'train':'meal');
+  var ORDER=['route','meal','train'],IDS={route:'heroRoute',meal:'heroMeal',train:'heroTrain'};
+  function show(k){if(!art)return;art.setAttribute('data-shot',k);ORDER.forEach(function(x){document.getElementById(IDS[x]).setAttribute('aria-hidden',x===k?'false':'true');});art.querySelectorAll('.shot-pick button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-shot')===k?'true':'false');});}
+  show(document.body.getAttribute('data-tab')==='train'?'train':'route');
   var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(art&&!still)timer=setInterval(function(){if(!document.hidden)show(art.getAttribute('data-shot')==='meal'?'train':'meal');},5000);
+  if(art&&!still)timer=setInterval(function(){if(!document.hidden)show(ORDER[(ORDER.indexOf(art.getAttribute('data-shot'))+1)%3]);},5000);
   if(art)art.querySelectorAll('.shot-pick button').forEach(function(btn){btn.addEventListener('click',function(){var k=btn.getAttribute('data-shot');clearInterval(timer);show(k);if(window.track)window.track('home_tab',{tab:k});});});
   // App Store taps open the training custom product page when the visitor landed on #training.
   document.addEventListener('click',function(e){
