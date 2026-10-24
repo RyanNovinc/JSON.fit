@@ -155,15 +155,6 @@
     <input type="search" class="search" id="search" placeholder="Search meals" autocomplete="off">
   </div>
   <div class="chips" id="chips" aria-label="Filter meals"></div>
-  <div class="ctl-row">
-    <div class="sort" role="group" aria-label="Sort" id="sort">
-      <button type="button" data-sort="featured" aria-pressed="true">Featured</button>
-      <button type="button" data-sort="kcal" aria-pressed="false">Calories</button>
-      <button type="button" data-sort="protein" aria-pressed="false">Protein</button>
-      <button type="button" data-sort="time" aria-pressed="false">Quickest</button>
-    </div>
-    <span class="count" id="count"></span>
-  </div>
 </div>
 
 <div class="lib">
@@ -342,11 +333,8 @@ var FILTERS=[
   {id:'Batch',label:'Batch meals',test:function(f){return f.cats.indexOf('Batch')>-1;}},
   {id:'Breakfast',label:'Breakfast',test:function(f){return f.cats.indexOf('Breakfast')>-1;}},
   {id:'Desserts',label:'Desserts',test:function(f){return f.cats.indexOf('Desserts')>-1;}},
-  {id:'Backup',label:'Backup meals',test:function(f){return f.cats.indexOf('Backup')>-1;},intro:'Didn\u2019t get to a meal? Blend one of these in about 4 minutes instead.'},
-  {id:'slow',label:'Slow cooker',test:function(f){return f.slow;}},
-  {id:'oven',label:'Oven bakes',test:function(f){return f.oven;}},
-  {id:'quick',label:'10 min hands-on or less',test:function(f){return f.active<=10;}},
-  {id:'protein',label:'40 g+ protein',test:function(f){return f.protein>=40;}}
+  {id:'Backup',label:'Backup meals',test:function(f){return f.cats.indexOf('Backup')>-1;},intro:'Didn\u2019t get to a meal? Blend one of these in about 4 minutes instead.'}
+
 ];
 var secIntro=document.getElementById('secIntro');
 function render(){
@@ -355,7 +343,7 @@ function render(){
   var list=SORTS[activeSort](ALL).filter(function(m){ return filt.test(m._f) && (!term || String(m.display_name).toLowerCase().indexOf(term)!==-1); });
   grid.innerHTML=list.map(cardHTML).join('');
   if(filt.intro){ secIntro.textContent=filt.intro; secIntro.hidden=false; } else { secIntro.hidden=true; }
-  countEl.textContent=list.length+(list.length===1?' meal':' meals');
+  if(countEl) countEl.textContent=list.length+(list.length===1?' meal':' meals');
   emptyEl.style.display=list.length?'none':'block';
 }
 function buildChips(){
@@ -373,7 +361,7 @@ function buildChips(){
     });
   });
 }
-sortEl.querySelectorAll('button').forEach(function(b){
+if(sortEl) sortEl.querySelectorAll('button').forEach(function(b){
   b.addEventListener('click',function(){
     activeSort=b.getAttribute('data-sort');
     sortEl.querySelectorAll('button').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});
