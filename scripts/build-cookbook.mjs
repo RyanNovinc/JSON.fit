@@ -1,35 +1,64 @@
 #!/usr/bin/env node
 /**
- * build-cookbook.mjs — "The Skinny Guy's Bulking Cookbook" from r/meals.json.
+ * build-cookbook.mjs: "The One Cook Cookbook" (working title) from r/meals.json.
  *
- *   node scripts/build-cookbook.mjs            # writes cookbook/build/cookbook.html + cookbook/bulking-cookbook.pdf
- *   node scripts/build-cookbook.mjs --html     # HTML only
+ *   node scripts/build-cookbook.mjs                 # writes cookbook/build/cookbook.html + the PDF
+ *   node scripts/build-cookbook.mjs --html          # HTML only
+ *   node scripts/build-cookbook.mjs --preview       # also cookbook/build/preview-*.html (landing page images)
  *
- * Photos: put print-sized JPEGs in cookbook/build/img/<stem>.jpg first, or the PDF is ~170 MB:
- *   for f in images/meals/*.webp; do sips -s format jpeg -s formatOptions 72 --resampleWidth 1300 "$f" --out cookbook/build/img/$(basename "$f" .webp).jpg; done
+ * Photos: put print-sized JPEGs (1100 px) in cookbook/build/img/<stem>.jpg first, or the PDF is huge.
+ * Batch mains come from the app's full-size PNGs, everything else from images/meals/*.png:
+ *   node scripts/build-cookbook.mjs --images --app ~/Desktop/Claude/worktrees/<app worktree>
  * cookbook/build/ is git-ignored; the PDF is the artefact.
  *
- * One A4 page per meal, photo from images/meals/, the default plate's macros,
- * ingredients and method from the default (quickest) sauce style. Re-run after
- * scripts/refresh-meals.cjs so the book never drifts from the app.
+ * Built from r/meals.json (scripts/refresh-offered-meals.mjs), the meals the app offers:
+ * the batch mains (slow cooker, then oven bakes), the breakfasts, the desserts and a short
+ * backup meals section (the smoothies) at the end. One A4 page per meal: the photo, the
+ * macros per tub or serve, the ingredients, the method and how it keeps.
+ *
+ * The PDF keeps its old path, cookbook/bulking-cookbook.pdf, so links already sent by
+ * email keep working. Rename it (and the link in cookbook/index.html) once the title is final.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
+const TITLE = 'The One Cook Cookbook';
+const SUBTITLE = 'Batch meals that cover your week';
+
 const ROOT = process.cwd();
-const meals = Object.values(JSON.parse(readFileSync(path.join(ROOT, 'r/meals.json'), 'utf8')));
+const all = Object.values(JSON.parse(readFileSync(path.join(ROOT, 'r/meals.json'), 'utf8')));
 const OUT_DIR = path.join(ROOT, 'cookbook/build');
 const PDF = path.join(ROOT, 'cookbook/bulking-cookbook.pdf');
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-mkdirSync(OUT_DIR, { recursive: true });
+mkdirSync(path.join(OUT_DIR, 'img'), { recursive: true });
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const stem = (s) => String(s || '').replace(/\.(png|jpe?g|webp)$/i, '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+// --images: make the print-sized JPEGs (1100 px wide) the book uses.
+if (process.argv.includes('--images')) {
+  const APP = process.argv.includes('--app') ? process.argv[process.argv.indexOf('--app') + 1] : null;
+  for (const m of all) {
+    const out = path.join(OUT_DIR, 'img', stem(m.image_filename) + '.jpg');
+    let src = null;
+    if (m.batch && APP && m.app_image_filename) src = path.join(APP, 'src/assets/meals', m.app_image_filename);
+    if (!src || !existsSync(src)) {
+      for (const ext of ['png', 'jpg', 'webp']) {
+        const p = path.join(ROOT, 'images/meals', stem(m.image_filename) + '.' + ext);
+        if (existsSync(p)) { src = p; break; }
+      }
+    }
+    if (!src) { console.warn('no photo for', m.slug); continue; }
+    execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '66', '--resampleWidth', '1100', src, '--out', out], { stdio: 'ignore' });
+  }
+  console.log('print images in cookbook/build/img/');
+}
+
 const imgFor = (m) => {
   const cands = [m.image_filename, (m.plates[0] || {}).image_filename, m.slug].map(stem).filter(Boolean);
   for (const c of cands) {
-    const j = path.join(OUT_DIR, 'img', c + '.jpg');           // print-sized copy, see header
+    const j = path.join(OUT_DIR, 'img', c + '.jpg');
     if (existsSync(j)) return 'file://' + j;
     const f = path.join(ROOT, 'images/meals', c + '.webp'); if (existsSync(f)) return 'file://' + f;
   }
@@ -37,50 +66,62 @@ const imgFor = (m) => {
 };
 const fmtTime = (mins) => { mins = +mins || 0; if (mins >= 60) { const h = Math.floor(mins / 60), r = mins % 60; return r ? `${h} h ${r} min` : `${h} h`; } return `${mins} min`; };
 const shortTime = (mins) => { mins = +mins || 0; if (mins >= 60) { const h = Math.floor(mins / 60), r = mins % 60; return r ? `${h}h ${r}m` : `${h}h`; } return `${mins}m`; };
+const frac = (n) => {
+  const w = Math.floor(n), f = n - w;
+  const t = [[0, ''], [0.25, '1/4'], [1 / 3, '1/3'], [0.5, '1/2'], [2 / 3, '2/3'], [0.75, '3/4'], [1, '']];
+  let best = t[0], bd = 9; for (const x of t) { const d = Math.abs(f - x[0]); if (d < bd) { bd = d; best = x; } }
+  const W = best[0] === 1 ? w + 1 : w; const F = best[0] === 1 ? '' : best[1];
+  if (!W && !F) return String(Math.round(n * 100) / 100);
+  return F ? (W ? `${W} ${F}` : F) : String(W);
+};
 const amount = (i) => {
   const n = Math.round(i.base_amount * 100) / 100;
   if (i.unit === 'g' || i.unit === 'ml') return `${n} ${i.unit}`;
-  if (i.unit === 'count') return `${n}`;
-  if (i.unit === 'cloves') return `${n} ${n === 1 ? 'clove' : 'cloves'}`;
-  return `${n} ${i.unit}`;
+  if (i.unit === 'count' || !i.unit) return frac(n);
+  if (i.unit === 'cloves') return `${frac(n)} ${n === 1 ? 'clove' : 'cloves'}`;
+  return `${frac(n)} ${i.unit}`;
 };
 const kcalFmt = (n) => Math.round(n).toLocaleString('en-AU');
 
-// Sections
-const SECTION = (m) => ({ breakfast: 'Breakfast', snack: 'Snacks', smoothie: 'Smoothies', dessert: 'Desserts' }[m.cuisine] || 'Mains');
-const ORDER = ['Breakfast', 'Mains', 'Snacks', 'Smoothies', 'Desserts'];
-const BLURB = {
-  Breakfast: 'Big first meals that take the pressure off the rest of the day. Most are under ten minutes of actual work.',
-  Mains: 'Lunches and dinners built for batch cooking: one pot, several days, plenty on the plate.',
-  Snacks: 'The gaps between meals are where the calories go missing. These fill them in a few minutes.',
-  Smoothies: 'When you can\'t face another plate, drink it. Five minutes and over a thousand calories.',
-  Desserts: 'Protein and calories in the one place you were going to spend them anyway.',
+// Sections: the batch mains split by how they cook, then breakfasts, desserts, backup meals.
+const SECTION = (m) => {
+  const s = (m.site || {}).section;
+  if (s === 'batch') return m.batch.method === 'oven' ? 'Oven bakes' : 'Slow cooker';
+  return { breakfast: 'Breakfast', dessert: 'Desserts', backup: 'Backup meals' }[s] || 'Desserts';
 };
-const sections = ORDER.map((name) => ({ name, meals: meals.filter((m) => SECTION(m) === name).sort((a, b) => a.display_name.localeCompare(b.display_name)) }));
+const ORDER = ['Slow cooker', 'Oven bakes', 'Breakfast', 'Desserts', 'Backup meals'];
+const BLURB = {
+  'Slow cooker': 'About ten minutes of work, then the pot does the rest. One cook makes 8 tubs: the next 3 days in the fridge, the rest in the freezer.',
+  'Oven bakes': 'One dish or tray into the oven, then cut into 8 and into tubs. The same week of food, no pot to watch.',
+  Breakfast: 'Most take five minutes or are made once and kept. The rest are cooked fresh when you have the time.',
+  Desserts: 'Protein in the one place you were going to have something sweet anyway. Several are made once for the week.',
+  'Backup meals': 'Didn\'t get to a meal? Blend one of these in about 4 minutes instead.',
+};
+const meals = all.slice();
+const sections = ORDER.map((name) => ({ name, meals: meals.filter((m) => SECTION(m) === name) }));
+const batchMeals = meals.filter((m) => m.batch);
 
-// Page numbering: cover 1, contents 2, skim 3–4, start here 5, then per section a divider + one page per meal, closing page last.
+for (const s of sections) s.meals.sort((a, b) => a.display_name.localeCompare(b.display_name));
+
+// Page numbering: cover 1, contents 2, skim 3-4, start here 5, then per section a divider + one page per meal, closing page last.
 let page = 6;
 for (const s of sections) { s.page = page; page += 1; for (const m of s.meals) { m.page = page; page += 1; } }
 const CLOSING_PAGE = page;
 const TOTAL = page;
 
-const prepFlags = (m) => { const st = m.meal_prep || {}; const f = []; if (st.strategy && st.strategy !== 'none') f.push('P'); if (st.storage && st.storage.freeze_months) f.push('F'); return f.join(''); };
-const activeMin = (m) => m.methods[0].time_active_minutes || m.methods[0].time_total_minutes || 0;
-const totalMin = (m) => m.methods[0].time_total_minutes || 0;
-// The plate a page describes: id 'standard' if there is one; otherwise, when the first plate is the
-// bare base (sauce only, id = slug) and there are served plates, the first served plate. Same as the old book.
-const defaultPlate = (m) => m.plates.find((p) => p.id === 'standard') || ((m.plates[0].id === m.slug && m.plates.length > 1) ? m.plates[1] : m.plates[0]);
-const kcal = (m) => defaultPlate(m).plate_macros.kcal;
+const method0 = (m) => m.methods[0];
+const activeMin = (m) => (m.batch ? m.batch.hands_on_minutes : method0(m).time_active_minutes || method0(m).time_total_minutes || 0);
+const totalMin = (m) => (m.batch ? m.batch.total_minutes : method0(m).time_total_minutes || 0);
+const prepFlags = (m) => { const st = (m.meal_prep || {}).storage || {}; return st.freeze_months ? 'F' : ''; };
+const defaultPlate = (m) => m.plates.find((p) => p.id === 'standard') || m.plates[0];
+const macros = (m) => defaultPlate(m).plate_macros || {};
 
-// Start-here picks: per section, the highest-calorie meal that is 15 minutes or less of hands-on time.
-const picks = sections.map((s) => s.meals.filter((m) => activeMin(m) <= 15).sort((a, b) => kcal(b) - kcal(a))[0] || s.meals[0]);
-const under10 = meals.filter((m) => activeMin(m) <= 10).length;
-const batches = meals.filter((m) => (m.meal_prep || {}).strategy && m.meal_prep.strategy !== 'none').length;
-const freezes = meals.filter((m) => (m.meal_prep || {}).storage && m.meal_prep.storage.freeze_months).length;
-const over1000 = meals.filter((m) => kcal(m) >= 1000).length;
+// Start-here picks: one per section (not the backup meals), the least hands-on time, then the most protein.
+const picks = sections.filter((s) => s.name !== 'Backup meals').map((s) => s.meals.slice().sort((a, b) => activeMin(a) - activeMin(b) || macros(b).protein_g - macros(a).protein_g)[0]).filter(Boolean);
+const batchTen = batchMeals.filter((m) => activeMin(m) <= 10).length;
+const freezes = meals.filter((m) => ((m.meal_prep || {}).storage || {}).freeze_months).length;
 
-const css = `
-@page{size:A4;margin:0}
+const css = `@page{size:A4;margin:0}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -179,32 +220,45 @@ body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff
 .closing .qr img{width:30mm;height:30mm;background:#fff;padding:2mm;border-radius:2.5mm}
 .closing .qr span{font-size:10.5pt;line-height:1.5;color:#c7c7cf}
 .closing .qr span b{display:block;color:#f2f2f4;font-size:13pt}
+.steps li b{font-weight:600}
+.recipe.xlong .photo{height:54mm}
+.recipe.xlong .body{padding-top:5mm}
+.recipe.xlong h2{font-size:20pt}
+.recipe.xlong .macros{margin-bottom:3mm}
+.recipe.xlong .macros div{padding:1.8mm 3mm 1.6mm}
+.recipe.xlong .macros b{font-size:14pt}
+.recipe.xlong .cols{grid-template-columns:66mm 1fr;gap:6mm}
+.recipe.xlong .steps li{font-size:8.1pt;line-height:1.32;padding-bottom:1.4mm}
+.recipe.xlong .ing li{font-size:7.9pt;padding:.9mm 0}
+.recipe.xlong .ing li small{font-size:6.9pt}
+.recipe.xlong .notes{font-size:7.6pt}
 `;
 
-const head = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>The Skinny Guy's Bulking Cookbook</title>
+const head = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${TITLE}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@1,9..144,500..700&family=Outfit:wght@400;500;600;700&display=swap">
 <style>${css}</style></head><body>`;
 
-const foot = (p, left) => `<div class="foot"><span>${left || `The Skinny Guy's Bulking Cookbook · <b>json.fit</b>`}</span><span>${p} / ${TOTAL}</span></div>`;
+const foot = (p, left) => `<div class="foot"><span>${left || `${TITLE} · <b>json.fit</b>`}</span><span>${p} / ${TOTAL}</span></div>`;
+const per = (m) => (m.batch ? 'per tub' : 'per serve');
 
-const coverPlates = [meals.find((m) => m.slug === 'spaghetti_carbonara'), meals.find((m) => m.slug === 'king_kong_chocolate'), meals.find((m) => m.slug === 'big_breakfast_plate')].filter(Boolean);
+const coverPlates = ['butter_chicken_and_rice', 'spaghetti_bolognese', 'teriyaki_chicken_and_rice'].map((s) => meals.find((m) => m.slug === s)).filter(Boolean);
 const cover = `<section class="page dark cover">
   <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-3.png')}" alt=""><span>JSON.fit</span></div>
   <p class="mono dim" style="margin:104mm 0 0">The free cookbook</p>
-  <h1 class="serif">The Skinny Guy's <span class="g">Bulking Cookbook.</span></h1>
-  <p class="lede">${meals.length} calorie-dense, high-protein meals you'll actually want to eat. Every macro counted, every ingredient listed, every step written for a work night.</p>
-  <div class="plates">${coverPlates.map((m) => `<div class="plate"><img src="${imgFor(m)}" alt=""><span>${esc(defaultPlate(m).display_name)}<small>${kcalFmt(kcal(m))} kcal · ${Math.round(defaultPlate(m).plate_macros.protein_g)} g protein</small></span></div>`).join('')}</div>
+  <h1 class="serif">The One Cook <span class="g">Cookbook.</span></h1>
+  <p class="lede">${SUBTITLE}. ${batchMeals.length} batch meals you cook once for 8 tubs, plus breakfasts, desserts and backup meals. Every ingredient, every step and the macros for each one.</p>
+  <div class="plates">${coverPlates.map((m) => `<div class="plate"><img src="${imgFor(m)}" alt=""><span>${esc(m.display_name)}<small>${activeMin(m)} min hands-on · ${m.batch.tubs} tubs</small></span></div>`).join('')}</div>
   <p class="trust"><b>Free</b> · No ads · No account · json.fit</p>
 </section>`;
 
 const contents = `<section class="page text">
   <p class="mono g">Contents</p>
   <h2 class="serif">What's inside.</h2>
-  <p>${over1000} of these meals are over 1,000 kcal a plate. ${under10} take ten minutes or less of hands-on time. ${batches} are built for batch cooking and ${freezes} freeze. Each recipe is one page: the plate, the numbers, the ingredients, the method.</p>
+  <p>${batchMeals.length} batch meals, each one cook for 8 tubs. ${batchTen} of them take 10 minutes or less of hands-on work; the slow cooker or the oven does the rest. ${freezes} recipes in the book freeze. Each recipe is one page: the plate, the numbers, the ingredients, the method and how it keeps.</p>
   <div class="toc">
     <div class="row"><span class="n">01</span><span class="t">Skim it</span><span class="c">every meal, time and kcal</span><span class="p">3</span></div>
-    <div class="row"><span class="n">02</span><span class="t">Start with these five</span><span class="c">one from each section</span><span class="p">5</span></div>
+    <div class="row"><span class="n">02</span><span class="t">Start with these</span><span class="c">one from each section</span><span class="p">5</span></div>
     ${sections.map((s, i) => `<div class="row"><span class="n">0${i + 3}</span><span class="t">${s.name}</span><span class="c">${s.meals.length} recipes</span><span class="p">${s.page}</span></div>`).join('')}
     <div class="row"><span class="n">0${sections.length + 3}</span><span class="t">Now let the app do it</span><span class="c">the same meals, planned</span><span class="p">${CLOSING_PAGE}</span></div>
   </div>
@@ -212,17 +266,17 @@ const contents = `<section class="page text">
 </section>`;
 
 const skimHalf = (secs, p, first) => `<section class="page text">
-  ${first ? `<p class="mono g">Skim it</p><h2 class="serif">The whole book at a glance.</h2><p class="dim" style="font-size:8.5pt">time = total minutes · kcal = the standard plate · P = prep ahead · F = freezes</p>` : `<p class="mono g">Skim it</p><h2 class="serif">Continued.</h2>`}
-  <div class="skim">${secs.map((s) => `<h3>${s.name}</h3>${s.meals.map((m) => `<div class="r"><span>${esc(m.display_name)}</span><span>${shortTime(totalMin(m))} · ${kcalFmt(kcal(m))}${prepFlags(m) ? ' · ' + prepFlags(m) : ''} · p${m.page}</span></div>`).join('')}`).join('')}</div>
+  ${first ? `<p class="mono g">Skim it</p><h2 class="serif">The whole book at a glance.</h2><p class="dim" style="font-size:8.5pt">hands-on minutes / total time · kcal per tub or serve · F = freezes</p>` : `<p class="mono g">Skim it</p><h2 class="serif">Continued.</h2>`}
+  <div class="skim">${secs.map((s) => `<h3>${s.name}</h3>${s.meals.map((m) => `<div class="r"><span>${esc(m.display_name)}</span><span>${activeMin(m)}m / ${shortTime(totalMin(m))} · ${kcalFmt(macros(m).kcal)}${prepFlags(m) ? ' · ' + prepFlags(m) : ''} · p${m.page}</span></div>`).join('')}`).join('')}</div>
   ${foot(p)}
 </section>`;
 const skim = skimHalf(sections.slice(0, 2), 3, true) + skimHalf(sections.slice(2), 4, false);
 
 const startHere = `<section class="page text">
   <p class="mono g">Start here</p>
-  <h2 class="serif">Start with these five.</h2>
-  <p>New to cooking for size? One from each section: big numbers, fifteen minutes or less of actual work, hard to get wrong. Cook one this week, then work through the rest.</p>
-  <div class="starts">${picks.map((m, i) => `<div class="start${i === 0 ? ' wide' : ''}"><img src="${imgFor(m)}" alt=""><div class="b"><b>${esc(m.display_name)}</b><small>${SECTION(m)} · ${fmtTime(totalMin(m))} · ${kcalFmt(kcal(m))} kcal · ${Math.round(defaultPlate(m).plate_macros.protein_g)} g protein · p${m.page}</small><p>${esc(defaultPlate(m).description || '')}</p></div></div>`).join('')}</div>
+  <h2 class="serif">Start with these.</h2>
+  <p>New to batch cooking? One from each section, the least hands-on work in it. Cook one batch this week and you have lunch or dinner sorted for days.</p>
+  <div class="starts">${picks.map((m, i) => `<div class="start${i === 0 ? ' wide' : ''}"><img src="${imgFor(m)}" alt=""><div class="b"><b>${esc(m.display_name)}</b><small>${SECTION(m)} · ${activeMin(m)} min hands-on · ${fmtTime(totalMin(m))} total · ${kcalFmt(macros(m).kcal)} kcal · ${Math.round(macros(m).protein_g)} g protein · p${m.page}</small><p>${esc(defaultPlate(m).description || '')}</p></div></div>`).join('')}</div>
   ${foot(5)}
 </section>`;
 
@@ -234,38 +288,55 @@ const divider = (s) => `<section class="page dark divider">
   ${foot(s.page)}
 </section>`;
 
+const stepText = (s) => (typeof s === 'string' ? esc(s) : (s.title ? `<b>${esc(s.title)}.</b> ` : '') + esc(s.summary || ''));
+const ingRow = (i, each, batch) => {
+  const pack = batch && i.pack && i.pack !== 'pantry' ? i.pack : '';
+  const sub = batch ? (pack ? `Buy: ${pack}` : i.pack === 'pantry' ? 'pantry' : '') : (i.notes || '');
+  return `<li><span>${esc(i.display_name)}${sub ? `<small>${esc(sub)}</small>` : ''}</span><span>${amount(i)}${each ? ' each' : ''}</span></li>`;
+};
+
 const recipe = (m) => {
-  const method = m.methods[0];
+  const method = method0(m);
   const plate = defaultPlate(m);
   const pm = plate.plate_macros;
+  const batch = !!m.batch;
   const ings = method.ingredients;
   const extra = plate.additional_ingredients || [];
-  const stepsList = method.instructions.map((s) => s.summary).concat((plate.additional_instructions || []).map((s) => (typeof s === 'string' ? s : s.summary))).filter(Boolean);
-  const words = stepsList.join(' ').split(/\s+/).length;
-  const long = words > 150 || ings.length + extra.length > 11 || stepsList.length > 6;
-  const short = !long && words < 95 && ings.length + extra.length <= 7;
+  const cook = method.instructions;
+  const day = plate.additional_instructions || [];
+  const words = cook.concat(day).map((s) => s.summary || '').join(' ').split(/\s+/).length;
+  const packWords = batch ? ings.concat(extra).map((i) => i.pack || '').join(' ').split(/\s+/).length : 0;
+  const lines = ings.length + extra.length;
+  const xlong = words + packWords * 0.6 > 330 || lines > 15;
+  const long = !xlong && (words > 150 || lines > 11 || cook.length + day.length > 6);
+  const short = !long && !xlong && words < 95 && lines <= 7;
   const otherPlates = m.plates.filter((p) => p !== plate);
-  const variants = (m.variants || []).filter((v) => !v.is_default);
   const prep = m.meal_prep || {};
-  const storage = prep.storage ? [prep.storage.fridge_days ? `fridge ${prep.storage.fridge_days} days` : null, prep.storage.freeze_months ? `freezer ${prep.storage.freeze_months} months` : null].filter(Boolean).join(' · ') : '';
+  const st = prep.storage || {};
+  const storage = [st.fridge_days ? `fridge ${st.fridge_days} days` : null, st.freeze_months ? `freezer ${st.freeze_months} month${st.freeze_months === 1 ? '' : 's'}` : null].filter(Boolean).join(' · ');
   const notes = [];
-  if (prep.strategy && prep.strategy !== 'none' && (prep.prep_note || prep.prep_ahead_summary)) notes.push(`<b>Prep ahead.</b> ${esc(prep.prep_ahead_summary || prep.prep_note)}`);
-  else if (prep.strategy === 'none' && prep.reason) notes.push(`<b>Cook fresh.</b> ${esc(prep.reason)}`);
   if (storage) notes.push(`<b>Keeps:</b> ${esc(storage)}.`);
-  if (variants.length) notes.push(`<b>Make it from scratch:</b> ${variants.map((v) => `${esc(v.display_name)}${v.extra_total_minutes ? `, +${fmtTime(v.extra_total_minutes)}` : ''}`).join('; ')}. The scratch version with every step is in the app.`);
+  if (batch && m.batch.freezer_note) notes.push(esc(m.batch.freezer_note));
+  if (batch && m.batch.side) notes.push(`<b>With it:</b> ${esc(m.batch.side.replace(/\.?$/, '.'))}`);
+  if (!batch && prep.prep_note && prep.storage) notes.push(esc(prep.prep_note));
   const other = m.methods.slice(1);
   if (other.length) notes.push(`<b>Or:</b> ${other.map((o) => `${esc(o.display_name)}, ${fmtTime(o.time_total_minutes)}`).join('; ')}. Steps in the app.`);
-  const kicker = [SECTION(m), fmtTime(totalMin(m)) + (activeMin(m) && activeMin(m) !== totalMin(m) ? ` (${activeMin(m)} hands-on)` : ''), method.display_name].filter(Boolean).join(' · ');
-  return `<section class="page recipe${long ? ' long' : short ? ' short' : ''}">
+  const yieldTxt = batch ? `${m.batch.tubs} tubs` : (m.produces_servings || 1) > 1 ? `makes ${m.produces_servings}` : '';
+  const kicker = [SECTION(m), `${activeMin(m)} min hands-on`, `${fmtTime(totalMin(m))} total`, yieldTxt, batch ? null : method.display_name].filter(Boolean).join(' · ');
+  const ingLbl = batch ? `Ingredients · whole pot, ${m.batch.tubs} tubs` : (m.produces_servings || 1) > 1 ? `Ingredients · makes ${m.produces_servings}` : 'Ingredients · 1 serve';
+  const stepsHtml = batch && day.length
+    ? `<ol class="steps">${cook.map((s) => `<li>${stepText(s)}</li>`).join('')}</ol><p class="lbl" style="margin-top:2mm">On the day</p><ol class="steps" style="counter-reset:s ${cook.length}">${day.map((s) => `<li>${esc(s.summary)}</li>`).join('')}</ol>`
+    : `<ol class="steps">${cook.concat(day).map((s) => `<li>${stepText(s)}</li>`).join('')}</ol>`;
+  return `<section class="page recipe${xlong ? ' long xlong' : long ? ' long' : short ? ' short' : ''}">
   <div class="photo"><img src="${imgFor(m)}" alt=""><div class="tag">${esc(kicker)}</div></div>
   <div class="body">
     <h2 class="serif">${esc(m.display_name)}</h2>
     <p class="desc">${esc(plate.description || '')}</p>
-    <div class="macros"><div class="k"><b>${kcalFmt(pm.kcal)}</b><span>kcal</span></div><div><b>${Math.round(pm.protein_g)} g</b><span>protein</span></div><div><b>${Math.round(pm.carbs_g)} g</b><span>carbs</span></div><div><b>${Math.round(pm.fat_g)} g</b><span>fat</span></div></div>
+    <div class="macros"><div class="k"><b>${kcalFmt(pm.kcal)}</b><span>kcal ${per(m)}</span></div><div><b>${Math.round(pm.protein_g)} g</b><span>protein</span></div><div><b>${Math.round(pm.carbs_g)} g</b><span>carbs</span></div><div><b>${Math.round(pm.fat_g)} g</b><span>fat</span></div></div>
     ${otherPlates.length ? `<p class="ways"><b>${m.plates.length} ways to serve.</b> ${otherPlates.map((p) => `${esc(p.display_name)} ${kcalFmt(p.plate_macros.kcal)} kcal / ${Math.round(p.plate_macros.protein_g)} g`).join(' · ')}. Recipes for each in the app.</p>` : ''}
     <div class="cols">
-      <div><p class="lbl">Ingredients · 1 serve</p><ul class="ing">${ings.map((i) => `<li><span>${esc(i.display_name)}${i.notes ? `<small>${esc(i.notes)}</small>` : ''}</span><span>${amount(i)}</span></li>`).join('')}${extra.length ? `<li class="sub">To plate it up</li>${extra.map((i) => `<li><span>${esc(i.display_name)}${i.notes ? `<small>${esc(i.notes)}</small>` : ''}</span><span>${amount(i)}</span></li>`).join('')}` : ''}</ul></div>
-      <div><p class="lbl">Method</p><ol class="steps">${stepsList.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>${notes.length ? `<div class="notes">${notes.join(' ')}</div>` : ''}</div>
+      <div><p class="lbl">${ingLbl}</p><ul class="ing">${ings.map((i) => ingRow(i, false, batch)).join('')}${extra.length ? `<li class="sub">${batch ? 'On the day, per tub' : 'To plate it up'}</li>${extra.map((i) => ingRow(i, false, batch)).join('')}` : ''}</ul></div>
+      <div><p class="lbl">Method</p>${stepsHtml}${notes.length ? `<div class="notes">${notes.join(' ')}</div>` : ''}</div>
     </div>
   </div>
   ${foot(m.page, `${esc(SECTION(m))} · <b>${esc(m.display_name)}</b>`)}
@@ -275,8 +346,8 @@ const recipe = (m) => {
 const closing = `<section class="page dark closing">
   <p class="mono dim">JSON.fit for iPhone and Android</p>
   <h2 class="serif">Now let the app <span class="g">do it.</span></h2>
-  <p>The book is the static version. The app takes these same ${meals.length} meals and builds your week around your numbers: a goal weight and a date, the meals to hit it, one shopping list, one prep session.</p>
-  <ul><li>Your calorie and protein targets, worked out from your goal</li><li>A week of meals that lands on them. Swap any meal, the day rebalances.</li><li>One grocery list by aisle, one batch-cook session</li><li>Cook mode with a timer on every step</li><li>Training programmed to match</li></ul>
+  <p>The book is the static version. The app takes these same ${meals.length} meals and builds your week around your numbers: which batch to cook, which tubs go in the fridge and which in the freezer, one shopping list, one cook.</p>
+  <ul><li>Your calorie and protein targets, worked out from your goal</li><li>A week of meals that lands on them. Swap any meal, the day rebalances.</li><li>One grocery list by aisle, one cook for the week</li><li>Cook mode with a timer on every step</li><li>Training programmed to match</li></ul>
   <div class="qr"><img src="file://${path.join(ROOT, 'images/qr-app.svg')}" alt="QR code"><span><b>json.fit/app</b>Point your phone's camera here, or search JSON.fit on the App Store or Google Play.<br>Free · No ads · No account</span></div>
   ${foot(CLOSING_PAGE)}
 </section>`;
@@ -285,15 +356,12 @@ const html = head + cover + contents + skim + startHere + sections.map((s) => di
 const htmlPath = path.join(OUT_DIR, 'cookbook.html');
 if (process.argv.includes('--preview')) {
   const pick = (slug) => meals.find((m) => m.slug === slug);
-  const longest = meals.slice().sort((a, b) => b.methods[0].instructions.map((s) => s.summary).join(' ').length - a.methods[0].instructions.map((s) => s.summary).join(' ').length)[0];
-  const pv = head + cover + contents + skim + startHere + divider(sections[1]) + [pick('spaghetti_carbonara'), pick('butter_chicken'), pick('pulled_pork'), longest, pick('king_kong_chocolate')].filter(Boolean).map(recipe).join('') + closing + '</body></html>';
-  writeFileSync(path.join(OUT_DIR, 'preview.html'), pv);
-  const one = { cover, start: startHere, bolognese: recipe(pick('bolognese')), closing, mains: divider(sections[1]), 'page-breakfast': recipe(pick('maple_muscle_toast')), 'page-main': recipe(pick('spaghetti_carbonara')), 'page-dessert': recipe(pick(meals.find((m) => /cheesecake/i.test(m.display_name)).slug)) };
+  const one = { cover, start: startHere, closing, mains: divider(sections[0]), 'page-breakfast': recipe(pick('protein_pancakes')), 'page-main': recipe(pick('butter_chicken_and_rice')), 'page-dessert': recipe(pick('fudgy_protein_brownies')) };
   for (const [k, v] of Object.entries(one)) writeFileSync(path.join(OUT_DIR, `preview-${k}.html`), head + v + '</body></html>');
-  console.log('preview.html: cover, contents, skim x2, start, divider, 5 recipes (longest: ' + longest.slug + '), closing');
+  console.log('preview-*.html written');
 }
 writeFileSync(htmlPath, html);
-console.log(`cookbook.html: ${TOTAL} pages expected (${meals.length} recipes), missing images: ${meals.filter((m) => !imgFor(m)).map((m) => m.slug).join(', ') || 'none'}`);
+console.log(`cookbook.html: ${TOTAL} pages expected (${meals.length} recipes: ${sections.map((s) => `${s.meals.length} ${s.name.toLowerCase()}`).join(', ')}), missing images: ${meals.filter((m) => !imgFor(m)).map((m) => m.slug).join(', ') || 'none'}`);
 
 if (!process.argv.includes('--html')) {
   execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--no-pdf-header-footer', '--virtual-time-budget=20000', `--print-to-pdf=${PDF}`, 'file://' + htmlPath], { stdio: 'ignore' });
