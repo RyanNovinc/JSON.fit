@@ -186,6 +186,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .feat .copy li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;color:var(--text);font-size:1rem}
 .feat .copy li::before{content:"";width:8px;height:8px;border-radius:50%;margin-top:10px;background:var(--green)}
 .feat.t .copy li::before{background:var(--cyan)}
+.feat .copy li a.inl{color:#fff;text-decoration:underline;text-decoration-color:var(--green-text);text-underline-offset:3px}
 .feat.rt .copy li::before{background:var(--violet-text)}
 .route.big-route .k{color:var(--violet-text)}
 .route.big-route .link{color:var(--violet-text)}
@@ -492,7 +493,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
         <p>Every day shows what to eat and when. Not feeling today's lunch? Swap it for something else. Your macros still hold.</p>
         <ul>
           <li>Only meals that keep the day on target are offered</li>
-          <li>Portions shift in small steps, never a different meal plan</li>
+          <li>No meal ready? <a class="inl" href="/meals.html?filter=Backup">Blend a backup smoothie</a> in about 4 minutes</li>
           <li>Your shopping list updates with it</li>
         </ul>
       </div>
