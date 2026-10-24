@@ -236,10 +236,11 @@ section{position:relative}
 .pillar li span{display:block;margin-top:2px;color:var(--text-2);font-size:.9rem;line-height:1.4}
 .pillar{display:flex;flex-direction:column}
 .pillar ul{flex:1}
-.pillar .sci{display:block;margin-top:8px;padding:12px 0 0 26px;position:relative;border-top:1px solid var(--line);color:var(--text-2);font-size:.85rem;text-decoration:none}
-.pillar .sci b{color:var(--pc)}
-.pillar .sci::before{content:"";position:absolute;left:0;top:13px;width:16px;height:16px;border-radius:50%;background:var(--pc);opacity:.18}
-.pillar .sci::after{content:"";position:absolute;left:5px;top:17px;width:6px;height:3px;border-left:2px solid var(--pc);border-bottom:2px solid var(--pc);transform:rotate(-45deg)}
+.pillar .sci{display:flex;align-items:center;gap:9px;margin-top:8px;padding:14px 0 2px;border-top:1px solid var(--line);color:var(--text-2);font-size:.85rem;text-decoration:none}
+.pillar .sci b{color:#fff}
+.pillar .sci .seal{flex:none;width:24px;height:24px}
+.pillar .sci .seal polygon{fill:var(--pc);stroke:var(--pc);stroke-width:1.6;stroke-linejoin:round}
+.pillar .sci .seal path{fill:none;stroke:#0a0a0b;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .pillar .sci:hover{color:#fff}
 @media(max-width:900px){.pillars{grid-template-columns:minmax(0,1fr)}}
 .perks-h .cyan{color:var(--cyan,#22d3ee)}
@@ -367,7 +368,7 @@ section{position:relative}
         <li><b>When to cut, when to bulk</b><span>Every phase in the right order</span></li>
         <li><b>Your way</b><span>You pick the pace. The science sets the limits</span></li>
       </ul>
-      <a class="sci" href="/research/#area-route"><b>Backed by science</b> &middot; 12 sourced decisions &rarr;</a>
+      <a class="sci" href="/research/#area-route"><svg class="seal" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12.00,1.00 14.41,3.02 17.50,2.47 18.58,5.42 21.53,6.50 20.98,9.59 23.00,12.00 20.98,14.41 21.53,17.50 18.58,18.58 17.50,21.53 14.41,20.98 12.00,23.00 9.59,20.98 6.50,21.53 5.42,18.58 2.47,17.50 3.02,14.41 1.00,12.00 3.02,9.59 2.47,6.50 5.42,5.42 6.50,2.47 9.59,3.02"/><path d="M7.6 12.3l3 3 5.8-6.2"/></svg><b>Backed by science</b> &middot; 12 sourced decisions &rarr;</a>
     </article>
     <article class="pillar g">
       <p class="pn">02</p>
@@ -380,7 +381,7 @@ section{position:relative}
         <li><b>Macros hit</b><span>Every day on your macros for your goal</span></li>
         <li><b>Health covered</b><span>Fibre, sodium and key micronutrients</span></li>
       </ul>
-      <a class="sci" href="/research/#area-meals"><b>Backed by science</b> &middot; 6 sourced decisions &rarr;</a>
+      <a class="sci" href="/research/#area-meals"><svg class="seal" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12.00,1.00 14.41,3.02 17.50,2.47 18.58,5.42 21.53,6.50 20.98,9.59 23.00,12.00 20.98,14.41 21.53,17.50 18.58,18.58 17.50,21.53 14.41,20.98 12.00,23.00 9.59,20.98 6.50,21.53 5.42,18.58 2.47,17.50 3.02,14.41 1.00,12.00 3.02,9.59 2.47,6.50 5.42,5.42 6.50,2.47 9.59,3.02"/><path d="M7.6 12.3l3 3 5.8-6.2"/></svg><b>Backed by science</b> &middot; 6 sourced decisions &rarr;</a>
     </article>
     <article class="pillar c">
       <p class="pn">03</p>
@@ -390,7 +391,7 @@ section{position:relative}
         <li><b>Rest times set</b><span>Tailored to each exercise, from the research</span></li>
         <li><b>How hard to push</b><span>How close to failure on every set</span></li>
       </ul>
-      <a class="sci" href="/research/#area-training"><b>Backed by science</b> &middot; 7 sourced decisions &rarr;</a>
+      <a class="sci" href="/research/#area-training"><svg class="seal" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12.00,1.00 14.41,3.02 17.50,2.47 18.58,5.42 21.53,6.50 20.98,9.59 23.00,12.00 20.98,14.41 21.53,17.50 18.58,18.58 17.50,21.53 14.41,20.98 12.00,23.00 9.59,20.98 6.50,21.53 5.42,18.58 2.47,17.50 3.02,14.41 1.00,12.00 3.02,9.59 2.47,6.50 5.42,5.42 6.50,2.47 9.59,3.02"/><path d="M7.6 12.3l3 3 5.8-6.2"/></svg><b>Backed by science</b> &middot; 7 sourced decisions &rarr;</a>
     </article>
   </div>
 </section>
