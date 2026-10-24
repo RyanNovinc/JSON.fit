@@ -403,3 +403,4 @@ a{color:inherit}
 .v2 .final2{background:radial-gradient(ellipse at 50% 0%,#1c1e24,var(--bg) 70%)}
 .v2 .final2 h2.d{font-size:clamp(2.6rem,7vw,5rem)}
 .v2 .hero2 h1.d{font-size:clamp(2.6rem,6.4vw,4.8rem)}
+.v2 .final2 h2.d{text-transform:none}
