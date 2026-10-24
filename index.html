@@ -81,13 +81,17 @@ img{display:block}
 .tabs button[aria-selected="true"]{background:#fff;color:#0a0a0b}
 .hero h1{font-size:clamp(3rem,8.4vw,6.6rem);line-height:.98;color:#fff;margin-top:14px}
 .hero h1 .cyan{display:block}
-.hero .sub{max-width:42ch;margin:22px auto 0;color:var(--text-2);font-size:clamp(1.02rem,1.6vw,1.2rem)}
+.hero .sub{text-wrap:balance;max-width:42ch;margin:22px auto 0;color:var(--text-2);font-size:clamp(1.02rem,1.6vw,1.2rem)}
 .hero-art{position:relative;margin:34px auto 0;max-width:1500px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 7%);mask-image:linear-gradient(to bottom,transparent 0,#000 7%)}
 .hero-art img{width:100%;height:auto}
 .hero-art .shot{display:block;transition:opacity .6s ease}
 .hero-art .shot.alt{position:absolute;inset:0;opacity:0}
-[data-tab="train"] .hero-art .shot.main{opacity:0}
-[data-tab="train"] .hero-art .shot.alt{opacity:1}
+.hero-art[data-shot="train"] .shot.main{opacity:0}
+.hero-art[data-shot="train"] .shot.alt{opacity:1}
+.shot-pick{position:absolute;z-index:2;left:50%;bottom:9%;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(10,10,11,.72);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.shot-pick button{border:0;background:none;color:var(--text-2);font:600 .85rem var(--sans);padding:.45rem 1rem;border-radius:999px;cursor:pointer}
+.shot-pick button[aria-pressed="true"]{background:#fff;color:#0a0a0b}
+.shot-pick button:focus-visible{outline:2px solid var(--cyan,#22d3ee);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.hero-art .shot{transition:none}}
 .hero-art::after{content:"";position:absolute;inset:auto 0 0 0;height:22%;background:linear-gradient(transparent,var(--bg))}
 @media(max-width:900px){
@@ -95,7 +99,6 @@ img{display:block}
   .hero-art{margin-top:24px}
   .hero-art img{height:440px;width:auto;max-width:none;position:relative;left:50%;transform:translateX(-50%)}
 }
-[data-tab="train"] .only-meal, [data-tab="meal"] .only-train{display:none}
 
 /* sections */
 section{position:relative}
@@ -254,16 +257,11 @@ section{position:relative}
 <main>
 <section class="hero" aria-labelledby="h1">
   <div class="hero-copy">
-    <div class="tabs" role="tablist" aria-label="What you want help with">
-      <button role="tab" id="tab-meal" aria-selected="true" data-set="meal">Meals</button>
-      <button role="tab" id="tab-train" aria-selected="false" data-set="train">Training</button>
-    </div>
-    <p class="label">The most results for the time you put in</p>
+    <p class="label">Science-backed training and food</p>
     <h1 id="h1" class="serif">
       Fitness,<span class="cyan">on autopilot.</span>
     </h1>
-    <p class="sub only-meal">Science-backed training and food, built to get you the most results for the least time. Short prep, your exact macros, meals you actually like.</p>
-    <p class="sub only-train">Science-backed training and food, built to get you the most results for the least time. You know exactly how many sets to do, how hard to push and how long to rest.</p>
+    <p class="sub">Built to get you the most results for the least time. Short prep meals at your exact macros, and training where every set counts.</p>
     <div class="badges">
       <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="hero">
         <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -276,7 +274,7 @@ section{position:relative}
     </div>
     <p class="trust"><b>Free</b> &middot; No ads &middot; No account &middot; Your data stays on your phone</p>
   </div>
-  <div class="hero-art">
+  <div class="hero-art" id="heroArt" data-shot="meal">
     <picture class="shot main" id="heroMeal">
       <source media="(max-width: 900px)" srcset="images/home/hero-1200.webp">
       <img src="images/home/hero-2400.webp" width="2400" height="1029" fetchpriority="high" alt="A man eating a bowl of carbonara between two phones showing JSON.fit: a wall of meals and the Mains recipe list">
@@ -285,6 +283,10 @@ section{position:relative}
       <source media="(max-width: 900px)" srcset="images/home/hero-train-1200.webp">
       <img src="images/home/hero-train-2400.webp" width="2400" height="1029" fetchpriority="low" alt="A man curling a pair of dumbbells between two phones showing JSON.fit: this week's workouts and an incline bench press being logged set by set">
     </picture>
+    <div class="shot-pick" aria-label="Show">
+      <button type="button" data-shot="meal" aria-pressed="true">Meals</button>
+      <button type="button" data-shot="train" aria-pressed="false">Training</button>
+    </div>
   </div>
 </section>
 
@@ -540,9 +542,14 @@ section{position:relative}
 (function(){
   // Meals / Training tabs (also: #training deep link). The Training tab's App Store taps open the training custom product page.
   var PPID='b08433ee-bbbe-4c5a-8066-4c6c2df76d44';
-  function setTab(t){document.body.setAttribute('data-tab',t);var hm=document.getElementById('heroMeal'),ht=document.getElementById('heroTrain');if(hm&&ht){hm.setAttribute('aria-hidden',t==='train'?'true':'false');ht.setAttribute('aria-hidden',t==='train'?'false':'true');}['meal','train'].forEach(function(k){var el=document.getElementById('tab-'+k);if(el)el.setAttribute('aria-selected',k===t?'true':'false');});}
-  setTab(document.body.getAttribute('data-tab')||'meal');
-  document.querySelectorAll('.tabs button').forEach(function(btn){btn.addEventListener('click',function(){var t=btn.getAttribute('data-set');setTab(t);if(window.gtag)gtag('event','home_tab',{tab:t});if(window.track)window.track('home_tab',{tab:t});});});
+  // Hero photo: rotates between meals and training on its own; the pills on the photo pick one (and stop the rotation).
+  var art=document.getElementById('heroArt'),timer=null;
+  function show(k){if(!art)return;art.setAttribute('data-shot',k);document.getElementById('heroMeal').setAttribute('aria-hidden',k==='meal'?'false':'true');document.getElementById('heroTrain').setAttribute('aria-hidden',k==='train'?'false':'true');art.querySelectorAll('.shot-pick button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-shot')===k?'true':'false');});}
+  show(document.body.getAttribute('data-tab')==='train'?'train':'meal');
+  var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(art&&!still)timer=setInterval(function(){if(!document.hidden)show(art.getAttribute('data-shot')==='meal'?'train':'meal');},5000);
+  if(art)art.querySelectorAll('.shot-pick button').forEach(function(btn){btn.addEventListener('click',function(){var k=btn.getAttribute('data-shot');clearInterval(timer);show(k);if(window.track)window.track('home_tab',{tab:k});});});
+  // App Store taps open the training custom product page when the visitor landed on #training.
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a'); if(!a||!a.href||a.href.indexOf('apps.apple.com')<0) return;
     try{var u=new URL(a.href);if(document.body.getAttribute('data-tab')==='train')u.searchParams.set('ppid',PPID);else u.searchParams.delete('ppid');a.href=u.toString();}catch(err){}
