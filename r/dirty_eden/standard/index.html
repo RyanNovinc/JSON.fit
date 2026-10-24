@@ -280,6 +280,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
 .ing-yield{font-size:.85rem;color:var(--text-2);margin:-.2rem 0 .8rem}
 .step-text b{color:var(--text);font-weight:600}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+.facts.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.section.timejoin{margin-top:-1.5rem}
 .fact{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.75rem .85rem}
 .fact b{display:block;font-size:1.05rem;color:var(--text);font-weight:600}
 .fact span{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
@@ -558,7 +560,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
     // Macros
     var macroSlot=document.getElementById('macro-slot');
     macroSlot.innerHTML =
-      cell(m.protein_g, 'Protein', true) + cell(m.carbs_g,'Carbs') + cell(m.fat_g,'Fat') + cell(m.kcal,'kcal');
+      cell(m.kcal,'kcal', true) + cell(m.protein_g, 'Protein') + cell(m.carbs_g,'Carbs') + cell(m.fat_g,'Fat');
 
     // Description
     var descSlot=document.getElementById('desc-slot');
@@ -720,11 +722,16 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center}
       var m0=methods[0];
       var facts=[];
       if(m0.time_active_minutes) facts.push([formatTime(m0.time_active_minutes),'Hands-on']);
-      facts.push([formatTime(m0.time_total_minutes),'Total']);
-      if(meal.batch) facts.push([String(meal.batch.tubs),'Tubs']);
+      if(meal.batch){
+        // Batch meals: the time it cooks on its own, named for the cooker.
+        var away=Math.max(0,(m0.time_total_minutes||0)-(m0.time_active_minutes||0));
+        var where=/oven/i.test(String(m0.display_name||''))?'In the oven':'In the slow cooker';
+        facts.push([formatTime(away),where]);
+      } else facts.push([formatTime(m0.time_total_minutes),'Total']);
+      if(meal.batch){}
       else if((meal.produces_servings||1)>1) facts.push([String(meal.produces_servings),'Serves']);
       else facts.push([m0.display_name||'Cook','Method']);
-      methodBlock = '<div class="section"><span class="eyebrow">Time</span><div class="facts">'+facts.map(function(f){return '<div class="fact"><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>'+
+      methodBlock = (meal.batch?'<div class="section timejoin">':'<div class="section"><span class="eyebrow">Time</span>')+'<div class="facts'+(meal.batch?' two':'')+'">'+facts.map(function(f){return '<div class="fact"><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>'+
         '<span id="single-time-val" data-mins="'+(m0.time_total_minutes||0)+'" hidden></span></div>';
     }
     var keepsBlock='';
