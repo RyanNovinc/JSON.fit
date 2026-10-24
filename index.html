@@ -107,7 +107,7 @@ img{display:block}
 @keyframes rdraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes rfade{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.hero-art[data-shot="route"] .rchart .ln,.hero-art[data-shot="route"] .rchart .ar{animation:none}}
-@media(max-width:900px){.hero-art .route-shot{padding:24px 16px 80px}.route.mini{padding:18px}.route.mini .phase{padding:7px 0}.rnote{display:none}.route.mini .big{font-size:1.5rem}}
+@media(max-width:900px){.hero-art .route-shot{padding:24px 16px 80px}.route.mini{padding:18px}.route.mini .phase{padding:7px 0}.rnote{display:none}.route.mini .big{font-size:1.3rem}}
 .hero-art[data-shot="train"] .shot.main{opacity:0}
 .hero-art[data-shot="train"] .shot.alt{opacity:1}
 .shot-pick{position:absolute;z-index:2;left:50%;bottom:9%;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(10,10,11,.72);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
@@ -199,7 +199,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 /* route card */
 .route{width:100%;max-width:460px;border:1px solid var(--line);border-radius:22px;background:var(--surface);padding:26px}
 .route .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
-.route .big{font-size:clamp(1.7rem,3.4vw,2.2rem);font-weight:900;line-height:1.05;margin-top:12px;letter-spacing:-.01em}
+.route .big{white-space:nowrap;font-size:clamp(1.25rem,2.6vw,1.9rem);font-weight:900;line-height:1.05;margin-top:12px;letter-spacing:-.01em}
 .route .big span{color:var(--text-3)}
 .phase{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
 .phases{margin-top:18px}
