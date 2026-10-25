@@ -213,6 +213,7 @@ async function buildProgram(about: any, training: any) {
 const API: any = {
   version: () => ({ app: __APP_VERSION__, rev: __APP_REV__ }),
   defaults,
+  goalWeightAt: (sex: string, heightCm: number, weightKg: number, goalBf: number) => defaultGoalWeight({ sex, heightCm, currentWeightKg: weightKg }, goalBf),
   routeOptions,
   buildRoute,
   buildProgram,
