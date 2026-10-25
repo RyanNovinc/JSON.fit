@@ -549,21 +549,31 @@
       return '<div class="meal"><div class="ph">' + photo(m.curated_meal_slug, m.name) + '</div><div><span class="sl">' + esc(SLOT[m.type] || m.type) + (m.time ? ' · ' + esc(m.time) : '') + '</span>' + nm + (tag ? '<span class="tag">' + tag + '</span>' : '') + '</div><div class="kc"><b>' + Math.round(m.calories) + '</b>kcal<br>' + Math.round(m.macros.protein) + ' g P</div></div>';
     }).join('');
     var T = function (k, val, lo, hi, unit, label) { return '<div class="tot' + (band[k] ? ' ok' : '') + '"><b>' + Math.round(val).toLocaleString('en-AU') + unit + '</b><span>' + label + ' · ' + Math.round(lo) + '–' + Math.round(hi) + '</span></div>'; };
-    var verdict = okDays === dates.length
-      ? '<p class="verdict"><i></i><span><b style="color:#fff">Every day lands on your macros.</b> Each day’s kcal, protein, carbs and fat sit inside your ranges.</span></p>'
-      : '<p class="verdict"><i class="part"></i><span><b style="color:#fff">' + okDays + ' of ' + dates.length + ' days land inside all four macro ranges.</b> The dots show which. In the app you can swap a meal and the day rebalances.</span></p>';
+    // Per macro: on how many days the day's total sits inside the plan's own range (report.targets).
+    var hits = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+    dates.forEach(function (d) { if (!byDate[d]) return; var b = inBand(byDate[d], t); Object.keys(hits).forEach(function (k) { if (b[k]) hits[k]++; }); });
+    var n = dates.length;
+    var verdict = okDays === n
+      ? '<p class="verdict"><i></i><span><b style="color:#fff">Every day lands on your macros.</b> Each day\u2019s kcal, protein, carbs and fat sit inside your ranges.</span></p>'
+      : '<p class="verdict"><i class="part"></i><span><b style="color:#fff">Days inside your ranges: kcal ' + hits.kcal + '/' + n + ', protein ' + hits.protein + '/' + n + ', carbs ' + hits.carbs + '/' + n + ', fat ' + hits.fat + '/' + n + '.</b> A green dot means all four. When days miss, the app shows the gap and the changes that close it, and you can swap any meal.</span></p>';
     var L0 = dayLabel(date);
-    var cook = M.cook ? (function () {
-      var C = M.cook, L = dayLabel(C.date);
-      var pots = C.pots.map(function (p) {
-        var where = (p.toFridge ? p.toFridge + ' to the fridge' : '') + (p.toFridge && p.toFreezer ? ', ' : '') + (p.toFreezer ? p.toFreezer + ' to the freezer' : '');
-        var page = mealName(p.recipe) || mealName(p.fullRecipe);
-        var nm = page ? '<a class="nm" href="../r/' + page + '/" target="_blank" rel="noopener" style="color:#fff;font-weight:700">' + esc(p.name) + '</a>' : '<b>' + esc(p.name) + '</b>';
-        return '<div class="pot"><div class="ph">' + photo(p.recipe, p.name) + '</div><div>' + nm + '<small>' + p.tubs + ' tubs' + (where ? ': ' + where : '') + '</small></div></div>';
+    var cooks = M.cooks || [];
+    var cook = cooks.length ? (function () {
+      var potsN = 0, mins = 0, tubs = 0;
+      cooks.forEach(function (C) { potsN += C.pots.length; mins += C.handsOnMinutes; tubs += C.tubs; });
+      var days = cooks.map(function (C) {
+        var L = dayLabel(C.date);
+        var pots = C.pots.map(function (p) {
+          var where = (p.toFridge ? p.toFridge + ' to the fridge' : '') + (p.toFridge && p.toFreezer ? ', ' : '') + (p.toFreezer ? p.toFreezer + ' to the freezer' : '');
+          var page = mealName(p.recipe) || mealName(p.fullRecipe);
+          var nm = page ? '<a class="nm" href="../r/' + page + '/" target="_blank" rel="noopener">' + esc(p.name) + '</a>' : '<b>' + esc(p.name) + '</b>';
+          return '<div class="pot"><div class="ph">' + photo(p.recipe, p.name) + '</div><div>' + nm + '<small>' + p.tubs + ' tubs' + (where ? ': ' + where : '') + '</small></div></div>';
+        }).join('');
+        return '<p class="kick" style="margin-top:16px">' + L.long + ' ' + L.d + ' ' + L.mon + ' \u00b7 ' + C.handsOnMinutes + ' min hands-on</p>' + pots;
       }).join('');
-      return '<div class="card cook"><p class="kick g">Cook day · ' + L.long + ' ' + L.d + ' ' + L.mon + '</p>' +
-        '<div class="stat3"><div><b>' + C.pots.length + '</b><span>' + (C.pots.length === 1 ? 'Pot' : 'Pots') + '</span></div><div><b>' + C.handsOnMinutes + '</b><span>Min hands-on</span></div><div><b>' + C.tubs + '</b><span>Tubs</span></div></div>' +
-        '<div style="margin-top:8px">' + pots + '</div>' + (M.week && M.week.headline ? '<p class="note">This week: ' + esc(M.week.headline) + (M.week.foot ? ' ' + esc(M.week.foot) : '') + '</p>' : '') + '</div>';
+      return '<div class="card cook"><p class="kick g">' + (cooks.length === 1 ? 'Your cook day' : 'Your ' + cooks.length + ' cook days') + '</p>' +
+        '<div class="stat3"><div><b>' + potsN + '</b><span>' + (potsN === 1 ? 'Pot' : 'Pots') + '</span></div><div><b>' + mins + '</b><span>Min hands-on</span></div><div><b>' + tubs + '</b><span>Tubs</span></div></div>' +
+        days + (M.week && M.week.foot ? '<p class="note">' + esc(M.week.foot) + '</p>' : '') + '</div>';
     })() : '';
     h('<section class="step" aria-labelledby="t5">' +
       '<p class="kick g">Your week of meals</p><h2 class="big" id="t5">Every day, <em>planned.</em></h2>' +

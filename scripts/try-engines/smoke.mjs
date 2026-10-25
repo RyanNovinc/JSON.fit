@@ -41,7 +41,7 @@ for (const P of PROFILES) {
     const days = Object.values(meals.plan.dailyMeals);
     const t = meals.report.targets;
     const inBand = meals.report.days.filter((x) => x.kcal >= t.kcalLo && x.kcal <= t.kcalHi && x.protein >= t.proteinLo).length;
-    say(`  meals ${meals.ms} ms: ${days.length} days, ${meals.report.counts.meals} meals, ${inBand}/7 days in kcal+protein band, misses ${JSON.stringify(meals.report.misses)}; grid ${grid.meals.length} (recommend ${grid.recommend}); cook ${meals.cook ? meals.cook.pots.map((p) => p.name).join(' + ') + ' ' + meals.cook.handsOnMinutes + ' min ' + meals.cook.tubs + ' tubs' : 'none'}; ${meals.week?.headline}; grocery ${meals.grocery.rows.length} rows`);
+    say(`  meals ${meals.ms} ms: ${days.length} days, ${meals.report.counts.meals} meals, ${inBand}/7 days in kcal+protein band, misses ${JSON.stringify(meals.report.misses)}; grid ${grid.meals.length} (recommend ${grid.recommend}); cooks ${meals.cooks.map((c) => c.date + ': ' + c.pots.map((p) => p.name).join(' + ') + ' ' + c.handsOnMinutes + ' min ' + c.tubs + ' tubs').join('; ') || 'none'}; ${meals.week?.headline}; grocery ${meals.grocery.rows.length} rows`);
     if (days.length !== 7) bad('days ' + days.length);
     const slugs = new Set(); days.forEach((dd) => dd.meals.forEach((x) => slugs.add(x.curated_meal_slug)));
     const noPhoto = [...slugs].filter((s) => !index[s]?.i);

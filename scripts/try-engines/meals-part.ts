@@ -123,18 +123,19 @@ async function buildMeals(about: any, food: any, buildRoute: (a: any) => Promise
   const ms = Date.now() - t0;
   const lookup = withPlanSwaps(mealLookup(), plan);
 
-  // The cook day: the first cook of the plan, as the prep session screen builds it.
-  let cook: any = null;
-  const cd = (plan.batch?.cookDays ?? []).filter((c: any) => (c?.pots ?? []).length).sort((a: any, b: any) => (a.date < b.date ? -1 : 1))[0];
-  if (cd) {
-    const session = prepSessionFromCook(cd, lookup, bookedByPot(plan.batch));
-    cook = {
-      date: cd.date,
-      pots: cd.pots.map((p: any) => ({ name: p.name, recipe: p.recipe, fullRecipe: p.fullRecipe, tubs: p.tubs, toFridge: p.toFridge, toFreezer: p.toFreezer, method: p.method })),
-      handsOnMinutes: session.totals.activeMinutes,
-      tubs: cd.pots.reduce((n: number, p: any) => n + (Number(p.tubs) || 0), 0),
-    };
-  }
+  // The cook days, each as the prep session screen builds it (prepSessionFromCook).
+  const cooks = (plan.batch?.cookDays ?? [])
+    .filter((c: any) => (c?.pots ?? []).length)
+    .sort((a: any, b: any) => (a.date < b.date ? -1 : 1))
+    .map((cd: any) => {
+      const session = prepSessionFromCook(cd, lookup, bookedByPot(plan.batch));
+      return {
+        date: cd.date,
+        pots: cd.pots.map((p: any) => ({ name: p.name, recipe: p.recipe, fullRecipe: p.fullRecipe, tubs: p.tubs, toFridge: p.toFridge, toFreezer: p.toFreezer, method: p.method })),
+        handsOnMinutes: session.totals.activeMinutes,
+        tubs: cd.pots.reduce((n: number, p: any) => n + (Number(p.tubs) || 0), 0),
+      };
+    });
   const week = batchWeekList(plan);
 
   // The shopping list: the app's own resolver (batch plan -> buildBatchShop rows).
@@ -146,7 +147,7 @@ async function buildMeals(about: any, food: any, buildRoute: (a: any) => Promise
     ms,
     plan: { startDate: plan.startDate, endDate: plan.endDate, dailyMeals: plan.dailyMeals, targets: plan.targets, name: plan.name, cookDayCount: (plan.batch?.cookDays ?? []).length },
     report: { days: report.days, targets: report.targets, misses: report.misses, counts: report.counts, avg: report.avg },
-    cook,
+    cooks,
     week: week ? { headline: week.headline, foot: week.foot } : null,
     grocery: { rows, sections, freezerLine: inputs.batchShop?.freezerLine ?? null, categoryOrder: CATEGORY_ORDER, categoryNames: CATEGORY_NAMES },
   };
