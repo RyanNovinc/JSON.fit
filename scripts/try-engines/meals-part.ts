@@ -22,6 +22,7 @@ import { withPlanSwaps } from 'APP_DIR/src/utils/lowSalt';
 import { resolveGroceryInputs } from 'APP_DIR/src/utils/groceryState';
 import { CATEGORY_ORDER, CATEGORY_NAMES } from 'APP_DIR/src/utils/groceryModel';
 import { DEFAULT_BATCH_SETTINGS } from 'APP_DIR/src/utils/tubInventory';
+import { INGREDIENTS } from 'APP_DIR/src/data/ingredients';
 
 /** CuratedFavoritesScreen effortMinutes / ingredientCount (private there). */
 function effortMinutes(m: any): number {
@@ -140,13 +141,18 @@ async function buildMeals(about: any, food: any, buildRoute: (a: any) => Promise
 
   // The shopping list: the app's own resolver (batch plan -> buildBatchShop rows).
   const inputs = resolveGroceryInputs({ plan, choices: {} as any, mealLookup: lookup, batch: true, myFoods: [] });
-  const rows = (inputs.view?.rows ?? []).map((r: any) => ({ key: r.key, name: r.name, amount: r.amount, category: r.category, note: r.note || null, section: r.section || null }));
+  const rows = (inputs.view?.rows ?? []).map((r: any) => {
+    const id = r.batch?.ingredientId ?? (String(r.key).startsWith('ing:') ? String(r.key).slice(4).split('|')[0] : null);
+    // is_pantry_negligible: shown by name only (the app hides these from macro totals and the shop amounts).
+    const negligible = !!(id && (INGREDIENTS as any)[id]?.is_pantry_negligible);
+    return { key: r.key, name: r.name, amount: r.amount, category: r.category, note: r.note || null, section: r.section || null, negligible };
+  });
   const sections = (inputs.batchShop?.sections ?? []).map((s: any) => ({ key: s.key, title: s.title }));
 
   return {
     ms,
     plan: { startDate: plan.startDate, endDate: plan.endDate, dailyMeals: plan.dailyMeals, targets: plan.targets, name: plan.name, cookDayCount: (plan.batch?.cookDays ?? []).length },
-    report: { days: report.days, targets: report.targets, misses: report.misses, counts: report.counts, avg: report.avg },
+    report: { days: report.days, targets: report.targets, misses: report.misses, counts: report.counts, avg: report.avg, kept: report.kept, batch: report.batch ? { potsToCook: report.batch.potsToCook, tubsBanked: report.batch.tubsBanked, tubsFromStock: report.batch.tubsFromStock, status: report.batch.status, tubsPerDay: report.batch.tubsPerDay, ownTubsPerDay: report.batch.ownTubsPerDay } : null },
     cooks,
     week: week ? { headline: week.headline, foot: week.foot } : null,
     grocery: { rows, sections, freezerLine: inputs.batchShop?.freezerLine ?? null, categoryOrder: CATEGORY_ORDER, categoryNames: CATEGORY_NAMES },

@@ -28,6 +28,7 @@ import { generateProgram } from 'APP_DIR/src/utils/workoutGenerator/generateProg
 import { rawBlockSummary, resolveProfile, targetsFor } from 'APP_DIR/src/utils/workoutGenerator/check';
 import { resolveRest } from 'APP_DIR/src/utils/restResolver';
 import { availableEquipment } from 'APP_DIR/src/utils/equipmentAvailability';
+import { buildView } from 'APP_DIR/src/utils/workoutGenerator/display';
 import { REP_STYLE_OPTIONS } from 'APP_DIR/src/data/repStyles';
 import MEALS_PART from "./meals-part";
 
@@ -207,7 +208,9 @@ async function buildProgram(about: any, training: any) {
       }
     }
   }
-  return { program, notes, targets, volume: summary?.volume ?? null, appBuildsGym: appEquipment[0] !== questionnaire.selectedEquipment[0] };
+  // WorkoutBuildScreen's step list and day rows, from the app's own buildView.
+  const view = buildView(program, notes, profile as any);
+  return { program, notes, targets, volume: summary?.volume ?? null, appBuildsGym: appEquipment[0] !== questionnaire.selectedEquipment[0], view: { steps: view.steps, days: view.days, weeks: view.weeks, deloads: view.deloads, movements: view.movements } };
 }
 
 const API: any = {

@@ -37,13 +37,13 @@ async function until(expr, ms = 20000) {
   throw new Error('waited for ' + expr);
 }
 const click = (sel) => ev(`(function(){var e=document.querySelector(${JSON.stringify(sel)}); if(!e) throw new Error('no ${sel.replace(/'/g, '')}'); e.click(); return true})()`);
-const stepIs = (n) => until(`document.getElementById('barLbl') && document.getElementById('barLbl').textContent.indexOf('Step ${n} of')===0 && !document.querySelector('.loading')`);
+const stepIsOld = (n) => until(`document.getElementById('barLbl') && document.getElementById('barLbl').textContent.indexOf('Step ${n} of')===0 && !document.querySelector('.loading')`);
 
 const PROFILES = [
-  { name: 'default man, gym 3', set: [], food: [], train: [] },
-  { name: 'woman cut vegetarian home 2', set: ['[data-sex="female"]', '[data-lift="new"]', '[data-act="sedentary"]'], gw: -8, food: ['[data-diet="vegetarian"]', '[data-allergy="Nuts"]', '[data-meals="4"]'], train: ['[data-days="2"]', '[data-eq="home_gym"]'] },
-  { name: 'man gain 6 days bodyweight, picks', set: ['[data-lift="consistent"]'], gw: +10, route: 'bulk', food: ['[data-meals="5"]', '[data-snack="2"]'], picks: 3, train: ['[data-days="6"]', '[data-eq="bodyweight"]'] },
-  { name: 'vegan, capped', set: ['[data-sex="female"]'], gw: +4, route: 'capped', food: ['[data-diet="vegan"]', '[data-skip="mushrooms"]'], train: ['[data-days="4"]', '[data-eq="basic_equipment"]'] },
+  { name: 'default man, gym 4', sex: 'male', lift: 'consistent', route: 'lean', active: 'light', band: '3.5', meat: 'any', allergies: [], skip: [], meals: '3', dessert: 'ai_decide', picks: 0, days: '4', equip: 'commercial_gym' },
+  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', band: '1.5', meat: 'vegetarian', allergies: ['Nuts'], skip: [], meals: '4', dessert: 'once_per_week', picks: 0, days: '2', equip: 'home_gym', estimate: true },
+  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', band: '5.5', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', dessert: '0', picks: 3, days: '6', equip: 'bodyweight', imperial: true },
+  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +3, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', dessert: 'ai_decide', picks: 1, days: '3', equip: 'basic_equipment' },
 ];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
 (async () => {
@@ -64,62 +64,82 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
       console.log(`${width}px ${P.name}`);
       events.length = 0; requests.length = 0;
       await send('Page.navigate', { url: BASE + '/try/' });
-      await until(`!!document.getElementById('startBtn')`);
+      await until(`!!document.querySelector('.screen[data-screen="start"]')`);
       const overflow = async (n) => { const o = await ev(`document.documentElement.scrollWidth - window.innerWidth`); if (o > 1) bad(`step ${n}: ${o}px horizontal overflow`); };
       const images = async (n) => {
         await ev(`Promise.all([...document.images].filter(i=>i.loading!=='lazy'||true).map(i=>{i.loading='eager';return i.complete?0:new Promise(r=>{i.onload=i.onerror=r;setTimeout(r,4000)})}))`);
         const broken = await ev(`[...document.images].filter(i=>i.complete && i.naturalWidth===0).map(i=>i.getAttribute('src'))`);
         if (broken.length) bad(`step ${n}: broken images ${broken.join(', ')}`);
       };
+      const scr = (id, ms) => until(`(function(){var s=document.querySelector('.screen[data-screen="${id}"]'); return !!s && !s.querySelector('.loading') && !document.querySelector('.screen.out-l,.screen.out-r')})()`, ms || 20000);
+      const go = async () => { await until(`!document.getElementById('nextBtn').disabled && !document.getElementById('cta').hidden`); await click('#nextBtn'); };
+      const opt = async (v) => { await click(`.screen .opt[data-v="${v}"]`); };
+      const steps = [];
       try {
-        await overflow(1);
-        await click('#startBtn'); await stepIs(2); await overflow(2);
-        for (const s of P.set) { await click(s); await sleep(250); }
-        if (P.gw) await ev(`(function(){var e=document.getElementById('f-gw'); e.value=(parseFloat(e.value)+${P.gw}); e.dispatchEvent(new Event('change')); return 1})()`);
-        await sleep(300);
-        await ev(`(function(){var b=document.getElementById('bfEst'); b.click(); return 1})()`); await sleep(300);
-        await click('[data-tier]:nth-child(3)'); await sleep(400);
-        await click('#nextBtn'); await stepIs(3); await overflow(3);
-        if (P.route) { await click(`[data-route="${P.route}"]`); await sleep(600); await stepIs(3); }
-        const hd = await ev(`document.getElementById('t3').textContent`);
-        const kcal = await ev(`(document.querySelector('.macros b')||{}).textContent`);
-        const ph = await ev(`document.querySelectorAll('.phase').length`);
-        console.log(`  route: ${hd} | ${ph} phases | ${kcal} kcal | chart ${await ev(`!!document.querySelector('.rchart .ln')`)}`);
+        await overflow('start');
+        await click('#nextBtn'); await scr('weight'); await overflow('weight');
+        if (P.imperial) { await click('[data-u="imperial"]'); await sleep(150); }
+        await click('.pm button[data-d="1"]'); await click('.pm button[data-d="1"]');
+        await go(); await scr('sex'); await opt(P.sex);
+        await scr('bodyfat'); await overflow('bodyfat');
+        if (P.estimate) { await click('#est'); await until(`!!document.querySelector('.sheet.on [data-tier]')`); await ev(`document.querySelectorAll('.sheet [data-tier]')[3].click()`); await sleep(500); }
+        await go(); await scr('height'); await go(); await scr('age'); await go();
+        await scr('lifting'); await opt(P.lift);
+        await scr('goalweight'); await overflow('goalweight');
+        if (P.gw) await ev(`(function(){var e=document.querySelector('.big input'); e.value=(parseFloat(e.value)+${P.gw}); e.dispatchEvent(new Event('change')); return 1})()`);
+        await go(); await scr('goalbf'); await go();
+        await scr('route'); await until(`document.querySelectorAll('.screen .opt').length===3`); await opt(P.route); await overflow('route'); await go();
+        await scr('active'); await opt(P.active);
+        await scr('sessions'); await opt(P.band); await go();
+        await scr('routebuild');
+        const t0 = Date.now(); await scr('routereveal', 20000); steps.push('route build ' + (Date.now() - t0) + ' ms');
+        await overflow('routereveal');
+        const hd = await ev(`document.querySelector('.goalline').textContent`);
+        await go(); await scr('phase1'); await overflow('phase1');
+        const kcal = await ev(`(document.querySelector('.mac b')||{}).getAttribute && document.querySelector('.mac b').getAttribute('data-c')`);
+        const ph = await ev(`document.querySelectorAll('.prow').length`);
+        await click('.prow'); 
+        console.log(`  route: ${hd.replace(/\s+/g, ' ').trim()} | ${ph} phases | ${kcal} kcal | ${steps[0]}`);
         if (!kcal || !ph) bad('route empty');
-        await click('#nextBtn'); await stepIs(4); await overflow(4);
-        for (const s of P.food) { await click(s); await sleep(500); await until(`!document.querySelector('.loading')`); }
-        if (P.picks) for (let i = 1; i <= P.picks; i++) { await click(`.pick:nth-child(${i})`); }
-        await images(4);
-        await click('#nextBtn'); await stepIs(5); await overflow(5); await images(5);
-        const v = await ev(`document.querySelector('.verdict').textContent`);
-        const nMeals = await ev(`document.querySelectorAll('.meal').length`);
-        const cook = await ev(`(document.querySelector('.cook .kick')||{}).textContent||'no cook day'`);
-        console.log(`  week: ${nMeals} meals on day 1 | ${v.slice(0, 60)} | ${cook}`);
+        await go(); await scr('meat'); await opt(P.meat);
+        await scr('allergies'); for (const x of P.allergies) await opt(x); await go();
+        await scr('skip'); for (const x of P.skip) await opt(x); await go();
+        await scr('eat'); await opt(P.meals); await go();
+        await scr('dessert'); await opt(P.dessert);
+        await scr('picks'); await images('picks'); await overflow('picks');
+        for (let i = 1; i <= P.picks; i++) await click(`.pick:nth-child(${i})`);
+        await go(); await scr('mealbuild');
+        // Skip by tapping, once the step list is showing.
+        await until(`!!document.querySelector('.act2.on')`, 20000); await click('.screen.bm');
+        await scr('weekready', 20000); await overflow('weekready'); await images('weekready');
+        const ready = await ev(`document.querySelector('.screen .sub').textContent`);
+        await go(); await scr('today'); await overflow('today'); await images('today');
+        const nMeals = await ev(`document.querySelectorAll('.mc').length`);
+        console.log(`  week: ${ready} | ${nMeals} cards on day 1`);
         if (!nMeals) bad('no meals');
-        for (let d = 2; d <= 7; d++) { await click(`[data-day="${d - 1}"]`); await sleep(80); }
-        await images(5);
-        await click('#nextBtn'); await stepIs(6); await overflow(6);
-        const items = await ev(`document.querySelectorAll('.gi').length`);
-        await click('.gi input');
-        console.log(`  shop: ${items} items in ${await ev(`document.querySelectorAll('.aisle').length`)} aisles`);
-        if (!items) bad('no shopping list');
-        // Back and forward again keeps the plan.
-        await click('#backBtn'); await stepIs(5); await click('#nextBtn'); await stepIs(6);
-        await click('#nextBtn'); await stepIs(7); await overflow(7);
-        for (const s of P.train) { await click(s); await sleep(100); }
-        await click('#nextBtn'); await stepIs(8); await overflow(8); await images(8);
-        const prog = await ev(`document.getElementById('t8').textContent`);
-        const ex = await ev(`document.querySelectorAll('.ex').length`);
-        const links = await ev(`[...document.querySelectorAll('.ex a.nm')].length`);
-        console.log(`  program: ${prog} | ${ex} exercises (${links} linked) | ${await ev(`document.querySelectorAll('.vol .vr').length`)} muscle rows`);
-        if (!ex) bad('no exercises');
+        for (let d = 2; d <= 7; d++) { await click(`[data-day="${d - 1}"]`); await sleep(60); }
+        await images('today');
+        await click('#shopBtn'); await scr('shop'); await overflow('shop');
+        const aisles = await ev(`document.querySelectorAll('.aisle').length`);
+        await click('[data-aisle]'); await click('.aisle[data-open="true"] .gi input');
+        const amts = await ev(`[...document.querySelectorAll('.aisle .gi small')].map(x=>x.textContent).join(' | ')`);
+        if (/Woolworths|Coles|McKenzie|\d{2,} ?tsp/.test(amts)) bad('shop amounts: ' + amts.slice(0, 200));
+        console.log(`  shop: ${aisles} aisles`);
+        // Back returns to the day.
+        await click('#backBtn'); await scr('today'); await click('#shopBtn'); await scr('shop');
+        await go(); await scr('days'); await opt(P.days);
+        await scr('equip'); await opt(P.equip);
+        await scr('progbuild'); await scr('program', 20000); await overflow('program'); await images('program');
+        const prog = await ev(`document.querySelector('.screen .ov').textContent`);
         const wds = await ev(`document.querySelectorAll('[data-wd]').length`);
-        for (let i = 1; i <= wds; i++) { await ev(`document.querySelectorAll('[data-wd]')[${i - 1}].click()`); await sleep(60); }
-        await images(8);
-        await click('#nextBtn'); await stepIs(9); await overflow(9);
-        // Browser back goes to the previous step.
-        await ev(`history.back()`); await stepIs(8);
-      } catch (e) { bad(String(e.message || e)); }
+        for (let i = 0; i < wds; i++) { await ev(`document.querySelectorAll('[data-wd]')[${i}].click()`); await sleep(80); await images('program day'); }
+        const ex = await ev(`document.querySelectorAll('.wd[data-open="true"] .ex').length`);
+        await click('#volBtn');
+        console.log(`  program: ${prog} | ${wds} training days | ${ex} exercises on the last | flag ${await ev(`!!document.querySelector('.flag')`)}`);
+        if (!ex) bad('no exercises');
+        await go(); await scr('keep'); await overflow('keep');
+        await ev(`history.back()`); await scr('program');
+            } catch (e) { bad(String(e.message || e)); }
       for (const e of events) bad(e);
       const posts = requests.filter((r) => r.method !== 'GET');
       const off = requests.filter((r) => r.method === 'GET' && !r.url.startsWith(BASE) && !/fonts\.(googleapis|gstatic)\.com|googletagmanager\.com|google-analytics\.com/.test(r.url));
@@ -131,7 +151,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         if (/lambda-url/.test(p.url) && p.body) {
           const evs = JSON.parse(p.body).events || [];
           for (const e of evs) {
-            const props = JSON.stringify(e.properties || {});
+            const pr = Object.assign({}, e.properties || {}); delete pr.screen; const props = JSON.stringify(pr);
             if (/kg|vegetarian|vegan|Nuts|bodyFat|goal|weight/i.test(props)) bad('analytics carries an answer: ' + props);
           }
           console.log('  analytics events: ' + evs.map((e) => e.event + (e.event === 'try_step' ? e.properties.step : '')).join(' '));
