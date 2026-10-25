@@ -130,8 +130,10 @@ function routeOptions(about: any) {
   const p = goalsProfileFrom(about);
   const out: any = {};
   for (const r of ['lean', 'bulk', 'capped'] as const) {
-    const rm = deriveRoadmap(planProfileFor(p, r), 'balanced');
-    out[r] = rm ? { cuts: expandPhases(rm).filter((x: any) => x.kind === 'trim' || x.kind === 'reveal').length, opensWithCut: rm.phases[0]?.kind === 'trim', years: rm.estYears } : null;
+    const pp = planProfileFor(p, r);
+    const rm = deriveRoadmap(pp, 'balanced');
+    // curve: the same body fat line the route screen draws, for the preview graph.
+    out[r] = rm ? { cuts: expandPhases(rm).filter((x: any) => x.kind === 'trim' || x.kind === 'reveal').length, opensWithCut: rm.phases[0]?.kind === 'trim', years: rm.estYears, curve: planCurve(pp, rm) } : null;
   }
   return out;
 }

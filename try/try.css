@@ -169,6 +169,9 @@ body{background:var(--bg)}
 .goalline{font-size:clamp(2rem,8.6vw,2.8rem);font-weight:900;color:#fff;line-height:1.02;letter-spacing:-.02em;margin-top:10px}
 .goalline span{color:var(--text-3)}
 .goalbf{color:var(--text-2);font-size:1.05rem;margin-top:4px}
+.rvis.rpick{min-height:clamp(150px,40vw,190px);margin-bottom:6px}
+.rvis.rpick .rchart{margin-top:10px}
+.rcap{text-align:center;margin:4px 0 0;font:500 .66rem var(--mono);color:var(--text-3);letter-spacing:.04em}
 .rchart{display:block;width:100%;height:auto;margin-top:22px;overflow:visible}
 .rchart .g{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
 .rchart .ax{fill:var(--text-3);font:500 10px var(--mono)}

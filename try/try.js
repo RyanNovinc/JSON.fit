@@ -510,9 +510,20 @@
     needAbout(el, my, function () {
       var a = S.about;
       head(el, 'How you get there', 'Do you want to stay lean while you grow?', 'You are at ' + r1(a.bodyFatPct) + '% body fat today. All three finish at ' + r1(a.goalBodyFatPct) + '%.');
+      // Body fat over time for the picked route; swaps as each option is tapped.
+      el.insertAdjacentHTML('beforeend', '<div class="rvis rpick rise" style="--i:2"></div>');
+      var vis = $('.rvis.rpick', el);
+      var show = function (v) {
+        var o = S.routeOpts || {}, oo = o[v], all = [], T = 0;
+        if (!oo || !oo.curve) { vis.innerHTML = ''; return; }
+        ROUTES.forEach(function (x) { var c = o[x.v] && o[x.v].curve; if (c) { c.points.forEach(function (p) { all.push(p.bodyFatPct); }); T = Math.max(T, c.totalMonths || 0); } });
+        vis.innerHTML = chart({ curve: oo.curve }, true, { hi: Math.max.apply(null, all), lo: Math.min.apply(null, all), T: T, bare: true }) +
+          '<p class="rcap"><span>Body fat over about ' + Math.round(oo.curve.totalMonths) + ' months</span></p>';
+      };
       var draw = function () {
         var o = S.routeOpts || {};
-        cards(el, ROUTES.map(function (x) { var oo = o[x.v]; return { v: x.v, l: x.l, h: routeLine(x.v, oo) + (oo ? ' ' + CUT_WORDS[Math.min(6, oo.cuts)] + '.' : '') }; }), a.route, function (v) { a.route = v; });
+        show(a.route);
+        cards(el, ROUTES.map(function (x) { var oo = o[x.v]; return { v: x.v, l: x.l, h: routeLine(x.v, oo) + (oo ? ' ' + CUT_WORDS[Math.min(6, oo.cuts)] + '.' : '') }; }), a.route, function (v) { a.route = v; show(v); });
       };
       var k = keyOf([a.sex, a.ageYears, a.heightCm, a.weightKg, a.bodyFatPct, a.goalWeightKg, a.goalBodyFatPct, a.trainingState]);
       if (S.routeOptsKey === k) draw();
@@ -619,11 +630,12 @@
     if (S.routeKey === k && S.route) return Promise.resolve(S.route);
     return call('buildRoute', aboutForEngine()).then(function (r) { S.route = r; S.routeKey = k; return r; });
   }
-  function chart(r, animated) {
+  function chart(r, animated, sc) {
+    // sc (optional): { hi, lo, T, bare } shares one scale across charts so they compare; bare drops the start label.
     var c = r.curve; if (!c || !c.points || c.points.length < 2) return '';
-    var pts = c.points, nodes = c.nodes, T = c.totalMonths || 1;
+    var pts = c.points, nodes = c.nodes, T = (sc && sc.T) || c.totalMonths || 1;
     var bfs = pts.map(function (p) { return p.bodyFatPct; });
-    var hi = Math.max.apply(null, bfs), lo = Math.min.apply(null, bfs);
+    var hi = sc ? sc.hi : Math.max.apply(null, bfs), lo = sc ? sc.lo : Math.min.apply(null, bfs);
     if (hi - lo < 2) { hi += 1; lo -= 1; }
     var X0 = 24, X1 = 416, Y0 = 26, Y1 = 138;
     var x = function (m) { return X0 + (m / T) * (X1 - X0); };
@@ -652,7 +664,7 @@
     return '<svg class="rchart" viewBox="0 0 450 180" role="img" aria-label="Your route: body fat from ' + r1(nodes[0].bodyFatPct) + '% to ' + r1(end.bodyFatPct) + '% over about ' + Math.round(T) + ' months">' +
       '<defs><linearGradient id="rfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a855f7" stop-opacity=".28"/><stop offset="1" stop-color="#a855f7" stop-opacity="0"/></linearGradient></defs>' +
       gl + '<path class="ar" d="' + d + ' L' + X1 + ' 150 L' + X0 + ' 150 Z" fill="url(#rfill)"/><path d="' + d + '" class="ln" pathLength="1"/>' + dots +
-      '<text style="--d:0" x="' + (X0 + 8) + '" y="' + (sy > 40 ? sy - 10 : sy + 18).toFixed(1) + '" class="nl">' + esc(fmtW(S.about.weightKg)) + '</text>' +
+      (sc && sc.bare ? '' : '<text style="--d:0" x="' + (X0 + 8) + '" y="' + (sy > 40 ? sy - 10 : sy + 18).toFixed(1) + '" class="nl">' + esc(fmtW(S.about.weightKg)) + '</text>') +
       '<rect style="--d:1" x="' + pillX.toFixed(1) + '" y="' + pillY.toFixed(1) + '" width="' + pw + '" height="20" rx="10" class="endpill"/><text style="--d:1" x="' + (pillX + pw / 2).toFixed(1) + '" y="' + (pillY + 14).toFixed(1) + '" class="nl c">' + esc(goal) + '</text>' +
       labels + '</svg>';
   }
