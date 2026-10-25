@@ -102,10 +102,10 @@ body{background:var(--bg)}
 .start .qh{font-size:clamp(2.5rem,10vw,3.6rem);text-transform:uppercase}
 .start .sub{margin-left:auto;margin-right:auto}
 .privacy{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-family:var(--mono);font-size:.7rem;color:var(--text-2);letter-spacing:.03em;text-align:left}
-.privacy i{width:8px;height:8px;border-radius:50%;background:var(--green-text);flex:none;box-shadow:0 0 10px var(--green-text)}
+.privacy i{width:8px;height:8px;border-radius:50%;background:var(--green-text);flex:none;opacity:.7}
 .trio{display:grid;gap:0;margin-top:34px;text-align:left;border-top:1px solid var(--line)}
 .trio div{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:center;padding:14px 2px;border-bottom:1px solid var(--line)}
-.trio i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:500 .7rem var(--mono);font-style:normal}
+.trio i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:500 .7rem var(--mono);font-style:normal;color:var(--text-2);border:1px solid var(--line)}
 .trio b{display:block;color:#fff;font-weight:800}
 .trio span{display:block;color:var(--text-3);font-size:.88rem}
 

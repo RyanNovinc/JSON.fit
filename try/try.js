@@ -343,13 +343,13 @@
   /* ================= intro ================= */
   function rStart(el) {
     el.classList.add('start');
-    el.innerHTML = '<p class="ov rise" style="--i:0;color:#22d3ee">Try JSON.fit</p>' +
-      '<h1 class="qh rise" style="--i:1">See your plan<br><em style="color:#c084fc;text-transform:none">in 60 seconds.</em></h1>' +
+    el.innerHTML = '<p class="ov rise" style="--i:0;color:var(--text-3)">Try JSON.fit</p>' +
+      '<h1 class="qh rise" style="--i:1">See your plan<br><em style="color:var(--cyan);text-transform:none">in 60 seconds.</em></h1>' +
       '<p class="sub rise" style="--i:2">No sign-up. Answer a few questions, then watch the app’s engines build your route, your week of meals and your training.</p>' +
       '<div class="rise" style="--i:3"><span class="privacy"><i></i>Runs on this page. Nothing you enter is sent anywhere.</span></div>' +
-      '<div class="trio rise" style="--i:4"><div><i style="background:rgba(192,132,252,.14);color:#c084fc">01</i><p><b>Your route</b><span>Your goal, your phases, your daily macros.</span></p></div>' +
-      '<div><i style="background:rgba(74,222,128,.14);color:#4ade80">02</i><p><b>Your food</b><span>A week of meals, one cook day, one shop.</span></p></div>' +
-      '<div><i style="background:rgba(34,211,238,.14);color:#22d3ee">03</i><p><b>Your training</b><span>Sets, reps, rest and how hard to push.</span></p></div></div>';
+      '<div class="trio rise" style="--i:4"><div><i>01</i><p><b>Your route</b><span>Your goal, your phases, your daily macros.</span></p></div>' +
+      '<div><i>02</i><p><b>Your food</b><span>A week of meals, one cook day, one shop.</span></p></div>' +
+      '<div><i>03</i><p><b>Your training</b><span>Sets, reps, rest and how hard to push.</span></p></div></div>';
     primary('Start', function () { startWorker(); ensureAbout().then(function () { go('weight'); }, function (e) { el.insertAdjacentHTML('beforeend', errBox(e.message)); }); });
     startWorker();
   }
