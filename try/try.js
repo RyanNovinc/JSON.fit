@@ -490,9 +490,80 @@
   function rGoalBf(el, my) {
     needAbout(el, my, function () {
       var a = S.about;
-      numBeat(el, { label: 'Goal body fat', aria: 'Goal body fat', q: 'How lean do you want to be?', unit: '%', value: a.goalBodyFatPct, min: 5, max: 45, step: 0.5, px: 14, major: 5, onChange: function (v) { a.goalBodyFatPct = v; S.touched.goalBodyFatPct = true; } });
+      leanGauge(el, a);
       primary('Continue');
     });
+  }
+  /* ---------- the app's LeanGauge (src/components/route/LeanGauge.tsx) ----------
+   * Body fat axis 6 to 30% (women +9). The curve is illustrative: how ordinary the
+   * muscle this goal weight implies is, peaking halfway between untrained and the
+   * drug-free limit (FFMI). Shaded left of the ceiling: lean enough at this weight
+   * that the muscle would be past what has been recorded drug free. Most aesthetic
+   * band 10 to 15% (men only, ATTRACTIVE_BF_RANGE). Health floor leanStopFor: 12% men,
+   * 22% women; going below asks first, as the app's ConfirmSheet does. */
+  function leanGauge(el, a) {
+    var fem = a.sex === 'female', sh = fem ? 9 : 0, lo = 6 + sh, hi = 30 + sh;
+    var floor = fem ? 22 : 12, AES = [10, 15], AES_C = 13;
+    var lim = fem ? { ok: 21, edge: 22 } : { ok: 24, edge: 25.5 }, untr = fem ? 16 : 19;
+    var peak = (untr + lim.ok) / 2, sig = Math.max(1, (lim.ok - untr) / 2.6);
+    var W = 320, H = 150, X0 = 20, X1 = 300, Y0 = 16, YB = 110;
+    var m = a.heightCm / 100;
+    var nAt = function (bf) { var lean = a.goalWeightKg * (1 - bf / 100); return lean / (m * m) + 6.3 * (1.8 - m); };
+    var xOf = function (bf) { return X0 + Math.min(1, Math.max(0, (bf - lo) / (hi - lo))) * (X1 - X0); };
+    var yAt = function (bf) { var z = (nAt(bf) - peak) / sig; return YB - (YB - Y0) * Math.exp(-0.5 * z * z); };
+    var edge = null; for (var b = lo; b <= hi; b += 0.1) { if (nAt(b) <= lim.edge) { edge = b; break; } }
+    var path = function (f, t, n) { var d = ''; for (var i = 0; i <= n; i++) { var bf = f + (t - f) * i / n; d += (i ? ' L' : 'M') + xOf(bf).toFixed(1) + ' ' + yAt(bf).toFixed(1); } return d; };
+    var curve = path(lo, hi, 90);
+    var svg = '<svg class="lg" viewBox="0 0 ' + W + ' ' + H + '" role="slider" tabindex="0" aria-label="Goal body fat" aria-valuemin="' + lo + '" aria-valuemax="' + hi + '">' +
+      '<defs><linearGradient id="lgB" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#0a0a0b" stop-opacity="0"/><stop offset="1" stop-color="#0a0a0b" stop-opacity=".72"/></linearGradient></defs>' +
+      '<path d="' + curve + ' L' + X1 + ' ' + YB + ' L' + X0 + ' ' + YB + ' Z" fill="#fff" opacity=".035"/>' +
+      (fem ? '' : '<path d="' + path(AES[0], AES[1], 30) + ' L' + xOf(AES[1]).toFixed(1) + ' ' + YB + ' L' + xOf(AES[0]).toFixed(1) + ' ' + YB + ' Z" class="aes"/>') +
+      '<path d="' + curve + '" fill="none" stroke="#4b4b52" stroke-width="1.8" stroke-linecap="round"/><line x1="' + X0 + '" x2="' + X1 + '" y1="' + YB + '" y2="' + YB + '" stroke="#232327"/>' +
+      (edge != null && edge > lo + 0.2 ? '<rect x="' + X0 + '" y="' + Y0 + '" width="' + Math.max(0, xOf(edge) - X0).toFixed(1) + '" height="' + (YB - Y0) + '" fill="url(#lgB)"/><line x1="' + xOf(edge).toFixed(1) + '" x2="' + xOf(edge).toFixed(1) + '" y1="' + (Y0 - 4) + '" y2="' + YB + '" stroke="#52525b" stroke-dasharray="3 4"/><text x="' + Math.max(X0 + 46, xOf(edge) - 46).toFixed(1) + '" y="' + (YB + 17) + '" class="lgt">Past the natural limit</text>' : '') +
+      (floor > lo && floor < hi ? '<line x1="' + xOf(floor) + '" x2="' + xOf(floor) + '" y1="' + (Y0 + 2) + '" y2="' + YB + '" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="2 3"/><text x="' + xOf(floor) + '" y="' + (Y0 - 2) + '" class="lgt fl">Health floor ' + floor + '%</text>' : '') +
+      (fem ? '' : '<text x="' + ((xOf(AES[0]) + xOf(AES[1])) / 2).toFixed(1) + '" y="' + (YB + 17) + '" class="lgt ae">Most aesthetic</text>') +
+      '<text x="' + X0 + '" y="' + (YB + 34) + '" class="lgt ax" text-anchor="start">' + lo + '%</text><text x="' + X1 + '" y="' + (YB + 34) + '" class="lgt ax" text-anchor="end">' + hi + '%</text>' +
+      '<line class="pin" y1="' + (Y0 + 4) + '" y2="' + YB + '"/><circle class="pind" r="5.5"/></svg>';
+    el.classList.add('beat');
+    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Goal body fat</p><h1 class="qh rise" style="--i:1;font-size:clamp(1.5rem,6vw,2rem)">How lean do you want to be?</h1>' +
+      '<div class="big rise" style="--i:2"><span class="ro" aria-live="polite"></span><span class="u">%</span></div>' +
+      '<div class="rise lgw" style="--i:3">' + svg + '</div><p class="lgh rise" style="--i:3">Drag along the curve.</p>' +
+      '<div class="pm rise" style="--i:4"><button type="button" data-d="-1" aria-label="Leaner">−</button><button type="button" data-d="1" aria-label="Less lean">+</button></div>' +
+      '<div class="snap rise" style="--i:4"></div>');
+    var g = $('svg.lg', el), ro = $('.big .ro', el), snap = $('.snap', el), pin = $('.pin', el), dot = $('.pind', el);
+    var asked = a.goalBodyFatPct < floor;  // a goal already below the floor came with a yes
+    function set(v, done) {
+      v = Math.round(Math.min(hi, Math.max(lo, v)) * 2) / 2;
+      a.goalBodyFatPct = v; S.touched.goalBodyFatPct = true;
+      ro.textContent = v.toFixed(1); g.setAttribute('aria-valuenow', v);
+      var x = xOf(v).toFixed(1); pin.setAttribute('x1', x); pin.setAttribute('x2', x); dot.setAttribute('cx', x); dot.setAttribute('cy', yAt(v).toFixed(1));
+      if (v >= floor) asked = false;
+      if (done) note();
+    }
+    // One fixed-height slot under the gauge, like the app's snapSlot, so nothing jumps.
+    function note() {
+      var v = a.goalBodyFatPct;
+      if (v < floor && !asked) {
+        snap.innerHTML = '<div class="floor"><b>Plan below ' + floor + '%?</b><span>' + (fem
+          ? 'Below about ' + floor + '% body fat, periods can stop and bone health starts to suffer, so this is where the app stops a plan by default. Worth doing with a doctor in the loop.'
+          : 'Below about ' + floor + '% body fat, hormones, sleep and recovery tend to suffer and it is hard to hold, so this is where the app stops a plan by default.') +
+          '</span><div><button type="button" data-a="keep">Keep ' + floor + '%</button><button type="button" data-a="go">Plan to ' + v + '%</button></div></div>';
+        $('[data-a="keep"]', snap).onclick = function () { set(floor, true); };
+        $('[data-a="go"]', snap).onclick = function () { asked = true; note(); };
+      } else if (!fem && (v < AES[0] || v > AES[1])) {
+        snap.innerHTML = '<button type="button" class="aesbtn">Take me to most aesthetic</button>';
+        $('.aesbtn', snap).onclick = function () { set(AES_C, true); };
+      } else snap.innerHTML = '';
+    }
+    var drag = false;
+    function at(e) { var r = g.getBoundingClientRect(), t = ((e.clientX - r.left) / r.width * W - X0) / (X1 - X0); return lo + Math.min(1, Math.max(0, t)) * (hi - lo); }
+    g.addEventListener('pointerdown', function (e) { drag = true; g.setPointerCapture(e.pointerId); set(at(e)); e.preventDefault(); });
+    g.addEventListener('pointermove', function (e) { if (drag) set(at(e)); });
+    var up = function () { if (drag) { drag = false; note(); } };
+    g.addEventListener('pointerup', up); g.addEventListener('pointercancel', up);
+    g.addEventListener('keydown', function (e) { var d = e.key === 'ArrowLeft' ? -0.5 : e.key === 'ArrowRight' ? 0.5 : 0; if (d) { set(a.goalBodyFatPct + d, true); e.preventDefault(); } });
+    $$('.pm button', el).forEach(function (b) { b.onclick = function () { set(a.goalBodyFatPct + (+b.getAttribute('data-d')) * 0.5, true); }; });
+    set(a.goalBodyFatPct, true);
   }
   var ROUTES = [
     { v: 'lean', l: 'Stay lean the whole way' },

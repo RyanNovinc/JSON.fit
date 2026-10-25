@@ -324,3 +324,20 @@ a.nm:hover{text-decoration:underline;text-decoration-color:var(--acc);text-under
 }
 html.still .screen,html.still .rise,html.still .mc,html.still .wd,html.still .ex,html.still .act2,html.still .st,html.still .st .v,html.still .rchart *{animation:none!important;transition:none!important}
 html.still .rchart .ln{stroke-dashoffset:0}html.still .rchart .ar,html.still .rchart .pt,html.still .rchart .end,html.still .rchart .pl,html.still .rchart .nl,html.still .rchart .endpill{opacity:1}
+
+/* goal body fat gauge (the app's LeanGauge) */
+.lgw{margin-top:8px}
+svg.lg{display:block;width:100%;height:auto;touch-action:none;cursor:ew-resize;outline:none}
+svg.lg:focus-visible{outline:2px solid var(--acc);outline-offset:4px;border-radius:8px}
+svg.lg .aes{fill:var(--acc);opacity:.22}
+svg.lg .lgt{font:500 9.5px var(--sans);fill:#6b6b70;text-anchor:middle}
+svg.lg .lgt.fl{fill:#f59e0b} svg.lg .lgt.ae{fill:var(--acc)} svg.lg .lgt.ax{font-family:var(--mono);font-size:9px}
+svg.lg .pin{stroke:var(--acc);stroke-width:2.5;stroke-linecap:round} svg.lg .pind{fill:var(--acc)}
+.lgh{text-align:center;color:var(--text-3);font-size:.8rem;margin:2px 0 0}
+.snap{min-height:132px;display:flex;justify-content:center;align-items:flex-start;margin-top:14px}
+.aesbtn{background:none;border:0;color:var(--acc);font:700 .95rem var(--sans);cursor:pointer;padding:10px}
+.floor{border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.06);border-radius:14px;padding:12px 14px;display:grid;gap:6px;text-align:left;max-width:440px}
+.floor b{color:#fbbf24;font-size:.95rem} .floor span{color:var(--text-2);font-size:.82rem;line-height:1.45}
+.floor div{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+.floor button{flex:1;min-width:120px;border-radius:999px;padding:9px 12px;font:700 .85rem var(--sans);cursor:pointer;border:1px solid var(--line);background:transparent;color:#fff}
+.floor button[data-a="keep"]{background:var(--acc);color:#0a0a0b;border-color:transparent}
