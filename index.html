@@ -258,6 +258,10 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .pillar .sci:hover{color:#fff}
 @media(max-width:900px){.pillars{grid-template-columns:minmax(0,1fr)}}
 .ul{text-decoration:underline;text-decoration-color:var(--violet-text);text-decoration-thickness:2px;text-underline-offset:4px;color:#fff}
+.try-cta{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:12px 20px;border-radius:999px;border:1px solid rgba(34,211,238,.45);background:rgba(34,211,238,.08);color:#fff;font-weight:700;font-size:.98rem;text-decoration:none;transition:background .2s,border-color .2s,transform .2s}
+.try-cta span{color:var(--cyan)}
+.try-cta:hover{background:rgba(34,211,238,.16);border-color:var(--cyan);transform:translateY(-1px)}
+.try-cta:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 .perks-h .cyan{color:var(--cyan,#22d3ee)}
 .perks-sub{max-width:52ch;margin:16px auto 0;color:var(--text-2);font-size:clamp(1rem,1.4vw,1.12rem);text-wrap:balance}
 .perk{background:var(--bg);padding:26px 14px;text-align:center}
@@ -336,6 +340,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
         <div><small>Get it on</small><span>Google Play</span></div>
       </a>
     </div>
+    <a class="try-cta" href="/try/" data-loc="hero">Try it first: build your plan in 60 seconds <span aria-hidden="true">&rarr;</span></a>
     <p class="trust"><b>Free</b> &middot; No ads &middot; No account &middot; Your data stays on your phone</p>
   </div>
   <div class="hero-art" id="heroArt" data-shot="meal">
