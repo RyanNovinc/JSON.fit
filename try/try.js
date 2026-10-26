@@ -151,9 +151,9 @@
     { id: 'plan', sec: 'route', grp: 'How you get there', r: rPlan, when: 'plan' },
     { id: 'summary', sec: 'route', grp: '', r: rSummary },
     { id: 'locked', sec: 'route', grp: '', r: rLocked, noBack: true },
+    { id: 'volume', sec: 'train', r: rVolume },
     { id: 'days', sec: 'train', r: rDays },
     { id: 'length', sec: 'train', r: rLength },
-    { id: 'volume', sec: 'train', r: rVolume },
     { id: 'refine', sec: 'train', r: rRefine },
     { id: 'progbuild', sec: 'train', r: rProgBuild, build: true },
     { id: 'program', sec: 'train', r: rProgram },
@@ -1986,14 +1986,14 @@
     el.innerHTML = '<p class="fov rise" style="--i:0">You’re 60% of the way</p><div class="fbar rise" style="--i:0"><i></i></div>' +
       '<h1 class="ftl rise" style="--i:1">Two short steps<br>to day one.</h1><div class="spine">' +
       '<div class="rise" style="--i:2">' + row('done', 0, 'Your route', 'Goal, timeline and phases set', 'DONE') + '</div>' +
-      '<div class="rise" style="--i:3">' + row('next', 2, 'Your training', 'Days, length, volume, extras', '~1 MIN', 'days') + '</div>' +
+      '<div class="rise" style="--i:3">' + row('next', 2, 'Your training', 'Days, length, volume, extras', '~1 MIN', 'volume') + '</div>' +
       '<div class="rise" style="--i:4">' + row('todo', 3, 'Your meals', 'Diet, allergies, the meals you like', '~3 MIN', 'active') + '</div>' +
       '<div class="rise" style="--i:5">' + row('goal', 0, 'Day one: ' + day, 'Your first session and your first day of meals, ready to follow.', '') + '</div></div>' +
       '<p class="free rise" style="--i:6">Free to build. Nothing to pay at the end.</p><p class="later rise" style="--i:7"><button type="button" class="linkb small" data-to="keep">I’ll do this later</button></p>';
     requestAnimationFrame(function () { var f = $('.fbar i', el); if (f) f.style.transform = 'scaleX(.6)'; });
     $$('[data-to]', el).forEach(function (b) { b.onclick = function () { go(b.getAttribute('data-to')); }; });
     // finishLineFor: training first, then meals.
-    primary('Next: my training', function () { go('days'); });
+    primary('Next: my training', function () { go('volume'); });
   }
 
   function toggle(arr, v) { var i = arr.indexOf(v); i > -1 ? arr.splice(i, 1) : arr.push(v); }
@@ -2622,23 +2622,25 @@
     el.innerHTML = '<p class="fov rise" style="--i:0">' + (next ? 'You’re ' + pct + '% of the way' : 'You’re all set') + '</p><div class="fbar rise" style="--i:0"><i></i></div>' +
       '<h1 class="ftl rise" style="--i:1">' + headline + '</h1><div class="spine">' +
       '<div class="rise" style="--i:2">' + row('done', 0, 'Your route', 'Goal, timeline and phases set', 'DONE') + '</div>' +
-      '<div class="rise" style="--i:3">' + row(mark(workoutBuilt, 'workout'), 2, 'Your training', 'Days, length, volume, extras', workoutBuilt ? 'DONE' : '~1 MIN', workoutBuilt ? 'program' : 'days') + '</div>' +
+      '<div class="rise" style="--i:3">' + row(mark(workoutBuilt, 'workout'), 2, 'Your training', 'Days, length, volume, extras', workoutBuilt ? 'DONE' : '~1 MIN', workoutBuilt ? 'program' : 'volume') + '</div>' +
       '<div class="rise" style="--i:4">' + row(mark(mealsBuilt, 'nutrition'), 3, 'Your meals', 'Diet, allergies, the meals you like', mealsBuilt ? 'DONE' : '~3 MIN', mealsBuilt ? 'today' : 'active') + '</div>' +
       '<div class="rise" style="--i:5">' + row('goal', 0, 'Day one: ' + day, line, '') + '</div></div>' +
       // Both built: no free note, and the pill already goes to the plan.
       (next ? '<p class="free rise" style="--i:6">Free to build. Nothing to pay at the end.</p><p class="later rise" style="--i:7"><button type="button" class="linkb small" data-to="keep">I’ll do this later</button></p>' : '');
     requestAnimationFrame(function () { var f = $('.fbar i', el); if (f) f.style.transform = 'scaleX(' + pct / 100 + ')'; });
     $$('[data-to]', el).forEach(function (b) { b.onclick = function () { go(b.getAttribute('data-to')); }; });
-    if (next === 'workout') primary('Next: my training', function () { go('days'); });
+    if (next === 'workout') primary('Next: my training', function () { go('volume'); });
     else if (next === 'nutrition') primary('Next: my meals', function () { go('active'); });
     else primary('Go to my plan', function () { go('keep'); });
   }
 
   /* ================= training =================
    * The app's workout questions from onboarding's finish line, screen for screen
-   * (release 1.0.44, workout generator on): Days (Q3DaysPerWeekScreen), How long
-   * (Q4ProgramDurationScreen), Volume (Q6VolumePreferenceScreen), Refinements
-   * (RefinementsScreen), then WorkoutBuildScreen. Equipment is not asked: the app
+   * (the next build: release 1.0.44 + release/integration, workout generator on):
+   * Volume (Q6VolumePreferenceScreen, first since 24 Oct 2026), Days
+   * (Q3DaysPerWeekScreen, 2 to 6 with each count's minutes), How long
+   * (Q4ProgramDurationScreen), Refinements (RefinementsScreen), then
+   * WorkoutBuildScreen. Equipment is not asked: the app
    * took it out of the flow (only "Commercial gym" can be built) and How long saves
    * the default. Every number on these screens (session minutes, sets per muscle,
    * the presets) comes from the app's own code in the engine bundle, and the
@@ -2658,8 +2660,8 @@
     if (T.start && T.startKey === k) return Promise.resolve(T.start);
     return tcall('trainingStart', aboutForEngine()).then(function (st) {
       T.start = st; T.startKey = k;
-      // Q3 opens on the stored week, else the meal side's sessions (daysScreenStart).
-      if (T.days == null && st.start.selected) { T.days = st.start.selected; T.week = st.start.days; T.varies = st.start.varies; T.time = st.start.time; }
+      // Days opens on the stored week, else the meal side's sessions, else 4, kept to 2 to 6 (daysScreenStart, estimateDays).
+      if (T.days == null) { T.days = st.start.selected; T.week = st.start.days; T.varies = st.start.varies; T.time = st.start.time; T.daysTouched = st.start.touched; T.hadWeek = st.start.hadWeek; }
       return st;
     });
   }
@@ -2667,9 +2669,9 @@
   /** The answers saved so far, field by field, as the screens save them (questionnaireStorage). */
   function savedThrough(step) {
     var q = {};
-    if (step >= 1) q.totalTrainingDays = T.days;
-    if (step >= 2) { q.programDuration = T.length; q.selectedEquipment = T.start.defaultEquipment; }
-    if (step >= 3) q.volumePreference = T.volume;
+    if (step >= 1) q.volumePreference = T.volume;
+    if (step >= 2) q.totalTrainingDays = T.days;
+    if (step >= 3) { q.programDuration = T.length; q.selectedEquipment = T.start.defaultEquipment; }
     if (step >= 4) {
       var r = T.refine || (T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} });
       q.refinementPresets = r.active; q.priorityMuscleGroups = r.priority; q.auxiliaryMuscles = r.aux; q.movementLimitations = r.avoid;
@@ -2693,13 +2695,15 @@
     infoO: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 12.5l4 4 9-9"/></svg>',
     bar: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="1" y="9" width="3" height="6" rx="1"/><rect x="4.5" y="6.5" width="3.2" height="11" rx="1"/><rect x="7.7" y="11" width="8.6" height="2" rx="1"/><rect x="16.3" y="6.5" width="3.2" height="11" rx="1"/><rect x="20" y="9" width="3" height="6" rx="1"/></svg>',
+    checkC: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 7.3-5.4 6.3a1 1 0 0 1-1.5.1l-2.6-2.6 1.4-1.4 1.8 1.8 4.8-5.5z"/></svg>',
+    time: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/></svg>',
     chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
   };
-  /** QuestionCard.tsx: icon box, title (with an optional pill), subtitle always shown, a check when picked. */
+  /** QuestionCard.tsx: icon box, title (with an optional pill), subtitle always shown, a check when picked (or `aside` on the right in both states). */
   function qcards(el, list, current, onPick) {
     el.insertAdjacentHTML('beforeend', '<div class="qcs rise" style="--i:3" role="radiogroup">' + list.map(function (o) {
       var on = current === o.v;
-      return '<button type="button" class="qc" role="radio" data-v="' + esc(o.v) + '" aria-checked="' + on + '" aria-pressed="' + on + '"><span class="qi">' + o.icon + '</span><span class="qt"><span class="qr"><b>' + esc(o.l) + '</b>' + (o.badge ? '<em>' + esc(o.badge) + '</em>' : '') + '</span><small>' + esc(o.h) + '</small></span><span class="qk">' + IC.check + '</span></button>';
+      return '<button type="button" class="qc" role="radio" data-v="' + esc(o.v) + '" aria-checked="' + on + '" aria-pressed="' + on + '"><span class="qi">' + o.icon + '</span><span class="qt"><span class="qr"><b>' + esc(o.l) + '</b>' + (o.badge ? '<em>' + esc(o.badge) + '</em>' : '') + '</span><small>' + esc(o.h) + '</small></span>' + (o.aside ? '<span class="qa">' + o.aside + '</span>' : '<span class="qk">' + IC.check + '</span>') + '</button>';
     }).join('') + '</div>');
     $$('.qc', el).forEach(function (b) {
       b.onclick = function () {
@@ -2708,62 +2712,39 @@
       };
     });
   }
-  /** The CTA, "Save" when a screen was opened to change one answer (editMode). */
-  function trainCta(ok, onNext) { primary(T.edit ? 'Save' : 'Continue', onNext, !ok); }
+  /** The CTA. */
+  function trainCta(ok, onNext) { primary('Continue', onNext, !ok); }
 
-  /* ---------- SessionLengthPanel.tsx ---------- */
+  /* ---------- SessionLengthPanel.tsx, compact (Refinements) ---------- */
   /**
-   * The live session length: block 1 of the real build for the answers so far,
-   * one bar per training day, the change line, and from 90 min the fixes with
-   * their minutes. 250 ms after an answer changes; the last result stays up,
-   * dimmed, until the new one lands. o: { saved, answers, value(), fixes(value)
-   * -> engine fix list, kind: 'days'|'volume'|'refine', compact, onFix(fix) }.
+   * The live session length pinned above Continue on Refinements: block 1 of the
+   * real build for the answers so far, and the change line. 250 ms after an answer
+   * changes; the last result stays up, dimmed, until the new one lands, and the
+   * pulsing dot shows once a build has taken a moment. o: { saved, answers(),
+   * value(), kind }.
    */
   function sessionPanel(box, my, o) {
     var shown = null, timer = 0, run = 0;
     function draw(res, loading) {
-      if (!res) { box.innerHTML = o.compact ? '<div class="slc"><div class="slr"><span>Sessions</span><b>Working it out</b></div></div>' : '<div class="slp"><div class="slh"><span class="pend">Working out your session length</span></div></div>'; return; }
-      var est = res.est, tone = res.tone, AMB = '#fbbf24';
-      var head = tone === 'ok' ? '#fff' : AMB;
+      if (!res) { box.innerHTML = '<div class="slc"><div class="slr"><span>Sessions</span><em class="slv"><i class="pdot"></i><b>Working it out</b></em></div></div>'; return; }
+      var est = res.est, AMB = '#fbbf24';
+      var head = res.tone === 'ok' ? '#fff' : AMB;
       var dc = res.delta ? (res.delta.tone === 'longer' ? AMB : res.delta.tone === 'shorter' ? '#4ade80' : '#a1a1aa') : '';
-      if (o.compact) {
-        box.innerHTML = '<div class="slc' + (loading ? ' dim' : '') + '"><div class="slr"><span>' + (res.repStyle === 'mix' ? 'Block 1 sessions' : 'Sessions') + '</span><b style="color:' + head + '">About ' + est.headline + ' min</b></div>' +
-          (res.delta ? '<p class="sld" style="color:' + dc + '">' + esc(res.delta.text) + '</p>' : '') + '</div>';
-        return;
-      }
-      var scale = Math.max(120, Math.max.apply(null, est.days.map(function (d) { return d.minutes; })));
-      var barC = res.delta && res.delta.tone === 'longer' ? AMB : 'var(--acc)';
-      box.innerHTML = '<div class="slp"><div class="slh"><b style="color:' + head + '">About ' + est.headline + ' min</b><span>' + (loading ? 'updating' : esc(res.headSub)) + '</span></div>' +
-        '<div class="slb' + (loading ? ' dim' : '') + '">' + est.days.map(function (d) {
-          return '<div class="slrow"><span class="n">' + esc(d.name) + '</span><span class="tr"><i style="width:' + Math.round(d.minutes / scale * 100) + '%;background:' + barC + '"></i></span><span class="m">' + d.minutes + '</span></div>';
-        }).join('') + '</div>' +
-        (res.delta ? '<p class="sld' + (loading ? ' dim' : '') + '" style="color:' + dc + '">' + esc(res.delta.text) + '</p>' : '') +
-        (res.longLine ? '<div class="slf' + (loading ? ' dim' : '') + '"><p class="sll">' + esc(res.longLine) + '</p>' + res.offered.map(function (f) {
-          return '<button type="button" class="slfx" data-fix="' + esc(f.key) + '"><span><b>' + esc(f.label) + '</b><small>About ' + f.headline + ' min' + (f.note ? ', ' + esc(f.note) : '') + '</small></span>' + IC.chev + '</button>';
-        }).join('') + '</div>' : '') +
-        (res.ramp ? '<p class="sla">' + esc(res.ramp) + '</p>' : '') +
-        (res.assumed ? '<p class="sla">' + esc(res.assumed) + '</p>' : '') + '</div>';
-      $$('[data-fix]', box).forEach(function (b) {
-        b.onclick = function () { var f = res.offered.filter(function (x) { return x.key === b.getAttribute('data-fix'); })[0]; var full = (res.fixes || []).filter(function (x) { return x.key === f.key; })[0]; o.onFix && o.onFix(full || f); };
-      });
+      box.innerHTML = '<div class="slc"><div class="slr"><span>' + (res.repStyle === 'mix' ? 'Block 1 sessions' : 'Sessions') + '</span><em class="slv">' + (loading ? '<i class="pdot late"></i>' : '') + '<b class="' + (loading ? 'dim' : '') + '" style="color:' + head + '">About ' + est.headline + ' min</b></em></div>' +
+        (res.delta ? '<p class="sld' + (loading ? ' dim' : '') + '" style="color:' + dc + '">' + esc(res.delta.text) + '</p>' : '') + '</div>';
     }
     function update() {
       var value = o.value();
-      if (!value) { box.innerHTML = ''; shown = null; return; }
       var id = ++run;
       if (shown) draw(shown.res, true); else draw(null);
       clearTimeout(timer);
       timer = setTimeout(function () {
-        var fixes = o.fixes ? o.fixes(value) : Promise.resolve([]);
-        Promise.resolve(fixes).then(function (fx) {
-          var delta = shown ? { kind: o.kind, prev: shown.value, prevAvg: shown.res.est.average } : null;
-          return tcall('sessionPanel', aboutForEngine(), o.saved, o.answers(), value, fx || [], delta).then(function (res) {
-            if (id !== run || my !== token || !res) return;
-            res.fixes = fx || [];
-            if (shown && keyOf(shown.value) === keyOf(value) && !res.delta) res.delta = shown.res.delta;
-            shown = { value: value, res: res };
-            draw(res, false);
-          });
+        var delta = shown ? { kind: o.kind, prev: shown.value, prevAvg: shown.res.est.average } : null;
+        tcall('sessionPanel', aboutForEngine(), o.saved, o.answers(), value, [], delta).then(function (res) {
+          if (id !== run || my !== token || !res) return;
+          if (shown && keyOf(shown.value) === keyOf(value) && !res.delta) res.delta = shown.res.delta;
+          shown = { value: value, res: res };
+          draw(res, false);
         }).catch(function () {});
       }, 250);
     }
@@ -2771,126 +2752,56 @@
     return update;
   }
 
-  /* ---------- Q3: How many days a week? ---------- */
-  var DAY_HINTS = {
-    1: 'One session can’t hold a full week. Some muscles get fewer sets.',
-    2: 'Two long sessions.',
-    3: 'Three full sessions.',
-    4: 'Four medium sessions.',
-    5: 'Five shorter sessions.',
-    6: 'Six short sessions.',
-    7: 'Builds as six sessions and a rest day, the same plan as 6.',
-  };
-  var MON_FIRST = [1, 2, 3, 4, 5, 6, 0], DOW_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-  function rDays(el, my) {
-    withTrain(el, my, function (st) {
-      var edit = T.edit;
-      // Opened from a "Train N days" row on Volume: start on N, as if tapped here.
-      if (edit && edit.presetDays) { T.days = edit.presetDays; T.week = null; T.daysTouched = true; edit.presetDays = null; }
-      head(el, trainStepLine(0), 'How many days a <em>week?</em>', 'From 2 days up, the same weekly sets and growth. Days mostly change how long each session is.');
-      el.insertAdjacentHTML('beforeend', '<div class="dtiles rise" style="--i:2" role="radiogroup">' + [1, 2, 3, 4, 5, 6, 7].map(function (d) {
-        return '<button type="button" class="dt" data-v="' + d + '" role="radio" aria-label="' + (d === 1 ? '1 day a week' : d + ' days a week') + '" aria-pressed="' + (T.days === d) + '">' + d + '</button>';
-      }).join('') + '</div><div class="band rise" style="--i:2"><i></i></div><p class="bandl rise" style="--i:2">Most people land here</p>' +
-        '<div id="slp"></div><div id="wkc" class="rise" style="--i:3"></div>' +
-        '<button type="button" class="varies" id="varies" role="checkbox" aria-checked="' + !!T.varies + '"><span class="vb"></span>My days change week to week</button>' +
-        '<div class="when"><b>Roughly when?</b><span>Optional</span></div><div class="rtc">' + st.roughTimes.map(function (t) {
-          return '<button type="button" class="rt" data-t="' + t.key + '" aria-pressed="' + (T.time === t.key) + '">' + esc(t.label) + '</button>';
-        }).join('') + '</div><p class="dhint" id="dhint"></p>');
-      var panel = sessionPanel($('#slp', el), my, {
-        kind: 'days', saved: null, answers: function () { return {}; },
-        value: function () { return T.days ? { totalTrainingDays: T.days } : null; },
-        fixes: function (v) { return tcall('daysFixes', v.totalTrainingDays); },
-        onFix: function (f) { pick(f.days); },
+  /* ---------- useSessionEstimates.ts ---------- */
+  /**
+   * Session estimates for several versions of the answers at once: Volume's
+   * weekly time per tier, Days' minutes per day count. Each variant is the saved
+   * answers + answersSoFar + its override, built as block 1 of the real
+   * generator (the engine's sessionEstimate). They run one at a time, in the
+   * order given (the picked one first), 250 ms after the list changes; a new list
+   * stops the old run before its next build; results are kept by profile, so a
+   * variant built before is instant. Returns read(saved, answers, variants) ->
+   * { key: estimate | null }; onLand runs as each one lands.
+   */
+  var ESTS = {}, estRun = 0;
+  function estimator(my, onLand) {
+    var last = null;
+    return function (saved, answers, variants) {
+      var about = keyOf(aboutForEngine()), out = {}, missing = [];
+      variants.forEach(function (v) {
+        var k = keyOf([about, saved, answers, v.override]);
+        out[v.key] = ESTS[k] || null;
+        if (!ESTS[k]) missing.push({ v: v, k: k });
       });
-      function weekCard() {
-        var shownDays = T.varies ? (T.days ? (st.spreads || {})[T.days] || T.week || [] : []) : T.week || [];
-        var value = !T.days ? 'Pick your days' : T.varies ? 'Any ' + T.days + ' days' : T.weekLabel || '';
-        $('#wkc', el).innerHTML = '<div class="icard"><div class="cap"><span>Your week</span><b>' + esc(value) + '</b></div><div class="wkrow">' + MON_FIRST.map(function (dow) {
-          var on = shownDays.indexOf(dow) > -1;
-          return '<button type="button" class="wkd' + (on ? ' on' : '') + (T.varies ? ' loose' : '') + '" data-dow="' + dow + '"' + (T.varies || !T.days && !T.week ? ' disabled' : '') + ' aria-label="' + ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dow] + ', ' + (on ? 'training' : 'rest') + '"><span class="dw">' + DOW_SHORT[dow] + '</span><span class="dc">' + (T.varies ? '<i></i>' : on ? IC.bar : 'Rest') + '</span></button>';
-        }).join('') + '</div><p class="disc">' + (T.varies ? 'Train whenever suits. The app learns your days.' : T.days ? 'Tap a day to change it' : 'Pick a number, or tap your days') + '</p></div>';
-        $$('.wkd', el).forEach(function (b) {
-          b.onclick = function () {
-            T.daysTouched = true;
-            tcall('toggleDay', T.week || [], +b.getAttribute('data-dow')).then(function (w) {
-              if (my !== token) return;
-              T.week = w; T.days = w.length; tiles(); refresh();
-            });
-          };
-        });
+      var list = keyOf([about, saved, answers, variants]);
+      if (list !== last) {
+        last = list;
+        var id = ++estRun;
+        if (missing.length) setTimeout(function () {
+          (function step(i) {
+            if (id !== estRun || my !== token || i >= missing.length) return;
+            var m = missing[i];
+            if (ESTS[m.k]) { step(i + 1); return; }
+            tcall('sessionEstimate', aboutForEngine(), saved, answers, m.v.override).then(function (e) {
+              if (e) ESTS[m.k] = e;
+              if (id !== estRun || my !== token) return;
+              if (e) onLand();
+              step(i + 1);
+            }, function () { if (id === estRun && my === token) step(i + 1); });
+          })(0);
+        }, 250);
       }
-      function tiles() { $$('.dt', el).forEach(function (b) { b.setAttribute('aria-pressed', +b.getAttribute('data-v') === T.days); }); }
-      function refresh() {
-        $('#dhint', el).className = T.days ? 'dhint' : 'dhint ph';
-        $('#dhint', el).textContent = T.days ? DAY_HINTS[T.days] : 'Tap a number above';
-        enable(!!T.days);
-        var w = T.week;
-        (w && w.length ? tcall('weekLabel', w, T.days) : Promise.resolve('')).then(function (l) { if (my !== token) return; T.weekLabel = l; weekCard(); });
-        panel();
-      }
-      function pick(n) {
-        T.daysTouched = true;
-        T.days = n;
-        tcall('weekFor', n).then(function (w) { if (my !== token) return; T.week = w; tiles(); refresh(); });
-      }
-      $$('.dt', el).forEach(function (b) { b.onclick = function () { pick(+b.getAttribute('data-v')); }; });
-      $('#varies', el).onclick = function () { T.daysTouched = true; T.varies = !T.varies; this.setAttribute('aria-checked', T.varies); weekCard(); };
-      $$('.rt', el).forEach(function (b) {
-        b.onclick = function () {
-          T.timeTouched = true;
-          var k = b.getAttribute('data-t'); T.time = T.time === k ? null : k;
-          $$('.rt', el).forEach(function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-t') === T.time); });
-        };
-      });
-      // The spreads for "My days change week to week" (the example spread, dimmed).
-      if (!st.spreads) {
-        st.spreads = {};
-        Promise.all([1, 2, 3, 4, 5, 6, 7].map(function (n) { return tcall('weekFor', n).then(function (w) { st.spreads[n] = w; }); })).then(function () { if (my === token) weekCard(); });
-      }
-      if (T.days && !T.week) tcall('weekFor', T.days).then(function (w) { if (my !== token) return; T.week = w; refresh(); }); else refresh();
-      trainCta(!!T.days, function () {
-        if (!T.days) return;
-        T.weekSaved = { daysTouched: !!T.daysTouched, timeTouched: !!T.timeTouched, hadWeek: false, varies: !!T.varies, days: T.week, selected: T.days, time: T.time };
-        if (T.edit) { T.edit = null; back(); return; }
-        go('length');
-      });
-    });
+      return out;
+    };
   }
+  /** WorkingMotion.tsx's skeleton: a grey bar a highlight crosses while it builds. */
+  function skel(cls) { return '<i class="sk ' + (cls || '') + '" aria-hidden="true"></i>'; }
 
-  /* ---------- Q4: How long should it run? ---------- */
-  var LENGTHS = [
-    { v: '4_weeks', l: '4 weeks', h: 'Quick reset. Single training block.', icon: IC.cal, w: 4 },
-    { v: '8_weeks', l: '8 weeks', h: 'Standard mesocycle. Real measurable results.', icon: IC.calF, w: 8 },
-    { v: '12_weeks', l: '12 weeks', h: 'Three blocks. Full progression cycle.', icon: IC.calC, w: 12 },
-    { v: '6_months', l: '6 months', h: 'Multiple phases. Sustained adaptation.', icon: IC.cal, w: 26 },
-    { v: '1_year', l: '1 year', h: 'Full periodization. Lifestyle commitment.', icon: IC.calN, w: 52 },
-  ];
-  /** PlanInstruments LengthTimeline: today to a year, filled to the pick. */
-  function lengthTimeline(v) {
-    var w = (LENGTHS.filter(function (x) { return x.v === v; })[0] || {}).w || 0;
-    return '<div class="icard"><div class="cap"><span>From today</span><b>' + (w ? w + ' weeks' : '') + '</b></div><div class="ltrack">' + [4, 8, 12, 26].map(function (t) { return '<s style="left:' + (t / 52 * 100) + '%"></s>'; }).join('') +
-      '<i style="width:' + (w / 52 * 100) + '%"></i></div><div class="tlbl"><span>TODAY</span><span>6 MO</span><span>1 YEAR</span></div></div>';
-  }
-  function rLength(el, my) {
-    withTrain(el, my, function () {
-      head(el, trainStepLine(1), 'How long should it <em>run?</em>', 'Longer programs build deeper adaptations.');
-      el.insertAdjacentHTML('beforeend', '<div id="ltl" class="rise" style="--i:2">' + lengthTimeline(T.length) + '</div>');
-      qcards(el, LENGTHS, T.length, function (v) {
-        T.length = v; enable(true);
-        var f = $('#ltl .ltrack i', el), c = $('#ltl .cap b', el), w = LENGTHS.filter(function (x) { return x.v === v; })[0].w;
-        f.style.width = (w / 52 * 100) + '%'; c.textContent = w + ' weeks';
-        $('#lnote', el).hidden = !(v === '6_months' || v === '1_year');
-      });
-      el.insertAdjacentHTML('beforeend', '<p class="tnote" id="lnote"' + (T.length === '6_months' || T.length === '1_year' ? '' : ' hidden') + '><span>' + IC.info + '</span>Long plans run as a series of training blocks, each one building on the last.</p>');
-      trainCta(!!T.length, function () { if (!T.length) return; if (T.edit) { T.edit = null; back(); return; } go('volume'); });
-    });
-  }
-
-  /* ---------- Q6: How much volume? ---------- */
+  /* ---------- Q6: How hard should we push? (first since 24 Oct 2026) ---------- */
   var VOLUMES = [
-    { v: '8-12', l: 'Conservative', h: 'Most of the growth for the least time. Good for new lifters and busy weeks.', icon: IC.leaf },
-    { v: '12-16', l: 'Moderate', h: 'Most of High’s growth in less time. The best fit for most people.', icon: IC.speed },
-    { v: '16-20', l: 'High', h: 'A bit more growth for more time. Mainly for experienced lifters who have stopped progressing.', icon: IC.flame },
+    { v: '8-12', l: 'Conservative', h: 'Most of the growth, least time', icon: IC.leaf },
+    { v: '12-16', l: 'Moderate', h: 'The best fit for most people', icon: IC.speed },
+    { v: '16-20', l: 'High', h: 'A bit more growth, more time', icon: IC.flame },
   ];
   /** PlanInstruments VolumeCurve: an illustrative diminishing-returns curve, the pick's zone lit. */
   function volumeCurve(v) {
@@ -2908,33 +2819,256 @@
       '<text x="' + ((x0 + x1) / 2) + '" y="' + (y1 + 31) + '" fill="#71717a" font-size="10" text-anchor="middle">SETS PER MUSCLE PER WEEK</text></svg></div>';
   }
   function rVolume(el, my) {
-    withTrain(el, my, function () {
-      var saved = savedThrough(2);
-      withData(el, my, function () { return tcall('volumeLines', aboutForEngine(), saved, saved); }, '', function (VL) {
-        head(el, trainStepLine(2), 'How much <em>volume?</em>', 'Sets per muscle per week. What you pick here is what gets built. This is the dial that drives growth, and it keeps paying as it climbs, just by less each time.');
-        el.insertAdjacentHTML('beforeend', '<div id="vcv" class="rise" style="--i:2">' + volumeCurve(T.volume) + '</div>');
-        qcards(el, VOLUMES.map(function (o) { return { v: o.v, l: o.l, h: VL.lines[o.v] + ' ' + o.h, icon: o.icon, badge: o.v === VL.recommended ? 'Recommended for you' : null }; }), T.volume, function (v) {
-          T.volume = v; enable(true); $('#vcv', el).innerHTML = volumeCurve(v); panel();
-        });
-        el.insertAdjacentHTML('beforeend', '<div id="slp"></div>' +
-          '<button type="button" class="why" id="whyV" aria-expanded="false">How much does volume matter?' + CHEV + '</button><div class="whyb" id="whyB" hidden>' +
-          '<p>Each extra set adds a little less growth than the one before. About 10 sets a week gives a muscle roughly two-thirds of what 20 would.</p>' +
-          '<p>In one study of trained lifters, 12, 18 and 24 sets a week built about the same thigh muscle over 8 weeks, though other studies found more sets helped a little. High is for lifters who have stopped progressing on Moderate, and it needs the sleep and food to recover from.</p>' +
-          '<p>New to lifting or coming back after a break? Your first two weeks start lighter whichever you pick, to keep soreness down while your muscles get used to it. A long session you skip or rush builds less than a shorter one you finish well.</p></div>' +
-          '<p class="tnote"><span>' + IC.info + '</span>Your ' + T.days + ' ' + (T.days === 1 ? 'day' : 'days') + ' a week decides how these sets get split up, not how many there are.</p>');
-        var panel = sessionPanel($('#slp', el), my, {
-          kind: 'volume', saved: saved, answers: function () { return saved; },
-          value: function () { return T.volume ? { volumePreference: T.volume } : null; },
-          fixes: function (v) { return tcall('volumeFixes', v.volumePreference, T.days); },
-          onFix: function (f) {
-            if (f.volume) { T.volume = f.volume; redrawTrain(el, my); return; }
-            // "Train N days" opens Days to change that one answer (editMode, presetDays).
-            T.edit = { presetDays: f.days }; go('days');
-          },
-        });
-        $('#whyV', el).onclick = function () { var b = $('#whyB', el), open = b.hidden; b.hidden = !open; this.setAttribute('aria-expanded', open); };
-        trainCta(!!T.volume, function () { if (!T.volume) return; go('refine'); });
+    withTrain(el, my, function (st) {
+      // The saved answers when the screen opens (none yet from the finish line), and its answersSoFar.
+      var saved = null, answers = {};
+      withData(el, my, function () { return tcall('volumeLines', aboutForEngine(), saved, answers); }, '', function (VL) {
+        var rec = st.recommendedVolume;
+        // The recommended tier is picked when nothing is answered, so most people just tap Continue.
+        if (!T.volume) T.volume = rec;
+        head(el, trainStepLine(0), 'How hard should we <em>push?</em>', 'We’ve marked the one that fits you.');
+        qcards(el, VOLUMES.map(function (o) {
+          return { v: o.v, l: o.l, h: o.h, icon: o.icon, badge: o.v === rec ? 'For you' : null, aside: '<span class="qtime" data-t="' + o.v + '"></span>' };
+        }), T.volume, function (v) { T.volume = v; enable(true); paint(); if (!$('#whyB', el).hidden) whyBody(); });
+        el.insertAdjacentHTML('beforeend', '<div class="reas rise" style="--i:4"><span>' + IC.check + '</span><p>' + (st.rampsIn ? 'Your first two weeks start lighter, and you can change this any time.' : 'You can change this any time.') + '</p></div>' +
+          '<button type="button" class="why rise" style="--i:4" id="whyV" aria-expanded="false">How we set this' + CHEV + '</button><div class="whyb" id="whyB" hidden></div>');
+        function whyBody() {
+          $('#whyB', el).innerHTML = volumeCurve(T.volume) +
+            '<p class="lead">' + esc(st.volumeLabel[T.volume]) + ': ' + esc(VL.lines[T.volume].replace(/^Most/, 'most')) + '</p>' +
+            '<p>Each extra set adds a little less growth than the one before. About 10 sets a week gives a muscle roughly two-thirds of what 20 would.</p>' +
+            '<p>In one study of trained lifters, 12, 18 and 24 sets a week built about the same thigh muscle over 8 weeks, though other studies found more sets helped a little. High is for lifters who have stopped progressing on Moderate, and it needs the sleep and food to recover from.</p>' +
+            '<p>A long session you skip or rush builds less than a shorter one you finish well. Next you’ll pick how many days to spread this over.</p>' +
+            '<a class="whyl" href="/research/" target="_blank" rel="noopener">The research behind it</a>';
+        }
+        $('#whyV', el).onclick = function () { var b = $('#whyB', el), open = b.hidden; if (open) whyBody(); b.hidden = !open; this.setAttribute('aria-expanded', open); };
+        // Each tier's weekly time at the days saved so far (4 before Days): the picked tier builds first.
+        var read = estimator(my, function () { paint(); });
+        function paint() {
+          var order = [T.volume, rec].concat(VOLUMES.map(function (o) { return o.v; })).filter(function (v, k, a) { return a.indexOf(v) === k; });
+          var ests = read(saved, answers, order.map(function (v) { return { key: v, override: { volumePreference: v, totalTrainingDays: st.volumeDays } }; }));
+          $$('.qtime', el).forEach(function (t) {
+            var e = ests[t.getAttribute('data-t')], html = e ? '<b>' + esc(e.hours) + '</b><small>a week</small>' : skel('skt') + '<small>a week</small>';
+            if (t.getAttribute('data-h') !== (e ? e.hours : '')) { t.innerHTML = html; t.setAttribute('data-h', e ? e.hours : ''); }
+            t.setAttribute('aria-label', e ? 'about ' + e.hours + ' a week' : 'Working out the time');
+          });
+        }
+        paint();
+        trainCta(!!T.volume, function () { if (!T.volume) return; go('days'); });
       });
+    });
+  }
+
+  /* ---------- Q3: How many days a week? (second since 24 Oct 2026) ---------- */
+  var LIMIT_NOTE_MS = 2600, UNDO_MS = 4000, SHOW_WORKING_MS = 120;
+  var MON_FIRST = [1, 2, 3, 4, 5, 6, 0], DOW_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  var DOW_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function rDays(el, my) {
+    withTrain(el, my, function (st) {
+      if (!T.week) { tcall('weekFor', T.days).then(function (w) { if (my !== token) return; T.week = w; redrawTrain(el, my); }); return; }
+      // What Volume saved, and the answers it passed on (DaysScreen's base and answersSoFar).
+      var saved = savedThrough(1), answers = { volumePreference: T.volume };
+      head(el, trainStepLine(1), 'How many days a <em>week?</em>', 'Your muscles grow the same from 2 days up. It’s only about how you like your week.');
+      el.insertAdjacentHTML('beforeend', '<div class="dtiles rise" style="--i:2" role="radiogroup">' + st.dayOptions.map(function (n) {
+        return '<button type="button" class="dt" data-v="' + n + '" role="radio"><b>' + n + '</b><span class="dm"></span></button>';
+      }).join('') + '</div><div class="dscale rise" style="--i:2"><span>‹ Fewer, longer sessions</span><span>More, shorter ›</span></div>' +
+        '<div class="dsc rise" style="--i:3" id="dsc"><i class="dsw" aria-hidden="true"></i>' +
+        '<div class="dsh" id="dsh"></div>' +
+        '<div class="dss"><span>a session · <span id="dvl"></span> · </span><button type="button" class="chg" id="chg">Change</button><span class="upd" id="upd" aria-hidden="true"><i class="pdot"></i><span></span></span></div>' +
+        '<div class="dsl" id="dsl"></div>' +
+        '<button type="button" class="each" id="each" aria-expanded="false"><span>See each day</span>' + CHEV + '</button><div class="dsb" id="dsb" hidden></div></div>' +
+        '<div id="wkc" class="rise" style="--i:4"></div><p class="dlim" id="dlim" aria-live="polite">&nbsp;</p>');
+      var C = { lastEst: null, lastLine: null, busy: false, working: false, wt: 0, prevHead: null, open: false, barsKey: '' };
+      var read = estimator(my, function () { paint(); });
+      var ests = {};
+      function volLabel() { return st.volumeLabel[T.volume] || 'Moderate'; }
+      // DaysScreen's one suggestion: fewest extra days under 90 min, else one step
+      // less volume, else one more day if it saves enough. Null while what it needs builds.
+      function line() {
+        var sel = T.days, est = ests['d' + sel], down = st.lowerVolume[T.volume];
+        if (!est) return null;
+        if (est.average < st.longMin) return { kind: 'calm' };
+        for (var n = sel + 1; n <= st.maxDays; n++) {
+          var e = ests['d' + n];
+          if (!e) return null;
+          if (e.average < st.longMin) return { kind: 'suggest', strong: n + ' days', minutes: e.headline, act: 'days', n: n };
+        }
+        if (down) {
+          if (!ests.down) return null;
+          if (est.average - ests.down.average >= st.fixMinSaving) return { kind: 'suggest', strong: st.volumeLabel[down], minutes: ests.down.headline, act: 'down', v: down };
+        }
+        var nx = sel < st.maxDays ? ests['d' + (sel + 1)] : null;
+        if (nx && est.average - nx.average >= st.fixMinSaving) return { kind: 'suggest', strong: (sel + 1) + ' days', minutes: nx.headline, act: 'days', n: sel + 1 };
+        return { kind: 'long' };
+      }
+      function paint() {
+        var sel = T.days, down = st.lowerVolume[T.volume];
+        var byDistance = st.dayOptions.slice().sort(function (a, b) { return Math.abs(a - sel) - Math.abs(b - sel) || b - a; });
+        var variants = byDistance.map(function (n) { return { key: 'd' + n, override: { totalTrainingDays: n, volumePreference: T.volume } }; });
+        if (down) variants.splice(2, 0, { key: 'down', override: { totalTrainingDays: sel, volumePreference: down } });
+        ests = read(saved, answers, variants);
+        // The tiles: each count's minutes, a skeleton while it builds.
+        $$('.dt', el).forEach(function (b) {
+          var n = +b.getAttribute('data-v'), e = ests['d' + n], on = n === sel;
+          b.setAttribute('aria-pressed', on); b.setAttribute('aria-checked', on);
+          b.setAttribute('aria-label', n + ' days a week' + (e ? ', about ' + e.headline + ' minutes a session' : ''));
+          var m = $('.dm', b), h = e ? String(e.headline) : '';
+          if (m.getAttribute('data-h') !== h || !m.firstChild) { m.innerHTML = e ? '<small>' + e.headline + 'm</small>' : skel('skd'); m.setAttribute('data-h', h); }
+        });
+        card();
+        weekCard();
+      }
+      /** DaysSessionCard.tsx: one height while it updates; the last number and line stay up, faded, until new ones land. */
+      function card() {
+        var est = ests['d' + T.days] || null, ln = line();
+        if (est) C.lastEst = est;
+        if (ln) C.lastLine = ln;
+        var shownEst = est || C.lastEst, shownLine = ln || C.lastLine, estBusy = !est, busy = estBusy || !ln;
+        if (busy !== C.busy) {
+          C.busy = busy; clearTimeout(C.wt);
+          if (!busy) C.working = false;
+          else C.wt = setTimeout(function () { if (my === token && C.busy) { C.working = true; card(); } }, SHOW_WORKING_MS);
+        }
+        var animating = C.working || !shownEst, box = $('#dsc', el);
+        box.classList.toggle('working', animating);
+        box.setAttribute('aria-label', shownEst ? 'About ' + shownEst.headline + ' minutes a session at ' + volLabel() + ' volume' : 'Working out your session length');
+        // The number fades up when it changes.
+        var hd = $('#dsh', el), headNow = est ? est.headline : null;
+        if (shownEst) {
+          var long = shownEst.average >= st.longMin;
+          if (!hd.firstChild || hd.firstChild.tagName !== 'B' || (headNow != null && headNow !== C.prevHead)) {
+            hd.innerHTML = '<b class="' + (headNow != null && !RM ? 'fade' : '') + '">About ' + shownEst.headline + ' min</b>';
+          }
+          hd.firstChild.style.color = long ? '#fbbf24' : '#fff';
+          hd.firstChild.classList.toggle('held', C.working && estBusy);
+        } else if (!hd.firstChild || hd.firstChild.tagName === 'B') hd.innerHTML = skel('skh');
+        C.prevHead = headNow;
+        $('#dvl', el).textContent = volLabel();
+        $('#chg', el).setAttribute('aria-label', 'Change volume, now ' + volLabel());
+        var upd = $('#upd', el); upd.classList.toggle('on', C.working); $('span', upd).textContent = estBusy ? 'Updating' : 'Checking';
+        // The line under the number is always there.
+        var L = $('#dsl', el), lkey = shownLine ? keyOf(shownLine) + busy : '';
+        L.classList.toggle('held', C.working);
+        if (L.getAttribute('data-k') !== lkey || !L.firstChild) {
+          L.setAttribute('data-k', lkey);
+          if (!shownLine) L.innerHTML = skel('skl');
+          else if (shownLine.kind === 'calm') L.innerHTML = '<p class="dlr"><span class="ok">' + IC.checkC + '</span>A comfortable session length.</p>';
+          else if (shownLine.kind === 'long') L.innerHTML = '<p class="dlr"><span class="amb">' + IC.time + '</span>A long session. The summary shows other ways to shorten it.</p>';
+          else {
+            L.innerHTML = '<button type="button" class="dlr sug" id="sug"' + (busy ? ' disabled' : '') + ' aria-label="Want shorter sessions? ' + esc(shownLine.strong) + ' brings it to about ' + shownLine.minutes + ' minutes"><span>Want shorter sessions? <b>' + esc(shownLine.strong) + '</b> brings it to about ' + shownLine.minutes + ' min.</span>' + IC.chev + '</button>';
+            var s = shownLine;
+            $('#sug', el).onclick = function () { if (s.act === 'down') lowerTo(s.v); else pickCount(s.n, true); };
+          }
+        }
+        // "See each day": the split's bars, the only thing that changes the card's height.
+        var eb = $('#each', el), bars = $('#dsb', el);
+        eb.setAttribute('aria-expanded', C.open); $('span', eb).textContent = C.open ? 'Hide each day' : 'See each day';
+        bars.hidden = !(C.open && shownEst);
+        if (C.open && shownEst) {
+          var scale = Math.max(120, Math.max.apply(null, shownEst.days.map(function (d) { return d.minutes; })));
+          var names = shownEst.days.map(function (d) { return d.name; }).join('|');
+          if (C.barsKey !== names + shownEst.days.length) {
+            C.barsKey = names + shownEst.days.length;
+            bars.innerHTML = shownEst.days.map(function (d) { return '<div class="slrow"><span class="n">' + esc(d.name) + '</span><span class="tr"><i style="width:0"></i></span><span class="m"></span></div>'; }).join('');
+            bars.offsetWidth; // a new split's bars grow in from empty
+          }
+          $$('.slrow', bars).forEach(function (r, i) { var d = shownEst.days[i]; $('.tr i', r).style.width = Math.round(d.minutes / scale * 1000) / 10 + '%'; $('.m', r).textContent = d.minutes; });
+          bars.classList.toggle('held', C.working && estBusy);
+        }
+      }
+      function weekCard() {
+        var shownDays = T.varies ? (st.spreads && st.spreads[T.days]) || [] : T.week || [];
+        $('#wkc', el).innerHTML = '<div class="icard"><div class="cap"><span>Your week</span><b>' + esc(T.varies ? 'Any ' + T.days + ' days' : T.weekLabel || '') + '</b></div><div class="wkrow">' + MON_FIRST.map(function (dow) {
+          var on = shownDays.indexOf(dow) > -1;
+          return '<button type="button" class="wkd' + (on ? ' on' : '') + (T.varies ? ' loose' : '') + '" data-dow="' + dow + '" aria-pressed="' + on + '" aria-label="' + DOW_LONG[dow] + '"><span class="dw">' + DOW_SHORT[dow] + '</span><span class="dc">' + (T.varies ? '<i></i>' : on ? IC.bar : 'Rest') + '</span></button>';
+        }).join('') + '</div><p class="disc">' + (T.varies ? 'Train whenever suits. The app learns your days.' : 'Tap a day to change it') + '</p></div>';
+        $$('.wkd', el).forEach(function (b) { b.onclick = function () { toggleDay(+b.getAttribute('data-dow')); }; });
+      }
+      function relabel() {
+        tcall('weekLabel', T.week, T.days).then(function (l) { if (my !== token) return; T.weekLabel = l; weekCard(); });
+      }
+      // Tapping a weekday adds or drops it and the count follows, within 2 to 6.
+      var limT = 0;
+      function limit(text) {
+        var p = $('#dlim', el); p.textContent = text; p.classList.add('on');
+        clearTimeout(limT); limT = setTimeout(function () { p.classList.remove('on'); }, LIMIT_NOTE_MS);
+      }
+      function toggleDay(dow) {
+        tcall('toggleDay', T.week || [], dow).then(function (next) {
+          if (my !== token) return;
+          if (next.length < st.minDays) { limit('At least ' + st.minDays + ' days a week'); return; }
+          if (next.length > st.maxDays) { limit('Up to ' + st.maxDays + ' days, so you keep a rest day'); return; }
+          T.daysTouched = true; T.varies = false; T.week = next; T.days = next.length;
+          paint(); relabel();
+        });
+      }
+      function pickCount(n, fromSuggestion) {
+        var prev = { days: T.days, week: T.week };
+        T.daysTouched = true;
+        T.days = n;
+        tcall('weekFor', n).then(function (w) {
+          if (my !== token) return;
+          T.week = w; paint(); relabel();
+          if (fromSuggestion) undoBar('Switched to ' + n + ' days', function () { T.days = prev.days; T.week = prev.week; paint(); relabel(); });
+        });
+      }
+      // A lower volume is saved straight away, so Volume shows it on the way back.
+      function lowerTo(v) {
+        var prev = T.volume;
+        T.volume = v; paint();
+        undoBar('Switched to ' + st.volumeLabel[v], function () { T.volume = prev; paint(); });
+      }
+      var undoT = 0;
+      function undoBar(text, run) {
+        var u = $('.undo', el);
+        if (!u) { el.insertAdjacentHTML('beforeend', '<div class="undo" role="status"><span></span><button type="button">Undo</button></div>'); u = $('.undo', el); }
+        $('span', u).textContent = text;
+        $('button', u).onclick = function () { clearTimeout(undoT); u.remove(); run(); };
+        clearTimeout(undoT); undoT = setTimeout(function () { u.remove(); }, UNDO_MS);
+      }
+      $$('.dt', el).forEach(function (b) { b.onclick = function () { pickCount(+b.getAttribute('data-v')); }; });
+      $('#each', el).onclick = function () { C.open = !C.open; card(); };
+      // "Change" goes back to Volume, the screen before.
+      $('#chg', el).onclick = function () { back(); };
+      // The spreads "My days change week to week" shows (set on the summary in the app; kept here).
+      if (T.varies && !st.spreads) {
+        st.spreads = {};
+        Promise.all(st.dayOptions.map(function (n) { return tcall('weekFor', n).then(function (w) { st.spreads[n] = w; }); })).then(function () { if (my === token) weekCard(); });
+      }
+      paint(); relabel();
+      trainCta(!!T.days, function () {
+        if (!T.days) return;
+        T.weekSaved = { daysTouched: !!T.daysTouched, timeTouched: false, hadWeek: !!T.hadWeek, varies: !!T.varies, days: T.week, selected: T.days, time: T.time };
+        go('length');
+      });
+    });
+  }
+
+  /* ---------- Q4: How long should it run? (third since 24 Oct 2026) ---------- */
+  var LENGTHS = [
+    { v: '4_weeks', l: '4 weeks', h: 'Quick reset. One block.', icon: IC.cal, w: 4 },
+    { v: '8_weeks', l: '8 weeks', h: 'Real, measurable results.', icon: IC.calF, w: 8 },
+    { v: '12_weeks', l: '12 weeks', h: 'A full progression cycle.', icon: IC.calC, w: 12 },
+    { v: '6_months', l: '6 months', h: 'Several phases. Lasting change.', icon: IC.cal, w: 26 },
+    { v: '1_year', l: '1 year', h: 'A full year, fully planned.', icon: IC.calN, w: 52 },
+  ];
+  /** PlanInstruments LengthTimeline: today to a year, filled to the pick. */
+  function lengthTimeline(v) {
+    var w = (LENGTHS.filter(function (x) { return x.v === v; })[0] || {}).w || 0;
+    return '<div class="icard"><div class="cap"><span>From today</span><b>' + (w ? w + ' weeks' : '') + '</b></div><div class="ltrack">' + [4, 8, 12, 26].map(function (t) { return '<s style="left:' + (t / 52 * 100) + '%"></s>'; }).join('') +
+      '<i style="width:' + (w / 52 * 100) + '%"></i></div><div class="tlbl"><span>TODAY</span><span>6 MO</span><span>1 YEAR</span></div></div>';
+  }
+  function rLength(el, my) {
+    withTrain(el, my, function () {
+      head(el, trainStepLine(2), 'How long should it <em>run?</em>', 'Longer programs build deeper adaptations.');
+      el.insertAdjacentHTML('beforeend', '<div id="ltl" class="rise" style="--i:2">' + lengthTimeline(T.length) + '</div>');
+      qcards(el, LENGTHS, T.length, function (v) {
+        T.length = v; enable(true);
+        var f = $('#ltl .ltrack i', el), c = $('#ltl .cap b', el), w = LENGTHS.filter(function (x) { return x.v === v; })[0].w;
+        f.style.width = (w / 52 * 100) + '%'; c.textContent = w + ' weeks';
+        $('#lnote', el).hidden = !(v === '6_months' || v === '1_year');
+      });
+      el.insertAdjacentHTML('beforeend', '<p class="tnote" id="lnote"' + (T.length === '6_months' || T.length === '1_year' ? '' : ' hidden') + '><span>' + IC.info + '</span>Long plans run as a series of training blocks, each one building on the last.</p>');
+      trainCta(!!T.length, function () { if (!T.length) return; go('refine'); });
     });
   }
   function redrawTrain(el, my) { if (my === token) { el.innerHTML = ''; SCREENS[cur].r(el, my); } }

@@ -119,13 +119,23 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         const lockedRows = await ev(`[...document.querySelectorAll('.spine .sb b')].map(x=>x.textContent).join(' > ')`);
         console.log(`  finish line: ${lockedRows} | ${lockedCta}`);
         if (!P.mealsFirst) {
-        // Training: the app's workout questions (Days, How long, Volume, Refinements), the build, the results.
-        await go(); await scr('days'); await click(`.dt[data-v="${P.days}"]`);
-        await until(`!!document.querySelector('#slp .slh b')`, 20000); await overflow('days');
+        // Training: the app's workout questions (Volume, Days, How long, Refinements), the build, the results.
+        await go(); await scr('volume');
+        if (!(await ev(`!!document.querySelector('.qc[aria-pressed="true"] em')`))) bad('volume: the tier marked "For you" is not the one picked');
+        await until(`document.querySelectorAll('.qtime b').length===3`, 30000);
+        await click(`.qc[data-v="${P.volume}"]`); await click('#whyV'); await until(`!document.getElementById('whyB').hidden && !!document.querySelector('#whyB .lead')`); await overflow('volume');
+        const vol = await ev(`document.querySelector('.qc[aria-pressed="true"] b').textContent + ' ' + document.querySelector('.qc[aria-pressed="true"] .qtime b').textContent + ' a week'`);
+        await go(); await scr('days');
+        // The minutes arrive without moving anything: the week card and the session card keep their place and height.
+        const lay = `[document.getElementById('wkc').offsetTop, document.getElementById('dsc').offsetHeight].join(',')`;
+        const lay0 = await ev(lay);
+        await click(`.dt[data-v="${P.days}"]`);
+        await until(`document.querySelectorAll('.dt small').length===5 && !document.querySelector('#dsc.working') && !!document.querySelector('#dsh b') && !document.querySelector('#dsl .sk')`, 30000);
+        const lay1 = await ev(lay);
+        if (lay0 !== lay1) bad(`days: layout moved as the minutes landed (${lay0} -> ${lay1})`);
+        await overflow('days');
+        const days = await ev(`document.querySelector('.dt[aria-pressed="true"]').textContent + ': ' + document.querySelector('#dsh b').textContent + ', ' + document.getElementById('dsl').textContent`);
         await go(); await scr('length'); await click(`.qc[data-v="${P.length}"]`); await overflow('length');
-        await go(); await scr('volume'); await click(`.qc[data-v="${P.volume}"]`);
-        await until(`!!document.querySelector('#slp .slh b') && !document.querySelector('#slp .dim')`, 20000); await overflow('volume');
-        const vol = await ev(`document.querySelector('#slp .slh b').textContent + ' | ' + document.querySelector('.qc[aria-pressed="true"] small').textContent.split('.')[0]`);
         await go(); await scr('refine');
         if (P.preset) await click(`.presets .preset:nth-child(${P.preset}) .pmain`);
         await click(`.rep[data-rep="${P.rep}"]`); await sleep(300);
@@ -145,7 +155,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         await go(); await until(`!!document.querySelector('.sheet.on [data-start]')`); await overflow('pace sheet');
         const pace = await ev(`document.querySelector('.sheet [data-start]').textContent`);
         await click('.sheet [data-start]');
-        console.log(`  training: ${vol} | ${prog} | ${ses} | ${pace}`);
+        console.log(`  training: ${vol} | ${days} | ${prog} | ${ses} | ${pace}`);
         await scr('traindone'); await overflow('traindone');
         const tdCta = await ev(`document.getElementById('nextBtn').textContent`);
         const tdLine = await ev(`document.querySelector('.ftl').textContent + ' | ' + [...document.querySelectorAll('.spine .sp')].map(x=>x.className.split(' ')[1] + ':' + x.querySelector('b').textContent).join(', ') + ' | ' + document.querySelector('.spine .sp.goal small').textContent`);
