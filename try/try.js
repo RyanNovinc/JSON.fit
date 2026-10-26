@@ -527,7 +527,10 @@
     el.classList.add('beat');
     el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Goal body fat</p><h1 class="qh rise" style="--i:1;font-size:clamp(1.5rem,6vw,2rem)">How lean do you want to be?</h1>' +
       '<div class="big rise" style="--i:2"><span class="ro" aria-live="polite"></span><span class="u">%</span></div>' +
-      '<div class="rise lgw" style="--i:3">' + svg + '</div><p class="lgh rise" style="--i:3">Drag along the curve.</p>' +
+      '<div class="rise lgw" style="--i:3">' + svg + '</div>' +
+      '<p class="lgk rise" style="--i:3"><i></i><span><b>Health floor ' + floor + '%.</b> ' + (fem
+        ? 'Below this, periods can stop and bone health starts to suffer.'
+        : 'Below this, hormones, sleep and recovery tend to suffer, and it is hard to hold.') + '</span></p>' +
       '<div class="pm rise" style="--i:4"><button type="button" data-d="-1" aria-label="Leaner">−</button><button type="button" data-d="1" aria-label="Less lean">+</button></div>' +
       '<div class="snap rise" style="--i:4"></div>');
     var g = $('svg.lg', el), ro = $('.big .ro', el), snap = $('.snap', el), pin = $('.pin', el), dot = $('.pind', el);
@@ -544,9 +547,7 @@
     function note() {
       var v = a.goalBodyFatPct;
       if (v < floor && !asked) {
-        snap.innerHTML = '<div class="floor"><b>Plan below ' + floor + '%?</b><span>' + (fem
-          ? 'Below about ' + floor + '% body fat, periods can stop and bone health starts to suffer, so this is where the app stops a plan by default. Worth doing with a doctor in the loop.'
-          : 'Below about ' + floor + '% body fat, hormones, sleep and recovery tend to suffer and it is hard to hold, so this is where the app stops a plan by default.') +
+        snap.innerHTML = '<div class="floor"><b>Plan below ' + floor + '%?</b><span>The app stops a plan at ' + floor + '% unless you say otherwise.' + (fem ? ' Worth doing with a doctor in the loop.' : '') +
           '</span><div><button type="button" data-a="keep">Keep ' + floor + '%</button><button type="button" data-a="go">Plan to ' + v + '%</button></div></div>';
         $('[data-a="keep"]', snap).onclick = function () { set(floor, true); };
         $('[data-a="go"]', snap).onclick = function () { asked = true; note(); };

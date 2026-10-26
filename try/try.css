@@ -334,10 +334,13 @@ svg.lg .lgt{font:500 9.5px var(--sans);fill:#6b6b70;text-anchor:middle}
 svg.lg .lgt.fl{fill:#f59e0b} svg.lg .lgt.ae{fill:var(--acc)} svg.lg .lgt.ax{font-family:var(--mono);font-size:9px}
 svg.lg .pin{stroke:var(--acc);stroke-width:2.5;stroke-linecap:round} svg.lg .pind{fill:var(--acc)}
 .lgh{text-align:center;color:var(--text-3);font-size:.8rem;margin:2px 0 0}
-.snap{min-height:132px;display:flex;justify-content:center;align-items:flex-start;margin-top:14px}
+.snap{min-height:112px;display:flex;justify-content:center;align-items:flex-start;margin-top:14px}
 .aesbtn{background:none;border:0;color:var(--acc);font:700 .95rem var(--sans);cursor:pointer;padding:10px}
 .floor{border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.06);border-radius:14px;padding:12px 14px;display:grid;gap:6px;text-align:left;max-width:440px}
 .floor b{color:#fbbf24;font-size:.95rem} .floor span{color:var(--text-2);font-size:.82rem;line-height:1.45}
 .floor div{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
 .floor button{flex:1;min-width:120px;border-radius:999px;padding:9px 12px;font:700 .85rem var(--sans);cursor:pointer;border:1px solid var(--line);background:transparent;color:#fff}
 .floor button[data-a="keep"]{background:var(--acc);color:#0a0a0b;border-color:transparent}
+.lgk{display:flex;gap:8px;align-items:baseline;max-width:440px;margin:10px auto 0;color:var(--text-2);font-size:.8rem;line-height:1.45;text-align:left}
+.lgk i{flex:none;width:10px;border-top:1.5px dashed #f59e0b;transform:translateY(-3px)}
+.lgk b{color:#fbbf24;font-weight:700}
