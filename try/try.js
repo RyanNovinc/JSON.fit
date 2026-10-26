@@ -57,7 +57,7 @@
   var S = {
     units: 'metric',
     about: null, touched: {}, defaults: null,
-    food: { mealsPerDay: 3, snackFrequency: 'ai_decide', dessertFrequency: null, dietPattern: null, allergies: [], skip: [], picks: [] },
+    food: freshFood(), mv: null, copy: null, cat: null, pk: null, edit: false, accepted: null,
     training: { days: null, equipment: null },
     foodOptions: null, grid: null, gridKey: '', routeOpts: null, routeOptsKey: '',
     route: null, routeKey: '', meals: null, mealsKey: '', program: null, programKey: '',
@@ -153,16 +153,31 @@
     { id: 'locked', sec: 'route', grp: '', r: rLocked, noBack: true },
     { id: 'active', sec: 'food', r: rActive },
     { id: 'sessions', sec: 'food', r: rSessions },
+    { id: 'diettype', sec: 'food', r: rDietType },
     { id: 'meat', sec: 'food', r: rMeat },
     { id: 'allergies', sec: 'food', r: rAllergies },
     { id: 'skip', sec: 'food', r: rSkip },
+    { id: 'keeplower', sec: 'food', r: rKeepLower },
+    { id: 'sleep', sec: 'food', r: rSleep },
     { id: 'eat', sec: 'food', r: rEat },
+    { id: 'snacks', sec: 'food', r: rSnacks, when: 'snacks' },
+    { id: 'appetite', sec: 'food', r: rAppetite, when: 'appetite' },
     { id: 'dessert', sec: 'food', r: rDessert },
+    { id: 'cooker', sec: 'food', r: rCooker },
+    { id: 'freezer', sec: 'food', r: rFreezer },
+    { id: 'cadence', sec: 'food', r: rCadence },
+    { id: 'stockup', sec: 'food', r: rStockUp, when: 'stockup' },
+    { id: 'planlength', sec: 'food', r: rPlanLength },
     { id: 'picks', sec: 'food', r: rPicks },
+    { id: 'mealsummary', sec: 'food', r: rSummary2 },
     { id: 'mealbuild', sec: 'food', r: rMealBuild, build: true },
+    { id: 'mealnote', sec: 'food', r: rMealNote, when: 'mealnote', side: true },
+    { id: 'mealweek', sec: 'food', r: rMealWeek, when: 'mealweek', side: true },
+    { id: 'mealgap', sec: 'food', r: rMealGap, when: 'mealgap', side: true },
     { id: 'weekready', sec: 'food', r: rWeekReady },
     { id: 'today', sec: 'food', r: rToday },
     { id: 'shop', sec: 'food', r: rShop, side: true },
+    { id: 'mealsdone', sec: 'food', grp: '', r: rMealsDone, noBack: true },
     { id: 'days', sec: 'train', r: rDays },
     { id: 'equip', sec: 'train', r: rEquip },
     { id: 'progbuild', sec: 'train', r: rProgBuild, build: true },
@@ -209,6 +224,7 @@
       trackScreen(i);
       window.scrollTo(0, 0);
       setHelp(null);
+      ctaNote('');
       SCREENS[i].r(el, my);
     };
     closeSheet();
@@ -227,17 +243,18 @@
   function replaceWith(id) { show(IDX[id], 1); }
   /** Whether screen i is shown for these answers (beat 9's steps exist only for some routes). */
   function applies(i) { var s = SCREENS[i]; return !!s && !s.side && (!s.when || WHEN[s.when]()); }
+  function appliesBack(i) { var s = SCREENS[i]; return !!s && (!s.when || WHEN[s.when]()); }
   function next() {
     var adv = function () { var i = cur + 1; while (SCREENS[i] && !applies(i)) i++; go(i); };
     // The route's steps depend on the plan, so the engine answers before the next one is picked.
-    if (SCREENS[cur + 1] && SCREENS[cur + 1].when) { enable(false); needRV().then(adv, adv); } else adv();
+    if (SCREENS[cur + 1] && SCREENS[cur + 1].when && SCREENS[cur + 1].sec === 'route') { enable(false); needRV().then(adv, adv); } else adv();
   }
   function back() {
     if (!stack.length) return;
     var i = stack.pop();
     if (i < 0) i = 0;
     // Never land back on a build, or on a route step these answers no longer have.
-    while (i > 0 && SCREENS[i] && (SCREENS[i].build || (SCREENS[i].when && !applies(i)))) i = stack.length ? stack.pop() : i - 1;
+    while (i > 0 && SCREENS[i] && (SCREENS[i].build || (SCREENS[i].when && !appliesBack(i)))) i = stack.length ? stack.pop() : i - 1;
     show(i, -1);
   }
   backBtn.addEventListener('click', function () {
@@ -937,11 +954,130 @@
     range: function () { return rvOk() && S.rv.rangeMatters && S.about.route !== 'bulk'; },
     wayin: function () { return rvOk() && S.rv.rangeMatters && S.about.route === 'lean' && S.rv.wayInApplies && !!S.rv.wayIn; },
     plan: function () { return true; },
+    // The meal flow's conditional steps (nutritionSteps): no snacks a day steps over the checklist,
+    // the appetite question is for gaining, stock up needs a freezer that holds a week.
+    snacks: function () { return S.food.snackFrequency !== '0'; },
+    appetite: function () { return !!(S.mv && S.mv.gaining); },
+    stockup: function () { return !(S.mv && S.mv.stockUpShows === false); },
+    mealnote: function () { return !!(S.meals && S.meals.note); },
+    mealweek: function () { return !!(S.meals && S.meals.week); },
+    mealgap: function () { return !!(S.meals && S.meals.gap); },
   };
 
-  /* ================= the meal questions that used to sit here =================
-   * N4Activity and N4bTraining are the meal questionnaire's first two questions in
-   * the app, so they open the food section here. */
+  /* ================= your meals (the app's meal questions, screen by screen) =================
+   * The app's walk after the route (questionnaireRouting.continueNutritionFlow,
+   * nutritionSteps with BATCH_PLANNER and BATCH_LIBRARY on): N4Activity,
+   * N4bTraining, N5DietType, N5aDietPattern, N5bAllergies, N5dSkipFoods,
+   * N5eKeepLower, N5cSleep, N6MealsSnacking, N6gSnacks, N6eAppetite (gaining),
+   * N6aDessert, the meal prep part (N6bSlowCooker, N6cFreezer, N6dShopCadence,
+   * N6fStockUp), N9PlanLength, then CuratedFavorites ("Foods you like"), the
+   * summary ("Looking good."), MealBuildScreen and its batch note, week list and
+   * gap. Copy is the app's word for word; the engine replays every answer
+   * through the app's own storage writes (scripts/try-engines/meals-part.ts),
+   * so each screen reads what the app's screen reads and the week is the
+   * app's week. */
+  var FOOD_STEPS = ['active', 'sessions', 'diettype', 'meat', 'allergies', 'skip', 'keeplower', 'sleep', 'eat', 'snacks', 'appetite', 'dessert', 'cooker', 'freezer', 'cadence', 'stockup', 'planlength'];
+  var PREP_STEPS = ['cooker', 'freezer', 'cadence', 'stockup'];
+  /** nutritionStepsFor + withoutStep: the steps this person sees, as the app numbers them on screen `id`. */
+  function stepList(id) {
+    var at = FOOD_STEPS.indexOf(id), f = S.food, mv = S.mv || {};
+    return FOOD_STEPS.filter(function (s) {
+      if (s === 'appetite') return !!mv.gaining;
+      // N6gSnacks steps aside (navigation.replace with the step gone) once "None" is the answer.
+      if (s === 'snacks') return !(f.snackFrequency === '0' && at > FOOD_STEPS.indexOf('eat'));
+      // N6dShopCadence numbers itself as if stock up were gone when it will be skipped.
+      if (s === 'stockup') return !(mv.stockUpShows === false && at >= FOOD_STEPS.indexOf('cadence'));
+      return true;
+    });
+  }
+  function stepLine(id, editLabel, optional) {
+    if (S.edit) return editLabel;
+    var l = stepList(id);
+    return 'Step · ' + (l.indexOf(id) + 1) + ' of ' + l.length + (optional ? ' · Optional' : '');
+  }
+  /** "MEAL PREP · 2 OF 3" (nutritionSteps.mealPrepPosition). */
+  function prepLine(id, editLabel) {
+    if (S.edit) return editLabel;
+    var l = stepList(id).filter(function (s) { return PREP_STEPS.indexOf(s) > -1; });
+    return 'Meal prep · ' + (l.indexOf(id) + 1) + ' of ' + l.length;
+  }
+  /** The engine's view of one screen, after replaying every earlier answer the way the app saves it. */
+  function mealView(screen) {
+    return call('mealView', aboutForEngine(), foodForEngine(), screen).then(function (v) {
+      S.mv = S.mv || {};
+      S.mv.gaining = v.gaining;
+      if (v.stockUpShows != null && screen === 'cadence') S.mv.stockUpShows = v.stockUpShows;
+      return v;
+    });
+  }
+  function needCopy() {
+    if (S.copy) return Promise.resolve(S.copy);
+    return call('mealCopy').then(function (c) { S.copy = c; return c; });
+  }
+  function needCatalogue() {
+    if (S.cat) return Promise.resolve(S.cat);
+    return call('foodCatalogueView').then(function (c) { S.cat = c; return c; });
+  }
+  /** The answers as the engine takes them: exactly what each screen would have saved. */
+  function foodForEngine() {
+    var f = S.food, c = f.customMacros, sl = f.sleep, p = f.picks;
+    return {
+      dietType: f.dietType,
+      customMacros: f.dietType === 'custom' ? { protein: parseInt(c.p, 10), carbs: parseInt(c.c, 10), fat: parseInt(c.f, 10) } : null,
+      dietPattern: f.dietPattern, allergies: f.allergies.slice(), skip: f.skip.slice(), keepLower: f.keepLower,
+      sleep: sl.skipped ? { skipped: true } : { bed: sl.bed, wake: sl.wake, strictness: sl.strictness, overrides: sl.overrides },
+      mealsPerDay: f.mealsPerDay, snackFrequency: f.snackFrequency, mealVariety: f.mealVariety,
+      snacks: { ticked: f.snacks.ticked || [], own: f.snacks.own.slice() },
+      lowAppetite: f.lowAppetite, dessertFrequency: f.dessertFrequency, dessertDays: f.dessertDays.slice(),
+      slowCooker: f.slowCooker, slowCookerCount: f.slowCookerCount, blender: f.blender, freezerTubs: f.freezerTubs,
+      shopCadence: f.shopCadence, stockUp: f.stockUp, startDate: f.startDate,
+      picks: { saved: p.saved, keys: p.keys.slice(), allergenOk: p.allergenOk, versionChoices: p.versionChoices, useUp: p.useUp.slice() },
+    };
+  }
+  function freshFood() {
+    return {
+      dietType: null, customMacros: { p: '', c: '', f: '' }, dietPattern: null, allergies: [], skip: [], keepLower: null,
+      sleep: { bed: 22 * 60 + 30, wake: 6 * 60 + 30, strictness: 'moderate', overrides: {}, touched: false, skipped: false },
+      mealsPerDay: null, snackFrequency: null, mealVariety: 'balanced', snacks: { ticked: null, own: [] }, lowAppetite: null,
+      dessertFrequency: null, dessertDays: [], slowCooker: null, slowCookerCount: 1, blender: null, freezerTubs: null,
+      shopCadence: null, stockUp: null, startDate: 'tomorrow',
+      picks: { saved: false, keys: [], allergenOk: {}, versionChoices: {}, useUp: [] },
+    };
+  }
+  /** One question screen: the mono step line, the question, the line under it. */
+  function qhead(el, line, q, sub) {
+    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">' + esc(line) + '</p><h1 class="qh rise" style="--i:0">' + q + '</h1>' + (sub ? '<p class="sub rise" style="--i:1">' + sub + '</p>' : '<div style="height:16px"></div>'));
+  }
+  /** The CTA in edit mode (opened from the summary's rows) reads "Save" and goes back there. */
+  function foodCta(label, disabled, onClick) {
+    primary(S.edit ? 'Save' : label, function () {
+      if (S.edit) { S.edit = false; go('mealsummary'); return; }
+      (onClick || next)();
+    }, disabled);
+  }
+  function ctaNote(html) { var n = document.getElementById('ctaNote'); if (!n) return; n.innerHTML = html || ''; n.hidden = !html; }
+  var CHECK = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var XS = '<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
+  var PLUS = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
+  var MINUS = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
+  var INFO = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1.2" fill="currentColor"/></svg>';
+  var WARN = '<svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M12 3l10 18H2z" fill="currentColor"/></svg>';
+  var CHEVR = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  /** A meal photo by the app's image filename (plates have their own). */
+  function photoFile(file, alt) {
+    var stem = INDEX && INDEX.__files && INDEX.__files[file];
+    if (stem) return '<img src="/images/meals/' + stem + '.webp" alt="' + esc(alt || '') + '" loading="lazy" decoding="async">';
+    return '<span class="noimg">' + ICONS.meal + '</span>';
+  }
+  /** allergenCatch.allergenWord / allergenList. */
+  function allergenWord(l) { var n = String(l).trim().toLowerCase(); return n === 'gluten/wheat' ? 'gluten' : n; }
+  function allergenList(labels) {
+    var w = []; labels.forEach(function (l) { var x = allergenWord(l); if (w.indexOf(x) < 0) w.push(x); });
+    return w.length <= 1 ? (w[0] || '') : w.slice(0, -1).join(', ') + ' and ' + w[w.length - 1];
+  }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
+
+  /* ---------- N4Activity ---------- */
   var ACTIVE = [
     { v: 'sedentary', l: 'Mostly sitting', h: 'Desk work, driving, not much walking' },
     { v: 'light', l: 'On my feet a bit', h: 'Some walking through the day' },
@@ -951,16 +1087,556 @@
   ];
   function rActive(el, my) {
     needAbout(el, my, function () {
-      head(el, 'Your food', 'How active are you outside the gym?', 'Work, errands, getting around. Your sessions are the next question, so leave them out here.');
-      cards(el, ACTIVE, S.about.activityLevel, function (v) { S.about.activityLevel = v; enable(true); });
-      primary('Continue', null, !S.about.activityLevel);
+      withData(el, my, function () { return Promise.all([loadIndex(), mealView('active')]); }, '', function () {
+        qhead(el, stepLine('active', 'Activity'), 'How active are you<br>outside the gym?', 'Work, errands, getting around. Your sessions are the next question, so leave them out here.');
+        cards(el, ACTIVE, S.about.activityLevel, function (v) { S.about.activityLevel = v; enable(true); });
+        foodCta('Continue', !S.about.activityLevel);
+      });
     });
   }
+  /* ---------- N4bTraining ---------- */
+  function bandFor(n) { if (n <= 0) return 0; if (n <= 2) return 1.5; if (n <= 4) return 3.5; if (n <= 6) return 5.5; return 10; }
   function rSessions(el, my) {
     needAbout(el, my, function () {
-      head(el, 'Your food', 'How much do you train?', 'Structured sessions: lifting, classes, sport. This is added on top of your day-to-day activity, so count it here and nowhere else.');
-      cards(el, S.defaults.trainingBands.map(function (b) { return { v: b.value, l: b.label, h: b.hint }; }), S.about.trainingSessionsPerWeek, function (v) { S.about.trainingSessionsPerWeek = v; enable(true); });
-      primary('Continue', null, S.about.trainingSessionsPerWeek == null);
+      qhead(el, stepLine('sessions', 'Training'), 'How much do you<br>train?', 'Structured sessions: lifting, classes, sport. This is added on top of your day-to-day activity, so count it here and nowhere else.');
+      var cur = S.about.trainingSessionsPerWeek;
+      cards(el, S.defaults.trainingBands.map(function (b) { return { v: b.value, l: b.label, h: b.hint }; }), cur == null ? null : bandFor(cur), function (v) { S.about.trainingSessionsPerWeek = v; enable(true); });
+      foodCta('Continue', cur == null);
+    });
+  }
+
+  /* ---------- N5DietType, with the MacroDonut ---------- */
+  var DIETS = [
+    { v: 'balanced', t: 'Balanced', s: '20% protein · 50% carbs · 30% fat. A solid default.', split: [20, 50, 30], tail: ' A solid default.' },
+    { v: 'high_protein', t: 'High protein', s: '30% protein · 40% carbs · 30% fat. Great for building.', split: [30, 40, 30], tail: ' Great for building.' },
+    { v: 'low_carb', t: 'Low carb', s: '25% protein · 25% carbs · 50% fat.', split: [25, 25, 50], tail: '' },
+    { v: 'keto', t: 'Keto', s: '20% protein · 5% carbs · 75% fat.', split: [20, 5, 75], tail: '' },
+    { v: 'custom', t: 'Custom', s: 'Set your own protein / carb / fat split.' },
+  ];
+  var MACRO_COLOURS = ['var(--acc)', '#60a5fa', '#f59e0b'];
+  function donut(split, proteinG, footer) {
+    var r = 52, c = 2 * Math.PI * r, p = split && split[0] + split[1] + split[2] === 100 ? split : null, off = 0, arcs = '';
+    (p || [0, 0, 0]).forEach(function (v, i) {
+      var len = (v / 100) * c, a = Math.max(0, len - (v > 1 ? 3 : len));
+      arcs += '<circle cx="66" cy="66" r="52" fill="none" stroke="' + MACRO_COLOURS[i] + '" stroke-width="18" stroke-dasharray="' + a.toFixed(1) + ' ' + c.toFixed(1) + '" stroke-dashoffset="' + (-off).toFixed(1) + '"/>';
+      off += len;
+    });
+    return '<div class="icard"><div class="donut"><svg viewBox="0 0 132 132" width="132" height="132" style="transform:rotate(-90deg)"><circle cx="66" cy="66" r="52" fill="none" stroke="#1c1c20" stroke-width="18"/>' + arcs + '</svg><div class="legend">' +
+      ['Protein', 'Carbs', 'Fat'].map(function (n, i) { return '<div class="lr"><i style="background:' + MACRO_COLOURS[i] + '"></i><span class="ln">' + n + '</span>' + (i === 0 && p && proteinG ? '<span class="lgg">' + proteinG + ' g</span>' : '') + '<b>' + (p ? p[i] + '%' : '–') + '</b></div>'; }).join('') +
+      '</div></div>' + (footer ? '<div class="dfoot">' + footer + '</div>' : '') + '</div>';
+  }
+  function rDietType(el, my) {
+    var f = S.food;
+    withData(el, my, function () { return mealView('diettype'); }, '', function (v) {
+      qhead(el, stepLine('diettype', 'How you eat'), 'How do you want to eat?', 'Sets how your calories split across protein, carbs, and fat.');
+      var box = document.createElement('div'); box.className = 'rise'; box.style.setProperty('--i', 2); el.appendChild(box);
+      var list = document.createElement('div'); list.className = 'opts'; el.appendChild(list);
+      var custom = document.createElement('div'); el.appendChild(custom);
+      var draw = function () {
+        var pv = v.previews, sel = f.dietType, sp = sel ? pv[sel] : null;
+        var cm = f.customMacros, cp = parseInt(cm.p, 10) || 0, cc = parseInt(cm.c, 10) || 0, cf = parseInt(cm.f, 10) || 0;
+        var split = sp ? sp.pct : sel === 'custom' ? [cp, cc, cf] : sel ? DIETS.filter(function (d) { return d.v === sel; })[0].split : null;
+        box.innerHTML = donut(split, sp ? sp.proteinG : null, v.floor ? '<span class="shield">' + CHECK + '</span><span>' + esc(v.floor.phrase) + ', protein stays at <b>' + v.floor.g + ' g or more</b>, whichever style you pick.</span>' : '');
+        list.innerHTML = DIETS.map(function (d) {
+          var p = pv[d.v], s = esc(d.s);
+          if (p && p.raised && d.split) s = '<s>' + d.split[0] + '%</s> <b class="accb">' + p.pct[0] + '% protein</b> · ' + p.pct[1] + '% carbs · ' + p.pct[2] + '% fat.' + esc(d.tail);
+          return '<button type="button" class="opt" data-v="' + d.v + '" aria-pressed="' + (sel === d.v) + '"><b>' + d.t + '</b><small>' + s + '</small></button>';
+        }).join('');
+        $$('.opt', list).forEach(function (b) { b.onclick = function () { f.dietType = b.getAttribute('data-v'); draw(); }; });
+        var total = cp + cc + cf;
+        custom.innerHTML = sel === 'custom' ? '<div class="custom"><div class="ch"><b>Your split</b><span style="color:' + (total === 100 ? 'var(--acc)' : '#ef4444') + '">' + total + '% / 100%</span></div>' +
+          [['p', 'Protein'], ['c', 'Carbs'], ['f', 'Fat']].map(function (r) { return '<label class="cmrow"><span>' + r[1] + '</span><span class="cin"><input inputmode="numeric" maxlength="3" placeholder="0" data-k="' + r[0] + '" value="' + esc(cm[r[0]]) + '" aria-label="' + r[1] + ' percent"><i>%</i></span></label>'; }).join('') + '</div>' : '';
+        $$('input', custom).forEach(function (inp) {
+          inp.oninput = function () {
+            cm[inp.getAttribute('data-k')] = inp.value.replace(/[^0-9]/g, '').slice(0, 3);
+            var t = (parseInt(cm.p, 10) || 0) + (parseInt(cm.c, 10) || 0) + (parseInt(cm.f, 10) || 0);
+            $('.ch span', custom).textContent = t + '% / 100%'; $('.ch span', custom).style.color = t === 100 ? 'var(--acc)' : '#ef4444';
+            clearTimeout(inp._t);
+            inp._t = setTimeout(function () { mealView('diettype').then(function (nv) { if (my !== token) return; v = nv; var pv2 = nv.previews.custom; var cpv = [parseInt(cm.p, 10) || 0, parseInt(cm.c, 10) || 0, parseInt(cm.f, 10) || 0]; box.innerHTML = donut(pv2 ? pv2.pct : cpv, pv2 ? pv2.proteinG : null, v.floor ? '<span class="shield">' + CHECK + '</span><span>' + esc(v.floor.phrase) + ', protein stays at <b>' + v.floor.g + ' g or more</b>, whichever style you pick.</span>' : ''); valid(); }); }, 160);
+            valid();
+          };
+        });
+        valid();
+      };
+      var valid = function () {
+        var cm = f.customMacros, ok = f.dietType != null;
+        if (f.dietType === 'custom') ok = [cm.p, cm.c, cm.f].every(function (x) { return /^\d+$/.test(x); }) && (+cm.p + +cm.c + +cm.f) === 100;
+        foodCta('Continue', !ok);
+      };
+      draw();
+    });
+  }
+
+  /* ---------- N5aDietPattern ---------- */
+  function rMeat(el, my) {
+    withData(el, my, needCopy, '', function (c) {
+      qhead(el, stepLine('meat', 'Diet'), 'Do you eat meat?', 'We only show you meals that fit.');
+      cards(el, c.dietPatterns.map(function (p) { return { v: p.value, l: p.label, h: p.hint }; }), S.food.dietPattern, function (v) { S.food.dietPattern = v; enable(true); });
+      foodCta('Continue', !S.food.dietPattern);
+    });
+  }
+
+  /* ---------- N5bAllergies ---------- */
+  var ALLERGENS = ['Nuts', 'Shellfish', 'Dairy', 'Eggs', 'Gluten/Wheat', 'Soy', 'Fish', 'Sesame'];
+  var LABEL_REMINDER = 'Check the labels. Products change, so always check ingredients for your allergies.';
+  function rAllergies(el) {
+    var f = S.food;
+    qhead(el, stepLine('allergies', 'Allergies'), 'Any allergies?', 'Meals with these are left out of your plan. Always check ingredient labels yourself. Skip if none apply.');
+    el.insertAdjacentHTML('beforeend', '<div class="fchipwrap rise" style="--i:2" id="alChips"></div>' +
+      '<div class="addf rise" style="--i:3"><input type="text" id="alIn" placeholder="Add another allergy" maxlength="40" autocomplete="off" aria-label="Add another allergy"><button type="button" id="alAdd" aria-label="Add">' + PLUS + '</button></div>' +
+      '<p class="remind" id="alRem"><span>' + INFO + '</span>' + LABEL_REMINDER + '</p>');
+    var draw = function () {
+      var custom = f.allergies.filter(function (a) { return ALLERGENS.indexOf(a) < 0; });
+      $('#alChips', el).innerHTML = ALLERGENS.map(function (a) { return '<button type="button" class="fchip" data-a="' + esc(a) + '" aria-pressed="' + (f.allergies.indexOf(a) > -1) + '">' + esc(a) + '</button>'; }).join('') +
+        custom.map(function (a) { return '<button type="button" class="fchip" data-a="' + esc(a) + '" aria-pressed="true">' + esc(a) + ' <i>' + XS + '</i></button>'; }).join('');
+      $$('[data-a]', el).forEach(function (b) { b.onclick = function () { toggle(f.allergies, b.getAttribute('data-a')); draw(); }; });
+      // LabelReminder: shown once anything is ticked; its line is reserved so nothing below jumps.
+      $('#alRem', el).style.visibility = f.allergies.length ? 'visible' : 'hidden';
+      foodCta(f.allergies.length ? 'Continue' : 'None of these');
+    };
+    var inp = $('#alIn', el), add = $('#alAdd', el);
+    var typed = function () { var t = inp.value.trim().length > 0; add.classList.toggle('on', t); inp.parentNode.classList.toggle('on', t); };
+    var submit = function () {
+      var v = inp.value.trim(); if (!v) return;
+      if (!f.allergies.some(function (x) { return x.toLowerCase() === v.toLowerCase(); })) f.allergies.push(v);
+      inp.value = ''; typed(); draw();
+    };
+    inp.oninput = typed;
+    inp.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); submit(); } };
+    add.onclick = submit;
+    typed(); draw();
+  }
+
+  /* ---------- N5dSkipFoods ---------- */
+  function rSkip(el, my) {
+    var f = S.food, q = '';
+    withData(el, my, needCatalogue, '', function (cat) {
+      qhead(el, stepLine('skip', 'Foods you skip', true), 'Anything you<br>won’t eat?', 'Those meals still show, just lower down and marked. Allergies are the step before.');
+      el.insertAdjacentHTML('beforeend', '<div class="search rise" style="--i:3"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="#71717a" stroke-width="2"/><path d="M16 16l4 4" stroke="#71717a" stroke-width="2" stroke-linecap="round"/></svg><input type="text" id="skQ" placeholder="Search any food, like cinnamon" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Search foods"><button type="button" id="skX" aria-label="Clear search" hidden>' + XS + '</button></div><div id="skBody"></div>');
+      var body = $('#skBody', el), inp = $('#skQ', el), clr = $('#skX', el), results = [], seq2 = 0;
+      var row = function (r, last) {
+        var got = f.skip.indexOf(r.id) > -1, nm = esc(r.name);
+        if (q) { var i = r.name.toLowerCase().indexOf(q.trim().toLowerCase()); if (i > -1) nm = esc(r.name.slice(0, i)) + '<b>' + esc(r.name.slice(i, i + q.trim().length)) + '</b>' + esc(r.name.slice(i + q.trim().length)); }
+        return '<button type="button" class="frow' + (last ? ' last' : '') + (got ? ' got' : '') + '" data-id="' + esc(r.id) + '" aria-pressed="' + got + '"><span class="ft"><span class="fn">' + nm + '</span>' + (r.alias ? '<small>' + esc(String(r.alias).replace(/\s*\([^)]*\)\s*/g, ' ').trim().toLowerCase()) + '</small>' : '') + '</span><span class="fc">in ' + plural(r.meals, 'meal') + '</span><span class="fp">' + (got ? CHECK : PLUS) + '</span></button>';
+      };
+      var draw = function () {
+        var typing = q.trim().length > 0, h = '';
+        if (typing) h += '<div class="results">' + (results.length ? results.map(function (r, i) { return row(r, i === results.length - 1); }).join('') : '<p class="nores">No meals use “' + esc(q.trim()) + '”, so there’s nothing to skip.</p>') + '</div>';
+        if (f.skip.length) h += '<div class="fchipwrap">' + f.skip.map(function (id) { return '<button type="button" class="fchip on" data-rm="' + esc(id) + '" aria-label="' + esc(cat.names[id] || id) + ', skipped. Tap to remove">' + esc(cat.names[id] || id) + ' <i>' + XS + '</i></button>'; }).join('') + '</div>';
+        var pop = cat.popular.filter(function (x) { return f.skip.indexOf(x.id) < 0; });
+        if (pop.length) h += '<p class="ovs">Common ones</p><div class="fchipwrap">' + pop.map(function (x) { return '<button type="button" class="fchip" data-tg="' + esc(x.id) + '">' + esc(x.name) + '</button>'; }).join('') + '</div>';
+        if (!typing) {
+          var groups = cat.groups.filter(function (g) { return f.skip.indexOf(g.id) < 0; });
+          if (groups.length) h += '<p class="ovs">Whole groups</p><div class="fchipwrap">' + groups.map(function (g) { return '<button type="button" class="fchip" data-tg="' + esc(g.id) + '">' + esc(g.name) + '</button>'; }).join('') + '</div>';
+          h += '<p class="ovs">Every food in JSON.fit · ' + cat.count + '</p><div class="alist">' + cat.sections.map(function (s) { return '<p class="letter">' + s.letter + '</p>' + s.items.map(function (r, i) { return row(r, i === s.items.length - 1); }).join(''); }).join('') + '</div>';
+        }
+        body.innerHTML = h;
+        $$('.frow', body).forEach(function (b) { b.onclick = function () { var id = b.getAttribute('data-id'); if (typing && f.skip.indexOf(id) < 0) { f.skip.push(id); q = ''; inp.value = ''; clr.hidden = true; } else toggle(f.skip, id); draw(); }; });
+        $$('[data-rm]', body).forEach(function (b) { b.onclick = function () { toggle(f.skip, b.getAttribute('data-rm')); draw(); }; });
+        $$('[data-tg]', body).forEach(function (b) { b.onclick = function () { toggle(f.skip, b.getAttribute('data-tg')); draw(); }; });
+        foodCta(f.skip.length ? 'Continue' : 'Nothing to skip');
+        impact();
+      };
+      var impact = function () {
+        if (!f.skip.length) { ctaNote('<p class="impact">Nothing skipped yet. Fine to leave it that way.</p>'); return; }
+        var k = f.skip.join('|');
+        call('skipImpact', f.skip.slice()).then(function (m) {
+          if (my !== token || f.skip.join('|') !== k || !m) return;
+          ctaNote('<p class="impact"><b>' + plural(m.lower, 'meal') + '</b> move' + (m.lower === 1 ? 's' : '') + ' lower' + (m.kept ? ', and <b>' + m.kept + '</b>' + (m.kept === 1 ? ' keeps its place without it.' : ' keep their place without it.') : '.') + '</p>');
+        });
+      };
+      inp.oninput = function () {
+        q = inp.value; clr.hidden = !q.trim();
+        inp.parentNode.classList.toggle('on', !!q.trim());
+        var my2 = ++seq2;
+        if (!q.trim()) { results = []; draw(); return; }
+        call('foodSearch', q).then(function (r) { if (my2 !== seq2 || my !== token) return; results = r; draw(); inp.focus(); });
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); if (results[0] && f.skip.indexOf(results[0].id) < 0) { f.skip.push(results[0].id); q = ''; inp.value = ''; clr.hidden = true; draw(); } else inp.blur(); } };
+      clr.onclick = function () { q = ''; inp.value = ''; clr.hidden = true; inp.parentNode.classList.remove('on'); results = []; draw(); inp.focus(); };
+      draw();
+    });
+  }
+
+  /* ---------- N5eKeepLower ---------- */
+  function rKeepLower(el, my) {
+    var f = S.food, help = false;
+    withData(el, my, needCopy, '', function (c) {
+      qhead(el, stepLine('keeplower', 'Keep lower'), 'Anything to keep lower?', 'Optional. Tick any that apply.');
+      var box = document.createElement('div'); el.appendChild(box);
+      var draw = function () {
+        var picked = f.keepLower;
+        box.innerHTML = '<div class="opts">' + c.keepLower.map(function (o) { return '<button type="button" class="opt multi" data-k="' + o.value + '" aria-pressed="' + !!(picked && picked.indexOf(o.value) > -1) + '"><b>' + esc(o.label) + '</b><small>' + esc(o.hint) + '</small></button>'; }).join('') +
+          '<button type="button" class="opt" data-k="none" aria-pressed="' + !!(picked && !picked.length) + '"><b>Nothing</b></button></div>' +
+          '<p class="nfoot">Follow your doctor\'s advice if you have a condition.</p><button type="button" class="linkb small" id="klHelp">How this works</button>' +
+          (help ? c.keepLowerHelp.map(function (l) { return '<p class="nfoot">' + esc(l) + '</p>'; }).join('') : '');
+        $$('[data-k]', box).forEach(function (b) {
+          b.onclick = function () {
+            var k = b.getAttribute('data-k');
+            if (k === 'none') f.keepLower = [];
+            else { var l = (f.keepLower || []).slice(); toggle(l, k); f.keepLower = l; }
+            draw();
+          };
+        });
+        $('#klHelp', box).onclick = function () { help = !help; draw(); };
+        foodCta(f.keepLower == null ? 'Skip' : 'Continue');
+      };
+      draw();
+    });
+  }
+
+  /* ---------- N5cSleep ---------- */
+  var STRICT = [
+    { v: 'minimal', t: 'Performance', d: 'Light meals up to 1 h before bed' },
+    { v: 'moderate', t: 'Balanced', d: 'Larger meals 2 h before bed' },
+    { v: 'maximum', t: 'Sleep-first', d: 'All food 3 h before bed' },
+  ];
+  var CUTOFF = { minimal: [1, 'Light meals'], moderate: [2, 'Larger meals'], maximum: [3, 'All food'] };
+  var MEAL_TIMES_GUIDE = 'These times are a guide, not rules. Eat when it suits you. What matters most is getting the whole day’s food in.';
+  function clockUpper(m) { var d = ((m % 1440) + 1440) % 1440, h = Math.floor(d / 60); return (h % 12 || 12) + ':' + String(d % 60).padStart(2, '0') + ' ' + (h < 12 ? 'AM' : 'PM'); }
+  function clockLower(m) { return clockUpper(m).replace('AM', 'am').replace('PM', 'pm'); }
+  function dur(min) { var h = Math.floor(min / 60), m = min % 60; return h + 'h' + (m ? ' ' + m + 'm' : ''); }
+  function parseClock(s) { var m = String(s || '').trim().match(/^(\d{1,2}):(\d{2})\s*(am|pm)?$/i); if (!m) return null; var h = +m[1]; if (m[3] && m[3].toLowerCase() === 'pm' && h < 12) h += 12; if (m[3] && m[3].toLowerCase() === 'am' && h === 12) h = 0; return h * 60 + +m[2]; }
+  function rSleep(el, my) {
+    var f = S.food, sl = f.sleep, open = null, shape = null, BED_MIN = 1080, BED_MAX = 1620, WAKE_MIN = 180, WAKE_MAX = 720;
+    withData(el, my, function () { return mealView('sleep'); }, '', function (v) {
+      shape = v.shape;
+      qhead(el, stepLine('sleep', 'Sleep'), 'When do you sleep?', 'Your meals are timed around it, and the big ones finish before bed.');
+      el.insertAdjacentHTML('beforeend', '<div class="tpair rise" style="--i:2"></div><div class="barcard rise" style="--i:3"></div>' +
+        '<div class="rise" style="--i:4"><p class="flbl">Meal timing</p><div class="seg"></div></div>' +
+        '<div class="rise" style="--i:5"><p class="ov" style="margin-top:26px">Your day</p><p class="dtitle">Your meal times</p><p class="dsub">Worked out from these times. Tap one to move it.</p><div class="mtl"></div><p class="guide">' + MEAL_TIMES_GUIDE + '</p></div>');
+      var len = function () { return sl.wake + 1440 - sl.bed; };
+      var canBed = function (d) { var n = sl.bed + d, l = sl.wake + 1440 - n; return n >= BED_MIN && n <= BED_MAX && l >= 240 && l <= 840; };
+      var canWake = function (d) { var n = sl.wake + d, l = n + 1440 - sl.bed; return n >= WAKE_MIN && n <= WAKE_MAX && l >= 240 && l <= 840; };
+      var touch = function () { sl.touched = true; sl.skipped = false; };
+      var pct = function (a) { return Math.min(100, Math.max(0, ((a - 1080) / 1080) * 100)) + '%'; };
+      var drawTimes = function () {
+        var card = function (lbl, val, can, k, name) {
+          return '<div class="tcard"><p class="tl">' + lbl + '</p><p class="tv">' + clockLower(val) + '</p><div class="tst">' +
+            '<button type="button" data-t="' + k + '" data-d="-15"' + (can(-15) ? '' : ' disabled') + ' aria-label="' + name + ' 15 minutes earlier">' + MINUS + '</button>' +
+            '<button type="button" data-t="' + k + '" data-d="15"' + (can(15) ? '' : ' disabled') + ' aria-label="' + name + ' 15 minutes later">' + PLUS + '</button></div></div>';
+        };
+        $('.tpair', el).innerHTML = card('BED', sl.bed, canBed, 'bed', 'Bedtime') + card('UP', sl.wake, canWake, 'wake', 'Wake time');
+        $$('[data-t]', el).forEach(function (b) {
+          b.onclick = function () {
+            var d = +b.getAttribute('data-d');
+            if (b.getAttribute('data-t') === 'bed') { if (!canBed(d)) return; sl.bed += d; } else { if (!canWake(d)) return; sl.wake += d; }
+            touch(); drawAll();
+          };
+        });
+        var c = CUTOFF[sl.strictness], cutAt = sl.bed - c[0] * 60;
+        $('.barcard', el).innerHTML = '<p class="bh"><b>' + dur(len()) + '</b><span>of sleep</span></p><div class="track2"><i class="span" style="left:' + pct(sl.bed) + ';width:' + (len() / 1080 * 100) + '%"></i><i class="mark" style="left:' + pct(cutAt) + '"></i></div>' +
+          '<div class="tk"><span>6P</span><span>12A</span><span>6A</span><span>12P</span></div><p class="lg2"><i></i>' + c[1] + ' done by <b>' + clockLower(cutAt) + '</b></p>';
+        $('.seg', el).innerHTML = STRICT.map(function (o) { return '<button type="button" data-s="' + o.v + '" aria-pressed="' + (sl.strictness === o.v) + '"><b>' + o.t + '</b><small>' + o.d + '</small></button>'; }).join('');
+        $$('[data-s]', el).forEach(function (b) { b.onclick = function () { sl.strictness = b.getAttribute('data-s'); touch(); drawAll(); }; });
+      };
+      var drawList = function () {
+        var sleepLike = { bedtime: clockUpper(sl.bed), wakeTime: clockUpper(sl.wake), optimizationLevel: sl.strictness };
+        call('dayTimes', sleepLike, shape, sl.overrides).then(function (d) {
+          if (my !== token) return;
+          var axis = function (m) { return m < d.wake ? m + 1440 : m; };
+          var can = function (m, x) { var a = axis(m) + x; return a >= d.wake && a <= d.bed; };
+          $('.mtl', el).innerHTML = d.rows.map(function (r, i) {
+            var isOpen = open === r.slot;
+            var sub = r.slot === 'dessert' && d.dessertDinner != null ? '<small>Dinner moves to ' + clockLower(d.dessertDinner) + ' that night</small>' : r.overridden ? '<small class="acc">Your time</small>' : '';
+            return '<div class="mrow' + (i ? ' sep' : '') + '"><button type="button" class="mtap" data-slot="' + r.slot + '" aria-expanded="' + isOpen + '" aria-label="' + esc(r.label) + ' at ' + clockLower(r.minute) + '. Change"><span class="ms"><b>' + esc(r.label) + '</b>' + sub + '</span><span class="mt' + (isOpen ? ' acc' : '') + '">' + clockLower(r.minute) + '</span>' + (isOpen ? CHEV : CHEVR) + '</button>' +
+              (isOpen ? '<div class="med"><button type="button" data-m="-15"' + (can(r.minute, -15) ? '' : ' disabled') + ' aria-label="' + esc(r.label) + ' 15 minutes earlier">' + MINUS + '</button><div class="mmid"><b>' + clockLower(r.minute) + '</b>' +
+                (r.overridden ? '<button type="button" class="reset" data-reset="1">Use suggested (' + clockLower(r.baseMinute) + ')</button>' : '<small>15 minutes a tap</small>') + '</div><button type="button" data-m="15"' + (can(r.minute, 15) ? '' : ' disabled') + ' aria-label="' + esc(r.label) + ' 15 minutes later">' + PLUS + '</button></div>' : '') + '</div>';
+          }).join('');
+          $$('.mtap', el).forEach(function (b) { b.onclick = function () { var s = b.getAttribute('data-slot'); open = open === s ? null : s; drawList(); }; });
+          var row = d.rows.filter(function (r) { return r.slot === open; })[0];
+          $$('[data-m]', el).forEach(function (b) {
+            b.onclick = function () {
+              var x = +b.getAttribute('data-m'); if (!row || !can(row.minute, x)) return;
+              var nx = (((row.minute + x) % 1440) + 1440) % 1440;
+              if (nx === row.baseMinute) delete sl.overrides[row.slot]; else sl.overrides[row.slot] = clockUpper(nx);
+              touch(); drawList(); setCta();
+            };
+          });
+          $$('[data-reset]', el).forEach(function (b) { b.onclick = function () { delete sl.overrides[row.slot]; touch(); drawList(); }; });
+        });
+      };
+      var setCta = function () {
+        foodCta('Continue', false, function () { sl.skipped = false; next(); });
+        // Skip: the quiet action under the pill, before anything is touched.
+        ctaNote(!S.edit && !sl.touched ? '<button type="button" class="skipb" id="slSkip">Skip</button>' : '');
+        var sk = document.getElementById('slSkip'); if (sk) sk.onclick = function () { sl.skipped = true; sl.overrides = {}; next(); };
+      };
+      var drawAll = function () { drawTimes(); drawList(); setCta(); };
+      drawAll();
+    });
+  }
+
+  /* ---------- N6MealsSnacking, with DayShape ---------- */
+  var MEAL_HINTS = { 2: 'Two bigger meals. Fewer dishes, simpler prep.', 3: 'Classic: breakfast, lunch and dinner.', 4: 'Four solid meals. Good for higher intakes.', 5: 'Five smaller meals spread across the day.', 6: 'Frequent eating. Demands more prep.' };
+  var SNACK_OPTS = [{ v: '0', l: 'None' }, { v: '1', l: '1 snack' }, { v: '2', l: '2 snacks' }, { v: '3+', l: '3+ snacks' }, { v: 'ai_decide', l: 'Let the plan decide' }];
+  var SNACK_NOTE = "Snacks you'd like built in. We'll add a small top-up if needed, always removable.";
+  var VARIETY = [
+    { v: 'convenience', l: 'Cook once, repeat', h: 'Cook a few meals and repeat them through the week. Least effort, least shopping.' },
+    { v: 'balanced', l: 'A bit of both', h: "Some repeats for easy prep, some variety so it doesn't get boring." },
+    { v: 'variety', l: 'Keep it varied', h: 'Different meals through the week. More cooking and shopping.' },
+  ];
+  function toHours(t) { var m = String(t || '').match(/(\d+):(\d+)\s*(AM|PM)/i); if (!m) return null; return (+m[1] % 12) + (m[3].toUpperCase() === 'PM' ? 12 : 0) + +m[2] / 60; }
+  function fmtHours(h) { h = ((h % 24) + 24) % 24; var hh = Math.floor(h), mm = Math.round((h - hh) * 60); if (mm === 60) { hh = (hh + 1) % 24; mm = 0; } return (hh % 12 || 12) + ':' + (mm < 10 ? '0' : '') + mm + ' ' + (hh >= 12 ? 'PM' : 'AM'); }
+  function dayShape(wake, bed, meals, snackFreq) {
+    var end = bed <= wake ? bed + 24 : bed, pos = function (h) { return (0.04 + ((h - wake) / (end - wake)) * 0.92) * 100; };
+    var a = wake + 0.75, b = end - 2.5, n = meals || 0, times = [];
+    for (var i = 0; i < n; i++) times.push(n === 1 ? (a + b) / 2 : a + (i * (b - a)) / (n - 1));
+    var gaps = times.slice(0, -1).map(function (t, i) { return (t + times[i + 1]) / 2; });
+    var sn = { '0': 0, '1': 1, '2': 2, '3+': 3, ai_decide: 2 }[snackFreq || ''] || 0, snacks = [];
+    if (gaps.length) for (var k = 0; k < sn; k++) snacks.push(gaps[k % gaps.length] + Math.floor(k / gaps.length) * 0.6);
+    var ai = snackFreq === 'ai_decide';
+    return '<div class="icard"><div class="cap"><span>Your day</span><b>' + fmtHours(wake) + ' – ' + fmtHours(bed) + '</b></div><div class="dline"><i class="rule"></i>' +
+      times.map(function (t) { return '<i class="md" style="left:' + pos(t).toFixed(2) + '%"></i><span class="mtm" style="left:' + pos(t).toFixed(2) + '%">' + fmtHours(Math.round(t * 2) / 2).replace(':00', '') + '</span>'; }).join('') +
+      snacks.map(function (t) { return '<i class="sndot' + (ai ? ' ai' : '') + '" style="left:' + pos(t).toFixed(2) + '%"></i>'; }).join('') + '</div></div>';
+  }
+  function rEat(el, my) {
+    var f = S.food;
+    withData(el, my, function () { return mealView('eat'); }, '', function (v) {
+      var ss = v.savedSleep, wake = (ss && toHours(ss.wakeTime)) != null ? toHours(ss.wakeTime) : 7, bed = (ss && toHours(ss.bedtime)) != null ? toHours(ss.bedtime) : 23;
+      qhead(el, stepLine('eat', 'Meals & snacks'), 'How do you like to eat?', "Sets the shape of your day. We'll handle hitting your targets.");
+      el.insertAdjacentHTML('beforeend', '<div class="rise" style="--i:2" id="dsh"></div><p class="flbl">Meals per day</p><div class="mgrid"></div><div class="hint" id="mh"></div>' +
+        '<p class="flbl" style="margin-top:28px">Snacks per day</p><div class="snk" id="sk"></div><div class="hint"><span>' + INFO + '</span>' + esc(SNACK_NOTE) + '</div>' +
+        '<p class="flbl" style="margin-top:28px">Variety</p><div class="snk" id="vr"></div><div class="hint" id="vh"></div>');
+      var draw = function () {
+        $('#dsh', el).innerHTML = dayShape(wake, bed, f.mealsPerDay, f.snackFrequency);
+        $('.mgrid', el).innerHTML = [2, 3, 4, 5, 6].map(function (n) { return '<button type="button" data-n="' + n + '" aria-pressed="' + (f.mealsPerDay === n) + '">' + n + '</button>'; }).join('');
+        // The hint box keeps its place before a pick (no jump when it fills).
+        $('#mh', el).innerHTML = '<span>' + INFO + '</span>' + esc(MEAL_HINTS[f.mealsPerDay] || MEAL_HINTS[3]);
+        $('#mh', el).style.visibility = f.mealsPerDay ? 'visible' : 'hidden';
+        $('#sk', el).innerHTML = SNACK_OPTS.map(function (o) { return '<button type="button" data-s="' + o.v + '" aria-pressed="' + (f.snackFrequency === o.v) + '">' + o.l + '</button>'; }).join('');
+        $('#vr', el).innerHTML = VARIETY.map(function (o) { return '<button type="button" data-vr="' + o.v + '" aria-pressed="' + (f.mealVariety === o.v) + '">' + o.l + '</button>'; }).join('');
+        $('#vh', el).innerHTML = '<span>' + INFO + '</span>' + esc(VARIETY.filter(function (o) { return o.v === f.mealVariety; })[0].h);
+        $$('[data-n]', el).forEach(function (b) { b.onclick = function () { f.mealsPerDay = +b.getAttribute('data-n'); draw(); }; });
+        $$('[data-s]', el).forEach(function (b) { b.onclick = function () { f.snackFrequency = b.getAttribute('data-s'); draw(); }; });
+        $$('[data-vr]', el).forEach(function (b) { b.onclick = function () { f.mealVariety = b.getAttribute('data-vr'); draw(); }; });
+        foodCta('Continue', !(f.mealsPerDay != null && f.snackFrequency != null));
+      };
+      draw();
+    });
+  }
+
+  /* ---------- N6gSnacks: SnackChecklist ---------- */
+  function whySheet(why) {
+    openSheet('<h2 class="sh-t">Why ' + why.n + '?</h2><p class="sh-b">' + esc(why.lead) + '</p>' +
+      why.rows.map(function (r) { return '<div class="whyrow"><b>' + esc(r.title) + '</b><span>' + esc(r.text) + '</span></div>'; }).join('') +
+      '<p class="sh-lede" style="margin-top:14px">' + esc(why.foot) + '</p><button type="button" class="sh-go" data-close="1">Got it</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
+  }
+  function pickCountLine(count, rec, what) {
+    if (count === rec) return null;
+    if (count < rec) return what === 'mains' ? 'Fewer picks means meals repeat more.' : what === 'snacks' ? 'Fewer picks means the same snacks repeat more.' : 'Fewer picks means the same breakfast most days.';
+    return what === 'mains' ? 'More picks is fine. Each one comes round less often.' : 'More picks is fine. Each one shows up less often.';
+  }
+  function addOwnSheet(onSave) {
+    var kinds = [['snack', 'Snack'], ['breakfast', 'Breakfast'], ['drink', 'Drink']], kind = 'snack', two = false;
+    var field = function (k, label, ph, num, half) { return '<label class="af' + (half ? ' half' : '') + '"><span>' + label + '</span><input data-f="' + k + '" placeholder="' + esc(ph) + '"' + (num ? ' inputmode="decimal"' : '') + ' maxlength="60" autocomplete="off"></label>'; };
+    openSheet('<h2 class="sh-t">Add your own</h2><p class="sh-lede">One serve, numbers from the pack.</p>' +
+      field('name', 'Name', 'Chobani yoghurt pot') + field('serve', 'Serve', '1 pot, 170 g') +
+      '<div class="af2">' + field('kcal', 'kcal', '120', true, true) + field('protein', 'Protein (g)', '15', true, true) + '</div>' +
+      '<div class="af2">' + field('carbs', 'Carbs (g), optional', '', true, true) + field('fat', 'Fat (g), optional', '', true, true) + '</div>' +
+      '<div class="kinds">' + kinds.map(function (k) { return '<button type="button" data-kd="' + k[0] + '" aria-pressed="' + (k[0] === kind) + '">' + k[1] + '</button>'; }).join('') + '</div>' +
+      '<label class="sw" id="afTwo"><span>I sometimes have 2</span><input type="checkbox"></label>' + field('shop', 'Shopping list line, optional', 'Yoghurt pots, 4-pack') +
+      '<p class="aferr" id="afErr"></p><button type="button" class="sh-go" id="afSave">Add to My foods</button>', function (sh) {
+      var num = function (k) { var s = $('[data-f="' + k + '"]', sh).value, n = Number(String(s).replace(',', '.').trim()); return s.trim() !== '' && isFinite(n) && n >= 0 ? n : undefined; };
+      $$('[data-kd]', sh).forEach(function (b) { b.onclick = function () { kind = b.getAttribute('data-kd'); $$('[data-kd]', sh).forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); $('#afTwo', sh).style.display = kind === 'breakfast' ? 'none' : ''; }; });
+      $('#afSave', sh).onclick = function () {
+        var name = $('[data-f="name"]', sh).value.trim(), k = num('kcal'), p = num('protein');
+        var missing = !name ? 'Add a name.' : k == null ? 'Add the kcal per serve.' : p == null ? 'Add the protein per serve (0 is fine).' : null;
+        if (missing) { $('#afErr', sh).textContent = missing; return; }
+        two = $('#afTwo input', sh).checked;
+        onSave({ name: name, serve: $('[data-f="serve"]', sh).value.trim() || undefined, kcal: k, protein: p, carbs: num('carbs'), fat: num('fat'), kind: kind, canDouble: kind !== 'breakfast' && two, shoppingLine: $('[data-f="shop"]', sh).value.trim() || undefined });
+        closeSheet();
+      };
+    });
+  }
+  function rSnacks(el, my) {
+    var f = S.food;
+    withData(el, my, function () { return mealView('snacks'); }, '', function (v) {
+      var sv = v.snacks;
+      if (f.snacks.ticked == null) f.snacks.ticked = sv.initial.slice();
+      el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">' + esc(stepLine('snacks', 'Snacks')) + '</p><h1 class="qh rise" style="--i:0">Snacks you already eat</h1>' +
+        '<p class="sub rise" style="--i:1">We recommend ' + sv.recommended + ' for the best results.</p><button type="button" class="linkb small why rise" style="--i:1" id="snWhy">Why ' + sv.recommended + '? ›</button><div id="snList"></div>');
+      $('#snWhy', el).onclick = function () { whySheet(sv.why); };
+      var box = $('#snList', el);
+      var draw = function () {
+        var t = f.snacks.ticked, own = f.snacks.own.filter(function (o) { return o.kind !== 'breakfast'; });
+        box.innerHTML = sv.groups.map(function (g) {
+          return '<div class="sgroup"><p class="sgt">' + esc(g.label) + '</p>' + g.items.map(function (s) {
+            var on = t.indexOf(s.id) > -1;
+            return '<button type="button" class="srow" data-sn="' + s.id + '" role="checkbox" aria-checked="' + on + '"><span class="st2"><b>' + esc(s.name) + '</b><small>' + esc(s.serve) + ' · ' + Math.round(s.kcal) + ' kcal · ' + Math.round(s.protein) + ' g protein' + (s.canDouble ? ' · 2 at once is fine' : '') + (s.needsPrep ? ' · needs prep' : '') + '</small>' + (s.clash ? '<em>Contains ' + esc(s.allergens.join(', ')) + '</em>' : '') + '</span><span class="sring">' + (on ? CHECK : '') + '</span></button>';
+          }).join('') + '</div>';
+        }).join('') +
+          (own.length ? '<div class="sgroup"><p class="sgt">Your own</p>' + own.map(function (o) { return '<div class="srow"><span class="st2"><b>' + esc(o.name) + '</b><small>' + esc(o.serve || '1 serve') + ' · ' + Math.round(o.kcal) + ' kcal · ' + Math.round(o.protein) + ' g protein</small></span><span class="sring on">' + CHECK + '</span></div>'; }).join('') + '</div>' : '') +
+          '<button type="button" class="addown" id="snAdd">' + PLUS + ' Add your own</button>';
+        $$('[data-sn]', box).forEach(function (b) { b.onclick = function () { toggle(f.snacks.ticked, b.getAttribute('data-sn')); draw(); }; });
+        $('#snAdd', box).onclick = function () { addOwnSheet(function (input) { f.snacks.own.push(input); draw(); }); };
+        var count = t.length + own.length, line = pickCountLine(count, sv.recommended, 'snacks');
+        ctaNote('<p class="gentle"' + (line ? '' : ' style="visibility:hidden"') + '>' + esc(line || '.') + '</p>');
+        foodCta('Continue · ' + count + ' of ' + sv.recommended);
+      };
+      draw();
+    });
+  }
+
+  /* ---------- N6eAppetite ---------- */
+  function rAppetite(el) {
+    qhead(el, stepLine('appetite', 'Eating enough'), 'Is eating enough hard for you?', "Gaining takes a lot of food. Tell us if that's a struggle.");
+    cards(el, [{ v: 'yes', l: 'Yes', h: "Most days it's hard to finish what you need. We lean on denser food." }, { v: 'no', l: 'No', h: 'Big plates are fine.' }],
+      S.food.lowAppetite == null ? null : S.food.lowAppetite ? 'yes' : 'no', function (v) { S.food.lowAppetite = v === 'yes'; enable(true); });
+    foodCta('Continue', S.food.lowAppetite == null);
+  }
+
+  /* ---------- N6aDessert, with DessertNights ---------- */
+  var DESSERT = [
+    { v: '0', l: 'No desserts', h: 'Skip desserts entirely. Clean bulk territory.' },
+    { v: 'once_per_week', l: 'Once a week', h: 'One night per week. An occasional treat.' },
+    { v: 'few_per_week', l: 'A few nights a week', h: '2 or 3 nights. A treat, not an expectation.' },
+    { v: 'most_nights', l: 'Most nights', h: '4 to 6 nights a week.' },
+    { v: 'every_night', l: 'Every night', h: 'A nightly treat after dinner.' },
+    { v: 'ai_decide', l: 'Let the plan decide', h: "We'll fit them in where they make sense." },
+  ];
+  var SPREAD = { '0': [], once_per_week: [6], few_per_week: [2, 4, 6], most_nights: [1, 2, 4, 5, 6], every_night: [0, 1, 2, 3, 4, 5, 6] };
+  var MON_FIRST = [1, 2, 3, 4, 5, 6, 0], DSHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'], DLET = ['S', 'M', 'T', 'W', 'T', 'F', 'S'], NIGHT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function freqForCount(n) { return n <= 0 ? '0' : n === 1 ? 'once_per_week' : n <= 3 ? 'few_per_week' : n <= 6 ? 'most_nights' : 'every_night'; }
+  function cleanDays(d) { var o = []; d.forEach(function (x) { if (o.indexOf(x) < 0) o.push(x); }); return o.sort(function (a, b) { return ((a + 6) % 7) - ((b + 6) % 7); }); }
+  function rDessert(el) {
+    var f = S.food;
+    if (!f.dessertDays.length && f.dessertFrequency) f.dessertDays = (SPREAD[f.dessertFrequency] || []).slice();
+    qhead(el, stepLine('dessert', 'Dessert'), 'Want dessert in your plan?', 'A small treat on top of your meals: protein ice cream, mug cakes. Tap the nights you want it, or pick how often.');
+    el.insertAdjacentHTML('beforeend', '<div class="rise" style="--i:2" id="dn"></div><div id="dopts"></div>');
+    var draw = function () {
+      var sel = f.dessertFrequency, ai = sel === 'ai_decide', nights = sel && !ai && sel !== '0' ? f.dessertDays : [];
+      var shown = sel ? nights : null;
+      var cap = ai ? 'The plan picks the nights. Tap one to choose yourself.' : shown == null ? 'Tap your nights, or pick how often below' : !shown.length ? 'No dessert nights' : shown.length === 7 ? 'Every night' : shown.length + ' night' + (shown.length === 1 ? '' : 's') + ' · ' + MON_FIRST.filter(function (d) { return shown.indexOf(d) > -1; }).map(function (d) { return NIGHT[d]; }).join(', ');
+      $('#dn', el).innerHTML = '<div class="icard"><div class="wrow">' + MON_FIRST.map(function (d) {
+        var lit = !ai && (shown || []).indexOf(d) > -1, maybe = ai && (d === 3 || d === 6);
+        return '<button type="button" class="dc" data-dow="' + d + '" aria-pressed="' + lit + '" aria-label="' + ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d] + ', ' + (lit ? 'dessert' : 'no dessert') + '"><small' + (lit ? ' class="acc"' : '') + '>' + DSHORT[d] + '</small><span class="night' + (lit ? ' lit' : '') + (maybe ? ' maybe' : '') + '">' + (lit ? CHECK : maybe ? '?' : DLET[d]) + '</span></button>';
+      }).join('') + '</div><p class="disc">' + cap + '</p></div>';
+      $('#dopts', el).innerHTML = '<div class="opts">' + DESSERT.map(function (o) { return '<button type="button" class="opt" data-v="' + o.v + '" aria-pressed="' + (sel === o.v) + '"><b>' + esc(o.l) + '</b><small>' + esc(o.h) + '</small></button>'; }).join('') + '</div>';
+      $$('[data-dow]', el).forEach(function (b) {
+        b.onclick = function () {
+          var dow = +b.getAttribute('data-dow'), base = f.dessertFrequency === 'ai_decide' ? [] : f.dessertDays.slice();
+          var nx = cleanDays(base.indexOf(dow) > -1 ? base.filter(function (x) { return x !== dow; }) : base.concat([dow]));
+          f.dessertDays = nx; f.dessertFrequency = freqForCount(nx.length); draw();
+        };
+      });
+      $$('#dopts .opt', el).forEach(function (b) {
+        b.onclick = function () {
+          var val = b.getAttribute('data-v'), prev = f.dessertFrequency;
+          f.dessertFrequency = val;
+          if (!(val !== 'ai_decide' && freqForCount(f.dessertDays.length) === val && prev !== 'ai_decide')) f.dessertDays = (SPREAD[val] || []).slice();
+          draw();
+        };
+      });
+      foodCta('Continue', !f.dessertFrequency);
+    };
+    draw();
+  }
+
+  /* ---------- Meal prep: N6bSlowCooker, N6cFreezer, N6dShopCadence, N6fStockUp ---------- */
+  function pillRow(title, opts, value, note, key) {
+    return '<div class="pillblk"><p class="pt">' + esc(title) + '</p><div class="pills">' + opts.map(function (o) { return '<button type="button" data-' + key + '="' + o.value + '" aria-pressed="' + (String(value) === String(o.value)) + '">' + esc(o.label) + '</button>'; }).join('') + '</div>' + (note ? '<p class="nfoot">' + esc(note) + '</p>' : '') + '</div>';
+  }
+  function rCooker(el, my) {
+    var f = S.food;
+    withData(el, my, function () { return Promise.all([needCopy(), mealView('cooker')]); }, '', function (r) {
+      var c = r[0];
+      qhead(el, prepLine('cooker', 'Slow cooker'), 'How big is your slow cooker?');
+      var box = document.createElement('div'); el.appendChild(box);
+      var draw = function () {
+        box.innerHTML = '<div class="opts">' + c.cookers.map(function (o) { return '<button type="button" class="opt" data-sz="' + o.value + '" aria-pressed="' + (f.slowCooker === o.value) + '"><b>' + esc(o.label) + '</b><small>' + esc(o.hint) + '</small></button>'; }).join('') + '</div>' +
+          // "How many?" only with a cooker; its room is kept so the blender row never jumps.
+          '<div style="visibility:' + (f.slowCooker && f.slowCooker !== 'none' ? 'visible' : 'hidden') + '">' + pillRow('How many?', c.cookerCounts, f.slowCookerCount, c.cookerCountNote, 'ct') + '</div>' +
+          pillRow(c.blender.title, c.blender.options, f.blender, c.blender.note, 'bl');
+        $$('[data-sz]', box).forEach(function (b) { b.onclick = function () { f.slowCooker = b.getAttribute('data-sz'); draw(); }; });
+        $$('[data-ct]', box).forEach(function (b) { b.onclick = function () { f.slowCookerCount = +b.getAttribute('data-ct'); draw(); }; });
+        $$('[data-bl]', box).forEach(function (b) { b.onclick = function () { f.blender = b.getAttribute('data-bl'); draw(); }; });
+        foodCta('Continue', !f.slowCooker);
+      };
+      draw();
+    });
+  }
+  var FRIDGE_ICONS = {
+    8: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 14h14M9 17h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    16: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 10h14M8 6v2M8 13v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    30: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 8h14M5 13.5h14M8 5v1.2M8 10.5v1.2M8 16v1.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    60: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M10 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  };
+  function rFreezer(el, my) {
+    var f = S.food;
+    withData(el, my, function () { return Promise.all([needCopy(), mealView('freezer')]); }, '', function (r) {
+      var c = r[0];
+      qhead(el, prepLine('freezer', 'Freezer'), 'How much freezer space do you have?');
+      var box = document.createElement('div'); el.appendChild(box);
+      var draw = function () {
+        box.innerHTML = '<div class="opts">' + c.freezers.map(function (o) { return '<button type="button" class="opt iconopt" data-fz="' + o.value + '" aria-pressed="' + (f.freezerTubs === o.value) + '"><span class="itile">' + FRIDGE_ICONS[o.value] + '</span><span><b>' + esc(o.label) + '</b><small>' + esc(o.hint) + '</small></span></button>'; }).join('') + '</div>';
+        $$('[data-fz]', box).forEach(function (b) { b.onclick = function () { f.freezerTubs = +b.getAttribute('data-fz'); draw(); }; });
+        foodCta('Continue', !f.freezerTubs);
+      };
+      draw();
+    });
+  }
+  function rCadence(el, my) {
+    var f = S.food;
+    withData(el, my, function () { return Promise.all([needCopy(), mealView('cadence')]); }, '', function (r) {
+      var c = r[0], v = r[1];
+      qhead(el, prepLine('cadence', 'How often you shop'), 'How often do you want to shop?');
+      var box = document.createElement('div'); el.appendChild(box);
+      var draw = function () {
+        var picked = f.shopCadence && !v.blocked[f.shopCadence] ? f.shopCadence : null;
+        box.innerHTML = '<div class="opts">' + c.cadences.map(function (o) { var why = v.blocked[o.value]; return '<button type="button" class="opt" data-cd="' + o.value + '" aria-pressed="' + (picked === o.value) + '"' + (why ? ' disabled' : '') + '><b>' + esc(o.label) + '</b><small>' + esc(why || o.hint) + '</small></button>'; }).join('') + '</div>';
+        $$('[data-cd]', box).forEach(function (b) { b.onclick = function () { f.shopCadence = b.getAttribute('data-cd'); draw(); }; });
+        foodCta(v.stockUpShows ? 'Continue' : 'Done', !picked, function () { if (!v.stockUpShows) f.stockUp = false; next(); });
+      };
+      draw();
+    });
+  }
+  function rStockUp(el, my) {
+    var f = S.food;
+    withData(el, my, function () { return Promise.all([needCopy(), mealView('stockup')]); }, '', function (r) {
+      var c = r[0], v = r[1];
+      qhead(el, prepLine('stockup', 'Stock up'), esc(c.stockUp.title), esc(c.stockUp.intro));
+      var box = document.createElement('div'); el.appendChild(box);
+      var draw = function () {
+        var value = v.stockUpCard ? f.stockUp : false;
+        box.innerHTML = '<div class="opts">' + c.stockUp.options.filter(function (o) { return v.stockUpCard || !o.value; }).map(function (o) { return '<button type="button" class="opt" data-su="' + o.value + '" aria-pressed="' + (value === o.value) + '"><b>' + esc(o.label) + '</b><small>' + esc(o.value ? v.stockUpHint : o.hint) + '</small></button>'; }).join('') + '</div>' +
+          (v.stockUpCard ? '<div class="sucard"><span>' + CHECK + '</span><div><b>' + esc(v.stockUpCard.title) + '</b><small>' + esc(v.stockUpCard.sub) + '</small></div></div>' : '<p class="nfoot">Your freezer is too small to stock up.</p>') +
+          '<p class="nfoot">' + esc(c.stockUp.foot) + '</p>';
+        $$('[data-su]', box).forEach(function (b) { b.onclick = function () { f.stockUp = b.getAttribute('data-su') === 'true'; draw(); }; });
+        foodCta('Done', value == null);
+      };
+      draw();
+    });
+  }
+
+  /* ---------- N9PlanLength, with PlanDates ---------- */
+  var MONS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function midnight(d) { var x = new Date(d); x.setHours(0, 0, 0, 0); return x; }
+  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function ymd(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function startOffset(v) { if (v === 'today') return 0; if (v === 'tomorrow') return 1; if (/^\d{4}-\d{2}-\d{2}$/.test(v || '')) { var p = v.split('-'); return Math.round((new Date(+p[0], +p[1] - 1, +p[2]) - midnight(new Date())) / 864e5); } return null; }
+  function startValue(off) { return off <= 0 ? 'today' : off === 1 ? 'tomorrow' : ymd(addDays(midnight(new Date()), off)); }
+  function rangeText(start, days) {
+    var end = addDays(start, Math.max(1, days) - 1), head = WD[start.getDay()] + ' ' + start.getDate(), tail = WD[end.getDay()] + ' ' + end.getDate() + ' ' + MONS[end.getMonth()];
+    return start.getMonth() === end.getMonth() ? head + ' → ' + tail : head + ' ' + MONS[start.getMonth()] + ' → ' + tail;
+  }
+  function rPlanLength(el, my) {
+    var f = S.food;
+    var off0 = startOffset(f.startDate); if (!(off0 != null && off0 >= 0 && off0 <= 6)) f.startDate = 'tomorrow';
+    withData(el, my, function () { return mealView('planlength'); }, '', function (v) {
+      qhead(el, stepLine('planlength', 'Plan length'), 'How long a plan?', 'Sets the days your plan covers.');
+      el.insertAdjacentHTML('beforeend', '<div class="fact rise" style="--i:2"><b>' + v.planDays.days + ' days</b><span>' + esc(v.planDays.line) + '</span></div><div class="rise" style="--i:3" id="pd"></div>');
+      var draw = function () {
+        var today = midnight(new Date()), off = startOffset(f.startDate), days = v.planDays.days;
+        $('#pd', el).innerHTML = '<div class="icard"><div class="cap"><span>Start on</span><b>' + (off != null ? rangeText(addDays(today, off), days) : 'Pick a start day') + '</b></div><div class="wrow">' +
+          [0, 1, 2, 3, 4, 5, 6].map(function (i) {
+            var d = addDays(today, i), isStart = off === i, cov = off != null && i > off && i < off + days;
+            return '<button type="button" class="dt' + (isStart ? ' dstart' : cov ? ' cov' : '') + '" data-off="' + i + '" aria-pressed="' + isStart + '" aria-label="Start ' + (i === 0 ? 'today' : i === 1 ? 'tomorrow' : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()]) + ' ' + d.getDate() + '"><small>' + (i === 0 ? 'TODAY' : DSHORT[d.getDay()]) + '</small><b>' + d.getDate() + '</b></button>';
+          }).join('') + '</div><p class="disc">Today, tomorrow or any day this week. Tap to choose.</p></div>';
+        $$('[data-off]', el).forEach(function (b) { b.onclick = function () { f.startDate = startValue(+b.getAttribute('data-off')); draw(); }; });
+      };
+      draw();
+      foodCta('Continue', false, function () { go('picks'); });
     });
   }
 
@@ -969,20 +1645,20 @@
    * The app's build screens: act 1 (ring draws, dots orbit, "Building your ...")
    * while the engine works, then act 2: a step list where each line runs and
    * ticks with the real number from the result, while the visual fills in.
-   * Tap anywhere to skip. Reduced motion: the finished list at once.
+   * No skip: watching each step land is what makes the plan feel worked out
+   * (MealBuildScreen, 11 Oct 2026). Reduced motion: the finished list at once.
    */
   function buildMoment(el, my, o) {
     // o: word ('your week.'), sub, work (Promise -> data), steps(data) -> [{label,value,count?}], visual(data) -> html, onStep(i, data, el), done(data)
     el.classList.add('bm');
-    el.innerHTML = '<div class="act1"><div class="ring"><div class="glow"></div><svg viewBox="0 0 140 140"><circle class="r" cx="70" cy="70" r="60"/></svg><div class="orbit">' +
+    el.innerHTML = (o.wall ? '<div class="wall" aria-hidden="true">' + (o.wall0 || []).map(function (f) { return '<span>' + photoFile(f, '') + '</span>'; }).join('') + '</div>' : '') + '<div class="act1"><div class="ring"><div class="glow"></div><svg viewBox="0 0 140 140"><circle class="r" cx="70" cy="70" r="60"/></svg><div class="orbit">' +
       [0, 1, 2, 3].map(function (k) { var ang = k * Math.PI / 2 - Math.PI / 2; return '<b style="left:' + (65 + Math.cos(ang) * 60) + 'px;top:' + (65 + Math.sin(ang) * 60) + 'px;animation-delay:' + (0.5 + k * 0.14) + 's"></b>'; }).join('') +
       '</div></div><p class="launch">Building<br><span>' + o.word + '</span></p><p class="sub" style="margin:8px auto 0;text-align:center">' + esc(o.sub || '') + '</p><div class="charge"><i></i></div></div><div class="act2" aria-live="polite"></div>';
     primary(null);
     var act1 = $('.act1', el), act2 = $('.act2', el);
-    var skip = false, finished = false, data = null;
+    var finished = false, data = null;
     var instant = RM || root.classList.contains('still');
     var t0 = performance.now();
-    el.addEventListener('click', function (e) { if (e.target.closest('[data-retry]')) return; skip = true; });
     function finish() {
       if (finished || my !== token) return; finished = true;
       if (holdBuild) return; // ?demo with a build screen asked for: stay on it for the screenshot
@@ -991,15 +1667,15 @@
     o.work().then(function (d) {
       data = d;
       if (my !== token) return;
-      var hold = instant ? 0 : Math.max(0, 1500 - (performance.now() - t0));
+      if (o.wall) { var wl = $('.wall', el); if (wl) wl.innerHTML = o.wall(d).concat(o.wall(d)).slice(0, 12).map(function (f) { return '<span>' + photoFile(f, '') + '</span>'; }).join(''); }
+      var hold = instant ? 0 : Math.max(0, (o.hold || 1500) - (performance.now() - t0));
       return wait(hold).then(function () {
         if (my !== token) return;
         var steps = o.steps(d);
-        act1.classList.add('gone');
+        act1.classList.add('gone'); el.classList.add('a2');
         setTimeout(function () { act1.style.display = 'none'; }, instant ? 0 : 420);
         act2.innerHTML = '<p class="ov">' + esc(o.over(d)) + '</p><p class="wt">Building <span>' + o.word + '</span></p><div class="vis">' + o.visual(d) + '</div><div class="steps">' +
-          steps.map(function (s) { return '<div class="st"><span class="dot"></span><span class="l">' + esc(s.label) + '</span><span class="v">' + esc(s.value) + '</span></div>'; }).join('') + '</div>' +
-          (instant ? '' : '<button type="button" class="skip">Tap to skip</button>');
+          steps.map(function (s) { return '<div class="st' + (s.warn ? ' warn' : '') + '"><span class="dot"></span><span class="l">' + esc(s.label) + '</span><span class="v">' + esc(s.value) + '</span></div>'; }).join('') + '</div>';
         requestAnimationFrame(function () { act2.classList.add('on'); });
         var rows = $$('.st', act2);
         if (instant) {
@@ -1008,10 +1684,9 @@
           else finish();
           return;
         }
-        var i = 0, STEP = 430;
+        var i = 0, STEP = o.stepMs || 430;
         (function stepOn() {
           if (my !== token) return;
-          if (skip) { rows.forEach(function (r, k) { if (!r.classList.contains('ok')) { r.classList.remove('run'); r.classList.add('ok'); o.onStep && o.onStep(k, d, act2, true); } }); finish(); return; }
           if (i >= rows.length) { setTimeout(finish, 350); return; }
           var r = rows[i], k = i;
           r.classList.add('run');
@@ -1283,91 +1958,7 @@
     primary('Next: my meals', function () { go('active'); });
   }
 
-  /* ================= food (the meal questions) ================= */
-  function needFoodOptions() {
-    var jobs = [loadIndex()];
-    if (!S.foodOptions) jobs.push(call('foodOptions').then(function (o) { S.foodOptions = o; }));
-    return Promise.all(jobs);
-  }
-  function rMeat(el, my) {
-    withData(el, my, needFoodOptions, '', function () {
-      head(el, 'Your food', 'Do you eat meat?', 'We only show you meals that fit.');
-      cards(el, S.foodOptions.dietPatterns.map(function (p) { return { v: p.value, l: p.label, h: p.hint }; }), S.food.dietPattern, function (v) { S.food.dietPattern = v; enable(true); });
-      primary('Continue', null, !S.food.dietPattern);
-    });
-  }
-  var ALLERGENS = ['Nuts', 'Shellfish', 'Dairy', 'Eggs', 'Gluten/Wheat', 'Soy', 'Fish', 'Sesame'];
   function toggle(arr, v) { var i = arr.indexOf(v); i > -1 ? arr.splice(i, 1) : arr.push(v); }
-  function rAllergies(el) {
-    head(el, 'Your food', 'Any allergies?', 'Meals with these are left out of your plan. Always check ingredient labels yourself. Skip if none apply.');
-    cards(el, ALLERGENS.map(function (x) { return { v: x, l: x }; }), S.food.allergies, function (v) { toggle(S.food.allergies, v); primary(S.food.allergies.length ? 'Continue' : 'None of these'); }, { chips: true, multi: true });
-    primary(S.food.allergies.length ? 'Continue' : 'None of these');
-  }
-  function rSkip(el, my) {
-    withData(el, my, needFoodOptions, '', function () {
-      head(el, 'Your food', 'Anything you won’t eat?', 'Those meals still show, just lower down and marked.');
-      cards(el, S.foodOptions.popularFoods.map(function (x) { return { v: x.id, l: x.name }; }), S.food.skip, function (v) { toggle(S.food.skip, v); primary(S.food.skip.length ? 'Continue' : 'I eat all of these'); }, { chips: true, multi: true });
-      primary(S.food.skip.length ? 'Continue' : 'I eat all of these');
-    });
-  }
-  var MEALS = [{ v: 2, l: '2', h: 'Two bigger meals' }, { v: 3, l: '3', h: 'Classic' }, { v: 4, l: '4', h: 'Four solid meals' }, { v: 5, l: '5', h: 'Five smaller' }, { v: 6, l: '6', h: 'Frequent eating' }];
-  var SNACKS = [{ v: '0', l: 'None' }, { v: '1', l: '1 snack' }, { v: '2', l: '2 snacks' }, { v: '3+', l: '3+ snacks' }, { v: 'ai_decide', l: 'Let the plan decide' }];
-  function rEat(el) {
-    head(el, 'Your food', 'How do you like to eat?', 'Sets the shape of your day. We’ll handle hitting your targets.');
-    el.insertAdjacentHTML('beforeend', '<p class="lbl rise" style="--i:2">Meals a day</p>');
-    var box1 = document.createElement('div'); el.appendChild(box1);
-    cards(box1, MEALS, S.food.mealsPerDay, function (v) { S.food.mealsPerDay = v; }, { tiles: true });
-    el.insertAdjacentHTML('beforeend', '<p class="lbl rise" style="--i:4">Snacks</p>');
-    var box2 = document.createElement('div'); el.appendChild(box2);
-    cards(box2, SNACKS, S.food.snackFrequency, function (v) { S.food.snackFrequency = v; }, { chips: true });
-    primary('Continue');
-  }
-  var DESSERT = [
-    { v: '0', l: 'No desserts', h: 'Skip desserts entirely.' },
-    { v: 'once_per_week', l: 'Once a week', h: 'One night per week. An occasional treat.' },
-    { v: 'few_per_week', l: 'A few nights a week', h: '2 or 3 nights. A treat, not an expectation.' },
-    { v: 'most_nights', l: 'Most nights', h: '4 to 6 nights a week.' },
-    { v: 'every_night', l: 'Every night', h: 'A nightly treat after dinner.' },
-    { v: 'ai_decide', l: 'Let the plan decide', h: 'We’ll fit them in where they make sense.' },
-  ];
-  function rDessert(el, my) {
-    head(el, 'Your food', 'Want dessert in your plan?', 'A small treat on top of your meals: protein ice cream, mug cakes.');
-    cards(el, DESSERT, S.food.dessertFrequency, function (v) { S.food.dessertFrequency = v; enable(true); });
-    primary('Continue', null, !S.food.dessertFrequency);
-  }
-  function needGrid() {
-    var f = S.food, k = keyOf([f.dietPattern, f.allergies, f.skip]);
-    if (S.gridKey === k) return loadIndex();
-    return Promise.all([loadIndex(), call('mainsGrid', { dietPattern: f.dietPattern || 'any', allergies: f.allergies, skip: f.skip }).then(function (g) {
-      S.grid = g; S.gridKey = k;
-      var ok = {}; g.meals.forEach(function (m) { ok[m.slug] = 1; });
-      f.picks = f.picks.filter(function (s) { return ok[s]; });
-    })]);
-  }
-  function rPicks(el, my) {
-    withData(el, my, needGrid, 'Loading the meals…', function () {
-      var f = S.food, g = S.grid;
-      head(el, 'Your food', 'Pick meals you <em>like.</em>', 'One cook makes 8 tubs. ' + esc(g.recommendLine));
-      el.insertAdjacentHTML('beforeend', '<p class="pickc rise" style="--i:2" id="pc"></p><div class="picks">' + g.meals.map(function (m, k) {
-        return '<button type="button" class="pick rise' + (m.skipped ? ' low' : '') + '" style="--i:' + Math.min(k + 3, 12) + '" data-pick="' + m.slug + '" aria-pressed="' + (f.picks.indexOf(m.slug) > -1) + '">' + photo(m.slug, m.name) + '<span class="ck" aria-hidden="true"></span><span class="t">' + esc(m.name) + '<small>' + m.minutes + ' min hands-on</small></span></button>';
-      }).join('') + '</div>' + (g.meals.length ? '' : '<p class="note">No batch mains fit these answers. The plan still builds the rest of your week.</p>'));
-      var upd = function () {
-        var n = f.picks.length;
-        $('#pc', el).textContent = n ? n + ' picked' + (n < g.recommend ? ', we recommend ' + g.recommend : '') : 'Pick some, or let the plan choose';
-        primary(n ? 'Build my week' : 'Let the plan choose', function () { go('mealbuild'); });
-      };
-      $$('[data-pick]', el).forEach(function (b) { b.onclick = function () { toggle(f.picks, b.getAttribute('data-pick')); b.setAttribute('aria-pressed', f.picks.indexOf(b.getAttribute('data-pick')) > -1); upd(); }; });
-      upd();
-    });
-  }
-  function foodForEngine() { var f = S.food; return Object.assign({}, f, { dietPattern: f.dietPattern || 'any', dessertFrequency: f.dessertFrequency || 'ai_decide' }); }
-  function needMeals() {
-    var k = keyOf([aboutForEngine(), foodForEngine()]);
-    return loadIndex().then(function () {
-      if (S.mealsKey === k && S.meals) return S.meals;
-      return call('buildMeals', aboutForEngine(), foodForEngine()).then(function (m) { S.meals = m; S.mealsKey = k; S.day = 0; S.ticks = {}; S.openAisle = null; return m; });
-    });
-  }
   /** The app's grocery amounts, without shop and brand names (and no "100 tsp" for spices). */
   function cleanAmount(r) {
     if (r.negligible) return '';
@@ -1389,50 +1980,494 @@
   function shortName(n) { return String(n).split(/[,(\[]/)[0].trim(); }
   var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], DOWL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function dl(date) { var p = date.split('-'), d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])); return { dow: DOW[d.getUTCDay()], long: DOWL[d.getUTCDay()], d: d.getUTCDate(), mon: MON[d.getUTCMonth()] }; }
-  function rMealBuild(el, my) {
-    var f = foodForEngine();
-    buildMoment(el, my, {
-      word: 'your week.', sub: f.picks.length ? f.picks.length + ' favourites' : 'Your answers',
-      work: needMeals,
-      over: function (M) { return M.plan.name || 'Your week'; },
-      steps: function (M) {
-        var R = M.report, c = R.counts, t = R.targets, av = R.avg, b = R.batch;
-        var kcalOff = (R.misses && R.misses.kcal) || 0;
-        var list = [];
-        list.push({ label: 'Setting your macros', value: n0(t.kcal) + ' kcal \u00b7 ' + t.protein + ' g protein' });
-        list.push(f.picks.length ? { label: 'Reading your ' + f.picks.length + ' favourite' + (f.picks.length === 1 ? '' : 's'), value: f.picks.length + ' meal' + (f.picks.length === 1 ? '' : 's') } : { label: 'Choosing meals for you', value: 'from the library' });
-        list.push({ label: 'Placing ' + c.meals + ' meals across ' + c.days + ' days', value: c.meals + ' / ' + c.meals });
-        list.push(kcalOff ? { label: 'Balancing kcal across the week', value: n0(av.kcal) + ' a day' } : { label: 'Hitting ' + n0(t.kcal) + ' kcal every day', value: n0(av.kcal), count: { to: av.kcal } });
-        if (b) {
-          list.push({ label: 'Planning your cook', value: 'cook ' + b.potsToCook + ' pot' + (b.potsToCook === 1 ? '' : 's') });
-          list.push({ label: 'Filling your freezer', value: b.tubsBanked ? b.tubsBanked + ' tub' + (b.tubsBanked === 1 ? '' : 's') + ' banked' : b.tubsFromStock ? b.tubsFromStock + ' from the freezer' : 'all in the fridge' });
+
+  /* ---------- CuratedFavorites: "Foods you like" ---------- */
+  function tabRhythm(t, dessertFreq) {
+    if (t.kind === 'core' && t.shelf === 'snacks') return 'mix';
+    if (t.kind === 'core' && t.shelf === 'dessert') return dessertFreq === 'every_night' ? 'daily' : 'mix';
+    if (t.kind === 'exotic' && /^(morning|afternoon|evening)_snack$/.test(t.slot)) return 'mix';
+    return 'daily';
+  }
+  var WHEN_CORE = { breakfast: 'every morning', lunch: 'every lunchtime', dinner: 'every evening', snacks: 'your go-to snack', dessert: 'your dessert' };
+  var WHEN_SLOT = { brunch: 'every late morning', second_lunch: 'every afternoon', early_dinner: 'every early evening', morning_snack: 'your morning snack', afternoon_snack: 'your afternoon snack', evening_snack: 'your evening snack', pre_workout: 'before every workout', post_workout: 'after every workout' };
+  var NOUN = { breakfast: 'breakfasts', lunch: 'lunches', dinner: 'dinners', snacks: 'snacks', dessert: 'desserts' };
+  function singularWhen(t) { return t.kind === 'core' ? WHEN_CORE[t.shelf] || 'every day' : WHEN_SLOT[t.slot] || 'every day'; }
+  function tabNoun(t) { return t.kind === 'core' ? NOUN[t.shelf] : t.label.toLowerCase() + ' options'; }
+  function isShelf(t, s) { return t.kind === 'core' && t.shelf === s; }
+  /** CuratedFavoritesScreen.slotSentence. */
+  function slotSentence(t, units, dessertFreq, variety, inSheet) {
+    var n = units.length, rhythm = tabRhythm(t, dessertFreq), noun = tabNoun(t), isDessert = isShelf(t, 'dessert');
+    var isSnacks = isShelf(t, 'snacks') || (t.kind === 'exotic' && /^(morning|afternoon|evening)_snack$/.test(t.slot));
+    if (n === 0) {
+      if (inSheet) return isDessert ? "We'll keep dessert covered for you." : "We'll pick your " + noun + ' for you.';
+      return isDessert ? "Dessert's covered either way. Pick favourites to make it yours." : "We'll choose your " + noun + '. Pick anything to take over.';
+    }
+    if (n === 1) return units[0].name + ', ' + singularWhen(t) + '.';
+    if (units.every(function (u) { return u.slug === units[0].slug; })) return units[0].name + ', ' + n + ' ways. ' + (rhythm === 'daily' ? "We'll rotate them." : "We'll mix them in.");
+    if (rhythm === 'daily') {
+      if (variety === 'convenience') return n + ' ' + noun + " picked. We'll keep the week simple and repeat what works.";
+      if (variety === 'variety') return n + ' ' + noun + ". We'll rotate through all of them.";
+      return n + ' ' + noun + " on rotation. We'll set the order.";
+    }
+    return n + ' ' + noun + ' to mix in.';
+  }
+  function batchMainsFooter(n) { return n <= 0 ? "We'll pick your mains. Pick anything to take over." : n === 1 ? "1 main for your tubs. We'll plan the cooks." : n + " mains for your tubs. We'll plan the cooks."; }
+  function batchMainsRecap(n) { return n <= 0 ? "We'll pick your mains for you." : n === 1 ? "1 main for lunch and dinner. We'll plan the cooks." : n + " mains for lunch and dinner. We'll plan the cooks."; }
+  function uniq(units) { var seen = {}; return units.filter(function (u) { if (seen[u.slug]) return false; seen[u.slug] = 1; return true; }); }
+
+  function rPicks(el, my) {
+    var f = S.food, P = f.picks;
+    S.pk = S.pk || { tab: null, filter: 'all' };
+    var V = null, toastT = 0;
+    var load = function () { return Promise.all([needCatalogue(), mealView('picks'), loadIndex()]).then(function (r) { V = r[1].picker; return V; }); };
+    withData(el, my, load, 'Loading the meals…', function () {
+      el.classList.add('pk');
+      var keysHas = function (k) { return P.keys.indexOf(k) > -1; };
+      var unitsFor = function (t) {
+        var out = [];
+        t.eligible.forEach(function (slug) {
+          var m = V.meals[slug];
+          if (keysHas(t.planSlot + '|' + slug)) out.push({ slug: slug, name: m.name, image: m.image });
+          m.plates.forEach(function (p) { if (keysHas(t.planSlot + '|' + slug + ':' + p.id)) out.push({ slug: slug, name: m.name, image: p.image || m.image }); });
+        });
+        return out;
+      };
+      S.pkMeals = V.meals;
+      var activeTab = function () { return V.tabs.filter(function (t) { return t.id === S.pk.tab; })[0] || V.tabs[0]; };
+      var mainsPicked = function () { var s = {}; V.tabs.forEach(function (t) { unitsFor(t).forEach(function (u) { if (V.meals[u.slug].full) s[u.slug] = 1; }); }); return Object.keys(s).length; };
+      var hasAny = function () { return V.tabs.some(function (t) { return unitsFor(t).length > 0; }); };
+      var mealKeys = function (slot, slug) { return P.keys.filter(function (k) { return k === slot + '|' + slug || k.indexOf(slot + '|' + slug + ':') === 0; }); };
+      var plateClash = function (m, plateId) { var p = m.plates.filter(function (x) { return x.id === plateId; })[0]; return p ? p.clash : []; };
+      var heroKey = function (slot, m) { return m.plates.length > 1 ? slot + '|' + m.slug + ':' + m.plates[0].id : slot + '|' + m.slug; };
+      var pickHero = function (slot, m) { var k = heroKey(slot, m); toggle(P.keys, k); };
+      var refetch = function () { return load().then(function () { if (my === token) draw(); }); };
+
+      var onCard = function (slug) {
+        var t = activeTab(), slot = t.planSlot, m = V.meals[slug], keys = mealKeys(slot, slug);
+        if (keys.length) {
+          P.keys = P.keys.filter(function (k) { return keys.indexOf(k) < 0; });
+          var still = P.keys.some(function (k) { var key = k.slice(k.indexOf('|') + 1); return key === slug || key.indexOf(slug + ':') === 0; });
+          if (!still && P.allergenOk[slug]) { delete P.allergenOk[slug]; return refetch(); }
+          return draw();
         }
-        list.push({ label: 'Balancing protein', value: Math.round(av.protein) + ' / ' + t.protein + ' g', count: { to: Math.round(av.protein), suffix: ' / ' + t.protein + ' g' } });
-        if ((R.kept || []).indexOf('fibre') > -1 && av.fiber) list.push({ label: 'Checking fibre', value: Math.round(av.fiber) + ' g a day' });
-        list.push({ label: 'Building your shopping list', value: shopRows(M.grocery).length + ' items' });
-        return list;
-      },
-      visual: function (M) {
-        var dates = Object.keys(M.plan.dailyMeals).sort(), max = 0;
-        dates.forEach(function (d) { max = Math.max(max, mealCards(M.plan.dailyMeals[d].meals).length); });
-        return '<div class="wgrid">' + dates.map(function (d) {
-          var cards = mealCards(M.plan.dailyMeals[d].meals), day = (M.report.days.filter(function (x) { return x.date === d; })[0] || {});
-          var fill = Math.max(0, Math.min(1, (day.kcal || 0) / M.report.targets.kcal));
-          return '<div class="wcol"><span class="dl">' + dl(d).dow.charAt(0) + '</span>' + cards.map(function (c) { return '<div class="cell"><div class="in">' + (INDEX && INDEX[c.slug] && INDEX[c.slug].i ? '<img src="/images/meals/' + INDEX[c.slug].i + '.webp" alt="" width="60" height="60">' : '<div class="ic">' + iconFor(c.slug) + '</div>') + '</div></div>'; }).join('') +
-            new Array(max - cards.length + 1).join('<div class="cell"></div>') + '<div class="dbar"><i data-f="' + fill.toFixed(3) + '"></i></div></div>';
-        }).join('') + '</div>';
-      },
-      onStep: function (i, M, box, now) {
-        var label = ($$('.st .l', box)[i] || {}).textContent || '';
-        if (/^Placing/.test(label)) {
-          var cells = $$('.cell', box).filter(function (c) { return c.firstChild; });
-          cells.forEach(function (c, k) { now ? c.classList.add('on') : setTimeout(function () { c.classList.add('on'); }, k * 12); });
+        if (m.catch && plateClash(m, m.hero).length > 0 && !(P.allergenOk[slug] && P.allergenOk[slug].mode === 'anyway')) return catchSheet(m, slot);
+        if (m.skip && m.skip.kind === 'version' && m.skip.safe) { P.versionChoices[slug] = m.skip.variantId; pickHero(slot, m); return refetch(); }
+        pickHero(slot, m); draw();
+      };
+
+      var catchSheet = function (m, slot) {
+        var c = m.catch, o = c.offer, words = c.heroWords, culprits = c.culprits;
+        var plur = function (n) { return n.length <= 1 ? (n[0] || '') : n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1]; };
+        var ov = culprits.length ? 'Contains ' + words + ' · ' + (culprits.length === 1 ? 'the ' + culprits[0] : culprits.length + ' ingredients') : 'Contains ' + words;
+        var l1 = o.kind === 'leave_out' ? 'It’s topped with <b>' + esc(plur(o.names)) + '</b>.' : culprits.length ? 'The <b>' + esc(plur(culprits)) + '</b> ' + (culprits.length === 1 ? 'has' : 'have') + ' ' + esc(words) + '.' : 'It’s labelled as containing ' + esc(words) + '.';
+        var l2 = '', why = '', yes = 'Leave it out';
+        if (o.kind === 'plate') { l2 = 'The ' + o.plateName.toLowerCase() + ' doesn’t.'; why = 'Same meal, served another way' + (o.variantName ? ', made ' + o.variantName.toLowerCase() : '') + '.'; yes = 'Pick the ' + o.plateName.toLowerCase(); }
+        else if (o.kind === 'variant') { l2 = 'Made ' + o.variantName.toLowerCase() + ', it doesn’t.'; why = o.extraActiveMinutes > 0 ? 'Same plate. About ' + o.extraActiveMinutes + ' more minutes hands-on.' : 'Same plate, no extra work.'; yes = 'Pick it ' + o.variantName.toLowerCase(); }
+        else if (o.kind === 'leave_out') { l2 = 'Without it, it’s safe.'; why = 'It’s only a topping, so your macros barely change. Leave it off when you plate up.'; yes = 'Pick it without the ' + plur(o.names); }
+        else why = 'There’s no ' + words + '-free version of this one yet, so it stays out of your plan unless you say otherwise.';
+        var alt = o.kind === 'plate' ? m.plates.filter(function (p) { return p.id === o.ref.plateId; })[0] : null;
+        var strike = o.kind === 'leave_out' ? '+ ' + plur(o.names) : culprits[0] || words;
+        openSheet('<div class="cphoto">' + photoFile(m.image, m.name) + (alt && alt.image && alt.image !== m.image ? '<div class="cwipe">' + photoFile(alt.image, alt.name) + '</div>' : '') + '<span class="strike">' + WARN + '<s' + (o.kind === 'none' ? ' class="no"' : '') + '>' + esc(strike) + '</s></span></div>' +
+          '<p class="sh-ov amber">' + esc(ov) + '</p><p class="cl1">' + l1 + '</p>' + (l2 ? '<p class="cl2"><span>' + CHECK + '</span>' + esc(l2) + '</p>' : '') + '<p class="sh-lede">' + esc(why) + '</p>' +
+          '<button type="button" class="sh-go" data-a="safe">' + esc(yes) + '</button><button type="button" class="sh-ghost two" data-a="anyway">' + (o.kind === 'none' ? 'Pick it anyway' : 'Pick the original anyway') + '<small>I have a safe swap at home</small></button>', function (sh) {
+          $$('[data-a]', sh).forEach(function (b) {
+            b.onclick = function () {
+              var a = b.getAttribute('data-a'); closeSheet();
+              if (a === 'safe' && o.kind === 'none') return;
+              if (a === 'anyway') { P.allergenOk[m.slug] = { mode: 'anyway' }; pickHero(slot, m); return refetch(); }
+              if (o.kind === 'leave_out') { P.allergenOk[m.slug] = { mode: 'leave_out', leaveOut: o.ingredientIds }; pickHero(slot, m); }
+              else if (o.kind === 'variant') { if (o.ref.variantId) P.versionChoices[m.slug] = o.ref.variantId; pickHero(slot, m); }
+              else if (o.kind === 'plate') { if (o.ref.variantId && o.ref.variantId !== c.heroVariant) P.versionChoices[m.slug] = o.ref.variantId; toggle(P.keys, slot + '|' + m.slug + ':' + o.ref.plateId); }
+              refetch();
+            };
+          });
+        });
+      };
+
+      var plateSheet = function (slug) {
+        var t = activeTab(), slot = t.planSlot, m = V.meals[slug];
+        var body = function () {
+          return '<p class="sh-ov acc">Pick a plate</p><h2 class="sh-t">' + esc(m.name) + '</h2><p class="sh-lede">How would you eat it? Pick one or a few. A few ways keeps one batch interesting.</p>' +
+            m.plates.map(function (p, i) {
+              var on = keysHas(slot + '|' + slug + ':' + p.id), notes = [];
+              if (p.clash.length) notes.push('<small class="amber">Has ' + esc(allergenList(p.clash)) + '</small>');
+              if (p.skipHas) notes.push('<small>Has ' + esc(p.skipHas) + '</small>');
+              return '<button type="button" class="prow' + (on ? ' on' : '') + '" data-pl="' + esc(p.id) + '" aria-pressed="' + on + '"><span class="pth">' + photoFile(p.image || m.image, p.name) + '</span><span class="pb"><span class="pn"><b>' + esc(p.name) + '</b>' + (p.stunt ? '<i class="treat">treat</i>' : '') + (i === 0 ? '<i class="herop">in the photo</i>' : '') + '</span><small>' + p.kcal + ' cal · ' + p.protein + 'g protein</small>' + notes.join('') + '</span><span class="pck">' + (on ? CHECK : '') + '</span></button>';
+            }).join('') + '<button type="button" class="sh-go" data-close="1">Done</button>';
+        };
+        openSheet('<div id="plBody">' + body() + '</div>', function (sh) {
+          var wire = function () {
+            $$('[data-pl]', sh).forEach(function (b) {
+              b.onclick = function () {
+                var id = b.getAttribute('data-pl'), k = slot + '|' + slug + ':' + id, turningOn = !keysHas(k);
+                if (turningOn && plateClash(m, id).length && !P.allergenOk[slug]) P.allergenOk[slug] = { mode: 'anyway' };
+                toggle(P.keys, k); $('#plBody', sh).innerHTML = body(); wire(); draw();
+              };
+            });
+            $('[data-close]', sh).onclick = function () { closeSheet(); };
+          };
+          wire();
+        });
+      };
+
+      var notesFor = function (m, view) {
+        var out = [], c = m.catch;
+        if (c) {
+          var picked = [];
+          view.forEach(function (k) { if (k === m.slug) picked.push(m.hero); else if (k.indexOf(m.slug + ':') === 0) picked.push(k.slice(m.slug.length + 1)); });
+          if (picked.length) {
+            var unsafe = picked.some(function (pid) { return plateClash(m, pid).length > 0; });
+            out.push(unsafe ? ['amber', 'Has ' + c.words + ' · your call'] : ['green', 'No ' + c.words]);
+          } else {
+            var hc = plateClash(m, m.hero);
+            out.push(hc.length ? ['amber', 'Has ' + allergenList(hc)] : ['green', 'No ' + c.words]);
+          }
         }
-        if (/kcal/.test(label)) $$('.dbar i', box).forEach(function (b, k) { var go = function () { b.style.transform = 'scaleX(' + b.getAttribute('data-f') + ')'; }; now ? go() : setTimeout(go, k * 45); });
-      },
-      done: function () { replaceWith('weekready'); },
+        var v = m.skip;
+        if (v && v.kind === 'has') out.push(['plain', 'Has ' + v.foods]);
+        else if (v && v.kind === 'leave_out') out.push(['green', 'No ' + v.foods]);
+        else if (v && v.kind === 'version') { var nm = String(v.variantName).toLowerCase(); out.push(['green', nm.charAt(0).toUpperCase() + nm.slice(1) + ': no ' + v.foods]); }
+        return out;
+      };
+      var cardHtml = function (slug, view, salt) {
+        var m = V.meals[slug], multi = m.plates.length > 1, picks = 0, ov = null;
+        if (view.indexOf(slug) > -1) picks++;
+        view.forEach(function (k) { if (k.indexOf(slug + ':') === 0) picks++; });
+        if (m.catch) { var pk = view.filter(function (k) { return k.indexOf(slug + ':') === 0; }); if (pk.length === 1) { var pl = m.plates.filter(function (p) { return slug + ':' + p.id === pk[0]; })[0]; if (pl && pl.id !== m.hero) ov = pl; } }
+        var notes = notesFor(m, view);
+        if (salt != null) notes.push(['plain', String(Math.round(salt)).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' mg sodium a tub']);
+        var label = !multi ? '' : (function () { var p = m.plates.filter(function (x) { return view.indexOf(slug + ':' + x.id) > -1; }); return p.length === 0 ? m.plates.length + ' ways' : p.length === 1 ? p[0].name : p.length + ' of ' + m.plates.length + ' ways'; })();
+        var rp = recipe(slug);
+        return '<div class="mcard' + (picks ? ' on' : '') + (m.skip && m.skip.kind === 'has' && !picks ? ' dim' : '') + '"><button type="button" class="mtp" data-card="' + slug + '" aria-pressed="' + (picks > 0) + '" aria-label="' + esc((ov ? ov.name : m.name) + ', ' + (m.effort === 0 ? 'no cooking' : m.effort + ' minutes hands-on') + ', ' + m.ings + ' ingredients' + notes.map(function (n) { return ', ' + n[1]; }).join('')) + '">' +
+          '<span class="mimg">' + photoFile(ov ? ov.image : m.image, '') + '</span>' +
+          (notes.length ? '<span class="nst">' + notes.map(function (n) { return '<span class="np ' + n[0] + '">' + (n[0] === 'amber' ? WARN : n[0] === 'green' ? CHECK : '') + esc(n[1]) + '</span>'; }).join('') + '</span>' : '') +
+          '<span class="cb">' + (picks ? (multi && picks > 1 ? '<b>' + picks + '</b>' : CHECK) : '') + '</span><span class="mt2">' + esc(ov ? ov.name : m.name) + '</span>' +
+          '<span class="pst"><span class="mp' + (m.ings >= 11 ? ' warn' : '') + '">' + m.ings + ' ings</span><span class="mp">' + (m.effort === 0 ? 'No cook' : m.effort + ' min') + '</span></span></button>' +
+          (multi ? '<button type="button" class="mfoot" data-ways="' + slug + '">' + esc(label) + CHEVR + '</button>' : '') +
+          (rp ? '<a class="minfo" href="../r/' + rp + '/" target="_blank" rel="noopener" aria-label="More about ' + esc(m.name) + '">' + INFO + '</a>' : '') + '</div>';
+      };
+
+      var draw = function () {
+        var t = activeTab(); S.pk.tab = t.id;
+        var view = P.keys.filter(function (k) { return k.indexOf(t.planSlot + '|') === 0; }).map(function (k) { return k.slice(t.planSlot.length + 1); });
+        var L = t.lists[S.pk.filter], rows = [];
+        var chunk = function (slugs) {
+          var quick = slugs.filter(function (s) { return V.meals[s].quick; }), slow = slugs.filter(function (s) { return !V.meals[s].quick; });
+          if (!slow.length) { rows.push(['grid', slugs]); return; }
+          if (quick.length) { rows.push(['head', 'Quick or made ahead', 'About 5 minutes with no stove, or made once and kept for the week.', true]); rows.push(['grid', quick]); }
+          rows.push(['div', 'Cooked fresh, 10 min or more']); rows.push(['grid', slow]);
+        };
+        var saltMg = {};
+        if (L.goal.length || L.salt.length) {
+          var on = {}; L.goal.concat(L.salt).forEach(function (x) { on[x.slug] = 1; });
+          if (L.goal.length) { rows.push(['head', V.shelf.title, V.shelf.sub, true, true]); chunk(L.goal.map(function (x) { return x.slug; })); }
+          if (L.salt.length) { L.salt.forEach(function (x) { saltMg[x.slug] = x.mg; }); rows.push(['head', 'Lower in salt', 'Least sodium a tub, made with salt-reduced tins and sauces.', true]); chunk(L.salt.map(function (x) { return x.slug; })); }
+          rows.push(['div', 'All mains']); chunk(L.top.filter(function (s) { return !on[s]; }));
+          if (L.low.length) rows.push(['div', 'Has foods you skip · ' + L.low.length]);
+          rows.push(['grid', L.low]);
+        } else if (L.low.length) { chunk(L.top); rows.push(['div', 'Has foods you skip · ' + L.low.length]); rows.push(['grid', L.low]); }
+        else chunk(L.top);
+        var have = P.useUp.map(function (id) { return { id: id, name: S.cat.names[id] }; });
+        var extra = have.filter(function (h) { return !S.cat.quickUseUp.some(function (q) { return q.id === h.id; }); });
+        var chip = function (label, id) { return '<button type="button" class="fchip sm" data-uu="' + esc(id) + '" aria-pressed="' + (P.useUp.indexOf(id) > -1) + '">' + esc(label) + '</button>'; };
+        var shortName = function (n) { return String(n).split(/[,(]/)[0].trim().split(' ')[0].toLowerCase(); };
+        var y = window.scrollY;
+        el.innerHTML = '<div class="pktop"><span></span><button type="button" class="linkb small" id="chooseMe" aria-label="Choose for me. Skip picking and let the app choose your meals">Choose for me</button></div>' +
+          '<h1 class="ptitle">Foods you like</h1><p class="sub">Pick what you’ll eat this week.</p>' +
+          (V.mainsRec != null ? '<p class="sub" style="margin-top:2px">' + esc(V.mainsLine) + '</p><button type="button" class="linkb small why" id="whyN">Why ' + V.mainsRec + '? ›</button>' : '') +
+          (V.avoid ? '<p class="avoid"><span>You avoid</span><i></i>' + esc(V.avoid) + '</p>' : '') +
+          V.unlabelled.map(function (a) { return '<p class="unl">' + esc(a) + " isn't on our meal labels. Check ingredients yourself.</p>"; }).join('') +
+          '<div class="tabs" role="tablist">' + V.tabs.map(function (x) { var hp = unitsFor(x).length > 0; return '<button type="button" role="tab" data-tab="' + x.id + '" aria-selected="' + (x.id === t.id) + '">' + esc(x.label) + '<i class="' + (hp ? 'on' : '') + '"></i></button>'; }).join('') + '</div>' +
+          '<div class="uucard"><div class="uuh"><b>Got food to use up?</b><button type="button" class="linkb small" id="allFoods">All foods ›</button></div><p>Tap what\'s in your fridge or pantry. Meals that use it go first.</p><div class="uuchips">' +
+            extra.map(function (h) { return chip(h.name, h.id); }).join('') + S.cat.quickUseUp.map(function (q) { return chip(q.label, q.id); }).join('') + '</div>' +
+            (have.length ? '<div class="uuse"><span>Using <b>' + esc(have.slice(0, 3).map(function (h) { return shortName(h.name); }).join(', ') + (have.length > 3 ? ' +' + (have.length - 3) : '')) + '</b></span><button type="button" id="fillWeek">Fill my week</button></div>' : '') + '</div>' +
+          (t.useUp.length ? '<p class="rowt">Uses what you have</p><div class="mrowx">' + t.useUp.map(function (u) { var m = V.meals[u.slug], pk = view.some(function (k) { return k === u.slug || k.indexOf(u.slug + ':') === 0; }); return '<button type="button" class="mcmini' + (pk ? ' on' : '') + '" data-card="' + u.slug + '"><span class="mimg">' + photoFile(m.image, '') + '<span class="cb">' + (pk ? CHECK : '') + '</span></span><b>' + esc(m.name) + '</b><small>' + esc(u.sub) + '</small></button>'; }).join('') + '</div>' : '') +
+          '<div class="filt">' + [['all', 'All'], ['quick', 'Quick'], ['no_cook', 'No-cook'], ['batch', 'Big batch']].map(function (q) { return '<button type="button" data-qf="' + q[0] + '" aria-pressed="' + (S.pk.filter === q[0]) + '">' + q[1] + '</button>'; }).join('') + '</div>' +
+          (L.top.length + L.low.length === 0 ? '<div class="empty"><p>No matches with this filter.</p><button type="button" class="linkb small" id="clrF">Clear filter</button></div>' :
+            rows.map(function (r) {
+              if (r[0] === 'grid') return '<div class="mgrid2">' + r[1].map(function (s) { return cardHtml(s, view, saltMg[s]); }).join('') + '</div>';
+              if (r[0] === 'div') return '<p class="sdiv"><span>' + esc(r[1]) + '</span><i></i></p>';
+              return '<div class="shead"><p class="sdiv acc"><span>' + esc(r[1]) + '</span><i></i>' + (r[4] ? '<button type="button" class="linkb small" id="whyThese">Why these ›</button>' : '') + '</p><small>' + esc(r[2]) + '</small></div>';
+            }).join(''));
+        window.scrollTo(0, y);
+        $$('[data-tab]', el).forEach(function (b) { b.onclick = function () { S.pk.tab = b.getAttribute('data-tab'); draw(); window.scrollTo(0, 0); }; });
+        $$('[data-card]', el).forEach(function (b) { b.onclick = function () { onCard(b.getAttribute('data-card')); }; });
+        $$('[data-ways]', el).forEach(function (b) { b.onclick = function () { plateSheet(b.getAttribute('data-ways')); }; });
+        $$('[data-qf]', el).forEach(function (b) { b.onclick = function () { S.pk.filter = b.getAttribute('data-qf'); draw(); }; });
+        $$('[data-uu]', el).forEach(function (b) { b.onclick = function () { toggle(P.useUp, b.getAttribute('data-uu')); refetch(); }; });
+        var cf = $('#clrF', el); if (cf) cf.onclick = function () { S.pk.filter = 'all'; draw(); };
+        var wn = $('#whyN', el); if (wn) wn.onclick = function () { whySheet(V.mainsWhy); };
+        var wt = $('#whyThese', el); if (wt) wt.onclick = function () {
+          var L2 = activeTab().lists[S.pk.filter];
+          openSheet('<h2 class="sh-t">' + esc(V.shelf.title) + '</h2><p class="sh-lede">' + esc(V.shelf.sub) + '</p>' + L2.goal.map(function (x) { return '<div class="whyrow"><b>' + esc(V.meals[x.slug].name) + '</b><span>' + esc(x.reason) + '</span></div>'; }).join('') + '<button type="button" class="sh-go" data-close="1">Done</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
+        };
+        $('#chooseMe', el).onclick = function () { P.saved = false; go('mealsummary'); };
+        $('#allFoods', el).onclick = allFoods;
+        var fw = $('#fillWeek', el); if (fw) fw.onclick = function () {
+          call('fillWeek', aboutForEngine(), foodForEngine()).then(function (r) {
+            if (my !== token) return;
+            P.keys = r.keys; draw();
+            toast(r.added ? 'Picked ' + plural(r.added, 'meal') + ' that use ' + r.names + '. The build fills the rest and keeps your macros.' : 'Nothing new to fill: every tab has picks, or no meal uses those foods.');
+          });
+        };
+        footer();
+      };
+      var toast = function (text) {
+        var old = document.querySelector('.ptoast'); if (old) old.remove();
+        var d = document.createElement('div'); d.className = 'ptoast'; d.innerHTML = '<span>' + CHECK + '</span>' + esc(text); document.body.appendChild(d);
+        clearTimeout(toastT); toastT = setTimeout(function () { d.remove(); }, 4200);
+      };
+      var allFoods = function () {
+        var q = '';
+        var body = function () {
+          var query = q.trim().toLowerCase();
+          var groups = S.cat.aisles.map(function (a) { return { label: a.label, items: a.items.filter(function (r) { return !query || r.name.toLowerCase().indexOf(query) > -1 || (r.syn || []).some(function (s) { return s.toLowerCase().indexOf(query) > -1; }); }) }; }).filter(function (g) { return g.items.length; });
+          return groups.length ? groups.map(function (g) { return '<p class="letter">' + esc(g.label) + '</p>' + g.items.map(function (r) { var on = P.useUp.indexOf(r.id) > -1; return '<button type="button" class="frow' + (on ? ' got' : '') + '" data-af="' + esc(r.id) + '" role="checkbox" aria-checked="' + on + '"><span class="ft"><span class="fn">' + esc(r.name) + '</span></span><span class="fc">in ' + plural(r.meals, 'meal') + '</span><span class="fp">' + (on ? CHECK : '') + '</span></button>'; }).join(''); }).join('') : '<p class="nores">Nothing matches “' + esc(q.trim()) + "”. Our meals don't use it.</p>";
+        };
+        openSheet('<h2 class="sh-t">What\'s in your kitchen?</h2><p class="sh-lede">Every food our meals use, by aisle. Tick what you want to use up.</p><div class="search"><input type="text" id="afQ" placeholder="Filter, like spin" autocomplete="off" aria-label="Filter foods"></div><div id="afL" class="alist"></div><button type="button" class="sh-go" data-close="1">Done</button>', function (sh) {
+          var wire = function () { $('#afL', sh).innerHTML = body(); $$('[data-af]', sh).forEach(function (b) { b.onclick = function () { toggle(P.useUp, b.getAttribute('data-af')); wire(); }; }); };
+          $('#afQ', sh).oninput = function () { q = this.value; wire(); };
+          $('[data-close]', sh).onclick = function () { closeSheet(); refetch(); };
+          wire();
+        }, function () { refetch(); });
+      };
+      var footer = function () {
+        var t = activeTab(), units = unitsFor(t), rhythm = tabRhythm(t, V.dessertFrequency);
+        var dot = function (u, i, overlap) { return '<span class="sdot' + (u ? '' : ' empty') + (overlap && i > 0 ? ' ov' : '') + '">' + (u ? photoFile(u.image, '') : '') + '</span>'; };
+        var dots = rhythm === 'daily' ? [0, 1, 2, 3, 4, 5, 6].map(function (i) { return dot(units.length ? units[i % units.length] : null, i, false); }).join('') : (units.length ? units.slice(0, 5) : [null, null, null]).map(function (u, i) { return dot(u, i, true); }).join('');
+        var mainsTabs = V.tabs.filter(function (x) { return isShelf(x, 'lunch') || isShelf(x, 'dinner'); });
+        var batchN = V.batchPlanOn && (isShelf(t, 'lunch') || isShelf(t, 'dinner')) ? uniq([].concat.apply([], mainsTabs.map(unitsFor))).length : null;
+        var any = hasAny(), mp = mainsPicked(), line = V.mainsRec != null && any ? pickCountLine(mp, V.mainsRec, 'mains') : null;
+        ctaNote('<div class="strip"><div class="sdots">' + dots + '</div><p>' + esc(batchN != null ? batchMainsFooter(batchN) : slotSentence(t, units, V.dessertFrequency, V.mealVariety, false)) + '</p></div><p class="gentle"' + (line ? '' : ' style="visibility:hidden"') + '>' + esc(line || '.') + '</p>');
+        primary(V.mainsRec != null && any ? 'Save · ' + mp + ' of ' + V.mainsRec : 'Save', confirm, !any);
+      };
+      var confirm = function () {
+        var tabs = V.tabs.filter(function (x) { return !(V.batchPlanOn && isShelf(x, 'dinner') && V.tabs.some(function (y) { return isShelf(y, 'lunch'); })); });
+        openSheet('<p class="sh-ov acc">Before we build</p><h2 class="sh-t">Your week, then.</h2><div class="rcap">' + tabs.map(function (x) {
+          var mainsRow = V.batchPlanOn && isShelf(x, 'lunch');
+          var units = mainsRow ? uniq(unitsFor(x).concat([].concat.apply([], V.tabs.filter(function (y) { return isShelf(y, 'dinner'); }).map(unitsFor)))) : unitsFor(x);
+          var rhythm = tabRhythm(x, V.dessertFrequency);
+          var mini = rhythm === 'daily' ? [0, 1, 2, 3, 4, 5, 6].map(function (i) { return units.length ? units[i % units.length] : null; }) : units.length ? units.slice(0, 5) : [null, null, null];
+          var nUniq = Object.keys(units.reduce(function (o, u) { o[u.slug] = 1; return o; }, {})).length;
+          return '<div class="rrow"><p class="rl">' + esc(mainsRow ? 'Lunch and dinner' : x.label) + '</p><div><div class="rdots' + (rhythm === 'mix' ? ' mix' : '') + '">' + mini.map(function (u) { return '<span>' + (u ? photoFile(u.image, '') : '') + '</span>'; }).join('') + '</div><p class="rsn">' + esc(mainsRow ? batchMainsRecap(nUniq) : slotSentence(x, units, V.dessertFrequency, V.mealVariety, true)) + '</p></div></div>';
+        }).join('') + '</div><button type="button" class="sh-go" id="cfOk">Looks good</button><button type="button" class="sh-sec" data-close="1">Keep editing</button>', function (sh) {
+          $('#cfOk', sh).onclick = function () { closeSheet(); P.saved = true; S.pk.tab = null; go('mealsummary'); };
+          $('[data-close]', sh).onclick = function () { closeSheet(); };
+        });
+      };
+      draw();
     });
   }
+
+  /* ---------- NutritionSummary: "Looking good." ---------- */
+  var ACTIVITY_LABELS = { sedentary: 'Mostly sitting', light: 'On my feet a bit', moderate: 'On my feet a lot', heavy: 'Physical work', extreme: 'Hard physical work' };
+  var DIET_LABELS = { balanced: 'Balanced', high_protein: 'High protein', low_carb: 'Low carb', keto: 'Keto', custom: 'Custom' };
+  function startLabel(v) {
+    if (v === 'today') return 'starts today'; if (v === 'tomorrow') return 'starts tomorrow';
+    var off = startOffset(v); if (off == null) return '';
+    var d = addDays(midnight(new Date()), off); return 'starts ' + WD[d.getDay()] + ' ' + d.getDate() + ' ' + MONS[d.getMonth()];
+  }
+  /** PhaseTargetNote.noteFor (em dashes in two app strings read as commas here). */
+  function phaseNote(n, m) {
+    var pace = function (dir) {
+      var dd = m ? Math.abs(m.tdee - m.calories) : null;
+      if (dd != null && dd > 0) return dir + ' about ' + ((dd * 7) / 7700).toFixed(2) + ' kg a week';
+      if (n.seedPct == null) return dir === 'Up' ? 'A small surplus, deliberately' : 'A steady deficit';
+      return dir + ' ' + n.seedPct + '% a week' + (n.weightKg ? ' (' + ((n.weightKg * n.seedPct) / 100).toFixed(2) + ' kg)' : '');
+    };
+    if (n.phase === 'recomp' || n.phase === 'maintain') {
+      var fav = n.trainingState === 'new' || n.trainingState === 'returning' || (n.bf != null && n.bf >= 18);
+      return { value: 'Hold steady, fat down, muscle up', title: 'What decides this', head: 'The scale is meant to sit still.', body: 'Your weight is meant to stay put. Fat comes down and muscle goes up while the scale sits still, so three weeks without movement is the plan working.\n\n' + (fav ? 'This works best for people new to lifting, coming back after a break, or carrying more body fat, which describes you, so it should move well.' : 'This works best for people new to lifting, coming back after a break, or carrying more body fat. You are past that stage, so it still works, just slowly. A cut and then a build might get you there sooner.'), src: 'Barakat et al., Strength & Conditioning Journal, 2020' };
+    }
+    if (n.phase === 'bulk' || n.phase === 'lean_bulk') return { value: pace('Up'), title: 'Why not eat more?', head: 'A small surplus, deliberately.', body: 'That is the pace your body can turn into muscle, and food does not raise it. When lifters were put on a large surplus instead of a small one, the extra weight was mostly fat, and strength and muscle came out much the same.\n\nSo your target is the smallest surplus that still covers the muscle you can build. Eating more would only add fat you would have to trim off later.', src: 'Helms et al., Sports Medicine – Open, 2023' };
+    return { value: pace('Down'), title: 'What decides this', head: 'A steady deficit, on purpose.', body: 'Your route runs this phase as a cut, and this is the pace it plans for: the slower end of what is safe. At this pace lifters in the research got stronger and added muscle while losing fat; a faster group shed it in about half the time but gained neither, on a much harder diet.\n\nYour fat stores can only release so much energy a day, and the leaner you get the lower that limit goes. The pace is checked against it every time your plan is built, so it follows your body rather than a number you chose once.' +
+      (m && m.raisedForEnergyAvailability ? '\n\nThe calories were raised above what that pace asked for, because a deficit that deep would not leave enough energy to run on after training. The pace shown is the one the raised target actually delivers.' : '') +
+      (m && m.raisedToAbsoluteFloor ? '\n\nThe calories were raised to the minimum the app will set for an unsupervised diet. A lower target is a decision for a doctor or dietitian, not an app.' : '') +
+      (m && m.heldForAge ? '\n\nBecause you are under 18, the app holds the target at maintenance rather than a deficit. Changing your intake while you are still growing is something to decide with a doctor, dietitian or parent.' : ''), src: 'Garthe et al., Int J Sport Nutr Exerc Metab, 2011 · Alpert, J Theor Biol, 2005' };
+  }
+  function rSummary2(el, my) {
+    S.edit = false;
+    withData(el, my, function () { return mealView('summary'); }, 'Loading your answers', function (v) {
+      var sm = v.summary, a = sm.answers, m = sm.macros, L = sm.labels;
+      var snack = a.snackFrequency === '0' ? 'no snacks' : a.snackFrequency === '3+' ? '3+ snacks' : a.snackFrequency === 'ai_decide' ? 'plan picks snacks' : a.snackFrequency ? a.snackFrequency + ' snack' + (a.snackFrequency === '1' ? '' : 's') : '';
+      var dess = { '0': 'None', every_night: 'Every night', most_nights: 'Most nights', once_per_week: 'Once a week', few_per_week: 'A few nights a week', ai_decide: 'Let the plan decide' };
+      var rows = [
+        ['Age', null, a.age != null ? String(a.age) : 'Not set'],
+        ['Day-to-day activity', 'active', a.activityLevel ? ACTIVITY_LABELS[a.activityLevel] || a.activityLevel : 'Not set'],
+        ['Training', 'sessions', L.training],
+        ['Diet', 'diettype', a.dietType ? DIET_LABELS[a.dietType] || a.dietType : 'Not set'],
+        ['Meat', 'meat', L.meat],
+        ['Keep lower', 'keeplower', L.keepLower],
+        ['Meals & snacking', 'eat', a.mealsPerDay == null ? 'Not set' : a.mealsPerDay + ' meals' + (snack ? ' · ' + snack : '')],
+      ];
+      if (L.appetite != null) rows.push(['Eating enough is hard', 'appetite', L.appetite]);
+      rows.push(['Variety', 'eat', a.mealVariety === 'convenience' ? 'Cook once, repeat' : a.mealVariety === 'variety' ? 'Keep it varied' : 'A bit of both']);
+      rows.push(['Desserts', 'dessert', !a.dessertFrequency || a.dessertFrequency === '0' ? 'None' : dess[a.dessertFrequency] || 'Not set']);
+      rows.push(['Slow cooker', 'cooker', L.cooker], ['Blender', 'cooker', L.blender], ['Freezer space', 'freezer', L.freezer], ['How often you shop', 'cadence', L.cadence]);
+      if (L.stockUp != null) rows.push(['Stock up', 'stockup', L.stockUp]);
+      rows.push(['Plan length', 'planlength', a.planDuration == null ? 'Not set' : L.planDays + ' days' + (startLabel(a.startDate) ? ' · ' + startLabel(a.startDate) : '')]);
+      rows.push(['Allergies', 'allergies', a.allergies && a.allergies.length ? a.allergies.join(', ') : 'None']);
+      rows.push(['Foods you skip', 'skip', sm.skip || 'None']);
+      var lvl = sm.sleep ? (sm.sleep.level === 'minimal' ? 'Performance-focused' : sm.sleep.level === 'maximum' ? 'Sleep-first' : 'Balanced') : '';
+      rows.push(['Sleep & meal timing', 'sleep', sm.sleep ? sm.sleep.bedtime + ' – ' + sm.sleep.wakeTime + ' · ' + lvl : 'Not set']);
+      rows.push(['Eating challenges', a.goal === 'gain_weight' ? 'appetite' : null, a.eatingChallenges && a.eatingChallenges.length ? a.eatingChallenges.join(', ') : 'None']);
+      var note = sm.note ? phaseNote(sm.note, m) : null;
+      var pC = (m.protein || 0) * 4, cC = (m.carbs || 0) * 4, fC = (m.fat || 0) * 9, tot = pC + cC + fC, pc = function (x) { return tot > 0 ? Math.round((x / tot) * 100) : 0; };
+      el.innerHTML = '<p class="ov rise" style="--i:0">Your meal plan</p><h1 class="qh rise" style="--i:0">Looking good.</h1><p class="sub rise" style="--i:1">Everything your plan is built from. Tap any row to change it.</p>' +
+        '<div class="mcardx rise" style="--i:2"><p class="kcal1"><b>' + n0(m.calories) + '</b><span>kcal / day</span></p>' +
+        [['Protein', m.protein, pc(pC), 'var(--acc)'], ['Carbs', m.carbs, pc(cC), '#fbbf24'], ['Fat', m.fat, pc(fC), '#f472b6']].map(function (x) { return '<div class="mbar"><span>' + x[0] + '</span><div><i style="width:' + x[2] + '%;background:' + x[3] + '"></i></div><b>' + Math.round(x[1]) + ' g</b><small>' + x[2] + '%</small></div>'; }).join('') +
+        (note ? '<button type="button" class="srow2 note" id="ptn"><span><small>Weight target</small><b>' + esc(note.value) + '</b></span>' + CHEVR + '</button>' : '') + '</div>' +
+        '<p class="shd">Build your plan around</p><button type="button" class="fyl rise' + (sm.favCount ? ' on' : '') + '" style="--i:3" id="fyl"><span class="hrt">' + (sm.favCount ? '♥' : '♡') + '</span><span><b>Foods you like</b><small>' + (sm.favCount ? plural(sm.favCount, 'pick') : "We'll choose your meals for you. Tap to take over.") + '</small></span>' + CHEVR + '</button>' +
+        '<p class="shd">Your answers</p><div class="ans">' + rows.map(function (r, i) {
+          var tap = r[1] && r[1] !== 'N3Age';
+          return '<' + (tap ? 'button type="button" data-ed="' + r[1] + '"' : 'div') + ' class="srow2 rise" style="--i:' + Math.min(4 + i, 12) + '"><span><small>' + esc(r[0]) + '</small><b>' + esc(r[2]) + '</b></span>' + (tap ? CHEVR : '') + '</' + (tap ? 'button' : 'div') + '>';
+        }).join('') + '</div><p class="restart"><button type="button" class="linkb small" id="restart">Restart questionnaire</button></p>';
+      if (note) $('#ptn', el).onclick = function () {
+        openSheet('<p class="sh-ov acc">Weight target · ' + esc(note.title) + '</p><h2 class="sh-t">' + esc(note.head) + '</h2>' + note.body.split('\n\n').map(function (p) { return '<p class="sh-b">' + esc(p) + '</p>'; }).join('') + '<p class="sh-src">' + esc(note.src) + '</p><button type="button" class="sh-ghost" data-close="1">Got it</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
+      };
+      $('#fyl', el).onclick = function () { go('picks'); };
+      $$('[data-ed]', el).forEach(function (b) { b.onclick = function () { S.edit = true; go(b.getAttribute('data-ed')); }; });
+      $('#restart', el).onclick = function () {
+        openSheet('<h2 class="sh-t">Restart questionnaire?</h2><p class="sh-b">This clears all your answers and starts the questionnaire from the beginning.</p><button type="button" class="sh-go danger" id="rsOk">Restart</button><button type="button" class="sh-sec" data-close="1">Cancel</button>', function (sh) {
+          $('#rsOk', sh).onclick = function () { closeSheet(); S.food = freshFood(); S.mv = null; S.meals = null; S.mealsKey = ''; go('active'); };
+          $('[data-close]', sh).onclick = function () { closeSheet(); };
+        });
+      };
+      primary('Build my meal plan', function () { go('mealbuild'); });
+    });
+  }
+
+  /* ---------- MealBuildScreen ---------- */
+  function needMeals(opts) {
+    var k = keyOf([aboutForEngine(), foodForEngine(), opts && opts.accepted || null]);
+    return loadIndex().then(function () {
+      if (S.mealsKey === k && S.meals) return S.meals;
+      return call('buildMeals', aboutForEngine(), foodForEngine(), opts || {}).then(function (m) { S.meals = m; S.mealsKey = k; S.accepted = opts && opts.accepted || null; S.day = 0; S.ticks = {}; S.openAisle = null; return m; });
+    });
+  }
+  /** MealBuildScreen.stepsFor + batchSteps: every number is the plan's own. */
+  function buildSteps(M) {
+    var R = M.report, c = R.counts, av = R.avg, t = R.targets, kcalOff = (R.misses && R.misses.kcal) || 0, fav = M.favourites;
+    var short = av.protein < t.proteinLo - 0.5, farOver = av.protein > t.proteinHi * 1.2;
+    var out = [
+      fav > 0 ? { label: 'Reading your ' + fav + ' favourite' + (fav === 1 ? '' : 's'), value: fav + ' meal' + (fav === 1 ? '' : 's') } : { label: 'Choosing meals for you', value: 'from the library' },
+      { label: 'Placing ' + c.meals + ' meals across ' + c.days + ' days', value: c.meals + ' / ' + c.meals },
+      { label: 'Hitting ' + n0(t.kcal) + ' kcal every day', value: kcalOff ? kcalOff + ' day' + (kcalOff === 1 ? '' : 's') + ' off' : n0(av.kcal), count: kcalOff ? null : { to: av.kcal }, warn: kcalOff > 0 },
+    ];
+    var b = R.batch;
+    if (b) {
+      out.push({ label: 'Planning your cook', value: 'cook ' + b.potsToCook + ' pot' + (b.potsToCook === 1 ? '' : 's') });
+      out.push({ label: 'Filling your freezer', value: b.tubsBanked ? b.tubsBanked + ' tub' + (b.tubsBanked === 1 ? '' : 's') + ' banked' : b.tubsFromStock ? b.tubsFromStock + ' from the freezer' : 'all in the fridge' });
+      if (b.status !== 'ok') out.push({ label: 'Tubs a day', value: b.tubsPerDay + ' of ' + b.ownTubsPerDay, warn: true });
+    } else {
+      out.push({ label: 'Planning your prep', value: c.batchCooks + ' batch cook' + (c.batchCooks === 1 ? '' : 's') });
+      out.push({ label: 'Checking fridge life', value: c.freezePortions ? c.freezePortions + ' to freeze' : 'all fresh' });
+    }
+    out.push({ label: 'Balancing protein', value: Math.round(av.protein) + ' / ' + t.protein + ' g', count: { to: Math.round(av.protein), suffix: ' / ' + t.protein + ' g' }, warn: short || farOver });
+    (R.dropped || []).forEach(function (d) { out.push({ label: 'No safe ' + d.word + ' in the library', value: d.slot === 'dessert' ? 'nights off' : 'left out', warn: true }); });
+    out.push({ label: 'Building your shopping list', value: c.groceryItems + ' items' });
+    return out;
+  }
+  function rMealBuild(el, my) {
+    var favN = S.food.picks.saved ? S.food.picks.keys.length : 0;
+    buildMoment(el, my, {
+      word: 'your week.', sub: favN ? favN + ' favourites' : 'Your favourites', stepMs: 520, hold: 2700,
+      wall0: S.food.picks.saved && S.pkMeals ? S.food.picks.keys.map(function (k) { var key = k.slice(k.indexOf('|') + 1), ci = key.indexOf(':'), m = S.pkMeals[ci < 0 ? key : key.slice(0, ci)]; if (!m) return null; var pl = ci < 0 ? null : m.plates.filter(function (p) { return p.id === key.slice(ci + 1); })[0]; return (pl && pl.image) || m.image; }).filter(Boolean) : [],
+      wall: function (M) { return M.wall; },
+      work: function () { return needMeals(S.accepted ? { accepted: S.accepted } : null); },
+      over: function (M) { return M.plan.name || 'Your week'; },
+      steps: buildSteps,
+      visual: function (M) {
+        return '<div class="wgrid g2">' + M.grid.days.map(function (d) { return '<span class="dl">' + d + '</span>'; }).join('') +
+          M.grid.cells.map(function (c) { return '<div class="cell' + (c.batch ? ' b' : '') + (c.frozen ? ' fz' : '') + '"><div class="in">' + (c.image ? photoFile(c.image, '') : '') + '</div>' + (c.frozen ? '<i class="snow"></i>' : '') + '</div>'; }).join('') + '</div>';
+      },
+      onStep: function (i, M, box, now) {
+        if (i === 1) $$('.cell', box).forEach(function (c, k) { now ? c.classList.add('on') : setTimeout(function () { c.classList.add('on'); }, k * 20); });
+        if (i === 3) box.classList.add('mark-b');
+        if (i === 4) box.classList.add('mark-f');
+      },
+      done: function (M) { replaceWith(M.note ? 'mealnote' : M.week ? 'mealweek' : M.gap ? 'mealgap' : 'weekready'); },
+    });
+  }
+  /** After the week list: the gap, else the hand-off. */
+  function afterWeek() { var M = S.meals; if (M && M.gap) go('mealgap'); else handoffMeals(); }
+  function handoffMeals() { call('handoff').then(function () {}, function () {}); go('weekready'); }
+
+  /* ---------- BatchNotePanel ---------- */
+  function rMealNote(el, my) {
+    withData(el, my, needMeals, '', function (M) {
+      var n = M.note, w = M.plan.startDate, kick = 'Your week';
+      if (w) { var d = new Date(w + 'T00:00:00'); kick = 'Week of ' + WD[d.getDay()] + ' ' + d.getDate() + ' ' + MONS[d.getMonth()]; }
+      el.innerHTML = '<div class="panel"><p class="ov rise" style="--i:0">' + esc(kick) + '</p><h1 class="qh rise" style="--i:0">' + esc(n.headline) + '</h1>' + n.lines.map(function (l) { return '<p class="sub rise" style="--i:1">' + esc(l) + '</p>'; }).join('') +
+        (n.offer ? '<div class="ncard rise" style="--i:2">' + esc(n.offer.line) + '</div>' : '') +
+        '<div class="pbtns">' + (n.offer ? '<button type="button" class="pgo" id="nAdd">' + esc(n.offer.cta) + '</button>' : n.empty ? '<button type="button" class="pgo" id="nCh">Change my mains</button>' : '') +
+        (n.offer && n.empty ? '<button type="button" class="pghost" id="nCh">Change my mains</button>' : '') +
+        '<button type="button" class="' + (n.offer || n.empty ? 'pghost' : 'pgo') + '" id="nKeep">' + esc(n.keepLabel) + '</button></div></div>';
+      primary(null);
+      var add = $('#nAdd', el); if (add) add.onclick = function () { add.disabled = true; S.accepted = n.offer.recipe; S.mealsKey = ''; go('mealbuild'); };
+      var ch = $('#nCh', el); if (ch) ch.onclick = function () { go('picks'); };
+      $('#nKeep', el).onclick = function () { var M2 = S.meals; if (M2.week) go('mealweek'); else afterWeek(); };
+    });
+  }
+  /* ---------- WeekListPanel ("Your week") ---------- */
+  function rMealWeek(el, my) {
+    withData(el, my, needMeals, '', function (M) {
+      var L = M.week;
+      el.innerHTML = '<div class="panel"><h1 class="whead rise" style="--i:0">' + esc(L.headline) + '</h1>' + L.weeks.map(function (w, wi) {
+        return '<div class="wkb rise" style="--i:' + (1 + wi) + '"><p class="wkt"><span class="ov">' + esc(w.title) + '</span>' + (w.verdict && w.balanced ? '<em>' + esc(w.verdict) + '</em>' : '') + '</p>' +
+          w.days.map(function (d) { return '<div class="wrow2"><b class="' + (d.cook ? 'cookd' : '') + '">' + esc(d.label) + '</b><div>' + (d.cook ? '<p class="wc">' + esc(d.cook) + '</p>' : '') + '<p class="wm">' + d.meals.map(function (m, i) { return (i ? ' · ' : '') + '<span' + (m.frozen ? ' class="fz"' : '') + '>' + esc(m.name) + '</span>'; }).join('') + '</p></div></div>'; }).join('') + '</div>';
+      }).join('') + (L.anyFrozen || L.foot ? '<p class="wfoot">' + (L.anyFrozen ? '<i></i><span class="fz">From the freezer.</span>' + (L.foot ? ' ' : '') : '') + esc(L.foot || '') + '</p>' : '') +
+        '<div class="pbtns"><button type="button" class="pgo" id="wUse">Use this plan</button><button type="button" class="pghost" id="wCh">Change mains</button></div></div>';
+      primary(null);
+      $('#wUse', el).onclick = function () { this.disabled = true; afterWeek(); };
+      $('#wCh', el).onclick = function () { go('picks'); };
+    });
+  }
+  /* ---------- GapPanel ---------- */
+  function rMealGap(el, my) {
+    withData(el, my, needMeals, '', function (M) {
+      var R = M.report, target = M.gap || 'protein', kg = R.kcalGap, isK = target === 'kcal' && !!kg, t = R.targets;
+      var now = isK ? kg.now : Math.round(R.avg.protein), lo = isK ? t.kcalLo : t.proteinLo, hi = isK ? t.kcalHi : t.proteinHi, mid = isK ? t.kcal : t.protein, unit = isK ? 'kcal' : 'g';
+      var fmt = function (n) { return isK ? n0(n) : String(Math.round(n)); }, over = isK && kg.dir === 'over';
+      var top = Math.max(hi * (isK ? 1.25 : 1.12), now * 1.1), pct = function (g) { return Math.min(100, Math.max(0, (g / top) * 100)) + '%'; };
+      var someDays = isK && kg.cause === 'some_days', dessertNight = someDays && kg.extraSlots.indexOf('dessert') > -1, nDays = isK ? kg.days.length : 0;
+      var overline = isK ? (dessertNight ? 'Calories · your dessert night' + (nDays > 1 ? 's' : '') : someDays ? 'Calories · ' + nDays + ' day' + (nDays === 1 ? '' : 's') + ' a week' : 'Calories · every day') : 'Protein · your week';
+      var why = !isK ? 'Your favourites top out at about ' + (R.proteinCeiling != null ? R.proteinCeiling : now) + ' g a day.' : someDays ? (dessertNight ? 'Your dessert night' + (nDays > 1 ? 's land' : ' lands') : nDays + ' day' + (nDays === 1 ? ' lands' : 's land')) + ' at about ' + fmt(now) + ' kcal, ' + fmt(Math.abs(now - (over ? hi : lo))) + ' ' + (over ? 'over your' : 'under your') + ' ' + fmt(over ? hi : lo) + ' ' + (over ? 'max' : 'minimum') + '.' : over ? 'Even the smallest portions of your favourites come to about ' + fmt(Math.min(kg.bound, now)) + ' kcal a day, over your ' + fmt(hi) + ' max.' : 'Your favourites top out at about ' + fmt(Math.max(kg.bound, now)) + ' kcal a day, under your ' + fmt(lo) + ' minimum.';
+      var options = null, picked = null;
+      var draw = function () {
+        var chosen = options && options.filter(function (o) { return o.i === picked; })[0];
+        var after = chosen ? (isK && (chosen.inRange || chosen.otherMiss) ? mid : chosen.value) : null;
+        var landed = !!chosen && (chosen.inRange || !!chosen.otherMiss);
+        var basis = landed ? now : after != null ? after : now;
+        var amount = isK ? Math.max(1, Math.round(over ? basis - hi : lo - basis)) : Math.max(1, Math.round(lo - basis));
+        var anyIn = (options || []).some(function (o) { return o.inRange || o.otherMiss; });
+        var lead = options == null ? why + ' Rebuilding your week with each possible fix to see which really work.' : !options.length ? why + ' We tried the best changes in the library and none of them gets your week closer.' : anyIn ? why + ' We rebuilt your week with each of these. Pick one:' : why + ' Nothing in the library gets you all the way. These get closest:';
+        var res = function (o) { if (o.inRange) return isK ? ['✓ Every day in range', '', true] : ['✓ ' + o.value + ' g a day', ' · in range', true]; if (o.otherMiss) return ['✓ ' + (isK ? 'Calories' : 'Protein') + ' in range', ' · ' + o.otherMiss, true]; return isK ? [fmt(o.value) + ' kcal', ' ' + (someDays ? 'that night' : 'a day') + ' · closer', false] : [o.value + ' g a day', ' · closer', false]; };
+        el.innerHTML = '<div class="panel gapp"><p class="ov" style="color:#fbbf24">' + (landed ? '&nbsp;' : esc(overline)) + '</p><h1 class="qh">' + (landed ? '<span style="color:#4ade80">' + (chosen.inRange ? 'In range.' : isK ? 'Calories fixed.' : 'Protein fixed.') + '</span>' : '<span style="color:#fbbf24">' + fmt(amount) + '</span> ' + (isK ? (over ? 'kcal over.' : 'kcal under.') : 'g short.')) + '</h1>' +
+          '<div class="meter"><i class="band" style="left:' + pct(lo) + ';width:' + pct(hi - lo) + '"></i>' + (after != null ? '<i class="ghost" style="width:' + pct(after) + '"></i>' : '') + '<i class="fill" style="width:' + pct(now) + '"></i><i class="tick" style="left:' + pct(mid) + '"></i></div>' +
+          '<div class="mscale"><span><b>' + fmt(now) + ' ' + unit + '</b>' + (someDays ? ' that night' : ' a day') + (chosen ? '<em class="' + (landed ? 'ok' : '') + '">' + (landed && isK ? '  →  in range' : '  →  ' + fmt(chosen.value)) + '</em>' : '') + '</span><span>range ' + fmt(lo) + '–' + fmt(hi) + ' ' + unit + '</span></div>' +
+          '<p class="sub">' + esc(lead) + '</p>' +
+          (options == null ? '<div class="think"><span class="tdots"><i></i><i></i><i></i></span><b>Finding what fixes it</b><small>Looking through the library…</small></div>' : '<div class="fixes">' + options.map(function (o) {
+            var r = res(o), on = picked === o.i, f0 = o.fixes[0];
+            return '<button type="button" class="fopt' + (on ? ' on' : '') + '" data-o="' + o.i + '" role="radio" aria-checked="' + on + '"><span class="fimg">' + (f0.image ? photoFile(f0.image, '') : '<b>' + (f0.kind === 'fewer_desserts' ? '−1' : '−') + '</b>') + '</span><span class="ftx"><b>' + esc(o.fixes.map(function (x) { return x.title; }).join(' + ')) + '</b><small><em class="' + (r[2] ? 'ok' : 'amb') + '">' + esc(r[0]) + '</em>' + esc(r[1]) + '</small></span><span class="rad"></span></button>';
+          }).join('') + '</div>') +
+          (options != null ? '<div class="pbtns">' + (chosen ? '<button type="button" class="pgo" id="gUse">Use this plan</button>' : '<button type="button" class="pgo" id="gFav">Choose other favourites</button>') +
+            '<button type="button" class="pghost two" id="gKeep">' + (someDays ? 'Keep it as it is' : 'Keep my picks as they are') + '<small>' + (someDays ? 'it’s ' + nDays + ' night' + (nDays === 1 ? '' : 's') + ' a week' : isK ? 'and land around ' + fmt(now) + ' kcal a day' : 'and aim for about ' + now + ' g this week') + '</small></button>' +
+            (chosen ? '<button type="button" class="linkb small" id="gFav2">Choose other favourites</button>' : '') + '</div>' : '') + '</div>';
+        $$('[data-o]', el).forEach(function (b) { b.onclick = function () { picked = +b.getAttribute('data-o'); draw(); }; });
+        var u = $('#gUse', el); if (u) u.onclick = function () { u.disabled = true; call('useGapOption', picked).then(function (r) { S.meals = Object.assign({}, S.meals, r, { note: null, week: null, gap: null }); handoffMeals(); }, function (e) { el.insertAdjacentHTML('beforeend', errBox(e.message)); }); };
+        [$('#gFav', el), $('#gFav2', el)].forEach(function (b) { if (b) b.onclick = function () { go('picks'); }; });
+        var kp = $('#gKeep', el); if (kp) kp.onclick = function () { handoffMeals(); };
+      };
+      draw();
+      primary(null);
+      var t0 = performance.now();
+      call('gapOptions').then(function (list) {
+        return wait(Math.max(0, 1600 - (performance.now() - t0))).then(function () { if (my !== token) return; options = list; picked = list[0] ? list[0].i : null; draw(); });
+      }, function () { if (my !== token) return; options = []; draw(); });
+    });
+  }
+
   /** One card per eating moment: a combo (two foods eaten together) is one card; an add-on rides under its main ("+ Wrap"). */
   function mealCards(meals) {
     var out = [], combos = {};
@@ -1493,7 +2528,7 @@
           $('#shopBtn', el).onclick = function () { go('shop'); };
         };
         draw(true);
-        primary('Plan my training', function () { go('days'); });
+        primary('Continue', function () { go('mealsdone'); });
       });
     });
   }
@@ -1509,9 +2544,33 @@
           }).join('') + '</div><p class="note">In the app the list also splits by cook, takes your own pack sizes, and remembers what you bought.</p>';
         $$('[data-aisle]', el).forEach(function (b) { b.onclick = function () { var box = b.parentNode, open = box.getAttribute('data-open') !== 'true'; $$('.aisle', el).forEach(function (x) { x.setAttribute('data-open', 'false'); }); box.setAttribute('data-open', open); b.setAttribute('aria-expanded', open); S.openAisle = open ? b.getAttribute('data-aisle') : null; }; });
         $$('[data-tick]', el).forEach(function (b) { b.onchange = function () { S.ticks[b.getAttribute('data-tick')] = b.checked; b.closest('.gi').classList.toggle('done', b.checked); }; });
-        primary('Plan my training', function () { go('days'); });
+        primary('Continue', function () { go('mealsdone'); });
       });
     });
+  }
+
+  /* ---------- RouteReveal's finish line, back from the meal build (built: 'nutrition') ---------- */
+  function rMealsDone(el) {
+    el.classList.add('finish');
+    var M = S.meals, dates = M ? Object.keys(M.plan.dailyMeals).sort() : [], first = dates.length ? M.plan.dailyMeals[dates[0]] : null;
+    var t = new Date(); t.setDate(t.getDate() + 1);
+    var day = first && first.dayName ? first.dayName : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][t.getDay()];
+    var meal = first && (first.meals || []).filter(function (m) { return m && m.name; })[0];
+    var type = meal && typeof meal.type === 'string' ? meal.type.replace(/_/g, ' ') : '';
+    var line = meal ? (type ? type.charAt(0).toUpperCase() + type.slice(1) + ' is ' + meal.name + '.' : 'First meal: ' + meal.name + '.') : 'Your first session and your first day of meals, ready to follow.';
+    var row = function (mark, num, title, sub, meta, to) {
+      return '<' + (to ? 'button type="button" data-to="' + to + '"' : 'div') + ' class="sp ' + mark + '"><span class="sd">' + (mark === 'done' ? '<svg viewBox="0 0 24 24" width="14" height="14"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#0a0a0b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' : mark === 'goal' ? '<i></i>' : num) + '</span><span class="sb"><b>' + esc(title) + '</b><small>' + esc(sub) + '</small></span>' + (meta ? '<em>' + meta + '</em>' : '') + '</' + (to ? 'button' : 'div') + '>';
+    };
+    el.innerHTML = '<p class="fov rise" style="--i:0">You’re 80% of the way</p><div class="fbar rise" style="--i:0"><i></i></div>' +
+      '<h1 class="ftl rise" style="--i:1">One short step<br>to day one.</h1><div class="spine">' +
+      '<div class="rise" style="--i:2">' + row('done', 0, 'Your route', 'Goal, timeline and phases set', 'DONE') + '</div>' +
+      '<div class="rise" style="--i:3">' + row('done', 0, 'Your meals', 'Diet, allergies, the meals you like', 'DONE', 'today') + '</div>' +
+      '<div class="rise" style="--i:4">' + row('next', 3, 'Your training', 'Days, length, volume, extras', '~1 MIN', 'days') + '</div>' +
+      '<div class="rise" style="--i:5">' + row('goal', 0, 'Day one: ' + day, line, '') + '</div></div>' +
+      '<p class="free rise" style="--i:6">Free to build. Nothing to pay at the end.</p><p class="later rise" style="--i:7"><button type="button" class="linkb small" data-to="keep">I’ll do this later</button></p>';
+    requestAnimationFrame(function () { var f = $('.fbar i', el); if (f) f.style.transform = 'scaleX(.8)'; });
+    $$('[data-to]', el).forEach(function (b) { b.onclick = function () { go(b.getAttribute('data-to')); }; });
+    primary('Next: my training', function () { go('days'); });
   }
 
   /* ================= training ================= */
@@ -1678,14 +2737,14 @@
             S.defaults = d;
             S.about = { sex: 'female', ageYears: 36, heightCm: 166, weightKg: 72, bodyFatPct: 32, bodyFatSource: 'reported', goalWeightKg: 64, goalBodyFatPct: 25, trainingState: 'new', activityLevel: 'light', trainingSessionsPerWeek: 1.5, route: 'lean' };
             S.touched = { goalWeightKg: true, goalBodyFatPct: true, heightCm: true, bodyFatPct: true };
-            S.food = { mealsPerDay: 3, snackFrequency: 'ai_decide', dessertFrequency: 'once_per_week', dietPattern: 'vegetarian', allergies: ['Nuts'], skip: [], picks: [] };
+            S.food = Object.assign(freshFood(), { dietType: 'high_protein', dietPattern: 'vegetarian', allergies: ['Nuts'], keepLower: ['salt'], mealsPerDay: 3, snackFrequency: '1', dessertFrequency: 'once_per_week', dessertDays: [6], slowCooker: 'none', blender: 'no', freezerTubs: 8, shopCadence: 'weekly', stockUp: false });
             S.training = { days: 3, equipment: 'home_gym' };
           });
         }
       : function () {
           return ensureAbout().then(function () {
             var a = S.about; a.sex = 'male'; a.trainingState = 'consistent'; a.activityLevel = 'light'; a.trainingSessionsPerWeek = 3.5;
-            S.food.dietPattern = 'any'; S.food.dessertFrequency = 'ai_decide';
+            S.food = Object.assign(freshFood(), { dietType: 'balanced', dietPattern: 'any', keepLower: [], mealsPerDay: 3, snackFrequency: '2', dessertFrequency: 'few_per_week', dessertDays: [2, 4, 6], slowCooker: '5_6l', blender: 'yes', freezerTubs: 16, shopCadence: 'weekly', stockUp: false });
             S.training = { days: 4, equipment: 'commercial_gym' };
           });
         };
