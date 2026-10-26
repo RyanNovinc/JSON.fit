@@ -65,7 +65,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
       events.length = 0; requests.length = 0;
       await send('Page.navigate', { url: BASE + '/try/' });
       await until(`!!document.querySelector('.screen[data-screen="start"]')`);
-      const overflow = async (n) => { const o = await ev(`document.documentElement.scrollWidth - window.innerWidth`); if (o > 1) bad(`step ${n}: ${o}px horizontal overflow`); };
+      const overflow = async (n) => { const o = await ev(`document.documentElement.scrollWidth - window.innerWidth`); if (o > 1) bad(`step ${n}: ${o}px horizontal overflow`); if (await ev(`/\u2014/.test(document.body.innerText) || /meal replacement/i.test(document.body.innerText)`)) bad(`step ${n}: an em dash or a banned phrase on screen`); };
       const images = async (n) => {
         await ev(`Promise.all([...document.images].filter(i=>i.loading!=='lazy'||true).map(i=>{i.loading='eager';return i.complete?0:new Promise(r=>{i.onload=i.onerror=r;setTimeout(r,4000)})}))`);
         const broken = await ev(`[...document.images].filter(i=>i.complete && i.naturalWidth===0).map(i=>i.getAttribute('src'))`);
