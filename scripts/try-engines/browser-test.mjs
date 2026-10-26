@@ -40,10 +40,10 @@ const click = (sel) => ev(`(function(){var e=document.querySelector(${JSON.strin
 const stepIsOld = (n) => until(`document.getElementById('barLbl') && document.getElementById('barLbl').textContent.indexOf('Step ${n} of')===0 && !document.querySelector('.loading')`);
 
 const PROFILES = [
-  { name: 'default man, gym 4', sex: 'male', lift: 'consistent', route: 'lean', active: 'light', band: '3.5', meat: 'any', allergies: [], skip: [], meals: '3', dessert: 'ai_decide', picks: 0, days: '4', equip: 'commercial_gym' },
-  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', band: '1.5', meat: 'vegetarian', allergies: ['Nuts'], skip: [], meals: '4', dessert: 'once_per_week', picks: 0, days: '2', equip: 'home_gym', estimate: true },
-  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', band: '5.5', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', dessert: '0', picks: 3, days: '6', equip: 'bodyweight', imperial: true },
-  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', dessert: 'ai_decide', picks: 1, days: '3', equip: 'basic_equipment' },
+  { name: 'default man, gym 4', sex: 'male', lift: 'consistent', route: 'lean', active: 'light', band: '3.5', meat: 'any', allergies: [], skip: [], meals: '3', dessert: 'ai_decide', picks: 0, days: '4', length: '8_weeks', volume: '12-16', rep: 'classic' },
+  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', band: '1.5', meat: 'vegetarian', allergies: ['Nuts'], skip: [], meals: '4', dessert: 'once_per_week', picks: 0, days: '2', length: '12_weeks', volume: '8-12', rep: 'higher', preset: 1, estimate: true },
+  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', band: '5.5', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', dessert: '0', picks: 3, days: '6', length: '1_year', volume: '16-20', rep: 'mix', imperial: true },
+  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', dessert: 'ai_decide', picks: 1, days: '3', length: '4_weeks', volume: '12-16', rep: 'heavier', preset: 3 },
 ];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
 (async () => {
@@ -141,18 +141,36 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         console.log(`  shop: ${aisles} aisles`);
         // Back returns to the day.
         await click('#backBtn'); await scr('today'); await click('#shopBtn'); await scr('shop');
-        await go(); await scr('days'); await opt(P.days); await go();
-        await scr('equip'); await opt(P.equip);
-        await scr('progbuild'); await scr('program', 20000); await overflow('program'); await images('program');
-        const prog = await ev(`document.querySelector('.screen .ov').textContent`);
-        const wds = await ev(`document.querySelectorAll('[data-wd]').length`);
-        for (let i = 0; i < wds; i++) { await ev(`document.querySelectorAll('[data-wd]')[${i}].click()`); await sleep(80); await images('program day'); }
-        const ex = await ev(`document.querySelectorAll('.wd[data-open="true"] .ex').length`);
-        await click('#volBtn');
-        console.log(`  program: ${prog} | ${wds} training days | ${ex} exercises on the last | flag ${await ev(`!!document.querySelector('.flag')`)}`);
-        if (!ex) bad('no exercises');
-        await go(); await scr('keep'); await overflow('keep');
-        await ev(`history.back()`); await scr('program');
+        // Training: the app's workout questions (Days, How long, Volume, Refinements), the build, the results.
+        await go(); await scr('days'); await click(`.dt[data-v="${P.days}"]`);
+        await until(`!!document.querySelector('#slp .slh b')`, 20000); await overflow('days');
+        await go(); await scr('length'); await click(`.qc[data-v="${P.length}"]`); await overflow('length');
+        await go(); await scr('volume'); await click(`.qc[data-v="${P.volume}"]`);
+        await until(`!!document.querySelector('#slp .slh b') && !document.querySelector('#slp .dim')`, 20000); await overflow('volume');
+        const vol = await ev(`document.querySelector('#slp .slh b').textContent + ' | ' + document.querySelector('.qc[aria-pressed="true"] small').textContent.split('.')[0]`);
+        await go(); await scr('refine');
+        if (P.preset) await click(`.presets .preset:nth-child(${P.preset}) .pmain`);
+        await click(`.rep[data-rep="${P.rep}"]`); await sleep(300);
+        await click('#repWhy'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await click('.pinfo'); await until(`!!document.querySelector('.sheet.on .ppick')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await until(`!!document.querySelector('#slpin .slr b') && document.querySelector('#slpin .slr b').textContent.indexOf('About')===0`, 20000); await overflow('refine');
+        await go(); await scr('progbuild'); await overflow('progbuild');
+        if (await ev(`!!document.querySelector('.screen.bm .skip')`)) console.log('  note: build shows a skip hint (shared buildMoment)');
+        await scr('program', 30000); await overflow('program'); await images('program');
+        const prog = await ev(`document.querySelector('.hpl').textContent + ' | ' + document.querySelector('.hmt').textContent + ' | ' + document.querySelectorAll('.scard').length + ' sessions'`);
+        await click('#planRow'); await scr('blocks'); await overflow('blocks'); await images('blocks');
+        await click('#pBuilt'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-dec]').click()`); await sleep(200); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await go(); await scr('trainweek'); await overflow('trainweek'); await images('trainweek');
+        await click('.nexth'); await scr('session'); await overflow('session'); await images('session');
+        const ses = await ev(`document.querySelector('.xov').textContent + ' | ' + document.querySelectorAll('.xr .rir').length + ' RIR labels'`);
+        if (await ev(`!!document.querySelector('.xcue')`)) { await click('.xcue'); await until(`!!document.querySelector('.sheet.on .cst')`); await ev(`dismiss=document.querySelector('.sheet-bg'); dismiss && dismiss.click()`); await sleep(400); }
+        await click('[data-menu="0"]'); await until(`!!document.querySelector('.sheet.on [data-m="scheme"]')`); await ev(`document.querySelector('.sheet [data-m="scheme"]').click()`); await until(`!!document.querySelector('.sheet.on .rtab')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await go(); await until(`!!document.querySelector('.sheet.on [data-start]')`); await overflow('pace sheet');
+        const pace = await ev(`document.querySelector('.sheet [data-start]').textContent`);
+        await click('.sheet [data-start]');
+        console.log(`  training: ${vol} | ${prog} | ${ses} | ${pace}`);
+        await scr('keep'); await overflow('keep');
+        await ev(`history.back()`); await scr('session');
             } catch (e) { bad(String(e.message || e)); }
       for (const e of events) bad(e);
       const posts = requests.filter((r) => r.method !== 'GET');
