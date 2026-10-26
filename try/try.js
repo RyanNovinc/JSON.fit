@@ -202,6 +202,8 @@
   function progress(i) {
     var s = SCREENS[i];
     prog.hidden = s.sec === 'intro';
+    // Once the questions start, the site's menu and footer go, so it reads like the app.
+    document.body.classList.toggle('immersive', s.sec !== 'intro');
     root.setAttribute('data-sec', s.sec);
     var fills = $$('.segs i', prog);
     SECS.forEach(function (sec, k) {
@@ -3371,6 +3373,17 @@
     setTimeout(function () { els.forEach(function (e) { e.remove(); }); }, now ? 0 : 340);
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheetEls) dismissSheet(); });
+
+  /* ================= leave ================= */
+  document.getElementById('exitBtn').onclick = function () {
+    var leave = function () { location.href = '/'; };
+    if (SCREENS[cur] && SCREENS[cur].id === 'keep') { leave(); return; }
+    openSheet('<div class="cf"><h2 class="sh-t c">Leave your plan?</h2><p class="sh-b c">Nothing is saved on this page, so you would start again next time.</p>' +
+      '<button type="button" class="sh-go" data-a="stay">Keep going</button><button type="button" class="sh-sec" data-a="leave">Leave</button></div>', function (sh) {
+      $('[data-a="stay"]', sh).onclick = function () { closeSheet(); };
+      $('[data-a="leave"]', sh).onclick = leave;
+    });
+  };
 
   /* ================= boot ================= */
   var params = new URLSearchParams(location.search);

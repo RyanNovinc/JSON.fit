@@ -1139,3 +1139,11 @@ svg.vcurve{display:block;width:100%;height:auto;font-family:var(--sans)}
 .upc em{font-style:normal;font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:#0a0a0b;background:var(--acc);border-radius:5px;padding:2px 6px}
 .ssup{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;color:var(--acc);text-align:center;margin:-2px 0 4px}
 @media(prefers-reduced-motion:reduce){.ltrack i,.slrow .tr i,.qc .qk,.dt,.wkd .dc,.ttoast{transition:none!important;animation:none!important}}
+
+/* Immersive: once the questions start, no site menu or footer; X leaves. */
+body.immersive .site-nav,body.immersive .site-foot{display:none}
+body.immersive .try{padding-top:0}
+body.immersive .prog{top:0;padding-top:env(safe-area-inset-top,0px)}
+.prog .exit{margin-left:auto}
+.prog .info:not([hidden])+.exit{margin-left:0}
+.prog .back{margin:0}
