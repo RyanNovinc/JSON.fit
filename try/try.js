@@ -1104,7 +1104,7 @@
   function rActive(el, my) {
     needAbout(el, my, function () {
       withData(el, my, function () { return Promise.all([loadIndex(), mealView('active')]); }, '', function () {
-        qhead(el, stepLine('active', 'Activity'), 'How active are you<br>outside the gym?', 'Work, errands, getting around. Your sessions are the next question, so leave them out here.');
+        qhead(el, stepLine('active', 'Activity'), 'How active are you<br>outside the gym?', 'Work, errands, getting around. Leave out your training. We count that separately.');
         cards(el, ACTIVE, S.about.activityLevel, function (v) { S.about.activityLevel = v; enable(true); });
         foodCta('Continue', !S.about.activityLevel);
       });
