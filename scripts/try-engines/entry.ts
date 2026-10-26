@@ -32,6 +32,7 @@ import { availableEquipment } from 'APP_DIR/src/utils/equipmentAvailability';
 import { buildView } from 'APP_DIR/src/utils/workoutGenerator/display';
 import { REP_STYLE_OPTIONS } from 'APP_DIR/src/data/repStyles';
 import MEALS_PART from "./meals-part";
+import TRAINING_PART from "./training-part";
 
 declare const __APP_VERSION__: string;
 declare const __APP_REV__: string;
@@ -282,7 +283,9 @@ const API: any = {
   repStyles: () => REP_STYLE_OPTIONS,
   ...MEALS_PART,
   buildMeals: (about: any, food: any) => MEALS_PART.buildMeals(about, food, buildRoute),
+  ...TRAINING_PART,
 };
+TRAINING_PART._setRoute((about: any) => buildRoute(about));
 
 (globalThis as any).JsonFitEngines = API;
 
