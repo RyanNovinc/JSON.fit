@@ -34,11 +34,11 @@ a{color:inherit}
 .site-nav .nav-links{display:flex;align-items:center;gap:1.6rem;list-style:none;margin:0;padding:0}
 .site-nav .nav-links a{text-decoration:none;color:var(--text-2);font-size:.88rem;font-weight:500;transition:color .2s}
 .site-nav .nav-links a:hover{color:var(--text)}
-.site-nav .nav-links a.m{color:var(--green-text)} .site-nav .nav-links a.e{color:var(--cyan)} .site-nav .nav-links a.l{color:var(--violet)}
 .site-nav .nav-links a[aria-current="page"]{color:#fff;text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px}
 .site-nav .nav-links a.m[aria-current="page"]{text-decoration-color:var(--green-text)}
 .site-nav .nav-links a.e[aria-current="page"]{text-decoration-color:var(--cyan)}
 .site-nav .nav-links a.l[aria-current="page"]{text-decoration-color:var(--violet)}
+.site-nav .nav-links a.r[aria-current="page"]{text-decoration-color:var(--cyan)}
 .site-nav .nav-cta{background:#fff;color:#0a0a0b !important;padding:.5rem 1rem;border-radius:999px;font-weight:700 !important}
 .site-nav .burger{display:none;background:none;border:0;padding:10px;cursor:pointer}
 .site-nav .burger span{display:block;width:20px;height:2px;background:#fff;margin:4px 0;transition:transform .25s,opacity .25s}
