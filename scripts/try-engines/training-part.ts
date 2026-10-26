@@ -4,7 +4,9 @@
 // The path is the app's (the next build: release 1.0.44 + release/integration,
 // WORKOUT_GENERATOR on), from the onboarding finish line: Volume (Q6Volume,
 // first since 24 Oct 2026) -> Days (Q3DaysPerWeek) -> How long
-// (Q4ProgramDuration) -> Refinements -> WorkoutBuild. Each screen saves its
+// (Q4ProgramDuration) -> Refinements -> the summary ("Here's your week",
+// since 26 Oct 2026; the volume picker adds Minimum and a custom number) ->
+// WorkoutBuild. Each screen saves its
 // answer with updateQuestionnaireField, Days also saves the training week
 // (daysScreenPatch), Q4 also saves the default equipment
 // (Equipment left the flow), Refinements saves its fields, and WorkoutBuild
@@ -32,6 +34,15 @@ import {
   estimateDays, LONG_SESSION_MIN, FIX_MIN_SAVING, MIN_DAYS, MAX_DAYS, DEFAULT_DAYS,
 } from 'APP_DIR/src/utils/sessionLengthEstimate';
 import { weeklyMinutes, hoursLabel } from 'APP_DIR/src/hooks/useSessionEstimates';
+import { VOLUME_COPY, TIER_COPY } from 'APP_DIR/src/data/volumeCopy';
+import {
+  TIER_VALUES, TIER_SETS, CUSTOM_SETS_MIN, CUSTOM_SETS_MAX, GROWTH_TOP_SETS, CUSTOM_VOLUME,
+  recommendedVolume, volumeOverride,
+} from 'APP_DIR/src/utils/volumeChoice';
+import {
+  moreDaysOptions, moreDaysNote, lowerVolumeNote, fewerPriorities, FEWER_PRIORITIES_KEEP,
+} from 'APP_DIR/src/utils/sessionLengthEstimate';
+import { clockLabel, sessionsForDays, ROUGH_START, DEFAULT_START } from 'APP_DIR/src/utils/trainingWeek';
 import { rampsIn } from 'APP_DIR/src/utils/workoutGenerator/check';
 import { trainingDayCount } from 'APP_DIR/src/utils/blockProgress';
 import { REFINEMENT_PRESETS, applyPreset, removePreset, isPresetActive, presetSexKey } from 'APP_DIR/src/data/refinementPresets';
@@ -58,6 +69,18 @@ import { blockRepStyle, repStyleOption } from 'APP_DIR/src/data/repStyles';
 import { rawBlockSummary } from 'APP_DIR/src/utils/workoutGenerator/check';
 import { trainingEvidenceContext } from 'APP_DIR/src/utils/evidenceContext';
 
+/**
+ * VOLUME_COPY as data the worker can post: each wording function is called
+ * with a placeholder ({n}, {name}, {hours}), which the page fills in. The
+ * words are the app's, verbatim (data/volumeCopy.ts).
+ */
+function volumeCopyData() {
+  const out: any = {};
+  const arg: Record<string, string> = { pctLink: '{n}', ownUse: '{n}', ownMin: '{n}', ownMax: '{n}', customWhat: '{n}', daysWeekLine: '{name}', daysWeekHours: '{hours}' };
+  for (const [k, v] of Object.entries(VOLUME_COPY)) out[k] = typeof v === 'function' ? (v as any)(arg[k] ?? '{x}') : v;
+  return out;
+}
+
 /** RefinementsScreen's chip lists (private there). */
 const AUX_TITLES: Record<string, string> = {
   neck: 'Neck', forearms: 'Forearms', obliques: 'Obliques', serratus: 'Serratus',
@@ -67,7 +90,7 @@ const auxTitle = (v: string) => AUX_TITLES[v] ?? v;
 
 /** The order the screens save their answers in (each one an updateQuestionnaireField): Volume, Days, How long, Refinements. */
 const SAVE_ORDER = [
-  'volumePreference', 'totalTrainingDays', 'programDuration', 'selectedEquipment',
+  'volumePreference', 'customWeeklySets', 'totalTrainingDays', 'programDuration', 'selectedEquipment',
   'refinementPresets', 'priorityMuscleGroups', 'auxiliaryMuscles', 'movementLimitations', 'gender', 'includeDirectCore', 'repStyle',
 ];
 
@@ -113,14 +136,37 @@ function estimate(p: any) {
  * answer, else DEFAULT_DAYS, kept to 2 to 6 (a stored 1 or 7 opens as 2 or 6
  * and counts as changed, so it is saved so).
  */
-async function trainingStart(about: any) {
-  await storageFor(about, null);
+async function daysOpening(answered?: number) {
   const profile = await loadGoalsProfile();
   const raw = await WorkoutStorage.loadTrainingWeek().catch(() => null);
   const w = raw ? sanitiseTrainingWeek(raw) : null;
-  const start = daysScreenStart(undefined, w as any, profile?.trainingSessionsPerWeek);
+  const start = daysScreenStart(answered, w as any, profile?.trainingSessionsPerWeek);
   const n = estimateDays(start.selected);
   const off = start.selected !== n || (start.days && start.days.length !== n);
+  return {
+    selected: n,
+    days: off ? daysForCount(n) : start.days ? sortMonFirst(start.days) : daysForCount(n),
+    varies: start.varies, time: start.time, touched: !!off, hadWeek: !!w?.asked,
+  };
+}
+
+/**
+ * Days opened again from the summary (edit mode): the stored week after the
+ * writes so far, and the answer, as its load effect reads them.
+ */
+async function daysStart(about: any, saved: any, week: any, answered?: number) {
+  ready = '';
+  await storageFor(about, saved);
+  await applyWeek(week);
+  const out = await daysOpening(answered);
+  ready = '';
+  return out;
+}
+
+async function trainingStart(about: any) {
+  await storageFor(about, null);
+  const profile = await loadGoalsProfile();
+  const opening = await daysOpening(undefined);
   const base = await loadWorkoutProfile();
   const prepared = prepareDecisions('training', repStyleEvidenceContext());
   const keep = (p: any) => REP_STYLE_EVIDENCE.includes(p.decision.id);
@@ -129,14 +175,21 @@ async function trainingStart(about: any) {
     sources: p.decision.sources.map((s: any) => ({ cite: s.cite, journal: s.journal, design: s.design, url: s.url, checked: s.checked })),
   }));
   return {
-    start: {
-      selected: n,
-      days: off ? daysForCount(n) : start.days ? sortMonFirst(start.days) : daysForCount(n),
-      varies: start.varies, time: start.time, touched: !!off, hadWeek: !!w?.asked,
-    },
+    start: opening,
     sex: profile?.sex ?? null,
     sexKey: presetSexKey(profile?.sex),
-    recommendedVolume: profile?.trainingState === 'new' ? '8-12' : '12-16',
+    recommendedVolume: recommendedVolume(profile?.trainingState),
+    // The volume picker (26 Oct 2026): the copy, the tiers and the slider's ends (utils/volumeChoice).
+    volume: {
+      copy: volumeCopyData(), tierCopy: TIER_COPY, tierValues: TIER_VALUES, tierSets: TIER_SETS,
+      min: CUSTOM_SETS_MIN, max: CUSTOM_SETS_MAX, top: GROWTH_TOP_SETS, custom: CUSTOM_VOLUME,
+    },
+    // TrainingWeekSheet: the rough times' starts, the exact time's clock labels (5 am to 10 pm, 15 min steps), plan sessions per day count.
+    weekSheet: {
+      roughStart: ROUGH_START, defaultStart: DEFAULT_START,
+      clock: Object.fromEntries(Array.from({ length: (22 - 5) * 4 + 1 }, (_, i) => 5 * 60 + i * 15).map((m) => [m, clockLabel(m)])),
+      sessionsFor: Object.fromEntries([1, 2, 3, 4, 5, 6, 7].map((n) => [n, sessionsForDays(n)])),
+    },
     // Q6: the reassurance line, and the days its weekly times are worked out at.
     rampsIn: rampsIn(base?.goalsProfile?.trainingState),
     volumeDays: estimateDays(base?.questionnaire?.totalTrainingDays),
@@ -145,7 +198,7 @@ async function trainingStart(about: any) {
     minDays: MIN_DAYS, maxDays: MAX_DAYS, defaultDays: DEFAULT_DAYS,
     longMin: LONG_SESSION_MIN, fixMinSaving: FIX_MIN_SAVING,
     volumeLabel: VOLUME_LABEL,
-    lowerVolume: Object.fromEntries(['8-12', '12-16', '16-20'].map((v) => [v, lowerVolume(v)])),
+    lowerVolume: Object.fromEntries(['4-8', '8-12', '12-16', '16-20'].map((v) => [v, lowerVolume(v)])),
     steps: ['Q6Volume', 'Q3DaysPerWeek', 'Q4ProgramDuration'].map((r) => workoutStep(r as any).label),
     roughTimes: (['morning', 'midday', 'evening', 'varies']).map((k) => ({ key: k, label: ROUGH_LABEL[k] })),
     presets: REFINEMENT_PRESETS,
@@ -181,6 +234,7 @@ async function sessionPanel(about: any, saved: any, answers: any, value: any, fi
   if (delta && delta.prev && JSON.stringify(delta.prev) !== JSON.stringify(value)) {
     if (delta.kind === 'days') deltaLine = sessionDeltaLine(delta.prevAvg, est.average, daysLabel(delta.prev.totalTrainingDays));
     else if (delta.kind === 'volume') deltaLine = sessionDeltaLine(delta.prevAvg, est.average, VOLUME_LABEL[delta.prev.volumePreference] ?? 'before');
+    else if (delta.kind === 'summary') deltaLine = sessionDeltaLine(delta.prevAvg, est.average, 'before');
     else if (delta.kind === 'refine') deltaLine = refinementsDeltaLine(delta.prev, value, delta.prevAvg, est.average, auxTitle);
   }
   let offered: any[] = [];
@@ -220,21 +274,71 @@ async function sessionEstimate(about: any, saved: any, answers: any, override: a
   return { days: est.days, average: est.average, headline: est.headline, rampWeeks: est.rampWeeks, week, hours: week == null ? null : hoursLabel(week) };
 }
 
-/** Q6's sets line ("Most muscles get 10 to 14 sets a week."), now under "How we set this", for this user. */
-async function volumeLines(about: any, saved: any, answers: any) {
+/**
+ * Q6's sets line, now in the "What does N% mean?" sheet under How we set this
+ * (Q6VolumePreferenceScreen setsLine): "most muscles get 10 to 14 sets a week."
+ * One per step (`steps`: [{ key, value, customWeeklySets? }]), for this user.
+ */
+async function volumeLines(about: any, saved: any, answers: any, steps: any[]) {
   await storageFor(about, saved);
   const base = await loadWorkoutProfile();
-  const profile = buildEstimateProfile(base, answers, {});
   const out: any = {};
-  for (const v of ['8-12', '12-16', '16-20']) {
-    const [lo, hi] = volumeTypicalSets(profile, v);
-    const pri = volumePrioritySets(profile, v);
-    const most = lo === hi ? `Most muscles get about ${lo} sets a week` : `Most muscles get ${lo} to ${hi} sets a week`;
-    if (!pri) { out[v] = `${most}.`; continue; }
+  for (const s of steps || []) {
+    const profile = buildEstimateProfile(base, answers, volumeOverride(s.value, s.customWeeklySets));
+    const [lo, hi] = volumeTypicalSets(profile, s.value);
+    const pri = volumePrioritySets(profile, s.value);
+    const most = lo === hi ? `most muscles get about ${lo} sets a week` : `most muscles get ${lo} to ${hi} sets a week`;
+    if (!pri) { out[s.key] = `${most}.`; continue; }
     const who = pri.count === 1 ? 'your priority muscle' : `your ${pri.count} priority muscles`;
-    out[v] = `${most}, ${who} ${pri.lo} to ${pri.hi}.`;
+    out[s.key] = `${most}, ${who} ${pri.lo} to ${pri.hi}.`;
   }
-  return { lines: out, recommended: base?.goalsProfile?.trainingState === 'new' ? '8-12' : '12-16' };
+  return { lines: out };
+}
+
+/**
+ * The summary's ("Here's your week") ways to shorten long sessions
+ * (QuestionnaireSummaryScreen summaryFixes): one step less volume, one more
+ * day, fewer priority muscles. `act` says which question a tap opens.
+ */
+function summaryFixes(a: any) {
+  const out: any[] = [];
+  const down = lowerVolume(a.volumePreference, a.customWeeklySets);
+  if (down) out.push({ key: 'volume-down', override: { volumePreference: down }, label: `${VOLUME_LABEL[down]} volume`, note: lowerVolumeNote(down), act: 'volume', v: down });
+  for (const n of moreDaysOptions(a.totalTrainingDays, 1)) {
+    out.push({ key: `days-${n}`, override: { totalTrainingDays: n }, label: `Train ${n} days`, note: moreDaysNote(a.totalTrainingDays ?? n), act: 'days', n });
+  }
+  const fewer = fewerPriorities(a.priorityMuscleGroups);
+  if (fewer) out.push({ key: 'priorities-fewer', override: { priorityMuscleGroups: fewer }, label: 'Fewer priority muscles', note: `if you keep ${FEWER_PRIORITIES_KEEP}`, act: 'refine' });
+  return out;
+}
+
+/**
+ * The training week's writes in order: Days' saves (daysScreenPatch, `days`)
+ * and TrainingWeekSheet's Save ({ days, time, exactMinute, asked }, `sheet`).
+ * An object (the page's older single Days save) is one Days write.
+ */
+async function applyWeek(week: any) {
+  const ops = Array.isArray(week) ? week : week ? [{ kind: 'days', input: week }] : [];
+  for (const op of ops) {
+    try {
+      if (op.kind === 'days') await updateTrainingWeek(daysScreenPatch(op.input));
+      else if (op.kind === 'sheet') await updateTrainingWeek(op.patch);
+    } catch {}
+  }
+}
+
+/** The summary's Training week row, from the stored week (QuestionnaireSummaryScreen weekValue / timeValue). */
+async function weekRow(about: any, saved: any, week: any) {
+  ready = '';
+  await storageFor(about, saved);
+  await applyWeek(week);
+  const w = await loadTrainingWeek();
+  const planDays = saved?.totalTrainingDays ?? null;
+  const weekValue = w.days ? weekDaysLabel(w.days) : weekDaysLabel(null, planDays);
+  const timeValue = w.exactMinute != null ? `Around ${clockLabel(w.exactMinute)}` : w.time === 'varies' ? 'Time varies' : ROUGH_LABEL[w.time];
+  const detail = w.exactMinute == null && w.time === 'varies' ? 'Add a rough time, or say your days change' : w.days ? timeValue : `${timeValue} · days change week to week`;
+  ready = '';
+  return { weekValue, timeValue, detail, days: w.days, time: w.time, exactMinute: w.exactMinute, planDays };
 }
 
 /** A preset card tapped on Refinements: on when every muscle it picks is picked. */
@@ -256,9 +360,7 @@ function activePresets(sexKey: string, state: any) {
 async function buildProgramFrom(about: any, saved: any, week?: any) {
   ready = '';
   await storageFor(about, saved);
-  if (week) {
-    try { await updateTrainingWeek(daysScreenPatch(week)); } catch {}
-  }
+  await applyWeek(week);
   const profile = await loadWorkoutProfile();
   const q = profile.questionnaire ?? {};
   const { program, notes } = await generateProgramAsync(profile);
@@ -396,6 +498,6 @@ async function programViews(program: any, q: any, now = Date.now()) {
 export default {
   programViews,
   _setRoute(fn: any) { routeFor = fn; },
-  trainingStart, weekFor, toggleDay, weekLabel, sessionPanel, sessionEstimate, volumeLines,
+  trainingStart, weekFor, toggleDay, weekLabel, sessionPanel, sessionEstimate, volumeLines, summaryFixes, weekRow, daysStart,
   presetToggle, activePresets, buildProgramFrom, normalizeRepStyle,
 };

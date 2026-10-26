@@ -41,9 +41,9 @@ const stepIsOld = (n) => until(`document.getElementById('barLbl') && document.ge
 
 const PROFILES = [
   { name: 'default man, meals first from the finish line (no plan, training yes)', mealsFirst: true, sex: 'male', lift: 'consistent', route: 'lean', active: 'light', training: 'yes', meat: 'any', allergies: [], skip: [], meals: '3', snacks: 'ai_decide', dessert: 'ai_decide', picks: 0, days: '4', length: '8_weeks', volume: '12-16', rep: 'classic' },
-  { name: 'woman cut vegetarian home 2, training edited at the summary', editTraining: 'no', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '8-12', rep: 'higher', preset: 1, estimate: true },
+  { name: 'woman cut vegetarian home 2, training edited at the summary', editTraining: 'no', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '4-8', rep: 'higher', preset: 1, estimate: true, editSummary: true },
   { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', diet: 'custom', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', snacks: '2', dessert: '0', freezer: 60, picks: 3, days: '6', length: '1_year', volume: '16-20', rep: 'mix', imperial: true },
-  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', snacks: '0', sleepSkip: true, dessert: 'ai_decide', picks: 1, days: '3', length: '4_weeks', volume: '12-16', rep: 'heavier', preset: 3 },
+  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', snacks: '0', sleepSkip: true, dessert: 'ai_decide', picks: 1, days: '3', length: '4_weeks', volume: '12-16', custom: 14, rep: 'heavier', preset: 3, weekSheet: true },
 ];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
 (async () => {
@@ -121,20 +121,48 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         if (!P.mealsFirst) {
         // Training: the app's workout questions (Volume, Days, How long, Refinements), the build, the results.
         await go(); await scr('volume');
-        if (!(await ev(`!!document.querySelector('.qc[aria-pressed="true"] em')`))) bad('volume: the tier marked "For you" is not the one picked');
-        await until(`document.querySelectorAll('.qtime b').length===3`, 30000);
-        await click(`.qc[data-v="${P.volume}"]`); await click('#whyV'); await until(`!document.getElementById('whyB').hidden && !!document.querySelector('#whyB .lead')`); await overflow('volume');
-        const vol = await ev(`document.querySelector('.qc[aria-pressed="true"] b').textContent + ' ' + document.querySelector('.qc[aria-pressed="true"] .qtime b').textContent + ' a week'`);
+        // The one-at-a-time picker: opens on the tier For you; − Less / More + step; the stage keeps its place while the hours land.
+        if ((await ev(`document.getElementById('vtag').textContent`)) !== 'FOR YOU') bad('volume: does not open on the tier For you');
+        // Layout positions (offsetTop ignores the screen's rise-in transform).
+        const vlay = `(function(){var y=function(e){var t=0;for(;e;e=e.offsetParent)t+=e.offsetTop;return t};return [document.getElementById('vnm'),document.getElementById('vt'),document.getElementById('vdots'),document.querySelector('.vsteps'),document.querySelector('.vlinks'),document.querySelector('.vst + .reas')].map(y).join(',')})()`;
+        const vlay0 = await ev(vlay);
+        await until(`!!document.querySelector('#vt') && /h$/.test(document.getElementById('vt').textContent) && !document.querySelector('.vd .sk')`, 30000);
+        const vlay1 = await ev(vlay);
+        if (vlay0 !== vlay1) bad(`volume: layout moved as the hours landed (${vlay0} -> ${vlay1})`);
+        const TIER = { '4-8': 'Minimum', '8-12': 'Conservative', '12-16': 'Moderate', '16-20': 'High' };
+        for (let k = 0; k < 5 && (await ev(`document.querySelector('#vnm b').textContent`)) !== TIER[P.volume]; k++) {
+          const order = Object.values(TIER), now = await ev(`document.querySelector('#vnm b').textContent`);
+          await click(`.vsb[data-dir="${order.indexOf(TIER[P.volume]) < order.indexOf(now) ? -1 : 1}"]`); await sleep(120);
+        }
+        if ((await ev(`document.querySelector('#vnm b').textContent`)) !== TIER[P.volume]) bad('volume: could not step to ' + TIER[P.volume]);
+        await until(`/h$/.test(document.getElementById('vt').textContent) && !document.querySelector('#vt.held') && !document.querySelector('.vd .sk')`, 30000);
+        if ((await ev(vlay)) !== vlay1) bad('volume: layout moved on a step');
+        await click('#vPct'); await until(`!!document.querySelector('.sheet.on .sh-b.lead')`); await overflow('volume % sheet');
+        const pct = await ev(`document.getElementById('vPct').textContent + ' ' + document.querySelector('.sheet .sh-b.lead').textContent`);
+        await ev(`document.querySelector('.sheet-bg').click()`); await sleep(400);
+        if (P.custom) {
+          await click('#vOwn'); await until(`!!document.querySelector('.sheet.on #oR')`);
+          await ev(`(function(){var r=document.getElementById('oR'); r.value=${P.custom}; r.dispatchEvent(new Event('input',{bubbles:true})); return 1})()`);
+          await until(`/h$/.test(document.getElementById('oT').textContent) && !document.querySelector('#oT.held')`, 30000); await overflow('set my own');
+          const own = await ev(`[...document.querySelectorAll('.ownr b')].map(x=>x.textContent).join(' ') + ' | ' + document.getElementById('oUse').textContent`);
+          await click('#oUse'); await sleep(400);
+          if ((await ev(`document.querySelector('#vnm b').textContent + ' ' + document.getElementById('vtag').textContent`)) !== 'Custom YOUR OWN') bad('volume: Set my own did not pick Custom');
+          await until(`/h$/.test(document.getElementById('vt').textContent) && !document.querySelector('#vt.held') && !document.querySelector('.vd .sk')`, 30000);
+          console.log(`  set my own: ${own} | dots ${await ev(`document.querySelectorAll('#vdots i').length`)}`);
+        }
+        await overflow('volume');
+        const vol = await ev(`document.querySelector('#vnm b').textContent + ' ' + document.getElementById('vg').textContent + ' ' + document.getElementById('vt').textContent + ' a week [' + [...document.querySelectorAll('.vd')].map(x=>x.textContent).join(' / ') + '] ' + ${JSON.stringify(pct)}`);
         await go(); await scr('days');
-        // The minutes arrive without moving anything: the week card and the session card keep their place and height.
-        const lay = `[document.getElementById('wkc').offsetTop, document.getElementById('dsc').offsetHeight].join(',')`;
+        if (!/can you lift\?$/.test(await ev(`document.querySelector('.screen .qh').textContent`))) bad('days: title');
+        // The minutes arrive without moving anything: the week line, the week card and the session card keep their place and height.
+        const lay = `[document.getElementById('wtot').offsetHeight, document.getElementById('wkc').offsetTop, document.getElementById('dsc').offsetHeight].join(',')`;
         const lay0 = await ev(lay);
         await click(`.dt[data-v="${P.days}"]`);
-        await until(`document.querySelectorAll('.dt small').length===5 && !document.querySelector('#dsc.working') && !!document.querySelector('#dsh b') && !document.querySelector('#dsl .sk')`, 30000);
+        await until(`document.querySelectorAll('.dt small').length===5 && !document.querySelector('#dsc.working') && !!document.querySelector('#dsh b') && !document.querySelector('#dsl .sk') && !document.querySelector('#wtot .sk') && !document.querySelector('#wtot b.held')`, 30000);
         const lay1 = await ev(lay);
         if (lay0 !== lay1) bad(`days: layout moved as the minutes landed (${lay0} -> ${lay1})`);
         await overflow('days');
-        const days = await ev(`document.querySelector('.dt[aria-pressed="true"]').textContent + ': ' + document.querySelector('#dsh b').textContent + ', ' + document.getElementById('dsl').textContent`);
+        const days = await ev(`document.getElementById('wtot').textContent + ' | ' + document.querySelector('.dt[aria-pressed="true"]').textContent + ': ' + document.querySelector('#dsh b').textContent + ', ' + document.getElementById('dsl').textContent`);
         await go(); await scr('length'); await click(`.qc[data-v="${P.length}"]`); await overflow('length');
         await go(); await scr('refine');
         if (P.preset) await click(`.presets .preset:nth-child(${P.preset}) .pmain`);
@@ -142,6 +170,31 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         await click('#repWhy'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
         await click('.pinfo'); await until(`!!document.querySelector('.sheet.on .ppick')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
         await until(`!!document.querySelector('#slpin .slr b') && document.querySelector('#slpin .slr b').textContent.indexOf('About')===0`, 20000); await overflow('refine');
+        // Refinements -> "Here's your week" -> the build.
+        await go(); await scr('trainsummary'); await overflow('trainsummary');
+        const panelDone = `!!document.querySelector('#sumPanel .slp .slh b') && !document.querySelector('#sumPanel .slp.working') && !document.querySelector('#sumPanel .slh .slu')`;
+        await until(panelDone, 30000);
+        const sumRows = () => ev(`document.querySelector('.screen .qh').textContent + ' | ' + [...document.querySelectorAll('.tsum .srow2')].map(x=>x.querySelector('small').textContent + ': ' + x.querySelector('b').textContent).join(', ') + ' | ' + document.querySelector('#sumPanel .slh b').textContent + ' | ' + document.getElementById('nextBtn').textContent`);
+        let sum = await sumRows();
+        if (!/^Here’s your week \| Volume: /.test(sum) || !/Build my plan$/.test(sum)) bad('summary: ' + sum);
+        if (P.editSummary) {
+          // A row opens its question in edit mode; Save comes back with the change.
+          await click('[data-ed="volume"]'); await scr('volume');
+          if ((await ev(`document.getElementById('nextBtn').textContent`)) !== 'Save') bad('volume edit CTA');
+          await click('.vsb[data-dir="1"]'); await sleep(150); await go(); await scr('trainsummary'); await until(panelDone, 30000);
+          const after = await sumRows();
+          console.log(`  summary edit: ${sum.split(' | ')[1].split(', ')[0]} -> ${after.split(' | ')[1].split(', ')[0]}, ${await ev(`(document.querySelector('#sumPanel .sld')||{}).textContent||''`)}`);
+          sum = after;
+        }
+        if (P.weekSheet) {
+          await click('#wkRow'); await until(`!!document.querySelector('.sheet.on #wkSave')`); await overflow('week sheet');
+          await click('.sheet [data-t="morning"]'); await sleep(100);
+          await click('#wkSave'); await sleep(400); await scr('trainsummary'); await until(panelDone, 30000);
+          sum = await sumRows();
+          if (!/Training week: [^,]+(, [A-Z][a-z]{2})*/.test(sum)) bad('summary week row: ' + sum);
+          console.log(`  week sheet: ${await ev(`document.querySelector('#wkRow em').textContent`)}`);
+        }
+        console.log(`  summary: ${sum}`);
         await go(); await scr('progbuild'); await overflow('progbuild');
         await scr('program', 30000); await overflow('program'); await images('program');
         const prog = await ev(`document.querySelector('.hpl').textContent + ' | ' + document.querySelector('.hmt').textContent + ' | ' + document.querySelectorAll('.scard').length + ' sessions'`);

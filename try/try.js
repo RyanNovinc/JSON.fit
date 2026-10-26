@@ -155,6 +155,7 @@
     { id: 'days', sec: 'train', r: rDays },
     { id: 'length', sec: 'train', r: rLength },
     { id: 'refine', sec: 'train', r: rRefine },
+    { id: 'trainsummary', sec: 'train', r: rTrainSummary },
     { id: 'progbuild', sec: 'train', r: rProgBuild, build: true },
     { id: 'program', sec: 'train', r: rProgram },
     { id: 'blocks', sec: 'train', r: rBlocks, side: true },
@@ -2639,7 +2640,8 @@
    * (the next build: release 1.0.44 + release/integration, workout generator on):
    * Volume (Q6VolumePreferenceScreen, first since 24 Oct 2026), Days
    * (Q3DaysPerWeekScreen, 2 to 6 with each count's minutes), How long
-   * (Q4ProgramDurationScreen), Refinements (RefinementsScreen), then
+   * (Q4ProgramDurationScreen), Refinements (RefinementsScreen), the summary
+   * ("Here's your week", QuestionnaireSummaryScreen, since 26 Oct 2026), then
    * WorkoutBuildScreen. Equipment is not asked: the app
    * took it out of the flow (only "Commercial gym" can be built) and How long saves
    * the default. Every number on these screens (session minutes, sets per muscle,
@@ -2669,7 +2671,8 @@
   /** The answers saved so far, field by field, as the screens save them (questionnaireStorage). */
   function savedThrough(step) {
     var q = {};
-    if (step >= 1) q.volumePreference = T.volume;
+    // customWeeklySets is what Volume last saved: a lower tier picked on Days saves only volumePreference, so the number stays stored.
+    if (step >= 1) { q.volumePreference = T.volume; if (T.customStored != null) q.customWeeklySets = T.customStored; }
     if (step >= 2) q.totalTrainingDays = T.days;
     if (step >= 3) { q.programDuration = T.length; q.selectedEquipment = T.start.defaultEquipment; }
     if (step >= 4) {
@@ -2698,6 +2701,7 @@
     checkC: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 7.3-5.4 6.3a1 1 0 0 1-1.5.1l-2.6-2.6 1.4-1.4 1.8 1.8 4.8-5.5z"/></svg>',
     time: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/></svg>',
     chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+    plusC: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>',
   };
   /** QuestionCard.tsx: icon box, title (with an optional pill), subtitle always shown, a check when picked (or `aside` on the right in both states). */
   function qcards(el, list, current, onPick) {
@@ -2712,8 +2716,6 @@
       };
     });
   }
-  /** The CTA. */
-  function trainCta(ok, onNext) { primary('Continue', onNext, !ok); }
 
   /* ---------- SessionLengthPanel.tsx, compact (Refinements) ---------- */
   /**
@@ -2724,7 +2726,8 @@
    * value(), kind }.
    */
   function sessionPanel(box, my, o) {
-    var shown = null, timer = 0, run = 0;
+    var keep = o.keep || {}, shown = keep.shown || null, timer = 0, run = 0;
+    if (o.full) return fullPanel(box, my, o, keep);
     function draw(res, loading) {
       if (!res) { box.innerHTML = '<div class="slc"><div class="slr"><span>Sessions</span><em class="slv"><i class="pdot"></i><b>Working it out</b></em></div></div>'; return; }
       var est = res.est, AMB = '#fbbf24';
@@ -2745,6 +2748,64 @@
           if (shown && keyOf(shown.value) === keyOf(value) && !res.delta) res.delta = shown.res.delta;
           shown = { value: value, res: res };
           draw(res, false);
+        }).catch(function () {});
+      }, 250);
+    }
+    update();
+    return update;
+  }
+
+  /**
+   * SessionLengthPanel.tsx, full (the summary): "About N min" and its line, one
+   * bar per day, the change line, and once sessions run long the fixes that
+   * save 5+ min (each built like the main estimate), the ramp line and what was
+   * assumed. The summary stays in the stack while a question is edited, so its
+   * last result (and the change line against it) survives the round trip:
+   * `keep` holds it. o.onFix(fix) runs on a tap.
+   */
+  function fullPanel(box, my, o, keep) {
+    var timer = 0, run = 0, wt = 0, AMB = '#fbbf24';
+    function draw(res, behind, working) {
+      if (!res) {
+        box.innerHTML = '<div class="slp working"><i class="slw" aria-hidden="true"></i><div class="slh"><span class="pend">Working out your session length</span></div><div class="slb">' +
+          Array.apply(null, Array(o.skeleton || 3)).map(function (x, i) { return '<div class="slrow"><span class="n"><i class="sk skn" style="width:' + (44 + (i % 3) * 8) + 'px"></i></span><span class="tr">' + skel('skb') + '</span><span class="m"></span></div>'; }).join('') + '</div></div>';
+        return;
+      }
+      var est = res.est, head = res.tone === 'ok' ? '#fff' : AMB;
+      var dc = res.delta ? (res.delta.tone === 'longer' ? AMB : res.delta.tone === 'shorter' ? '#4ade80' : '#a1a1aa') : '';
+      var scale = Math.max(120, Math.max.apply(null, est.days.map(function (d) { return d.minutes; })));
+      var barC = res.delta && res.delta.tone === 'longer' ? AMB : 'var(--acc)';
+      box.innerHTML = '<div class="slp' + (working ? ' working' : '') + '"><i class="slw" aria-hidden="true"></i><div class="slh"><b style="color:' + head + '">About ' + est.headline + ' min</b>' +
+        (working ? '<span class="slu"><i class="pdot"></i>' + (behind ? 'Updating' : 'Finding shorter options') + '</span>' : '<span>' + esc(res.headSub) + '</span>') + '</div>' +
+        '<div class="slb' + (behind && working ? ' dim' : '') + '">' + est.days.map(function (d) {
+          return '<div class="slrow"><span class="n">' + esc(d.name) + '</span><span class="tr"><i style="width:' + Math.round(d.minutes / scale * 1000) / 10 + '%;background:' + barC + '"></i></span><span class="m">' + d.minutes + '</span></div>';
+        }).join('') + '</div>' +
+        (res.delta ? '<p class="sld' + (behind ? ' dim' : '') + '" style="color:' + dc + '">' + esc(res.delta.text) + '</p>' : '') +
+        (res.longLine ? '<div class="slf' + (behind ? ' dim' : '') + '"><p class="sll">' + esc(res.longLine) + '</p>' + res.offered.map(function (f) {
+          return '<button type="button" class="slfx" data-fix="' + esc(f.key) + '"' + (behind ? ' disabled' : '') + '><span><b>' + esc(f.label) + '</b><small>About ' + f.headline + ' min' + (f.note ? ', ' + esc(f.note) : '') + '</small></span>' + IC.chev + '</button>';
+        }).join('') + '</div>' : '') +
+        (res.ramp ? '<p class="sla">' + esc(res.ramp) + '</p>' : '') +
+        (res.assumed ? '<p class="sla">' + esc(res.assumed) + '</p>' : '') + '</div>';
+      $$('[data-fix]', box).forEach(function (b) {
+        b.onclick = function () { var f = (res.fixes || []).filter(function (x) { return x.key === b.getAttribute('data-fix'); })[0]; if (f && o.onFix) o.onFix(f); };
+      });
+    }
+    function update() {
+      var value = o.value(), fixes = o.fixes ? o.fixes : [];
+      var id = ++run, same = keep.shown && keyOf(keep.shown.value) === keyOf(value) && keyOf(keep.shown.fixesFor) === keyOf(fixes);
+      if (same) { draw(keep.shown.res, false, false); return; }
+      if (keep.shown) draw(keep.shown.res, true, false); else draw(null);
+      clearTimeout(wt); wt = setTimeout(function () { if (id === run && my === token && keep.shown) draw(keep.shown.res, true, true); }, 120);
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var delta = keep.shown ? { kind: 'summary', prev: keep.shown.value, prevAvg: keep.shown.res.est.average } : null;
+        tcall('sessionPanel', aboutForEngine(), o.saved, o.answers(), value, fixes, delta).then(function (res) {
+          if (id !== run || my !== token || !res) return;
+          clearTimeout(wt);
+          res.fixes = fixes;
+          if (keep.shown && keyOf(keep.shown.value) === keyOf(value) && !res.delta) res.delta = keep.shown.res.delta;
+          keep.shown = { value: value, fixesFor: fixes, res: res };
+          draw(res, false, false);
         }).catch(function () {});
       }, 250);
     }
@@ -2797,65 +2858,233 @@
   /** WorkingMotion.tsx's skeleton: a grey bar a highlight crosses while it builds. */
   function skel(cls) { return '<i class="sk ' + (cls || '') + '" aria-hidden="true"></i>'; }
 
-  /* ---------- Q6: How hard should we push? (first since 24 Oct 2026) ---------- */
-  var VOLUMES = [
-    { v: '8-12', l: 'Conservative', h: 'Most of the growth, least time', icon: IC.leaf },
-    { v: '12-16', l: 'Moderate', h: 'The best fit for most people', icon: IC.speed },
-    { v: '16-20', l: 'High', h: 'A bit more growth, more time', icon: IC.flame },
-  ];
-  /** PlanInstruments VolumeCurve: an illustrative diminishing-returns curve, the pick's zone lit. */
-  function volumeCurve(v) {
-    var W = 320, H = 140, x0 = 18, x1 = 306, y0 = 16, y1 = 108;
-    var X = function (s) { return x0 + (s / 24) * (x1 - x0); }, Y = function (s) { return y1 - (1 - Math.exp(-s / 8)) * (y1 - y0); };
-    var path = function (a, b) { var d = ''; for (var t = a; t <= b + 0.001; t += 0.5) d += (d ? 'L' : 'M') + X(t).toFixed(1) + ' ' + Y(t).toFixed(1); return d; };
-    var Z = [['8-12', 8, 12], ['12-16', 12, 16], ['16-20', 16, 20]], sel = Z.filter(function (z) { return z[0] === v; })[0];
-    return '<div class="icard"><svg class="vcurve" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' + Z.map(function (z) {
-      var on = sel && sel[0] === z[0];
-      return '<rect x="' + X(z[1]) + '" y="' + y0 + '" width="' + (X(z[2]) - X(z[1]) - 2) + '" height="' + (y1 - y0) + '" rx="6" fill="' + (on ? 'var(--acc)' : '#18181b') + '" fill-opacity="' + (on ? 0.22 : 1) + '"/>';
-    }).join('') + '<path d="' + path(0, 24) + '" stroke="#3f3f46" stroke-width="2.5" fill="none"/>' +
-      (sel ? '<path d="' + path(sel[1], sel[2]) + '" stroke="var(--acc)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="' + X((sel[1] + sel[2]) / 2) + '" cy="' + Y((sel[1] + sel[2]) / 2) + '" r="6" fill="var(--acc)"/>' : '') +
-      [8, 12, 16, 20].map(function (t) { return '<text x="' + X(t) + '" y="' + (y1 + 16) + '" fill="#71717a" font-size="10.5" text-anchor="middle">' + t + '</text>'; }).join('') +
-      '<text x="' + x0 + '" y="10" fill="#71717a" font-size="10">MORE GROWTH</text><text x="' + x1 + '" y="10" fill="#71717a" font-size="10" text-anchor="end">ILLUSTRATIVE</text>' +
-      '<text x="' + ((x0 + x1) / 2) + '" y="' + (y1 + 31) + '" fill="#71717a" font-size="10" text-anchor="middle">SETS PER MUSCLE PER WEEK</text></svg></div>';
+  /* ---------- utils/volumeChoice.ts (26 Oct 2026), ported ---------- */
+  /**
+   * The volume picker's pure helpers, word for word from utils/volumeChoice.ts
+   * (and sessionLengthEstimate.lowerVolume). V is trainingStart's `volume`: the
+   * app's tiers, sets, slider ends and VOLUME_COPY (its wording functions as
+   * "{n}" templates). parity-training.mjs runs this block against the app's own
+   * functions over every input, so keep it between the markers.
+   */
+  /* volume-kit:start */
+  function volumeKit(V) {
+    var MINUS = '−';
+    function fill(s, m) { return String(s).replace(/\{(\w+)\}/g, function (x, k) { return m[k] != null ? String(m[k]) : x; }); }
+    function growthPercent(sets) { if (typeof sets !== 'number' || !isFinite(sets) || sets <= 0) return 0; return Math.round(Math.sqrt(sets / V.top) * 100); }
+    function sanitiseCustomSets(x) {
+      var n = typeof x === 'string' && x.trim() !== '' ? Number(x) : x;
+      if (typeof n !== 'number' || !isFinite(n)) return null;
+      return Math.min(V.max, Math.max(V.min, Math.round(n)));
+    }
+    function isTier(v) { return typeof v === 'string' && V.tierValues.indexOf(v) > -1; }
+    function sanitiseVolume(v, c) {
+      if (isTier(v)) return { volumePreference: v };
+      if (v === V.custom) { var n = sanitiseCustomSets(c); return n != null ? { volumePreference: V.custom, customWeeklySets: n } : null; }
+      return null;
+    }
+    function tierForSets(n) { for (var i = 0; i < V.tierValues.length; i++) if (V.tierSets[V.tierValues[i]] === n) return V.tierValues[i]; return null; }
+    function volumeSteps(customSets) {
+      var out = V.tierValues.map(function (t) { return { key: t, value: t, name: V.tierCopy[t].name, what: V.tierCopy[t].what, sets: V.tierSets[t] }; });
+      var n = sanitiseCustomSets(customSets);
+      if (n != null && !tierForSets(n)) {
+        var at = -1;
+        for (var i = 0; i < out.length; i++) if (out[i].sets > n) { at = i; break; }
+        out.splice(at < 0 ? out.length : at, 0, { key: V.custom, value: V.custom, customWeeklySets: n, name: V.copy.customName, what: fill(V.copy.customWhat, { n: n }), sets: n });
+      }
+      return out;
+    }
+    function volumeLabel(v, c) {
+      if (isTier(v)) return V.tierCopy[v].name;
+      if (v === V.custom) { var n = sanitiseCustomSets(c); return n != null ? V.copy.customName + ' · ' + n + ' sets' : V.copy.customName; }
+      return null;
+    }
+    function volumeShortLabel(v, c) {
+      if (v === V.custom) { var n = sanitiseCustomSets(c); return n != null ? n + ' sets' : V.copy.customName; }
+      return volumeLabel(v);
+    }
+    function volumeOverride(v, c) {
+      if (v !== V.custom) return { volumePreference: v };
+      var o = { volumePreference: v }, n = sanitiseCustomSets(c);
+      if (n != null) o.customWeeklySets = n;
+      return o;
+    }
+    function lowerVolume(v, c) {
+      if (v === V.custom) {
+        var n = sanitiseCustomSets(c);
+        if (n == null) return null;
+        var below = V.tierValues.filter(function (t) { return V.tierSets[t] < n; });
+        return below.length ? below[below.length - 1] : null;
+      }
+      var cur = !v || v === 'not_sure' ? '12-16' : v;
+      return cur === '16-20' ? '12-16' : cur === '12-16' ? '8-12' : cur === '8-12' ? '4-8' : null;
+    }
+    function halfHoursLabel(minutes) { var h = Math.round(Math.abs(minutes) / 30) / 2, whole = Math.floor(h); return whole + (h - whole ? '½' : '') + ' h'; }
+    function weekTimeDelta(minutes) {
+      var a = Math.abs(minutes);
+      if (a < 5) return 'same time';
+      var sign = minutes < 0 ? MINUS : '+';
+      return a < 55 ? sign + Math.round(a / 5) * 5 + ' min' : sign + halfHoursLabel(a);
+    }
+    function growthDelta(from, to) { var d = growthPercent(to) - growthPercent(from); return (d < 0 ? MINUS : '+') + Math.abs(d) + '%'; }
+    return {
+      fill: fill, growthPercent: growthPercent, sanitiseCustomSets: sanitiseCustomSets, sanitiseVolume: sanitiseVolume, tierForSets: tierForSets,
+      volumeSteps: volumeSteps, volumeLabel: volumeLabel, volumeShortLabel: volumeShortLabel, volumeOverride: volumeOverride, lowerVolume: lowerVolume,
+      halfHoursLabel: halfHoursLabel, weekTimeDelta: weekTimeDelta, growthDelta: growthDelta,
+    };
   }
+  /* volume-kit:end */
+  var VKIT = null;
+  function vk(st) { if (!VKIT || VKIT.st !== st) { VKIT = volumeKit(st.volume); VKIT.st = st; } return VKIT; }
+  /** The volume answer as questionnaire fields (Volume's save: a tier drops the custom number). */
+  function volumeFields() { return vk(T.start).volumeOverride(T.volume, T.volume === T.start.volume.custom ? T.customSets : null); }
+  /** The page's volume, its label ("Custom · 14 sets") and the short one ("14 sets"). */
+  function volName() { return vk(T.start).volumeLabel(T.volume, T.customSets) || 'Moderate'; }
+  function volShort() { return vk(T.start).volumeShortLabel(T.volume, T.customSets) || 'Moderate'; }
+
+  /* ---------- Q6: How hard should we push? (one option at a time, 26 Oct 2026) ---------- */
+  /**
+   * Q6VolumePreferenceScreen: the option you're on (tag, name, line, growth %
+   * and its real weekly hours), dots, − Less / More + with the trade on each
+   * ("+14% · +1½ h"), "What does N% mean?" (with How we set this), "Set my own"
+   * (a 4 to 22 slider, VolumeOwnSheet). A custom number joins the steps as
+   * Custom. Opens on the saved answer, else the tier For you. Weekly hours are
+   * the real build's at the saved days (4 before Days); while one builds the
+   * last figure stays up, faded, so nothing moves.
+   */
   function rVolume(el, my) {
     withTrain(el, my, function (st) {
-      // The saved answers when the screen opens (none yet from the finish line), and its answersSoFar.
-      var saved = null, answers = {};
-      withData(el, my, function () { return tcall('volumeLines', aboutForEngine(), saved, answers); }, '', function (VL) {
-        var rec = st.recommendedVolume;
-        // The recommended tier is picked when nothing is answered, so most people just tap Continue.
-        if (!T.volume) T.volume = rec;
-        head(el, trainStepLine(0), 'How hard should we <em>push?</em>', 'We’ve marked the one that fits you.');
-        qcards(el, VOLUMES.map(function (o) {
-          return { v: o.v, l: o.l, h: o.h, icon: o.icon, badge: o.v === rec ? 'For you' : null, aside: '<span class="qtime" data-t="' + o.v + '"></span>' };
-        }), T.volume, function (v) { T.volume = v; enable(true); paint(); if (!$('#whyB', el).hidden) whyBody(); });
-        el.insertAdjacentHTML('beforeend', '<div class="reas rise" style="--i:4"><span>' + IC.check + '</span><p>' + (st.rampsIn ? 'Your first two weeks start lighter, and you can change this any time.' : 'You can change this any time.') + '</p></div>' +
-          '<button type="button" class="why rise" style="--i:4" id="whyV" aria-expanded="false">How we set this' + CHEV + '</button><div class="whyb" id="whyB" hidden></div>');
-        function whyBody() {
-          $('#whyB', el).innerHTML = volumeCurve(T.volume) +
-            '<p class="lead">' + esc(st.volumeLabel[T.volume]) + ': ' + esc(VL.lines[T.volume].replace(/^Most/, 'most')) + '</p>' +
-            '<p>Each extra set adds a little less growth than the one before. About 10 sets a week gives a muscle roughly two-thirds of what 20 would.</p>' +
-            '<p>In one study of trained lifters, 12, 18 and 24 sets a week built about the same thigh muscle over 8 weeks, though other studies found more sets helped a little. High is for lifters who have stopped progressing on Moderate, and it needs the sleep and food to recover from.</p>' +
-            '<p>A long session you skip or rush builds less than a shorter one you finish well. Next you’ll pick how many days to spread this over.</p>' +
-            '<a class="whyl" href="/research/" target="_blank" rel="noopener">The research behind it</a>';
+      var K = vk(st), C = st.volume.copy, rec = st.recommendedVolume;
+      // From the summary (edit mode) the screen reads every saved answer; from the finish line, none yet.
+      var edit = !!T.edit, saved = edit ? savedThrough(4) : null, answers = edit ? savedThrough(4) : {};
+      // A "less volume" fix on the summary opens the screen on that tier (answersSoFar keeps the rest).
+      if (edit && T.editPreset) answers = Object.assign({}, answers, { volumePreference: T.editPreset });
+      if (!T.volume) T.volume = rec;
+      if (edit && T.editPreset) { T.volume = T.editPreset; T.editPreset = null; }
+      var weekDays = edit ? T.days : st.volumeDays;
+      el.classList.add('vstage');
+      head(el, trainStepLine(0), 'How hard should we <em>push?</em>', esc(C.subtitle));
+      el.insertAdjacentHTML('beforeend', '<div class="vst rise" style="--i:2" aria-live="polite">' +
+        '<p class="vtag" id="vtag"></p><div class="vnm" id="vnm"><b></b><p></p></div>' +
+        '<div class="vstats"><div class="vstat"><b class="vg" id="vg"></b><span>' + esc(C.growthLabel) + '</span></div><div class="vstat" id="vtw"><b class="vt" id="vt"></b><span>' + esc(C.weekLabel) + '</span></div></div>' +
+        '<div class="vdots" id="vdots" aria-hidden="true"></div>' +
+        '<div class="vsteps"><button type="button" class="vsb" data-dir="-1"><b>' + esc(C.less) + '</b><span class="vd"></span></button><button type="button" class="vsb" data-dir="1"><b>' + esc(C.more) + '</b><span class="vd"></span></button></div>' +
+        '<div class="vlinks"><button type="button" id="vPct"></button><button type="button" id="vOwn">' + esc(C.ownLink) + '</button></div></div>' +
+        '<div class="reas rise" style="--i:3"><span>' + IC.check + '</span><p>' + esc(st.rampsIn ? C.rampIn : C.changeAnyTime) + '</p></div>');
+      var read = estimator(my, function () { paint(); });
+      var ests = {}, lastMins = null, lastKey = null, dir = 0, ownOpen = false;
+      function steps() { return K.volumeSteps(T.customSets); }
+      function at() { var s = steps(), i = 0; for (var k = 0; k < s.length; k++) if (s[k].value === T.volume) i = k; return { s: s, i: i, cur: s[i], lo: s[i - 1], hi: s[i + 1] }; }
+      function mins(step) { var e = step && ests[step.key]; return e ? e.week : null; }
+      function paint() {
+        var A = at(), cur = A.cur;
+        var order = [cur, A.lo, A.hi].concat(A.s).filter(function (x, k, a) { return x && a.indexOf(x) === k; });
+        if (!ownOpen) ests = read(saved, answers, order.map(function (x) { return { key: x.key, override: Object.assign(K.volumeOverride(x.value, x.customWeeklySets), { totalTrainingDays: weekDays }) }; }));
+        var tag = cur.value === st.volume.custom ? C.tagYourOwn : cur.value === rec ? C.tagForYou : '';
+        $('#vtag', el).textContent = tag;
+        var nm = $('#vnm', el);
+        if (lastKey !== cur.key) {
+          $('b', nm).textContent = cur.name; $('p', nm).textContent = cur.what;
+          if (lastKey != null && !RM) { nm.style.setProperty('--dx', (dir * 14) + 'px'); nm.classList.remove('in'); void nm.offsetWidth; nm.classList.add('in'); }
+          lastKey = cur.key;
         }
-        $('#whyV', el).onclick = function () { var b = $('#whyB', el), open = b.hidden; if (open) whyBody(); b.hidden = !open; this.setAttribute('aria-expanded', open); };
-        // Each tier's weekly time at the days saved so far (4 before Days): the picked tier builds first.
-        var read = estimator(my, function () { paint(); });
-        function paint() {
-          var order = [T.volume, rec].concat(VOLUMES.map(function (o) { return o.v; })).filter(function (v, k, a) { return a.indexOf(v) === k; });
-          var ests = read(saved, answers, order.map(function (v) { return { key: v, override: { volumePreference: v, totalTrainingDays: st.volumeDays } }; }));
-          $$('.qtime', el).forEach(function (t) {
-            var e = ests[t.getAttribute('data-t')], html = e ? '<b>' + esc(e.hours) + '</b><small>a week</small>' : skel('skt') + '<small>a week</small>';
-            if (t.getAttribute('data-h') !== (e ? e.hours : '')) { t.innerHTML = html; t.setAttribute('data-h', e ? e.hours : ''); }
-            t.setAttribute('aria-label', e ? 'about ' + e.hours + ' a week' : 'Working out the time');
-          });
-        }
-        paint();
-        trainCta(!!T.volume, function () { if (!T.volume) return; go('days'); });
+        var growth = K.growthPercent(cur.sets);
+        $('#vg', el).textContent = growth + '%';
+        var m = mins(cur); if (m != null) lastMins = m;
+        var shown = m != null ? m : lastMins, t = $('#vt', el);
+        if (shown != null) { if (t.getAttribute('data-h') !== K.halfHoursLabel(shown)) { t.textContent = K.halfHoursLabel(shown); t.setAttribute('data-h', t.textContent); } t.classList.toggle('held', m == null); }
+        else if (!t.firstChild || t.firstChild.nodeType === 3) { t.innerHTML = skel('skv'); t.removeAttribute('data-h'); }
+        $('#vtw', el).setAttribute('aria-label', shown != null ? 'about ' + K.halfHoursLabel(shown) + ' a week' : 'Working out the time');
+        $('#vdots', el).innerHTML = A.s.map(function (x, k) { return '<i' + (k === A.i ? ' class="on"' : '') + '></i>'; }).join('');
+        $$('.vsb', el).forEach(function (b) {
+          var d = +b.getAttribute('data-dir'), other = d < 0 ? A.lo : A.hi, om = mins(other), vd = $('.vd', b);
+          b.disabled = !other;
+          var key = other ? other.key + ':' + om + ':' + m : 'end';
+          if (vd.getAttribute('data-k') !== key) {
+            vd.setAttribute('data-k', key);
+            vd.innerHTML = other ? esc(K.growthDelta(cur.sets, other.sets)) + ' · ' + (om != null && m != null ? esc(K.weekTimeDelta(om - m)) : skel('skvd')) : esc(d < 0 ? C.lowest : C.highest);
+          }
+          b.setAttribute('aria-label', other ? (d < 0 ? 'Less' : 'More') + ': ' + other.name + ', ' + K.growthDelta(cur.sets, other.sets) + ' growth' + (om != null && m != null ? ', ' + K.weekTimeDelta(om - m) + ' a week' : '') : d < 0 ? 'Less, already the lowest' : 'More, already the highest');
+        });
+        $('#vPct', el).textContent = K.fill(C.pctLink, { n: growth });
+      }
+      $$('.vsb', el).forEach(function (b) {
+        b.onclick = function () { var d = +b.getAttribute('data-dir'), A = at(), nx = A.s[A.i + d]; if (!nx) return; dir = d; T.volume = nx.value; paint(); };
+      });
+      $('#vPct', el).onclick = function () {
+        var cur = at().cur;
+        tcall('volumeLines', aboutForEngine(), saved, answers, [{ key: cur.key, value: cur.value, customWeeklySets: cur.customWeeklySets }]).then(function (VL) {
+          if (my !== token) return;
+          openSheet('<h2 class="sh-t">' + esc(C.pctSheetTitle) + '</h2>' + C.pctSheet.map(function (p) { return '<p class="sh-b">' + esc(p) + '</p>'; }).join('') +
+            '<div class="vrule"></div><p class="sh-ov acc">' + esc(C.howWeSetThis) + '</p><p class="sh-b lead">' + esc(cur.name) + ': ' + esc(VL.lines[cur.key]) + '</p>' +
+            '<p class="sh-b">Each extra set adds a little less growth than the one before. About 10 sets a week gives a muscle roughly two-thirds of what 20 would.</p>' +
+            '<p class="sh-b">In one study of trained lifters, 12, 18 and 24 sets a week built about the same thigh muscle over 8 weeks, though other studies found more sets helped a little. High is for lifters who have stopped progressing on Moderate, and it needs the sleep and food to recover from.</p>' +
+            '<p class="sh-b">A long session you skip or rush builds less than a shorter one you finish well. Next you’ll pick how many days to spread this over.</p>' +
+            '<a class="whyl" href="/research/" target="_blank" rel="noopener">The research behind it</a>');
+        }, function () {});
+      };
+      $('#vOwn', el).onclick = function () {
+        ownOpen = true;
+        ownSheet(st, my, { start: at().cur.sets, rec: rec, saved: saved, answers: answers, weekDays: weekDays, onUse: function (n) {
+          var tier = K.tierForSets(n);
+          if (tier) T.volume = tier; else { T.customSets = n; T.volume = st.volume.custom; }
+          dir = 0; closeSheet();
+        }, onClose: function () {
+          if (!ownOpen) return;
+          // The screen's estimates pause while the sheet is open (useSessionEstimates enabled: focused && !ownOpen), then pick up again.
+          ownOpen = false; if (my !== token) return; read = estimator(my, function () { paint(); }); paint();
+        } });
+      };
+      paint();
+      primary(edit ? 'Save' : 'Continue', function () {
+        if (!T.volume) return;
+        // Volume's save: the pick, and the custom number (a tier drops it).
+        T.customStored = T.volume === st.volume.custom ? T.customSets : null;
+        if (edit) { T.edit = false; go('trainsummary'); return; }
+        go('days');
       });
     });
+  }
+  /**
+   * VolumeOwnSheet: hard sets per muscle a week, 4 to 22, with live sets,
+   * growth % and the real build's weekly hours (built once the thumb settles,
+   * 300 ms; the last figure stays up, faded, while the next builds). The four
+   * tiers are marked under the track (For you in the accent); tapping a mark
+   * moves the thumb there.
+   */
+  function ownSheet(st, my, o) {
+    var K = vk(st), C = st.volume.copy, V = st.volume, span = V.max - V.min;
+    var sets = o.start, settled = o.start, lastMins = null, tmr = 0;
+    var read = estimator(my, function () { draw(); });
+    openSheet('<div class="own"><h2 class="sh-t">' + esc(C.ownSheetTitle) + '</h2><p class="sh-b">' + esc(C.ownSheetBody) + '</p>' +
+      '<div class="ownr"><div><b id="oS"></b><span>' + esc(C.ownSets) + '</span></div><div><b class="og" id="oG"></b><span>' + esc(C.ownGrowth) + '</span></div><div id="oTw"><b class="ot" id="oT"></b><span>' + esc(C.ownWeek) + '</span></div></div>' +
+      '<div class="owns"><input type="range" id="oR" min="' + V.min + '" max="' + V.max + '" step="1" value="' + sets + '" aria-label="' + esc(C.ownSliderLabel) + '">' +
+      '<div class="omarks">' + V.tierValues.map(function (t, i) {
+        var r = t === o.rec, x = (V.tierSets[t] - V.min) / span;
+        return '<button type="button" class="omark' + (r ? ' omk-rec' : '') + (i === V.tierValues.length - 1 ? ' low' : '') + '" data-n="' + V.tierSets[t] + '" style="--x:' + x + '" aria-label="' + esc(V.tierCopy[t].name + ', ' + V.tierSets[t] + ' sets' + (r ? ', recommended for you' : '')) + '"><i></i><span>' + esc(r ? C.ownForYouMark : V.tierCopy[t].name) + '</span></button>';
+      }).join('') + '</div><div class="oends"><span>' + esc(K.fill(C.ownMin, { n: V.min })) + '</span><span>' + esc(K.fill(C.ownMax, { n: V.max })) + '</span></div></div>' +
+      '<button type="button" class="sh-go" id="oUse"></button></div>', function (sh) {
+      var R = $('#oR', sh);
+      function move(n) { sets = n; R.value = n; clearTimeout(tmr); tmr = setTimeout(function () { settled = sets; draw(); }, 300); draw(); }
+      R.oninput = function () { move(+R.value); };
+      $$('.omark', sh).forEach(function (b) { b.onclick = function () { move(+b.getAttribute('data-n')); }; });
+      $('#oUse', sh).onclick = function () { o.onUse(sets); o.onClose(); };
+      draw();
+    }, function () { o.onClose(); });
+    function draw() {
+      var sh = document.querySelector('.sheet .own'); if (!sh) return;
+      var key = 'own' + settled;
+      var e = read(o.saved, o.answers, [{ key: key, override: Object.assign(K.volumeOverride(V.custom, settled), { totalTrainingDays: o.weekDays }) }])[key];
+      var fresh = e && settled === sets;
+      if (fresh) lastMins = e.week;
+      var shown = fresh ? e.week : lastMins;
+      var R = $('#oR', sh); R.style.setProperty('--p', ((sets - V.min) / span * 100) + '%');
+      $('#oS', sh).textContent = sets;
+      $('#oG', sh).textContent = K.growthPercent(sets) + '%';
+      var t = $('#oT', sh);
+      if (shown != null) { t.textContent = K.halfHoursLabel(shown); t.classList.toggle('held', !fresh); } else if (!t.firstChild || t.firstChild.nodeType === 3) t.innerHTML = skel('sko');
+      $('#oTw', sh).setAttribute('aria-label', shown != null ? 'about ' + K.halfHoursLabel(shown) + ' a week' : 'Working out the time');
+      $('#oUse', sh).textContent = K.fill(C.ownUse, { n: sets });
+    }
   }
 
   /* ---------- Q3: How many days a week? (second since 24 Oct 2026) ---------- */
@@ -2865,10 +3094,13 @@
   function rDays(el, my) {
     withTrain(el, my, function (st) {
       if (!T.week) { tcall('weekFor', T.days).then(function (w) { if (my !== token) return; T.week = w; redrawTrain(el, my); }); return; }
+      var K = vk(st), edit = !!T.edit;
       // What Volume saved, and the answers it passed on (DaysScreen's base and answersSoFar).
-      var saved = savedThrough(1), answers = { volumePreference: T.volume };
-      head(el, trainStepLine(1), 'How many days a <em>week?</em>', 'Your muscles grow the same from 2 days up. It’s only about how you like your week.');
-      el.insertAdjacentHTML('beforeend', '<div class="dtiles rise" style="--i:2" role="radiogroup">' + st.dayOptions.map(function (n) {
+      // From the summary (edit mode): every saved answer.
+      var saved = edit ? savedThrough(4) : savedThrough(1), answers = edit ? savedThrough(4) : volumeFields();
+      head(el, trainStepLine(1), 'How many days a week <em>can you lift?</em>', 'Your muscles grow the same from 2 days up. It’s only about how you like your week.');
+      // The week's total from the volume pick (26 Oct 2026): the real build at the picked count, held while the next builds.
+      el.insertAdjacentHTML('beforeend', '<div class="wtot rise" style="--i:2" id="wtot"><span></span><b></b></div><div class="dtiles rise" style="--i:2" role="radiogroup">' + st.dayOptions.map(function (n) {
         return '<button type="button" class="dt" data-v="' + n + '" role="radio"><b>' + n + '</b><span class="dm"></span></button>';
       }).join('') + '</div><div class="dscale rise" style="--i:2"><span>‹ Fewer, longer sessions</span><span>More, shorter ›</span></div>' +
         '<div class="dsc rise" style="--i:3" id="dsc"><i class="dsw" aria-hidden="true"></i>' +
@@ -2880,11 +3112,21 @@
       var C = { lastEst: null, lastLine: null, busy: false, working: false, wt: 0, prevHead: null, open: false, barsKey: '' };
       var read = estimator(my, function () { paint(); });
       var ests = {};
-      function volLabel() { return st.volumeLabel[T.volume] || 'Moderate'; }
+      function volLabel() { return volName(); }
+      var lastWeek = null;
+      function weekTotal() {
+        var e = ests['d' + T.days], m = e ? e.week : null, box = $('#wtot', el), b = $('b', box);
+        if (m != null) lastWeek = m;
+        var shown = m != null ? m : lastWeek;
+        $('span', box).textContent = K.fill(st.volume.copy.daysWeekLine, { name: volShort() });
+        if (shown != null) { var t = K.fill(st.volume.copy.daysWeekHours, { hours: K.halfHoursLabel(shown) }); if (b.textContent !== t) b.textContent = t; b.classList.toggle('held', m == null); }
+        else if (!b.firstChild || b.firstChild.nodeType === 3) b.innerHTML = skel('skw');
+        box.setAttribute('aria-label', 'Each week, ' + volName() + (shown != null ? ', about ' + K.halfHoursLabel(shown) + ' of lifting' : ''));
+      }
       // DaysScreen's one suggestion: fewest extra days under 90 min, else one step
       // less volume, else one more day if it saves enough. Null while what it needs builds.
       function line() {
-        var sel = T.days, est = ests['d' + sel], down = st.lowerVolume[T.volume];
+        var sel = T.days, est = ests['d' + sel], down = K.lowerVolume(T.volume, T.customSets);
         if (!est) return null;
         if (est.average < st.longMin) return { kind: 'calm' };
         for (var n = sel + 1; n <= st.maxDays; n++) {
@@ -2894,16 +3136,16 @@
         }
         if (down) {
           if (!ests.down) return null;
-          if (est.average - ests.down.average >= st.fixMinSaving) return { kind: 'suggest', strong: st.volumeLabel[down], minutes: ests.down.headline, act: 'down', v: down };
+          if (est.average - ests.down.average >= st.fixMinSaving) return { kind: 'suggest', strong: K.volumeLabel(down) || down, minutes: ests.down.headline, act: 'down', v: down };
         }
         var nx = sel < st.maxDays ? ests['d' + (sel + 1)] : null;
         if (nx && est.average - nx.average >= st.fixMinSaving) return { kind: 'suggest', strong: (sel + 1) + ' days', minutes: nx.headline, act: 'days', n: sel + 1 };
         return { kind: 'long' };
       }
       function paint() {
-        var sel = T.days, down = st.lowerVolume[T.volume];
+        var sel = T.days, down = K.lowerVolume(T.volume, T.customSets);
         var byDistance = st.dayOptions.slice().sort(function (a, b) { return Math.abs(a - sel) - Math.abs(b - sel) || b - a; });
-        var variants = byDistance.map(function (n) { return { key: 'd' + n, override: { totalTrainingDays: n, volumePreference: T.volume } }; });
+        var variants = byDistance.map(function (n) { return { key: 'd' + n, override: Object.assign({ totalTrainingDays: n }, volumeFields()) }; });
         if (down) variants.splice(2, 0, { key: 'down', override: { totalTrainingDays: sel, volumePreference: down } });
         ests = read(saved, answers, variants);
         // The tiles: each count's minutes, a skeleton while it builds.
@@ -2914,6 +3156,7 @@
           var m = $('.dm', b), h = e ? String(e.headline) : '';
           if (m.getAttribute('data-h') !== h || !m.firstChild) { m.innerHTML = e ? '<small>' + e.headline + 'm</small>' : skel('skd'); m.setAttribute('data-h', h); }
         });
+        weekTotal();
         card();
         weekCard();
       }
@@ -3015,7 +3258,7 @@
       function lowerTo(v) {
         var prev = T.volume;
         T.volume = v; paint();
-        undoBar('Switched to ' + st.volumeLabel[v], function () { T.volume = prev; paint(); });
+        undoBar('Switched to ' + (K.volumeLabel(v) || v), function () { T.volume = prev; paint(); });
       }
       var undoT = 0;
       function undoBar(text, run) {
@@ -3035,11 +3278,15 @@
         Promise.all(st.dayOptions.map(function (n) { return tcall('weekFor', n).then(function (w) { st.spreads[n] = w; }); })).then(function () { if (my === token) weekCard(); });
       }
       paint(); relabel();
-      trainCta(!!T.days, function () {
+      primary(edit ? 'Save' : 'Continue', function () {
         if (!T.days) return;
-        T.weekSaved = { daysTouched: !!T.daysTouched, timeTouched: false, hadWeek: !!T.hadWeek, varies: !!T.varies, days: T.week, selected: T.days, time: T.time };
+        // DaysScreen's save: the answer, then the week (daysScreenPatch). A second
+        // pass from the flow replaces the first; an edit from the summary adds one.
+        var op = { kind: 'days', input: { daysTouched: !!T.daysTouched, timeTouched: false, hadWeek: !!T.hadWeek, varies: !!T.varies, days: T.week, selected: T.days, time: T.time } };
+        if (edit) { T.weekOps = (T.weekOps || []).concat([op]); T.edit = false; go('trainsummary'); return; }
+        T.weekOps = [op];
         go('length');
-      });
+      }, !T.days);
     });
   }
 
@@ -3068,7 +3315,7 @@
         $('#lnote', el).hidden = !(v === '6_months' || v === '1_year');
       });
       el.insertAdjacentHTML('beforeend', '<p class="tnote" id="lnote"' + (T.length === '6_months' || T.length === '1_year' ? '' : ' hidden') + '><span>' + IC.info + '</span>Long plans run as a series of training blocks, each one building on the last.</p>');
-      trainCta(!!T.length, function () { if (!T.length) return; go('refine'); });
+      primary(T.edit ? 'Save' : 'Continue', function () { if (!T.length) return; if (T.edit) { T.edit = false; go('trainsummary'); return; } go('refine'); }, !T.length);
     });
   }
   function redrawTrain(el, my) { if (my === token) { el.innerHTML = ''; SCREENS[cur].r(el, my); } }
@@ -3082,7 +3329,9 @@
   function rRefine(el, my) {
     withTrain(el, my, function (st) {
       if (!T.refine) T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} };
-      var R = T.refine, saved = savedThrough(3);
+      var R = T.refine, saved = savedThrough(T.edit ? 4 : 3);
+      // "Fewer priority muscles" on the summary opens this with More volume open.
+      if (T.edit && T.editFocus) { R.open[T.editFocus] = true; T.editFocus = null; }
       el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Optional</p><h1 class="qh rise" style="--i:1">Want to refine <em>further?</em></h1><div id="rbody"></div><div class="slpin" id="slpin"></div>');
       var body = $('#rbody', el);
       function chips(list, picked, key) {
@@ -3141,7 +3390,8 @@
         value: function () { return { priorityMuscleGroups: R.priority.slice(), auxiliaryMuscles: R.aux.slice(), movementLimitations: R.avoid.slice(), includeDirectCore: R.core, repStyle: R.rep }; },
       });
       changed();
-      primary('Continue', function () { go('progbuild'); });
+      // The summary ("Here's your week") for everyone since 26 Oct 2026 (afterRefinementsRoute).
+      primary(T.edit ? 'Save changes' : 'Continue', function () { if (T.edit) { T.edit = false; go('trainsummary'); return; } go('trainsummary'); });
     });
   }
   /** PresetEvidenceSheet.tsx: what the preset picks for this sex and why, then the studies. */
@@ -3197,13 +3447,151 @@
     });
   }
 
+  /* ---------- QuestionnaireSummaryScreen: Here's your week (26 Oct 2026) ---------- */
+  /**
+   * After Refinements, for everyone since 26 Oct 2026 (afterRefinementsRoute):
+   * every answer as a row, each tappable to change it (the question opens in
+   * edit mode and Save comes back here), the Training week row and its sheet,
+   * Refinements folded into one row, the session length for the saved answers
+   * with its fixes when long, then Build my plan. Equipment has no question on
+   * this page (the app took it out of the flow), so its row only shows.
+   */
+  var DURATION_LABELS = { '4_weeks': '4 weeks', '8_weeks': '8 weeks', '12_weeks': '12 weeks', '6_months': '6 months', '1_year': '1 year' };
+  var EQUIPMENT_LABELS = { commercial_gym: 'Commercial gym', home_gym: 'Home gym', basic_equipment: 'Basic equipment', bodyweight: 'Bodyweight only' };
+  function rTrainSummary(el, my) {
+    T.edit = false;
+    withTrain(el, my, function (st) {
+      var a = savedThrough(4);
+      // Opened straight from a link (?step=trainsummary): Days' save as it would have run.
+      if (!T.weekOps) T.weekOps = [{ kind: 'days', input: { daysTouched: !!T.daysTouched, timeTouched: false, hadWeek: !!T.hadWeek, varies: !!T.varies, days: T.week || null, selected: T.days, time: T.time || null } }];
+      withData(el, my, function () {
+        return Promise.all([tcall('weekRow', aboutForEngine(), a, T.weekOps || []), tcall('summaryFixes', a)]);
+      }, 'Loading your answers', function (got) {
+        var wr = got[0], fixes = got[1], K = vk(st), R = T.refine;
+        // The summary reads the stored week; the page's week follows it.
+        if (wr.days) { T.week = wr.days; T.varies = false; } else T.varies = true;
+        T.time = wr.time;
+        var presets = (R.active || []).map(function (id) { var p = st.presets.filter(function (x) { return x.id === id; })[0]; return p ? p.label : id; });
+        var hasRef = presets.length > 0 || R.priority.length > 0 || R.aux.length > 0 || R.avoid.length > 0 || R.core === false || (R.rep != null && R.rep !== 'classic');
+        var shortList = function (xs) { return xs.length > 3 ? xs.slice(0, 3).join(', ') + ' +' + (xs.length - 3) : xs.join(', '); };
+        var parts = [];
+        if (R.priority.length) parts.push(shortList(R.priority));
+        if (R.aux.length) parts.push(shortList(R.aux.map(function (v) { return AUX_LABELS[v] || v; })));
+        if (R.avoid.length) parts.push('Avoid ' + shortList(R.avoid));
+        if (R.core === false) parts.push('No direct core');
+        if (R.rep && R.rep !== 'classic') parts.push(R.rep === 'mix' ? 'Reps change each block' : ((st.repStyles.filter(function (o) { return o.value === R.rep; })[0] || {}).label || R.rep) + ' reps');
+        var refValue = presets.join(', ') || parts.shift() || 'Direct core on', refDetail = parts.join(' · ');
+        var equip = (a.selectedEquipment || []).map(function (v) { return EQUIPMENT_LABELS[v] || v; }).join(', ') || 'Not set';
+        var rows = [
+          ['Volume', 'volume', volName()],
+          ['Days per week', 'days', T.days + ' ' + (T.days === 1 ? 'day' : 'days') + ' a week'],
+          ['Program length', 'length', DURATION_LABELS[T.length] || T.length || 'Not set'],
+          ['Equipment', null, equip],
+        ];
+        el.innerHTML = '<p class="ov rise" style="--i:0">Your plan</p><h1 class="qh rise" style="--i:0">Here’s your <em>week</em></h1><p class="sub rise" style="--i:1">Tap anything to change it.</p>' +
+          '<div class="ans tsum">' + rows.map(function (r, i) {
+            var tap = !!r[1];
+            return '<' + (tap ? 'button type="button" data-ed="' + r[1] + '"' : 'div') + ' class="srow2 rise" style="--i:' + (i + 2) + '" aria-label="' + esc(r[0] + ', ' + r[2] + (tap ? '. Tap to change' : '')) + '"><span><small>' + esc(r[0]) + '</small><b>' + esc(r[2]) + '</b></span>' + (tap ? CHEVR : '') + '</' + (tap ? 'button' : 'div') + '>';
+          }).join('') +
+          '<button type="button" class="srow2 rise" style="--i:6" id="wkRow" aria-label="' + esc('Training week, ' + wr.weekValue + ', ' + wr.timeValue + '. Tap to change') + '"><span><small>Training week</small><b>' + esc(wr.weekValue) + '</b><em>' + esc(wr.detail) + '</em></span>' + CHEVR + '</button>' +
+          '<button type="button" class="srow2 rise" style="--i:6" data-ed="refine" aria-label="' + esc(hasRef ? 'Refinements, ' + refValue + '. Tap to change' : 'Add refinements') + '"><span><small>Refinements</small>' +
+          (hasRef ? '<b>' + esc(refValue) + '</b>' + (refDetail ? '<em>' + esc(refDetail) + '</em>' : '') : '<b class="addr">' + IC.plusC + 'Add refinements</b>') + '</span>' + CHEVR + '</button></div>' +
+          '<div class="rise" style="--i:7" id="sumPanel"></div><p class="restart"><button type="button" class="linkb small" id="restartT">Restart questionnaire</button></p>';
+        // Session length for the saved answers: an edit shows its minutes here.
+        var value = { totalTrainingDays: a.totalTrainingDays, programDuration: a.programDuration, selectedEquipment: a.selectedEquipment, volumePreference: a.volumePreference, customWeeklySets: a.customWeeklySets,
+          priorityMuscleGroups: a.priorityMuscleGroups || [], auxiliaryMuscles: a.auxiliaryMuscles || [], movementLimitations: a.movementLimitations || [], includeDirectCore: a.includeDirectCore !== false, repStyle: a.repStyle || 'classic' };
+        T.sumKeep = T.sumKeep || {};
+        sessionPanel($('#sumPanel', el), my, {
+          full: true, keep: T.sumKeep, skeleton: T.days, saved: a, answers: function () { return a; }, value: function () { return value; }, fixes: fixes,
+          // A fix opens that question with the new answer picked, so it is seen before saving.
+          onFix: function (f) {
+            if (f.act === 'volume') { T.edit = true; T.editPreset = f.v; go('volume'); }
+            else if (f.act === 'days') editDays(f.n);
+            else { T.edit = true; T.editFocus = 'priority'; go('refine'); }
+          },
+        });
+        $$('[data-ed]', el).forEach(function (b) {
+          b.onclick = function () {
+            var to = b.getAttribute('data-ed');
+            if (to === 'days') { editDays(null); return; }
+            if (to === 'volume') T.customSets = T.customStored != null ? T.customStored : null; // the screen opens on the stored number
+            T.edit = true; go(to);
+          };
+        });
+        $('#wkRow', el).onclick = function () { weekSheet(st, my, wr, function () { if (my === token) redrawTrain(el, my); }); };
+        $('#restartT', el).onclick = function () {
+          openSheet('<h2 class="sh-t">Restart questionnaire?</h2><p class="sh-b">This clears all your answers and starts the questionnaire from the beginning.</p><button type="button" class="sh-go danger" id="rsT">Restart</button><button type="button" class="sh-sec" data-close="1">Cancel</button>', function (sh) {
+            $('#rsT', sh).onclick = function () { closeSheet(); T.volume = null; T.customSets = null; T.customStored = null; T.length = null; T.refine = null; T.sumKeep = null; T.edit = false; go('volume'); };
+            $('[data-close]', sh).onclick = function () { closeSheet(); };
+          });
+        };
+        primary('Build my plan', function () { go('progbuild'); });
+      });
+    });
+  }
+  /** Days from the summary: it opens on the stored week and the answer (its load effect), or on a "Train N days" fix's N. */
+  function editDays(preset) {
+    tcall('daysStart', aboutForEngine(), savedThrough(4), T.weekOps || [], T.days).then(function (o) {
+      T.hadWeek = o.hadWeek; T.time = o.time;
+      if (preset) return tcall('weekFor', preset).then(function (w) { T.days = preset; T.week = w; T.varies = false; T.daysTouched = true; });
+      T.days = o.selected; T.week = o.days; T.varies = o.varies; T.daysTouched = o.touched;
+    }).then(function () { T.edit = true; go('days'); });
+  }
+  /**
+   * TrainingWeekSheet.tsx: which days (tap to flip), "My days change week to
+   * week", a rough time or an exact one, Save. A count that would build a
+   * different plan offers "Rebuild for N days", which saves the week and the
+   * days answer and stays on the summary. Every Save is replayed into the
+   * build's training week in order (T.weekOps).
+   */
+  function weekSheet(st, my, wr, done) {
+    var W = st.weekSheet, planDays = T.days, fallback = planDays && planDays > 0 ? Math.min(7, planDays) : 3;
+    tcall('weekFor', fallback).then(function (fb) {
+      var days = wr.days || fb, varies = !wr.days, time = wr.time, exact = wr.exactMinute, showExact = wr.exactMinute != null;
+      openSheet('<div class="wks"><p class="sh-ov acc">Your week</p><h2 class="sh-t">Which days, roughly when?</h2><div class="wkrow" id="wkS"></div><p class="wkfit" id="wkFit"></p><p class="wkrb"><button type="button" id="wkRb" hidden></button></p>' +
+        '<button type="button" class="wkv" id="wkV" role="checkbox"></button><div class="wkt" id="wkT"></div><div id="wkX"></div><button type="button" class="sh-go" id="wkSave">Save</button></div>', function (sh) {
+        function draw() {
+          var shownDays = varies ? fb : days, count = varies ? null : days.length;
+          $('#wkS', sh).innerHTML = MON_FIRST.map(function (dow) {
+            var on = shownDays.indexOf(dow) > -1;
+            return '<button type="button" class="wkd' + (on ? ' on' : '') + (varies ? ' loose' : '') + '" data-dow="' + dow + '" aria-pressed="' + on + '" aria-label="' + DOW_LONG[dow] + '"><span class="dw">' + DOW_SHORT[dow] + '</span><span class="dc">' + (varies ? '<i></i>' : on ? IC.bar : 'Rest') + '</span></button>';
+          }).join('');
+          $('#wkFit', sh).textContent = varies ? 'Any ' + fallback + ' days. Reminders follow the days you train.'
+            : planDays && count !== planDays ? 'Your plan has ' + planDays + ' ' + (planDays === 1 ? 'session' : 'sessions') + ' a week'
+            : planDays ? count + ' ' + (count === 1 ? 'day' : 'days') + ', matches your plan' : count + ' ' + (count === 1 ? 'day' : 'days') + ' a week';
+          var rb = $('#wkRb', sh), can = !!planDays && count != null && count !== planDays && W.sessionsFor[count] !== planDays;
+          rb.hidden = !can; rb.textContent = can ? 'Rebuild for ' + count + ' days' : '';
+          var v = $('#wkV', sh); v.setAttribute('aria-checked', varies); v.innerHTML = '<span class="ck' + (varies ? ' on' : '') + '">' + (varies ? IC.check : '') + '</span>My days change week to week';
+          $('#wkT', sh).innerHTML = st.roughTimes.map(function (r) { var on = !showExact && time === r.key; return '<button type="button" class="wkc' + (on ? ' on' : '') + '" data-t="' + r.key + '" aria-pressed="' + on + '">' + esc(r.label) + '</button>'; }).join('');
+          $('#wkX', sh).innerHTML = showExact && exact != null
+            ? '<div class="wkx"><button type="button" data-st="-15" aria-label="Earlier">−</button><span><b>' + esc(W.clock[exact] || '') + '</b><button type="button" id="wkRough">Use a rough time</button></span><button type="button" data-st="15" aria-label="Later">+</button></div>'
+            : '<p class="wkxl"><button type="button" id="wkEx">Exact time: <span>' + (exact != null ? esc(W.clock[exact] || '') : 'set one') + '</span></button></p>';
+          $$('[data-dow]', sh).forEach(function (b) { b.onclick = function () { tcall('toggleDay', days, +b.getAttribute('data-dow')).then(function (n) { days = n; draw(); }); }; });
+          $$('[data-t]', sh).forEach(function (b) { b.onclick = function () { time = b.getAttribute('data-t'); showExact = false; draw(); }; });
+          $$('[data-st]', sh).forEach(function (b) { b.onclick = function () { var base = exact != null ? exact : time !== 'varies' ? W.roughStart[time] : W.defaultStart; exact = Math.max(5 * 60, Math.min(22 * 60, base + +b.getAttribute('data-st'))); draw(); }; });
+          var ex = $('#wkEx', sh); if (ex) ex.onclick = function () { showExact = true; if (exact == null) exact = time !== 'varies' ? W.roughStart[time] : W.defaultStart; draw(); };
+          var ro = $('#wkRough', sh); if (ro) ro.onclick = function () { showExact = false; draw(); };
+        }
+        function save() {
+          T.weekOps = (T.weekOps || []).concat([{ kind: 'sheet', patch: { days: varies ? null : days, time: time, exactMinute: showExact ? exact : null, asked: true } }]);
+          if (!varies) T.week = days;
+          T.varies = varies; T.time = time;
+        }
+        $('#wkV', sh).onclick = function () { varies = !varies; draw(); };
+        $('#wkSave', sh).onclick = function () { save(); closeSheet(); done(); };
+        $('#wkRb', sh).onclick = function () { if (varies) return; save(); T.days = days.length; closeSheet(); done(); };
+        draw();
+      });
+    });
+  }
+
   /* ---------- WorkoutBuildScreen ---------- */
   var LENGTH_WORDS = { '4_weeks': '4 weeks', '8_weeks': '8 weeks', '12_weeks': '12 weeks', '6_months': '6 months', '1_year': '1 year' };
   function needProgram() {
     return Promise.all([loadIndex(), needTrain()]).then(function () {
-      var saved = savedThrough(4), k = keyOf([aboutForEngine(), saved, T.weekSaved]);
+      var saved = savedThrough(4), k = keyOf([aboutForEngine(), saved, T.weekOps]);
       if (S.programKey === k && S.program) return S.program;
-      return tcall('buildProgramFrom', aboutForEngine(), saved, T.weekSaved).then(function (p) { S.program = p; S.programKey = k; T.landed = false; T.log = 0; return p; });
+      return tcall('buildProgramFrom', aboutForEngine(), saved, T.weekOps).then(function (p) { S.program = p; S.programKey = k; T.landed = false; T.log = 0; return p; });
     });
   }
   /** Exercise start frames, in the app's default (cyan) theme. */
