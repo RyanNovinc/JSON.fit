@@ -41,7 +41,7 @@ const stepIsOld = (n) => until(`document.getElementById('barLbl') && document.ge
 
 const PROFILES = [
   { name: 'default man, meals first from the finish line (no plan, training yes)', mealsFirst: true, sex: 'male', lift: 'consistent', route: 'lean', active: 'light', training: 'yes', meat: 'any', allergies: [], skip: [], meals: '3', snacks: 'ai_decide', dessert: 'ai_decide', picks: 0, days: '4', length: '8_weeks', volume: '12-16', rep: 'classic' },
-  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '8-12', rep: 'higher', preset: 1, estimate: true },
+  { name: 'woman cut vegetarian home 2, training edited at the summary', editTraining: 'no', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '8-12', rep: 'higher', preset: 1, estimate: true },
   { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', diet: 'custom', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', snacks: '2', dessert: '0', freezer: 60, picks: 3, days: '6', length: '1_year', volume: '16-20', rep: 'mix', imperial: true },
   { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', snacks: '0', sleepSkip: true, dessert: 'ai_decide', picks: 1, days: '3', length: '4_weeks', volume: '12-16', rep: 'heavier', preset: 3 },
 ];
@@ -172,7 +172,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
           if (!/^diettype /.test(next)) bad('training question not skipped with a plan: ' + next);
         }
         const typeIn = (sel, text) => ev(`(function(){var e=document.querySelector(${JSON.stringify(sel)}); e.value=${JSON.stringify(text)}; e.dispatchEvent(new Event('input',{bubbles:true})); return 1})()`);
-        const seenMeal = [];
+        const seenMeal = []; let edited = false;
         for (let k = 0; k < 30; k++) {
           await until(`(function(){var s=document.querySelector('.screen'); return !!s && !s.querySelector('.loading') && !document.querySelector('.screen.out-l,.screen.out-r') && s.children.length>0})()`, 45000);
           const id = await ev(`document.querySelector('.screen').getAttribute('data-screen')`);
@@ -203,7 +203,18 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
           else if (id === 'mealnote') { await click('#nKeep'); continue; }
           else if (id === 'mealweek') { await click('#wUse'); continue; }
           else if (id === 'mealgap') { await until(`!!document.querySelector('#gKeep')`, 60000); await click('#gKeep'); continue; }
-          if (id === 'mealsummary') { const tr = await ev(`[...document.querySelectorAll('.srow2')].find(x=>x.textContent.indexOf('Training')===0).querySelector('b').textContent`); console.log(`  summary Training row: ${tr}`); await click('#nextBtn'); continue; }
+          if (id === 'mealsummary') {
+            const trRow = () => ev(`[...document.querySelectorAll('.srow2')].find(x=>x.textContent.indexOf('Training')===0).querySelector('b').textContent`);
+            const tr = await trRow();
+            if (P.editTraining && !edited) {
+              // The Training row opens the question in edit mode; Save writes it at the summary.
+              edited = true;
+              await click('[data-ed="sessions"]'); await scr('sessions'); await overflow('sessions edit');
+              await opt(P.editTraining); await go(); await scr('mealsummary');
+              console.log(`  summary Training row: ${tr} -> ${await trRow()}`);
+            } else console.log(`  summary Training row: ${tr}`);
+            await click('#nextBtn'); continue;
+          }
           await go();
         }
         console.log(`  meals: ${seenMeal.join(' > ')}`);
@@ -223,7 +234,14 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         console.log(`  shop: ${aisles} aisles`);
         // Back returns to the day.
         await click('#backBtn'); await scr('today'); await click('#shopBtn'); await scr('shop');
-        await go(); await scr('keep'); await overflow('keep');
+        // Back on the finish line: 100% with both plans, else training is still to do.
+        await go(); await scr('alldone'); await overflow('alldone');
+        const ad = await ev(`document.querySelector('.fov').textContent + ' | ' + document.querySelector('.ftl').textContent + ' | ' + document.querySelector('.spine .sp.goal small').textContent + ' | ' + document.getElementById('nextBtn').textContent`);
+        console.log(`  after meals: ${ad}`);
+        const wantCta = P.mealsFirst ? 'Next: my training' : 'Go to my plan';
+        if (!ad.endsWith(wantCta)) bad('finish line after meals: ' + ad);
+        if (P.mealsFirst) await click('.later [data-to="keep"]'); else await go();
+        await scr('keep'); await overflow('keep');
             } catch (e) { bad(String(e.message || e)); }
       for (const e of events) bad(e);
       const posts = requests.filter((r) => r.method !== 'GET');

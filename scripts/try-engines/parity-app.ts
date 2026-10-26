@@ -329,6 +329,20 @@ export async function appMealPath(lockProfile: any, about: any, taps: any) {
     for (const [slug, variantId] of Object.entries(versionChoices)) if (pickedSlugs.has(slug) && stored[slug] !== variantId) await setVariantChoice(slug, variantId as string);
   }
 
+  // NutritionSummary's Training row -> N4bTraining (editMode): handleNext's writes, then goBack.
+  if (about.trainingEdit === 'yes' || about.trainingEdit === 'no') {
+    const planMinutes = await loadPlanMinutesPerWeek();
+    const plan = planMinutes != null ? { minutes: planMinutes, sessions: await loadPlanSessionsPerWeek() } : null;
+    const mins = about.trainingEdit === 'no' ? 0 : plan?.minutes ?? DEFAULT_TRAINING_MINUTES;
+    const sess = about.trainingEdit === 'no' ? 0 : plan?.sessions ?? Math.round(DEFAULT_TRAINING_MINUTES / 60);
+    await updateGoalsProfileField('trainingMinutesPerWeek', mins);
+    await updateGoalsProfileField('trainingSessionsPerWeek', sess);
+    await updateNutritionField('trainingMinutesPerWeek', mins);
+    await updateNutritionField('trainingSessionsPerWeek', sess);
+  }
+
+  const batchAtSummary = await WorkoutStorage.loadBatchSettings();
+
   // NutritionSummary "Build my meal plan".
   const answers = await resolveNutritionAnswers();
   if (!(await finalizeNutrition(answers))) throw new Error('summary finalize failed');
@@ -339,7 +353,7 @@ export async function appMealPath(lockProfile: any, about: any, taps: any) {
   for (const v of batchFoodViews() as any[]) if (v?.slug) lookup[v.slug] = v;
   const inputs = resolveGroceryInputs({ plan: r.plan, choices: {} as any, mealLookup: withPlanSwaps(lookup, r.plan), batch: true, myFoods: sanitizeMyFoods(await WorkoutStorage.loadMyFoods()) });
   const prof = await loadGoalsProfile();
-  return { training: { minutes: prof?.trainingMinutesPerWeek ?? null, sessions: prof?.trainingSessionsPerWeek ?? null }, plan: r.plan, report: r.report, grocery: (inputs.view?.rows ?? []).map((x: any) => ({ key: x.key, name: x.name, amount: x.amount, category: x.category })), steps };
+  return { batch: batchAtSummary, training: { minutes: prof?.trainingMinutesPerWeek ?? null, sessions: prof?.trainingSessionsPerWeek ?? null }, plan: r.plan, report: r.report, grocery: (inputs.view?.rows ?? []).map((x: any) => ({ key: x.key, name: x.name, amount: x.amount, category: x.category })), steps };
 }
 
 (globalThis as any).AppMealPath = appMealPath;

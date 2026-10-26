@@ -227,6 +227,20 @@ async function pickerMeals(answers: any) {
   return offeredMeals(undefined, dietPattern, undefined, noBlender);
 }
 
+/** N4bTrainingScreen.handleNext: 'yes' counts the plan's minutes (else the no-plan default), 'no' counts none. */
+async function saveTrainingAnswer(choice: any) {
+  if (choice !== 'yes' && choice !== 'no') return;
+  const planMin = await loadPlanMinutesPerWeek();
+  const plan = planMin != null ? { minutes: planMin, sessions: await loadPlanSessionsPerWeek() } : null;
+  const no = choice === 'no';
+  const mins = no ? 0 : plan?.minutes ?? DEFAULT_TRAINING_MINUTES;
+  const sess = no ? 0 : plan?.sessions ?? Math.round(DEFAULT_TRAINING_MINUTES / 60);
+  await updateGoalsProfileField('trainingMinutesPerWeek', mins);
+  await updateGoalsProfileField('trainingSessionsPerWeek', sess);
+  await updateNutritionField('trainingMinutesPerWeek', mins);
+  await updateNutritionField('trainingSessionsPerWeek', sess);
+}
+
 /**
  * Replays the answers up to (not including) `upto`, exactly as the screens
  * would have written them, starting from empty storage.
@@ -279,19 +293,8 @@ async function replay(about: any, f: any, upto: string) {
   await updateGoalsProfileField('activityLevel', about.activityLevel);
   await updateNutritionField('activityLevel', about.activityLevel);
   if (!reach('sessions')) return ctx;
-  // N4bTraining: shown with no plan; with one, only when opened from the
-  // summary's Training row. Unanswered is unanswered in storage too.
-  if (about.trainingChoice === 'yes' || about.trainingChoice === 'no') {
-    const planMin = await loadPlanMinutesPerWeek();
-    const plan = planMin != null ? { minutes: planMin, sessions: await loadPlanSessionsPerWeek() } : null;
-    const no = about.trainingChoice === 'no';
-    const mins = no ? 0 : plan?.minutes ?? DEFAULT_TRAINING_MINUTES;
-    const sess = no ? 0 : plan?.sessions ?? Math.round(DEFAULT_TRAINING_MINUTES / 60);
-    await updateGoalsProfileField('trainingMinutesPerWeek', mins);
-    await updateGoalsProfileField('trainingSessionsPerWeek', sess);
-    await updateNutritionField('trainingMinutesPerWeek', mins);
-    await updateNutritionField('trainingSessionsPerWeek', sess);
-  }
+  // N4bTraining, in the flow only with no plan. Unanswered is unanswered in storage too.
+  if (!ctx.trainingKnown) await saveTrainingAnswer(about.trainingChoice);
   if (!reach('diettype')) return ctx;
   // N5DietType
   await updateNutritionField('dietType', f.dietType);
@@ -423,6 +426,9 @@ async function replay(about: any, f: any, upto: string) {
       if (pickedSlugs.has(slug) && stored[slug] !== variantId) await setVariantChoice(slug, variantId as string);
     }
   }
+  // The summary's Training row (N4bTraining in edit mode): written there, after
+  // every earlier screen, so what those screens saved (tubs a day) stays as it was.
+  await saveTrainingAnswer(about.trainingEdit);
   if (!reach('summary')) return ctx;
   // NutritionSummary "Build my meal plan": finalize the resolved answers again.
   const answers = await resolveNutritionAnswers();
@@ -817,4 +823,9 @@ async function handoff() {
   return true;
 }
 
-export default { lockProfileFor, dayTimes, mealCopy, foodCatalogueView, foodSearch, skipImpact, mealView, fillWeek, allMeals, buildMeals, gapOptions, useGapOption, handoff, initMeals, replay };
+/** For the parity script: the batch settings as the last replay left them (tubs a day included). */
+async function batchSettingsNow() {
+  return WorkoutStorage.loadBatchSettings();
+}
+
+export default { batchSettingsNow, lockProfileFor, dayTimes, mealCopy, foodCatalogueView, foodSearch, skipImpact, mealView, fillWeek, allMeals, buildMeals, gapOptions, useGapOption, handoff, initMeals, replay };

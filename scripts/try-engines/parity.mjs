@@ -67,6 +67,8 @@ const gainer = { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFat
 const SETS = [
   { name: 'man cut, 4-day plan first, defaults, choose for me', about: man, train: { days: 4, length: '8_weeks', volume: '12-16' }, food: base({}) },
   { name: 'man cut, 6-day plan first (same answers otherwise)', about: man, train: { days: 6, length: '8_weeks', volume: '12-16' }, food: base({}) },
+  { name: '3-day plan first, then "Not right now" from the summary\'s Training row', about: { ...man, trainingEdit: 'no' }, train: { days: 3, length: '8_weeks', volume: '12-16' }, food: base({ freezerTubs: 30 }) },
+  { name: 'no plan, training yes, then "Not right now" from the summary', about: { ...woman, trainingEdit: 'no' }, food: base({ freezerTubs: 30, shopCadence: 'shop2_cook1' }) },
   { name: 'no plan, training yes: woman cut, vegetarian, nuts, skip mushroom, sleep moved, 4 meals, dessert 3 nights, no slow cooker', about: woman,
     food: base({ dietType: 'high_protein', dietPattern: 'vegetarian', allergies: ['Nuts', 'Kiwi'], skip: ['mushrooms', 'coriander'], keepLower: ['salt'], sleep: { bed: 1380, wake: 360, strictness: 'maximum', overrides: { lunch: '1:00 PM' } },
       mealsPerDay: 4, snackFrequency: '1', mealVariety: 'variety', snacks: { ticked: ['sn_banana', 'sn_greek_yog'], own: [{ name: 'Protein bar', kcal: 210, protein: 20, serve: '1 bar' }] },
@@ -117,6 +119,7 @@ for (const S of SETS) {
     const sm = (await WEB.mealView(S.about, S.food, 'summary')).summary;
     const webTraining = { minutes: sm.answers.trainingMinutesPerWeek ?? null, sessions: sm.answers.trainingSessionsPerWeek ?? null };
     cmp('training counted', webTraining, a.training);
+    cmp('batch settings', await WEB.batchSettingsNow(), a.batch);
     const webSteps = (await WEB.mealView(S.about, S.food, 'active')).trainingKnown;
     cmp('training question skipped', webSteps, !a.steps.includes('N4bTraining'));
     cmp('days', dayView(w.plan), dayView(a.plan));
