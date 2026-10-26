@@ -266,8 +266,6 @@
   function head(el, ov, q, sub) {
     el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">' + ov + '</p><h1 class="qh rise" style="--i:1">' + q + '</h1>' + (sub ? '<p class="sub rise" style="--i:1">' + sub + '</p>' : ''));
   }
-  /** Single choice that moves on by itself, as the app's option screens do. */
-  function autoNext(my) { setTimeout(function () { if (my === token) next(); }, RM ? 60 : 260); }
 
   /* ---------- the ruler (the app's ScaleRuler) ---------- */
   function ruler(el, o) {
@@ -387,8 +385,9 @@
     needAbout(el, my, function () {
       head(el, 'Sex', 'What’s your sex?', 'Sets your energy needs and the body fat ranges.');
       cards(el, [{ v: 'male', l: 'Male' }, { v: 'female', l: 'Female' }], S.about.sex, function (v) {
-        var changed = S.about.sex !== v; S.about.sex = v; enable(true);
-        (changed ? refreshForSex() : Promise.resolve()).then(function () { autoNext(my); });
+        // Continue waits for the sex-dependent defaults to reload; no auto-advance.
+        var changed = S.about.sex !== v; S.about.sex = v; enable(!changed);
+        if (changed) refreshForSex().then(function () { if (my === token) enable(true); });
       });
       primary('Continue', null, !S.about.sex);
     });
@@ -461,7 +460,7 @@
   function rLifting(el, my) {
     needAbout(el, my, function () {
       head(el, 'Experience', 'Where are you with lifting?');
-      cards(el, LIFT, S.about.trainingState, function (v) { S.about.trainingState = v; enable(true); autoNext(my); });
+      cards(el, LIFT, S.about.trainingState, function (v) { S.about.trainingState = v; enable(true); });
       primary('Continue', null, !S.about.trainingState);
     });
   }
@@ -613,7 +612,7 @@
   function rActive(el, my) {
     needAbout(el, my, function () {
       head(el, 'Your day', 'How active are you outside the gym?', 'Work, errands, getting around. Your sessions are the next question, so leave them out here.');
-      cards(el, ACTIVE, S.about.activityLevel, function (v) { S.about.activityLevel = v; enable(true); autoNext(my); });
+      cards(el, ACTIVE, S.about.activityLevel, function (v) { S.about.activityLevel = v; enable(true); });
       primary('Continue', null, !S.about.activityLevel);
     });
   }
@@ -816,7 +815,7 @@
   function rMeat(el, my) {
     withData(el, my, needFoodOptions, '', function () {
       head(el, 'Your food', 'Do you eat meat?', 'We only show you meals that fit.');
-      cards(el, S.foodOptions.dietPatterns.map(function (p) { return { v: p.value, l: p.label, h: p.hint }; }), S.food.dietPattern, function (v) { S.food.dietPattern = v; enable(true); autoNext(my); });
+      cards(el, S.foodOptions.dietPatterns.map(function (p) { return { v: p.value, l: p.label, h: p.hint }; }), S.food.dietPattern, function (v) { S.food.dietPattern = v; enable(true); });
       primary('Continue', null, !S.food.dietPattern);
     });
   }
@@ -856,7 +855,7 @@
   ];
   function rDessert(el, my) {
     head(el, 'Your food', 'Want dessert in your plan?', 'A small treat on top of your meals: protein ice cream, mug cakes.');
-    cards(el, DESSERT, S.food.dessertFrequency, function (v) { S.food.dessertFrequency = v; enable(true); autoNext(my); });
+    cards(el, DESSERT, S.food.dessertFrequency, function (v) { S.food.dessertFrequency = v; enable(true); });
     primary('Continue', null, !S.food.dessertFrequency);
   }
   function needGrid() {
@@ -1042,7 +1041,7 @@
   function rDays(el, my) {
     needAbout(el, my, function () {
       head(el, 'Your training', 'How many days a week?', 'From 2 days up, the same weekly sets and growth. Days mostly change how long each session is.');
-      cards(el, [1, 2, 3, 4, 5, 6].map(function (d) { return { v: d, l: String(d) }; }), S.training.days, function (v) { S.training.days = v; enable(true); autoNext(my); }, { tiles: true });
+      cards(el, [1, 2, 3, 4, 5, 6].map(function (d) { return { v: d, l: String(d) }; }), S.training.days, function (v) { S.training.days = v; enable(true); }, { tiles: true });
       primary('Continue', null, !S.training.days);
     });
   }
