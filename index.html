@@ -236,6 +236,12 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .perks + .perks-label{margin-top:30px}
 .perk i{display:block;font-style:normal;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--cyan,#22d3ee);margin-bottom:10px}
 .perks-sub a.six{color:#fff;text-decoration:underline;text-decoration-color:var(--cyan);text-decoration-thickness:2px;text-underline-offset:4px}
+/* Hover: the cyan underline floods up into a highlight, and an arrow says it opens the working-out. */
+.perks-sub a.six{background:linear-gradient(var(--cyan),var(--cyan)) no-repeat 0 100%/100% 0;border-radius:5px;padding:0 5px;margin:0 1px;transition:background-size .28s cubic-bezier(.2,.9,.25,1),color .2s,text-decoration-color .2s}
+.perks-sub a.six::after{content:' \2192';display:inline-block;opacity:0;transform:translateX(-4px);transition:opacity .2s,transform .2s;width:0;overflow:visible;white-space:nowrap}
+.perks-sub a.six:hover,.perks-sub a.six:focus-visible{background-size:100% 100%;color:#0a0a0b;text-decoration-color:transparent;outline:none}
+.perks-sub a.six:hover::after,.perks-sub a.six:focus-visible::after{opacity:1;transform:none;color:#0a0a0b;width:auto;margin-left:5px}
+@media (prefers-reduced-motion:reduce){.perks-sub a.six,.perks-sub a.six::after{transition:none}}
 .pillars{max-width:1240px;margin:36px auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:left}
 .pillar{border:1px solid var(--line);border-radius:20px;background:var(--surface);padding:24px 24px 18px;border-top:3px solid var(--pc)}
 .pillar.v{--pc:var(--violet-text)} .pillar.g{--pc:var(--green-text)} .pillar.c{--pc:var(--cyan)}
