@@ -58,7 +58,7 @@
     units: 'metric',
     about: null, touched: {}, defaults: null,
     food: { mealsPerDay: 3, snackFrequency: 'ai_decide', dessertFrequency: null, dietPattern: null, allergies: [], skip: [], picks: [] },
-    training: { days: null, equipment: null },
+    training: { days: null, length: null, volume: null, refine: null },
     foodOptions: null, grid: null, gridKey: '', routeOpts: null, routeOptsKey: '',
     route: null, routeKey: '', meals: null, mealsKey: '', program: null, programKey: '',
     day: 0, ticks: {}, openDay: null, openAisle: null,
@@ -164,9 +164,14 @@
     { id: 'today', sec: 'food', r: rToday },
     { id: 'shop', sec: 'food', r: rShop, side: true },
     { id: 'days', sec: 'train', r: rDays },
-    { id: 'equip', sec: 'train', r: rEquip },
+    { id: 'length', sec: 'train', r: rLength },
+    { id: 'volume', sec: 'train', r: rVolume },
+    { id: 'refine', sec: 'train', r: rRefine },
     { id: 'progbuild', sec: 'train', r: rProgBuild, build: true },
     { id: 'program', sec: 'train', r: rProgram },
+    { id: 'blocks', sec: 'train', r: rBlocks, side: true },
+    { id: 'trainweek', sec: 'train', r: rTrainWeek, side: true },
+    { id: 'session', sec: 'train', r: rSession, side: true },
     { id: 'keep', sec: 'done', r: rKeep },
   ];
   var IDX = {}; SCREENS.forEach(function (s, i) { IDX[s.id] = i; });
@@ -1514,49 +1519,458 @@
     });
   }
 
-  /* ================= training ================= */
+  /* ================= training =================
+   * The app's workout questions from onboarding's finish line, screen for screen
+   * (release 1.0.44, workout generator on): Days (Q3DaysPerWeekScreen), How long
+   * (Q4ProgramDurationScreen), Volume (Q6VolumePreferenceScreen), Refinements
+   * (RefinementsScreen), then WorkoutBuildScreen. Equipment is not asked: the app
+   * took it out of the flow (only "Commercial gym" can be built) and How long saves
+   * the default. Every number on these screens (session minutes, sets per muscle,
+   * the presets) comes from the app's own code in the engine bundle, and the
+   * answers are saved and read back the way the screens save them
+   * (scripts/try-engines/training-part.ts). */
+  var T = S.training;
+  // Engine calls for training run one at a time: they share the worker's storage.
+  var tq = Promise.resolve();
+  function tcall() {
+    var args = arguments;
+    var p = tq.then(function () { return call.apply(null, args); });
+    tq = p.catch(function () {});
+    return p;
+  }
+  function needTrain() {
+    var k = keyOf(aboutForEngine());
+    if (T.start && T.startKey === k) return Promise.resolve(T.start);
+    return tcall('trainingStart', aboutForEngine()).then(function (st) {
+      T.start = st; T.startKey = k;
+      // Q3 opens on the stored week, else the meal side's sessions (daysScreenStart).
+      if (T.days == null && st.start.selected) { T.days = st.start.selected; T.week = st.start.days; T.varies = st.start.varies; T.time = st.start.time; }
+      return st;
+    });
+  }
+  function withTrain(el, my, fn) { needAbout(el, my, function () { withData(el, my, needTrain, '', fn); }); }
+  /** The answers saved so far, field by field, as the screens save them (questionnaireStorage). */
+  function savedThrough(step) {
+    var q = {};
+    if (step >= 1) q.totalTrainingDays = T.days;
+    if (step >= 2) { q.programDuration = T.length; q.selectedEquipment = T.start.defaultEquipment; }
+    if (step >= 3) q.volumePreference = T.volume;
+    if (step >= 4) {
+      var r = T.refine || (T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} });
+      q.refinementPresets = r.active; q.priorityMuscleGroups = r.priority; q.auxiliaryMuscles = r.aux; q.movementLimitations = r.avoid;
+      if (T.start.sex) q.gender = T.start.sex;
+      q.includeDirectCore = r.core; q.repStyle = r.rep;
+    }
+    return q;
+  }
+  function stepLine(i) { return T.start.steps[i]; }
+
+  /* ---------- Ionicons the screens use, as inline SVG ---------- */
+  var IC = {
+    cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+    calF: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 2.5a1 1 0 0 1 1 1V5h6V3.5a1 1 0 1 1 2 0V5h1a3 3 0 0 1 3 3v1.5H3V8a3 3 0 0 1 3-3h1V3.5a1 1 0 0 1 1-1zM3 11h18v7a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"/></svg>',
+    calC: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 2.5a1 1 0 0 1 1 1V5h6V3.5a1 1 0 1 1 2 0V5h1a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h1V3.5a1 1 0 0 1 1-1zm-3 8V18a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7.5z"/></svg>',
+    calN: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M10 12.5l2-1.5v6"/></svg>',
+    leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15z"/><path d="M5 19l8-8"/></svg>',
+    speed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="M12 13l4-4"/><circle cx="12" cy="13" r="1.3" fill="currentColor"/></svg>',
+    flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c4 0 6.5-2.6 6.5-6.2 0-4.3-3.6-6.5-4.4-10.3-2.3 1.5-3.4 3.6-3.1 6.1C9.6 9.7 9 8.5 9 7c-2 1.7-3.5 4.4-3.5 7.8C5.5 18.4 8 21 12 21z"/></svg>',
+    info: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5.2a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zM13.2 17h-2.4v-6h2.4z"/></svg>',
+    infoO: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 12.5l4 4 9-9"/></svg>',
+    bar: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="1" y="9" width="3" height="6" rx="1"/><rect x="4.5" y="6.5" width="3.2" height="11" rx="1"/><rect x="7.7" y="11" width="8.6" height="2" rx="1"/><rect x="16.3" y="6.5" width="3.2" height="11" rx="1"/><rect x="20" y="9" width="3" height="6" rx="1"/></svg>',
+    chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+  };
+  /** QuestionCard.tsx: icon box, title (with an optional pill), subtitle always shown, a check when picked. */
+  function qcards(el, list, current, onPick) {
+    el.insertAdjacentHTML('beforeend', '<div class="qcs rise" style="--i:3" role="radiogroup">' + list.map(function (o) {
+      var on = current === o.v;
+      return '<button type="button" class="qc" role="radio" data-v="' + esc(o.v) + '" aria-checked="' + on + '" aria-pressed="' + on + '"><span class="qi">' + o.icon + '</span><span class="qt"><span class="qr"><b>' + esc(o.l) + '</b>' + (o.badge ? '<em>' + esc(o.badge) + '</em>' : '') + '</span><small>' + esc(o.h) + '</small></span><span class="qk">' + IC.check + '</span></button>';
+    }).join('') + '</div>');
+    $$('.qc', el).forEach(function (b) {
+      b.onclick = function () {
+        $$('.qc', el).forEach(function (x) { var on = x === b; x.setAttribute('aria-pressed', on); x.setAttribute('aria-checked', on); });
+        onPick(b.getAttribute('data-v'));
+      };
+    });
+  }
+  /** The CTA, "Save" when a screen was opened to change one answer (editMode). */
+  function trainCta(ok, onNext) { primary(T.edit ? 'Save' : 'Continue', onNext, !ok); }
+
+  /* ---------- SessionLengthPanel.tsx ---------- */
+  /**
+   * The live session length: block 1 of the real build for the answers so far,
+   * one bar per training day, the change line, and from 90 min the fixes with
+   * their minutes. 250 ms after an answer changes; the last result stays up,
+   * dimmed, until the new one lands. o: { saved, answers, value(), fixes(value)
+   * -> engine fix list, kind: 'days'|'volume'|'refine', compact, onFix(fix) }.
+   */
+  function sessionPanel(box, my, o) {
+    var shown = null, timer = 0, run = 0;
+    function draw(res, loading) {
+      if (!res) { box.innerHTML = o.compact ? '<div class="slc"><div class="slr"><span>Sessions</span><b>Working it out</b></div></div>' : '<div class="slp"><div class="slh"><span class="pend">Working out your session length</span></div></div>'; return; }
+      var est = res.est, tone = res.tone, AMB = '#fbbf24';
+      var head = tone === 'ok' ? '#fff' : AMB;
+      var dc = res.delta ? (res.delta.tone === 'longer' ? AMB : res.delta.tone === 'shorter' ? '#4ade80' : '#a1a1aa') : '';
+      if (o.compact) {
+        box.innerHTML = '<div class="slc' + (loading ? ' dim' : '') + '"><div class="slr"><span>' + (res.repStyle === 'mix' ? 'Block 1 sessions' : 'Sessions') + '</span><b style="color:' + head + '">About ' + est.headline + ' min</b></div>' +
+          (res.delta ? '<p class="sld" style="color:' + dc + '">' + esc(res.delta.text) + '</p>' : '') + '</div>';
+        return;
+      }
+      var scale = Math.max(120, Math.max.apply(null, est.days.map(function (d) { return d.minutes; })));
+      var barC = res.delta && res.delta.tone === 'longer' ? AMB : 'var(--acc)';
+      box.innerHTML = '<div class="slp"><div class="slh"><b style="color:' + head + '">About ' + est.headline + ' min</b><span>' + (loading ? 'updating' : esc(res.headSub)) + '</span></div>' +
+        '<div class="slb' + (loading ? ' dim' : '') + '">' + est.days.map(function (d) {
+          return '<div class="slrow"><span class="n">' + esc(d.name) + '</span><span class="tr"><i style="width:' + Math.round(d.minutes / scale * 100) + '%;background:' + barC + '"></i></span><span class="m">' + d.minutes + '</span></div>';
+        }).join('') + '</div>' +
+        (res.delta ? '<p class="sld' + (loading ? ' dim' : '') + '" style="color:' + dc + '">' + esc(res.delta.text) + '</p>' : '') +
+        (res.longLine ? '<div class="slf' + (loading ? ' dim' : '') + '"><p class="sll">' + esc(res.longLine) + '</p>' + res.offered.map(function (f) {
+          return '<button type="button" class="slfx" data-fix="' + esc(f.key) + '"><span><b>' + esc(f.label) + '</b><small>About ' + f.headline + ' min' + (f.note ? ', ' + esc(f.note) : '') + '</small></span>' + IC.chev + '</button>';
+        }).join('') + '</div>' : '') +
+        (res.ramp ? '<p class="sla">' + esc(res.ramp) + '</p>' : '') +
+        (res.assumed ? '<p class="sla">' + esc(res.assumed) + '</p>' : '') + '</div>';
+      $$('[data-fix]', box).forEach(function (b) {
+        b.onclick = function () { var f = res.offered.filter(function (x) { return x.key === b.getAttribute('data-fix'); })[0]; var full = (res.fixes || []).filter(function (x) { return x.key === f.key; })[0]; o.onFix && o.onFix(full || f); };
+      });
+    }
+    function update() {
+      var value = o.value();
+      if (!value) { box.innerHTML = ''; shown = null; return; }
+      var id = ++run;
+      if (shown) draw(shown.res, true); else draw(null);
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var fixes = o.fixes ? o.fixes(value) : Promise.resolve([]);
+        Promise.resolve(fixes).then(function (fx) {
+          var delta = shown ? { kind: o.kind, prev: shown.value, prevAvg: shown.res.est.average } : null;
+          return tcall('sessionPanel', aboutForEngine(), o.saved, o.answers(), value, fx || [], delta).then(function (res) {
+            if (id !== run || my !== token || !res) return;
+            res.fixes = fx || [];
+            if (shown && keyOf(shown.value) === keyOf(value) && !res.delta) res.delta = shown.res.delta;
+            shown = { value: value, res: res };
+            draw(res, false);
+          });
+        }).catch(function () {});
+      }, 250);
+    }
+    update();
+    return update;
+  }
+
+  /* ---------- Q3: How many days a week? ---------- */
+  var DAY_HINTS = {
+    1: 'One session can’t hold a full week. Some muscles get fewer sets.',
+    2: 'Two long sessions.',
+    3: 'Three full sessions.',
+    4: 'Four medium sessions.',
+    5: 'Five shorter sessions.',
+    6: 'Six short sessions.',
+    7: 'Builds as six sessions and a rest day, the same plan as 6.',
+  };
+  var MON_FIRST = [1, 2, 3, 4, 5, 6, 0], DOW_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   function rDays(el, my) {
-    needAbout(el, my, function () {
-      head(el, 'Your training', 'How many days a week?', 'From 2 days up, the same weekly sets and growth. Days mostly change how long each session is.');
-      cards(el, [1, 2, 3, 4, 5, 6].map(function (d) { return { v: d, l: String(d) }; }), S.training.days, function (v) { S.training.days = v; enable(true); }, { tiles: true });
-      primary('Continue', null, !S.training.days);
+    withTrain(el, my, function (st) {
+      var edit = T.edit;
+      // Opened from a "Train N days" row on Volume: start on N, as if tapped here.
+      if (edit && edit.presetDays) { T.days = edit.presetDays; T.week = null; T.daysTouched = true; edit.presetDays = null; }
+      head(el, stepLine(0), 'How many days a <em>week?</em>', 'From 2 days up, the same weekly sets and growth. Days mostly change how long each session is.');
+      el.insertAdjacentHTML('beforeend', '<div class="dtiles rise" style="--i:2" role="radiogroup">' + [1, 2, 3, 4, 5, 6, 7].map(function (d) {
+        return '<button type="button" class="dt" data-v="' + d + '" role="radio" aria-label="' + (d === 1 ? '1 day a week' : d + ' days a week') + '" aria-pressed="' + (T.days === d) + '">' + d + '</button>';
+      }).join('') + '</div><div class="band rise" style="--i:2"><i></i></div><p class="bandl rise" style="--i:2">Most people land here</p>' +
+        '<div id="slp"></div><div id="wkc" class="rise" style="--i:3"></div>' +
+        '<button type="button" class="varies" id="varies" role="checkbox" aria-checked="' + !!T.varies + '"><span class="vb"></span>My days change week to week</button>' +
+        '<div class="when"><b>Roughly when?</b><span>Optional</span></div><div class="rtc">' + st.roughTimes.map(function (t) {
+          return '<button type="button" class="rt" data-t="' + t.key + '" aria-pressed="' + (T.time === t.key) + '">' + esc(t.label) + '</button>';
+        }).join('') + '</div><p class="dhint" id="dhint"></p>');
+      var panel = sessionPanel($('#slp', el), my, {
+        kind: 'days', saved: null, answers: function () { return {}; },
+        value: function () { return T.days ? { totalTrainingDays: T.days } : null; },
+        fixes: function (v) { return tcall('daysFixes', v.totalTrainingDays); },
+        onFix: function (f) { pick(f.days); },
+      });
+      function weekCard() {
+        var shownDays = T.varies ? (T.days ? (st.spreads || {})[T.days] || T.week || [] : []) : T.week || [];
+        var value = !T.days ? 'Pick your days' : T.varies ? 'Any ' + T.days + ' days' : T.weekLabel || '';
+        $('#wkc', el).innerHTML = '<div class="icard"><div class="cap"><span>Your week</span><b>' + esc(value) + '</b></div><div class="wkrow">' + MON_FIRST.map(function (dow) {
+          var on = shownDays.indexOf(dow) > -1;
+          return '<button type="button" class="wkd' + (on ? ' on' : '') + (T.varies ? ' loose' : '') + '" data-dow="' + dow + '"' + (T.varies || !T.days && !T.week ? ' disabled' : '') + ' aria-label="' + ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dow] + ', ' + (on ? 'training' : 'rest') + '"><span class="dw">' + DOW_SHORT[dow] + '</span><span class="dc">' + (T.varies ? '<i></i>' : on ? IC.bar : 'Rest') + '</span></button>';
+        }).join('') + '</div><p class="disc">' + (T.varies ? 'Train whenever suits. The app learns your days.' : T.days ? 'Tap a day to change it' : 'Pick a number, or tap your days') + '</p></div>';
+        $$('.wkd', el).forEach(function (b) {
+          b.onclick = function () {
+            T.daysTouched = true;
+            tcall('toggleDay', T.week || [], +b.getAttribute('data-dow')).then(function (w) {
+              if (my !== token) return;
+              T.week = w; T.days = w.length; tiles(); refresh();
+            });
+          };
+        });
+      }
+      function tiles() { $$('.dt', el).forEach(function (b) { b.setAttribute('aria-pressed', +b.getAttribute('data-v') === T.days); }); }
+      function refresh() {
+        $('#dhint', el).className = T.days ? 'dhint' : 'dhint ph';
+        $('#dhint', el).textContent = T.days ? DAY_HINTS[T.days] : 'Tap a number above';
+        enable(!!T.days);
+        var w = T.week;
+        (w && w.length ? tcall('weekLabel', w, T.days) : Promise.resolve('')).then(function (l) { if (my !== token) return; T.weekLabel = l; weekCard(); });
+        panel();
+      }
+      function pick(n) {
+        T.daysTouched = true;
+        T.days = n;
+        tcall('weekFor', n).then(function (w) { if (my !== token) return; T.week = w; tiles(); refresh(); });
+      }
+      $$('.dt', el).forEach(function (b) { b.onclick = function () { pick(+b.getAttribute('data-v')); }; });
+      $('#varies', el).onclick = function () { T.daysTouched = true; T.varies = !T.varies; this.setAttribute('aria-checked', T.varies); weekCard(); };
+      $$('.rt', el).forEach(function (b) {
+        b.onclick = function () {
+          T.timeTouched = true;
+          var k = b.getAttribute('data-t'); T.time = T.time === k ? null : k;
+          $$('.rt', el).forEach(function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-t') === T.time); });
+        };
+      });
+      // The spreads for "My days change week to week" (the example spread, dimmed).
+      if (!st.spreads) {
+        st.spreads = {};
+        Promise.all([1, 2, 3, 4, 5, 6, 7].map(function (n) { return tcall('weekFor', n).then(function (w) { st.spreads[n] = w; }); })).then(function () { if (my === token) weekCard(); });
+      }
+      if (T.days && !T.week) tcall('weekFor', T.days).then(function (w) { if (my !== token) return; T.week = w; refresh(); }); else refresh();
+      trainCta(!!T.days, function () {
+        if (!T.days) return;
+        T.weekSaved = { daysTouched: !!T.daysTouched, timeTouched: !!T.timeTouched, hadWeek: false, varies: !!T.varies, days: T.week, selected: T.days, time: T.time };
+        if (T.edit) { T.edit = null; back(); return; }
+        go('length');
+      });
     });
   }
-  var EQUIP = [
-    { v: 'commercial_gym', l: 'Commercial gym', h: 'Machines, cables, barbells and dumbbells.' },
-    { v: 'home_gym', l: 'Home gym', h: 'Barbell, dumbbells, a bench and a pull-up bar. Coming to the app soon.' },
-    { v: 'basic_equipment', l: 'Basic equipment', h: 'Dumbbells and a bench. Coming to the app soon.' },
-    { v: 'bodyweight', l: 'Bodyweight only', h: 'A pull-up bar and a bench at most. Coming to the app soon.' },
+
+  /* ---------- Q4: How long should it run? ---------- */
+  var LENGTHS = [
+    { v: '4_weeks', l: '4 weeks', h: 'Quick reset. Single training block.', icon: IC.cal, w: 4 },
+    { v: '8_weeks', l: '8 weeks', h: 'Standard mesocycle. Real measurable results.', icon: IC.calF, w: 8 },
+    { v: '12_weeks', l: '12 weeks', h: 'Three blocks. Full progression cycle.', icon: IC.calC, w: 12 },
+    { v: '6_months', l: '6 months', h: 'Multiple phases. Sustained adaptation.', icon: IC.cal, w: 26 },
+    { v: '1_year', l: '1 year', h: 'Full periodization. Lifestyle commitment.', icon: IC.calN, w: 52 },
   ];
-  function rEquip(el, my) {
-    needAbout(el, my, function () {
-      head(el, 'Your training', 'What’s available to you?', 'Decides which exercises your plan can use.');
-      cards(el, EQUIP, S.training.equipment, function (v) { S.training.equipment = v; enable(true); setTimeout(function () { if (my === token) go('progbuild'); }, RM ? 60 : 260); });
-      primary('Build my program', function () { go('progbuild'); }, !S.training.equipment);
+  /** PlanInstruments LengthTimeline: today to a year, filled to the pick. */
+  function lengthTimeline(v) {
+    var w = (LENGTHS.filter(function (x) { return x.v === v; })[0] || {}).w || 0;
+    return '<div class="icard"><div class="cap"><span>From today</span><b>' + (w ? w + ' weeks' : '') + '</b></div><div class="ltrack">' + [4, 8, 12, 26].map(function (t) { return '<s style="left:' + (t / 52 * 100) + '%"></s>'; }).join('') +
+      '<i style="width:' + (w / 52 * 100) + '%"></i></div><div class="tlbl"><span>TODAY</span><span>6 MO</span><span>1 YEAR</span></div></div>';
+  }
+  function rLength(el, my) {
+    withTrain(el, my, function () {
+      head(el, stepLine(1), 'How long should it <em>run?</em>', 'Longer programs build deeper adaptations.');
+      el.insertAdjacentHTML('beforeend', '<div id="ltl" class="rise" style="--i:2">' + lengthTimeline(T.length) + '</div>');
+      qcards(el, LENGTHS, T.length, function (v) {
+        T.length = v; enable(true);
+        var f = $('#ltl .ltrack i', el), c = $('#ltl .cap b', el), w = LENGTHS.filter(function (x) { return x.v === v; })[0].w;
+        f.style.width = (w / 52 * 100) + '%'; c.textContent = w + ' weeks';
+        $('#lnote', el).hidden = !(v === '6_months' || v === '1_year');
+      });
+      el.insertAdjacentHTML('beforeend', '<p class="tnote" id="lnote"' + (T.length === '6_months' || T.length === '1_year' ? '' : ' hidden') + '><span>' + IC.info + '</span>Long plans run as a series of training blocks, each one building on the last.</p>');
+      trainCta(!!T.length, function () { if (!T.length) return; if (T.edit) { T.edit = null; back(); return; } go('volume'); });
     });
   }
-  function trainForEngine() { return { days: S.training.days || 3, equipment: S.training.equipment || 'commercial_gym' }; }
+
+  /* ---------- Q6: How much volume? ---------- */
+  var VOLUMES = [
+    { v: '8-12', l: 'Conservative', h: 'Most of the growth for the least time. Good for new lifters and busy weeks.', icon: IC.leaf },
+    { v: '12-16', l: 'Moderate', h: 'Most of High’s growth in less time. The best fit for most people.', icon: IC.speed },
+    { v: '16-20', l: 'High', h: 'A bit more growth for more time. Mainly for experienced lifters who have stopped progressing.', icon: IC.flame },
+  ];
+  /** PlanInstruments VolumeCurve: an illustrative diminishing-returns curve, the pick's zone lit. */
+  function volumeCurve(v) {
+    var W = 320, H = 140, x0 = 18, x1 = 306, y0 = 16, y1 = 108;
+    var X = function (s) { return x0 + (s / 24) * (x1 - x0); }, Y = function (s) { return y1 - (1 - Math.exp(-s / 8)) * (y1 - y0); };
+    var path = function (a, b) { var d = ''; for (var t = a; t <= b + 0.001; t += 0.5) d += (d ? 'L' : 'M') + X(t).toFixed(1) + ' ' + Y(t).toFixed(1); return d; };
+    var Z = [['8-12', 8, 12], ['12-16', 12, 16], ['16-20', 16, 20]], sel = Z.filter(function (z) { return z[0] === v; })[0];
+    return '<div class="icard"><svg class="vcurve" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' + Z.map(function (z) {
+      var on = sel && sel[0] === z[0];
+      return '<rect x="' + X(z[1]) + '" y="' + y0 + '" width="' + (X(z[2]) - X(z[1]) - 2) + '" height="' + (y1 - y0) + '" rx="6" fill="' + (on ? 'var(--acc)' : '#18181b') + '" fill-opacity="' + (on ? 0.22 : 1) + '"/>';
+    }).join('') + '<path d="' + path(0, 24) + '" stroke="#3f3f46" stroke-width="2.5" fill="none"/>' +
+      (sel ? '<path d="' + path(sel[1], sel[2]) + '" stroke="var(--acc)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="' + X((sel[1] + sel[2]) / 2) + '" cy="' + Y((sel[1] + sel[2]) / 2) + '" r="6" fill="var(--acc)"/>' : '') +
+      [8, 12, 16, 20].map(function (t) { return '<text x="' + X(t) + '" y="' + (y1 + 16) + '" fill="#71717a" font-size="10.5" text-anchor="middle">' + t + '</text>'; }).join('') +
+      '<text x="' + x0 + '" y="10" fill="#71717a" font-size="10">MORE GROWTH</text><text x="' + x1 + '" y="10" fill="#71717a" font-size="10" text-anchor="end">ILLUSTRATIVE</text>' +
+      '<text x="' + ((x0 + x1) / 2) + '" y="' + (y1 + 31) + '" fill="#71717a" font-size="10" text-anchor="middle">SETS PER MUSCLE PER WEEK</text></svg></div>';
+  }
+  function rVolume(el, my) {
+    withTrain(el, my, function () {
+      var saved = savedThrough(2);
+      withData(el, my, function () { return tcall('volumeLines', aboutForEngine(), saved, saved); }, '', function (VL) {
+        head(el, stepLine(2), 'How much <em>volume?</em>', 'Sets per muscle per week. What you pick here is what gets built. This is the dial that drives growth, and it keeps paying as it climbs, just by less each time.');
+        el.insertAdjacentHTML('beforeend', '<div id="vcv" class="rise" style="--i:2">' + volumeCurve(T.volume) + '</div>');
+        qcards(el, VOLUMES.map(function (o) { return { v: o.v, l: o.l, h: VL.lines[o.v] + ' ' + o.h, icon: o.icon, badge: o.v === VL.recommended ? 'Recommended for you' : null }; }), T.volume, function (v) {
+          T.volume = v; enable(true); $('#vcv', el).innerHTML = volumeCurve(v); panel();
+        });
+        el.insertAdjacentHTML('beforeend', '<div id="slp"></div>' +
+          '<button type="button" class="why" id="whyV" aria-expanded="false">How much does volume matter?' + CHEV + '</button><div class="whyb" id="whyB" hidden>' +
+          '<p>Each extra set adds a little less growth than the one before. About 10 sets a week gives a muscle roughly two-thirds of what 20 would.</p>' +
+          '<p>In one study of trained lifters, 12, 18 and 24 sets a week built about the same thigh muscle over 8 weeks, though other studies found more sets helped a little. High is for lifters who have stopped progressing on Moderate, and it needs the sleep and food to recover from.</p>' +
+          '<p>New to lifting or coming back after a break? Your first two weeks start lighter whichever you pick, to keep soreness down while your muscles get used to it. A long session you skip or rush builds less than a shorter one you finish well.</p></div>' +
+          '<p class="tnote"><span>' + IC.info + '</span>Your ' + T.days + ' ' + (T.days === 1 ? 'day' : 'days') + ' a week decides how these sets get split up, not how many there are.</p>');
+        var panel = sessionPanel($('#slp', el), my, {
+          kind: 'volume', saved: saved, answers: function () { return saved; },
+          value: function () { return T.volume ? { volumePreference: T.volume } : null; },
+          fixes: function (v) { return tcall('volumeFixes', v.volumePreference, T.days); },
+          onFix: function (f) {
+            if (f.volume) { T.volume = f.volume; redrawTrain(el, my); return; }
+            // "Train N days" opens Days to change that one answer (editMode, presetDays).
+            T.edit = { presetDays: f.days }; go('days');
+          },
+        });
+        $('#whyV', el).onclick = function () { var b = $('#whyB', el), open = b.hidden; b.hidden = !open; this.setAttribute('aria-expanded', open); };
+        trainCta(!!T.volume, function () { if (!T.volume) return; go('refine'); });
+      });
+    });
+  }
+  function redrawTrain(el, my) { if (my === token) { el.innerHTML = ''; SCREENS[cur].r(el, my); } }
+
+  /* ---------- Refinements: Want to refine further? ---------- */
+  var PRIORITY = ['Chest', 'Lats', 'Upper Back', 'Traps', 'Front Delts', 'Side Delts', 'Rear Delts', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Core'];
+  var AUX_LOOKS = [{ v: 'neck', l: 'Neck' }, { v: 'forearms', l: 'Forearms' }, { v: 'obliques', l: 'Obliques' }, { v: 'serratus', l: 'Serratus' }];
+  var AUX_STRENGTH = [{ v: 'lower_back', l: 'Lower back' }, { v: 'hip_abductors', l: 'Hip abductors' }, { v: 'hip_adductors', l: 'Hip adductors' }, { v: 'shins', l: 'Shins' }];
+  var AVOID = ['Overhead pressing', 'Heavy squats', 'Heavy deadlifts', 'High-impact moves', 'Jumping & plyometrics', 'Inversions'];
+  function countLabel(n) { return n === 0 ? 'none picked' : n + ' picked'; }
+  function rRefine(el, my) {
+    withTrain(el, my, function (st) {
+      if (!T.refine) T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} };
+      var R = T.refine, saved = savedThrough(3);
+      el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Optional</p><h1 class="qh rise" style="--i:1">Want to refine <em>further?</em></h1><div id="rbody"></div><div class="slpin" id="slpin"></div>');
+      var body = $('#rbody', el);
+      function chips(list, picked, key) {
+        return '<div class="rchips">' + list.map(function (o) { var v = o.v || o, l = o.l || o; return '<button type="button" class="rchip" data-g="' + key + '" data-v="' + esc(v) + '" aria-pressed="' + (picked.indexOf(v) > -1) + '">' + esc(l) + '</button>'; }).join('') + '</div>';
+      }
+      function group(key, label, n, inner) {
+        return '<button type="button" class="rgrp" data-open-g="' + key + '" aria-expanded="' + !!R.open[key] + '"><span>' + label + '</span><small>' + countLabel(n) + '</small>' + CHEV + '</button>' + (R.open[key] ? inner : '');
+      }
+      function draw() {
+        // A group with picks opens on its own.
+        if (R.priority.length) R.open.priority = true;
+        if (AUX_LOOKS.some(function (x) { return R.aux.indexOf(x.v) > -1; })) R.open.looks = true;
+        if (AUX_STRENGTH.some(function (x) { return R.aux.indexOf(x.v) > -1; })) R.open.strength = true;
+        if (R.avoid.length) R.open.avoid = true;
+        var looksN = AUX_LOOKS.filter(function (o) { return R.aux.indexOf(o.v) > -1; }).length, strN = AUX_STRENGTH.filter(function (o) { return R.aux.indexOf(o.v) > -1; }).length;
+        body.innerHTML = '<p class="rlab">Optimise for</p><div class="presets">' + st.presets.map(function (p) {
+          var on = R.active.indexOf(p.id) > -1;
+          return '<div class="preset' + (on ? ' on' : '') + '"><button type="button" class="pmain" data-preset="' + p.id + '" aria-pressed="' + on + '"><b>' + esc(p.label) + '</b><small>' + esc(p.description) + '</small></button><button type="button" class="pinfo" data-ev="' + p.id + '" aria-label="Evidence for ' + esc(p.label) + '">' + IC.infoO + '</button>' + (on ? '<span class="pchk">' + IC.check + '</span>' : '') + '</div>';
+        }).join('') + '</div>' +
+          '<p class="rlab">Rep style</p><p class="rlead">' + esc(st.repLead) + '</p><div class="reps">' + st.repStyles.map(function (o) {
+            var on = R.rep === o.value;
+            return '<button type="button" class="rep' + (on ? ' on' : '') + '" data-rep="' + o.value + '" role="radio" aria-checked="' + on + '"><span class="rtop"><b>' + esc(o.label) + '</b><em>' + esc(o.tag) + '</em><span class="rk">' + (on ? IC.check : '') + '</span></span>' +
+              (on ? '<span class="rdet"><span><i class="acc">PROS</i>' + esc(o.pros) + '</span><span><i>CONS</i>' + esc(o.cons) + '</span></span>' : '') + '</button>';
+          }).join('') + '<button type="button" class="rwhy" id="repWhy"><span>' + IC.infoO + '</span>Why</button></div>' +
+          group('priority', 'More volume', R.priority.length, chips(PRIORITY, R.priority, 'priority')) +
+          group('looks', 'Extra work · for looks', looksN, chips(AUX_LOOKS, R.aux, 'aux')) +
+          group('strength', 'Extra work · for strength and injury prevention', strN, chips(AUX_STRENGTH, R.aux, 'aux')) +
+          group('avoid', 'Avoid', R.avoid.length, chips(AVOID, R.avoid, 'avoid')) +
+          '<div class="core"><span>Direct core work</span><button type="button" class="sw" id="coreSw" role="switch" aria-checked="' + R.core + '" aria-label="Direct core work"><i></i></button></div>';
+        $$('[data-preset]', body).forEach(function (b) {
+          b.onclick = function () {
+            tcall('presetToggle', b.getAttribute('data-preset'), st.sexKey, { priorityMuscles: R.priority, auxiliaryMuscles: R.aux, includeDirectCore: R.core }).then(function (n) {
+              R.priority = n.priorityMuscles; R.aux = n.auxiliaryMuscles; R.core = n.includeDirectCore; changed();
+            });
+          };
+        });
+        $$('[data-ev]', body).forEach(function (b) { b.onclick = function () { presetSheet(st, b.getAttribute('data-ev')); }; });
+        $$('[data-rep]', body).forEach(function (b) { b.onclick = function () { R.rep = b.getAttribute('data-rep'); changed(); }; });
+        $('#repWhy', body).onclick = function () { repProof(st); };
+        $$('[data-open-g]', body).forEach(function (b) { b.onclick = function () { var k = b.getAttribute('data-open-g'); R.open[k] = !R.open[k]; draw(); }; });
+        $$('.rchip', body).forEach(function (b) {
+          b.onclick = function () {
+            var g = b.getAttribute('data-g'), v = b.getAttribute('data-v'), arr = g === 'priority' ? R.priority : g === 'aux' ? R.aux : R.avoid;
+            var i = arr.indexOf(v); if (i > -1) arr.splice(i, 1); else arr.push(v);
+            changed();
+          };
+        });
+        $('#coreSw', body).onclick = function () { R.core = !R.core; changed(); };
+      }
+      function changed() {
+        tcall('activePresets', st.sexKey, { priorityMuscles: R.priority, auxiliaryMuscles: R.aux }).then(function (ids) { R.active = ids; if (my === token) draw(); });
+        draw(); panel();
+      }
+      var panel = sessionPanel($('#slpin', el), my, {
+        kind: 'refine', compact: true, saved: saved, answers: function () { return saved; },
+        value: function () { return { priorityMuscleGroups: R.priority.slice(), auxiliaryMuscles: R.aux.slice(), movementLimitations: R.avoid.slice(), includeDirectCore: R.core, repStyle: R.rep }; },
+      });
+      changed();
+      primary('Continue', function () { go('progbuild'); });
+    });
+  }
+  /** PresetEvidenceSheet.tsx: what the preset picks for this sex and why, then the studies. */
+  var AUX_LABELS = { neck: 'Neck', forearms: 'Forearms', obliques: 'Obliques', serratus: 'Serratus', lower_back: 'Lower back', hip_abductors: 'Hip abductors', hip_adductors: 'Hip adductors', shins: 'Shins' };
+  var GRADE = { strong: 'STRONG EVIDENCE', moderate: 'MODERATE EVIDENCE', weak: 'WEAK EVIDENCE' };
+  var SEX_LINE = { male: 'Selections for men', female: 'Selections for women', unspecified: 'Selections when sex is not set' };
+  function presetSheet(st, id) {
+    var p = st.presets.filter(function (x) { return x.id === id; })[0], sel = p.selections[st.sexKey], n = p.studies.length;
+    var picks = sel.priorityMuscles.map(function (m) { return { l: m, why: p.muscleRationale[m] }; }).concat(sel.auxiliaryMuscles.map(function (m) { return { l: AUX_LABELS[m] || m, why: p.muscleRationale[m] }; }));
+    var one = '<p class="sh-ov acc">Preset · based on ' + n + ' ' + (n === 1 ? 'study' : 'studies') + '</p><h2 class="sh-t big">' + esc(p.label) + '</h2><p><span class="grade ' + p.evidenceGrade + '">' + GRADE[p.evidenceGrade] + '</span></p>' +
+      p.summary.map(function (l) { return '<p class="sh-b">' + esc(l) + '</p>'; }).join('') + '<p class="ek2">' + SEX_LINE[st.sexKey] + '</p>' +
+      picks.map(function (x) { return '<div class="ppick"><b>' + esc(x.l) + '</b>' + (x.why ? '<span>' + esc(x.why) + '</span>' : '') + '</div>'; }).join('') +
+      '<button type="button" class="sh-more" data-more="1">Based on ' + n + ' ' + (n === 1 ? 'study' : 'studies') + '<span aria-hidden="true">›</span></button><button type="button" class="sh-go" data-close="1">Got it</button>';
+    var two = '<button type="button" class="sh-back" data-less="1">‹ ' + esc(p.label) + '</button><p class="ek2">The studies</p>' + p.studies.map(function (s) {
+      return '<a class="study" href="' + esc(s.url) + '" target="_blank" rel="noopener"><span class="sc">' + esc(s.authors) + ' (' + s.year + '). ' + esc(s.journal) + '.</span><b>' + esc(s.title) + '</b><span>' + esc(s.summary) + '</span>' +
+        (s.supports.length ? '<small>Supports: ' + esc(s.supports.map(function (m) { return AUX_LABELS[m] || m; }).join(', ')) + '</small>' : '') + '</a>';
+    }).join('') + (p.caveats.length ? '<p class="ek2">What it doesn’t tell you</p>' + p.caveats.map(function (c) { return '<p class="sh-b">' + esc(c) + '</p>'; }).join('') : '');
+    pagedSheet(one, two);
+  }
+  /** RepStyleProofSheet: the shared proof sheet, limited to the rep style decisions. */
+  function repProof(st) {
+    var chip = function (c, long) { var l = st.confidenceLabel[c]; return '<span class="conf ' + c + '">' + esc((long && c !== 'estimate' ? l + ' evidence' : l).toUpperCase()) + '</span>'; };
+    var src = function (d) { var c = d.sources.map(function (s) { return s.cite; }); return c.length > 2 ? c.slice(0, 2).join(' · ') + ' · and more' : c.join(' · '); };
+    var list = '<p class="sh-ov acc">Rep style</p><h2 class="sh-t big">Why any rep<br>range works.</h2>' + st.repEvidence.map(function (d, k) {
+      return '<button type="button" class="pdec" data-dec="' + k + '"><span class="pt"><b>' + esc(d.title) + '</b>' + chip(d.confidence) + '</span><span class="pw">' + esc(d.why) + '</span><small>' + esc(src(d)) + '</small></button>';
+    }).join('') + '<button type="button" class="sh-ghost" data-close="1">Got it</button>';
+    var page = function (k) {
+      var d = st.repEvidence[k];
+      return '<button type="button" class="sh-back" data-less="1">‹ Back</button><p class="sh-ov acc">Why</p><h2 class="sh-t">' + esc(d.title) + '</h2><p class="sh-b">' + esc(d.why) + '</p><p class="ek2">What the studies found</p><p class="sh-b">' + esc(d.found) + '</p>' +
+        d.sources.map(function (s) { return '<a class="study" href="' + esc(s.url) + '" target="_blank" rel="noopener"><b>' + esc(s.cite) + '</b><span>' + esc(s.journal + ' · ' + s.design) + (s.checked === 'secondary' ? ' · abstract not available, from press coverage' : '') + '</span></a>'; }).join('') +
+        (d.forYou ? '<div class="fy"><p class="ek2">For you</p><p class="sh-b">' + esc(d.forYou) + '</p></div>' : '') + '<p>' + chip(d.confidence, true) + '</p><button type="button" class="sh-ghost" data-close="1">Got it</button>';
+    };
+    openSheet('<div class="evs">' + list + '</div>', function (sh) {
+      var box = $('.evs', sh);
+      var wire = function () {
+        $$('[data-dec]', box).forEach(function (b) { b.onclick = function () { box.innerHTML = page(+b.getAttribute('data-dec')); wire(); }; });
+        var l = $('[data-less]', box); if (l) l.onclick = function () { box.innerHTML = list; wire(); };
+        $$('[data-close]', box).forEach(function (b) { b.onclick = function () { closeSheet(); }; });
+      };
+      wire();
+    });
+  }
+  function pagedSheet(one, two) {
+    openSheet('<div class="evs">' + one + '</div>', function (sh) {
+      var box = $('.evs', sh);
+      var wire = function () {
+        var m = $('[data-more]', box), l = $('[data-less]', box);
+        if (m) m.onclick = function () { box.innerHTML = two; wire(); };
+        if (l) l.onclick = function () { box.innerHTML = one; wire(); };
+        $$('[data-close]', box).forEach(function (b) { b.onclick = function () { closeSheet(); }; });
+      };
+      wire();
+    });
+  }
+
+  /* ---------- WorkoutBuildScreen ---------- */
+  var LENGTH_WORDS = { '4_weeks': '4 weeks', '8_weeks': '8 weeks', '12_weeks': '12 weeks', '6_months': '6 months', '1_year': '1 year' };
   function needProgram() {
-    var k = keyOf([aboutForEngine(), trainForEngine()]);
-    return loadIndex().then(function () {
+    return Promise.all([loadIndex(), needTrain()]).then(function () {
+      var saved = savedThrough(4), k = keyOf([aboutForEngine(), saved, T.weekSaved]);
       if (S.programKey === k && S.program) return S.program;
-      return call('buildProgram', aboutForEngine(), trainForEngine()).then(function (p) { S.program = p; S.programKey = k; S.openDay = null; return p; });
+      return tcall('buildProgramFrom', aboutForEngine(), saved, T.weekSaved).then(function (p) { S.program = p; S.programKey = k; T.landed = false; T.log = 0; return p; });
     });
   }
-  function exImg(name) {
-    var slug = EXINDEX && EXINDEX[name];
-    var sx = S.about && S.about.sex === 'female' ? 'pink' : 'blue';
-    return slug ? '<img src="/images/exercises/' + slug + '/' + sx + '/start.webp" alt="" loading="lazy" decoding="async" width="112" height="112">' : '';
-  }
+  /** Exercise start frames, in the app's default (cyan) theme. */
+  function exSrc(name) { var slug = EXINDEX && EXINDEX[name]; return slug ? '/images/exercises/' + slug + '/blue/start.webp' : null; }
+  function exImg(name) { var s = exSrc(name); return s ? '<img src="' + s + '" alt="" loading="lazy" decoding="async" width="112" height="112">' : ''; }
   function rProgBuild(el, my) {
-    var t = trainForEngine();
+    // Act 1's line under "Building your program." is the answers it reads (WorkoutBuildScreen profileLine).
+    var sub = [T.days ? T.days + ' days a week' : null, LENGTH_WORDS[T.length]].filter(Boolean).join(' · ');
     buildMoment(el, my, {
-      word: 'your program.', sub: t.days + ' days a week · 8 weeks',
+      word: 'your program.', sub: sub,
       work: needProgram,
       over: function (P) { return P.program.routine_name; },
       steps: function (P) { return P.view.steps; },
       visual: function (P) {
-        return '<p class="note" style="margin:0 0 10px">Week 1' + (P.view.weeks > 1 ? ' of ' + P.view.weeks : '') + '</p><div class="drows">' + P.view.days.map(function (d) {
+        var dl = P.view.deloads.length ? 'deload ' + (P.view.deloads.length === 1 ? 'week' : 'weeks') + ' ' + P.view.deloads.join(', ') : '';
+        return '<p class="note" style="margin:0 0 10px">Week 1' + (P.view.weeks > 1 ? ' of ' + P.view.weeks : '') + (dl ? ' · ' + dl : '') + '</p><div class="drows">' + P.view.days.map(function (d) {
           return '<div class="drow"><span class="n">' + esc(d.name) + '</span><span class="th">' + d.exercises.map(function (x) { return '<span>' + exImg(x) + '</span>'; }).join('') + '</span></div>';
         }).join('') + '</div>';
       },
@@ -1569,49 +1983,232 @@
       done: function () { replaceWith('program'); },
     });
   }
-  function rest(sec) { if (!sec) return ''; if (sec < 60) return sec + ' s'; var m = Math.floor(sec / 60), s = sec % 60; return m + ' min' + (s ? ' ' + s + ' s' : ''); }
+
+  /* ---------- The Workouts tab (HomeScreen), the program just landed ---------- */
+  function sectionHead(label, link, id) { return '<div class="shd"><span>' + esc(label) + '</span>' + (link ? '<button type="button" class="shl"' + (id ? ' id="' + id + '"' : '') + '>' + esc(link) + '</button>' : '') + '</div>'; }
   function rProgram(el, my) {
     needAbout(el, my, function () {
       withData(el, my, needProgram, 'Building your program…', function (P) {
-        var prog = P.program, b0 = prog.blocks[0], sched = b0.weekly_schedule || [];
-        var byName = {}; b0.days.forEach(function (d) { byName[d.day_name] = d; });
-        var sx = S.about.sex === 'female' ? 'pink' : 'blue';
-        el.innerHTML = '<p class="ov rise" style="--i:0">' + esc(prog.routine_name) + '</p><h1 class="qh rise" style="--i:1">Your <em>week.</em></h1>' +
-          '<p class="sub rise" style="--i:2">' + prog.days_per_week + ' days a week. Tap a day to see the session.</p>' +
-          (P.appBuildsGym ? '<p class="flag rise" style="--i:2"><i></i><span>Home and bodyweight programs are coming to the app. Today the app builds gym programs.</span></p>' : '') +
-          '<div class="wk">' + sched.map(function (s, k) {
-            var d = byName[s.day_name];
-            if (s.type !== 'training' || !d) return '<div class="wd rest" style="--i:' + k + '"><button type="button" tabindex="-1"><span class="dn">DAY ' + (k + 1) + '</span><span><b>Rest</b></span><span></span></button></div>';
-            return '<div class="wd" style="--i:' + k + '" data-open="' + (S.openDay === k) + '"><button type="button" data-wd="' + k + '" aria-expanded="' + (S.openDay === k) + '"><span class="dn">DAY ' + (k + 1) + '</span><span><b>' + esc(s.day_name) + '</b><small>' + d.exercises.length + ' exercises · ~' + d.estimated_duration + ' min</small></span>' + CHEV + '</button><div class="exs">' +
-              d.exercises.map(function (e, j) {
-                var slug = EXINDEX && EXINDEX[e.exercise];
-                var sets = (e.sets_weekly && e.sets_weekly['1']) || e.sets, rir = e.rir_weekly && e.rir_weekly['1'];
-                return '<div class="ex" style="--i:' + j + '"><div class="im">' + (slug ? '<img src="/images/exercises/' + slug + '/' + sx + '/start.webp" alt="" loading="lazy" decoding="async" width="112" height="112">' : '') + '</div><div>' +
-                  (slug ? '<a class="nm" href="../exercises/#' + slug + '" target="_blank" rel="noopener">' + esc(e.exercise) + '</a>' : '<span class="nm">' + esc(e.exercise) + '</span>') +
-                  '<div class="meta"><span><b>' + sets + ' × ' + esc(e.reps) + '</b></span>' + (e._restSec ? '<span>Rest ' + rest(e._restSec) + '</span>' : '') + (rir ? '<span>RIR ' + esc(rir) + '</span>' : '') + '</div></div></div>';
-              }).join('') + '<p class="note">Sets × reps, rest between sets, and RIR: reps left in the tank on each set. Week 1.</p></div></div>';
-          }).join('') + '</div>' +
-          '<button type="button" class="btn2 rise" style="--i:8" id="volBtn" aria-expanded="false">Sets per muscle <small>week 1 ›</small></button><div id="vol" class="vol" hidden></div>';
-        $$('[data-wd]', el).forEach(function (b) {
-          b.onclick = function () {
-            var k = +b.getAttribute('data-wd'), box = b.parentNode, open = box.getAttribute('data-open') !== 'true';
-            $$('.wd', el).forEach(function (x) { x.setAttribute('data-open', 'false'); });
-            box.setAttribute('data-open', open); b.setAttribute('aria-expanded', open); S.openDay = open ? k : null;
-          };
-        });
-        $('#volBtn', el).onclick = function () {
-          var v = $('#vol', el), open = v.hidden;
-          if (open && !v.innerHTML) {
-            var vol = P.volume || {};
-            v.innerHTML = '<p class="note" style="margin-bottom:6px">Main lifts count a full set, lifts where the muscle helps count half. The shaded band is your target.</p>' + (P.targets || []).filter(function (t) { return t.kind === 'standard'; }).map(function (t) {
-              var x = vol[t.row] || 0, max = Math.max(24, t.hi, x);
-              return '<div class="vr"><span>' + esc(t.row) + '</span><span class="vb"><i style="left:' + (t.lo / max * 100) + '%;width:' + ((t.hi - t.lo) / max * 100) + '%"></i><s style="left:calc(' + Math.min(100, x / max * 100) + '% - 2px)"></s></span><span class="vn">' + (Math.round(x * 2) / 2) + '</span></div>';
-            }).join('');
-          }
-          v.hidden = !open; this.setAttribute('aria-expanded', open);
-        };
-        primary('Keep it', function () { go('keep'); });
+        var V = P.views, card = V.blockCard, nx = V.hero.next;
+        var segs = (V.weekDays || V.sessions.length);
+        el.innerHTML = '<p class="dline rise" style="--i:0"><button type="button" id="dateLn">' + esc(V.dateLine) + '</button></p><h1 class="wtitle rise" style="--i:0">Workouts</h1>' +
+          '<button type="button" class="hero rise" style="--i:1" id="heroBtn"><span class="hbg">' + exImg(nx.first) + '</span><span class="hsg">' + Array.apply(null, Array(segs)).map(function () { return '<i></i>'; }).join('') + '</span>' +
+          '<span class="hbt"><span class="htd"><b>' + esc(V.hero.label.toUpperCase()) + '</b>' + (V.hero.pill ? '<em>' + esc(V.hero.pill) + '</em>' : '') + '</span><span class="hnm">' + esc(nx.name) + '</span><span class="hpl">' + esc(V.name) + '</span><span class="hmt">' + nx.exercises + ' ' + (nx.exercises === 1 ? 'exercise' : 'exercises') + ' · ' + sessionLen(nx.minutes) + '</span></span><span class="hplay" id="playBtn"><svg viewBox="0 0 24 24" width="24" height="24" fill="#0a0a0b"><path d="M8 5.5v13l11-6.5z"/></svg></span></button>' +
+          '<div class="rise" style="--i:2">' + sectionHead('This week · 0 of ' + V.sessions.length, V.weekLink) + '<div class="scards">' + V.sessions.map(function (s, i) {
+            var ring = s.kind === 'today' || s.kind === 'now' || s.kind === 'next';
+            return '<button type="button" class="scard' + (ring ? ' ring' : '') + '" data-log="' + i + '"><span class="si">' + (exImg(s.first) || IC.bar) + '</span><span class="sl">' + esc(s.label || '') + '</span><b>' + esc(s.name) + '</b></button>';
+          }).join('') + '</div></div>' +
+          (card ? '<div class="rise" style="--i:3">' + sectionHead('Your block') + '<button type="button" class="bcard" id="bcard"><span class="bct"><b>' + esc(card.title) + '</b>' + (card.deloadLine ? '<em>' + esc(card.deloadLine) + '</em>' : '') + '</span><span class="bsegs">' + card.segments.map(function (g) {
+            return '<i class="' + g.state + (g.deload ? ' dl' : '') + '"></i>';
+          }).join('') + '</span>' + (card.muscles.length ? '<span class="bov">Focus muscles · sets this week</span>' + card.muscles.map(function (m) {
+            var t = m.target || 0;
+            return '<span class="bmr"><span>' + esc(m.label) + '</span><span class="bmb"><i style="width:' + (t ? Math.min(100, m.done / t * 100) : 0) + '%"></i></span><span class="bmv">' + fmtSets(m.done) + ' / ' + (m.target == null ? '–' : fmtSets(m.target)) + '</span></span>';
+          }).join('') : '') + '</button></div>' : '') +
+          '<div class="rise" style="--i:4">' + sectionHead('Your plans', '+ New plan', 'newPlan') + '<button type="button" class="prow" id="planRow"><span class="pth">' + exImg(nx.first) + '</span><span class="ptx"><i>CURRENT</i><b>' + esc(V.name) + '</b><small>' + esc(V.plansSub) + '</small><span class="pbar"><s style="width:' + (100 / V.totalWeeks) + '%"></s></span></span></button></div>' +
+''; // the app's theme tip and its later cards (last session, getting stronger) need logged workouts
+        if (!T.landed) { T.landed = true; toast(el, 'Added to Workouts'); }
+        $('#heroBtn', el).onclick = function (e) { if (e.target.closest('#playBtn')) { T.log = 0; go('session'); return; } go('blocks'); };
+        $('#planRow', el).onclick = function () { go('blocks'); };
+        $('#dateLn', el).onclick = function () { go('trainweek'); };
+        if ($('#bcard', el)) $('#bcard', el).onclick = function () { go('trainweek'); };
+        $$('[data-log]', el).forEach(function (b) { b.onclick = function () { T.log = +b.getAttribute('data-log'); go('session'); }; });
+        primary('Continue', function () { go('keep'); });
       });
+    });
+  }
+  /** WorkoutCover formatSessionLength: "about 55 min", from two hours "about 2 h". */
+  function sessionLen(min) { if (min == null) return ''; if (min < 120) return 'about ' + Math.round(min / 5) * 5 + ' min'; var h = Math.round(min / 30) / 2; return 'about ' + h + ' h'; }
+  function fmtSets(n) { return String(Math.round(n * 2) / 2); }
+  function toast(el, text) {
+    if (RM || root.classList.contains('still')) return;
+    var t = document.createElement('div'); t.className = 'ttoast'; t.innerHTML = '<span>' + IC.check + '</span>' + esc(text);
+    el.appendChild(t); setTimeout(function () { t.classList.add('off'); }, 2200); setTimeout(function () { t.remove(); }, 2700);
+  }
+
+  /* ---------- BlocksScreen ---------- */
+  function rBlocks(el, my) {
+    needAbout(el, my, function () {
+      withData(el, my, needProgram, '', function (P) {
+        var V = P.views, B = V.blocks;
+        el.innerHTML = '<div class="pcover rise" style="--i:0"><span class="pci">' + exImg(V.hero.next.first) + '</span><span class="pco"><span class="ov">' + esc(B.overline) + '</span><b>' + esc(V.name) + '</b><span class="pbar"><s style="width:' + (B.fill * 100) + '%"></s></span><small>' + esc(B.meta) + '</small></span></div>' +
+          '<div class="rise" style="--i:1">' +
+          '<button type="button" class="proofr" id="pBuilt"><span class="pb">' + IC.check + '</span><span><b>How this was built</b><small>The research behind your sets and rests</small></span>' + IC.chev + '</button>' +
+          '<button type="button" class="proofr" id="pRep"><span class="pb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg></span><span><b>Rep style</b><small>' + esc(B.repStyleSub) + '</small></span>' + IC.chev + '</button></div>' +
+          '<div class="brows rise" style="--i:2">' + B.rows.map(function (r, i) {
+            return '<button type="button" class="brow' + (r.current ? ' cur' : '') + '" data-blk="' + i + '"' + (r.current ? '' : ' disabled') + '><span class="ov">' + esc(r.overline) + '</span><b>' + esc(r.title) + '</b><small>' + esc(r.meta) + '</small>' + (r.current ? IC.chev : '') + '</button>';
+          }).join('') + '</div>' +
+          '<p class="note">In the app you can also add a block, rebuild from Your setup, and open later blocks as you reach them.</p>';
+        $('#pBuilt', el).onclick = function () { builtProof(B.proof); };
+        $('#pRep', el).onclick = function () { repStyleSheet(B); };
+        $$('[data-blk]', el).forEach(function (b) { b.onclick = function () { go('trainweek'); }; });
+        primary('Open this week', function () { go('trainweek'); });
+      });
+    });
+  }
+  /** ProofSheet for area 'training', the Blocks screen's "How this was built". */
+  function builtProof(pr) {
+    var rows = pr.featured.length ? pr.featured : pr.all;
+    proofSheet('How your training was built', 'Why these<br>sets and rests.', rows, pr.all.length > rows.length ? pr.all : null);
+  }
+  function proofSheet(over, headHtml, rows, allRows) {
+    var st = T.start;
+    var chip = function (c, long) { var l = st.confidenceLabel[c]; return '<span class="conf ' + c + '">' + esc((long && c !== 'estimate' ? l + ' evidence' : l).toUpperCase()) + '</span>'; };
+    var src = function (d) { var c = d.sources.map(function (s) { return s.cite; }); return c.length > 2 ? c.slice(0, 2).join(' · ') + ' · and more' : c.join(' · '); };
+    var shown = rows;
+    var list = function () {
+      return '<p class="sh-ov acc">' + esc(over) + '</p><h2 class="sh-t big">' + headHtml + '</h2>' + shown.map(function (d, k) {
+        return '<button type="button" class="pdec" data-dec="' + k + '"><span class="pt"><b>' + esc(d.title) + '</b>' + chip(d.confidence) + '</span><span class="pw">' + esc(d.why) + '</span><small>' + esc(src(d)) + '</small></button>';
+      }).join('') + (allRows && shown !== allRows ? '<button type="button" class="sh-more" data-all="1">Show all ' + allRows.length + ' decisions<span aria-hidden="true">›</span></button>' : '') + '<button type="button" class="sh-ghost" data-close="1">Got it</button>';
+    };
+    var page = function (k) {
+      var d = shown[k];
+      return '<button type="button" class="sh-back" data-less="1">‹ Back</button><p class="sh-ov acc">Why</p><h2 class="sh-t">' + esc(d.title) + '</h2><p class="sh-b">' + esc(d.why) + '</p><p class="ek2">What the studies found</p><p class="sh-b">' + esc(d.found) + '</p>' +
+        d.sources.map(function (s) { return '<a class="study" href="' + esc(s.url) + '" target="_blank" rel="noopener"><b>' + esc(s.cite) + '</b><span>' + esc(s.journal + ' · ' + s.design) + (s.checked === 'secondary' ? ' · abstract not available, from press coverage' : '') + '</span></a>'; }).join('') +
+        (d.forYou ? '<div class="fy"><p class="ek2">For you</p><p class="sh-b">' + esc(d.forYou) + '</p></div>' : '') + '<p>' + chip(d.confidence, true) + '</p><button type="button" class="sh-ghost" data-close="1">Got it</button>';
+    };
+    openSheet('<div class="evs">' + list() + '</div>', function (sh) {
+      var box = $('.evs', sh);
+      var wire = function () {
+        $$('[data-dec]', box).forEach(function (b) { b.onclick = function () { box.innerHTML = page(+b.getAttribute('data-dec')); wire(); }; });
+        var l = $('[data-less]', box); if (l) l.onclick = function () { box.innerHTML = list(); wire(); };
+        var a = $('[data-all]', box); if (a) a.onclick = function () { shown = allRows; box.innerHTML = list(); wire(); };
+        $$('[data-close]', box).forEach(function (b) { b.onclick = function () { closeSheet(); }; });
+      };
+      wire();
+    });
+  }
+  /** RepStylePlanRow's sheet: the style for later blocks (view only here: nothing is saved on this page). */
+  function repStyleSheet(B) {
+    var st = T.start, cur = T.refine ? T.refine.rep : 'classic';
+    openSheet('<p class="sh-ov acc">Applies from your next block</p><h2 class="sh-t big">Rep style</h2><p class="sh-b">' + esc(st.repLead) + '</p><div class="reps">' + st.repStyles.map(function (o) {
+      var on = cur === o.value;
+      return '<div class="rep' + (on ? ' on' : '') + '"><span class="rtop"><b>' + esc(o.label) + '</b><em>' + esc(o.tag) + '</em><span class="rk">' + (on ? IC.check : '') + '</span></span>' + (on ? '<span class="rdet"><span><i class="acc">PROS</i>' + esc(o.pros) + '</span><span><i>CONS</i>' + esc(o.cons) + '</span></span>' : '') + '</div>';
+    }).join('') + '</div><p class="sh-lede">' + (B.laterBlock ? 'Your current block stays as it is. The change starts at block ' + B.laterBlock + '.' : 'This plan has no later block, so it applies to your next plan.') + '</p><button type="button" class="sh-ghost" data-close="1">Got it</button>', function (sh) {
+      $('[data-close]', sh).onclick = function () { closeSheet(); };
+    });
+  }
+
+  /* ---------- DaysScreen: the block's week ---------- */
+  function rTrainWeek(el, my) {
+    needAbout(el, my, function () {
+      withData(el, my, needProgram, '', function (P) {
+        var Wk = P.views.week, days = Wk.days.filter(function (d) { return !d.rest; });
+        var next = days[0], rest = days.slice(1);
+        var workIdx = function (d) { return Wk.days.filter(function (x) { return !x.rest; }).indexOf(d); };
+        el.innerHTML = '<p class="ov rise" style="--i:0">' + esc(Wk.label) + '</p><h1 class="wkh rise" style="--i:0">Week ' + Wk.week + '<span> of ' + Wk.of + '</span></h1>' +
+          (Wk.deload ? '<p class="wbadge amb">DELOAD WEEK</p><p class="wsub">Reduced volume, recover and back off</p>' : '') +
+          (Wk.ramp ? '<p class="wbadge">EASING IN</p><p class="wsub">Lighter week ' + (Wk.rampWeeks.indexOf(Wk.week) + 1) + ' of ' + Wk.rampWeeks.length + ' while you ease in. Full sets from week ' + (Math.max.apply(null, Wk.rampWeeks) + 1) + '.</p>' : '') +
+          '<p class="wcount rise" style="--i:1"><b>0</b> OF ' + Wk.workouts + ' DONE THIS WEEK</p>' +
+          '<div class="wstrip rise" style="--i:1">' + Array.apply(null, Array(Wk.of)).map(function (_, i) {
+            var w = i + 1, dl = Wk.deloads.indexOf(w) > -1;
+            return '<span class="wc' + (w === Wk.week ? ' cur' : '') + '"><b class="' + (dl ? 'dl' : '') + '">W' + w + '</b><span>' + days.map(function () { return '<i></i>'; }).join('') + '</span></span>';
+          }).join('') + '</div>' +
+          '<button type="button" class="nexth rise" style="--i:2" data-day="' + workIdx(next) + '"><span class="nhi">' + exImg(next.first) + '</span><span class="nhc"><span class="nchips"><em>UP NEXT</em><em class="g">DAY ' + next.pos + ' OF ' + Wk.days.length + '</em></span><b>' + esc(next.name) + '</b><span class="nmu">' + esc(next.muscles.join(' · ')) + '</span><span class="nmt">' + next.exercises + ' ' + (next.exercises === 1 ? 'exercise' : 'exercises') + ' · ~' + next.minutes + ' min</span><span class="nst">Start workout</span></span></button>' +
+          '<div class="rise" style="--i:3">' + sectionHead('Coming up', rest.length + ' ' + (rest.length === 1 ? 'day' : 'days') + ' left') + rest.map(function (d) {
+            return '<button type="button" class="drw" data-day="' + workIdx(d) + '"><span class="dth">' + (exImg(d.first) || workIdx(d) + 1) + '</span><span><b>' + esc(d.name) + '</b><small>' + d.exercises + ' ' + (d.exercises === 1 ? 'exercise' : 'exercises') + ' · ~' + d.minutes + ' min</small></span>' + IC.chev + '</button>';
+          }).join('') + '</div>';
+        $$('.shd .shl', el).forEach(function (b) { b.disabled = true; });
+        $$('[data-day]', el).forEach(function (b) { b.onclick = function () { T.log = +b.getAttribute('data-day'); go('session'); }; });
+        primary('Start workout', function () { T.log = workIdx(next); go('session'); });
+      });
+    });
+  }
+
+  /* ---------- WorkoutLog, before Start ---------- */
+  function rSession(el, my) {
+    needAbout(el, my, function () {
+      withData(el, my, needProgram, '', function (P) {
+        var L = P.views.logs[T.log || 0] || P.views.logs[0], exs = L.exercises, W = P.views.week.week;
+        el.innerHTML = '<div class="xticks rise" style="--i:0">' + exs.map(function (_, i) { return '<i' + (i === 0 ? ' class="on"' : '') + '></i>'; }).join('') + '</div>' +
+          '<div class="xpager rise" style="--i:0" id="xpager">' + exs.map(function (e, i) {
+            return '<article class="xcard"><div class="xim">' + (exImg(e.name) || '<span class="xno">' + IC.bar + 'No preview</span>') + '<button type="button" class="xmore" data-menu="' + i + '" aria-label="More">⋯</button></div>' +
+              '<p class="xov">' + e.sets + ' × ' + esc(e.reps) + (e.rirSummary ? ' · ' + esc(e.rirSummary) : '') + ' · WEEK ' + W + '</p><h2 class="xnm">' + esc(e.name) + '</h2><p class="xmu">' + esc(e.muscles.join(' · ')) + '</p>' +
+              (e.cue ? '<button type="button" class="xcue" data-cue="' + i + '"><i></i><span>' + esc(e.cue.quickCue) + '</span>' + IC.chev + '</button>' : '') +
+              '<div class="xsets"><div class="xh"><span>SET</span><span>KG</span><span>REPS</span><span>✓</span></div>' + e.rirSets.map(function (r, k) {
+                var reps = String(e.reps).split(',')[k];
+                return '<div class="xr"><span class="n">' + (k + 1) + '</span><span class="in"></span><span class="in"><em>' + esc((reps || '').trim()) + '</em></span><span class="ck"></span>' + (r != null ? '<span class="rir">RIR ' + esc(r) + '</span>' : '') + '</div>';
+              }).join('') + '</div></article>';
+          }).join('') + '</div>' +
+          '<div class="rise" style="--i:1"><p class="ov upn">Up next</p>' + exs.map(function (e, i) {
+            var sup = e.superset && exs[i + 1] && exs[i + 1].superset === e.superset;
+            return '<button type="button" class="upc' + (i === 0 ? ' cur' : '') + '" data-up="' + i + '"><span class="ut">' + exImg(e.name) + '</span><span><b>' + esc(e.name) + '</b><small>' + e.sets + ' × ' + esc(e.reps) + '</small></span>' + (i === 0 ? '<em>CURRENT</em>' : '') + '</button>' + (sup ? '<p class="ssup">SUPERSET</p>' : '');
+          }).join('') + '</div><p class="note">Logging sets, the rest timer and your weights live in the app.</p>';
+        var pager = $('#xpager', el), ticks = $$('.xticks i', el), ups = $$('.upc', el);
+        var at = function (i) {
+          ticks.forEach(function (t, k) { t.className = k === i ? 'on' : k < i ? 'done' : ''; });
+          ups.forEach(function (u, k) { u.classList.toggle('cur', k === i); var em = u.querySelector('em'); if (em) em.remove(); if (k === i) u.insertAdjacentHTML('beforeend', '<em>CURRENT</em>'); });
+        };
+        pager.addEventListener('scroll', function () { at(Math.round(pager.scrollLeft / pager.clientWidth)); }, { passive: true });
+        $$('[data-up]', el).forEach(function (b) { b.onclick = function () { var i = +b.getAttribute('data-up'); pager.scrollTo({ left: i * pager.clientWidth, behavior: RM ? 'auto' : 'smooth' }); at(i); window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); }; });
+        $$('[data-cue]', el).forEach(function (b) { b.onclick = function () { cueSheet(exs[+b.getAttribute('data-cue')]); }; });
+        $$('[data-menu]', el).forEach(function (b) { b.onclick = function () { exMenu(L, exs[+b.getAttribute('data-menu')], W); }; });
+        primary('Start Workout', function () { paceSheet(L, P.views.pace); });
+      });
+    });
+  }
+  /** ExerciseCueModal: "How to do it". */
+  function cueSheet(e) {
+    var c = e.cue, steps = function (l) { return '<ol class="cst">' + l.map(function (s, i) { return '<li><b>' + (i + 1) + '</b><span>' + esc(s) + '</span></li>'; }).join('') + '</ol>'; };
+    openSheet('<div class="cueh">' + exImg(e.name) + '</div><p class="sh-ov acc">How to do it</p><h2 class="sh-t big">' + esc(e.name) + '</h2><p class="sh-lede">' + esc(c.target) + '</p><p class="sh-b">' + esc(c.quickCue) + '</p>' +
+      (c.why ? '<p class="ek2">Why it’s done this way</p><p class="sh-b">' + esc(c.why) + '</p>' : '') +
+      '<p class="ek2">Setup</p>' + steps(c.setup) + '<p class="ek2">Execution</p>' + steps(c.execution) +
+      '<p class="ek2">What it should feel like</p><p class="sh-b">' + esc(c.feel) + '</p><p class="ek2">Watch out for</p><p class="sh-b wo">' + esc(c.mistake) + '</p>' +
+      '<a class="sh-ghost sh-link" href="https://www.youtube.com/results?search_query=' + encodeURIComponent(e.name + ' technique') + '" target="_blank" rel="noopener">Watch a technique video</a>', function () {});
+  }
+  /** The exercise's ⋯ menu: the two sheets that explain the numbers. */
+  function exMenu(L, e, W) {
+    openSheet('<p class="sh-ov">' + esc(L.name + ' · ' + e.name) + '</p><button type="button" class="mrow" data-m="scheme">Rep scheme</button>' + (e.cue ? '<button type="button" class="mrow" data-m="cue">How to do it</button>' : '') + '<button type="button" class="mrow" data-m="how">How the app works</button>', function (sh) {
+      $$('[data-m]', sh).forEach(function (b) {
+        b.onclick = function () { var m = b.getAttribute('data-m'); if (m === 'scheme') schemeSheet(e, W); else if (m === 'cue') cueSheet(e); else howSheet(); };
+      });
+    });
+  }
+  /** RepSchemeModal: this week's reps and sets, and every week's reps and RIR. */
+  function rirFeel(r) { var s = String(r || '').trim(); if (!s || s.indexOf(',') > -1) return ''; if (s === '0') return 'To failure'; if (s === '0-1') return 'Near failure'; if (s === '1') return '1 rep left'; return /^\d+$/.test(s) ? s + ' reps left' : ''; }
+  function schemeSheet(e, W) {
+    var weeks = Object.keys(e.repsWeekly).map(Number).sort(function (a, b) { return a - b; });
+    openSheet('<p class="sh-ov acc">Rep scheme · week ' + W + '</p><h2 class="sh-t">' + esc(e.name) + '</h2><div class="tiles2"><span><small>TARGET REPS</small><b>' + esc(e.reps) + '</b></span><span><small>SETS</small><b>' + e.sets + '</b></span></div>' +
+      '<p class="ek2">RIR progression</p><div class="rtab"><div class="rth"><span>WEEK</span><span>REPS</span><span>RIR</span><span>FEEL</span></div>' + weeks.map(function (w) {
+        return '<div class="rtr' + (w === W ? ' cur' : '') + '"><span>' + w + '</span><span>' + esc(e.repsWeekly[w] || '–') + '</span><span>' + esc(e.rirWeekly[w] || '–') + '</span><span>' + esc(rirFeel(e.rirWeekly[w])) + '</span></div>';
+      }).join('') + '</div><p class="sh-src">RIR = reps in reserve. How many reps you could still do before failure. Lower RIR means you’re closer to failure and lifting harder.</p><button type="button" class="sh-go" data-close="1">Got it</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
+  }
+  /** HowItWorksModal. */
+  function howSheet() {
+    var sec = function (n, t, b) { return '<div class="hw"><p class="ek2">' + n + '</p><b>' + t + '</b><p class="sh-b">' + b + '</p></div>'; };
+    openSheet('<p class="sh-ov acc">How the app works</p><h2 class="sh-t big">You pick the weight.<br><span class="mut">We set the target.</span></h2><p class="sh-lede">Your plan gives you a rep target and an RIR target for every set. You choose the weight. Here is how to make those numbers work for you.</p>' +
+      sec('01', 'Picking your weight', 'The app never sets your weight, because only you know what you can lift on the day. For each set, pick a load that lets you hit the rep target at the listed RIR. If a movement is new to you, start lighter than you think and build up. The first session is just for finding your numbers.') +
+      sec('02', 'What is RIR?', 'RIR means reps in reserve. It is how many more reps you could have done before failing. So RIR 2 means you stopped with about two clean reps still in the tank, and RIR 0 means you took the set all the way to failure. A lower number means you pushed closer to your limit, so the set was harder.') +
+      '<div class="meter">' + [['4', 'Easy'], ['3', 'Light'], ['2', 'Working'], ['1', 'Hard'], ['0', 'Failure']].map(function (x, i) { return '<span style="--k:' + i + '"><b>' + x[0] + '</b><small>' + x[1] + '</small></span>'; }).join('') + '</div><p class="sh-lede">The number on top is the RIR. The word under it is roughly how the set should feel.</p>' +
+      sec('03', 'When to add weight', 'Hold the same weight until you can hit every rep target at the prescribed RIR with clean form. Once a weight feels under control across all of your sets, nudge it up a little next time. Earn the jump before you take it. Adding load too early just buries your reps and your technique.') +
+      sec('04', 'Week to week', 'Across a block the rep targets usually come down, and the RIR target comes down with them. Fewer reps at a lower RIR means you are grinding closer to failure, which is the signal that the weight is ready to move up.') +
+      '<div class="sh-src"><b>FOR EXAMPLE</b><br>Week one asks for 10 reps at RIR 2 on the curl and you get 9. You fell a rep short, so you hold the weight. Week two asks for 8 reps at RIR 1. That same weight will feel easier at 8 reps, so now you have earned the right to push it up. Keep the effort high and let the numbers guide the load.</div>' +
+      sec('05', 'Blocks', 'A block is a run of weeks that build on each other. You open a block with a weight you can manage, then chase the shifting rep and RIR targets until it ends. The next block resets to fresh targets, ideally with you a little stronger than where you started.') +
+      '<button type="button" class="sh-go" data-close="1">Got it</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
+  }
+  /** RestPaceSheet: Start Workout asks how long to rest, with each pace's minutes. */
+  function paceSheet(L, PC) {
+    var pick = 'moderate', clock = function (m) { var d = new Date(Date.now() + m * 60000); return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); };
+    var view = function () {
+      return '<p class="sh-ov acc">Rest pace · ' + esc(L.name) + ' <button type="button" class="pinfo2" data-info="1">What these mean</button></p><h2 class="sh-t big">How long do you<br>want to rest?</h2>' + PC.explainers.map(function (x) {
+        var on = pick === x.pace;
+        return '<button type="button" class="pace' + (on ? ' on' : '') + '" data-pace="' + x.pace + '"><span><b>' + esc(x.label) + '</b><small>' + esc(x.body) + '</small></span><span class="pm"><b>' + L.paces[x.pace] + ' min</b><small>done ' + esc(clock(L.paces[x.pace])) + '</small></span></button>';
+      }).join('') + '<button type="button" class="sh-go" data-start="1">Start workout · ' + L.paces[pick] + ' min</button><p class="sh-lede" style="margin-top:12px;text-align:center">Logging the workout happens in the app.</p>';
+    };
+    var info = function () {
+      return '<button type="button" class="sh-back" data-less="1">‹ Rest pace</button><h2 class="sh-t">What the paces mean</h2>' + PC.explainers.map(function (x) { return '<p class="sh-b"><b>' + esc(x.label) + '</b><br>' + esc(x.body) + '</p>'; }).join('') +
+        '<p class="sh-b">' + esc(PC.footer) + '</p><p class="sh-lede">' + esc(PC.switchNote) + '</p><p class="ek2">References</p>' + PC.refs.map(function (r) { return '<a class="study" href="' + esc(r.url) + '" target="_blank" rel="noopener"><b>' + esc(r.cite) + '</b><span>' + esc(r.topic) + ' · ' + esc(r.journal) + '</span></a>'; }).join('');
+    };
+    var same = L.paces.optimal === L.paces.moderate && L.paces.moderate === L.paces.minimal;
+    if (same) { go('keep'); return; }
+    openSheet('<div class="evs">' + view() + '</div>', function (sh) {
+      var box = $('.evs', sh);
+      var wire = function () {
+        $$('[data-pace]', box).forEach(function (b) { b.onclick = function () { pick = b.getAttribute('data-pace'); box.innerHTML = view(); wire(); }; });
+        var i = $('[data-info]', box); if (i) i.onclick = function () { box.innerHTML = info(); wire(); };
+        var l = $('[data-less]', box); if (l) l.onclick = function () { box.innerHTML = view(); wire(); };
+        var s = $('[data-start]', box); if (s) s.onclick = function () { closeSheet(); go('keep'); };
+      };
+      wire();
     });
   }
 
@@ -1679,14 +2276,14 @@
             S.about = { sex: 'female', ageYears: 36, heightCm: 166, weightKg: 72, bodyFatPct: 32, bodyFatSource: 'reported', goalWeightKg: 64, goalBodyFatPct: 25, trainingState: 'new', activityLevel: 'light', trainingSessionsPerWeek: 1.5, route: 'lean' };
             S.touched = { goalWeightKg: true, goalBodyFatPct: true, heightCm: true, bodyFatPct: true };
             S.food = { mealsPerDay: 3, snackFrequency: 'ai_decide', dessertFrequency: 'once_per_week', dietPattern: 'vegetarian', allergies: ['Nuts'], skip: [], picks: [] };
-            S.training = { days: 3, equipment: 'home_gym' };
+            Object.assign(S.training, { days: 3, length: '8_weeks', volume: '8-12', refine: { priority: ['Glutes'], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} } });
           });
         }
       : function () {
           return ensureAbout().then(function () {
             var a = S.about; a.sex = 'male'; a.trainingState = 'consistent'; a.activityLevel = 'light'; a.trainingSessionsPerWeek = 3.5;
             S.food.dietPattern = 'any'; S.food.dessertFrequency = 'ai_decide';
-            S.training = { days: 4, equipment: 'commercial_gym' };
+            Object.assign(S.training, { days: 4, length: '12_weeks', volume: '12-16' });
           });
         };
     fill().then(function () { if (params.get('route')) S.about.route = params.get('route'); for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
