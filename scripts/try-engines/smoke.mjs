@@ -28,7 +28,7 @@ for (const P of PROFILES) {
   const d = E.defaults(sex);
   const about = P.about || { sex, ageYears: d.ageYears, heightCm: d.heightCm, weightKg: d.weightKg, bodyFatPct: d.bodyFatPct, goalWeightKg: d.goalWeightKg, goalBodyFatPct: d.goalBodyFatPct, trainingState: 'consistent', activityLevel: 'moderate', trainingSessionsPerWeek: 3.5, route: 'lean' };
   try {
-    const opts = E.routeOptions(about);
+    const rv = E.routeView(about); const opts = rv.previews;
     const r = await E.buildRoute(about);
     const m = r.macros;
     say(`${P.name}: phase ${r.phase}; ${r.phases.map((p) => `${p.kind}->${p.exitBodyFatPct}%/${p.exitWeightKg ?? '?'}kg ${p.estMonths.join('-')}mo`).join(' | ')}; ${m.calories} kcal P${m.protein} C${m.carbs} F${m.fat}; options ${JSON.stringify(Object.fromEntries(Object.entries(opts).map(([k, v]) => [k, v?.cuts])))}`);

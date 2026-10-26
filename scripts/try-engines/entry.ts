@@ -12,8 +12,9 @@
 import { derivePhase } from 'APP_DIR/src/utils/goalsProfile';
 import {
   deriveRoadmap, weightAtBodyFat, leanAtNormalisedFfmi, ffmiLimitsFor, FFMI_UNTRAINED,
-  operatingRangeFor, BODY_FAT_TIERS, bodyFatFromTier, tierRange,
+  operatingRangeFor, BODY_FAT_TIERS, bodyFatFromTier, tierRange, MIN_RANGE_WIDTH_PCT,
 } from 'APP_DIR/src/utils/roadmap';
+import { VERIFIED_PAPER_COUNT } from 'APP_DIR/src/data/evidence';
 import { defaultGoalBodyFatFor } from 'APP_DIR/src/utils/attractivenessTargets';
 import { leanStopFor } from 'APP_DIR/src/utils/operatingBands';
 import { planCurve } from 'APP_DIR/src/utils/planCurve';
@@ -68,41 +69,32 @@ function defaults(sex: 'male' | 'female', heightCm?: number, weightKg?: number, 
     goalWeightKg: defaultGoalWeight({ sex, heightCm: h, currentWeightKg: w }, goalBf),
     leanStop: leanStopFor(sex),
     tiers: BODY_FAT_TIERS.map((t: any) => ({ range: tierRange(t, sex), description: t.description, pct: bodyFatFromTier(t, sex) })),
+    papers: VERIFIED_PAPER_COUNT,
     trainingBands: TRAINING_BANDS,
   };
 }
 
 /**
- * RouteScreen.planProfileFor for one of the three beat 9 answers ('lean' |
- * 'bulk' | 'capped'), with the range and the way in left on their defaults
- * (bottom and top untouched, way in = cut), preference 'balanced'.
+ * RouteScreen.planProfileFor, exactly: the beat 9 answer ('lean' | 'bulk' |
+ * 'capped') plus the screen's own state (`bottom`, `top`, `bulkTo` and
+ * `wayIn`, null when untouched), preference 'balanced'.
  */
-function planProfileFor(profile: any, r: 'lean' | 'bulk' | 'capped') {
+function planProfileFor(profile: any, r: 'lean' | 'bulk' | 'capped', c: any = {}) {
   const preference = 'balanced';
   const base: any = {
     ...profile,
     routePhase: undefined,
     phaseOrder: r === 'lean' ? 'cut_first' : 'build_first',
-    preBuildBf: undefined,
+    preBuildBf: c.bottom ?? undefined,
     ceilingBf: undefined,
   };
-  const suggested = operatingRangeFor(base, preference)?.suggestedTop ?? null;
-  let bulkToBf: number | undefined;
-  if (r === 'capped') {
-    // RouteScreen driftTopBf + defaultBulkTo.
-    const bulkProfile = { ...base, phaseOrder: 'build_first', ceilingBf: NO_CEILING_BF };
-    const rm = deriveRoadmap(bulkProfile, preference);
-    const now = profile.currentBodyFatPct ?? 20;
-    const driftTop = rm ? Math.round(Math.max(now, ...rm.phases.map((ph: any) => ph.exitBodyFatPct)) * 10) / 10 : null;
-    const cap = driftTop != null ? driftTop - 0.5 : now + 4;
-    bulkToBf = Math.max(now + 2, Math.min(now + 4, Math.round(cap * 2) / 2));
-    bulkToBf = Math.max(bulkToBf, now + MIN_BULK_HEADROOM_PCT);
-  }
+  const chosen = c.top != null && c.top < NO_CEILING_BF ? c.top : null;
+  const suggested = chosen == null ? (operatingRangeFor(base, preference)?.suggestedTop ?? null) : null;
   return {
     ...base,
-    ceilingBf: r === 'bulk' ? NO_CEILING_BF : (suggested ?? undefined),
-    bulkToBf,
-    wayIn: r === 'lean' ? 'cut' : undefined,
+    ceilingBf: r === 'bulk' ? NO_CEILING_BF : (chosen ?? suggested ?? undefined),
+    bulkToBf: r === 'capped' ? (c.bulkTo ?? undefined) : undefined,
+    wayIn: r === 'lean' ? (c.wayIn || 'cut') : undefined,
     routePreference: preference,
   };
 }
@@ -117,7 +109,8 @@ function goalsProfileFrom(a: any) {
     bodyFatSource: a.bodyFatSource === 'visual' ? 'visual' : 'reported',
     goalWeightKg: a.goalWeightKg,
     goalBodyFatPct: a.goalBodyFatPct,
-    goalBelowFloorConfirmed: a.goalBodyFatPct < leanStopFor(a.sex) ? true : undefined,
+    // RouteScreen's ConfirmSheet: below the health floor only with a yes.
+    goalBelowFloorConfirmed: a.belowFloorOk && a.goalBodyFatPct < leanStopFor(a.sex) ? true : undefined,
     trainingState: a.trainingState || 'consistent',
     trainingStateChosen: true,
     activityLevel: a.activityLevel || 'moderate',
@@ -125,17 +118,77 @@ function goalsProfileFrom(a: any) {
   };
 }
 
-/** Each route answer's cut count, for the three options (RouteScreen CUT_WORDS). */
-function routeOptions(about: any) {
-  const p = goalsProfileFrom(about);
-  const out: any = {};
+/** The screen's state for beat 9, as RouteScreen holds it. */
+function choiceOf(a: any) {
+  return { bottom: a.bottom ?? null, top: a.top ?? null, bulkTo: a.bulkTo ?? null, wayIn: a.wayIn || 'cut' };
+}
+
+const WAY_IN_IDS = ['hold', 'ease', 'cut'];
+const isCut = (k: string) => k === 'trim' || k === 'reveal';
+/** What the page draws from a roadmap: JourneyChart, PhaseLine and the summary read these. */
+function roadmapOut(pp: any, rm: any) {
+  if (!rm) return null;
+  const curve = planCurve(pp, rm);
+  return {
+    phases: rm.phases.map((ph: any) => ({ kind: ph.kind, exitBodyFatPct: ph.exitBodyFatPct, exitWeightKg: ph.exitWeightKg, estMonths: ph.estMonths, repeats: ph.repeats })),
+    expanded: expandPhases(rm).map((ph: any) => ({ kind: ph.kind, exitBodyFatPct: ph.exitBodyFatPct, exitWeightKg: ph.exitWeightKg, estMonths: ph.estMonths })),
+    band: rm.band,
+    estYears: rm.estYears,
+    gapKg: rm.gapKg,
+    leanNowKg: rm.leanNowKg,
+    plausibility: rm.plausibility,
+    holdsAtGoalBodyFat: !!rm.holdsAtGoalBodyFat,
+    cuts: rm.phases.filter((ph: any) => isCut(ph.kind)).length,
+    curve: curve ? { points: curve.points.map((p: any) => ({ month: p.month, bodyFatPct: p.bodyFatPct })), nodes: curve.nodes.map((n: any) => ({ month: n.month, bodyFatPct: n.bodyFatPct, weightKg: n.weightKg, when: n.when })), totalMonths: curve.totalMonths } : null,
+  };
+}
+
+/**
+ * Everything RouteScreen's beat 9 and beat 10 compute, for one state of the
+ * screen: the three option previews, the range, the capped peak, the way in,
+ * and the plan for the chosen answer.
+ */
+function routeView(about: any) {
+  const preference = 'balanced';
+  const p: any = goalsProfileFrom(about);
+  const c = choiceOf(about);
+  const routeId = about.route || 'lean';
+  const effProfile = planProfileFor(p, 'lean', c);
+  const range = operatingRangeFor(effProfile, preference);
+  const bf = p.currentBodyFatPct;
+  const wayInApplies = routeId === 'lean' && bf != null && range != null && bf > range.bottom + 0.2;
+  // driftTopBf + defaultBulkTo + bulkFloor.
+  const bulkRm = deriveRoadmap(planProfileFor(p, 'bulk', c), preference);
+  const driftTop = bulkRm ? Math.round(Math.max(bf ?? 0, ...bulkRm.phases.map((ph: any) => ph.exitBodyFatPct)) * 10) / 10 : null;
+  const now = bf ?? 20;
+  const cap = driftTop != null ? driftTop - 0.5 : now + 4;
+  const defaultBulkTo = Math.max(now + 2, Math.min(now + 4, Math.round(cap * 2) / 2));
+  const bulkFloor = (bf ?? 0) + MIN_BULK_HEADROOM_PCT;
+  const previews: any = {};
   for (const r of ['lean', 'bulk', 'capped'] as const) {
-    const pp = planProfileFor(p, r);
-    const rm = deriveRoadmap(pp, 'balanced');
-    // curve: the same body fat line the route screen draws, for the preview graph.
-    out[r] = rm ? { cuts: expandPhases(rm).filter((x: any) => x.kind === 'trim' || x.kind === 'reveal').length, opensWithCut: rm.phases[0]?.kind === 'trim', years: rm.estYears, curve: planCurve(pp, rm) } : null;
+    const pp = planProfileFor(p, r, c);
+    previews[r] = roadmapOut(pp, deriveRoadmap(pp, preference));
   }
-  return out;
+  const planProfile = planProfileFor(p, routeId, c);
+  const roadmap = roadmapOut(planProfile, deriveRoadmap(planProfile, preference));
+  let wayIn: any = null;
+  if (wayInApplies) {
+    const out: any[] = [];
+    for (const id of WAY_IN_IDS) {
+      const rm = deriveRoadmap({ ...effProfile, wayIn: id }, preference);
+      const first = rm?.phases[0];
+      if (!first || first.exitWeightKg == null) continue;
+      if (id === 'hold' && first.kind !== 'recomp') continue;
+      out.push({ id, exitWeightKg: first.exitWeightKg, months: first.estMonths, exitBodyFatPct: first.exitBodyFatPct });
+    }
+    wayIn = out.length > 1 ? out : null;
+  }
+  return {
+    range, rangeMatters: range != null, wayInApplies, wayIn,
+    openingCut: range != null && bf != null && bf > range.bottom + 0.2,
+    defaultBulkTo, bulkFloor, previews, roadmap,
+    leanStop: leanStopFor(p.sex), minWidth: MIN_RANGE_WIDTH_PCT,
+  };
 }
 
 /**
@@ -144,7 +197,7 @@ function routeOptions(about: any) {
  */
 async function buildRoute(about: any, nutrition?: any) {
   await wipe();
-  const planProfile = planProfileFor(goalsProfileFrom(about), about.route || 'lean');
+  const planProfile = planProfileFor(goalsProfileFrom(about), about.route || 'lean', choiceOf(about));
   await saveGoalsProfile(planProfile);
   const plan = await replanRoute('lock', { profile: planProfile, route: 'balanced' });
   const profile = await loadGoalsProfile();
@@ -178,7 +231,7 @@ async function buildRoute(about: any, nutrition?: any) {
 
 /** The workout program, built the way generateProgramFromStorage does (loadWorkoutProfile). */
 async function buildProgram(about: any, training: any) {
-  const goalsProfile = planProfileFor(goalsProfileFrom(about), about.route || 'lean');
+  const goalsProfile = planProfileFor(goalsProfileFrom(about), about.route || 'lean', choiceOf(about));
   const questionnaire: any = {
     totalTrainingDays: training.days,
     programDuration: training.programDuration || '8_weeks',
@@ -219,7 +272,8 @@ const API: any = {
   version: () => ({ app: __APP_VERSION__, rev: __APP_REV__ }),
   defaults,
   goalWeightAt: (sex: string, heightCm: number, weightKg: number, goalBf: number) => defaultGoalWeight({ sex, heightCm, currentWeightKg: weightKg }, goalBf),
-  routeOptions,
+  routeView,
+  paperCount: () => VERIFIED_PAPER_COUNT,
   buildRoute,
   buildProgram,
   repStyles: () => REP_STYLE_OPTIONS,
