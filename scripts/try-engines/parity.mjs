@@ -10,6 +10,12 @@
 // meal on every day (slot, recipe, plate, time, kcal and macros), each day's
 // totals, the cook days and pots, and the shopping list. Any difference fails.
 //
+// Training runs first, as the app's finish line orders it: most sets build a
+// workout plan (the page's buildProgramFrom, which parity-training.mjs checks
+// against the app's) and hand it to both sides, so calories count the plan's
+// minutes and N4bTraining is skipped; the others have no plan and answer the
+// two-option training question.
+//
 // The generator stops its search on a wall clock (3.5 s), so both runs get the
 // same fake clock: a fixed date, and Date.now() advancing 10 microseconds a
 // call, so the search is the same length every run.
@@ -55,22 +61,33 @@ const base = (o) => ({ dietType: 'balanced', customMacros: null, dietPattern: 'a
   mealsPerDay: 3, snackFrequency: 'ai_decide', mealVariety: 'balanced', snacks: { ticked: ['sn_banana', 'sn_greek_yog', 'sn_almonds', 'sn_whey_milk', 'sn_toast_pb'], own: [] },
   lowAppetite: false, dessertFrequency: '0', dessertDays: [], slowCooker: '5_6l', slowCookerCount: 1, blender: null, freezerTubs: 16, shopCadence: 'weekly', stockUp: false,
   startDate: 'tomorrow', picks: { saved: false, keys: [], allergenOk: {}, versionChoices: {}, useUp: [] }, ...o });
-const man = { sex: 'male', ageYears: 34, heightCm: 180, weightKg: 92, bodyFatPct: 25, goalWeightKg: 82, goalBodyFatPct: 13, trainingState: 'consistent', activityLevel: 'light', trainingSessionsPerWeek: 3.5, route: 'lean' };
-const woman = { sex: 'female', ageYears: 41, heightCm: 165, weightKg: 74, bodyFatPct: 34, goalWeightKg: 64, goalBodyFatPct: 26, trainingState: 'new', activityLevel: 'sedentary', trainingSessionsPerWeek: 1.5, route: 'lean' };
-const gainer = { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFatPct: 12, goalWeightKg: 80, goalBodyFatPct: 13, trainingState: 'new', activityLevel: 'moderate', trainingSessionsPerWeek: 5.5, route: 'bulk' };
+const man = { sex: 'male', ageYears: 34, heightCm: 180, weightKg: 92, bodyFatPct: 25, goalWeightKg: 82, goalBodyFatPct: 13, trainingState: 'consistent', activityLevel: 'light', route: 'lean' };
+const woman = { sex: 'female', ageYears: 41, heightCm: 165, weightKg: 74, bodyFatPct: 34, goalWeightKg: 64, goalBodyFatPct: 26, trainingState: 'new', activityLevel: 'sedentary', trainingChoice: 'yes', route: 'lean' };
+const gainer = { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFatPct: 12, goalWeightKg: 80, goalBodyFatPct: 13, trainingState: 'new', activityLevel: 'moderate', route: 'bulk' };
 const SETS = [
-  { name: 'man cut, defaults, choose for me', about: man, food: base({}) },
-  { name: 'woman cut, vegetarian, nuts, skip mushroom, sleep moved, 4 meals, dessert 3 nights, no slow cooker', about: woman,
+  { name: 'man cut, 4-day plan first, defaults, choose for me', about: man, train: { days: 4, length: '8_weeks', volume: '12-16' }, food: base({}) },
+  { name: 'man cut, 6-day plan first (same answers otherwise)', about: man, train: { days: 6, length: '8_weeks', volume: '12-16' }, food: base({}) },
+  { name: 'no plan, training yes: woman cut, vegetarian, nuts, skip mushroom, sleep moved, 4 meals, dessert 3 nights, no slow cooker', about: woman,
     food: base({ dietType: 'high_protein', dietPattern: 'vegetarian', allergies: ['Nuts', 'Kiwi'], skip: ['mushrooms', 'coriander'], keepLower: ['salt'], sleep: { bed: 1380, wake: 360, strictness: 'maximum', overrides: { lunch: '1:00 PM' } },
       mealsPerDay: 4, snackFrequency: '1', mealVariety: 'variety', snacks: { ticked: ['sn_banana', 'sn_greek_yog'], own: [{ name: 'Protein bar', kcal: 210, protein: 20, serve: '1 bar' }] },
       dessertFrequency: 'few_per_week', dessertDays: [1, 3, 5], slowCooker: 'none', blender: 'no', freezerTubs: 8 }) },
-  { name: 'gainer, low appetite, picks + use-up, chest freezer, cook2, stock up', about: gainer,
+  { name: '5-day plan first: gainer, low appetite, picks + use-up, chest freezer, cook2, stock up', about: gainer, train: { days: 5, length: '12_weeks', volume: '8-12' },
     food: base({ dietType: 'custom', customMacros: { protein: 30, carbs: 45, fat: 25 }, mealsPerDay: 5, snackFrequency: '2', lowAppetite: true, dessertFrequency: 'every_night', dessertDays: [0, 1, 2, 3, 4, 5, 6],
       slowCooker: '7l_plus', slowCookerCount: 2, blender: 'yes', freezerTubs: 60, shopCadence: 'cook2', stockUp: true, startDate: 'today',
       picks: { saved: true, keys: [], allergenOk: {}, versionChoices: {}, useUp: ['chicken', 'rice'] } }) },
-  { name: 'man, no snacks, skip sleep, pescatarian, weekly', about: man,
+  { name: 'no plan, not training: man, no snacks, skip sleep, pescatarian, weekly', about: { ...man, trainingChoice: 'no' },
     food: base({ dietType: 'low_carb', dietPattern: 'pescatarian', allergies: ['Shellfish'], sleep: { skipped: true }, mealsPerDay: 2, snackFrequency: '0', dessertFrequency: 'once_per_week', dessertDays: [6], freezerTubs: 30, shopCadence: 'shop2_cook1' }) },
 ];
+
+/** The workout plan built first: the page's answers through Days, How long, Volume and Refinements (defaults), then the build. */
+const trainFirst = async (S) => {
+  if (!S.train) return;
+  const st = await WEB.trainingStart(S.about);
+  const saved = { totalTrainingDays: S.train.days, programDuration: S.train.length, selectedEquipment: st.defaultEquipment, volumePreference: S.train.volume,
+    refinementPresets: [], priorityMuscleGroups: [], auxiliaryMuscles: [], movementLimitations: [], ...(st.sex ? { gender: st.sex } : {}), includeDirectCore: true, repStyle: 'classic' };
+  const w = await WEB.buildProgramFrom(S.about, saved, { daysTouched: false, timeTouched: false, hadWeek: false, varies: false, days: null, selected: S.train.days, time: null });
+  S.food.plan = { program: w.program, totalTrainingDays: S.train.days };
+};
 
 const pick3 = async (S) => {
   // The third set picks the first three mains and the first breakfast the picker shows.
@@ -88,18 +105,26 @@ let fails = 0;
 for (const S of SETS) {
   const lines = [];
   try {
+    resetClock(); await trainFirst(S);
     resetClock(); await pick3(S);
     resetClock();
     const w = await WEB.buildMeals(S.about, S.food);
     resetClock();
     const a = await APPRUN(WEB.lockProfileFor(S.about), S.about, S.food);
     const cmp = (label, x, y) => { const sx = JSON.stringify(x), sy = JSON.stringify(y); if (sx !== sy) lines.push(`${label}: web ${sx.slice(0, 300)} | app ${sy.slice(0, 300)}`); };
+    // What calories count, the summary's Training row, and the steps the questions number themselves by.
+    resetClock();
+    const sm = (await WEB.mealView(S.about, S.food, 'summary')).summary;
+    const webTraining = { minutes: sm.answers.trainingMinutesPerWeek ?? null, sessions: sm.answers.trainingSessionsPerWeek ?? null };
+    cmp('training counted', webTraining, a.training);
+    const webSteps = (await WEB.mealView(S.about, S.food, 'active')).trainingKnown;
+    cmp('training question skipped', webSteps, !a.steps.includes('N4bTraining'));
     cmp('days', dayView(w.plan), dayView(a.plan));
     cmp('totals', totals(w.report), totals(a.report));
     cmp('targets', w.report.targets, a.report.targets);
     cmp('cooks', w.cooks.map((c) => [c.date, c.pots.map((p) => p.name + ' x' + p.tubs)]), (a.plan.batch?.cookDays ?? []).filter((c) => (c.pots ?? []).length).sort((x, y) => (x.date < y.date ? -1 : 1)).map((c) => [c.date, c.pots.map((p) => p.name + ' x' + p.tubs)]));
     cmp('shopping', w.grocery.rows.map((r) => [r.key, r.name, r.amount, r.category]), a.grocery.map((r) => [r.key, r.name, r.amount, r.category]));
-    say(`${lines.length ? 'DIFF' : 'same'}  ${S.name}: ${w.report.counts.meals} meals, ${w.cooks.length} cook(s), ${w.grocery.rows.length} shopping rows, app steps ${a.steps.length}`);
+    say(`${lines.length ? 'DIFF' : 'same'}  ${S.name}: training ${sm.labels.training} (${a.training.minutes ?? '-'} min, ${a.training.sessions ?? '-'} sessions), ${w.report.targets.kcal} kcal; ${w.report.counts.meals} meals, ${w.cooks.length} cook(s), ${w.grocery.rows.length} shopping rows, app steps ${a.steps.length}${a.steps.includes('N4bTraining') ? '' : ' (no N4bTraining)'}`);
   } catch (e) {
     lines.push('threw ' + (e?.stack || e));
   }

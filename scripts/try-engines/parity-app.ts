@@ -2,6 +2,9 @@
 // @ts-nocheck
 //
 // Written from the screens' own handlers (src/screens/RouteScreen.tsx lock-in,
+// RouteReveal's finish line sending training first (questionnaireRouting
+// finishLineFor: "Next: my training"), WorkoutBuildScreen's hand-off
+// (syncCaloriesToTrainingDays) and the importer's addRoutine,
 // utils/questionnaireRouting.continueNutritionFlow + beginNutritionSteps, each
 // N screen's handleNext with its answersSoFar params as React Navigation passes
 // them, components/questionnaire/BatchQuestion's useTubsPerDay and
@@ -23,7 +26,8 @@ import {
 import { nutritionStepsFor, withoutStep } from 'APP_DIR/src/utils/nutritionSteps';
 import { asksAppetite, withLowAppetite, toBatchSettings, tubsPerDayForKcal, withSlowCookerEquipment, cadenceBlockedReason, showsStockUp, stockUpCard } from 'APP_DIR/src/utils/batchSetup';
 import { DEFAULT_BATCH_SETTINGS } from 'APP_DIR/src/utils/tubInventory';
-import { resolvePlanMacros, finalizeNutrition } from 'APP_DIR/src/utils/nutritionMacros';
+import { resolvePlanMacros, finalizeNutrition, DEFAULT_TRAINING_MINUTES } from 'APP_DIR/src/utils/nutritionMacros';
+import { syncCaloriesToTrainingDays, loadPlanMinutesPerWeek, loadPlanSessionsPerWeek } from 'APP_DIR/src/utils/trainingDaysSync';
 import { updateFoodPrefs } from 'APP_DIR/src/utils/foodPrefs';
 import { WorkoutStorage } from 'APP_DIR/src/utils/storage';
 import { snacksPerDayFromAnswer, newCustomFood, untick, tickSeed, myFoodFromSnackSeed } from 'APP_DIR/src/utils/myFoods';
@@ -79,6 +83,17 @@ export async function appMealPath(lockProfile: any, about: any, taps: any) {
   await saveGoalsProfile(lockProfile);
   await replanRoute('lock', { profile: lockProfile, route: 'balanced' });
 
+  // RouteReveal "Next: my training" -> ... -> WorkoutBuildScreen. `taps.plan`
+  // is the program it built (parity-training.mjs checks that one against the
+  // app's). handoff(): syncCaloriesToTrainingDays(builtDays, result.program),
+  // then confirmImport -> handleUnifiedMesocycleImport -> addRoutine.
+  if (taps.plan?.program) {
+    const program = taps.plan.program;
+    const builtDays = Number(program.days_per_week) || Number(taps.plan.totalTrainingDays);
+    if (builtDays > 0) await syncCaloriesToTrainingDays(builtDays, program);
+    await WorkoutStorage.addRoutine({ id: 'app-plan', name: program.routine_name, days: program.days_per_week || 5, blocks: program.blocks?.length || 0, data: program } as any);
+  }
+
   // RouteReveal "Next: my meals" -> startNutritionFlow(justOnboarded) -> continueNutritionFlow.
   const profile = await loadGoalsProfile();
   const seed: any = {};
@@ -92,8 +107,19 @@ export async function appMealPath(lockProfile: any, about: any, taps: any) {
   // beginNutritionSteps
   let sessions = profile?.trainingSessionsPerWeek ?? null;
   if (sessions == null) sessions = await trainingDaysFromProgram();
+  if (sessions != null) {
+    await updateGoalsProfileField('trainingSessionsPerWeek', sessions);
+    await updateNutritionField('trainingSessionsPerWeek', sessions);
+  }
+  let minutes: number | null = await loadPlanMinutesPerWeek();
+  if (minutes != null) {
+    await updateGoalsProfileField('trainingMinutesPerWeek', minutes);
+    await updateNutritionField('trainingMinutesPerWeek', minutes);
+  } else {
+    minutes = profile?.trainingMinutesPerWeek ?? null;
+  }
   let steps: string[] = nutritionStepsFor({ age: profile?.ageYears != null, training: sessions != null, gaining: asksAppetite(merged?.goal) });
-  let p: any = { ...merged };
+  let p: any = { ...merged, ...(sessions != null ? { trainingSessionsPerWeek: sessions } : {}), ...(minutes != null ? { trainingMinutesPerWeek: minutes } : {}) };
   const route = (name: string) => ({ name, params: { steps } });
 
   for (const step of [...steps]) {
@@ -104,11 +130,21 @@ export async function appMealPath(lockProfile: any, about: any, taps: any) {
         await updateNutritionField('activityLevel', about.activityLevel);
         p = { ...p, activityLevel: about.activityLevel };
         break;
-      case 'N4bTraining':
-        await updateGoalsProfileField('trainingSessionsPerWeek', about.trainingSessionsPerWeek);
-        await updateNutritionField('trainingSessionsPerWeek', about.trainingSessionsPerWeek);
-        p = { ...p, trainingSessionsPerWeek: about.trainingSessionsPerWeek };
+      case 'N4bTraining': {
+        // "Are you training right now?": Yes, most weeks / Not right now.
+        const choice = about.trainingChoice;
+        if (choice !== 'yes' && choice !== 'no') throw new Error('training not answered');
+        const planMinutes = await loadPlanMinutesPerWeek();
+        const plan = planMinutes != null ? { minutes: planMinutes, sessions: await loadPlanSessionsPerWeek() } : null;
+        const mins = choice === 'no' ? 0 : plan?.minutes ?? DEFAULT_TRAINING_MINUTES;
+        const sess = choice === 'no' ? 0 : plan?.sessions ?? Math.round(DEFAULT_TRAINING_MINUTES / 60);
+        await updateGoalsProfileField('trainingMinutesPerWeek', mins);
+        await updateGoalsProfileField('trainingSessionsPerWeek', sess);
+        await updateNutritionField('trainingMinutesPerWeek', mins);
+        await updateNutritionField('trainingSessionsPerWeek', sess);
+        p = { ...p, trainingSessionsPerWeek: sess, trainingMinutesPerWeek: mins };
         break;
+      }
       case 'N5DietType': {
         const customMacros = taps.dietType === 'custom' ? taps.customMacros : undefined;
         await updateNutritionField('dietType', taps.dietType);
@@ -302,7 +338,8 @@ export async function appMealPath(lockProfile: any, about: any, taps: any) {
   const lookup: any = { ...CURATED_MEALS };
   for (const v of batchFoodViews() as any[]) if (v?.slug) lookup[v.slug] = v;
   const inputs = resolveGroceryInputs({ plan: r.plan, choices: {} as any, mealLookup: withPlanSwaps(lookup, r.plan), batch: true, myFoods: sanitizeMyFoods(await WorkoutStorage.loadMyFoods()) });
-  return { plan: r.plan, report: r.report, grocery: (inputs.view?.rows ?? []).map((x: any) => ({ key: x.key, name: x.name, amount: x.amount, category: x.category })), steps };
+  const prof = await loadGoalsProfile();
+  return { training: { minutes: prof?.trainingMinutesPerWeek ?? null, sessions: prof?.trainingSessionsPerWeek ?? null }, plan: r.plan, report: r.report, grocery: (inputs.view?.rows ?? []).map((x: any) => ({ key: x.key, name: x.name, amount: x.amount, category: x.category })), steps };
 }
 
 (globalThis as any).AppMealPath = appMealPath;

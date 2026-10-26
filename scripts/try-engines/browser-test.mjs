@@ -40,10 +40,10 @@ const click = (sel) => ev(`(function(){var e=document.querySelector(${JSON.strin
 const stepIsOld = (n) => until(`document.getElementById('barLbl') && document.getElementById('barLbl').textContent.indexOf('Step ${n} of')===0 && !document.querySelector('.loading')`);
 
 const PROFILES = [
-  { name: 'default man, gym 4', sex: 'male', lift: 'consistent', route: 'lean', active: 'light', band: '3.5', meat: 'any', allergies: [], skip: [], meals: '3', snacks: 'ai_decide', dessert: 'ai_decide', picks: 0, days: '4', length: '8_weeks', volume: '12-16', rep: 'classic' },
-  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', band: '1.5', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '8-12', rep: 'higher', preset: 1, estimate: true },
-  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', band: '5.5', diet: 'custom', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', snacks: '2', dessert: '0', freezer: 60, picks: 3, days: '6', length: '1_year', volume: '16-20', rep: 'mix', imperial: true },
-  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', snacks: '0', sleepSkip: true, dessert: 'ai_decide', picks: 1, days: '3', length: '4_weeks', volume: '12-16', rep: 'heavier', preset: 3 },
+  { name: 'default man, meals first from the finish line (no plan, training yes)', mealsFirst: true, sex: 'male', lift: 'consistent', route: 'lean', active: 'light', training: 'yes', meat: 'any', allergies: [], skip: [], meals: '3', snacks: 'ai_decide', dessert: 'ai_decide', picks: 0, days: '4', length: '8_weeks', volume: '12-16', rep: 'classic' },
+  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '8-12', rep: 'higher', preset: 1, estimate: true },
+  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', diet: 'custom', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', snacks: '2', dessert: '0', freezer: 60, picks: 3, days: '6', length: '1_year', volume: '16-20', rep: 'mix', imperial: true },
+  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', snacks: '0', sleepSkip: true, dessert: 'ai_decide', picks: 1, days: '3', length: '4_weeks', volume: '12-16', rep: 'heavier', preset: 3 },
 ];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
 (async () => {
@@ -113,9 +113,64 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         console.log(`  route: ${seen9.join(' > ')} | ${hd}`);
         await go(); await until(`!!document.querySelector('.sheet.on [data-a="lock"]')`); await click('.sheet [data-a="lock"]');
         await scr('locked', 8000); await overflow('locked');
-        await go(); await scr('active'); await opt(P.active); await go();
-        await scr('sessions'); await opt(P.band); await go();
-        // The meal questions, in the order the app asks them; conditional steps by what shows up.
+        // The finish line sends training first ("Next: my training"); the meals row is the other way in.
+        const lockedCta = await ev(`document.getElementById('nextBtn').textContent`);
+        if (lockedCta !== 'Next: my training') bad('finish line CTA: ' + lockedCta);
+        const lockedRows = await ev(`[...document.querySelectorAll('.spine .sb b')].map(x=>x.textContent).join(' > ')`);
+        console.log(`  finish line: ${lockedRows} | ${lockedCta}`);
+        if (!P.mealsFirst) {
+        // Training: the app's workout questions (Days, How long, Volume, Refinements), the build, the results.
+        await go(); await scr('days'); await click(`.dt[data-v="${P.days}"]`);
+        await until(`!!document.querySelector('#slp .slh b')`, 20000); await overflow('days');
+        await go(); await scr('length'); await click(`.qc[data-v="${P.length}"]`); await overflow('length');
+        await go(); await scr('volume'); await click(`.qc[data-v="${P.volume}"]`);
+        await until(`!!document.querySelector('#slp .slh b') && !document.querySelector('#slp .dim')`, 20000); await overflow('volume');
+        const vol = await ev(`document.querySelector('#slp .slh b').textContent + ' | ' + document.querySelector('.qc[aria-pressed="true"] small').textContent.split('.')[0]`);
+        await go(); await scr('refine');
+        if (P.preset) await click(`.presets .preset:nth-child(${P.preset}) .pmain`);
+        await click(`.rep[data-rep="${P.rep}"]`); await sleep(300);
+        await click('#repWhy'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await click('.pinfo'); await until(`!!document.querySelector('.sheet.on .ppick')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await until(`!!document.querySelector('#slpin .slr b') && document.querySelector('#slpin .slr b').textContent.indexOf('About')===0`, 20000); await overflow('refine');
+        await go(); await scr('progbuild'); await overflow('progbuild');
+        await scr('program', 30000); await overflow('program'); await images('program');
+        const prog = await ev(`document.querySelector('.hpl').textContent + ' | ' + document.querySelector('.hmt').textContent + ' | ' + document.querySelectorAll('.scard').length + ' sessions'`);
+        await click('#planRow'); await scr('blocks'); await overflow('blocks'); await images('blocks');
+        await click('#pBuilt'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-dec]').click()`); await sleep(200); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await go(); await scr('trainweek'); await overflow('trainweek'); await images('trainweek');
+        await click('.nexth'); await scr('session'); await overflow('session'); await images('session');
+        const ses = await ev(`document.querySelector('.xov').textContent + ' | ' + document.querySelectorAll('.xr .rir').length + ' RIR labels'`);
+        if (await ev(`!!document.querySelector('.xcue')`)) { await click('.xcue'); await until(`!!document.querySelector('.sheet.on .cst')`); await ev(`dismiss=document.querySelector('.sheet-bg'); dismiss && dismiss.click()`); await sleep(400); }
+        await click('[data-menu="0"]'); await until(`!!document.querySelector('.sheet.on [data-m="scheme"]')`); await ev(`document.querySelector('.sheet [data-m="scheme"]').click()`); await until(`!!document.querySelector('.sheet.on .rtab')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
+        await go(); await until(`!!document.querySelector('.sheet.on [data-start]')`); await overflow('pace sheet');
+        const pace = await ev(`document.querySelector('.sheet [data-start]').textContent`);
+        await click('.sheet [data-start]');
+        console.log(`  training: ${vol} | ${prog} | ${ses} | ${pace}`);
+        await scr('traindone'); await overflow('traindone');
+        const tdCta = await ev(`document.getElementById('nextBtn').textContent`);
+        const tdLine = await ev(`document.querySelector('.ftl').textContent + ' | ' + [...document.querySelectorAll('.spine .sp')].map(x=>x.className.split(' ')[1] + ':' + x.querySelector('b').textContent).join(', ') + ' | ' + document.querySelector('.spine .sp.goal small').textContent`);
+        console.log(`  after training: ${tdLine} | ${tdCta}`);
+        if (tdCta !== 'Next: my meals') bad('finish line after training CTA: ' + tdCta);
+        // Back returns to the session; starting it again comes back here.
+        await ev(`history.back()`); await scr('session');
+        await go(); await until(`!!document.querySelector('.sheet.on [data-start]')`); await click('.sheet [data-start]'); await scr('traindone');
+        }
+        // The meal questions. With a workout plan the training question is left out and every step number moves up one.
+        if (P.mealsFirst) await click('.spine [data-to="active"]'); else await go();
+        await scr('active'); await overflow('active');
+        const activeStep = await ev(`document.querySelector('.screen .ov').textContent`);
+        await opt(P.active); await go();
+        if (P.mealsFirst) {
+          await scr('sessions'); await overflow('sessions');
+          const tq = await ev(`document.querySelector('.screen .qh').textContent + ' | ' + [...document.querySelectorAll('.screen .opt')].map(x=>x.textContent).join(' / ')`);
+          console.log(`  ${activeStep} | training question: ${tq}`);
+          await opt(P.training); await go();
+        } else {
+          await until(`(function(){var s=document.querySelector('.screen'); return !!s && !s.querySelector('.loading') && !document.querySelector('.screen.out-l,.screen.out-r') && s.children.length>0})()`, 45000);
+          const next = await ev(`document.querySelector('.screen').getAttribute('data-screen') + ' ' + document.querySelector('.screen .ov').textContent`);
+          console.log(`  ${activeStep} | next: ${next}`);
+          if (!/^diettype /.test(next)) bad('training question not skipped with a plan: ' + next);
+        }
         const typeIn = (sel, text) => ev(`(function(){var e=document.querySelector(${JSON.stringify(sel)}); e.value=${JSON.stringify(text)}; e.dispatchEvent(new Event('input',{bubbles:true})); return 1})()`);
         const seenMeal = [];
         for (let k = 0; k < 30; k++) {
@@ -148,7 +203,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
           else if (id === 'mealnote') { await click('#nKeep'); continue; }
           else if (id === 'mealweek') { await click('#wUse'); continue; }
           else if (id === 'mealgap') { await until(`!!document.querySelector('#gKeep')`, 60000); await click('#gKeep'); continue; }
-          if (id === 'mealsummary') { await click('#nextBtn'); continue; }
+          if (id === 'mealsummary') { const tr = await ev(`[...document.querySelectorAll('.srow2')].find(x=>x.textContent.indexOf('Training')===0).querySelector('b').textContent`); console.log(`  summary Training row: ${tr}`); await click('#nextBtn'); continue; }
           await go();
         }
         console.log(`  meals: ${seenMeal.join(' > ')}`);
@@ -168,36 +223,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         console.log(`  shop: ${aisles} aisles`);
         // Back returns to the day.
         await click('#backBtn'); await scr('today'); await click('#shopBtn'); await scr('shop');
-        await go(); await scr('mealsdone'); await overflow('mealsdone');
-        // Training: the app's workout questions (Days, How long, Volume, Refinements), the build, the results.
-        await go(); await scr('days'); await click(`.dt[data-v="${P.days}"]`);
-        await until(`!!document.querySelector('#slp .slh b')`, 20000); await overflow('days');
-        await go(); await scr('length'); await click(`.qc[data-v="${P.length}"]`); await overflow('length');
-        await go(); await scr('volume'); await click(`.qc[data-v="${P.volume}"]`);
-        await until(`!!document.querySelector('#slp .slh b') && !document.querySelector('#slp .dim')`, 20000); await overflow('volume');
-        const vol = await ev(`document.querySelector('#slp .slh b').textContent + ' | ' + document.querySelector('.qc[aria-pressed="true"] small').textContent.split('.')[0]`);
-        await go(); await scr('refine');
-        if (P.preset) await click(`.presets .preset:nth-child(${P.preset}) .pmain`);
-        await click(`.rep[data-rep="${P.rep}"]`); await sleep(300);
-        await click('#repWhy'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
-        await click('.pinfo'); await until(`!!document.querySelector('.sheet.on .ppick')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
-        await until(`!!document.querySelector('#slpin .slr b') && document.querySelector('#slpin .slr b').textContent.indexOf('About')===0`, 20000); await overflow('refine');
-        await go(); await scr('progbuild'); await overflow('progbuild');
-        await scr('program', 30000); await overflow('program'); await images('program');
-        const prog = await ev(`document.querySelector('.hpl').textContent + ' | ' + document.querySelector('.hmt').textContent + ' | ' + document.querySelectorAll('.scard').length + ' sessions'`);
-        await click('#planRow'); await scr('blocks'); await overflow('blocks'); await images('blocks');
-        await click('#pBuilt'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-dec]').click()`); await sleep(200); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
-        await go(); await scr('trainweek'); await overflow('trainweek'); await images('trainweek');
-        await click('.nexth'); await scr('session'); await overflow('session'); await images('session');
-        const ses = await ev(`document.querySelector('.xov').textContent + ' | ' + document.querySelectorAll('.xr .rir').length + ' RIR labels'`);
-        if (await ev(`!!document.querySelector('.xcue')`)) { await click('.xcue'); await until(`!!document.querySelector('.sheet.on .cst')`); await ev(`dismiss=document.querySelector('.sheet-bg'); dismiss && dismiss.click()`); await sleep(400); }
-        await click('[data-menu="0"]'); await until(`!!document.querySelector('.sheet.on [data-m="scheme"]')`); await ev(`document.querySelector('.sheet [data-m="scheme"]').click()`); await until(`!!document.querySelector('.sheet.on .rtab')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
-        await go(); await until(`!!document.querySelector('.sheet.on [data-start]')`); await overflow('pace sheet');
-        const pace = await ev(`document.querySelector('.sheet [data-start]').textContent`);
-        await click('.sheet [data-start]');
-        console.log(`  training: ${vol} | ${prog} | ${ses} | ${pace}`);
-        await scr('keep'); await overflow('keep');
-        await ev(`history.back()`); await scr('session');
+        await go(); await scr('keep'); await overflow('keep');
             } catch (e) { bad(String(e.message || e)); }
       for (const e of events) bad(e);
       const posts = requests.filter((r) => r.method !== 'GET');

@@ -8,9 +8,13 @@
 //
 //   RouteScreen lock-in (saveGoalsProfile + replanRoute('lock'), the profile
 //     as the route left it: no activity or training sessions yet)
+//   the workout plan, when one was built first (the finish line's "Next: my
+//     training"): the importer's addRoutine and WorkoutBuildScreen's
+//     syncCaloriesToTrainingDays(days, program), sessions and minutes
 //   continueNutritionFlow (routeNutritionSeed + the profile's sex, height,
-//     weight, merged into the draft)
-//   N4Activity, N4bTraining, N5DietType, N5aDietPattern, N5bAllergies,
+//     weight, merged into the draft) and beginNutritionSteps (the plan's
+//     sessions and minutes a week saved; N4bTraining left out when known)
+//   N4Activity, N4bTraining (no plan only), N5DietType, N5aDietPattern, N5bAllergies,
 //   N5dSkipFoods, N5eKeepLower, N5cSleep, N6MealsSnacking, N6gSnacks (My
 //   foods), N6eAppetite, N6aDessert, N6bSlowCooker, N6cFreezer,
 //   N6dShopCadence, N6fStockUp (each one's handleNext, with useTubsPerDay and
@@ -45,13 +49,15 @@ import { buildFoodCatalogue, popularFoods, browseFoods, searchFoods, skipVerdict
 import { heroPlateId, cookingVariantId } from 'APP_DIR/src/utils/mealVersions';
 import {
   saveNutritionAnswers, loadNutritionAnswers, updateNutritionField, mergeNutritionAnswers, resolveNutritionAnswers, saveMealTimesAnswer,
+  trainingDaysFromProgram,
 } from 'APP_DIR/src/utils/nutritionQuestionnaireStorage';
 import { routeNutritionSeed } from 'APP_DIR/src/utils/routeNutritionSeed';
 import { saveGoalsProfile, loadGoalsProfile, updateGoalsProfileField } from 'APP_DIR/src/utils/goalsProfileStorage';
 import { replanRoute } from 'APP_DIR/src/utils/phaseJourney';
 import { derivePhase } from 'APP_DIR/src/utils/goalsProfile';
 import { dietSplitPreview, phasePhrase, finalizeNutrition, resolvePlanMacros } from 'APP_DIR/src/utils/nutritionMacros';
-import { trainingSessionsLabel } from 'APP_DIR/src/utils/phasePrescription';
+import { trainingTimeLabel, DEFAULT_TRAINING_MINUTES } from 'APP_DIR/src/utils/phasePrescription';
+import { syncCaloriesToTrainingDays, loadPlanMinutesPerWeek, loadPlanSessionsPerWeek } from 'APP_DIR/src/utils/trainingDaysSync';
 import { deriveDayMealTimes, mealWindow } from 'APP_DIR/src/utils/mealDayTimes';
 import { planMainSlots } from 'APP_DIR/src/utils/mealPlanPromptV2';
 import { WorkoutStorage } from 'APP_DIR/src/utils/storage';
@@ -139,6 +145,7 @@ function lockProfileFor(about: any) {
   const p: any = R.planProfileFor(R.goalsProfileFrom(about), about.route || 'lean', R.choiceOf(about));
   delete p.activityLevel;
   delete p.trainingSessionsPerWeek;
+  delete p.trainingMinutesPerWeek;
   return p;
 }
 
@@ -235,22 +242,56 @@ async function replay(about: any, f: any, upto: string) {
   await saveGoalsProfile(lockProfile);
   await replanRoute('lock', { profile: lockProfile, route: 'balanced' });
 
+  // The workout plan, built first from the finish line (f.plan: the page's
+  // built program, as the importer parsed it). useWorkoutImport's
+  // handleUnifiedMesocycleImport adds it as the routine; WorkoutBuildScreen's
+  // hand-off saves its sessions and minutes a week for calories.
+  const program = f.plan?.program;
+  if (program) {
+    await WorkoutStorage.addRoutine({ id: 'try-plan', name: program.routine_name, days: program.days_per_week || 5, blocks: program.blocks?.length || 0, data: program } as any);
+    const builtDays = Number(program.days_per_week) || Number(f.plan.totalTrainingDays);
+    if (builtDays > 0) await syncCaloriesToTrainingDays(builtDays, program);
+  }
+
   // continueNutritionFlow: the route's goal and rate, and the profile's facts, over the draft.
   const profile = await loadGoalsProfile();
   const seed = profile ? { ...routeNutritionSeed(profile), ...profileNutritionFields(profile) } : {};
   if (Object.keys(seed).length) await mergeNutritionAnswers(seed as any);
+  // beginNutritionSteps: the plan's sessions (else the days answered) and its
+  // minutes a week; with sessions known, N4bTraining is left out of the steps.
+  let sessions: number | null = profile?.trainingSessionsPerWeek ?? null;
+  if (sessions == null) sessions = await trainingDaysFromProgram();
+  if (sessions != null) {
+    await updateGoalsProfileField('trainingSessionsPerWeek', sessions);
+    await updateNutritionField('trainingSessionsPerWeek', sessions);
+  }
+  const minutes: number | null = await loadPlanMinutesPerWeek();
+  if (minutes != null) {
+    await updateGoalsProfileField('trainingMinutesPerWeek', minutes);
+    await updateNutritionField('trainingMinutesPerWeek', minutes);
+  }
   const goal = (await loadNutritionAnswers())?.goal;
   const gaining = asksAppetite(goal);
-  const ctx: any = { gaining, goal };
+  const ctx: any = { gaining, goal, trainingKnown: sessions != null };
   if (!reach('active')) return ctx;
 
   // N4Activity
   await updateGoalsProfileField('activityLevel', about.activityLevel);
   await updateNutritionField('activityLevel', about.activityLevel);
   if (!reach('sessions')) return ctx;
-  // N4bTraining
-  await updateGoalsProfileField('trainingSessionsPerWeek', about.trainingSessionsPerWeek);
-  await updateNutritionField('trainingSessionsPerWeek', about.trainingSessionsPerWeek);
+  // N4bTraining: shown with no plan; with one, only when opened from the
+  // summary's Training row. Unanswered is unanswered in storage too.
+  if (about.trainingChoice === 'yes' || about.trainingChoice === 'no') {
+    const planMin = await loadPlanMinutesPerWeek();
+    const plan = planMin != null ? { minutes: planMin, sessions: await loadPlanSessionsPerWeek() } : null;
+    const no = about.trainingChoice === 'no';
+    const mins = no ? 0 : plan?.minutes ?? DEFAULT_TRAINING_MINUTES;
+    const sess = no ? 0 : plan?.sessions ?? Math.round(DEFAULT_TRAINING_MINUTES / 60);
+    await updateGoalsProfileField('trainingMinutesPerWeek', mins);
+    await updateGoalsProfileField('trainingSessionsPerWeek', sess);
+    await updateNutritionField('trainingMinutesPerWeek', mins);
+    await updateNutritionField('trainingSessionsPerWeek', sess);
+  }
   if (!reach('diettype')) return ctx;
   // N5DietType
   await updateNutritionField('dietType', f.dietType);
@@ -462,7 +503,17 @@ function dayTimes(sleep: any, shape: any, overrides: any) {
 /** Per-screen data, read the way each screen reads it after the replay. */
 async function mealView(about: any, f: any, screen: string) {
   const ctx = await replay(about, f, screen);
-  const out: any = { gaining: ctx.gaining };
+  const out: any = { gaining: ctx.gaining, trainingKnown: ctx.trainingKnown };
+  if (screen === 'sessions') {
+    // N4bTrainingScreen's focus read: the plan's minutes and sessions, and an earlier answer.
+    const [minutes, sessions, p] = [await loadPlanMinutesPerWeek(), await loadPlanSessionsPerWeek(), await loadGoalsProfile()];
+    const answers: any = (await loadNutritionAnswers()) ?? {};
+    out.training = {
+      plan: minutes != null ? { minutes, sessions, label: trainingTimeLabel(minutes) } : null,
+      knownMinutes: p?.trainingMinutesPerWeek ?? answers.trainingMinutesPerWeek ?? null,
+      knownSessions: p?.trainingSessionsPerWeek ?? answers.trainingSessionsPerWeek ?? null,
+    };
+  }
   if (screen === 'diettype') {
     const answers = { ...((await resolveNutritionAnswers()) ?? {}) };
     const profile = await loadGoalsProfile();
@@ -649,7 +700,7 @@ async function summaryView() {
     skip: skipNames.length ? skipNames.join(', ') : null,
     note: phase ? { phase, bf: profile.currentBodyFatPct, trainingState: profile.trainingState, seedPct: seed?.targetRatePercentage, weightKg: profile.currentWeightKg } : null,
     labels: {
-      training: trainingSessionsLabel(a.trainingSessionsPerWeek), meat: dietPatternLabel(a.dietPattern), keepLower: keepLowerLabel(a.keepLower),
+      training: trainingTimeLabel(a.trainingMinutesPerWeek, a.trainingSessionsPerWeek), meat: dietPatternLabel(a.dietPattern), keepLower: keepLowerLabel(a.keepLower),
       appetite: BATCH_PLANNER && asksAppetite(a.goal) ? (Array.isArray(a.eatingChallenges) ? (hasLowAppetite(a.eatingChallenges) ? 'Yes' : 'No') : 'Not set') : null,
       cooker: cookerLabel(a.slowCooker, a.slowCookerCount), blender: blenderLabel(a.blender), freezer: freezerLabel(a.freezerTubs), cadence: cadenceLabel(a.shopCadence),
       stockUp: BATCH_PLANNER && (a.stockUp === true || showsStockUp(a.freezerTubs, 1)) ? stockUpLabel(a.stockUp) : null,

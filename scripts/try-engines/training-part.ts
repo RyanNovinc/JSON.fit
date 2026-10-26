@@ -7,8 +7,11 @@
 // answer with updateQuestionnaireField, Q4 also saves the default equipment
 // (Equipment left the flow), Refinements saves its fields, and WorkoutBuild
 // reads them back with loadWorkoutProfile() and runs generateProgramAsync on
-// them. The route's profile comes from storage too (buildRoute locks it there,
-// as RouteScreen does), so experience comes from the same trainingState.
+// them. The route's profile comes from storage too (locked there as
+// RouteScreen does, entry.ts), so experience comes from the same trainingState.
+// Training runs before meals, as the finish line orders it ("Next: my
+// training"), so the profile has no activity or training sessions yet and the
+// Days question opens on nothing the meal side said.
 // @ts-nocheck
 
 import { loadWorkoutProfile } from 'APP_DIR/src/utils/workoutGenerator';
@@ -69,8 +72,8 @@ const READY_KEY = '@try_training_ready';
 
 /**
  * Storage as the app has it when the workout questions open: the route locked
- * (RouteScreen) with the meal side's sessions on the profile, and the answers
- * the earlier workout screens saved, field by field in screen order.
+ * (RouteScreen), and the answers the earlier workout screens saved, field by
+ * field in screen order.
  */
 async function storageFor(about: any, saved: any) {
   const key = JSON.stringify([about, saved]);

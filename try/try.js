@@ -151,8 +151,18 @@
     { id: 'plan', sec: 'route', grp: 'How you get there', r: rPlan, when: 'plan' },
     { id: 'summary', sec: 'route', grp: '', r: rSummary },
     { id: 'locked', sec: 'route', grp: '', r: rLocked, noBack: true },
+    { id: 'days', sec: 'train', r: rDays },
+    { id: 'length', sec: 'train', r: rLength },
+    { id: 'volume', sec: 'train', r: rVolume },
+    { id: 'refine', sec: 'train', r: rRefine },
+    { id: 'progbuild', sec: 'train', r: rProgBuild, build: true },
+    { id: 'program', sec: 'train', r: rProgram },
+    { id: 'blocks', sec: 'train', r: rBlocks, side: true },
+    { id: 'trainweek', sec: 'train', r: rTrainWeek, side: true },
+    { id: 'session', sec: 'train', r: rSession, side: true },
+    { id: 'traindone', sec: 'train', grp: '', r: rTrainDone, noBack: true },
     { id: 'active', sec: 'food', r: rActive },
-    { id: 'sessions', sec: 'food', r: rSessions },
+    { id: 'sessions', sec: 'food', r: rSessions, when: 'sessions' },
     { id: 'diettype', sec: 'food', r: rDietType },
     { id: 'meat', sec: 'food', r: rMeat },
     { id: 'allergies', sec: 'food', r: rAllergies },
@@ -177,20 +187,10 @@
     { id: 'weekready', sec: 'food', r: rWeekReady },
     { id: 'today', sec: 'food', r: rToday },
     { id: 'shop', sec: 'food', r: rShop, side: true },
-    { id: 'mealsdone', sec: 'food', grp: '', r: rMealsDone, noBack: true },
-    { id: 'days', sec: 'train', r: rDays },
-    { id: 'length', sec: 'train', r: rLength },
-    { id: 'volume', sec: 'train', r: rVolume },
-    { id: 'refine', sec: 'train', r: rRefine },
-    { id: 'progbuild', sec: 'train', r: rProgBuild, build: true },
-    { id: 'program', sec: 'train', r: rProgram },
-    { id: 'blocks', sec: 'train', r: rBlocks, side: true },
-    { id: 'trainweek', sec: 'train', r: rTrainWeek, side: true },
-    { id: 'session', sec: 'train', r: rSession, side: true },
     { id: 'keep', sec: 'done', r: rKeep },
   ];
   var IDX = {}; SCREENS.forEach(function (s, i) { IDX[s.id] = i; });
-  var SECS = ['route', 'food', 'train'];
+  var SECS = ['route', 'train', 'food'];
   var SEC_NAME = { route: 'Your route', food: 'Your food', train: 'Training', done: 'Done', intro: '' };
 
   var cur = -1, stack = [], seen = {}, token = 0, holdBuild = false;
@@ -413,7 +413,7 @@
       S.defaults = d;
       S.about = {
         sex: null, ageYears: d.ageYears, heightCm: d.heightCm, weightKg: d.weightKg, bodyFatPct: d.bodyFatPct, bodyFatSource: 'visual', bfText: '',
-        goalWeightKg: null, goalBodyFatPct: d.goalBodyFatPct, belowFloorOk: false, trainingState: null, activityLevel: null, trainingSessionsPerWeek: null,
+        goalWeightKg: null, goalBodyFatPct: d.goalBodyFatPct, belowFloorOk: false, trainingState: null, activityLevel: null, trainingChoice: null,
         route: 'lean', bottom: null, top: null, bulkTo: null, wayIn: 'cut',
       };
     });
@@ -789,7 +789,8 @@
     if (id === 'bulk') return 'Bigger sooner and filling out shirts, but softer the whole way.';
     return 'Bigger sooner without going past a number you pick, but cutting back each time you get there.';
   }
-  function aboutForEngine() { var a = S.about; return Object.assign({}, a, { sex: a.sex || 'male', goalWeightKg: goalW(), trainingState: a.trainingState || 'consistent', activityLevel: a.activityLevel || 'light', trainingSessionsPerWeek: a.trainingSessionsPerWeek == null ? 3.5 : a.trainingSessionsPerWeek }); }
+  /** trainingChoice is N4bTraining's answer ('yes' | 'no'); unanswered, the engine counts the app's no-plan default. */
+  function aboutForEngine() { var a = S.about; return Object.assign({}, a, { sex: a.sex || 'male', goalWeightKg: goalW(), trainingState: a.trainingState || 'consistent', activityLevel: a.activityLevel || 'light', trainingChoice: a.trainingChoice || null }); }
   function withRV(el, my, fn) { withData(el, my, needRV, '', function (rv) { setHelp(HELP_ROUTE); fn(rv); }); }
   /** Beat 9's "Continue", or "See the whole plan" once the range has nothing left to ask. */
   function wayCta(label) { primary(label, function () { enable(false); needRV().then(next, next); }); }
@@ -959,6 +960,8 @@
     range: function () { return rvOk() && S.rv.rangeMatters && S.about.route !== 'bulk'; },
     wayin: function () { return rvOk() && S.rv.rangeMatters && S.about.route === 'lean' && S.rv.wayInApplies && !!S.rv.wayIn; },
     plan: function () { return true; },
+    // beginNutritionSteps: N4bTraining is left out when the workout plan already says how much you train.
+    sessions: function () { return !(S.mv && S.mv.trainingKnown); },
     // The meal flow's conditional steps (nutritionSteps): no snacks a day steps over the checklist,
     // the appetite question is for gaining, stock up needs a freezer that holds a week.
     snacks: function () { return S.food.snackFrequency !== '0'; },
@@ -970,9 +973,11 @@
   };
 
   /* ================= your meals (the app's meal questions, screen by screen) =================
-   * The app's walk after the route (questionnaireRouting.continueNutritionFlow,
-   * nutritionSteps with BATCH_PLANNER and BATCH_LIBRARY on): N4Activity,
-   * N4bTraining, N5DietType, N5aDietPattern, N5bAllergies, N5dSkipFoods,
+   * The app's walk after the workout plan, the finish line's second step
+   * (questionnaireRouting.continueNutritionFlow, nutritionSteps with
+   * BATCH_PLANNER and BATCH_LIBRARY on): N4Activity, N4bTraining (only with no
+   * plan: with one, its sessions and minutes a week are saved and the step is
+   * left out, so every number after it moves up one), N5DietType, N5aDietPattern, N5bAllergies, N5dSkipFoods,
    * N5eKeepLower, N5cSleep, N6MealsSnacking, N6gSnacks, N6eAppetite (gaining),
    * N6aDessert, the meal prep part (N6bSlowCooker, N6cFreezer, N6dShopCadence,
    * N6fStockUp), N9PlanLength, then CuratedFavorites ("Foods you like"), the
@@ -987,6 +992,7 @@
   function stepList(id) {
     var at = FOOD_STEPS.indexOf(id), f = S.food, mv = S.mv || {};
     return FOOD_STEPS.filter(function (s) {
+      if (s === 'sessions') return !mv.trainingKnown;
       if (s === 'appetite') return !!mv.gaining;
       // N6gSnacks steps aside (navigation.replace with the step gone) once "None" is the answer.
       if (s === 'snacks') return !(f.snackFrequency === '0' && at > FOOD_STEPS.indexOf('eat'));
@@ -1011,6 +1017,7 @@
     return call('mealView', aboutForEngine(), foodForEngine(), screen).then(function (v) {
       S.mv = S.mv || {};
       S.mv.gaining = v.gaining;
+      S.mv.trainingKnown = !!v.trainingKnown;
       if (v.stockUpShows != null && screen === 'cadence') S.mv.stockUpShows = v.stockUpShows;
       return v;
     });
@@ -1037,6 +1044,8 @@
       slowCooker: f.slowCooker, slowCookerCount: f.slowCookerCount, blender: f.blender, freezerTubs: f.freezerTubs,
       shopCadence: f.shopCadence, stockUp: f.stockUp, startDate: f.startDate,
       picks: { saved: p.saved, keys: p.keys.slice(), allergenOk: p.allergenOk, versionChoices: p.versionChoices, useUp: p.useUp.slice() },
+      // The workout plan built first (the program as the importer saved it): calories count its minutes.
+      plan: S.program ? { program: S.program.program, totalTrainingDays: S.training.days } : null,
     };
   }
   function freshFood() {
@@ -1099,14 +1108,25 @@
       });
     });
   }
-  /* ---------- N4bTraining ---------- */
-  function bandFor(n) { if (n <= 0) return 0; if (n <= 2) return 1.5; if (n <= 4) return 3.5; if (n <= 6) return 5.5; return 10; }
+  /* ---------- N4bTraining (no workout plan, or the summary's Training row) ---------- */
   function rSessions(el, my) {
     needAbout(el, my, function () {
-      qhead(el, stepLine('sessions', 'Training'), 'How much do you<br>train?', 'Structured sessions: lifting, classes, sport. This is added on top of your day-to-day activity, so count it here and nowhere else.');
-      var cur = S.about.trainingSessionsPerWeek;
-      cards(el, S.defaults.trainingBands.map(function (b) { return { v: b.value, l: b.label, h: b.hint }; }), cur == null ? null : bandFor(cur), function (v) { S.about.trainingSessionsPerWeek = v; enable(true); });
-      foodCta('Continue', cur == null);
+      withData(el, my, function () { return mealView('sessions'); }, '', function (v) {
+        var tr = v.training, plan = tr.plan, a = S.about;
+        qhead(el, stepLine('sessions', 'Training'), 'Are you training<br>right now?', 'Lifting, classes or sport. Your calories count the time you train each week, on top of your day-to-day activity.');
+        // An earlier answer opens selected.
+        if (a.trainingChoice == null) {
+          if (typeof tr.knownMinutes === 'number') a.trainingChoice = tr.knownMinutes > 0 ? 'yes' : 'no';
+          else if (typeof tr.knownSessions === 'number') a.trainingChoice = tr.knownSessions > 0 ? 'yes' : 'no';
+        }
+        var opts = [
+          { v: 'yes', l: 'Yes, most weeks', h: plan ? 'Your workout plan: ' + plan.label.toLowerCase() : 'We count about 3 hours a week until you build a workout plan' },
+          { v: 'no', l: 'Not right now', h: 'No structured sessions' },
+        ];
+        cards(el, opts, a.trainingChoice, function (x) { a.trainingChoice = x; enable(true); });
+        if (plan) el.insertAdjacentHTML('beforeend', '<p class="nfoot plnote">' + IC.bar + '<span>Worked out from your plan\'s sessions. It updates whenever your plan changes.</span></p>');
+        foodCta('Continue', a.trainingChoice == null);
+      });
     });
   }
 
@@ -1954,13 +1974,14 @@
     el.innerHTML = '<p class="fov rise" style="--i:0">You’re 60% of the way</p><div class="fbar rise" style="--i:0"><i></i></div>' +
       '<h1 class="ftl rise" style="--i:1">Two short steps<br>to day one.</h1><div class="spine">' +
       '<div class="rise" style="--i:2">' + row('done', 0, 'Your route', 'Goal, timeline and phases set', 'DONE') + '</div>' +
-      '<div class="rise" style="--i:3">' + row('next', 2, 'Your meals', 'Diet, allergies, the meals you like', '~3 MIN', 'active') + '</div>' +
-      '<div class="rise" style="--i:4">' + row('todo', 3, 'Your training', 'Days, length, volume, extras', '~1 MIN', 'days') + '</div>' +
+      '<div class="rise" style="--i:3">' + row('next', 2, 'Your training', 'Days, length, volume, extras', '~1 MIN', 'days') + '</div>' +
+      '<div class="rise" style="--i:4">' + row('todo', 3, 'Your meals', 'Diet, allergies, the meals you like', '~3 MIN', 'active') + '</div>' +
       '<div class="rise" style="--i:5">' + row('goal', 0, 'Day one: ' + day, 'Your first session and your first day of meals, ready to follow.', '') + '</div></div>' +
       '<p class="free rise" style="--i:6">Free to build. Nothing to pay at the end.</p><p class="later rise" style="--i:7"><button type="button" class="linkb small" data-to="keep">I’ll do this later</button></p>';
     requestAnimationFrame(function () { var f = $('.fbar i', el); if (f) f.style.transform = 'scaleX(.6)'; });
     $$('[data-to]', el).forEach(function (b) { b.onclick = function () { go(b.getAttribute('data-to')); }; });
-    primary('Next: my meals', function () { go('active'); });
+    // finishLineFor: training first, then meals.
+    primary('Next: my training', function () { go('days'); });
   }
 
   function toggle(arr, v) { var i = arr.indexOf(v); i > -1 ? arr.splice(i, 1) : arr.push(v); }
@@ -2334,7 +2355,7 @@
       $$('[data-ed]', el).forEach(function (b) { b.onclick = function () { S.edit = true; go(b.getAttribute('data-ed')); }; });
       $('#restart', el).onclick = function () {
         openSheet('<h2 class="sh-t">Restart questionnaire?</h2><p class="sh-b">This clears all your answers and starts the questionnaire from the beginning.</p><button type="button" class="sh-go danger" id="rsOk">Restart</button><button type="button" class="sh-sec" data-close="1">Cancel</button>', function (sh) {
-          $('#rsOk', sh).onclick = function () { closeSheet(); S.food = freshFood(); S.mv = null; S.meals = null; S.mealsKey = ''; go('active'); };
+          $('#rsOk', sh).onclick = function () { closeSheet(); S.food = freshFood(); S.about.trainingChoice = null; S.mv = null; S.meals = null; S.mealsKey = ''; go('active'); };
           $('[data-close]', sh).onclick = function () { closeSheet(); };
         });
       };
@@ -2545,7 +2566,7 @@
           $('#shopBtn', el).onclick = function () { go('shop'); };
         };
         draw(true);
-        primary('Continue', function () { go('mealsdone'); });
+        primary('Continue', function () { go('keep'); });
       });
     });
   }
@@ -2561,33 +2582,32 @@
           }).join('') + '</div><p class="note">In the app the list also splits by cook, takes your own pack sizes, and remembers what you bought.</p>';
         $$('[data-aisle]', el).forEach(function (b) { b.onclick = function () { var box = b.parentNode, open = box.getAttribute('data-open') !== 'true'; $$('.aisle', el).forEach(function (x) { x.setAttribute('data-open', 'false'); }); box.setAttribute('data-open', open); b.setAttribute('aria-expanded', open); S.openAisle = open ? b.getAttribute('data-aisle') : null; }; });
         $$('[data-tick]', el).forEach(function (b) { b.onchange = function () { S.ticks[b.getAttribute('data-tick')] = b.checked; b.closest('.gi').classList.toggle('done', b.checked); }; });
-        primary('Continue', function () { go('mealsdone'); });
+        primary('Continue', function () { go('keep'); });
       });
     });
   }
 
-  /* ---------- RouteReveal's finish line, back from the meal build (built: 'nutrition') ---------- */
-  function rMealsDone(el) {
+  /* ---------- RouteReveal's finish line, back from the workout build (built: 'workout') ---------- */
+  function rTrainDone(el) {
     el.classList.add('finish');
-    var M = S.meals, dates = M ? Object.keys(M.plan.dailyMeals).sort() : [], first = dates.length ? M.plan.dailyMeals[dates[0]] : null;
+    // dayOnePreview(routine, no meal plan): tomorrow, and the plan's first session.
     var t = new Date(); t.setDate(t.getDate() + 1);
-    var day = first && first.dayName ? first.dayName : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][t.getDay()];
-    var meal = first && (first.meals || []).filter(function (m) { return m && m.name; })[0];
-    var type = meal && typeof meal.type === 'string' ? meal.type.replace(/_/g, ' ') : '';
-    var line = meal ? (type ? type.charAt(0).toUpperCase() + type.slice(1) + ' is ' + meal.name + '.' : 'First meal: ' + meal.name + '.') : 'Your first session and your first day of meals, ready to follow.';
+    var day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][t.getDay()];
+    var P = S.program, d0 = P && P.program.blocks[0] && P.program.blocks[0].days[0], n = d0 && Array.isArray(d0.exercises) ? d0.exercises.length : 0;
+    var line = d0 && d0.day_name ? (n > 0 ? d0.day_name + ', ' + n + ' ' + (n === 1 ? 'exercise' : 'exercises') + '.' : d0.day_name + '.') : 'Your first session and your first day of meals, ready to follow.';
     var row = function (mark, num, title, sub, meta, to) {
       return '<' + (to ? 'button type="button" data-to="' + to + '"' : 'div') + ' class="sp ' + mark + '"><span class="sd">' + (mark === 'done' ? '<svg viewBox="0 0 24 24" width="14" height="14"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#0a0a0b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' : mark === 'goal' ? '<i></i>' : num) + '</span><span class="sb"><b>' + esc(title) + '</b><small>' + esc(sub) + '</small></span>' + (meta ? '<em>' + meta + '</em>' : '') + '</' + (to ? 'button' : 'div') + '>';
     };
     el.innerHTML = '<p class="fov rise" style="--i:0">You’re 80% of the way</p><div class="fbar rise" style="--i:0"><i></i></div>' +
       '<h1 class="ftl rise" style="--i:1">One short step<br>to day one.</h1><div class="spine">' +
       '<div class="rise" style="--i:2">' + row('done', 0, 'Your route', 'Goal, timeline and phases set', 'DONE') + '</div>' +
-      '<div class="rise" style="--i:3">' + row('done', 0, 'Your meals', 'Diet, allergies, the meals you like', 'DONE', 'today') + '</div>' +
-      '<div class="rise" style="--i:4">' + row('next', 3, 'Your training', 'Days, length, volume, extras', '~1 MIN', 'days') + '</div>' +
+      '<div class="rise" style="--i:3">' + row('done', 0, 'Your training', 'Days, length, volume, extras', 'DONE', 'program') + '</div>' +
+      '<div class="rise" style="--i:4">' + row('next', 3, 'Your meals', 'Diet, allergies, the meals you like', '~3 MIN', 'active') + '</div>' +
       '<div class="rise" style="--i:5">' + row('goal', 0, 'Day one: ' + day, line, '') + '</div></div>' +
       '<p class="free rise" style="--i:6">Free to build. Nothing to pay at the end.</p><p class="later rise" style="--i:7"><button type="button" class="linkb small" data-to="keep">I’ll do this later</button></p>';
     requestAnimationFrame(function () { var f = $('.fbar i', el); if (f) f.style.transform = 'scaleX(.8)'; });
     $$('[data-to]', el).forEach(function (b) { b.onclick = function () { go(b.getAttribute('data-to')); }; });
-    primary('Next: my training', function () { go('days'); });
+    primary('Next: my meals', function () { go('active'); });
   }
 
   /* ================= training =================
@@ -3083,7 +3103,7 @@
         $('#dateLn', el).onclick = function () { go('trainweek'); };
         if ($('#bcard', el)) $('#bcard', el).onclick = function () { go('trainweek'); };
         $$('[data-log]', el).forEach(function (b) { b.onclick = function () { T.log = +b.getAttribute('data-log'); go('session'); }; });
-        primary('Continue', function () { go('keep'); });
+        primary('Continue', function () { go('traindone'); });
       });
     });
   }
@@ -3270,14 +3290,14 @@
         '<p class="sh-b">' + esc(PC.footer) + '</p><p class="sh-lede">' + esc(PC.switchNote) + '</p><p class="ek2">References</p>' + PC.refs.map(function (r) { return '<a class="study" href="' + esc(r.url) + '" target="_blank" rel="noopener"><b>' + esc(r.cite) + '</b><span>' + esc(r.topic) + ' · ' + esc(r.journal) + '</span></a>'; }).join('');
     };
     var same = L.paces.optimal === L.paces.moderate && L.paces.moderate === L.paces.minimal;
-    if (same) { go('keep'); return; }
+    if (same) { go('traindone'); return; }
     openSheet('<div class="evs">' + view() + '</div>', function (sh) {
       var box = $('.evs', sh);
       var wire = function () {
         $$('[data-pace]', box).forEach(function (b) { b.onclick = function () { pick = b.getAttribute('data-pace'); box.innerHTML = view(); wire(); }; });
         var i = $('[data-info]', box); if (i) i.onclick = function () { box.innerHTML = info(); wire(); };
         var l = $('[data-less]', box); if (l) l.onclick = function () { box.innerHTML = view(); wire(); };
-        var s = $('[data-start]', box); if (s) s.onclick = function () { closeSheet(); go('keep'); };
+        var s = $('[data-start]', box); if (s) s.onclick = function () { closeSheet(); go('traindone'); };
       };
       wire();
     });
@@ -3344,7 +3364,7 @@
       ? function () {
           return call('defaults', 'female').then(function (d) {
             S.defaults = d;
-            S.about = { sex: 'female', ageYears: 36, heightCm: 166, weightKg: 72, bodyFatPct: 32, bodyFatSource: 'reported', goalWeightKg: 64, goalBodyFatPct: 25, trainingState: 'new', activityLevel: 'light', trainingSessionsPerWeek: 1.5, route: 'lean' };
+            S.about = { sex: 'female', ageYears: 36, heightCm: 166, weightKg: 72, bodyFatPct: 32, bodyFatSource: 'reported', goalWeightKg: 64, goalBodyFatPct: 25, trainingState: 'new', activityLevel: 'light', route: 'lean' };
             S.touched = { goalWeightKg: true, goalBodyFatPct: true, heightCm: true, bodyFatPct: true };
             S.food = Object.assign(freshFood(), { dietType: 'high_protein', dietPattern: 'vegetarian', allergies: ['Nuts'], keepLower: ['salt'], mealsPerDay: 3, snackFrequency: '1', dessertFrequency: 'once_per_week', dessertDays: [6], slowCooker: 'none', blender: 'no', freezerTubs: 8, shopCadence: 'weekly', stockUp: false });
             Object.assign(S.training, { days: 3, length: '8_weeks', volume: '8-12', refine: { priority: ['Glutes'], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} } });
@@ -3352,12 +3372,14 @@
         }
       : function () {
           return ensureAbout().then(function () {
-            var a = S.about; a.sex = 'male'; a.trainingState = 'consistent'; a.activityLevel = 'light'; a.trainingSessionsPerWeek = 3.5;
+            var a = S.about; a.sex = 'male'; a.trainingState = 'consistent'; a.activityLevel = 'light';
             S.food = Object.assign(freshFood(), demo === '3' ? { allergies: ['Gluten/Wheat', 'Dairy'], skip: ['mushrooms'], keepLower: ['salt'], snacks: { ticked: null, own: [{ name: 'Protein bar', kcal: 210, protein: 20, serve: '1 bar', kind: 'snack' }] } } : {}, { dietType: 'balanced', dietPattern: 'any', keepLower: demo === '3' ? ['salt'] : [], mealsPerDay: 3, snackFrequency: '2', dessertFrequency: 'few_per_week', dessertDays: [2, 4, 6], slowCooker: '5_6l', blender: 'yes', freezerTubs: 16, shopCadence: 'weekly', stockUp: false });
             Object.assign(S.training, { days: 4, length: '12_weeks', volume: '12-16' });
           });
         };
-    fill().then(function () { if (params.get('route')) S.about.route = params.get('route'); for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
+    // Past the workout build, the demo's plan is built first, as the finish line orders it (training, then meals).
+    var planFirst = function () { return target > IDX.progbuild && !params.get('noplan') ? needProgram() : null; };
+    fill().then(function () { if (params.get('route')) S.about.route = params.get('route'); return planFirst(); }).then(function () { for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
   } else {
     show(0, 0);
   }

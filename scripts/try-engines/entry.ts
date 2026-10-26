@@ -19,7 +19,7 @@ import { defaultGoalBodyFatFor } from 'APP_DIR/src/utils/attractivenessTargets';
 import { leanStopFor } from 'APP_DIR/src/utils/operatingBands';
 import { planCurve } from 'APP_DIR/src/utils/planCurve';
 import { phaseIntentFor } from 'APP_DIR/src/utils/phaseIntent';
-import { TRAINING_BANDS } from 'APP_DIR/src/utils/phasePrescription';
+import { DEFAULT_TRAINING_MINUTES } from 'APP_DIR/src/utils/phasePrescription';
 import { saveGoalsProfile, loadGoalsProfile } from 'APP_DIR/src/utils/goalsProfileStorage';
 import { replanRoute, expandPhases, journeyRoadmap, loadSavedRoutePlan } from 'APP_DIR/src/utils/phaseJourney';
 import { computeMacrosPhaseAware } from 'APP_DIR/src/utils/nutritionMacros';
@@ -65,7 +65,8 @@ function defaults(sex: 'male' | 'female', heightCm?: number, weightKg?: number, 
     leanStop: leanStopFor(sex),
     tiers: BODY_FAT_TIERS.map((t: any) => ({ range: tierRange(t, sex), description: t.description, pct: bodyFatFromTier(t, sex) })),
     papers: VERIFIED_PAPER_COUNT,
-    trainingBands: TRAINING_BANDS,
+    // N4bTraining with no workout plan: "Yes, most weeks" counts this until a plan replaces it.
+    trainingDefaultMinutes: DEFAULT_TRAINING_MINUTES,
   };
 }
 
@@ -109,8 +110,20 @@ function goalsProfileFrom(a: any) {
     trainingState: a.trainingState || 'consistent',
     trainingStateChosen: true,
     activityLevel: a.activityLevel || 'moderate',
-    trainingSessionsPerWeek: a.trainingSessionsPerWeek ?? 3.5,
+    ...trainingOf(a),
   };
+}
+
+/**
+ * The training a profile counts for calories when the page has no answer of
+ * its own: N4bTraining's answer ('yes' | 'no', as the screen saves it with no
+ * plan), else the app's no-plan default (DEFAULT_TRAINING_MINUTES, and the
+ * sessions the screen saves with it). The meal path never uses this: it
+ * replays the plan and the screen (meals-part.ts).
+ */
+function trainingOf(a: any) {
+  if (a.trainingChoice === 'no') return { trainingSessionsPerWeek: 0, trainingMinutesPerWeek: 0 };
+  return { trainingSessionsPerWeek: Math.round(DEFAULT_TRAINING_MINUTES / 60), trainingMinutesPerWeek: DEFAULT_TRAINING_MINUTES };
 }
 
 /** The screen's state for beat 9, as RouteScreen holds it. */
@@ -211,6 +224,7 @@ async function buildRoute(about: any, nutrition?: any) {
     weight: about.weightKg,
     activityLevel: profile.activityLevel,
     trainingSessionsPerWeek: profile.trainingSessionsPerWeek,
+    trainingMinutesPerWeek: profile.trainingMinutesPerWeek,
     dietType: 'balanced',
     ...(nutrition || {}),
   } as any);
@@ -239,7 +253,14 @@ const API: any = {
   ...TRAINING_PART,
 };
 MEALS_PART.initMeals({ wipe, planProfileFor, goalsProfileFrom, choiceOf });
-TRAINING_PART._setRoute((about: any) => buildRoute(about));
+// The workout questions run first from the finish line ("Next: my training"),
+// so they open on the route's lock-in alone: no activity, no training yet.
+TRAINING_PART._setRoute(async (about: any) => {
+  await wipe();
+  const lockProfile = MEALS_PART.lockProfileFor(about);
+  await saveGoalsProfile(lockProfile);
+  await replanRoute('lock', { profile: lockProfile, route: 'balanced' });
+});
 
 (globalThis as any).JsonFitEngines = API;
 

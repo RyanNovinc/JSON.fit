@@ -3,12 +3,16 @@
 // RefinementsScreen), then WorkoutBuildScreen (loadWorkoutProfile ->
 // generateProgramAsync -> built_from -> the importer's deload normalising).
 // Written from the screens, not from training-part.ts, so the two can be
-// compared. APP_DIR is substituted by parity-training.mjs.
+// compared. APP_DIR is substituted by parity-training.mjs. Training runs first
+// from the finish line ("Next: my training"), so storage holds the route's
+// lock-in and nothing from the meal questions.
 // @ts-nocheck
-import { saveGoalsProfile } from 'APP_DIR/src/utils/goalsProfileStorage';
+import { saveGoalsProfile, loadGoalsProfile } from 'APP_DIR/src/utils/goalsProfileStorage';
+import { replanRoute } from 'APP_DIR/src/utils/phaseJourney';
+import { WorkoutStorage } from 'APP_DIR/src/utils/storage';
 import { updateQuestionnaireField, loadQuestionnaireAnswers } from 'APP_DIR/src/utils/questionnaireStorage';
 import { DEFAULT_EQUIPMENT } from 'APP_DIR/src/utils/questionnaireRouting';
-import { daysScreenPatch, updateTrainingWeek } from 'APP_DIR/src/utils/trainingWeek';
+import { daysScreenPatch, updateTrainingWeek, daysScreenStart } from 'APP_DIR/src/utils/trainingWeek';
 import { loadWorkoutProfile, generateProgramAsync } from 'APP_DIR/src/utils/workoutGenerator';
 import { builtFromStamp } from 'APP_DIR/src/utils/setupHub';
 import { normalizeDeloadWeeks } from 'APP_DIR/src/utils/deloadWeeks';
@@ -16,17 +20,31 @@ import { buildEstimateProfile, estimateSessionLength } from 'APP_DIR/src/utils/s
 import { REFINEMENT_PRESETS, isPresetActive, presetSexKey } from 'APP_DIR/src/data/refinementPresets';
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 
-/** Q3's panel before anything is saved: the route's profile only. */
-async function q3Estimate(profile: any, days: number) {
+/** RouteScreen's lock-in: the profile saved, the route locked. */
+async function lockIn(profile: any) {
   await AsyncStorage.clear();
   await saveGoalsProfile(profile);
+  await replanRoute('lock', { profile, route: 'balanced' });
+}
+
+/** What Q3DaysPerWeekScreen opens on: daysScreenStart(answered, stored week, profile sessions). */
+async function q3Start(profile: any) {
+  await lockIn(profile);
+  const p = await loadGoalsProfile();
+  const stored = await WorkoutStorage.loadTrainingWeek().catch(() => null);
+  const st = daysScreenStart(undefined, stored as any, p?.trainingSessionsPerWeek);
+  return { selected: st.selected, days: st.days, varies: st.varies, time: st.time };
+}
+
+/** Q3's panel before anything is saved: the route's profile only. */
+async function q3Estimate(profile: any, days: number) {
+  await lockIn(profile);
   const base = await loadWorkoutProfile();
   return estimateSessionLength(buildEstimateProfile(base, {}, { totalTrainingDays: days }));
 }
 
 async function appProgram(profile: any, a: any) {
-  await AsyncStorage.clear();
-  await saveGoalsProfile(profile);
+  await lockIn(profile);
   // Q3
   await updateQuestionnaireField('totalTrainingDays', a.days);
   await updateTrainingWeek(daysScreenPatch({ daysTouched: false, timeTouched: false, hadWeek: false, varies: false, days: a.week ?? null, selected: a.days, time: null }));
@@ -61,4 +79,4 @@ async function appProgram(profile: any, a: any) {
   return { program: parsed, notes, questionnaire: p.questionnaire };
 }
 
-(globalThis as any).AppTraining = { appProgram, q3Estimate };
+(globalThis as any).AppTraining = { appProgram, q3Estimate, q3Start };

@@ -4,7 +4,8 @@
 // build, from the app source, same esbuild stubs) and, for several answer
 // sets, diffs its program against the web engine's buildProgramFrom: days,
 // exercises, sets, reps, RIR, blocks, deloads, everything in the JSON. Also
-// checks the Days screen's live session length. Exits 1 on any difference.
+// checks the Days screen's live session length and what it opens on (training
+// runs first, so nothing from the meal side). Exits 1 on any difference.
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -29,10 +30,10 @@ const E = globalThis.JsonFitEngines;
 require(path.join(OUT, 'parity-app-training.cjs'));
 const A = globalThis.AppTraining;
 
-const man = { sex: 'male', ageYears: 34, heightCm: 180, weightKg: 92, bodyFatPct: 25, goalWeightKg: 82, goalBodyFatPct: 13, trainingState: 'consistent', activityLevel: 'light', trainingSessionsPerWeek: 3.5, route: 'lean' };
-const woman = { sex: 'female', ageYears: 41, heightCm: 165, weightKg: 74, bodyFatPct: 34, goalWeightKg: 64, goalBodyFatPct: 26, trainingState: 'new', activityLevel: 'sedentary', trainingSessionsPerWeek: 1.5, route: 'lean' };
-const lifter = { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFatPct: 12, goalWeightKg: 80, goalBodyFatPct: 13, trainingState: 'advanced', activityLevel: 'moderate', trainingSessionsPerWeek: 5.5, route: 'bulk' };
-const back = { sex: 'female', ageYears: 29, heightCm: 170, weightKg: 58, bodyFatPct: 24, goalWeightKg: 63, goalBodyFatPct: 24, trainingState: 'returning', activityLevel: 'moderate', trainingSessionsPerWeek: 1.5, route: 'capped' };
+const man = { sex: 'male', ageYears: 34, heightCm: 180, weightKg: 92, bodyFatPct: 25, goalWeightKg: 82, goalBodyFatPct: 13, trainingState: 'consistent', activityLevel: 'light', route: 'lean' };
+const woman = { sex: 'female', ageYears: 41, heightCm: 165, weightKg: 74, bodyFatPct: 34, goalWeightKg: 64, goalBodyFatPct: 26, trainingState: 'new', activityLevel: 'sedentary', route: 'lean' };
+const lifter = { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFatPct: 12, goalWeightKg: 80, goalBodyFatPct: 13, trainingState: 'advanced', activityLevel: 'moderate', route: 'bulk' };
+const back = { sex: 'female', ageYears: 29, heightCm: 170, weightKg: 58, bodyFatPct: 24, goalWeightKg: 63, goalBodyFatPct: 24, trainingState: 'returning', activityLevel: 'moderate', route: 'capped' };
 const base = { priority: [], aux: [], avoid: [], core: true, rep: 'classic' };
 const SETS = [
   { name: 'man 4 days 8 weeks moderate', about: man, a: { ...base, days: 4, length: '8_weeks', volume: '12-16' } },
@@ -56,8 +57,8 @@ function shape(prog) {
 }
 let fail = 0;
 for (const T of SETS) {
-  const route = await E.buildRoute(T.about);
-  const profile = route.profile;
+  // The route's lock-in, as RouteScreen saves it (no activity or training yet).
+  const profile = E.lockProfileFor(T.about);
   // Web: the page's answers, as the page saves them (savedThrough(4)).
   const st = await E.trainingStart(T.about);
   const state = { priorityMuscles: T.a.priority, auxiliaryMuscles: T.a.aux, includeDirectCore: T.a.core };
@@ -70,13 +71,16 @@ for (const T of SETS) {
   const webPanel = await E.sessionPanel(T.about, null, {}, { totalTrainingDays: T.a.days });
   const app = await A.appProgram(profile, T.a);
   const appQ3 = await A.q3Estimate(profile, T.a.days);
+  const appStart = await A.q3Start(profile);
+  const webStart = { ...st.start };
   const strip = (q) => { const { lastUpdatedAt, ...r } = q || {}; return r; };
   const dq = firstDiff(strip(app.questionnaire), strip(web.profile.questionnaire));
   const dp = firstDiff(app.program, web.program);
   const dn = firstDiff(app.notes, web.notes);
   const de = firstDiff({ days: appQ3.days, headline: appQ3.headline }, { days: webPanel.est.days, headline: webPanel.est.headline });
-  say(`${T.name}: ${shape(app.program)} | Q3 about ${appQ3.headline} min`);
-  for (const [what, d] of [['answers', dq], ['program', dp], ['notes', dn], ['Q3 session length', de]]) if (d) { fail++; say(`  DIFF ${what}: ${d}`); }
+  const ds = firstDiff(appStart, webStart);
+  say(`${T.name}: ${shape(app.program)} | Q3 opens on ${appStart.selected ?? 'nothing'}, about ${appQ3.headline} min`);
+  for (const [what, d] of [['answers', dq], ['program', dp], ['notes', dn], ['Q3 session length', de], ['Q3 opens on', ds]]) if (d) { fail++; say(`  DIFF ${what}: ${d}`); }
 }
 say(fail ? `${fail} difference(s)` : 'training parity OK: the web program is the app\'s, exactly');
 process.exit(fail ? 1 : 0);
