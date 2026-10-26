@@ -43,7 +43,7 @@ const PROFILES = [
   { name: 'default man, gym 4', sex: 'male', lift: 'consistent', route: 'lean', active: 'light', band: '3.5', meat: 'any', allergies: [], skip: [], meals: '3', dessert: 'ai_decide', picks: 0, days: '4', equip: 'commercial_gym' },
   { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', band: '1.5', meat: 'vegetarian', allergies: ['Nuts'], skip: [], meals: '4', dessert: 'once_per_week', picks: 0, days: '2', equip: 'home_gym', estimate: true },
   { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', band: '5.5', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', dessert: '0', picks: 3, days: '6', equip: 'bodyweight', imperial: true },
-  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +3, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', dessert: 'ai_decide', picks: 1, days: '3', equip: 'basic_equipment' },
+  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', dessert: 'ai_decide', picks: 1, days: '3', equip: 'basic_equipment' },
 ];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
 (async () => {
@@ -79,28 +79,42 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         await overflow('start');
         await click('#nextBtn'); await scr('weight'); await overflow('weight');
         if (P.imperial) { await click('[data-u="imperial"]'); await sleep(150); }
-        await click('.pm button[data-d="1"]'); await click('.pm button[data-d="1"]');
-        await go(); await scr('sex'); await opt(P.sex); await go();
+        const key = (sel, k, n) => ev(`(function(){var e=document.querySelector(${JSON.stringify(sel)}); for(var i=0;i<${n};i++) e.dispatchEvent(new KeyboardEvent('keydown',{key:'${k}',bubbles:true})); return 1})()`);
+        await key('.ruler', 'ArrowRight', 2);
+        await go(); await scr('sex'); await click(`.sexpick[data-sex="${P.sex}"]`); await go();
         await scr('bodyfat'); await overflow('bodyfat');
-        if (P.estimate) { await click('#est'); await until(`!!document.querySelector('.sheet.on [data-tier]')`); await ev(`document.querySelectorAll('.sheet [data-tier]')[3].click()`); await sleep(500); }
+        if (P.estimate) { await click('#est'); await until(`!!document.querySelector('.sheet.on [data-tier]')`); await ev(`document.querySelectorAll('.sheet [data-tier]')[3].click()`); await click('#useTier'); await sleep(400); }
         await go(); await scr('height'); await go(); await scr('age'); await go();
         await scr('lifting'); await opt(P.lift); await go();
         await scr('goalweight'); await overflow('goalweight');
-        if (P.gw) await ev(`(function(){var e=document.querySelector('.big input'); e.value=(parseFloat(e.value)+${P.gw}); e.dispatchEvent(new Event('change')); return 1})()`);
-        await go(); await scr('goalbf'); await go();
-        await scr('route'); await until(`document.querySelectorAll('.screen .opt').length===3`); await opt(P.route); await overflow('route'); await go();
-        await scr('active'); await opt(P.active); await go();
-        await scr('sessions'); await opt(P.band); await go();
-        await scr('routebuild');
-        const t0 = Date.now(); await scr('routereveal', 20000); steps.push('route build ' + (Date.now() - t0) + ' ms');
-        await overflow('routereveal');
-        const hd = await ev(`document.querySelector('.goalline').textContent`);
-        await go(); await scr('phase1'); await overflow('phase1');
-        const kcal = await ev(`(document.querySelector('.mac b')||{}).getAttribute && document.querySelector('.mac b').getAttribute('data-c')`);
-        const ph = await ev(`document.querySelectorAll('.prow').length`);
-        await click('.prow'); 
-        console.log(`  route: ${hd.replace(/\s+/g, ' ').trim()} | ${ph} phases | ${kcal} kcal | ${steps[0]}`);
-        if (!kcal || !ph) bad('route empty');
+        if (P.gw) await key('.ruler', P.gw > 0 ? 'ArrowRight' : 'ArrowLeft', Math.abs(P.gw) * (P.imperial ? 2 : 2));
+        await go(); await scr('goalbf'); await overflow('goalbf'); await go();
+        // Beat 9: the route (when there is a range), then whatever that answer opens, then the plan.
+        await until(`!!document.querySelector('.screen[data-screen="route"],.screen[data-screen="plan"]') && !document.querySelector('.loading')`);
+        const seen9 = [];
+        if (await ev(`!!document.querySelector('.screen[data-screen="route"]')`)) {
+          seen9.push('route:' + P.route);
+          await until(`document.querySelectorAll('.screen .ropt').length===3`); await click(`.ropt[data-v="${P.route}"]`); await sleep(300); await overflow('route');
+          await until(`document.querySelector('.ropt[data-v="${P.route}"]').getAttribute('aria-pressed')==='true' && !document.querySelector('.loading')`);
+          await go();
+        }
+        for (let k = 0; k < 6; k++) {
+          await until(`(function(){var s=document.querySelector('.screen'); return !!s && !s.querySelector('.loading') && !document.querySelector('.screen.out-l,.screen.out-r') && s.children.length>0})()`);
+          const id = await ev(`document.querySelector('.screen').getAttribute('data-screen')`);
+          seen9.push(id); await overflow(id);
+          if (id === 'summary') break;
+          if (id === 'range') { await click('.stp[data-k="hi"][data-d="1"]'); await sleep(300); }
+          if (id === 'bulkto') { await click('.stp[data-k="bulk"][data-d="1"]'); await sleep(300); }
+          if (id === 'plan') { seen9.push('[' + (await ev(`document.querySelector('.dest').textContent`)) + ']'); const n = await ev(`document.querySelectorAll('.pc [data-node]').length`); if (n > 1) { await ev(`document.querySelectorAll('.pc [data-node]')[1].dispatchEvent(new MouseEvent('click',{bubbles:true}))`); } }
+          await go();
+        }
+        await scr('summary'); await overflow('summary');
+        const hd = await ev(`document.querySelector('.sey').textContent + ' ' + document.querySelector('.stl').textContent + ', ' + document.querySelector('.dur b').textContent`);
+        console.log(`  route: ${seen9.join(' > ')} | ${hd}`);
+        await go(); await until(`!!document.querySelector('.sheet.on [data-a="lock"]')`); await click('.sheet [data-a="lock"]');
+        await scr('locked', 8000); await overflow('locked');
+        await go(); await scr('active'); await opt(P.active); await go();
+        await scr('sessions'); await opt(P.band);
         await go(); await scr('meat'); await opt(P.meat); await go();
         await scr('allergies'); for (const x of P.allergies) await opt(x); await go();
         await scr('skip'); for (const x of P.skip) await opt(x); await go();
