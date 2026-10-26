@@ -166,7 +166,10 @@ function routeView(about: any) {
   const bulkFloor = (bf ?? 0) + MIN_BULK_HEADROOM_PCT;
   const previews: any = {};
   for (const r of ['lean', 'bulk', 'capped'] as const) {
-    const pp = planProfileFor(p, r, c);
+    // The limit option previews at the limit it will plan with (the default until
+    // one is picked). Without it the preview had no limit and drew the same line
+    // as 'Grow now, cut at the end'. The app's beat 9 has the same gap.
+    const pp = planProfileFor(p, r, r === 'capped' ? { ...c, bulkTo: c.bulkTo ?? defaultBulkTo } : c);
     previews[r] = roadmapOut(pp, deriveRoadmap(pp, preference));
   }
   const planProfile = planProfileFor(p, routeId, c);
