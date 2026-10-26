@@ -98,17 +98,71 @@ body{background:var(--bg)}
 .go[disabled]{opacity:.35;cursor:default}
 .go.ghost{flex:none;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25);padding:0 20px}
 
-/* start */
-.start{text-align:center;padding-top:34px}
-.start .qh{font-size:clamp(2.5rem,10vw,3.6rem);text-transform:uppercase}
-.start .sub{margin-left:auto;margin-right:auto}
-.privacy{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-family:var(--mono);font-size:.7rem;color:var(--text-2);letter-spacing:.03em;text-align:left}
-.privacy i{width:8px;height:8px;border-radius:50%;background:var(--green-text);flex:none;opacity:.7}
-.trio{display:grid;gap:0;margin-top:34px;text-align:left;border-top:1px solid var(--line)}
-.trio div{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:center;padding:14px 2px;border-bottom:1px solid var(--line)}
-.trio i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:500 .7rem var(--mono);font-style:normal;color:var(--text-2);border:1px solid var(--line)}
-.trio b{display:block;color:#fff;font-weight:800}
-.trio span{display:block;color:var(--text-3);font-size:.88rem}
+/* start: headline and a looping preview (route, meals, training) centred, the button at the bottom */
+.try[data-sec="intro"]{overflow:clip}
+.try[data-sec="intro"]::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.9;
+  background:radial-gradient(60% 34% at 15% 18%,rgba(192,132,252,.17),transparent 70%),radial-gradient(60% 34% at 90% 34%,rgba(34,211,238,.15),transparent 70%),radial-gradient(70% 30% at 40% 86%,rgba(74,222,128,.10),transparent 70%);
+  animation:ipDrift 14s ease-in-out infinite alternate}
+@keyframes ipDrift{to{transform:translate(-12px,16px) scale(1.05)}}
+.start{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;padding:4px 0 8px}
+/* full screen: the bar (just the X), then the headline and preview centred in what is left above the fixed button */
+html.ip-intro .try{display:flex;flex-direction:column;min-height:100vh;min-height:100svh;min-height:100dvh}
+html.ip-intro .stage{flex:1;width:100%;min-height:0;display:flex;flex-direction:column;padding:4px 16px calc(146px + env(safe-area-inset-bottom,0px))}
+html.ip-intro .prog{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+html.ip-intro .prog .back,html.ip-intro .prog .segs,html.ip-intro .prog .seglbl,html.ip-intro .prog .info:not(.exit){display:none}
+html.ip-intro .prog .exit{margin-left:auto}
+html.ip-lock,html.ip-lock body{overflow:hidden;overscroll-behavior:none}
+html.ip-lock .try{height:100vh;height:100svh;height:100dvh}
+.ip-mid{width:100%;max-width:420px;margin:0 auto}
+.ip-k{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2)}
+.ip-h{font-weight:900;font-size:clamp(2.45rem,10.4vw,3.2rem);line-height:.98;letter-spacing:-.04em;color:#fff;margin:10px 0 22px}
+.ip-h span{display:block;background:linear-gradient(90deg,#c084fc,#22d3ee,#4ade80);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.06em}
+.ip-card{height:298px;line-height:1.3;border-radius:22px;background:rgba(16,16,21,.86);border:1px solid var(--line);overflow:hidden;position:relative;text-align:left;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.ip-scene{position:absolute;inset:0;padding:15px;opacity:0;transform:translateY(14px) scale(.98);transition:opacity .6s,transform .6s cubic-bezier(.2,.9,.25,1)}
+.ip-scene.on{opacity:1;transform:none}
+.ip-sk{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase}
+.ip-st{font-weight:700;font-size:1.05rem;color:#fff;margin-top:4px}
+.ip-ss{color:var(--text-3);font-size:.8rem;margin-top:2px}
+.ip-scene svg{display:block;width:100%;height:auto;max-height:200px;margin-top:12px}
+.ip-curve{fill:none;stroke:#c084fc;stroke-width:3;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420}
+.ip-scene.on .ip-curve{animation:ipDraw 1.8s cubic-bezier(.4,0,.2,1) .2s forwards}
+@keyframes ipDraw{to{stroke-dashoffset:0}}
+.ip-dot{fill:#c084fc;opacity:0}.ip-scene.on .ip-dot{animation:ipPop .4s 1.9s forwards}
+.ip-lbl{fill:#fff;font:600 11px var(--sans);opacity:0}.ip-scene.on .ip-lbl{animation:ipPop .4s 2s forwards}
+@keyframes ipPop{from{opacity:0}to{opacity:1}}
+.ip-meals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}
+.ip-meal{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:12px;background:#16161c;opacity:0;transform:translateY(10px) scale(.9)}
+.ip-scene.on .ip-meal{animation:ipUp .45s cubic-bezier(.2,.9,.3,1.2) forwards}
+@keyframes ipUp{to{opacity:1;transform:none}}
+.ip-macro{display:flex;gap:5px;margin-top:10px}.ip-macro span{height:5px;border-radius:5px}
+.ip-sess{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.ip-ex{background:#16161c;border-radius:12px;overflow:hidden;opacity:0;transform:translateY(10px)}
+.ip-ex img{display:block;width:100%;height:50px;object-fit:cover;background:#000}
+.ip-ex b{display:block;font-weight:600;font-size:.82rem;color:#fff;padding:7px 9px 0}
+.ip-ex span{display:block;font-family:var(--mono);color:var(--text-3);font-size:.66rem;padding:2px 9px 8px}
+.ip-scene.on .ip-ex{animation:ipIn .45s cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes ipIn{to{opacity:1;transform:none}}
+.ip-pips{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.ip-pips i{width:22px;height:3px;border-radius:3px;background:#24242a;overflow:hidden;position:relative}
+.ip-pips i:nth-child(1){--c:#c084fc}.ip-pips i:nth-child(2){--c:#4ade80}.ip-pips i:nth-child(3){--c:#22d3ee}
+.ip-pips i.on::after{content:'';position:absolute;inset:0;background:var(--c);transform-origin:left;animation:ipFill 3.4s linear forwards}
+.ip-pips i.done{background:var(--c)}
+@keyframes ipFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* the button glints; Free, no sign-up, no ads under it */
+.try[data-sec="intro"] .go{position:relative;overflow:hidden;box-shadow:0 12px 34px rgba(34,211,238,.3)}
+.try[data-sec="intro"] .go::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);background-size:300% 100%;background-position:120% 0;animation:ipGlint 4.5s ease-in-out 2s infinite}
+@keyframes ipGlint{0%,55%{background-position:120% 0}85%,100%{background-position:-20% 0}}
+.cta-trust{display:none}
+.try[data-sec="intro"] .cta-trust{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;max-width:560px;margin:12px auto 0;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--text-3);text-transform:uppercase}
+.cta-trust .tf{color:var(--green-text)}
+@media(prefers-reduced-motion:reduce){
+  .try[data-sec="intro"]::before,.try[data-sec="intro"] .go::after,.ip-pips i.on::after{animation:none!important}
+  .ip-scene,.ip-scene *{animation:none!important;transition:none!important}
+  .ip-curve{stroke-dashoffset:0}.ip-dot,.ip-lbl,.ip-meal,.ip-ex{opacity:1;transform:none}
+  .ip-pips i.on{background:var(--c)}
+}
+html.still .try[data-sec="intro"]::before,html.still .try[data-sec="intro"] .go::after,html.still .ip-scene,html.still .ip-scene *{animation:none!important;transition:none!important}
+html.still .ip-curve{stroke-dashoffset:0}html.still .ip-dot,html.still .ip-lbl{opacity:1}
 
 /* build moment */
 .bm{position:relative;padding-top:18px;min-height:70svh;cursor:pointer}

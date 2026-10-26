@@ -202,9 +202,12 @@
   }
   function progress(i) {
     var s = SCREENS[i];
-    prog.hidden = s.sec === 'intro';
-    // Once the questions start, the site's menu and footer go, so it reads like the app.
-    document.body.classList.toggle('immersive', s.sec !== 'intro');
+    prog.hidden = false;
+    // Full screen from the intro on: the site's menu and footer go, so it reads like the app.
+    // On the intro the bar keeps only the X (straight back to the home page).
+    document.body.classList.add('immersive');
+    document.documentElement.classList.toggle('ip-intro', s.sec === 'intro');
+    if (s.sec !== 'intro') document.documentElement.classList.remove('ip-lock');
     root.setAttribute('data-sec', s.sec);
     var fills = $$('.segs i', prog);
     SECS.forEach(function (sec, k) {
@@ -391,18 +394,56 @@
   function rerender(el) { el.innerHTML = ''; el.className = 'screen norise'; return el; }
 
   /* ================= intro ================= */
+  // A looping preview of the three results (route, meals, training), about 3.4 s a scene.
+  // Fixed-height card, so nothing below it moves as the scenes change. Reduced motion: scene one, still.
+  var INTRO_MEALS = ['batch-butter-chicken-and-rice', 'baked-oats', 'batch-beef-and-lentil-bolognese', 'batch-chicken-and-chickpea-curry', 'batch-chipotle-chicken-burritos-or-bowl', 'batch-beef-stroganoff-and-rice', 'batch-chicken-cacciatore-and-pasta', 'batch-bulking-chilli-bowl'];
+  var INTRO_EX = [['barbell-bench-press', 'Bench press', '3 × 6–8'], ['chest-supported-dumbbell-row', 'Supported row', '3 × 8–10'], ['seated-dumbbell-shoulder-press', 'Shoulder press', '3 × 8–10'], ['lat-pulldown', 'Lat pulldown', '2 × 10–12']];
   function rStart(el) {
     el.classList.add('start');
-    el.innerHTML = '<p class="ov rise" style="--i:0;color:var(--text-3)">Try JSON.fit</p>' +
-      '<h1 class="qh rise" style="--i:1">See your plan<br><em style="color:var(--cyan);text-transform:none">in 60 seconds.</em></h1>' +
-      '<p class="sub rise" style="--i:2">No sign-up. Answer a few questions, then watch the app’s engines build your route, your week of meals and your training.</p>' +
-      '<div class="rise" style="--i:3"><span class="privacy"><i></i>Runs on this page. Nothing you enter is sent anywhere.</span></div>' +
-      '<div class="trio rise" style="--i:4"><div><i>01</i><p><b>Your route</b><span>Your goal, your phases, how long it takes.</span></p></div>' +
-      '<div><i>02</i><p><b>Your food</b><span>A week of meals, one cook day, one shop.</span></p></div>' +
-      '<div><i>03</i><p><b>Your training</b><span>Sets, reps, rest and how hard to push.</span></p></div></div>';
-    primary('Start', function () { startWorker(); ensureAbout().then(function () { go('weight'); }, function (e) { el.insertAdjacentHTML('beforeend', errBox(e.message)); }); });
+    var meals = INTRO_MEALS.map(function (m, i) { return '<img class="ip-meal" style="animation-delay:' + (0.07 * i).toFixed(2) + 's" src="/images/meals/' + m + '.webp" alt="" width="80" height="80" decoding="async" fetchpriority="low">'; }).join('');
+    var exs = INTRO_EX.map(function (x, i) { return '<div class="ip-ex" style="animation-delay:' + (0.1 + 0.15 * i).toFixed(2) + 's"><img src="/images/exercises/' + x[0] + '/blue/end.webp" alt="" width="160" height="50" decoding="async" fetchpriority="low"><b>' + x[1] + '</b><span>' + x[2] + '</span></div>'; }).join('');
+    el.innerHTML = '<div class="ip-mid">' +
+      '<p class="ip-k rise" style="--i:0">Fitness, on autopilot</p>' +
+      '<h1 class="ip-h rise" style="--i:1">Set it up once.<span>Get hours back.</span></h1>' +
+      '<div class="ip-card rise" style="--i:2" role="img" aria-label="Your route, your meals and your training, built for you">' +
+        '<div class="ip-scene on" aria-hidden="true"><div class="ip-sk" style="color:var(--violet-text,#c084fc)">Your route</div><div class="ip-st">77 kg → 70 kg, lean</div><div class="ip-ss">Phases timed to your body</div>' +
+          '<svg viewBox="0 0 300 140"><line x1="0" y1="128" x2="300" y2="128" stroke="#24242a"/><path class="ip-curve" d="M8 34 C 60 36, 80 78, 120 80 S 180 72, 210 94 S 255 110, 286 108"/><circle class="ip-dot" cx="286" cy="108" r="6"/><text class="ip-lbl" x="282" y="94" text-anchor="end">Your goal</text></svg></div>' +
+        '<div class="ip-scene" aria-hidden="true"><div class="ip-sk" style="color:var(--green-text)">Your meals</div><div class="ip-st">7 days on 2,144 kcal</div><div class="ip-ss">One cook, one shopping list, a prep guide</div>' +
+          '<div class="ip-meals">' + meals + '</div><div class="ip-macro"><span style="flex:32;background:var(--green-text)"></span><span style="flex:42;background:#f59e0b"></span><span style="flex:26;background:#f472b6"></span></div></div>' +
+        '<div class="ip-scene" aria-hidden="true"><div class="ip-sk" style="color:var(--cyan)">Your training</div><div class="ip-st">A 1-year program, built instantly</div><div class="ip-ss">Every set, rep and rest, decided</div>' +
+          '<div class="ip-sess">' + exs + '</div></div>' +
+      '</div>' +
+      '<div class="ip-pips rise" style="--i:2" aria-hidden="true"><i class="on"></i><i></i><i></i></div>' +
+      '</div>';
+    var scenes = $$('.ip-scene', el), pips = $$('.ip-pips i', el), k = 0;
+    function scene(n) {
+      scenes.forEach(function (s, i) {
+        s.classList.toggle('on', i === n);
+        // Restart the scene's entrance animations each time it comes round.
+        if (i === n) $$('.ip-curve,.ip-dot,.ip-lbl,.ip-meal,.ip-ex', s).forEach(function (e) { e.style.animation = 'none'; void e.getBoundingClientRect(); e.style.animation = ''; });
+      });
+      pips.forEach(function (p, i) { p.className = i < n ? 'done' : i === n ? 'on' : ''; });
+    }
+    if (!RM && !root.classList.contains('still')) {
+      var tick = setInterval(function () {
+        if (!el.isConnected) { clearInterval(tick); return; }
+        if (document.hidden) return;
+        k = (k + 1) % 3; scene(k);
+      }, 3400);
+    }
+    primary('Build my free plan', function () { startWorker(); ensureAbout().then(function () { go('weight'); }, function (e) { el.insertAdjacentHTML('beforeend', errBox(e.message)); }); });
     startWorker();
+    fitIntro();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitIntro);
   }
+  /** The intro is one screen with no page scroll, but only when it fits; a short viewport (a phone on its side) scrolls as normal. */
+  function fitIntro() {
+    var h = document.documentElement;
+    h.classList.remove('ip-lock');
+    if (!SCREENS[cur] || SCREENS[cur].sec !== 'intro') return;
+    if (h.scrollHeight <= window.innerHeight + 1) h.classList.add('ip-lock');
+  }
+  window.addEventListener('resize', function () { if (SCREENS[cur] && SCREENS[cur].sec === 'intro') requestAnimationFrame(fitIntro); });
 
   /* ================= your route (RouteScreen.tsx, beat by beat) =================
    * The app's walk: 1 weight, 2 sex, 3 body fat, 4 height, 6 age, 5 experience,
@@ -3899,7 +3940,8 @@
   /* ================= leave ================= */
   document.getElementById('exitBtn').onclick = function () {
     var leave = function () { location.href = '/'; };
-    if (SCREENS[cur] && SCREENS[cur].id === 'keep') { leave(); return; }
+    // Nothing to lose yet on the intro, and nothing kept at the end: no sheet.
+    if (SCREENS[cur] && (SCREENS[cur].id === 'keep' || SCREENS[cur].sec === 'intro')) { leave(); return; }
     openSheet('<div class="cf"><h2 class="sh-t c">Leave your plan?</h2><p class="sh-b c">Nothing is saved on this page, so you would start again next time.</p>' +
       '<button type="button" class="sh-go" data-a="stay">Keep going</button><button type="button" class="sh-sec" data-a="leave">Leave</button></div>', function (sh) {
       $('[data-a="stay"]', sh).onclick = function () { closeSheet(); };

@@ -28,17 +28,31 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192-3.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/icon-180-3.png">
 <link rel="preload" href="engines.min.js?v=91224bcf" as="script">
+<!-- the intro preview's images (training, then meals) -->
+<link rel="preload" href="/images/exercises/barbell-bench-press/blue/end.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/exercises/chest-supported-dumbbell-row/blue/end.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/exercises/seated-dumbbell-shoulder-press/blue/end.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/exercises/lat-pulldown/blue/end.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/batch-butter-chicken-and-rice.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/baked-oats.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/batch-beef-and-lentil-bolognese.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/batch-chicken-and-chickpea-curry.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/batch-chipotle-chicken-burritos-or-bowl.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/batch-beef-stroganoff-and-rice.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/batch-chicken-cacciatore-and-pasta.webp" as="image" type="image/webp" fetchpriority="low">
+<link rel="preload" href="/images/meals/batch-bulking-chilli-bowl.webp" as="image" type="image/webp" fetchpriority="low">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
-<link rel="stylesheet" href="try.css?v=1032ad83">
+<link rel="stylesheet" href="try.css?v=4edc61df">
 <script src="/analytics-web.js"
         data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
         data-app-version="web"
         data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
 </head>
 <body>
+<script>document.body.classList.add('immersive');document.documentElement.classList.add('ip-intro');</script>
 
 <nav class="site-nav" aria-label="Main">
   <a href="/" class="logo" aria-label="JSON.fit home">
@@ -69,7 +83,7 @@
   <div class="stage" id="stage" aria-live="polite">
     <noscript><p class="sub" style="padding-top:40px">This page builds your plan with JavaScript, on your device. Turn JavaScript on to try it, or get the app.</p></noscript>
   </div>
-  <div class="cta" id="cta" hidden><div class="cta-note" id="ctaNote" hidden></div><div class="cta-in"><button type="button" class="go" id="nextBtn">Continue</button></div></div>
+  <div class="cta" id="cta" hidden><div class="cta-note" id="ctaNote" hidden></div><div class="cta-in"><button type="button" class="go" id="nextBtn">Continue</button></div><div class="cta-trust" id="ctaTrust"><span class="tf">Free</span><span>No sign-up</span><span>No ads</span><span>62 studies</span></div></div>
 </main>
 
 <footer class="site-foot">
@@ -85,6 +99,6 @@
 </footer>
 
 <script src="/assets/site.js"></script>
-<script>window.TRY_ENGINES='engines.min.js?v=91224bcf';</script><script src="try.js?v=68d3dd6f"></script>
+<script>window.TRY_ENGINES='engines.min.js?v=91224bcf';</script><script src="try.js?v=7f737f1f"></script>
 </body>
 </html>

@@ -58,6 +58,26 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
     if (d.method === 'Log.entryAdded' && d.params.entry.level === 'error') events.push('log: ' + d.params.entry.text + ' ' + (d.params.entry.url || ''));
   };
   await send('Network.enable'); await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable');
+  // The intro is full screen like the questions: no site menu or footer, one viewport with no
+  // page scroll and the button in view; a short viewport (a phone on its side) scrolls instead.
+  for (const [w, h, lock] of [[400, 800, true], [1280, 800, true], [800, 400, false]]) {
+    await send('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: 1, mobile: w < 600 });
+    await send('Page.navigate', { url: BASE + '/try/' });
+    await until(`!!document.querySelector('.screen[data-screen="start"] .ip-card')`);
+    await sleep(600);
+    const r = JSON.parse(await ev(`JSON.stringify({nav:getComputedStyle(document.querySelector('.site-nav')).display, foot:getComputedStyle(document.querySelector('.site-foot')).display, x:document.documentElement.scrollWidth-innerWidth, y:document.documentElement.scrollHeight-innerHeight, lock:document.documentElement.classList.contains('ip-lock'), btn:document.getElementById('nextBtn').getBoundingClientRect().bottom<=innerHeight, label:document.getElementById('nextBtn').textContent, exit:!!document.getElementById('exitBtn').offsetParent, back:!!document.getElementById('backBtn').offsetParent, trust:[...document.querySelectorAll('#ctaTrust span')].map(function(e){return e.textContent}).join(' ')})`));
+    console.log(`intro ${w}x${h}: ` + JSON.stringify(r));
+    if (r.nav !== 'none' || r.foot !== 'none') bad(`intro ${w}x${h}: site menu or footer showing`);
+    if (r.x > 1) bad(`intro ${w}x${h}: ${r.x}px horizontal overflow`);
+    if (lock && (r.y > 1 || !r.lock)) bad(`intro ${w}x${h}: ${r.y}px vertical overflow, lock ${r.lock}`);
+    if (!lock && r.lock) bad(`intro ${w}x${h}: scroll locked on a short viewport`);
+    if (!r.btn) bad(`intro ${w}x${h}: button below the fold`);
+    if (r.label !== 'Build my free plan' || !r.exit || r.back) bad(`intro ${w}x${h}: button/X/back wrong`);
+    if (!/FREE NO SIGN-UP NO ADS 62 STUDIES/i.test(r.trust)) bad(`intro ${w}x${h}: trust row ` + r.trust);
+    if (await ev(`/Runs on this page/.test(document.body.innerText)`)) bad('intro: old privacy line still showing');
+  }
+  // The X on the intro goes straight home, no sheet.
+  await click('#exitBtn'); await until(`location.pathname === '/'`);
   for (const width of [400, 1280]) {
     await send('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width < 600 });
     for (const P of PROFILES) {
