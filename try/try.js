@@ -28,7 +28,7 @@
   var worker = null, seq = 0, pending = {};
   function startWorker() {
     if (worker) return;
-    try { worker = new Worker('engines.min.js'); } catch (e) { worker = null; return; }
+    try { worker = new Worker(window.TRY_ENGINES || 'engines.min.js'); } catch (e) { worker = null; return; }
     worker.onmessage = function (ev) {
       var d = ev.data || {}, p = pending[d.id];
       if (!p) return;

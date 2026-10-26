@@ -36,3 +36,4 @@ COMMON="--bundle --log-level=warning \
 # The slug -> photo / recipe page index the page uses for meal photos and links.
 node "$HERE/meal-index.mjs" "$OUT/engines.cjs" "$SITE"
 echo "try/engines.min.js from app $VER ($REV): $(wc -c < "$SITE/try/engines.min.js" | tr -d ' ') bytes, $(gzip -c "$SITE/try/engines.min.js" | wc -c | tr -d ' ') gzipped"
+sh "$HERE/stamp.sh"
