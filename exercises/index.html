@@ -135,10 +135,8 @@ h1 .cyan{display:block}
 
 <main>
   <header class="head">
-    <span class="label">The exercise library</span>
-    <h1>144 exercises. <span class="cyan">Every one earns its place.</span></h1>
-    <p class="sub">Each exercise was chosen for a muscle. Tap one to see what it trains, what it helps, how long the app rests it, and how to do it.</p>
-    <div class="stats"><div class="stat"><b id="sTotal">–</b><span>exercises</span></div><div class="stat"><b id="sMuscles">–</b><span>muscles tagged</span></div><div class="stat"><b id="sComp">–</b><span>compound</span></div><div class="stat"><b id="sIso">–</b><span>isolation</span></div></div>
+    <span class="label">144 exercises</span>
+    <h1>The exercise <span class="cyan">library.</span></h1>
   </header>
 
   <div class="controls"><div class="wrap row">
@@ -262,8 +260,7 @@ h1 .cyan{display:block}
   fetch('/exercises/exercises.json').then(function(r){ return r.json(); }).then(function(d){
     EX = d.exercises;
     var tagged = new Set(); EX.forEach(function(e){ e.primary.concat(e.secondary).forEach(function(t){ tagged.add(t); }); });
-    document.getElementById('sTotal').textContent = EX.length; document.getElementById('sMuscles').textContent = tagged.size;
-    document.getElementById('sComp').textContent = EX.filter(function(e){ return e.category === 'Compound'; }).length; document.getElementById('sIso').textContent = EX.filter(function(e){ return e.category !== 'Compound'; }).length;
+    // Stats row removed 27 Oct 2026 (header now matches the meal library: label + title only)
     render();
     var h = location.hash.replace('#',''); if (h) openSheet(h, false);
   }).catch(function(){ grid.innerHTML = '<div class="empty">The library could not be loaded.</div>'; });
