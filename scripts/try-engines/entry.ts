@@ -24,12 +24,6 @@ import { saveGoalsProfile, loadGoalsProfile } from 'APP_DIR/src/utils/goalsProfi
 import { replanRoute, expandPhases, journeyRoadmap, loadSavedRoutePlan } from 'APP_DIR/src/utils/phaseJourney';
 import { computeMacrosPhaseAware } from 'APP_DIR/src/utils/nutritionMacros';
 import { saveNutritionAnswers, resolveNutritionAnswers } from 'APP_DIR/src/utils/nutritionQuestionnaireStorage';
-import { WorkoutStorage } from 'APP_DIR/src/utils/storage';
-import { generateProgram } from 'APP_DIR/src/utils/workoutGenerator/generateProgram';
-import { rawBlockSummary, resolveProfile, targetsFor } from 'APP_DIR/src/utils/workoutGenerator/check';
-import { resolveRest } from 'APP_DIR/src/utils/restResolver';
-import { availableEquipment } from 'APP_DIR/src/utils/equipmentAvailability';
-import { buildView } from 'APP_DIR/src/utils/workoutGenerator/display';
 import { REP_STYLE_OPTIONS } from 'APP_DIR/src/data/repStyles';
 import MEALS_PART from "./meals-part";
 import TRAINING_PART from "./training-part";
@@ -233,45 +227,6 @@ async function buildRoute(about: any, nutrition?: any) {
   };
 }
 
-/** The workout program, built the way generateProgramFromStorage does (loadWorkoutProfile). */
-async function buildProgram(about: any, training: any) {
-  const goalsProfile = planProfileFor(goalsProfileFrom(about), about.route || 'lean', choiceOf(about));
-  const questionnaire: any = {
-    totalTrainingDays: training.days,
-    programDuration: training.programDuration || '8_weeks',
-    volumePreference: training.volumePreference || 'not_sure',
-    repStyle: training.repStyle || 'classic',
-    gender: about.sex,
-    priorityMuscleGroups: [],
-    auxiliaryMuscles: [],
-    movementLimitations: [],
-    selectedEquipment: [training.equipment || 'commercial_gym'],
-  };
-  const appEquipment = availableEquipment(questionnaire.selectedEquipment);
-  const profile = { id: 'web', kind: 'workout', label: 'web', questionnaire, goalsProfile };
-  const { program, notes } = generateProgram(profile as any);
-  const resolved = resolveProfile(profile as any, { blocks: [] });
-  const targets = targetsFor(resolved);
-  const summary = rawBlockSummary(program.blocks[0]);
-  // Rest for week 1 of block 1, per exercise, at the program's default pace.
-  const pace = program.default_pace || 'moderate';
-  for (const b of program.blocks) {
-    for (const d of b.days) {
-      for (const e of d.exercises) {
-        try {
-          const t = resolveRest({ exerciseName: e.exercise, repsThisWeek: e.reps_weekly?.['1'], rirThisWeek: e.rir_weekly?.['1'], isDeloadWeek: false } as any);
-          e._restSec = t?.[pace] ?? t?.moderate ?? null;
-        } catch {
-          e._restSec = null;
-        }
-      }
-    }
-  }
-  // WorkoutBuildScreen's step list and day rows, from the app's own buildView.
-  const view = buildView(program, notes, profile as any);
-  return { program, notes, targets, volume: summary?.volume ?? null, appBuildsGym: appEquipment[0] !== questionnaire.selectedEquipment[0], view: { steps: view.steps, days: view.days, weeks: view.weeks, deloads: view.deloads, movements: view.movements } };
-}
-
 const API: any = {
   version: () => ({ app: __APP_VERSION__, rev: __APP_REV__ }),
   defaults,
@@ -279,7 +234,6 @@ const API: any = {
   routeView,
   paperCount: () => VERIFIED_PAPER_COUNT,
   buildRoute,
-  buildProgram,
   repStyles: () => REP_STYLE_OPTIONS,
   ...MEALS_PART,
   buildMeals: (about: any, food: any) => MEALS_PART.buildMeals(about, food, buildRoute),

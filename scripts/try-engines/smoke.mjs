@@ -49,12 +49,17 @@ for (const P of PROFILES) {
     if (P.food.dietPattern === 'vegetarian' || P.food.dietPattern === 'vegan') say('  slugs:', [...slugs].join(', '));
     for (const s of [...slugs]) if (index[s]?.i && !existsSync(path.join(SITE, 'images/meals', index[s].i + '.webp'))) bad('missing image ' + s);
     if (!meals.grocery.rows.length) bad('no grocery');
-    const w = await E.buildProgram(about, P.training);
+    // Training: the answers the workout questions save (training-part.ts buildProgramFrom).
+    const st = await E.trainingStart(about);
+    const saved = { totalTrainingDays: P.training.days, programDuration: P.training.length || '8_weeks', selectedEquipment: st.defaultEquipment, volumePreference: st.recommendedVolume,
+      refinementPresets: [], priorityMuscleGroups: [], auxiliaryMuscles: [], movementLimitations: [], gender: st.sex, includeDirectCore: true, repStyle: 'classic' };
+    const w = await E.buildProgramFrom(about, saved);
     const b0 = w.program.blocks[0];
     const exs = b0.days.flatMap((x) => x.exercises);
-    say(`  program: ${w.program.routine_name}, ${w.program.blocks.length} blocks, ${b0.days.length} days, ${exs.length} exercises, rest ${exs.slice(0, 3).map((e) => e._restSec).join('/')}s, appBuildsGym ${w.appBuildsGym}; volume ${JSON.stringify(w.volume).slice(0, 160)}`);
+    const logs = w.views.logs;
+    say(`  program: ${w.program.routine_name}, ${w.program.blocks.length} blocks, ${b0.days.filter((x) => x.exercises.length).length} days, ${exs.length} exercises; ${w.views.landingMeta}; hero ${w.views.hero.label}; rest ${logs[0].exercises.slice(0, 3).map((e) => e.rest.moderate).join('/')}s; paces ${JSON.stringify(logs[0].paces)}`);
     if (!exs.length) bad('no exercises');
-    if (exs.some((e) => !(e._restSec > 0))) bad('rest missing');
+    if (logs.some((l) => l.exercises.some((e) => !(e.rest?.moderate > 0)))) bad('rest missing');
   } catch (e) {
     bad(P.name + ' threw ' + (e?.stack || e));
   }
