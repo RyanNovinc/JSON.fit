@@ -16,7 +16,7 @@ const index = JSON.parse(readFileSync(path.join(SITE, 'try/meal-index.json'), 'u
 const PROFILES = [
   { name: 'man cut gym 4', about: { sex: 'male', ageYears: 34, heightCm: 180, weightKg: 92, bodyFatPct: 25, goalWeightKg: 82, goalBodyFatPct: 13, trainingState: 'consistent', activityLevel: 'light', trainingSessionsPerWeek: 3.5, route: 'lean' }, food: { mealsPerDay: 3, dietPattern: 'any' }, training: { days: 4, equipment: 'commercial_gym' } },
   { name: 'woman cut veg 3 home', about: { sex: 'female', ageYears: 41, heightCm: 165, weightKg: 74, bodyFatPct: 34, goalWeightKg: 64, goalBodyFatPct: 26, trainingState: 'new', activityLevel: 'sedentary', trainingSessionsPerWeek: 1.5, route: 'lean' }, food: { mealsPerDay: 3, dietPattern: 'vegetarian', allergies: ['Nuts'] }, training: { days: 3, equipment: 'home_gym' } },
-  { name: 'skinny man gain 6', about: { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFatPct: 12, goalWeightKg: 80, goalBodyFatPct: 13, trainingState: 'new', activityLevel: 'moderate', trainingSessionsPerWeek: 5.5, route: 'bulk' }, food: { mealsPerDay: 4, dietPattern: 'any', snackFrequency: '2' }, training: { days: 6, equipment: 'commercial_gym' } },
+  { name: 'skinny man gain 6', about: { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFatPct: 12, goalWeightKg: 80, goalBodyFatPct: 13, trainingState: 'new', activityLevel: 'moderate', trainingSessionsPerWeek: 5.5, route: 'bulk' }, food: { mealsPerDay: 4, dietPattern: 'any', snackFrequency: '2', lowAppetite: true }, training: { days: 6, equipment: 'commercial_gym' } },
   { name: 'woman gain capped 2 bodyweight', about: { sex: 'female', ageYears: 29, heightCm: 170, weightKg: 58, bodyFatPct: 24, goalWeightKg: 63, goalBodyFatPct: 24, trainingState: 'returning', activityLevel: 'moderate', trainingSessionsPerWeek: 1.5, route: 'capped' }, food: { mealsPerDay: 2, dietPattern: 'pescatarian', allergies: ['Dairy'] }, training: { days: 2, equipment: 'bodyweight' } },
   { name: 'vegan man picks', about: { sex: 'male', ageYears: 45, heightCm: 175, weightKg: 85, bodyFatPct: 22, goalWeightKg: 80, goalBodyFatPct: 15, trainingState: 'advanced', activityLevel: 'heavy', trainingSessionsPerWeek: 3.5, route: 'lean' }, food: { mealsPerDay: 3, dietPattern: 'vegan' }, training: { days: 5, equipment: 'basic_equipment' } },
   { name: 'defaults', about: null, food: {}, training: { days: 3 } },
@@ -35,9 +35,12 @@ for (const P of PROFILES) {
     if (!(m.calories > 1100 && m.calories < 5000)) bad('kcal ' + m.calories);
     if (!r.phases.length) bad('no phases');
     if (!r.curve) bad('no curve');
-    const grid = E.mainsGrid({ dietPattern: P.food.dietPattern, allergies: P.food.allergies });
-    const picks = P.name === 'vegan man picks' ? grid.meals.slice(0, 3).map((x) => x.slug) : [];
-    const meals = await E.buildMeals(about, { ...P.food, picks });
+    const food = { dietType: 'balanced', dietPattern: 'any', allergies: [], skip: [], keepLower: [], sleep: { bed: 1350, wake: 390, strictness: 'moderate', overrides: {} }, mealsPerDay: 3, snackFrequency: 'ai_decide', mealVariety: 'balanced', snacks: { ticked: ['sn_banana', 'sn_greek_yog'], own: [] }, dessertFrequency: '0', dessertDays: [], slowCooker: '5_6l', slowCookerCount: 1, blender: 'yes', freezerTubs: 16, shopCadence: 'weekly', stockUp: false, startDate: 'tomorrow', picks: { saved: false, keys: [], allergenOk: {}, versionChoices: {}, useUp: [] }, ...P.food };
+    const pv = (await E.mealView(about, food, 'picks')).picker;
+    const mainsTab = pv.tabs.find((t) => t.shelf === 'lunch') || pv.tabs.find((t) => t.shelf === 'dinner');
+    const grid = { meals: mainsTab.lists.all.top, recommend: pv.mainsRec };
+    if (P.name === 'vegan man picks') food.picks = { ...food.picks, saved: true, keys: grid.meals.slice(0, 3).map((s) => mainsTab.planSlot + '|' + s) };
+    const meals = await E.buildMeals(about, food);
     const days = Object.values(meals.plan.dailyMeals);
     const t = meals.report.targets;
     const inBand = meals.report.days.filter((x) => x.kcal >= t.kcalLo && x.kcal <= t.kcalHi && x.protein >= t.proteinLo).length;

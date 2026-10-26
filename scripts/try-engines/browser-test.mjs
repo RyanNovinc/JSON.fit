@@ -13,7 +13,7 @@ const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = 9333 + Math.floor(Math.random() * 500);
 const prof = mkdtempSync(path.join(os.tmpdir(), 'trytest-'));
 const ch = spawn(CHROME, ['--headless=new', '--disable-gpu', `--remote-debugging-port=${PORT}`, `--user-data-dir=${prof}`, 'about:blank'], { stdio: 'ignore' });
-const kill = setTimeout(() => { console.log('TIMEOUT'); ch.kill('SIGKILL'); process.exit(2); }, 240000);
+const kill = setTimeout(() => { console.log('TIMEOUT'); ch.kill('SIGKILL'); process.exit(2); }, 1200000);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let ws, id = 0; const wait = {}, events = [];
 async function connect() {
@@ -40,10 +40,10 @@ const click = (sel) => ev(`(function(){var e=document.querySelector(${JSON.strin
 const stepIsOld = (n) => until(`document.getElementById('barLbl') && document.getElementById('barLbl').textContent.indexOf('Step ${n} of')===0 && !document.querySelector('.loading')`);
 
 const PROFILES = [
-  { name: 'default man, gym 4', sex: 'male', lift: 'consistent', route: 'lean', active: 'light', band: '3.5', meat: 'any', allergies: [], skip: [], meals: '3', dessert: 'ai_decide', picks: 0, days: '4', equip: 'commercial_gym' },
-  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', band: '1.5', meat: 'vegetarian', allergies: ['Nuts'], skip: [], meals: '4', dessert: 'once_per_week', picks: 0, days: '2', equip: 'home_gym', estimate: true },
-  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', band: '5.5', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', dessert: '0', picks: 3, days: '6', equip: 'bodyweight', imperial: true },
-  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', dessert: 'ai_decide', picks: 1, days: '3', equip: 'basic_equipment' },
+  { name: 'default man, gym 4', sex: 'male', lift: 'consistent', route: 'lean', active: 'light', band: '3.5', meat: 'any', allergies: [], skip: [], meals: '3', snacks: 'ai_decide', dessert: 'ai_decide', picks: 0, days: '4', equip: 'commercial_gym' },
+  { name: 'woman cut vegetarian home 2', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', band: '1.5', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', equip: 'home_gym', estimate: true },
+  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', band: '5.5', diet: 'custom', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', snacks: '2', dessert: '0', freezer: 60, picks: 3, days: '6', equip: 'bodyweight', imperial: true },
+  { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', band: '3.5', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', snacks: '0', sleepSkip: true, dessert: 'ai_decide', picks: 1, days: '3', equip: 'basic_equipment' },
 ];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
 (async () => {
@@ -114,17 +114,44 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         await go(); await until(`!!document.querySelector('.sheet.on [data-a="lock"]')`); await click('.sheet [data-a="lock"]');
         await scr('locked', 8000); await overflow('locked');
         await go(); await scr('active'); await opt(P.active); await go();
-        await scr('sessions'); await opt(P.band);
-        await go(); await scr('meat'); await opt(P.meat); await go();
-        await scr('allergies'); for (const x of P.allergies) await opt(x); await go();
-        await scr('skip'); for (const x of P.skip) await opt(x); await go();
-        await scr('eat'); await opt(P.meals); await go();
-        await scr('dessert'); await opt(P.dessert); await go();
-        await scr('picks'); await images('picks'); await overflow('picks');
-        for (let i = 1; i <= P.picks; i++) await click(`.pick:nth-child(${i})`);
-        await go(); await scr('mealbuild');
-        // Skip by tapping, once the step list is showing.
-        await until(`!!document.querySelector('.act2.on')`, 20000); await click('.screen.bm');
+        await scr('sessions'); await opt(P.band); await go();
+        // The meal questions, in the order the app asks them; conditional steps by what shows up.
+        const typeIn = (sel, text) => ev(`(function(){var e=document.querySelector(${JSON.stringify(sel)}); e.value=${JSON.stringify(text)}; e.dispatchEvent(new Event('input',{bubbles:true})); return 1})()`);
+        const seenMeal = [];
+        for (let k = 0; k < 30; k++) {
+          await until(`(function(){var s=document.querySelector('.screen'); return !!s && !s.querySelector('.loading') && !document.querySelector('.screen.out-l,.screen.out-r') && s.children.length>0})()`, 45000);
+          const id = await ev(`document.querySelector('.screen').getAttribute('data-screen')`);
+          if (id === 'weekready') break;
+          seenMeal.push(id); await overflow(id);
+          if (id === 'diettype') { await opt(P.diet || 'balanced'); if (P.diet === 'custom') { await typeIn('[data-k="p"]', '30'); await typeIn('[data-k="c"]', '45'); await typeIn('[data-k="f"]', '25'); await sleep(400); } }
+          else if (id === 'meat') await opt(P.meat);
+          else if (id === 'allergies') { for (const x of P.allergies) await click(`[data-a="${x}"]`); if (P.typedAllergy) { await typeIn('#alIn', P.typedAllergy); await click('#alAdd'); } }
+          else if (id === 'skip') { if (P.search) { await typeIn('#skQ', P.search); await until(`!!document.querySelector('.results .frow')`); await click('.results .frow'); } for (const x of P.skip) await click(`[data-tg="${x}"]`); }
+          else if (id === 'keeplower') { if (P.keepLower) await click(`[data-k="${P.keepLower}"]`); }
+          else if (id === 'sleep') { if (P.sleepSkip) { await click('#slSkip'); continue; } await click('[data-t="bed"][data-d="15"]'); await click('.mtap'); await sleep(200); await click('[data-m="15"]'); await sleep(200); }
+          else if (id === 'eat') { await click(`[data-n="${P.meals}"]`); await click(`#sk [data-s="${P.snacks}"]`); }
+          else if (id === 'snacks') { await images('snacks'); }
+          else if (id === 'appetite') await opt('yes');
+          else if (id === 'dessert') await opt(P.dessert);
+          else if (id === 'cooker') { await click(`[data-sz="${P.cooker || '5_6l'}"]`); await click('[data-bl="yes"]'); }
+          else if (id === 'freezer') await click(`[data-fz="${P.freezer || 16}"]`);
+          else if (id === 'cadence') await click('[data-cd="weekly"]');
+          else if (id === 'stockup') await click('[data-su="false"]');
+          else if (id === 'picks') {
+            await images('picks');
+            if (!P.picks) { await click('#chooseMe'); continue; }
+            await click('[data-tab$=":lunch"],[data-tab$=":dinner"]'); await sleep(200);
+            for (let i = 0; i < P.picks; i++) { await ev(`(function(){var c=[...document.querySelectorAll('.mgrid2 .mcard:not(.on) .mtp')][0]; c.click(); return 1})()`); await sleep(150); if (await ev(`!!document.querySelector('.sheet.on [data-a="anyway"]')`)) { await click('.sheet [data-a="anyway"]'); await sleep(300); } }
+            await go(); await until(`!!document.querySelector('.sheet.on #cfOk')`); await click('#cfOk'); continue;
+          }
+          else if (id === 'mealbuild') { await until(`!document.querySelector('.screen[data-screen="mealbuild"]')`, 60000); continue; }
+          else if (id === 'mealnote') { await click('#nKeep'); continue; }
+          else if (id === 'mealweek') { await click('#wUse'); continue; }
+          else if (id === 'mealgap') { await until(`!!document.querySelector('#gKeep')`, 60000); await click('#gKeep'); continue; }
+          if (id === 'mealsummary') { await click('#nextBtn'); continue; }
+          await go();
+        }
+        console.log(`  meals: ${seenMeal.join(' > ')}`);
         await scr('weekready', 20000); await overflow('weekready'); await images('weekready');
         const ready = await ev(`document.querySelector('.screen .sub').textContent`);
         await go(); await scr('today'); await overflow('today'); await images('today');
@@ -141,6 +168,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         console.log(`  shop: ${aisles} aisles`);
         // Back returns to the day.
         await click('#backBtn'); await scr('today'); await click('#shopBtn'); await scr('shop');
+        await go(); await scr('mealsdone'); await overflow('mealsdone');
         await go(); await scr('days'); await opt(P.days); await go();
         await scr('equip'); await opt(P.equip);
         await scr('progbuild'); await scr('program', 20000); await overflow('program'); await images('program');
@@ -156,8 +184,9 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
             } catch (e) { bad(String(e.message || e)); }
       for (const e of events) bad(e);
       const posts = requests.filter((r) => r.method !== 'GET');
-      const off = requests.filter((r) => r.method === 'GET' && !r.url.startsWith(BASE) && !/fonts\.(googleapis|gstatic)\.com|googletagmanager\.com|google-analytics\.com/.test(r.url));
+      const off = requests.filter((r) => r.method === 'GET' && !r.url.startsWith(BASE) && !r.url.startsWith('data:') && !/fonts\.(googleapis|gstatic)\.com|googletagmanager\.com|google-analytics\.com/.test(r.url));
       for (const r of off) bad('unexpected request ' + r.url);
+      for (const r of requests) if (/Kiwi|cinnamon/i.test(r.url + r.body)) bad('typed text left the page: ' + r.url);
       for (const p of posts) {
         const isAnalytics = /lambda-url|google-analytics|googletagmanager|analytics\.google/.test(p.url);
         if (!isAnalytics) bad('unexpected ' + p.method + ' ' + p.url);
@@ -166,7 +195,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
           const evs = JSON.parse(p.body).events || [];
           for (const e of evs) {
             const pr = Object.assign({}, e.properties || {}); delete pr.screen; const props = JSON.stringify(pr);
-            if (/kg|vegetarian|vegan|Nuts|bodyFat|goal|weight/i.test(props)) bad('analytics carries an answer: ' + props);
+            if (/kg|vegetarian|vegan|Nuts|Kiwi|cinnamon|bodyFat|goal|weight/i.test(props)) bad('analytics carries an answer: ' + props);
           }
           console.log('  analytics events: ' + evs.map((e) => e.event + (e.event === 'try_step' ? e.properties.step : '')).join(' '));
         }
