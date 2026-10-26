@@ -7,7 +7,7 @@
  * this tab's memory only. Nothing typed here is sent, stored or put in the
  * URL; the only events are the screens reached (track('try_step', {step, screen})).
  *
- * ?step=<number or screen id>&demo=1 (or demo=2) fills the answers and opens a
+ * ?step=<number or screen id>&demo=1 (or demo=2, or demo=3 with allergies, skipped foods and salt) fills the answers and opens a
  * screen, for screenshots and tests.
  */
 (function () {
@@ -1182,7 +1182,7 @@
   function rAllergies(el) {
     var f = S.food;
     qhead(el, stepLine('allergies', 'Allergies'), 'Any allergies?', 'Meals with these are left out of your plan. Always check ingredient labels yourself. Skip if none apply.');
-    el.insertAdjacentHTML('beforeend', '<div class="fchipwrap rise" style="--i:2" id="alChips"></div>' +
+    el.insertAdjacentHTML('beforeend', '<div class="chipwrap rise" style="--i:2" id="alChips"></div>' +
       '<div class="addf rise" style="--i:3"><input type="text" id="alIn" placeholder="Add another allergy" maxlength="40" autocomplete="off" aria-label="Add another allergy"><button type="button" id="alAdd" aria-label="Add">' + PLUS + '</button></div>' +
       '<p class="remind" id="alRem"><span>' + INFO + '</span>' + LABEL_REMINDER + '</p>');
     var draw = function () {
@@ -1222,12 +1222,12 @@
       var draw = function () {
         var typing = q.trim().length > 0, h = '';
         if (typing) h += '<div class="results">' + (results.length ? results.map(function (r, i) { return row(r, i === results.length - 1); }).join('') : '<p class="nores">No meals use “' + esc(q.trim()) + '”, so there’s nothing to skip.</p>') + '</div>';
-        if (f.skip.length) h += '<div class="fchipwrap">' + f.skip.map(function (id) { return '<button type="button" class="fchip on" data-rm="' + esc(id) + '" aria-label="' + esc(cat.names[id] || id) + ', skipped. Tap to remove">' + esc(cat.names[id] || id) + ' <i>' + XS + '</i></button>'; }).join('') + '</div>';
+        if (f.skip.length) h += '<div class="chipwrap">' + f.skip.map(function (id) { return '<button type="button" class="fchip on" data-rm="' + esc(id) + '" aria-label="' + esc(cat.names[id] || id) + ', skipped. Tap to remove">' + esc(cat.names[id] || id) + ' <i>' + XS + '</i></button>'; }).join('') + '</div>';
         var pop = cat.popular.filter(function (x) { return f.skip.indexOf(x.id) < 0; });
-        if (pop.length) h += '<p class="ovs">Common ones</p><div class="fchipwrap">' + pop.map(function (x) { return '<button type="button" class="fchip" data-tg="' + esc(x.id) + '">' + esc(x.name) + '</button>'; }).join('') + '</div>';
+        if (pop.length) h += '<p class="ovs">Common ones</p><div class="chipwrap">' + pop.map(function (x) { return '<button type="button" class="fchip" data-tg="' + esc(x.id) + '">' + esc(x.name) + '</button>'; }).join('') + '</div>';
         if (!typing) {
           var groups = cat.groups.filter(function (g) { return f.skip.indexOf(g.id) < 0; });
-          if (groups.length) h += '<p class="ovs">Whole groups</p><div class="fchipwrap">' + groups.map(function (g) { return '<button type="button" class="fchip" data-tg="' + esc(g.id) + '">' + esc(g.name) + '</button>'; }).join('') + '</div>';
+          if (groups.length) h += '<p class="ovs">Whole groups</p><div class="chipwrap">' + groups.map(function (g) { return '<button type="button" class="fchip" data-tg="' + esc(g.id) + '">' + esc(g.name) + '</button>'; }).join('') + '</div>';
           h += '<p class="ovs">Every food in JSON.fit · ' + cat.count + '</p><div class="alist">' + cat.sections.map(function (s) { return '<p class="letter">' + s.letter + '</p>' + s.items.map(function (r, i) { return row(r, i === s.items.length - 1); }).join(''); }).join('') + '</div>';
         }
         body.innerHTML = h;
@@ -2183,7 +2183,7 @@
             (have.length ? '<div class="uuse"><span>Using <b>' + esc(have.slice(0, 3).map(function (h) { return shortName(h.name); }).join(', ') + (have.length > 3 ? ' +' + (have.length - 3) : '')) + '</b></span><button type="button" id="fillWeek">Fill my week</button></div>' : '') + '</div>' +
           (t.useUp.length ? '<p class="rowt">Uses what you have</p><div class="mrowx">' + t.useUp.map(function (u) { var m = V.meals[u.slug], pk = view.some(function (k) { return k === u.slug || k.indexOf(u.slug + ':') === 0; }); return '<button type="button" class="mcmini' + (pk ? ' on' : '') + '" data-card="' + u.slug + '"><span class="mimg">' + photoFile(m.image, '') + '<span class="cb">' + (pk ? CHECK : '') + '</span></span><b>' + esc(m.name) + '</b><small>' + esc(u.sub) + '</small></button>'; }).join('') + '</div>' : '') +
           '<div class="filt">' + [['all', 'All'], ['quick', 'Quick'], ['no_cook', 'No-cook'], ['batch', 'Big batch']].map(function (q) { return '<button type="button" data-qf="' + q[0] + '" aria-pressed="' + (S.pk.filter === q[0]) + '">' + q[1] + '</button>'; }).join('') + '</div>' +
-          (L.top.length + L.low.length === 0 ? '<div class="empty"><p>No matches with this filter.</p><button type="button" class="linkb small" id="clrF">Clear filter</button></div>' :
+          (L.top.length + L.low.length === 0 ? '<div class="pempty"><p>No matches with this filter.</p><button type="button" class="linkb small" id="clrF">Clear filter</button></div>' :
             rows.map(function (r) {
               if (r[0] === 'grid') return '<div class="mgrid2">' + r[1].map(function (s) { return cardHtml(s, view, saltMg[s]); }).join('') + '</div>';
               if (r[0] === 'div') return '<p class="sdiv"><span>' + esc(r[1]) + '</span><i></i></p>';
@@ -2434,6 +2434,18 @@
       var overline = isK ? (dessertNight ? 'Calories · your dessert night' + (nDays > 1 ? 's' : '') : someDays ? 'Calories · ' + nDays + ' day' + (nDays === 1 ? '' : 's') + ' a week' : 'Calories · every day') : 'Protein · your week';
       var why = !isK ? 'Your favourites top out at about ' + (R.proteinCeiling != null ? R.proteinCeiling : now) + ' g a day.' : someDays ? (dessertNight ? 'Your dessert night' + (nDays > 1 ? 's land' : ' lands') : nDays + ' day' + (nDays === 1 ? ' lands' : 's land')) + ' at about ' + fmt(now) + ' kcal, ' + fmt(Math.abs(now - (over ? hi : lo))) + ' ' + (over ? 'over your' : 'under your') + ' ' + fmt(over ? hi : lo) + ' ' + (over ? 'max' : 'minimum') + '.' : over ? 'Even the smallest portions of your favourites come to about ' + fmt(Math.min(kg.bound, now)) + ' kcal a day, over your ' + fmt(hi) + ' max.' : 'Your favourites top out at about ' + fmt(Math.max(kg.bound, now)) + ' kcal a day, under your ' + fmt(lo) + ' minimum.';
       var options = null, picked = null;
+      // GapPanel.fixName: calorie swaps say what they replace.
+      var SLOT_NOUN = { dessert: 'dessert', breakfast: 'breakfast', brunch: 'brunch', lunch: 'lunch', dinner: 'dinner', snack: 'snack', second_lunch: 'second lunch', early_dinner: 'early dinner' };
+      var replaced = function (slot) {
+        var dates = Object.keys(M.plan.dailyMeals).sort(), days = isK && kg.days.length ? kg.days : dates.map(function (_, i) { return i; }), found = [];
+        days.forEach(function (d) { ((M.plan.dailyMeals[dates[d]] || {}).meals || []).forEach(function (m) { if ((m.type === slot || (slot === 'snack' && /_snack$/.test(m.type))) && (m.tags || []).indexOf('adjuster') < 0) found.push({ name: m.name, kcal: m.calories }); }); });
+        if (!found.length) return null;
+        return found.sort(function (a, b) { return over ? b.kcal - a.kcal : a.kcal - b.kcal; })[0];
+      };
+      var fixName = function (x) {
+        if (isK && x.kind === 'add_meal') { var r = replaced(x.slot); return (over ? 'Lighter ' : 'Bigger ') + (SLOT_NOUN[x.slot] || x.slot) + ': ' + x.name + (r ? ' instead of ' + r.name : ''); }
+        return x.title;
+      };
       var draw = function () {
         var chosen = options && options.filter(function (o) { return o.i === picked; })[0];
         var after = chosen ? (isK && (chosen.inRange || chosen.otherMiss) ? mid : chosen.value) : null;
@@ -2449,7 +2461,7 @@
           '<p class="sub">' + esc(lead) + '</p>' +
           (options == null ? '<div class="think"><span class="tdots"><i></i><i></i><i></i></span><b>Finding what fixes it</b><small>Looking through the library…</small></div>' : '<div class="fixes">' + options.map(function (o) {
             var r = res(o), on = picked === o.i, f0 = o.fixes[0];
-            return '<button type="button" class="fopt' + (on ? ' on' : '') + '" data-o="' + o.i + '" role="radio" aria-checked="' + on + '"><span class="fimg">' + (f0.image ? photoFile(f0.image, '') : '<b>' + (f0.kind === 'fewer_desserts' ? '−1' : '−') + '</b>') + '</span><span class="ftx"><b>' + esc(o.fixes.map(function (x) { return x.title; }).join(' + ')) + '</b><small><em class="' + (r[2] ? 'ok' : 'amb') + '">' + esc(r[0]) + '</em>' + esc(r[1]) + '</small></span><span class="rad"></span></button>';
+            return '<button type="button" class="fopt' + (on ? ' on' : '') + '" data-o="' + o.i + '" role="radio" aria-checked="' + on + '"><span class="fimg">' + (f0.image ? photoFile(f0.image, '') : '<b>' + (f0.kind === 'fewer_desserts' ? '−1' : '−') + '</b>') + '</span><span class="ftx"><b>' + esc(o.fixes.map(fixName).join(' + ')) + '</b><small><em class="' + (r[2] ? 'ok' : 'amb') + '">' + esc(r[0]) + '</em>' + esc(r[1]) + '</small></span><span class="rad"></span></button>';
           }).join('') + '</div>') +
           (options != null ? '<div class="pbtns">' + (chosen ? '<button type="button" class="pgo" id="gUse">Use this plan</button>' : '<button type="button" class="pgo" id="gFav">Choose other favourites</button>') +
             '<button type="button" class="pghost two" id="gKeep">' + (someDays ? 'Keep it as it is' : 'Keep my picks as they are') + '<small>' + (someDays ? 'it’s ' + nDays + ' night' + (nDays === 1 ? '' : 's') + ' a week' : isK ? 'and land around ' + fmt(now) + ' kcal a day' : 'and aim for about ' + now + ' g this week') + '</small></button>' +
@@ -2744,7 +2756,7 @@
       : function () {
           return ensureAbout().then(function () {
             var a = S.about; a.sex = 'male'; a.trainingState = 'consistent'; a.activityLevel = 'light'; a.trainingSessionsPerWeek = 3.5;
-            S.food = Object.assign(freshFood(), { dietType: 'balanced', dietPattern: 'any', keepLower: [], mealsPerDay: 3, snackFrequency: '2', dessertFrequency: 'few_per_week', dessertDays: [2, 4, 6], slowCooker: '5_6l', blender: 'yes', freezerTubs: 16, shopCadence: 'weekly', stockUp: false });
+            S.food = Object.assign(freshFood(), demo === '3' ? { allergies: ['Gluten/Wheat', 'Dairy'], skip: ['mushrooms'], keepLower: ['salt'], snacks: { ticked: null, own: [{ name: 'Protein bar', kcal: 210, protein: 20, serve: '1 bar', kind: 'snack' }] } } : {}, { dietType: 'balanced', dietPattern: 'any', keepLower: demo === '3' ? ['salt'] : [], mealsPerDay: 3, snackFrequency: '2', dessertFrequency: 'few_per_week', dessertDays: [2, 4, 6], slowCooker: '5_6l', blender: 'yes', freezerTubs: 16, shopCadence: 'weekly', stockUp: false });
             S.training = { days: 4, equipment: 'commercial_gym' };
           });
         };

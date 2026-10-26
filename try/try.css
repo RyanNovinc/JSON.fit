@@ -682,7 +682,7 @@ svg.lg .pin{stroke:var(--acc);stroke-width:2.5;stroke-linecap:round} svg.lg .pin
 .filt{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:16px}
 .filt button{flex:none;border:0;border-radius:999px;background:#1c1c20;color:#a1a1aa;font:600 .84rem var(--sans);padding:8px 14px;cursor:pointer}
 .filt button[aria-pressed="true"]{background:#fafafa;color:#0a0a0b}
-.empty{text-align:center;padding:40px 0;color:#71717a}
+.pempty{text-align:center;padding:40px 0;color:#71717a}
 .sdiv{display:flex;align-items:center;gap:10px;margin-top:22px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#71717a}
 .sdiv.acc{color:var(--acc)}
 .sdiv i{flex:1;height:1px;background:#26262b}
@@ -855,3 +855,4 @@ html.still .wall,html.still .cphoto .cwipe,html.still .strike s,html.still .tdot
 .mcard .mtp{flex:1;aspect-ratio:auto;min-height:0}
 .sdot,.rdots span,.mcard .mimg,.mcmini .mimg{display:block;flex:none}
 .cta-note .strip{background:rgba(8,8,11,.6);border-radius:16px;padding:6px 0 0}
+.pk{padding-bottom:120px}
