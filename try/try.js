@@ -23,6 +23,7 @@
   var cta = document.getElementById('cta');
   var nextBtn = document.getElementById('nextBtn');
   var backBtn = document.getElementById('backBtn');
+  var infoBtn = document.getElementById('infoBtn');
 
   /* ================= engines (Web Worker) ================= */
   var worker = null, seq = 0, pending = {};
@@ -135,20 +136,23 @@
   /* ================= screens ================= */
   var SCREENS = [
     { id: 'start', sec: 'intro', r: rStart },
-    { id: 'weight', sec: 'route', r: rWeight },
-    { id: 'sex', sec: 'route', r: rSex },
-    { id: 'bodyfat', sec: 'route', r: rBodyFat },
-    { id: 'height', sec: 'route', r: rHeight },
-    { id: 'age', sec: 'route', r: rAge },
-    { id: 'lifting', sec: 'route', r: rLifting },
-    { id: 'goalweight', sec: 'route', r: rGoalWeight },
-    { id: 'goalbf', sec: 'route', r: rGoalBf },
-    { id: 'route', sec: 'route', r: rRouteChoice },
-    { id: 'active', sec: 'route', r: rActive },
-    { id: 'sessions', sec: 'route', r: rSessions },
-    { id: 'routebuild', sec: 'route', r: rRouteBuild, build: true },
-    { id: 'routereveal', sec: 'route', r: rRouteReveal },
-    { id: 'phase1', sec: 'route', r: rPhase1 },
+    { id: 'weight', sec: 'route', grp: 'About you', r: rWeight },
+    { id: 'sex', sec: 'route', grp: 'About you', r: rSex },
+    { id: 'bodyfat', sec: 'route', grp: 'About you', r: rBodyFat },
+    { id: 'height', sec: 'route', grp: 'About you', r: rHeight },
+    { id: 'age', sec: 'route', grp: 'About you', r: rAge },
+    { id: 'lifting', sec: 'route', grp: 'About you', r: rLifting },
+    { id: 'goalweight', sec: 'route', grp: 'Your goal', r: rGoalWeight },
+    { id: 'goalbf', sec: 'route', grp: 'Your goal', r: rGoalBf },
+    { id: 'route', sec: 'route', grp: 'How you get there', r: rRouteChoice, when: 'route' },
+    { id: 'bulkto', sec: 'route', grp: 'How you get there', r: rBulkTo, when: 'bulkto' },
+    { id: 'range', sec: 'route', grp: 'How you get there', r: rRange, when: 'range' },
+    { id: 'wayin', sec: 'route', grp: 'How you get there', r: rWayIn, when: 'wayin' },
+    { id: 'plan', sec: 'route', grp: 'How you get there', r: rPlan, when: 'plan' },
+    { id: 'summary', sec: 'route', grp: '', r: rSummary },
+    { id: 'locked', sec: 'route', grp: '', r: rLocked, noBack: true },
+    { id: 'active', sec: 'food', r: rActive },
+    { id: 'sessions', sec: 'food', r: rSessions },
     { id: 'meat', sec: 'food', r: rMeat },
     { id: 'allergies', sec: 'food', r: rAllergies },
     { id: 'skip', sec: 'food', r: rSkip },
@@ -185,7 +189,9 @@
       var w = i > last || s.sec === 'done' ? 100 : i < first ? 0 : Math.round(((Math.min(i, last) - first + 1) / ids.length) * 100);
       fills[k].style.width = w + '%';
     });
-    document.getElementById('segLbl').textContent = SEC_NAME[s.sec] || '';
+    // Route screens carry the app's own section names (RouteScreen SECTIONS); the summary is quiet.
+    document.getElementById('segLbl').textContent = s.grp != null ? s.grp : (SEC_NAME[s.sec] || '');
+    backBtn.style.visibility = s.noBack ? 'hidden' : '';
   }
   /** Shows screen i. dir: 1 forward, -1 back, 0 replace in place. */
   function show(i, dir) {
@@ -202,6 +208,7 @@
       progress(i);
       trackScreen(i);
       window.scrollTo(0, 0);
+      setHelp(null);
       SCREENS[i].r(el, my);
     };
     closeSheet();
@@ -218,12 +225,19 @@
   }
   /** After a build: the result replaces the build screen, so Back skips it. */
   function replaceWith(id) { show(IDX[id], 1); }
-  function next() { var i = cur + 1; while (SCREENS[i] && SCREENS[i].side) i++; go(i); }
+  /** Whether screen i is shown for these answers (beat 9's steps exist only for some routes). */
+  function applies(i) { var s = SCREENS[i]; return !!s && !s.side && (!s.when || WHEN[s.when]()); }
+  function next() {
+    var adv = function () { var i = cur + 1; while (SCREENS[i] && !applies(i)) i++; go(i); };
+    // The route's steps depend on the plan, so the engine answers before the next one is picked.
+    if (SCREENS[cur + 1] && SCREENS[cur + 1].when) { enable(false); needRV().then(adv, adv); } else adv();
+  }
   function back() {
     if (!stack.length) return;
     var i = stack.pop();
     if (i < 0) i = 0;
-    while (SCREENS[i] && SCREENS[i].build && i > 0) i--; // never land back on a build
+    // Never land back on a build, or on a route step these answers no longer have.
+    while (i > 0 && SCREENS[i] && (SCREENS[i].build || (SCREENS[i].when && !applies(i)))) i = stack.length ? stack.pop() : i - 1;
     show(i, -1);
   }
   backBtn.addEventListener('click', function () {
@@ -269,7 +283,8 @@
 
   /* ---------- the ruler (the app's ScaleRuler) ---------- */
   function ruler(el, o) {
-    // o: min, max, step, px (px per unit), major (label every), value, fmt(value) for labels, onChange(v)
+    // o: min, max, step, px (px per unit), major (label every), value, fmt(value) for labels,
+    // tickColor(v) (optional, the body fat zones), onChange(v)
     var wrap = document.createElement('div');
     wrap.className = 'ruler-wrap rise'; wrap.style.setProperty('--i', 3);
     wrap.innerHTML = '<div class="ruler" tabindex="0" role="slider" aria-valuemin="' + o.min + '" aria-valuemax="' + o.max + '" aria-label="' + esc(o.aria || '') + '"><div class="track"><div class="ticks"></div></div></div><div class="needle"></div>';
@@ -280,7 +295,18 @@
     track.style.width = (span + half * 2) + 'px';
     ticks.style.left = half + 'px'; ticks.style.width = span + 'px';
     var minorPx = o.px * (o.tick || o.step), majorPx = o.px * o.major;
-    ticks.style.background = 'repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 2px,transparent 2px ' + majorPx + 'px) 0 0/100% 34px no-repeat,repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0 1.5px,transparent 1.5px ' + minorPx + 'px) 0 12px/100% 22px no-repeat';
+    var isMajor = o.isMajor || function (v) { return Math.abs(v / o.major - Math.round(v / o.major)) < 1e-6; };
+    if (o.tickColor) {
+      // Zones carried in the ticks themselves (RouteBodyFatField's tickColor).
+      var t = '', step = o.tick || o.step;
+      for (var tv = o.min; tv <= o.max + 1e-9; tv += step) {
+        var tx = ((tv - o.min) * o.px).toFixed(1), mj = isMajor(tv);
+        t += '<line x1="' + tx + '" x2="' + tx + '" y1="' + (mj ? 0 : 12) + '" y2="34" stroke="' + o.tickColor(tv) + '" stroke-opacity="' + (mj ? 0.9 : 0.5) + '" stroke-width="' + (mj ? 2 : 1.5) + '"/>';
+      }
+      ticks.innerHTML = '<svg width="' + (span + 2) + '" height="34" style="overflow:visible;display:block">' + t + '</svg>';
+    } else {
+      ticks.style.background = 'repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 2px,transparent 2px ' + majorPx + 'px) 0 0/100% 34px no-repeat,repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0 1.5px,transparent 1.5px ' + minorPx + 'px) 0 12px/100% 22px no-repeat';
+    }
     var labels = '';
     for (var v = Math.ceil(o.min / o.major) * o.major; v <= o.max + 1e-9; v += o.major) labels += '<span class="ml" style="left:' + (half + (v - o.min) * o.px) + 'px">' + esc(o.fmt ? o.fmt(v) : v) + '</span>';
     track.insertAdjacentHTML('beforeend', labels);
@@ -304,39 +330,39 @@
     sc.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; dx = e.clientX; sl = sc.scrollLeft; sc.setPointerCapture(e.pointerId); sc.style.cursor = 'grabbing'; });
     sc.addEventListener('pointermove', function (e) { if (dx == null) return; sc.scrollLeft = sl - (e.clientX - dx); });
     sc.addEventListener('pointerup', function () { dx = null; sc.style.cursor = ''; });
+    var kstep = o.keyStep || o.step;
     sc.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { e.preventDefault(); api.set(val + o.step, true); o.onChange(val, false); }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { e.preventDefault(); api.set(val - o.step, true); o.onChange(val, false); }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { e.preventDefault(); api.set(val + kstep, false); o.onChange(val, false); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { e.preventDefault(); api.set(val - kstep, false); o.onChange(val, false); }
     });
     var api = { set: function (v, smooth) { val = snap(v); sc.setAttribute('aria-valuenow', val); place(val, smooth); }, get: function () { return val; } };
     return api;
   }
-  /** A number beat: label, the big number (type to edit), the ruler, and plus/minus. */
+  /**
+   * A number beat, RouteScreen's instrument panel: the field label, the big
+   * number, the ScaleRuler, and under it either the unit toggle or one line.
+   * o.input makes the number typeable (only the body fat beat is, in the app).
+   */
   function numBeat(el, o) {
     el.classList.add('beat');
-    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">' + o.label + '</p>' + (o.q ? '<h1 class="qh rise" style="--i:1;font-size:clamp(1.5rem,6vw,2rem)">' + o.q + '</h1>' : '') +
-      (o.units ? '<div class="unit-tog rise" style="--i:1" role="group" aria-label="Units"><button type="button" data-u="metric" aria-pressed="' + (S.units === 'metric') + '">' + o.units[0] + '</button><button type="button" data-u="imperial" aria-pressed="' + (S.units === 'imperial') + '">' + o.units[1] + '</button></div>' : '') +
-      '<div class="big rise" style="--i:2">' + (o.readout ? '<span class="ro" aria-live="polite"></span>' : '<input type="text" inputmode="decimal" aria-label="' + esc(o.aria) + '">') + '<span class="u">' + esc(o.unit) + '</span></div><p class="delta rise" style="--i:2"></p>');
-    var input = $('.big input', el), ro = $('.big .ro', el), delta = $('.delta', el);
-    var show = function (v) { if (input) { input.value = o.disp ? o.disp(v) : v; input.style.width = (String(input.value).length * 0.62 + 0.2) + 'em'; } if (ro) ro.textContent = o.disp ? o.disp(v) : v; if (o.delta) delta.textContent = o.delta(v); };
-    show(o.value);
-    var r = ruler(el, { min: o.min, max: o.max, step: o.step, px: o.px, major: o.major, tick: o.tick, fmt: o.fmt, value: o.value, aria: o.aria, onChange: function (v) { show(v); o.onChange(v); } });
-    el.insertAdjacentHTML('beforeend', '<div class="pm rise" style="--i:4"><button type="button" data-d="-1" aria-label="Less">−</button><button type="button" data-d="1" aria-label="More">+</button></div>');
-    $$('.pm button', el).forEach(function (b) {
-      b.onclick = function () { var v = r.get() + (+b.getAttribute('data-d')) * (o.bump || o.step); r.set(v, true); show(r.get()); o.onChange(r.get()); };
-    });
-    if (input) {
-      input.addEventListener('change', function () {
-        var v = parseFloat(String(input.value).replace(',', '.'));
-        if (!isFinite(v)) { show(r.get()); return; }
-        r.set(o.parse ? o.parse(v) : v, true); show(r.get()); o.onChange(r.get());
-      });
-      input.addEventListener('focus', function () { input.select(); });
+    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">' + o.label + '</p>' +
+      '<div class="big rise" style="--i:1">' + (o.input ? '<input type="text" inputmode="decimal" maxlength="4" aria-label="' + esc(o.aria) + '">' : '<span class="ro" aria-live="polite"></span>') + '<span class="u">' + esc(o.unit) + '</span></div>');
+    var input = $('.big input', el), ro = $('.big .ro', el), unitEl = $('.big .u', el);
+    var show = function (v) {
+      if (ro) ro.textContent = o.disp ? o.disp(v) : v;
+      if (o.unitFor) unitEl.textContent = o.unitFor(v);
+      if (o.under) $('.under', el).textContent = o.under(v);
+    };
+    var r = ruler(el, { min: o.min, max: o.max, step: o.step, px: o.px, major: o.major, tick: o.tick, isMajor: o.isMajor, fmt: o.fmt, tickColor: o.tickColor, keyStep: o.keyStep, value: o.value, aria: o.aria, onChange: function (v) { show(v); o.onChange(v); } });
+    if (o.units) {
+      el.insertAdjacentHTML('beforeend', '<div class="rise" style="--i:4"><div class="unit-tog" role="group" aria-label="Units"><button type="button" data-u="metric" aria-pressed="' + (S.units === 'metric') + '">' + o.units[0] + '</button><button type="button" data-u="imperial" aria-pressed="' + (S.units === 'imperial') + '">' + o.units[1] + '</button></div></div>');
+      $$('.unit-tog button', el).forEach(function (b) { b.onclick = function () { if (S.units === b.getAttribute('data-u')) return; S.units = b.getAttribute('data-u'); SCREENS[cur].r(rerender(el), token); }; });
     }
-    $$('.unit-tog button', el).forEach(function (b) { b.onclick = function () { S.units = b.getAttribute('data-u'); SCREENS[cur].r(rerender(el), token); }; });
-    return { ruler: r, show: show };
+    if (o.under) el.insertAdjacentHTML('beforeend', '<p class="under rise" style="--i:4"></p>');
+    show(o.value);
+    return { ruler: r, show: show, input: input };
   }
-  function rerender(el) { el.innerHTML = ''; el.className = 'screen'; return el; }
+  function rerender(el) { el.innerHTML = ''; el.className = 'screen norise'; return el; }
 
   /* ================= intro ================= */
   function rStart(el) {
@@ -345,21 +371,28 @@
       '<h1 class="qh rise" style="--i:1">See your plan<br><em style="color:var(--cyan);text-transform:none">in 60 seconds.</em></h1>' +
       '<p class="sub rise" style="--i:2">No sign-up. Answer a few questions, then watch the app’s engines build your route, your week of meals and your training.</p>' +
       '<div class="rise" style="--i:3"><span class="privacy"><i></i>Runs on this page. Nothing you enter is sent anywhere.</span></div>' +
-      '<div class="trio rise" style="--i:4"><div><i>01</i><p><b>Your route</b><span>Your goal, your phases, your daily macros.</span></p></div>' +
+      '<div class="trio rise" style="--i:4"><div><i>01</i><p><b>Your route</b><span>Your goal, your phases, how long it takes.</span></p></div>' +
       '<div><i>02</i><p><b>Your food</b><span>A week of meals, one cook day, one shop.</span></p></div>' +
       '<div><i>03</i><p><b>Your training</b><span>Sets, reps, rest and how hard to push.</span></p></div></div>';
     primary('Start', function () { startWorker(); ensureAbout().then(function () { go('weight'); }, function (e) { el.insertAdjacentHTML('beforeend', errBox(e.message)); }); });
     startWorker();
   }
 
-  /* ================= about you (RouteScreen beats) ================= */
+  /* ================= your route (RouteScreen.tsx, beat by beat) =================
+   * The app's walk: 1 weight, 2 sex, 3 body fat, 4 height, 6 age, 5 experience,
+   * 7 goal weight, 8 goal body fat, 9 the route (with the questions each answer
+   * opens: the capped peak, the range, the way in, then the plan), 10 the summary
+   * and the lock, then the celebration and RouteReveal's finish line. Copy is the
+   * app's, word for word, except where the README of each function says otherwise.
+   */
   function ensureAbout() {
     if (S.about) return Promise.resolve();
     return call('defaults', 'male').then(function (d) {
       S.defaults = d;
       S.about = {
-        sex: null, ageYears: d.ageYears, heightCm: d.heightCm, weightKg: d.weightKg, bodyFatPct: d.bodyFatPct, bodyFatSource: 'visual',
-        goalWeightKg: d.goalWeightKg, goalBodyFatPct: d.goalBodyFatPct, trainingState: null, activityLevel: null, trainingSessionsPerWeek: null, route: 'lean',
+        sex: null, ageYears: d.ageYears, heightCm: d.heightCm, weightKg: d.weightKg, bodyFatPct: d.bodyFatPct, bodyFatSource: 'visual', bfText: '',
+        goalWeightKg: null, goalBodyFatPct: d.goalBodyFatPct, belowFloorOk: false, trainingState: null, activityLevel: null, trainingSessionsPerWeek: null,
+        route: 'lean', bottom: null, top: null, bulkTo: null, wayIn: 'cut',
       };
     });
   }
@@ -369,30 +402,122 @@
     ensureAbout().then(function () { if (my === token) { el.innerHTML = ''; fn(); } });
   }
   var imp = function () { return S.units === 'imperial'; };
+  var LB = 2.2046226218;
+  /** RouteScreen's provisionalGoalW: the stored goal weight, or the default for this frame at the goal body fat. */
+  function goalW() {
+    var a = S.about;
+    if (a.goalWeightKg != null) return a.goalWeightKg;
+    var m = a.heightCm / 100, fem = a.sex === 'female';
+    var lean = function (n) { return (n - 6.3 * (1.8 - m)) * m * m; };
+    var w = function (l) { return l / (1 - a.goalBodyFatPct / 100); };
+    return Math.round(((w(lean(fem ? 16 : 19)) + w(lean(fem ? 21 : 24))) / 2) * 2) / 2;
+  }
+  /** "Pick one to continue" while a choice beat has no answer, as the app's CTA says. */
+  function pickCta(on) { primary(on ? 'Continue' : 'Pick one to continue', null, !on); }
+
+  /* ---------- help, the (i) in the top bar (RouteScreen helpFor) ---------- */
+  var HELP_SEX = {
+    title: 'Why we ask',
+    body: 'Body fat ranges and muscle limits differ between male and female bodies, so your answer changes the numbers this app works from. It is used for those calculations and nothing else.',
+  };
+  var HELP_GOALBF_M = {
+    title: 'Why this range',
+    body: 'Lean enough that the muscle you have built actually shows. Shoulders, arms, the taper at the waist. Ratings peak here and fall away on both sides, so going leaner past it stops paying off.\n\nIt shows in your face as well: the jaw and cheekbones come out as the fat over them goes.\n\nWhere that happens for you depends on where you store fat, so this is a range rather than a number.',
+    sources: 'Xia et al. 2025, Personality and Individual Differences, 283 raters, DXA measured · Coetzee et al. 2009, Perception · de Jager et al. 2018, Frontiers in Psychology · Brierley et al. 2016, PLOS ONE',
+  };
+  var HELP_GOALBF_F = {
+    title: 'Why nothing is marked',
+    body: 'The male research lands on a clear peak. The research on women does not, so there is no single figure to mark and this app will not invent one.\n\nLeaning out still shows the same way: the body first, and the face after it.\n\nOne finding worth knowing. When female faces were rated, the level judged most attractive was leaner than the level judged healthiest.',
+    sources: 'Wang et al., PLOS ONE, ten populations, DXA measured · Coetzee et al. 2011, Body Image · de Jager et al. 2018, Frontiers in Psychology',
+  };
+  var HELP_ROUTE = {
+    title: 'Same finish either way',
+    body: 'Same muscle, same total time either way. What you are choosing is how you look while you get there.',
+    groups: [
+      { title: 'Stay lean the whole way', points: ['Defined the whole way, and it shows in your face first', 'A surplus started leaner adds less fat', 'Cost: a smaller frame while you get there, and more cuts to hold it'] },
+      { title: 'Grow now, cut at the end', points: ['Bigger sooner, and never smaller than you are today', 'Stop early and you finish bigger, not just leaner', 'Cost: softer the whole way through, and one long cut at the end'] },
+      { title: 'What is not known', points: ['No trial has compared the two', 'Growing lean and growing soft have not been shown to build different amounts of muscle', 'Reasoned defaults, not proven ones'] },
+    ],
+    sources: 'Helms 2023 · Garthe 2013 · Murphy and Koehler 2022 · Galgani 2025',
+  };
+  var HELP_WAYIN = {
+    title: 'Getting into your range',
+    body: 'All three arrive at the same body fat with the same muscle, and the plan finishes at the same time whichever you pick. What differs is what the scale reads on the way, and how long you stay soft.',
+    groups: [
+      { title: 'Hold your weight', points: ['Fat leaves only as fast as muscle arrives, so the scale sits still while the shape changes', 'Eating at maintenance, which is the easiest of the three to keep to', 'Cost: soft for longer, and nothing you can measure at home confirms it is working'] },
+      { title: 'Ease it down', points: ['A small deficit. In the one small trial that tested it, the same muscle was gained and more fat was lost than holding weight, though the gap was not statistically significant', 'Cost: a deficit that small is inside most people’s tracking error, so it is really letting the scale drift'] },
+      { title: 'Cut', points: ['Lean soonest, and the one the scale can confirm within a few weeks', 'Cost: the harder stretch of eating, and a smaller frame until the build brings it back'] },
+      { title: 'What is not known', points: ['No trial has followed any of the three through a whole plan', 'The one trial comparing a small deficit with maintenance ran ten weeks with ten people per arm'] },
+    ],
+    sources: 'Vargas-Molina 2026 · Garthe 2011 · Murphy and Koehler 2022',
+  };
+  function helpSheet(h) {
+    openSheet('<p class="sh-ov">Why we ask</p><h2 class="sh-t">' + esc(h.title) + '</h2>' +
+      h.body.split('\n\n').map(function (p) { return '<p class="sh-b">' + esc(p) + '</p>'; }).join('') +
+      (h.groups || []).map(function (g) { return '<div class="hg"><p class="hg-t">' + esc(g.title) + '</p><ul>' + g.points.map(function (pt) { return '<li>' + esc(pt) + '</li>'; }).join('') + '</ul></div>'; }).join('') +
+      (h.sources ? '<p class="sh-src">' + esc(h.sources) + '</p>' : '') +
+      '<button type="button" class="sh-ghost" data-close="1">Got it</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
+  }
+  function setHelp(h) {
+    infoBtn.hidden = !h;
+    infoBtn.onclick = h ? function () { helpSheet(typeof h === 'function' ? h() : h); } : null;
+  }
+
+  /* ---------- BodyPictogram.tsx: the restroom-sign body, widening with body fat ---------- */
+  function pictogram(bf, sex, h, color) {
+    var fem = sex === 'female', t = Math.min(1, Math.max(0, (bf - (6 + (fem ? 9 : 0))) / 28)), CX = 60;
+    var sh = (fem ? 22 : 27) + t * 9, wa = (fem ? 19 : 22) + t * 13, hip = (fem ? 30 : 22) + t * 13, lo = (fem ? 15 : 16) + t * 6;
+    var body = fem
+      ? 'M' + (CX - sh) + ' 48 Q' + CX + ' 39 ' + (CX + sh) + ' 48 L' + (CX + wa) + ' 104 L' + (CX + hip) + ' 118 L' + (CX - hip) + ' 118 L' + (CX - wa) + ' 104 Z'
+      : 'M' + (CX - sh) + ' 48 Q' + CX + ' 39 ' + (CX + sh) + ' 48 L' + (CX + wa) + ' 104 L' + (CX + wa * 0.94) + ' 118 L' + (CX - wa * 0.94) + ' 118 L' + (CX - wa) + ' 104 Z';
+    var leg = function (s) { return 'M' + (CX + s * lo) + ' 118 L' + (CX + s * 3.5) + ' 118 L' + (CX + s * 3.5) + ' 186 L' + (CX + s * (lo - 2)) + ' 186 Z'; };
+    return '<svg width="' + (h * 0.6).toFixed(0) + '" height="' + h + '" viewBox="0 0 120 200" aria-hidden="true" fill="' + color + '"><circle cx="60" cy="26" r="13"/><path d="' + body + '"/><path d="' + leg(-1) + '"/><path d="' + leg(1) + '"/></svg>';
+  }
+
+  /* ---------- beat 1: CURRENT WEIGHT ---------- */
   function rWeight(el, my) {
     needAbout(el, my, function () {
       var a = S.about;
       numBeat(el, {
         label: 'Current weight', aria: 'Current weight', units: ['kg', 'lbs'], unit: imp() ? 'lbs' : 'kg',
-        value: imp() ? Math.round(kgToLb(a.weightKg)) : r1(a.weightKg), min: imp() ? 77 : 35, max: imp() ? 440 : 200, step: imp() ? 1 : 0.1, tick: imp() ? 1 : 0.5, px: imp() ? 6 : 13, major: imp() ? 10 : 5,
+        value: imp() ? Math.round(a.weightKg * LB) : r1(a.weightKg), min: imp() ? 77 : 35, max: imp() ? 440 : 200, step: imp() ? 1 : 0.1, tick: imp() ? 1 : 0.5, px: imp() ? 6 : 13, major: imp() ? 10 : 5, keyStep: 1,
         disp: function (v) { return imp() ? v : v.toFixed(1); },
-        onChange: function (v) { a.weightKg = imp() ? v / 2.20462 : v; S.touched.weightKg = true; },
+        onChange: function (v) { a.weightKg = imp() ? v / LB : v; },
       });
       primary('Continue');
     });
   }
+  /* ---------- beat 2: SEX ---------- */
   function rSex(el, my) {
     needAbout(el, my, function () {
-      head(el, 'Sex', 'What’s your sex?', 'Sets your energy needs and the body fat ranges.');
-      cards(el, [{ v: 'male', l: 'Male' }, { v: 'female', l: 'Female' }], S.about.sex, function (v) {
-        // Continue waits for the sex-dependent defaults to reload; no auto-advance.
-        var changed = S.about.sex !== v; S.about.sex = v; enable(!changed);
-        if (changed) refreshForSex().then(function () { if (my === token) enable(true); });
+      var a = S.about;
+      el.classList.add('beat');
+      el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Sex</p><div class="sexpair rise" style="--i:1" role="group">' +
+        [['male', 'Male', 14], ['female', 'Female', 23]].map(function (x) {
+          return '<button type="button" class="sexpick" data-sex="' + x[0] + '" aria-pressed="' + (a.sex === x[0]) + '"><span class="fig" data-bf="' + x[2] + '"></span><b>' + x[1] + '</b></button>';
+        }).join('') + '</div>');
+      var paint = function () {
+        $$('.sexpick', el).forEach(function (b) {
+          var on = a.sex === b.getAttribute('data-sex');
+          b.setAttribute('aria-pressed', on);
+          $('.fig', b).innerHTML = pictogram(+$('.fig', b).getAttribute('data-bf'), b.getAttribute('data-sex'), 72, on ? 'var(--acc)' : '#52525b');
+        });
+      };
+      paint();
+      $$('.sexpick', el).forEach(function (b) {
+        b.onclick = function () {
+          // Continue waits for the sex-dependent defaults to reload; no auto-advance.
+          var v = b.getAttribute('data-sex'), changed = a.sex !== v;
+          a.sex = v; paint(); enable(!changed);
+          nextBtn.textContent = 'Continue';
+          if (changed) refreshForSex().then(function () { if (my === token) enable(true); });
+        };
       });
-      primary('Continue', null, !S.about.sex);
+      setHelp(HELP_SEX);
+      pickCta(!!a.sex);
     });
   }
-  /** Seeds that follow sex until touched (RouteScreen: heightSeed, placeholderBodyFat, defaultGoalBodyFatFor). */
+  /** Seeds that follow sex until answered (RouteScreen: heightSeed, placeholderBodyFat, defaultGoalBodyFatFor). */
   function refreshForSex() {
     var a = S.about, t = S.touched;
     return call('defaults', a.sex).then(function (d) {
@@ -402,55 +527,97 @@
       if (!t.goalBodyFatPct) a.goalBodyFatPct = d.goalBodyFatPct;
     });
   }
+  /* ---------- beat 3: CURRENT BODY FAT (RouteBodyFatField) ---------- */
+  var BF_ZONES = [{ to: 12, label: 'Lean', c: '#38bdf8' }, { to: 16, label: 'Athletic', c: '#34d399' }, { to: 22, label: 'Average', c: '#f0b429' }, { to: Infinity, label: 'Higher', c: '#a1a1aa' }];
+  function bfZone(pct, sex) {
+    var sh = sex === 'female' ? 9 : 0;
+    for (var i = 0; i < BF_ZONES.length; i++) if (pct < BF_ZONES[i].to + (BF_ZONES[i].to === Infinity ? 0 : sh)) return BF_ZONES[i];
+    return BF_ZONES[BF_ZONES.length - 1];
+  }
+  function tierPick(t, last) { return last ? t.range[0] + 6 : Math.round((t.range[0] + t.range[1]) / 2); }
   function rBodyFat(el, my) {
     needAbout(el, my, function () {
-      var a = S.about;
+      var a = S.about, sex = a.sex;
       var b = numBeat(el, {
-        label: 'Current body fat', aria: 'Current body fat', unit: '%', value: a.bodyFatPct, min: 5, max: 45, step: 0.5, px: 14, major: 5,
-        onChange: function (v) { a.bodyFatPct = v; a.bodyFatSource = 'reported'; S.touched.bodyFatPct = true; },
+        label: 'Current body fat', aria: 'Body fat', unit: '%', input: true, value: Math.round(a.bodyFatPct), min: 5, max: 45, step: 1, px: 13, major: 5,
+        tickColor: function (v) { return bfZone(v, sex).c; },
+        onChange: function (v) { a.bodyFatPct = v; a.bodyFatSource = 'reported'; a.bfText = String(v); S.touched.bodyFatPct = true; paint(); },
       });
-      el.insertAdjacentHTML('beforeend', '<p class="rise" style="--i:5;text-align:center"><span style="color:var(--text-2)">Not sure? </span><button type="button" class="linkb" id="est">Estimate it</button></p>');
+      el.insertAdjacentHTML('beforeend', '<p class="zone rise" style="--i:4"></p><p class="notsure rise" style="--i:5"><span>Not sure? </span><button type="button" class="linkb" id="est">Estimate it</button></p>');
+      var input = b.input;
+      // The placeholder is today's figure in full colour: Continue takes it as the answer.
+      input.placeholder = String(Math.round(a.bodyFatPct));
+      var paint = function () {
+        input.value = a.bfText || '';
+        input.placeholder = String(Math.round(a.bodyFatPct));
+        fit();
+        var z = bfZone(a.bodyFatPct, sex), zl = $('.zone', el);
+        zl.textContent = z.label; zl.style.color = z.c;
+      };
+      function fit() { input.style.width = (Math.max(1, (input.value || input.placeholder).length) * 0.62 + 0.15) + 'em'; }
+      paint();
+      input.addEventListener('input', function () {
+        fit();
+        var t = input.value.replace(',', '.').replace(/[^0-9.]/g, '');
+        input.value = t;
+        var v = parseFloat(t);
+        if (!isFinite(v) || v < 3 || v > 60) return;
+        a.bodyFatPct = v; a.bodyFatSource = 'reported'; a.bfText = t; S.touched.bodyFatPct = true;
+        b.ruler.set(Math.round(Math.min(45, Math.max(5, v))), true);
+        var z = bfZone(v, sex), zl = $('.zone', el); zl.textContent = z.label; zl.style.color = z.c;
+      });
+      input.addEventListener('focus', function () { input.select(); });
       $('#est', el).onclick = function () {
-        var d = S.defaults;
-        openSheet('<p class="ov">Body fat</p><h2 class="qh" style="font-size:1.8rem">Pick the closest.</h2><p class="sub">A rough match is fine. Lands within a few points for most people.</p><div class="opts">' +
-          d.tiers.map(function (t, i) {
-            var range = i === d.tiers.length - 1 ? t.range[0] + '%+' : t.range[0] + '–' + t.range[1] + '%';
-            return '<button type="button" class="opt" data-tier="' + t.pct + '" aria-pressed="' + (a.bodyFatSource === 'visual' && a.bodyFatPct === t.pct) + '"><b>' + range + '</b><small>' + esc(t.description) + '</small></button>';
-          }).join('') + '</div>', function (sh) {
-          $$('[data-tier]', sh).forEach(function (x) {
-            x.onclick = function () {
-              a.bodyFatPct = +x.getAttribute('data-tier'); a.bodyFatSource = 'visual'; S.touched.bodyFatPct = true;
-              $$('[data-tier]', sh).forEach(function (y) { y.setAttribute('aria-pressed', y === x ? 'true' : 'false'); });
-              setTimeout(function () { closeSheet(); b.ruler.set(a.bodyFatPct, true); b.show(a.bodyFatPct); }, 220);
-            };
-          });
+        var tiers = S.defaults.tiers, n = tiers.length;
+        var pending = (function () { for (var i = 0; i < n; i++) if (a.bodyFatPct <= tiers[i].range[1]) return i; return n - 1; })();
+        openSheet('<p class="sh-ov">Body fat</p><h2 class="sh-t">Pick the closest.</h2><p class="sh-lede">A rough match is fine. Lands within a few points for most people.</p><div class="tiers">' +
+          tiers.map(function (t, i) {
+            var last = i === n - 1;
+            return '<button type="button" class="tier" data-tier="' + i + '" aria-pressed="false" aria-label="' + esc(t.description) + '"><span class="tf"></span><b>' + (last ? t.range[0] + '%+' : t.range[0] + '–' + t.range[1] + '%') + '</b><small>' + esc(t.description) + '</small></button>';
+          }).join('') + '</div><button type="button" class="sh-go" id="useTier"></button>', function (sh) {
+          var paintT = function () {
+            $$('[data-tier]', sh).forEach(function (x, i) {
+              var on = i === pending;
+              x.setAttribute('aria-pressed', on);
+              $('.tf', x).innerHTML = pictogram(tierPick(tiers[i], i === n - 1), sex, 82, on ? 'var(--acc)' : '#52525b');
+            });
+            $('#useTier', sh).textContent = 'Use ' + tierPick(tiers[pending], pending === n - 1) + '%';
+          };
+          paintT();
+          $$('[data-tier]', sh).forEach(function (x) { x.onclick = function () { pending = +x.getAttribute('data-tier'); paintT(); }; });
+          $('#useTier', sh).onclick = function () {
+            var v = tierPick(tiers[pending], pending === n - 1);
+            a.bodyFatPct = v; a.bodyFatSource = 'visual'; a.bfText = String(v); S.touched.bodyFatPct = true;
+            closeSheet(); b.ruler.set(v, true); paint();
+          };
         });
       };
-      primary('Continue');
+      primary('Continue', function () { S.touched.bodyFatPct = true; next(); });
     });
   }
+  /* ---------- beat 4: HEIGHT ---------- */
   function rHeight(el, my) {
     needAbout(el, my, function () {
       var a = S.about;
-      var inch = function (cm) { return Math.round(cm / 2.54); };
-      var ftin = function (i) { return Math.floor(i / 12) + '′' + (i % 12) + '″'; };
+      var ftin = function (i) { i = Math.round(i); return Math.floor(i / 12) + '\'' + (i % 12); };
       numBeat(el, {
-        label: 'Height', aria: 'Height', units: ['cm', 'ft in'], unit: imp() ? '' : 'cm', readout: imp(),
-        value: imp() ? inch(a.heightCm) : Math.round(a.heightCm), min: imp() ? 48 : 120, max: imp() ? 86 : 220, step: 1, px: imp() ? 14 : 9, major: imp() ? 12 : 10,
-        fmt: imp() ? function (v) { return Math.floor(v / 12) + '′'; } : null, disp: imp() ? ftin : null,
+        label: 'Height', aria: 'Height', units: ['cm', 'ft in'], unit: imp() ? '"' : 'cm',
+        value: imp() ? Math.round(a.heightCm / 2.54) : Math.round(a.heightCm), min: imp() ? 48 : 120, max: imp() ? 86 : 220, step: 1, px: imp() ? 20 : 13, major: imp() ? 6 : 5,
+        fmt: imp() ? function (v) { return ftin(v) + '"'; } : null, disp: imp() ? ftin : null,
         onChange: function (v) { a.heightCm = imp() ? v * 2.54 : v; S.touched.heightCm = true; },
       });
-      primary('Continue');
+      primary('Continue', function () { S.touched.heightCm = true; next(); });
     });
   }
+  /* ---------- beat 6: AGE ---------- */
   function rAge(el, my) {
     needAbout(el, my, function () {
       var a = S.about;
-      numBeat(el, { label: 'Age', aria: 'Age', unit: 'years', value: a.ageYears, min: 16, max: 100, step: 1, px: 14, major: 5, onChange: function (v) { a.ageYears = v; } });
-      el.insertAdjacentHTML('beforeend', '<p class="note rise" style="--i:5;text-align:center">Sets your calorie targets when you build a meal plan.</p>');
+      numBeat(el, { label: 'Age', aria: 'Age', unit: 'years', value: a.ageYears, min: 13, max: 100, step: 1, px: 14, major: 5, onChange: function (v) { a.ageYears = v; }, under: function () { return 'Sets your calorie targets when you build a meal plan.'; } });
       primary('Continue');
     });
   }
+  /* ---------- beat 5: EXPERIENCE ---------- */
   var LIFT = [
     { v: 'new', l: 'Just starting', h: 'New to lifting, or under a year in' },
     { v: 'returning', l: 'Coming back', h: 'Trained before, had time off' },
@@ -459,38 +626,38 @@
   ];
   function rLifting(el, my) {
     needAbout(el, my, function () {
-      head(el, 'Experience', 'Where are you with lifting?');
-      cards(el, LIFT, S.about.trainingState, function (v) { S.about.trainingState = v; enable(true); });
-      primary('Continue', null, !S.about.trainingState);
+      el.classList.add('beat');
+      el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Experience</p><h1 class="expq rise" style="--i:1">Where are you with lifting?</h1>');
+      cards(el, LIFT, S.about.trainingState, function (v) { S.about.trainingState = v; pickCta(true); });
+      pickCta(!!S.about.trainingState);
     });
   }
+  /* ---------- beat 7: GOAL WEIGHT ---------- */
   function rGoalWeight(el, my) {
     needAbout(el, my, function () {
       var a = S.about;
-      var draw = function () {
-        numBeat(el, {
-          label: 'Goal weight', aria: 'Goal weight', q: 'Where do you want to end up?', unit: imp() ? 'lbs' : 'kg',
-          value: imp() ? Math.round(kgToLb(a.goalWeightKg)) : Math.round(a.goalWeightKg * 2) / 2, min: imp() ? 77 : 35, max: imp() ? 440 : 200, step: imp() ? 1 : 0.5, tick: imp() ? 1 : 0.5, px: imp() ? 6 : 13, major: imp() ? 10 : 5,
-          disp: function (v) { return imp() ? v : v.toFixed(1); },
-          delta: function (v) {
-            var kg = imp() ? v / 2.20462 : v, d = kg - a.weightKg;
-            if (Math.abs(d) < 0.05) return 'the same as you weigh now';
-            return (d > 0 ? '+' : '−') + (imp() ? Math.round(kgToLb(Math.abs(d))) + ' lbs' : Math.abs(d).toFixed(1) + ' kg') + ' from where you are now';
-          },
-          onChange: function (v) { a.goalWeightKg = imp() ? v / 2.20462 : v; S.touched.goalWeightKg = true; },
-        });
-        el.insertAdjacentHTML('beforeend', '<p class="note rise" style="--i:5;text-align:center">You set the goal. The app works out how to get there.</p>');
-      };
-      if (S.touched.goalWeightKg) { draw(); primary('Continue'); return; }
-      // RouteScreen's default goal weight, at the goal body fat for this sex.
-      call('goalWeightAt', a.sex || 'male', a.heightCm, a.weightKg, a.goalBodyFatPct).then(function (w) { a.goalWeightKg = w; }, function () {}).then(function () { if (my === token) { draw(); primary('Continue'); } });
+      var w = goalW();
+      numBeat(el, {
+        label: 'Goal weight', aria: 'Goal weight', unit: imp() ? 'lbs' : 'kg',
+        value: imp() ? Math.round(w * LB) : Math.round(w * 2) / 2, min: imp() ? 77 : 35, max: imp() ? 440 : 200, step: imp() ? 1 : 0.5, tick: imp() ? 1 : 0.5, px: imp() ? 6 : 13, major: imp() ? 10 : 5, keyStep: imp() ? 1 : 0.5,
+        disp: function (v) { return imp() ? v : v.toFixed(1); },
+        under: function (v) {
+          var kg = imp() ? v / LB : v, d = kg - a.weightKg;
+          if (Math.abs(d) < 0.05) return 'the same as you weigh now';
+          return imp() ? (d > 0 ? '+' : '') + (d * LB).toFixed(0) + ' lbs from where you are now' : (d > 0 ? '+' : '') + d.toFixed(1) + ' kg from where you are now';
+        },
+        onChange: function (v) { a.goalWeightKg = imp() ? v / LB : v; },
+      });
+      primary('Continue');
     });
   }
+  /* ---------- beat 8: GOAL BODY FAT (LeanGauge) ---------- */
   function rGoalBf(el, my) {
     needAbout(el, my, function () {
-      var a = S.about;
-      leanGauge(el, a);
-      primary('Continue');
+      leanGauge(el, S.about);
+      setHelp(function () { return S.about.sex === 'female' ? HELP_GOALBF_F : HELP_GOALBF_M; });
+      // The commitment point: the goal weight shown is the one the plan keeps.
+      primary('Continue', function () { S.about.goalWeightKg = goalW(); S.touched.goalBodyFatPct = true; next(); });
     });
   }
   /* ---------- the app's LeanGauge (src/components/route/LeanGauge.tsx) ----------
@@ -499,7 +666,9 @@
    * drug-free limit (FFMI). Shaded left of the ceiling: lean enough at this weight
    * that the muscle would be past what has been recorded drug free. Most aesthetic
    * band 10 to 15% (men only, ATTRACTIVE_BF_RANGE). Health floor leanStopFor: 12% men,
-   * 22% women; going below asks first, as the app's ConfirmSheet does. */
+   * 22% women; letting go below it asks first (RouteScreen's ConfirmSheet). While no
+   * goal weight is set, the goal weight follows the goal body fat (provisionalGoalW),
+   * so the curve moves with the pin, as in the app. */
   function leanGauge(el, a) {
     var fem = a.sex === 'female', sh = fem ? 9 : 0, lo = 6 + sh, hi = 30 + sh;
     var floor = fem ? 22 : 12, AES = [10, 15], AES_C = 13;
@@ -507,101 +676,272 @@
     var peak = (untr + lim.ok) / 2, sig = Math.max(1, (lim.ok - untr) / 2.6);
     var W = 320, H = 150, X0 = 20, X1 = 300, Y0 = 16, YB = 110;
     var m = a.heightCm / 100;
-    var nAt = function (bf) { var lean = a.goalWeightKg * (1 - bf / 100); return lean / (m * m) + 6.3 * (1.8 - m); };
     var xOf = function (bf) { return X0 + Math.min(1, Math.max(0, (bf - lo) / (hi - lo))) * (X1 - X0); };
-    var yAt = function (bf) { var z = (nAt(bf) - peak) / sig; return YB - (YB - Y0) * Math.exp(-0.5 * z * z); };
-    var edge = null; for (var b = lo; b <= hi; b += 0.1) { if (nAt(b) <= lim.edge) { edge = b; break; } }
-    var path = function (f, t, n) { var d = ''; for (var i = 0; i <= n; i++) { var bf = f + (t - f) * i / n; d += (i ? ' L' : 'M') + xOf(bf).toFixed(1) + ' ' + yAt(bf).toFixed(1); } return d; };
-    var curve = path(lo, hi, 90);
-    var svg = '<svg class="lg" viewBox="0 0 ' + W + ' ' + H + '" role="slider" tabindex="0" aria-label="Goal body fat" aria-valuemin="' + lo + '" aria-valuemax="' + hi + '">' +
-      '<defs><linearGradient id="lgB" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#0a0a0b" stop-opacity="0"/><stop offset="1" stop-color="#0a0a0b" stop-opacity=".72"/></linearGradient></defs>' +
-      '<path d="' + curve + ' L' + X1 + ' ' + YB + ' L' + X0 + ' ' + YB + ' Z" fill="#fff" opacity=".035"/>' +
-      (fem ? '' : '<path d="' + path(AES[0], AES[1], 30) + ' L' + xOf(AES[1]).toFixed(1) + ' ' + YB + ' L' + xOf(AES[0]).toFixed(1) + ' ' + YB + ' Z" class="aes"/>') +
-      '<path d="' + curve + '" fill="none" stroke="#4b4b52" stroke-width="1.8" stroke-linecap="round"/><line x1="' + X0 + '" x2="' + X1 + '" y1="' + YB + '" y2="' + YB + '" stroke="#232327"/>' +
-      (edge != null && edge > lo + 0.2 ? '<rect x="' + X0 + '" y="' + Y0 + '" width="' + Math.max(0, xOf(edge) - X0).toFixed(1) + '" height="' + (YB - Y0) + '" fill="url(#lgB)"/><line x1="' + xOf(edge).toFixed(1) + '" x2="' + xOf(edge).toFixed(1) + '" y1="' + (Y0 - 4) + '" y2="' + YB + '" stroke="#52525b" stroke-dasharray="3 4"/><text x="' + Math.max(X0 + 46, xOf(edge) - 46).toFixed(1) + '" y="' + (YB + 17) + '" class="lgt">Past the natural limit</text>' : '') +
-      (floor > lo && floor < hi ? '<line x1="' + xOf(floor) + '" x2="' + xOf(floor) + '" y1="' + (Y0 + 2) + '" y2="' + YB + '" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="2 3"/><text x="' + xOf(floor) + '" y="' + (Y0 - 2) + '" class="lgt fl">Health floor ' + floor + '%</text>' : '') +
-      (fem ? '' : '<text x="' + ((xOf(AES[0]) + xOf(AES[1])) / 2).toFixed(1) + '" y="' + (YB + 17) + '" class="lgt ae">Most aesthetic</text>') +
-      '<text x="' + X0 + '" y="' + (YB + 34) + '" class="lgt ax" text-anchor="start">' + lo + '%</text><text x="' + X1 + '" y="' + (YB + 34) + '" class="lgt ax" text-anchor="end">' + hi + '%</text>' +
-      '<line class="pin" y1="' + (Y0 + 4) + '" y2="' + YB + '"/><circle class="pind" r="5.5"/></svg>';
     el.classList.add('beat');
-    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Goal body fat</p><h1 class="qh rise" style="--i:1;font-size:clamp(1.5rem,6vw,2rem)">How lean do you want to be?</h1>' +
-      '<div class="big rise" style="--i:2"><span class="ro" aria-live="polite"></span><span class="u">%</span></div>' +
-      '<div class="rise lgw" style="--i:3">' + svg + '</div>' +
-      '<p class="lgk rise" style="--i:3"><i></i><span><b>Health floor ' + floor + '%.</b> ' + (fem
-        ? 'Below this, periods can stop and bone health starts to suffer.'
-        : 'Below this, hormones, sleep and recovery tend to suffer, and it is hard to hold.') + '</span></p>' +
-      '<div class="pm rise" style="--i:4"><button type="button" data-d="-1" aria-label="Leaner">−</button><button type="button" data-d="1" aria-label="Less lean">+</button></div>' +
-      '<div class="snap rise" style="--i:4"></div>');
-    var g = $('svg.lg', el), ro = $('.big .ro', el), snap = $('.snap', el), pin = $('.pin', el), dot = $('.pind', el);
-    var asked = a.goalBodyFatPct < floor;  // a goal already below the floor came with a yes
-    function set(v, done) {
-      v = Math.round(Math.min(hi, Math.max(lo, v)) * 2) / 2;
-      a.goalBodyFatPct = v; S.touched.goalBodyFatPct = true;
-      ro.textContent = v.toFixed(1); g.setAttribute('aria-valuenow', v);
-      var x = xOf(v).toFixed(1); pin.setAttribute('x1', x); pin.setAttribute('x2', x); dot.setAttribute('cx', x); dot.setAttribute('cy', yAt(v).toFixed(1));
-      if (v >= floor) asked = false;
-      if (done) note();
+    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Goal body fat</p>' +
+      '<div class="big rise" style="--i:1"><span class="ro" aria-live="polite"></span><span class="u">%</span></div>' +
+      '<div class="rise lgw" style="--i:2"><svg class="lg" viewBox="0 0 ' + W + ' ' + H + '" role="slider" tabindex="0" aria-label="Goal body fat" aria-valuemin="' + lo + '" aria-valuemax="' + hi + '"></svg></div>' +
+      '<div class="snap rise" style="--i:3"></div>');
+    var g = $('svg.lg', el), ro = $('.big .ro', el), snap = $('.snap', el);
+    function draw(pinBf) {
+      var gw = goalW();
+      var nAt = function (bf) { var lean = gw * (1 - bf / 100); return lean / (m * m) + 6.3 * (1.8 - m); };
+      var yAt = function (bf) { var z = (nAt(bf) - peak) / sig; return YB - (YB - Y0) * Math.exp(-0.5 * z * z); };
+      var edge = null; for (var b = lo; b <= hi; b += 0.1) { if (nAt(b) <= lim.edge) { edge = b; break; } }
+      var path = function (f, t, n) { var d = ''; for (var i = 0; i <= n; i++) { var bf = f + (t - f) * i / n; d += (i ? ' L' : 'M') + xOf(bf).toFixed(1) + ' ' + yAt(bf).toFixed(1); } return d; };
+      var curve = path(lo, hi, 90);
+      var px = xOf(pinBf).toFixed(1);
+      g.innerHTML = '<defs><linearGradient id="lgB" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#0a0a0b" stop-opacity="0"/><stop offset="1" stop-color="#0a0a0b" stop-opacity=".72"/></linearGradient></defs>' +
+        '<path d="' + curve + ' L' + X1 + ' ' + YB + ' L' + X0 + ' ' + YB + ' Z" fill="#fff" opacity=".035"/>' +
+        (fem ? '' : '<path d="' + path(AES[0], AES[1], 30) + ' L' + xOf(AES[1]).toFixed(1) + ' ' + YB + ' L' + xOf(AES[0]).toFixed(1) + ' ' + YB + ' Z" class="aes"/>') +
+        '<path d="' + curve + '" fill="none" stroke="#4b4b52" stroke-width="1.8" stroke-linecap="round"/><line x1="' + X0 + '" x2="' + X1 + '" y1="' + YB + '" y2="' + YB + '" stroke="#232327"/>' +
+        (edge != null && edge > lo + 0.2 ? '<rect x="' + X0 + '" y="' + Y0 + '" width="' + Math.max(0, xOf(edge) - X0).toFixed(1) + '" height="' + (YB - Y0) + '" fill="url(#lgB)"/><line x1="' + xOf(edge).toFixed(1) + '" x2="' + xOf(edge).toFixed(1) + '" y1="' + (Y0 - 4) + '" y2="' + YB + '" stroke="#52525b" stroke-dasharray="3 4"/><text x="' + Math.max(X0 + 46, xOf(edge) - 46).toFixed(1) + '" y="' + (YB + 17) + '" class="lgt">Past the ceiling</text>' : '') +
+        (floor > lo && floor < hi ? '<line x1="' + xOf(floor) + '" x2="' + xOf(floor) + '" y1="' + (Y0 + 2) + '" y2="' + YB + '" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="2 3"/><text x="' + xOf(floor) + '" y="' + (Y0 - 2) + '" class="lgt fl">Health floor ' + floor + '%</text>' : '') +
+        (fem ? '' : '<text x="' + ((xOf(AES[0]) + xOf(AES[1])) / 2).toFixed(1) + '" y="' + (YB + 17) + '" class="lgt ae">Most aesthetic</text>') +
+        '<line class="pin" x1="' + px + '" x2="' + px + '" y1="' + (Y0 - 6) + '" y2="' + YB + '"/><circle class="pind" r="5.5" cx="' + px + '" cy="' + yAt(pinBf).toFixed(1) + '"/>';
     }
-    // One fixed-height slot under the gauge, like the app's snapSlot, so nothing jumps.
+    // The slot under the gauge has a fixed height, like the app's snapSlot, so nothing jumps.
     function note() {
       var v = a.goalBodyFatPct;
-      if (v < floor && !asked) {
-        snap.innerHTML = '<div class="floor"><b>Plan below ' + floor + '%?</b><span>The app stops a plan at ' + floor + '% unless you say otherwise.' + (fem ? ' Worth doing with a doctor in the loop.' : '') +
-          '</span><div><button type="button" data-a="keep">Keep ' + floor + '%</button><button type="button" data-a="go">Plan to ' + v + '%</button></div></div>';
-        $('[data-a="keep"]', snap).onclick = function () { set(floor, true); };
-        $('[data-a="go"]', snap).onclick = function () { asked = true; note(); };
+      if (v < floor && !a.belowFloorOk) {
+        snap.innerHTML = '<button type="button" class="snapbtn">Your plan stops at ' + floor + '%. Go lower?</button>';
+        $('.snapbtn', snap).onclick = function () { ask(v); };
       } else if (!fem && (v < AES[0] || v > AES[1])) {
-        snap.innerHTML = '<button type="button" class="aesbtn">Take me to most aesthetic</button>';
-        $('.aesbtn', snap).onclick = function () { set(AES_C, true); };
+        snap.innerHTML = '<button type="button" class="snapbtn">Take me to most aesthetic</button>';
+        $('.snapbtn', snap).onclick = function () { set(AES_C); };
       } else snap.innerHTML = '';
     }
-    var drag = false;
+    function set(v, live) {
+      a.goalBodyFatPct = v; S.touched.goalBodyFatPct = true;
+      ro.textContent = v.toFixed(1); g.setAttribute('aria-valuenow', v);
+      draw(live != null ? live : v);
+      note();
+    }
+    /** RouteScreen's floor ConfirmSheet: one explicit yes. Any other way out keeps the floor. */
+    function ask(pct) {
+      openSheet('<div class="cf"><span class="chip"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span>' +
+        '<h2 class="sh-t c">Plan below ' + floor + '%?</h2><p class="sh-b c">' + (fem
+          ? 'Below about ' + floor + '% body fat, periods can stop and bone health starts to suffer, so this is where the app stops a plan by default. You can still aim for ' + pct + '% and the plan will take you there. It is worth doing with a doctor in the loop.'
+          : 'Below about ' + floor + '% body fat, hormones, sleep and recovery tend to suffer and it is hard to hold, so this is where the app stops a plan by default. You can still aim for ' + pct + '% and the plan will take you there.') +
+        '</p><button type="button" class="sh-go" data-a="go">Plan to ' + pct + '%</button><button type="button" class="sh-sec" data-a="keep">Keep ' + floor + '%</button></div>', function (sh) {
+        $('[data-a="go"]', sh).onclick = function () { a.belowFloorOk = true; closeSheet(); set(pct); };
+        $('[data-a="keep"]', sh).onclick = function () { closeSheet(); set(floor); };
+      }, function () { set(floor); });
+    }
+    function commit(v) {
+      if (v < floor && !a.belowFloorOk) { set(v); ask(v); return; }
+      if (v >= floor) a.belowFloorOk = false;
+      set(v);
+    }
+    var drag = false, last = a.goalBodyFatPct;
     function at(e) { var r = g.getBoundingClientRect(), t = ((e.clientX - r.left) / r.width * W - X0) / (X1 - X0); return lo + Math.min(1, Math.max(0, t)) * (hi - lo); }
-    g.addEventListener('pointerdown', function (e) { drag = true; g.setPointerCapture(e.pointerId); set(at(e)); e.preventDefault(); });
-    g.addEventListener('pointermove', function (e) { if (drag) set(at(e)); });
-    var up = function () { if (drag) { drag = false; note(); } };
+    function move(e) { var raw = at(e); last = Math.min(hi, Math.max(lo, Math.round(raw))); set(last, raw); }
+    g.addEventListener('pointerdown', function (e) { drag = true; g.setPointerCapture(e.pointerId); move(e); e.preventDefault(); });
+    g.addEventListener('pointermove', function (e) { if (drag) move(e); });
+    var up = function () { if (drag) { drag = false; commit(last); } };
     g.addEventListener('pointerup', up); g.addEventListener('pointercancel', up);
-    g.addEventListener('keydown', function (e) { var d = e.key === 'ArrowLeft' ? -0.5 : e.key === 'ArrowRight' ? 0.5 : 0; if (d) { set(a.goalBodyFatPct + d, true); e.preventDefault(); } });
-    $$('.pm button', el).forEach(function (b) { b.onclick = function () { set(a.goalBodyFatPct + (+b.getAttribute('data-d')) * 0.5, true); }; });
-    set(a.goalBodyFatPct, true);
+    g.addEventListener('keydown', function (e) { var d = e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowRight' ? 1 : 0; if (d) { commit(Math.min(hi, Math.max(lo, Math.round(a.goalBodyFatPct) + d))); e.preventDefault(); } });
+    set(a.goalBodyFatPct);
   }
+
+  /* ---------- beat 9: the route, and the questions each answer opens ---------- */
+  function needRV() {
+    var k = keyOf(aboutForEngine());
+    if (S.rvKey === k && S.rv) return Promise.resolve(S.rv);
+    if (S.rvP && S.rvPKey === k) return S.rvP;
+    S.rvPKey = k;
+    S.rvP = call('routeView', aboutForEngine()).then(function (v) { if (S.rvPKey === k) { S.rv = v; S.rvKey = k; S.rvP = null; } return v; }, function (e) { if (S.rvPKey === k) S.rvP = null; throw e; });
+    return S.rvP;
+  }
+  /** Redraws a beat 9 screen after a tap, once the engine has the new plan; the old content holds until then. */
+  function redraw(el, my) { needRV().then(function () { if (my === token) SCREENS[cur].r(rerender(el), my); }, function () {}); }
   var ROUTES = [
     { v: 'lean', l: 'Stay lean the whole way' },
     { v: 'bulk', l: 'Grow now, cut at the end' },
     { v: 'capped', l: 'Grow now, up to a limit' },
   ];
   var CUT_WORDS = ['No cuts', 'One cut', 'Two cuts', 'Three cuts', 'Four cuts', 'Five cuts', 'Six cuts'];
-  function routeLine(id, o) {
-    if (id === 'lean') return o && o.opensWithCut ? 'More defined and a sharper jawline, but a smaller frame while you get there.' : 'More defined the whole way, and never a long stretch of being soft.';
+  var cutWords = function (n) { return CUT_WORDS[n] || n + ' cuts'; };
+  function routeLine(id, openingCut) {
+    if (id === 'lean') return openingCut ? 'More defined and a sharper jawline, but a smaller frame while you get there.' : 'More defined the whole way, and never a long stretch of being soft.';
     if (id === 'bulk') return 'Bigger sooner and filling out shirts, but softer the whole way.';
     return 'Bigger sooner without going past a number you pick, but cutting back each time you get there.';
   }
-  function aboutForEngine() { var a = S.about; return Object.assign({}, a, { sex: a.sex || 'male', trainingState: a.trainingState || 'consistent', activityLevel: a.activityLevel || 'light', trainingSessionsPerWeek: a.trainingSessionsPerWeek == null ? 3.5 : a.trainingSessionsPerWeek }); }
+  function aboutForEngine() { var a = S.about; return Object.assign({}, a, { sex: a.sex || 'male', goalWeightKg: goalW(), trainingState: a.trainingState || 'consistent', activityLevel: a.activityLevel || 'light', trainingSessionsPerWeek: a.trainingSessionsPerWeek == null ? 3.5 : a.trainingSessionsPerWeek }); }
+  function withRV(el, my, fn) { withData(el, my, needRV, '', function (rv) { setHelp(HELP_ROUTE); fn(rv); }); }
+  /** Beat 9's "Continue", or "See the whole plan" once the range has nothing left to ask. */
+  function wayCta(label) { primary(label, function () { enable(false); needRV().then(next, next); }); }
   function rRouteChoice(el, my) {
     needAbout(el, my, function () {
-      var a = S.about;
-      head(el, 'How you get there', 'Do you want to stay lean while you grow?', 'You are at ' + r1(a.bodyFatPct) + '% body fat today. All three finish at ' + r1(a.goalBodyFatPct) + '%.');
-      // Body fat over time for the picked route; swaps as each option is tapped.
-      el.insertAdjacentHTML('beforeend', '<div class="rvis rpick rise" style="--i:2"></div>');
-      var vis = $('.rvis.rpick', el);
-      var show = function (v) {
-        var o = S.routeOpts || {}, oo = o[v], all = [], T = 0;
-        if (!oo || !oo.curve) { vis.innerHTML = ''; return; }
-        ROUTES.forEach(function (x) { var c = o[x.v] && o[x.v].curve; if (c) { c.points.forEach(function (p) { all.push(p.bodyFatPct); }); T = Math.max(T, c.totalMonths || 0); } });
-        vis.innerHTML = chart({ curve: oo.curve }, true, { hi: Math.max.apply(null, all), lo: Math.min.apply(null, all), T: T, bare: true }) +
-          '<p class="rcap"><span>Body fat over about ' + Math.round(oo.curve.totalMonths) + ' months</span></p>';
-      };
-      var draw = function () {
-        var o = S.routeOpts || {};
-        show(a.route);
-        cards(el, ROUTES.map(function (x) { var oo = o[x.v]; return { v: x.v, l: x.l, h: routeLine(x.v, oo) + (oo ? ' ' + CUT_WORDS[Math.min(6, oo.cuts)] + '.' : '') }; }), a.route, function (v) { a.route = v; show(v); });
-      };
-      var k = keyOf([a.sex, a.ageYears, a.heightCm, a.weightKg, a.bodyFatPct, a.goalWeightKg, a.goalBodyFatPct, a.trainingState]);
-      if (S.routeOptsKey === k) draw();
-      else call('routeOptions', aboutForEngine()).then(function (o) { S.routeOpts = o; S.routeOptsKey = k; }, function () {}).then(function () { if (my === token) draw(); });
-      primary('Continue');
+      withRV(el, my, function (rv) {
+        var a = S.about;
+        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">Do you want to stay lean while you grow?</h1><p class="rs rise" style="--i:1">You are at ' + Math.round(a.bodyFatPct) + '% body fat today. Both finish at ' + Math.round(a.goalBodyFatPct) + '%.</p>' +
+          '<div class="opts rise" style="--i:2" role="radiogroup">' + ROUTES.map(function (x) {
+            var pv = rv.previews[x.v], on = a.route === x.v;
+            return '<button type="button" class="opt ropt" role="radio" data-v="' + x.v + '" aria-checked="' + on + '" aria-pressed="' + on + '">' +
+              (pv ? '<span class="mini">' + journeyChart(a.bodyFatPct, pv, { compact: true, band: x.v !== 'bulk', color: on ? 'var(--acc)' : '#54545e' }) + '</span>' : '') +
+              '<span class="om"><b>' + esc(x.l) + '</b><small>' + esc(routeLine(x.v, rv.openingCut)) + '</small><i>' + esc(cutWords(pv ? pv.cuts : 0)) + '</i></span></button>';
+          }).join('') + '</div>');
+        $$('.ropt', el).forEach(function (b) {
+          b.onclick = function () {
+            var v = b.getAttribute('data-v');
+            if (v === a.route) return;
+            a.route = v;
+            if (v === 'capped' && a.bulkTo == null) a.bulkTo = rv.defaultBulkTo;
+            $$('.ropt', el).forEach(function (x) { var on = x === b; x.setAttribute('aria-pressed', on); x.setAttribute('aria-checked', on); });
+            redraw(el, my);
+          };
+        });
+        wayCta(rv.rangeMatters ? 'Continue' : 'See the whole plan');
+      });
     });
   }
+  /** Shared by the bulk-to and range screens: a hairline row with a value between − and +. */
+  function edgeRow(key, label, val, minusOff) {
+    return '<div class="erow"><span class="ek">' + label + '</span><span class="ectl"><button type="button" class="stp" data-k="' + key + '" data-d="-1"' + (minusOff ? ' disabled' : '') + ' aria-label="Lower the ' + label.toLowerCase() + '">−</button><b>' + val + '%</b><button type="button" class="stp" data-k="' + key + '" data-d="1" aria-label="Raise the ' + label.toLowerCase() + '">+</button></span></div>';
+  }
+  /* The capped answer's question: how big before the first cut. */
+  function rBulkTo(el, my) {
+    needAbout(el, my, function () {
+      withRV(el, my, function (rv) {
+        var a = S.about, at = a.bulkTo != null ? a.bulkTo : rv.defaultBulkTo;
+        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">How big do you get before your first cut?</h1><p class="rs rise" style="--i:1">You grow from where you are today up to this point, then cut back.</p>' +
+          '<div class="rise" style="--i:2">' + journeyChart(a.bodyFatPct, rv.roadmap, { bare: true, bandOnly: true, frame: true, targetPct: at }) + '</div>' +
+          '<div class="erows rise" style="--i:3">' + edgeRow('bulk', 'Bulk up to', at, at <= rv.bulkFloor) + '</div>');
+        $$('.stp', el).forEach(function (b) {
+          b.onclick = function () {
+            var nx = Math.max(rv.bulkFloor, Math.round((at + (+b.getAttribute('data-d')) * 0.5) * 2) / 2);
+            if (nx === at) return;
+            a.bulkTo = nx; $('.erow b', el).textContent = nx + '%'; redraw(el, my);
+          };
+        });
+        wayCta('Continue');
+      });
+    });
+  }
+  /* The range: both edges, with the recommendation as the button. */
+  function rRange(el, my) {
+    needAbout(el, my, function () {
+      withRV(el, my, function (rv) {
+        var a = S.about, r = rv.range, lo = r.bottom, hi = r.top;
+        var atStop = lo <= r.leanStop, atMin = hi - lo <= r.minWidth, onSug = lo === r.suggestedBottom && hi === r.suggestedTop;
+        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">What body fat do you want to sit at?</h1>' +
+          '<button type="button" class="rec rise" style="--i:1"' + (onSug ? ' disabled' : '') + '><span>We recommend ' + r.suggestedBottom + ' to ' + r.suggestedTop + '%</span><b>' + (onSug ? 'In use' : 'Use') + '</b></button>' +
+          '<div class="rise" style="--i:2">' + journeyChart(a.bodyFatPct, rv.roadmap, { bare: true, bandOnly: true, frame: true, leanStopPct: rv.leanStop }) + '</div>' +
+          '<div class="erows rise" style="--i:3">' + edgeRow('hi', 'Top', hi, atMin) + edgeRow('lo', 'Bottom', lo, atStop) + '</div>' +
+          // Both limit lines have their room reserved, so the screen never grows when one appears.
+          '<div class="limits rise" style="--i:4">' +
+          (atStop ? '<button type="button" class="lim" data-ev="lean-stop"><i></i><span>' + rv.leanStop + '% is as lean as this goes. <em>Why?</em></span></button>' : '') +
+          (atMin ? '<button type="button" class="lim" data-ev="range-width"><i></i><span>' + rv.minWidth + ' points is as narrow as it goes. <em>Why?</em></span></button>' : '') + '</div>');
+        $('.rec', el).onclick = function () { a.bottom = r.suggestedBottom; a.top = r.suggestedTop; redraw(el, my); };
+        $$('.stp', el).forEach(function (b) {
+          b.onclick = function () {
+            var by = (+b.getAttribute('data-d')) * 0.5;
+            if (b.getAttribute('data-k') === 'lo') {
+              var nx = Math.min(Math.max(r1(lo + by), r.leanStop), Math.max(r.leanStop, r.topStop));
+              a.bottom = nx;
+              // The top follows rather than blocking the bottom.
+              if (hi - nx < r.minWidth) a.top = r1(nx + r.minWidth);
+            } else {
+              a.top = Math.max(r1(hi + by), r1(lo + r.minWidth));
+            }
+            redraw(el, my);
+          };
+        });
+        $$('[data-ev]', el).forEach(function (b) { b.onclick = function () { evidenceSheet(b.getAttribute('data-ev'), rv); }; });
+        wayCta('Continue');
+      });
+    });
+  }
+  /* EvidenceSheet.tsx, the two topics the range screen opens: level one, then where it comes from. */
+  var EVIDENCE = {
+    'lean-stop': function (rv) {
+      return { title: rv.leanStop + '% is as lean as the plan goes', lines: ['Below this your fat store cannot release energy fast enough to cover a normal deficit, so the difference starts coming off muscle instead.', 'The number itself is a margin rather than a measured line, set well above where anything has been recorded going wrong.'],
+        blocks: [
+          { k: 'What actually binds first', g: 'Theoretical model [B]', b: 'Alpert put a limit on how fast fat can release energy, and the app uses a deliberately conservative figure. Set the deficit a rate needs equal to what a fat store can supply and the bodyweight cancels out, leaving a single body fat percentage: about 11% at the slow rate this app plans, and about 23% at the fast one. That is why the faster option disappears as you lean out.' },
+          { k: 'Why the stop is higher than that', b: 'Because the arithmetic above is sex blind, and the lean end is not. For women the stop sits at 22%, near where menstrual function is documented as maintained, and a plan that returns someone to that line every cycle for years is a different proposition from one that visits it once.' },
+          { k: 'Where harm has actually been measured', g: 'Case study [B]', b: 'One drug-free man taken from 15% to 4.5% lost most of his testosterone and had not fully recovered his strength six months later. That is far below this stop, which is the point: the margin is wide on purpose.' },
+          { k: 'What it doesn’t tell you', b: 'Nothing about you specifically, and nothing about being leaner than this briefly. It is where the app will keep putting you for years, which is a higher bar than where a person can visit.' },
+        ], src: 'Alpert 2005, J Theor Biol 233(1):1-13 · Rossow et al. 2013, PMID 23412685 · Fagerberg 2018, Int J Sport Nutr Exerc Metab · Mursu, Hulmi et al. 2023, Nutrients 15(2):382' };
+    },
+    'range-width': function (rv) {
+      return { title: rv.minWidth + ' points is as narrow as it goes', lines: ['A tighter range means each stretch of building and each cut finishes before a bathroom scale could show it worked.', 'Nothing is wrong with living in a one point range. The app just could not tell you whether you were on track, so it will not plan one.'],
+        blocks: [
+          { k: 'Measured in this app', g: 'Our own model, not a trial', b: 'Same lifter, widening the range: half a point gives ten cuts and twenty phases, ten of them too short to read on a scale. One point gives six cuts and five. Two points gives four cuts and one, and the one is the final cut, which is short at every width. Two and a half gives none.' },
+          { k: 'Why shortness is the problem', b: 'A phase ends on a body fat number, and body fat is measured with error. A phase that finishes inside that error cannot be confirmed as finished, so the app would be moving you between phases on noise.' },
+          { k: 'What width is not', g: 'Preference [B]', b: 'Nothing says a narrow range builds less muscle or takes longer. The closest trial ran interrupted against continuous restriction in trained lifters and found them identical on strength, hormones, sleep and lean mass, with the interrupted arm reporting less hunger. Width is a preference with a real cost on both sides, and this limit is only about what can be verified.' },
+        ], src: 'Peos et al. 2021, Med Sci Sports Exerc 53(8):1685-1698 · phase counts from this app’s own roadmap model, not from a trial' };
+    },
+  };
+  function evidenceSheet(topic, rv) {
+    var e = EVIDENCE[topic](rv);
+    var one = '<p class="sh-ov amber">Your route</p><h2 class="sh-t">' + esc(e.title) + '</h2>' + e.lines.map(function (l) { return '<p class="sh-b">' + esc(l) + '</p>'; }).join('') +
+      '<button type="button" class="sh-more" data-more="1">Where this comes from<span aria-hidden="true">›</span></button><button type="button" class="sh-ghost" data-close="1">Got it</button>';
+    var two = '<button type="button" class="sh-back" data-less="1">‹ Where this comes from</button><h2 class="sh-t">' + esc(e.title) + '</h2>' +
+      e.blocks.map(function (b) { return '<div class="eb"><p class="ek2">' + esc(b.k) + (b.g ? ' <span>' + esc(b.g) + '</span>' : '') + '</p><p class="sh-b">' + esc(b.b) + '</p></div>'; }).join('') +
+      '<p class="sh-src">' + esc(e.src) + '</p><button type="button" class="sh-ghost" data-close="1">Got it</button>';
+    openSheet('<div class="evs">' + one + '</div>', function (sh) {
+      var box = $('.evs', sh);
+      var wire = function () {
+        var m = $('[data-more]', box), l = $('[data-less]', box);
+        if (m) m.onclick = function () { box.innerHTML = two; wire(); };
+        if (l) l.onclick = function () { box.innerHTML = one; wire(); };
+        $('[data-close]', box).onclick = function () { closeSheet(); };
+      };
+      wire();
+    });
+  }
+  /* WayInChart.tsx: what the scale does on the way into the range, to scale against the deepest option. */
+  function wayInMini(id, w, exitW, deepest, color) {
+    var X0 = 4, X1 = 110, YT = 22, YD = 58, N = 20, span = Math.max(0.1, w - deepest);
+    var yOf = function (x) { return YT + ((w - x) / span) * (YD - YT); };
+    var end = Math.max(YT, Math.min(YD, yOf(exitW))), pts = [];
+    for (var i = 0; i <= N; i++) {
+      var t = i / N, x = X0 + (X1 - X0) * t, y = id === 'hold' ? YT : id === 'cut' ? yOf(w * Math.pow(exitW / w, t)) : YT + (end - YT) * t;
+      pts.push((i ? 'L' : 'M') + x.toFixed(1) + ',' + Math.min(YD, y).toFixed(1));
+    }
+    return '<svg width="116" height="70" viewBox="0 0 116 70" aria-hidden="true"><line x1="0" y1="' + YT + '" x2="116" y2="' + YT + '" stroke="#2a2a30" stroke-dasharray="2 3"/><path d="' + pts.join(' ') + '" fill="none" stroke="' + color + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="' + X1 + '" cy="' + end.toFixed(1) + '" r="3" fill="' + (color === '#54545e' ? '#0a0a0b' : color) + '" stroke="' + color + '" stroke-width="1.6"/></svg>';
+  }
+  var WAY_IN = [
+    { v: 'hold', l: 'Hold your weight' },
+    { v: 'ease', l: 'Ease it down' },
+    { v: 'cut', l: 'Cut' },
+  ];
+  function wtShort(kg) { return imp() ? Math.round(kg * LB) + ' lbs' : Math.round(kg) + ' kg'; }
+  /* The lean answer's second question, only when the plan opens with a cut. */
+  function rWayIn(el, my) {
+    needAbout(el, my, function () {
+      withRV(el, my, function (rv) {
+        setHelp(HELP_WAYIN);
+        var a = S.about, lo = rv.range.bottom, opts = rv.wayIn || [];
+        var deepest = Math.min.apply(null, opts.map(function (o) { return o.exitWeightKg; }));
+        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">How do you get down to ' + lo + '%?</h1><p class="rs rise" style="--i:1">Your goal takes about the same time either way. What changes is how soon you reach ' + lo + '%.</p>' +
+          '<div class="opts rise" style="--i:2" role="radiogroup">' + WAY_IN.map(function (x) {
+            var o = opts.filter(function (y) { return y.id === x.v; })[0];
+            if (!o) return '';
+            var on = a.wayIn === x.v, where = (x.v === 'hold' ? 'Stays at ' : 'Down to ') + wtShort(o.exitWeightKg);
+            var ml = Math.round(o.months[0]), mh = Math.round(o.months[1]);
+            var mo = ml === mh ? ml + ' month' + (ml === 1 ? '' : 's') : ml + ' to ' + mh + ' months';
+            var stops = Math.abs(o.exitBodyFatPct - lo) > 0.2 ? ' to ' + Math.round(o.exitBodyFatPct) + '%' : '';
+            return '<button type="button" class="opt ropt" role="radio" data-v="' + x.v + '" aria-checked="' + on + '" aria-pressed="' + on + '"><span class="mini">' + wayInMini(x.v, a.weightKg, o.exitWeightKg, deepest, on ? 'var(--acc)' : '#54545e') + '</span><span class="om"><b>' + x.l + '</b><small>' + esc(where + stops + ' · ' + mo) + '</small></span></button>';
+          }).join('') + '</div>');
+        $$('.ropt', el).forEach(function (b) { b.onclick = function () { var v = b.getAttribute('data-v'); if (v === a.wayIn) return; a.wayIn = v; redraw(el, my); }; });
+        wayCta('Continue');
+      });
+    });
+  }
+  var rvOk = function () { return !!S.rv; };
+  var WHEN = {
+    route: function () { return rvOk() && S.rv.rangeMatters; },
+    bulkto: function () { return rvOk() && S.rv.rangeMatters && S.about.route === 'capped'; },
+    range: function () { return rvOk() && S.rv.rangeMatters && S.about.route !== 'bulk'; },
+    wayin: function () { return rvOk() && S.rv.rangeMatters && S.about.route === 'lean' && S.rv.wayInApplies && !!S.rv.wayIn; },
+    plan: function () { return true; },
+  };
+
+  /* ================= the meal questions that used to sit here =================
+   * N4Activity and N4bTraining are the meal questionnaire's first two questions in
+   * the app, so they open the food section here. */
   var ACTIVE = [
     { v: 'sedentary', l: 'Mostly sitting', h: 'Desk work, driving, not much walking' },
     { v: 'light', l: 'On my feet a bit', h: 'Some walking through the day' },
@@ -611,16 +951,16 @@
   ];
   function rActive(el, my) {
     needAbout(el, my, function () {
-      head(el, 'Your day', 'How active are you outside the gym?', 'Work, errands, getting around. Your sessions are the next question, so leave them out here.');
+      head(el, 'Your food', 'How active are you outside the gym?', 'Work, errands, getting around. Your sessions are the next question, so leave them out here.');
       cards(el, ACTIVE, S.about.activityLevel, function (v) { S.about.activityLevel = v; enable(true); });
       primary('Continue', null, !S.about.activityLevel);
     });
   }
   function rSessions(el, my) {
     needAbout(el, my, function () {
-      head(el, 'Your training', 'How much do you train?', 'Structured sessions: lifting, classes, sport.');
+      head(el, 'Your food', 'How much do you train?', 'Structured sessions: lifting, classes, sport. This is added on top of your day-to-day activity, so count it here and nowhere else.');
       cards(el, S.defaults.trainingBands.map(function (b) { return { v: b.value, l: b.label, h: b.hint }; }), S.about.trainingSessionsPerWeek, function (v) { S.about.trainingSessionsPerWeek = v; enable(true); });
-      primary('Build my route', function () { go('routebuild'); }, S.about.trainingSessionsPerWeek == null);
+      primary('Continue', null, S.about.trainingSessionsPerWeek == null);
     });
   }
 
@@ -695,75 +1035,6 @@
     });
   }
 
-  /* ---------- route ---------- */
-  function needRoute() {
-    var k = keyOf(aboutForEngine());
-    if (S.routeKey === k && S.route) return Promise.resolve(S.route);
-    return call('buildRoute', aboutForEngine()).then(function (r) { S.route = r; S.routeKey = k; return r; });
-  }
-  function chart(r, animated, sc) {
-    // sc (optional): { hi, lo, T, bare } shares one scale across charts so they compare; bare drops the start label.
-    var c = r.curve; if (!c || !c.points || c.points.length < 2) return '';
-    var pts = c.points, nodes = c.nodes, T = (sc && sc.T) || c.totalMonths || 1;
-    var bfs = pts.map(function (p) { return p.bodyFatPct; });
-    var hi = sc ? sc.hi : Math.max.apply(null, bfs), lo = sc ? sc.lo : Math.min.apply(null, bfs);
-    if (hi - lo < 2) { hi += 1; lo -= 1; }
-    var X0 = 24, X1 = 416, Y0 = 26, Y1 = 138;
-    var x = function (m) { return X0 + (m / T) * (X1 - X0); };
-    var y = function (b) { return Y1 - ((b - lo) / (hi - lo)) * (Y1 - Y0); };
-    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + x(p.month).toFixed(1) + ' ' + y(p.bodyFatPct).toFixed(1); }).join(' ');
-    var gl = '', used = [];
-    [nodes[0].bodyFatPct, nodes[nodes.length - 1].bodyFatPct, hi, lo].forEach(function (b) {
-      var yy = y(b); if (used.some(function (u) { return Math.abs(u - yy) < 16; })) return; used.push(yy);
-      gl += '<line x1="' + X0 + '" x2="' + X1 + '" y1="' + yy.toFixed(1) + '" y2="' + yy.toFixed(1) + '" class="g"/><text x="' + (X1 + 10) + '" y="' + (yy + 3).toFixed(1) + '" class="ax">' + r1(b) + '%</text>';
-    });
-    var dots = nodes.map(function (n, i) {
-      var last = i === nodes.length - 1;
-      return '<circle style="--d:' + (n.month / T).toFixed(2) + '" cx="' + x(n.month).toFixed(1) + '" cy="' + y(n.bodyFatPct).toFixed(1) + '" r="' + (i === 0 || last ? 5 : 3) + '" class="' + (last ? 'end' : 'pt') + '"/>';
-    }).join('');
-    var labels = '';
-    for (var i = 1; i < nodes.length; i++) {
-      var a = x(nodes[i - 1].month), b = x(nodes[i].month), k = nodes[i].kind, lx = (a + b) / 2, anchor = '';
-      if (b - a < 34) { if (i !== nodes.length - 1) continue; lx = X1; anchor = ';text-anchor:end'; }
-      var cls = k === 'trim' ? 'pl t' : k === 'reveal' ? 'pl r' : k === 'recomp' ? 'pl x' : 'pl';
-      labels += '<text x="' + lx.toFixed(1) + '" y="170" class="' + cls + '" style="--d:' + (nodes[i].month / T).toFixed(2) + anchor + '">' + (SHORT[k] || '') + '</text>';
-    }
-    var end = nodes[nodes.length - 1], ex = x(end.month), ey = y(end.bodyFatPct);
-    var goal = fmtW(S.about.goalWeightKg), pw = goal.length * 7 + 16;
-    var pillX = Math.min(ex - pw / 2, X1 - pw + 8), pillY = ey > 110 ? ey - 32 : ey + 10;
-    var sy = y(nodes[0].bodyFatPct);
-    return '<svg class="rchart" viewBox="0 0 450 180" role="img" aria-label="Your route: body fat from ' + r1(nodes[0].bodyFatPct) + '% to ' + r1(end.bodyFatPct) + '% over about ' + Math.round(T) + ' months">' +
-      '<defs><linearGradient id="rfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a855f7" stop-opacity=".28"/><stop offset="1" stop-color="#a855f7" stop-opacity="0"/></linearGradient></defs>' +
-      gl + '<path class="ar" d="' + d + ' L' + X1 + ' 150 L' + X0 + ' 150 Z" fill="url(#rfill)"/><path d="' + d + '" class="ln" pathLength="1"/>' + dots +
-      (sc && sc.bare ? '' : '<text style="--d:0" x="' + (X0 + 8) + '" y="' + (sy > 40 ? sy - 10 : sy + 18).toFixed(1) + '" class="nl">' + esc(fmtW(S.about.weightKg)) + '</text>') +
-      '<rect style="--d:1" x="' + pillX.toFixed(1) + '" y="' + pillY.toFixed(1) + '" width="' + pw + '" height="20" rx="10" class="endpill"/><text style="--d:1" x="' + (pillX + pw / 2).toFixed(1) + '" y="' + (pillY + 14).toFixed(1) + '" class="nl c">' + esc(goal) + '</text>' +
-      labels + '</svg>';
-  }
-  function kindsLine(r) {
-    var seen = [], out = [];
-    r.phases.forEach(function (p) { var w = KIND[p.kind] || p.kind; if (out[out.length - 1] !== w) out.push(w); });
-    return out.join(', ');
-  }
-  function rRouteBuild(el, my) {
-    var a = S.about;
-    buildMoment(el, my, {
-      word: 'your route.', sub: fmtW(a.weightKg) + ' → ' + fmtW(a.goalWeightKg) + ' at ' + r1(a.goalBodyFatPct) + '%',
-      work: needRoute,
-      over: function () { return 'Your route to your goal'; },
-      steps: function (r) {
-        return [
-          { label: 'Reading your body', value: fmtW(a.weightKg) + ' · ' + r1(a.bodyFatPct) + '%' },
-          { label: 'Setting your goal', value: fmtW(a.goalWeightKg) + ' at ' + r1(a.goalBodyFatPct) + '%' },
-          { label: 'Working out your phases', value: kindsLine(r) },
-          { label: 'Timing each phase', value: years(r.roadmap.estYears) },
-          { label: 'Setting phase 1 macros', value: r.macros ? n0(r.macros.calories) + ' kcal' : '' , count: r.macros ? { to: r.macros.calories, suffix: ' kcal' } : null },
-        ];
-      },
-      visual: function () { return '<div class="rvis" style="min-height:120px"></div>'; },
-      onStep: function (i, r, box) { if (i === 2) $('.rvis', box).innerHTML = chart(r); },
-      done: function () { replaceWith('routereveal'); },
-    });
-  }
   function withData(el, my, work, text, fn) {
     el.innerHTML = '<div class="loading"><div class="spin"></div>' + esc(text) + '</div>';
     primary(null);
@@ -773,37 +1044,243 @@
       $('[data-retry]', el).onclick = function () { show(cur, 0); };
     });
   }
-  function rRouteReveal(el, my) {
+  /* ---------- JourneyChart.tsx: body fat from today to the goal, inside the range ----------
+   * Same geometry as the app (320 wide viewBox, X0 30 to X1 308, the line sampled
+   * from planCurve at 96 fixed points). Modes used by the route: compact (the
+   * option miniatures), bandOnly + frame (the bulk-to and range screens), and bare
+   * + frame + yearLines + tappable nodes with the flag (the plan). No morph between
+   * plans: the line is redrawn. */
+  var JC = { X0: 30, X1: 308, Y0: 14, Y1: 104, N: 96 };
+  function journeyChart(startBf, rm, o) {
+    o = o || {};
+    var X0 = JC.X0, X1 = JC.X1, Y0 = JC.Y0, Y1 = JC.Y1, N = JC.N;
+    var color = o.color || 'var(--acc)', band = o.band !== false, compact = !!o.compact, bandOnly = !!o.bandOnly;
+    var phases = rm.phases, start = startBf != null ? startBf : rm.band.ceiling + 2;
+    var goal = phases[phases.length - 1].exitBodyFatPct, floor = rm.band.floor, ceiling = rm.band.ceiling;
+    var exits = bandOnly ? [] : phases.map(function (p) { return p.exitBodyFatPct; });
+    var marks = o.leanStopPct != null ? [o.leanStopPct] : [];
+    var edges = band ? [ceiling, floor] : [];
+    var lineHi = Math.max.apply(null, [start].concat(exits, marks, edges)), lineLo = Math.min.apply(null, [goal].concat(exits, marks, edges));
+    var hi = compact ? lineHi + 0.6 : Math.ceil((lineHi + 2) / 2) * 2, lo = compact ? lineLo - 0.6 : Math.floor((lineLo - 2) / 2) * 2;
+    var yTop = compact ? 8 : Y0, yBot = compact ? 62 : Y1;
+    var yOf = function (bf) { var y = yTop + ((hi - bf) / (hi - lo)) * (yBot - yTop); return isFinite(y) ? y : (yTop + yBot) / 2; };
+    var yAt = function (bf) { return Y0 + ((hi - bf) / (hi - lo)) * (Y1 - Y0); };
+    var mid = function (m) { return (m[0] + m[1]) / 2; };
+    var way = [];
+    phases.forEach(function (p) { for (var i = 0; i < Math.max(1, p.repeats || 1); i++) way.push([mid(p.estMonths), p.exitBodyFatPct]); });
+    var total = way.reduce(function (s, w) { return s + w[0]; }, 0) || 1;
+    var curve = rm.curve, ys = [];
+    if (curve && curve.points.length > 1 && curve.totalMonths > 0) {
+      var pts = curve.points, k = 1;
+      for (var i = 0; i < N; i++) {
+        var atM = (i / (N - 1)) * curve.totalMonths;
+        while (k < pts.length - 1 && pts[k].month < atM) k++;
+        var pa = pts[k - 1], pb = pts[k], f = pb.month === pa.month ? 0 : (atM - pa.month) / (pb.month - pa.month);
+        ys.push(yOf(pa.bodyFatPct + (pb.bodyFatPct - pa.bodyFatPct) * f));
+      }
+    } else {
+      var nd = [[0, start]], tt = 0;
+      way.forEach(function (w) { tt += w[0] / total; nd.push([tt, w[1]]); });
+      for (var j = 0; j < N; j++) {
+        var ti = j / (N - 1), kk = 1;
+        while (kk < nd.length - 1 && nd[kk][0] < ti) kk++;
+        var fr = nd[kk][0] === nd[kk - 1][0] ? 0 : (ti - nd[kk - 1][0]) / (nd[kk][0] - nd[kk - 1][0]);
+        ys.push(yOf(nd[kk - 1][1] + (nd[kk][1] - nd[kk - 1][1]) * fr));
+      }
+    }
+    var monthsT = curve ? curve.totalMonths : total;
+    var nodes = curve && monthsT > 0 ? curve.nodes.map(function (n) { return { x: X0 + (n.month / monthsT) * (X1 - X0), y: yOf(n.bodyFatPct), month: n.month, bodyFatPct: n.bodyFatPct, weightKg: n.weightKg }; }) : [];
+    var xOf = function (i) { return X0 + (i / (N - 1)) * (X1 - X0); };
+    var d = 'M' + xOf(0).toFixed(1) + ' ' + ys[0].toFixed(1);
+    for (var q = 1; q < N - 1; q++) d += ' Q' + xOf(q).toFixed(1) + ' ' + ys[q].toFixed(1) + ' ' + ((xOf(q) + xOf(q + 1)) / 2).toFixed(1) + ' ' + ((ys[q] + ys[q + 1]) / 2).toFixed(1);
+    d += ' L' + xOf(N - 1).toFixed(1) + ' ' + ys[N - 1].toFixed(1);
+    var H = bandOnly ? 132 : compact ? (o.muscleKg != null ? 96 : 72) : o.muscleKg != null ? 158 : 124;
+    var flagRoom = o.nodeFlag ? 30 : 0;
+    var s = '';
+    if (band) s += '<rect x="' + X0 + '" y="' + yOf(ceiling).toFixed(1) + '" width="' + (X1 - X0) + '" height="' + Math.max(0, yOf(floor) - yOf(ceiling)).toFixed(1) + '" rx="8" fill="' + color + '" fill-opacity=".1"/>';
+    if (o.yearLines && monthsT > 12) for (var yr = 1; yr <= Math.floor(monthsT / 12); yr++) { var yx = X0 + ((yr * 12) / monthsT) * (X1 - X0); s += '<line x1="' + yx.toFixed(1) + '" y1="' + Y0 + '" x2="' + yx.toFixed(1) + '" y2="' + Y1 + '" stroke="#1e1e24"/><text x="' + (yx + 3).toFixed(1) + '" y="' + (Y1 - 4) + '" font-size="8" fill="#3f3f46">' + yr + 'y</text>'; }
+    if (o.targetPct != null) {
+      var off = o.targetPct > hi, ty = off ? Y0 : yAt(o.targetPct);
+      s += '<line x1="' + X0 + '" y1="' + ty.toFixed(1) + '" x2="' + X1 + '" y2="' + ty.toFixed(1) + '" stroke="' + color + '" stroke-width="1.5" stroke-opacity="' + (off ? 0.55 : 1) + '"/><text x="' + (X1 - 2) + '" y="' + (ty - 5).toFixed(1) + '" font-size="8.5" fill="' + color + '" fill-opacity="' + (off ? 0.75 : 1) + '" text-anchor="end">' + (off ? '▲ ' : '') + o.targetPct + '%</text>';
+    }
+    if (bandOnly) {
+      if (o.leanStopPct != null) s += '<line x1="' + X0 + '" y1="' + yAt(o.leanStopPct).toFixed(1) + '" x2="' + X1 + '" y2="' + yAt(o.leanStopPct).toFixed(1) + '" stroke="#8a6b28"/>';
+      [[startBf, 'TODAY'], [goal, 'GOAL']].forEach(function (mk) {
+        if (mk[0] == null) return;
+        var my = yAt(mk[0]).toFixed(1);
+        s += '<line x1="' + X0 + '" y1="' + my + '" x2="' + X1 + '" y2="' + my + '" stroke="#2c2c31" stroke-dasharray="2 5"/><text x="' + (X0 + 4) + '" y="' + (my - 5) + '" font-size="7.6" fill="#4b4b52" letter-spacing="1.15">' + mk[1] + ' ' + Math.round(mk[0]) + '%</text>';
+      });
+    }
+    if (o.frame) s += '<line x1="' + X0 + '" y1="' + Y0 + '" x2="' + X0 + '" y2="' + Y1 + '" stroke="#232328"/><line x1="' + X0 + '" y1="' + Y1 + '" x2="' + X1 + '" y2="' + Y1 + '" stroke="#232328"/>';
+    if ((o.bare || bandOnly) && !compact) for (var t4 = 0; t4 < 4; t4++) { var pct = hi - ((hi - lo) * t4) / 3; s += '<text x="' + (X0 - 4) + '" y="' + (yAt(pct) + 3).toFixed(1) + '" font-size="8.5" fill="#3f3f46" text-anchor="end">' + Math.round(pct) + '%</text>'; }
+    if (!bandOnly) s += '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + (compact ? 2.2 : 2.5) + '" stroke-linejoin="round" stroke-linecap="round"/>';
+    if (!compact && !bandOnly) s += '<circle cx="' + X0 + '" cy="' + yOf(start).toFixed(1) + '" r="8" fill="' + color + '" fill-opacity=".18"/><circle cx="' + X0 + '" cy="' + yOf(start).toFixed(1) + '" r="4.5" fill="' + color + '"/><circle cx="' + X1 + '" cy="' + ys[N - 1].toFixed(1) + '" r="3.5" fill="#131316" stroke="#8e8e93" stroke-width="1.5"/>';
+    if (o.selectable && !bandOnly) nodes.forEach(function (n, i) {
+      var on = o.selected === i;
+      s += '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) + '" r="' + (on ? 5 : 3.2) + '" fill="' + (on ? color : '#0a0a0b') + '" stroke="' + color + '" stroke-width="' + (on ? 0 : 1.6) + '"/><circle class="hit" data-node="' + i + '" cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) + '" r="17" fill="transparent"/>';
+    });
+    var fn = o.nodeFlag && o.selected != null ? nodes[o.selected] : null;
+    if (fn) {
+      var label = (imp() ? Math.round(fn.weightKg * LB) + ' lbs' : fn.weightKg.toFixed(1) + ' kg') + ' · ' + fn.bodyFatPct.toFixed(1) + '% · ' + (fn.month < 0.5 ? 'Now' : 'Month ' + Math.round(fn.month));
+      var em = 0; for (var c = 0; c < label.length; c++) { var ch = label[c]; em += ch >= '0' && ch <= '9' ? 0.56 : ch === ' ' || ch === '.' ? 0.28 : ch === '·' ? 0.34 : ch === '%' ? 0.86 : ch >= 'A' && ch <= 'Z' ? 0.66 : 0.52; }
+      var fw = Math.min(X1 - X0, em * 11 + 22), fh = 21, ftop = -flagRoom + 4, bx = Math.min(Math.max(fn.x - fw / 2, X0), X1 - fw);
+      s += '<line x1="' + fn.x.toFixed(1) + '" y1="' + (ftop + fh) + '" x2="' + fn.x.toFixed(1) + '" y2="' + (fn.y - 7).toFixed(1) + '" stroke="' + color + '" stroke-opacity=".45"/><rect x="' + bx.toFixed(1) + '" y="' + ftop + '" width="' + fw.toFixed(1) + '" height="' + fh + '" rx="10.5" fill="#0a0a0b" stroke="#2c2c33"/><text x="' + (bx + fw / 2).toFixed(1) + '" y="' + (ftop + 14.5) + '" font-size="11" font-weight="600" fill="#e8e8ea" text-anchor="middle">' + esc(label) + '</text>';
+    }
+    if (o.muscleKg != null) {
+      var span = (function () {
+        var tot = phases.reduce(function (sum, p) { return sum + mid(p.estMonths) * (p.repeats || 1); }, 0), at = 0, l = null, h = 0;
+        if (tot <= 0) return null;
+        phases.forEach(function (p) { var w = (mid(p.estMonths) * (p.repeats || 1)) / tot; if (p.kind === 'build') { if (l == null) l = at; h = at + w; } at += w; });
+        return l == null ? null : { lo: l, hi: h };
+      })();
+      if (span) {
+        var bx1 = X0 + span.lo * (X1 - X0), bx2 = X0 + span.hi * (X1 - X0), by = (compact ? 62 : Y1) + 12;
+        s += '<g stroke="' + color + '" stroke-opacity=".38"><line x1="' + bx1.toFixed(1) + '" y1="' + by + '" x2="' + bx2.toFixed(1) + '" y2="' + by + '"/><line x1="' + bx1.toFixed(1) + '" y1="' + (by - 4) + '" x2="' + bx1.toFixed(1) + '" y2="' + (by + 4) + '"/><line x1="' + bx2.toFixed(1) + '" y1="' + (by - 4) + '" x2="' + bx2.toFixed(1) + '" y2="' + (by + 4) + '"/></g><text x="' + ((bx1 + bx2) / 2).toFixed(1) + '" y="' + (by + 16) + '" font-size="11" fill="' + color + '" text-anchor="middle">+' + o.muscleKg + ' kg muscle</text>';
+      }
+    }
+    var cls = compact ? 'jc mini-c' : 'jc';
+    return '<svg class="' + cls + '" viewBox="0 ' + (-flagRoom) + ' 320 ' + (H + flagRoom) + '"' + (compact ? ' width="116" height="72"' : '') + ' role="img" aria-label="Body fat from ' + Math.round(start) + '% to ' + Math.round(goal) + '%">' + s + '</svg>';
+  }
+  /* ---------- PhaseLine.tsx: the whole journey dim, phase 1 lit and drawn in ---------- */
+  function phaseLine(startBf, rm) {
+    var W = 308, H = 96, X0 = 4, X1 = 304, Y0 = 12, YB = 84;
+    var legs = rm.expanded.map(function (p) { return { m: (p.estMonths[0] + p.estMonths[1]) / 2, bf: p.exitBodyFatPct }; });
+    var start = startBf != null ? startBf : rm.band.ceiling + 2, total = legs.reduce(function (s, l) { return s + l.m; }, 0) || 1;
+    var all = [start].concat(legs.map(function (l) { return l.bf; })), hi = Math.max.apply(null, all) + 1.5, lo = Math.min.apply(null, all) - 1.5;
+    var yOf = function (bf) { return Y0 + ((hi - bf) / (hi - lo || 1)) * (YB - Y0); };
+    var nodes = [{ x: X0, y: yOf(start) }], acc = 0;
+    legs.forEach(function (l) { acc += l.m; nodes.push({ x: X0 + (acc / total) * (X1 - X0), y: yOf(l.bf) }); });
+    var toPath = function (p) { return p.map(function (n, i) { return (i ? 'L' : 'M') + n.x.toFixed(1) + ' ' + n.y.toFixed(1); }).join(' '); };
+    var lit = nodes.slice(0, 2), runEnd = lit[lit.length - 1].x;
+    var lp = toPath(lit);
+    return '<svg class="pline" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><defs><linearGradient id="phaseRun" gradientUnits="userSpaceOnUse" x1="' + X0 + '" y1="0" x2="' + runEnd.toFixed(1) + '" y2="0"><stop offset="0" stop-color="var(--acc)" stop-opacity=".1"/><stop offset="0" stop-color="var(--acc)" stop-opacity=".95"/><stop offset="1" stop-color="var(--acc)"/></linearGradient></defs>' +
+      '<path d="' + toPath(nodes) + '" fill="none" stroke="#26262b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<path d="' + lp + '" fill="none" stroke="url(#phaseRun)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<path class="sweep" d="' + lp + '" pathLength="1" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' +
+      head(9, '.18') + head(4.5, '1') + '</svg>';
+    // The head runs along the lit leg (an SVG motion path from the start node); still screens get it at the end.
+    function head(r, op) {
+      var still = RM || root.classList.contains('still'), p = still ? lit[1] : lit[0];
+      return '<circle r="' + r + '" fill="var(--acc)" opacity="' + op + '" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '">' + (still ? '' : '<animateMotion dur="0.9s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".33 1 .68 1" path="M0 0 L' + (lit[1].x - lit[0].x).toFixed(1) + ' ' + (lit[1].y - lit[0].y).toFixed(1) + '"/>') + '</circle>';
+    }
+  }
+  var KIND_LABEL = { trim: 'Trim', build: 'Build', recomp: 'Recomp', reveal: 'The reveal' };
+  var INTENT = {
+    build: ['Gain weight on purpose', 'You eat above maintenance, so the scale climbs. Some of that is fat, and that is the trade. Muscle goes on faster this way.'],
+    trim: ['Lose fat, keep the muscle', 'You eat below maintenance and keep lifting hard. The scale falls, and the job is making sure what leaves is fat.'],
+    recomp: ['Hold your weight', 'Muscle up, fat down, the scale roughly still. It is the one phase where both move at once.'],
+    reveal: ['Bring it down to the finish', 'The last stretch. Fat comes off and what you have built underneath shows.'],
+  };
+  function wtOne(kg) { return imp() ? Math.round(kg * LB) + ' lbs' : kg.toFixed(1) + ' kg'; }
+  function varianceSheet(y) {
+    openSheet('<p class="sh-ov">Estimate · ' + y[0] + ' to ' + y[1] + ' years</p><h2 class="sh-t">Why the range?</h2>' +
+      '<p class="sh-b">People respond differently to the same training. Two lifters running the identical program can build at quite different rates, and there is no way to know which you are until you start. The fast end assumes you respond well, the slow end assumes you do not.</p>' +
+      '<p class="sh-b">How fast the scale follows your calories moves it too. Each trim is timed from the deficit your meal plan sets: the short end is exactly that pace, and the long end allows for the scale coming down more slowly than the numbers say, which it often does. It is a smaller part of the total.</p>' +
+      '<p class="sh-b">Not following the plan is not in this range. Missed sessions and off-plan weeks do not put you at the slow end. They put you outside it. The estimate assumes you train and eat as planned throughout.</p>' +
+      '<button type="button" class="sh-ghost" data-close="1">Got it</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
+  }
+  /* ---------- beat 9, the plan: no controls, each row jumps back to its question ---------- */
+  function rPlan(el, my) {
     needAbout(el, my, function () {
-      withData(el, my, needRoute, 'Planning your route…', function (r) {
-        var a = S.about;
-        el.innerHTML = '<p class="ov rise" style="--i:0">Your route to your goal</p>' +
-          '<p class="goalline rise" style="--i:1"><span class="cw"></span> <span>→</span> <b class="gw" style="color:#fff"></b></p>' +
-          '<p class="goalbf rise" style="--i:2">at ' + r1(a.goalBodyFatPct) + '% body fat</p>' + chart(r) +
-          '<div class="years rise" style="--i:6"><b>' + esc(years(r.roadmap.estYears)) + '</b><span>About, from published rates</span></div>';
-        var unit = imp() ? ' lb' : ' kg', f = function (v) { return (imp() ? Math.round(v) : r1(v)) + unit; };
-        countUp($('.cw', el), imp() ? kgToLb(a.weightKg) : a.weightKg, 700, f);
-        countUp($('.gw', el), imp() ? kgToLb(a.goalWeightKg) : a.goalWeightKg, 1400, f);
-        primary('See phase 1', function () { go('phase1'); });
+      withRV(el, my, function (rv) {
+        var a = S.about, rm = rv.roadmap;
+        if (!rm) { el.innerHTML = errBox('No plan came back for these numbers.'); $('[data-retry]', el).onclick = function () { show(cur, 0); }; return; }
+        var y = rm.estYears, gw = goalW(), lb = imp();
+        var big = function (kg) { return (lb ? Math.round(kg * LB) : Math.round(kg)) + '<small>' + (lb ? 'lbs' : 'kg') + '</small>'; };
+        var name = ROUTES.filter(function (x) { return x.v === a.route; })[0].l;
+        var rows = '';
+        if (rv.rangeMatters) {
+          rows += '<button type="button" class="crow" data-to="route"><span><i>How you grow</i><b>' + esc(name + ' · ' + cutWords(rm.cuts).toLowerCase()) + '</b></span><em>Change</em></button>';
+          if (a.route === 'capped') rows += '<button type="button" class="crow" data-to="bulkto"><span><i>Bulk up to</i><b>' + (a.bulkTo != null ? a.bulkTo : rv.defaultBulkTo) + '%</b></span><em>Change</em></button>';
+          if (a.route !== 'bulk' && rv.range) rows += '<button type="button" class="crow" data-to="range"><span><i>' + (a.route === 'capped' ? 'Then you sit in' : 'Your range') + '</i><b>' + rv.range.bottom + ' to ' + rv.range.top + '%</b></span><em>Change</em></button>';
+          if (WHEN.wayin()) {
+            var p0 = rm.phases[0], wn = WAY_IN.filter(function (x) { return x.v === a.wayIn; })[0] || WAY_IN[2];
+            if (p0 && p0.exitWeightKg != null) rows += '<button type="button" class="crow" data-to="wayin"><span><i>Getting in</i><b>' + esc(wn.l + ' · ' + (p0.kind === 'recomp' ? 'stays at ' : 'down to ') + wtShort(p0.exitWeightKg)) + '</b></span><em>Change</em></button>';
+          }
+          rows = '<div class="erows">' + rows + '</div>';
+        } else {
+          rows = '<p class="nonote">' + ((rm.gapKg || 0) > 0 ? 'You are already leaner than your goal, so there is nothing to cut first. One long build.' : 'You already carry the muscle your goal needs, so this is one stretch of fat loss.') + '</p>';
+        }
+        var sel = a.bodyFatPct != null ? 0 : null;
+        var muscle = rm.gapKg != null && rm.gapKg > 0 ? Math.round(rm.gapKg) : null;
+        var drawChart = function () { $('.pc', el).innerHTML = journeyChart(a.bodyFatPct, rm, { bare: true, frame: true, yearLines: true, band: a.route !== 'bulk', selectable: true, selected: sel, nodeFlag: true, muscleKg: muscle }); };
+        el.insertAdjacentHTML('beforeend', '<div class="dest rise" style="--i:0"><div><i>Today</i><b>' + big(a.weightKg) + '</b><span>' + Math.round(a.bodyFatPct) + '% body fat</span></div><em>→</em><div class="r"><i>Goal</i><b class="g">' + big(gw) + '</b><span>' + Math.round(a.goalBodyFatPct) + '% body fat</span></div></div>' +
+          '<div class="pc wipe"></div><div class="cends"><span>Today</span><span>' + y[0] + '–' + y[1] + ' yr</span></div><p class="whyr"><button type="button" class="linkb small" id="whyR">why the range?</button></p>' + rows);
+        drawChart();
+        $('.pc', el).addEventListener('click', function (e) { var h = e.target.closest && e.target.closest('[data-node]'); if (!h) return; var i = +h.getAttribute('data-node'); sel = sel === i ? null : i; drawChart(); });
+        $('#whyR', el).onclick = function () { varianceSheet(y); };
+        $$('[data-to]', el).forEach(function (b) { b.onclick = function () { go(b.getAttribute('data-to')); }; });
+        primary('See the whole plan');
       });
     });
   }
-  function rPhase1(el, my) {
+  /* ---------- beat 10: the summary, phase 1, and the lock ---------- */
+  function rSummary(el, my) {
     needAbout(el, my, function () {
-      withData(el, my, needRoute, 'Planning your route…', function (r) {
-        var p = r.phases[0], m = r.macros;
-        el.innerHTML = '<p class="ov rise" style="--i:0">Phase 1 of ' + r.phases.length + '</p>' +
-          '<h1 class="qh rise" style="--i:1">' + esc(KIND[p.kind] || p.kind) + '.<br><em>' + esc(p.title) + '.</em></h1>' +
-          '<p class="sub rise" style="--i:2">' + r1(S.about.bodyFatPct) + ' → ' + r1(p.exitBodyFatPct) + '% body fat' + (p.exitWeightKg != null ? ', ' + fmtW(p.exitWeightKg) : '') + '. ' + months(p.estMonths[0], p.estMonths[1]) + '.</p>' +
-          (m ? '<div class="ph1 rise" style="--i:3"><p class="k">Every day in this phase</p><div class="mac"><div><b data-c="' + m.calories + '">0</b><span>kcal</span></div><div><b data-c="' + m.protein + '" data-g="1">0</b><span>Protein</span></div><div><b data-c="' + m.carbs + '" data-g="1">0</b><span>Carbs</span></div><div><b data-c="' + m.fat + '" data-g="1">0</b><span>Fat</span></div></div></div>' : '') +
-          '<p class="lbl rise" style="--i:4">All your phases</p><div class="rise" style="--i:5">' + r.phases.map(function (q, i) {
-            return '<button type="button" class="prow" aria-expanded="false"><i class="' + q.kind + '"></i><span><b>' + (i + 1) + '. ' + esc(KIND[q.kind] || q.kind) + '</b></span><small>' + esc(months(q.estMonths[0], q.estMonths[1])) + '</small><span class="more">' + esc(q.title) + '. To ' + r1(q.exitBodyFatPct) + '% body fat' + (q.exitWeightKg != null ? ', ' + fmtW(q.exitWeightKg) : '') + '.</span></button>';
-          }).join('') + '</div><p class="note rise" style="--i:6">In the app the route updates as you check in.</p>';
-        $$('[data-c]', el).forEach(function (b) { countUp(b, +b.getAttribute('data-c'), 900, function (v) { return n0(v) + (b.getAttribute('data-g') ? ' g' : ''); }); });
-        $$('.prow', el).forEach(function (b) { b.onclick = function () { b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); }; });
-        primary('Plan my food', function () { go('meat'); });
+      withData(el, my, needRV, '', function (rv) {
+        var a = S.about, rm = rv.roadmap;
+        if (!rm) { el.innerHTML = errBox('No plan came back for these numbers.'); $('[data-retry]', el).onclick = function () { show(cur, 0); }; return; }
+        var first = rm.phases[0], intent = INTENT[first.kind] || ['Keep going', 'Log your weight each week and the plan adjusts around it.'];
+        var gw = goalW(), lb = imp();
+        var leanHeld = rm.leanNowKg != null ? rm.leanNowKg / (1 - a.goalBodyFatPct / 100) : null;
+        var sheds = first.kind === 'reveal' && leanHeld != null && leanHeld > gw;
+        var title = sheds ? 'A big cut, and some muscle goes too' : intent[0];
+        var detail = sheds ? 'Reaching ' + (lb ? Math.round(gw * LB) + ' lbs' : Math.round(gw) + ' kg') + ' at ' + Math.round(first.exitBodyFatPct) + '% means about ' + (lb ? Math.round((leanHeld - gw) * LB) + ' lbs' : Math.round(leanHeld - gw) + ' kg') + ' of lean mass comes off alongside the fat. Lifting hard and eating enough protein keeps that as small as it can be.' : intent[1];
+        var endKg = first.exitWeightKg != null ? first.exitWeightKg : null;
+        el.classList.add('summ');
+        el.innerHTML = '<p class="sey rise" style="--i:0">Phase 1 of ' + rm.expanded.length + '</p><h1 class="stl rise" style="--i:1">' + esc(KIND_LABEL[first.kind] || first.kind) + '</h1>' +
+          '<p class="spair rise" style="--i:2"><b class="f">0</b><span>→</span><b class="t">0</b><small>% body fat</small></p>' +
+          '<p class="dur rise" style="--i:3"><b>' + first.estMonths[0] + ' to ' + first.estMonths[1] + ' months</b><span>Estimate</span></p>' +
+          '<div class="intent"><i>This phase</i><b>' + esc(title) + '</b><p>' + esc(detail) + '</p>' + (endKg != null ? '<p class="sc">Ends around <b>' + wtOne(endKg) + '</b>, at ' + Math.round(first.exitBodyFatPct) + '%</p>' : '') + '</div>' +
+          (rm.plausibility === 'beyond' ? '<p class="limit"><i></i><span><b>Past the drug-free range. </b>The plan still works, but the last stretch may not. A few kilos off your goal weight brings it back in range.</span></p>' : '') +
+          (rm.holdsAtGoalBodyFat ? '<p class="holdn">You’re already at your goal body fat, so we’ll hold your weight steady while you build.</p>' : '') +
+          '<div class="schart">' + phaseLine(a.bodyFatPct, rm) + '</div>' +
+          '<a class="proof rise" style="--i:4" href="/research/" target="_blank" rel="noopener"><span><b>Built on ' + (S.defaults.papers || 'the') + ' published papers</b><small>See how we worked this out</small></span><em aria-hidden="true">›</em></a>';
+        countUp($('.spair .f', el), Math.round(a.bodyFatPct), 750, function (v) { return Math.round(v); });
+        countUp($('.spair .t', el), Math.round(first.exitBodyFatPct), 750, function (v) { return Math.round(v); });
+        primary('Lock in my plan', function () { lockSheet(rv); });
       });
     });
+  }
+  function lockSheet(rv) {
+    var a = S.about, rm = rv.roadmap, y = rm.estYears;
+    openSheet('<div class="cf"><span class="chip"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>' +
+      '<p class="sh-ov acc c">Last step</p><h2 class="sh-t c big">Lock this plan in?</h2>' +
+      '<p class="sh-b c">This sets your goal and builds the phase sequence around it. In the app you can change it later in Goals and stats, but the plans get rebuilt when you do.</p>' +
+      '<div class="recap"><div><i>Goal</i><b>' + wtOne(goalW()) + ' at ' + Math.round(a.goalBodyFatPct) + '%</b></div><div><i>Route</i><span><b>' + esc(rm.phases.map(function (p) { return KIND_LABEL[p.kind] || p.kind; }).join(' → ')) + '</b><small>' + y[0] + ' to ' + y[1] + ' years</small></span></div></div>' +
+      '<button type="button" class="sh-go" data-a="lock">Lock it in</button><button type="button" class="sh-sec" data-a="no">Not yet</button></div>', function (sh) {
+      $('[data-a="no"]', sh).onclick = function () { closeSheet(); };
+      $('[data-a="lock"]', sh).onclick = function () { closeSheet(true); celebrate(function () { go('locked'); }); };
+    });
+  }
+  /* Motion.tsx Celebration: two rings, the badge, the tick, "Locked in.", then on. */
+  function celebrate(done) {
+    var c = document.createElement('div');
+    c.className = 'cele';
+    c.innerHTML = '<i class="ring1"></i><i class="ring2"></i><span class="badge2"><svg width="52" height="52" viewBox="0 0 52 52"><path d="M15 27l8 8 15-17" stroke="#04141a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><b>Locked in.</b>';
+    document.body.appendChild(c);
+    primary(null);
+    var still = RM || root.classList.contains('still');
+    setTimeout(function () { c.classList.add('out'); done(); setTimeout(function () { c.remove(); }, 300); }, still ? 700 : 2100);
+  }
+  /* ---------- RouteReveal's finish line ---------- */
+  function rLocked(el) {
+    el.classList.add('finish');
+    var t = new Date(); t.setDate(t.getDate() + 1);
+    var day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][t.getDay()];
+    var row = function (mark, num, title, sub, meta, to) {
+      return '<' + (to ? 'button type="button" data-to="' + to + '"' : 'div') + ' class="sp ' + mark + '"><span class="sd">' + (mark === 'done' ? '<svg viewBox="0 0 24 24" width="14" height="14"><path d="M6 12.5l4 4 8-9" fill="none" stroke="#0a0a0b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' : mark === 'goal' ? '<i></i>' : num) + '</span><span class="sb"><b>' + esc(title) + '</b><small>' + esc(sub) + '</small></span>' + (meta ? '<em>' + meta + '</em>' : '') + '</' + (to ? 'button' : 'div') + '>';
+    };
+    el.innerHTML = '<p class="fov rise" style="--i:0">You’re 60% of the way</p><div class="fbar rise" style="--i:0"><i></i></div>' +
+      '<h1 class="ftl rise" style="--i:1">Two short steps<br>to day one.</h1><div class="spine">' +
+      '<div class="rise" style="--i:2">' + row('done', 0, 'Your route', 'Goal, timeline and phases set', 'DONE') + '</div>' +
+      '<div class="rise" style="--i:3">' + row('next', 2, 'Your meals', 'Diet, allergies, the meals you like', '~3 MIN', 'active') + '</div>' +
+      '<div class="rise" style="--i:4">' + row('todo', 3, 'Your training', 'Days, length, volume, extras', '~1 MIN', 'days') + '</div>' +
+      '<div class="rise" style="--i:5">' + row('goal', 0, 'Day one: ' + day, 'Your first session and your first day of meals, ready to follow.', '') + '</div></div>' +
+      '<p class="free rise" style="--i:6">Free to build. Nothing to pay at the end.</p><p class="later rise" style="--i:7"><button type="button" class="linkb small" data-to="keep">I’ll do this later</button></p>';
+    requestAnimationFrame(function () { var f = $('.fbar i', el); if (f) f.style.transform = 'scaleX(.6)'; });
+    $$('[data-to]', el).forEach(function (b) { b.onclick = function () { go(b.getAttribute('data-to')); }; });
+    primary('Next: my meals', function () { go('active'); });
   }
 
   /* ================= food (the meal questions) ================= */
@@ -1159,25 +1636,31 @@
   }
 
   /* ================= sheet ================= */
-  var sheetEls = null;
-  function openSheet(html, onMount) {
+  var sheetEls = null, sheetDismiss = null;
+  /** onDismiss runs when the sheet is closed by the backdrop or Escape, not by its own buttons. */
+  function openSheet(html, onMount, onDismiss) {
     closeSheet(true);
+    sheetDismiss = onDismiss || null;
     var bg = document.createElement('div'); bg.className = 'sheet-bg';
     var sh = document.createElement('div'); sh.className = 'sheet'; sh.setAttribute('role', 'dialog'); sh.setAttribute('aria-modal', 'true');
     sh.innerHTML = '<div class="grab"></div><div class="sheet-in">' + html + '</div>';
+    // The sheet sits outside .try, so it takes the section's accent from it.
+    try { sh.style.setProperty('--acc', getComputedStyle(root).getPropertyValue('--acc').trim() || '#c084fc'); } catch (e) {}
     document.body.appendChild(bg); document.body.appendChild(sh);
     sheetEls = [bg, sh];
-    bg.onclick = function () { closeSheet(); };
+    bg.onclick = dismissSheet;
     requestAnimationFrame(function () { bg.classList.add('on'); sh.classList.add('on'); });
     onMount && onMount(sh);
   }
+  function dismissSheet() { var f = sheetDismiss; closeSheet(); if (f) f(); }
   function closeSheet(now) {
+    sheetDismiss = null;
     if (!sheetEls) return;
     var els = sheetEls; sheetEls = null;
     els.forEach(function (e) { e.classList.remove('on'); });
     setTimeout(function () { els.forEach(function (e) { e.remove(); }); }, now ? 0 : 340);
   }
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheetEls) dismissSheet(); });
 
   /* ================= boot ================= */
   var params = new URLSearchParams(location.search);
@@ -1206,7 +1689,7 @@
             S.training = { days: 4, equipment: 'commercial_gym' };
           });
         };
-    fill().then(function () { for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
+    fill().then(function () { if (params.get('route')) S.about.route = params.get('route'); for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
   } else {
     show(0, 0);
   }
