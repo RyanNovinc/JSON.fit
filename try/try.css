@@ -62,7 +62,7 @@ body{background:var(--bg)}
 .unit-tog button{border:0;background:none;color:var(--text-2);font:700 .86rem var(--sans);padding:.45rem 1.05rem;border-radius:999px;cursor:pointer;min-height:36px}
 .unit-tog button[aria-pressed="true"]{background:#fff;color:#0a0a0b}
 .big{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-top:26px}
-.big input{width:3ch;background:none;border:0;color:#fff;font:900 clamp(4rem,19vw,5.6rem)/1 var(--sans);letter-spacing:-.03em;text-align:center;padding:0;-moz-appearance:textfield;text-shadow:0 0 40px color-mix(in srgb,var(--acc) 45%,transparent)}
+.big input{width:3ch;background:none;border:0;color:#fff;font:900 clamp(4rem,19vw,5.6rem)/1 var(--sans);letter-spacing:-.03em;text-align:center;padding:0;-moz-appearance:textfield;filter:drop-shadow(0 0 22px color-mix(in srgb,var(--acc) 45%,transparent))}
 .big input::-webkit-outer-spin-button,.big input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .big input:focus{outline:none}
 .big input::placeholder{color:#fff;opacity:1}
@@ -1147,3 +1147,5 @@ body.immersive .prog{top:0;padding-top:env(safe-area-inset-top,0px)}
 .prog .exit{margin-left:auto}
 .prog .info:not([hidden])+.exit{margin-left:0}
 .prog .back{margin:0}
+/* Number beats sit in the middle of the screen now there's no site menu. */
+body.immersive .screen.beat{min-height:calc(100svh - 56px - env(safe-area-inset-top,0px) - 162px);display:flex;flex-direction:column;justify-content:center;padding-top:0}
