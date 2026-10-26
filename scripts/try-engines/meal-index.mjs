@@ -21,6 +21,7 @@ const slugifyImage = (f) => String(f || '').replace(/\.(png|jpe?g|webp)$/i, '')
   .replace(/[\s_]+/g, '-').replace(/-+/g, '-').toLowerCase();
 const has = (stem) => stem && existsSync(path.join(site, 'images/meals', stem + '.webp'));
 const out = {};
+const files = {};
 let missing = [];
 for (const m of E.allMeals()) {
   const s = siteMeals[m.slug] || (m.batch?.variant_of && siteMeals[m.batch.variant_of]) || null;
@@ -29,7 +30,14 @@ for (const m of E.allMeals()) {
   const pageSlug = [m.slug, m.batch?.variant_of].find((x) => x && existsSync(path.join(site, 'r', x, 'index.html'))) || null;
   out[m.slug] = { i: stem, r: pageSlug };
   if (!stem && !String(m.slug).startsWith('myfood_')) missing.push(m.slug);
+  // The app's image filenames (meal and plate photos) -> site photo, for screens drawn from filenames.
+  if (m.image_filename && stem) files[m.image_filename] = files[m.image_filename] || stem;
+  for (const p of m.plates || []) {
+    const ps = [slugifyImage(p.image_filename)].find(has);
+    if (p.image_filename && (ps || stem)) files[p.image_filename] = files[p.image_filename] || ps || stem;
+  }
 }
+out.__files = files;
 writeFileSync(path.join(site, 'try/meal-index.json'), JSON.stringify(out));
 // Exercise name -> /exercises/#<slug> (the site's exercise library).
 const exFile = path.join(site, 'exercises/exercises.json');

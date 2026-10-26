@@ -281,8 +281,8 @@ const API: any = {
   buildProgram,
   repStyles: () => REP_STYLE_OPTIONS,
   ...MEALS_PART,
-  buildMeals: (about: any, food: any) => MEALS_PART.buildMeals(about, food, buildRoute),
 };
+MEALS_PART.initMeals({ wipe, planProfileFor, goalsProfileFrom, choiceOf });
 
 (globalThis as any).JsonFitEngines = API;
 
