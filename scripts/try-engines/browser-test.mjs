@@ -54,10 +54,18 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
     const d = JSON.parse(m.data);
     if (d.id && wait[d.id]) { d.error ? wait[d.id].rej(new Error(d.error.message)) : wait[d.id].res(d.result); delete wait[d.id]; return; }
     if (d.method === 'Network.requestWillBeSent') requests.push({ url: d.params.request.url, method: d.params.request.method, body: d.params.request.postData || '' });
+    // The plan pass: on a computer the end screen saves the plan to the share API by itself.
+    // Never hit the real API from a test; answer it here with a fake share id.
+    if (d.method === 'Fetch.requestPaused') {
+      const cors = [{ name: 'Access-Control-Allow-Origin', value: '*' }, { name: 'Access-Control-Allow-Headers', value: 'Content-Type' }, { name: 'Access-Control-Allow-Methods', value: 'POST, OPTIONS' }, { name: 'Content-Type', value: 'application/json' }];
+      const body = d.params.request.method === 'OPTIONS' ? '' : JSON.stringify({ shareId: 'TESTpass', expiresAt: Math.floor(Date.now() / 1000) + 7 * 86400 });
+      send('Fetch.fulfillRequest', { requestId: d.params.requestId, responseCode: d.params.request.method === 'OPTIONS' ? 204 : 200, responseHeaders: cors, body: Buffer.from(body).toString('base64') }).catch(() => {});
+      return;
+    }
     if (d.method === 'Runtime.exceptionThrown') events.push('exception: ' + JSON.stringify(d.params.exceptionDetails).slice(0, 300));
     if (d.method === 'Log.entryAdded' && d.params.entry.level === 'error') events.push('log: ' + d.params.entry.text + ' ' + (d.params.entry.url || ''));
   };
-  await send('Network.enable'); await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable');
+  await send('Network.enable'); await send('Fetch.enable', { patterns: [{ urlPattern: '*execute-api*/shares*' }] }); await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable');
   // The intro is full screen like the questions: no site menu or footer, one viewport with no
   // page scroll and the button in view; a short viewport (a phone on its side) scrolls instead.
   for (const [w, h, lock] of [[400, 800, true], [1280, 800, true], [800, 400, false]]) {
@@ -83,6 +91,8 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
     for (const P of PROFILES) {
       console.log(`${width}px ${P.name}`);
       events.length = 0; requests.length = 0;
+      // A saved plan pass would land on "welcome back"; each profile starts fresh.
+      await ev(`(function(){try{localStorage.removeItem('jsonfit_plan_pass')}catch(e){};return 1})()`).catch(() => {});
       await send('Page.navigate', { url: BASE + '/try/' });
       await until(`!!document.querySelector('.screen[data-screen="start"]')`);
       const overflow = async (n) => { const o = await ev(`document.documentElement.scrollWidth - window.innerWidth`); if (o > 1) bad(`step ${n}: ${o}px horizontal overflow`); if (await ev(`/\u2014/.test(document.body.innerText) || /meal replacement/i.test(document.body.innerText)`)) bad(`step ${n}: an em dash or a banned phrase on screen`); };
@@ -332,7 +342,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
       for (const r of off) bad('unexpected request ' + r.url);
       for (const r of requests) if (/Kiwi|cinnamon/i.test(r.url + r.body)) bad('typed text left the page: ' + r.url);
       for (const p of posts) {
-        const isAnalytics = /lambda-url|google-analytics|googletagmanager|analytics\.google/.test(p.url);
+        const isAnalytics = /lambda-url|google-analytics|googletagmanager|analytics\.google/.test(p.url) || /execute-api.*\/shares$/.test(p.url);
         if (!isAnalytics) bad('unexpected ' + p.method + ' ' + p.url);
         // Our own analytics: only try_step numbers and the usual page events, never answers.
         if (/lambda-url/.test(p.url) && p.body) {

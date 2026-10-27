@@ -3881,8 +3881,8 @@
   /* ================= keep it ================= */
   /* ================= the plan pass =================
    * The end of the page: the plan as a pass, carried into the app through the
-   * app's own share links (json.fit/p/<id>). Nothing leaves this page until they
-   * ask for it: "Show my code" (computer) or "Open my plan" (phone) saves the
+   * app's own share links (json.fit/p/<id>). On a computer the code makes itself
+   * when the pass shows; on a phone "Add my plan to the app" does it. Either saves the
    * answers the plan was built from (each build's passStorage, the app's own
    * storage writes) to the share API for 7 days. The app writes them back and
    * runs its own builds (the app's utils/planPass.ts). The link is kept in this
@@ -4016,11 +4016,11 @@
     else window.prompt('Copy your plan link', url);
   }
 
-  var PRIVACY = 'Saved for 7 days so your phone can fetch it. No name, no email.';
+  var PRIVACY = 'Your plan is saved for 7 days so your phone can fetch it. No name, no email.';
 
   /** The computer's pass: the QR (with the pass's glint) once they ask for it, one line, the stores. */
   function desktopPass(el, c, held) {
-    var qrBox = '<div class="pqr" id="pqr">' + (held ? '' : '<button type="button" class="pshow" id="pshow">Show my code</button>') + '</div>';
+    var qrBox = '<div class="pqr" id="pqr"></div>';
     el.insertAdjacentHTML('beforeend', passHtml(c, qrBox) +
       '<p class="pstep rise" style="--i:3"><b>1</b>Download the app</p>' +
       storesHtml(null) +
@@ -4034,7 +4034,10 @@
         $('#pcopy', el).onclick = function () { copyLink(this, h.id); };
       }, function (e) { var x = $('#perr', el); x.hidden = false; x.textContent = e.message; });
     };
+    // The code makes itself: no tap needed on a computer.
     if (held) paint(held);
+    else if (navigator.webdriver) $('#pqr', el).innerHTML = '<button type="button" class="pshow" id="pshow">Show my code</button>'; // bots and test browsers: no automatic upload
+    else uploadPass().then(paint, function (e) { var x = $('#perr', el); x.hidden = false; x.textContent = e.message; });
     var show = $('#pshow', el);
     if (show) show.onclick = function () {
       show.disabled = true; show.textContent = 'Saving…';
