@@ -52,3 +52,17 @@
   var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{rootMargin:'0px 0px -6% 0px',threshold:.06});
   els.forEach(function(el){io.observe(el);});
 })();
+
+/* Hero headline: the final full stop lands last (CSS .en-dot). Only on pages with the load-in. */
+(function(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('[data-enter] h1').forEach(function(h){
+    var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT,null),n,last=null;
+    while((n=w.nextNode())) if(/\S/.test(n.nodeValue)) last=n;
+    if(!last||!/\.\s*$/.test(last.nodeValue)) return;
+    var i=last.nodeValue.lastIndexOf('.'),dot=document.createElement('span');
+    dot.className='en-dot';dot.textContent='.';
+    var rest=last.splitText(i);rest.nodeValue=rest.nodeValue.slice(1);
+    last.parentNode.insertBefore(dot,rest);
+  });
+})();

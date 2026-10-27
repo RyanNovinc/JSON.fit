@@ -417,7 +417,10 @@ a{color:inherit}
    element's own style. Reduced Motion: off. ===== */
 @keyframes enRise{from{opacity:0;transform:translateY(18px)}}
 @keyframes enSharp{from{opacity:0;transform:translateY(22px);filter:blur(8px)}}
-@keyframes enWipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -5% 0 0)}}
+@keyframes enWipe{from{clip-path:inset(-25% 100% -35% -5%)}to{clip-path:inset(-25% -5% -35% -5%)}}
+/* the full stop lands last, with a little thud */
+@keyframes enDot{0%{opacity:0;transform:translateY(-.55em) scale(1.9)}55%{opacity:1;transform:translateY(0) scale(.86)}75%{transform:scale(1.08)}100%{transform:none}}
+.en-dot{display:inline-block;animation:enDot .55s cubic-bezier(.3,1.4,.5,1) 1.3s backwards}
 @keyframes enFade{from{opacity:0}}
 @keyframes enVis{from{opacity:0;transform:translateY(40px) scale(.96)}}
 [data-enter]>*{animation:enRise .7s cubic-bezier(.2,.8,.2,1) backwards}
@@ -433,4 +436,4 @@ a{color:inherit}
 [data-enter="fade"]>*{animation:enFade .6s ease-out backwards}
 [data-enter="fade"] h1 *{animation:none}
 [data-enter-vis]{animation:enVis 1s cubic-bezier(.16,1,.3,1) .2s backwards}
-@media(prefers-reduced-motion:reduce){[data-enter]>*,[data-enter] h1 em,[data-enter] h1 .cyan,[data-enter] h1 .green,[data-enter] h1 .violet,[data-enter-vis]{animation:none!important}}
+@media(prefers-reduced-motion:reduce){[data-enter]>*,[data-enter] h1 em,[data-enter] h1 .cyan,[data-enter] h1 .green,[data-enter] h1 .violet,[data-enter-vis],.en-dot{animation:none!important}}
