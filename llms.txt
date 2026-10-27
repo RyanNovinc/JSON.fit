@@ -11,6 +11,9 @@ Busy working adults, men and women, who want to eat right and train with the lea
 ## Core pages
 
 - [Try it](https://json.fit/try/): Build your plan in the browser, no sign-up: answer a few questions and see your route, your training program and your weekly meals, made by the same engines as the app.
+- [Meal prep for people who already train](https://json.fit/meal-prep/): For people who train but whose food falls apart midweek: high protein meal prep from one shop and one slow cooker cook, 8 tubs on your macros.
+- [FIFO and shift workers](https://json.fit/fifo/): For FIFO and shift workers: one cook covers the weeks at home, on your macros, plus training at a gym, at home or bodyweight only. It does not plan camp food.
+- [Keep muscle while losing weight](https://json.fit/protein-first/): For people losing weight who want to keep their muscle: a high protein meal plan, a cut paced to keep muscle and a strength program.
 - [Home](https://json.fit/): What the app does, the route, the meals, the week, the training, the evidence and FAQ. Primary reference page.
 - [Meals](https://json.fit/meals.html): All 75 meals with calories, protein and hands-on time, filterable by batch meals, breakfast, desserts, backup meals, slow cooker, oven bakes, 10 minutes hands-on or less and 40 g+ protein.
 - [Recipe pages](https://json.fit/r/): One page per meal with ingredients, method, macros and how it keeps, e.g. https://json.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
