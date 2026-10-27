@@ -18,6 +18,12 @@
  *
  * The PDF keeps its old path, cookbook/bulking-cookbook.pdf, so links already sent by
  * email keep working. Rename it (and the link in cookbook/index.html) once the title is final.
+ *
+ * Print friendly: white pages throughout. The photos are cut out of their black studio
+ * background by scripts/cookbook-white-photos.mjs (cookbook/build/white-photos/); the few the
+ * cut-out can't do cleanly (KEEP_BLACK) stay as framed photos on their black background.
+ *   --cover white|dark   white cover (default) or the dark one, the book's only dark page
+ *   --out <file.pdf>     write the PDF somewhere else (to review before replacing the live one)
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -29,7 +35,9 @@ const SUBTITLE = 'Batch meals that cover your week';
 const ROOT = process.cwd();
 const all = Object.values(JSON.parse(readFileSync(path.join(ROOT, 'r/meals.json'), 'utf8')));
 const OUT_DIR = path.join(ROOT, 'cookbook/build');
-const PDF = path.join(ROOT, 'cookbook/bulking-cookbook.pdf');
+const argv = (k) => (process.argv.includes(k) ? process.argv[process.argv.indexOf(k) + 1] : null);
+const PDF = argv('--out') ? path.resolve(argv('--out')) : path.join(ROOT, 'cookbook/bulking-cookbook.pdf');
+const COVER = argv('--cover') === 'dark' ? 'dark' : 'white';
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 mkdirSync(path.join(OUT_DIR, 'img'), { recursive: true });
 
@@ -64,6 +72,23 @@ const imgFor = (m) => {
   }
   return null;
 };
+// Photos the automatic cut-out can't do cleanly (glass stems, mug handles, dark pans and plates
+// that are part of the dish): shown as a framed photo on black, until a photo shot on white is saved
+// as images/cookbook/white/<stem>.jpg.
+const KEEP_BLACK = new Set(['batch-massaman-beef', 'chocolate-protein-mousse', 'chocolate-protein-mug-cake', 'cottage-cheese-ice-cream', 'fudgy-protein-brownies', 'raspberry-rip', 'smoked-salmon-bagel']);
+// The photo for a white page: { src, cut } (cut = the cut-out on white with its shadow baked in, else the black original).
+const photoFor = (m) => {
+  const cands = [m.image_filename, (m.plates[0] || {}).image_filename, m.slug].map(stem).filter(Boolean);
+  for (const c of cands) {
+    // A photo shot on white (images/cookbook/white/<stem>.jpg) beats the automatic cut-out.
+    const shot = path.join(ROOT, 'images/cookbook/white', c + '.jpg');
+    if (existsSync(shot)) return { src: 'file://' + shot, cut: true };
+    const w = path.join(OUT_DIR, 'white-photos', c + '.jpg');
+    if (!KEEP_BLACK.has(c) && existsSync(w)) return { src: 'file://' + w, cut: true };
+  }
+  return { src: imgFor(m), cut: false };
+};
+const photo = (m, cls = '') => { const p = photoFor(m); return `<img class="${p.cut ? 'cut' : 'framed'}${cls ? ' ' + cls : ''}" src="${p.src}" alt="">`; };
 const fmtTime = (mins) => { mins = +mins || 0; if (mins >= 60) { const h = Math.floor(mins / 60), r = mins % 60; return r ? `${h} h ${r} min` : `${h} h`; } return `${mins} min`; };
 const shortTime = (mins) => { mins = +mins || 0; if (mins >= 60) { const h = Math.floor(mins / 60), r = mins % 60; return r ? `${h}h ${r}m` : `${h}h`; } return `${mins}m`; };
 const frac = (n) => {
@@ -125,7 +150,10 @@ const css = `@page{size:A4;margin:0}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;break-after:page;background:#faf9f6}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;break-after:page;background:#fff}
+/* photos on white: cut-outs float with a soft shadow; the few that keep their black studio sit in a rounded frame */
+img.cut{object-fit:contain!important}
+img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 .page:last-child{page-break-after:auto;break-after:auto}
 .dark{background:#08080b;color:#f2f2f4}
 .mono{font-family:'DM Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;font-size:7.5pt}
@@ -135,6 +163,12 @@ body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff
 .foot{position:absolute;left:14mm;right:14mm;bottom:9mm;display:flex;justify-content:space-between;align-items:baseline;font-family:'DM Mono',monospace;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:#8a8a95}
 .foot b{font-weight:500;color:#15151a}.dark .foot b{color:#f2f2f4}
 /* cover: big title, big food, nothing small to read */
+.cover.white .food{top:96mm;grid-template-rows:1.35fr 1fr 1fr;gap:2mm 6mm}
+.cover.white .food div{background:none;overflow:visible;border-radius:0}
+.cover.white .food img{transform:none}
+.cover.white .food img.framed{transform:none}
+.cover.white h1{color:#15151a}
+.cover.white .badge{left:2mm;top:0}
 .cover{padding:16mm 14mm}
 .cover .brand{display:flex;align-items:center;gap:4mm;font-weight:600;font-size:13pt}
 .cover .brand img{width:9mm;height:9mm;border-radius:2.2mm}
@@ -165,6 +199,8 @@ body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff
 .starts{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:6mm}
 .start{border-radius:3.5mm;overflow:hidden;background:#fff;border:1px solid #e3e1da;break-inside:avoid}
 .start img{width:100%;height:34mm;object-fit:cover;display:block}
+.start img.cut{padding:2mm 3mm 0}
+.start img.framed{border-radius:0}
 .start .b{padding:3.5mm 4mm 4mm}
 .start .b b{display:block;font-size:12pt;line-height:1.2}
 .start .b small{display:block;font-family:'DM Mono',monospace;font-size:7.5pt;color:#6f6f7a;margin-top:1.2mm;letter-spacing:.04em}
@@ -174,14 +210,17 @@ body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff
 /* divider */
 .divider{padding:18mm 16mm;display:flex;flex-direction:column;justify-content:flex-end}
 .divider h2{font-size:64pt;line-height:.95;margin:0 0 6mm}
-.divider p{font-size:12pt;line-height:1.5;max-width:130mm;color:#c7c7cf;margin:0 0 12mm}
-.divider .wall{position:absolute;left:0;right:0;top:0;height:150mm;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:75mm}
-.divider .wall img{width:100%;height:100%;object-fit:cover;display:block}
-.divider .wall::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,11,.05),rgba(8,8,11,.25) 60%,#08080b 100%)}
+.divider p{font-size:12pt;line-height:1.5;max-width:140mm;color:#3b3b44;margin:0 0 12mm}
+.divider .wall{position:absolute;left:14mm;right:14mm;top:14mm;height:168mm;display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:54mm;gap:3mm 8mm}
+.divider .wall img{width:100%;height:100%;object-fit:contain;display:block}
+.divider .wall img.framed{object-fit:cover;height:48mm;margin-top:3mm}
+.divider h2 .g,.closing h2 .g{color:#16a34a}
 /* recipe */
-.recipe .photo{height:84mm;overflow:hidden;background:#111;position:relative}
+.recipe .photo{height:84mm;overflow:hidden;background:#fff;position:relative;padding:7mm 14mm 0}
 .recipe .photo img{width:100%;height:100%;object-fit:cover;display:block}
-.recipe .photo .tag{position:absolute;left:14mm;bottom:5mm;color:#fff;font-family:'DM Mono',monospace;font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.recipe .photo img.cut{height:calc(100% - 7mm)}
+.recipe .photo img.framed{height:calc(100% - 9mm)}
+.recipe .photo .tag{position:absolute;left:14mm;bottom:1mm;color:#6f6f7a;font-family:'DM Mono',monospace;font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase}
 .recipe .body{padding:7mm 14mm 0}
 .recipe h2{font-size:24pt;line-height:1.02;margin:0 0 2mm;max-width:150mm}
 .recipe .desc{font-size:9.6pt;line-height:1.45;color:#3b3b44;margin:0 0 4mm;max-width:170mm}
@@ -213,13 +252,13 @@ body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff
 /* closing */
 .closing{padding:18mm 16mm;display:flex;flex-direction:column;justify-content:center}
 .closing h2{font-size:44pt;line-height:1;margin:0 0 6mm}
-.closing p{font-size:12pt;line-height:1.5;max-width:135mm;color:#c7c7cf;margin:0 0 5mm}
-.closing ul{margin:0 0 10mm;padding:0;list-style:none;font-size:11pt;line-height:1.8;color:#f2f2f4}
-.closing ul li::before{content:"✓";color:#4ade80;margin-right:3mm}
+.closing p{font-size:12pt;line-height:1.5;max-width:135mm;color:#3b3b44;margin:0 0 5mm}
+.closing ul{margin:0 0 10mm;padding:0;list-style:none;font-size:11pt;line-height:1.8;color:#15151a}
+.closing ul li::before{content:"✓";color:#16a34a;margin-right:3mm}
 .closing .qr{display:flex;align-items:center;gap:6mm}
-.closing .qr img{width:30mm;height:30mm;background:#fff;padding:2mm;border-radius:2.5mm}
-.closing .qr span{font-size:10.5pt;line-height:1.5;color:#c7c7cf}
-.closing .qr span b{display:block;color:#f2f2f4;font-size:13pt}
+.closing .qr img{width:30mm;height:30mm;background:#fff;padding:2mm;border-radius:2.5mm;border:1px solid #e3e1da}
+.closing .qr span{font-size:10.5pt;line-height:1.5;color:#3b3b44}
+.closing .qr span b{display:block;color:#15151a;font-size:13pt}
 .steps li b{font-weight:600}
 .recipe.xlong .photo{height:54mm}
 .recipe.xlong .body{padding-top:5mm}
@@ -243,11 +282,17 @@ const foot = (p, left) => `<div class="foot"><span>${left || `${TITLE} · <b>jso
 const per = (m) => (m.batch ? 'per tub' : 'per serve');
 
 const coverPlates = ['butter_chicken_and_rice', 'spaghetti_bolognese', 'bbq_pulled_pork_bowl_or_burger', 'massaman_beef', 'teriyaki_chicken_and_rice'].map((s) => meals.find((m) => m.slug === s)).filter(Boolean);
-const cover = `<section class="page dark cover">
+const coverDark = `<section class="page dark cover">
   <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-3.png')}" alt=""><span>JSON.fit</span></div>
   <h1 class="serif"><span>The One Cook</span><span class="g">Cookbook.</span></h1>
   <div class="food">${coverPlates.map((m, i) => `<div>${i === 0 ? '<span class="badge">10 min hands-on</span>' : ''}<img src="${imgFor(m)}" alt=""></div>`).join('')}</div>
 </section>`;
+const coverWhite = `<section class="page cover white">
+  <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-3.png')}" alt=""><span>JSON.fit</span></div>
+  <h1 class="serif"><span>The One Cook</span><span class="g">Cookbook.</span></h1>
+  <div class="food">${coverPlates.map((m) => (photoFor(m).cut ? m : meals.find((x) => x.slug === 'chicken_mac_and_cheese_bake') || m)).map((m, i) => `<div>${i === 0 ? '<span class="badge">10 min hands-on</span>' : ''}${photo(m)}</div>`).join('')}</div>
+</section>`;
+const cover = COVER === 'dark' ? coverDark : coverWhite;
 
 const contents = `<section class="page text">
   <p class="mono g">Contents</p>
@@ -273,12 +318,12 @@ const startHere = `<section class="page text">
   <p class="mono g">Start here</p>
   <h2 class="serif">Start with these.</h2>
   <p>New to batch cooking? One from each section, the least hands-on work in it. Cook one batch this week and you have lunch or dinner sorted for days.</p>
-  <div class="starts">${picks.map((m, i) => `<div class="start${i === 0 ? ' wide' : ''}"><img src="${imgFor(m)}" alt=""><div class="b"><b>${esc(m.display_name)}</b><small>${SECTION(m)} · ${activeMin(m)} min hands-on · ${fmtTime(totalMin(m))} total · ${kcalFmt(macros(m).kcal)} kcal · ${Math.round(macros(m).protein_g)} g protein · p${m.page}</small><p>${esc(defaultPlate(m).description || '')}</p></div></div>`).join('')}</div>
+  <div class="starts">${picks.map((m, i) => `<div class="start${i === 0 ? ' wide' : ''}">${photo(m)}<div class="b"><b>${esc(m.display_name)}</b><small>${SECTION(m)} · ${activeMin(m)} min hands-on · ${fmtTime(totalMin(m))} total · ${kcalFmt(macros(m).kcal)} kcal · ${Math.round(macros(m).protein_g)} g protein · p${m.page}</small><p>${esc(defaultPlate(m).description || '')}</p></div></div>`).join('')}</div>
   ${foot(5)}
 </section>`;
 
-const divider = (s) => `<section class="page dark divider">
-  <div class="wall">${s.meals.slice(0, 6).map((m) => `<img src="${imgFor(m)}" alt="">`).join('')}</div>
+const divider = (s) => `<section class="page divider">
+  <div class="wall">${s.meals.filter((m) => photoFor(m).cut).concat(s.meals.filter((m) => !photoFor(m).cut)).slice(0, 6).map((m) => photo(m)).join('')}</div>
   <p class="mono dim">${s.meals.length} recipes · pages ${s.meals[0].page} to ${s.meals[s.meals.length - 1].page}</p>
   <h2 class="serif">${s.name}<span class="g">.</span></h2>
   <p>${BLURB[s.name]}</p>
@@ -325,7 +370,7 @@ const recipe = (m) => {
     ? `<ol class="steps">${cook.map((s) => `<li>${stepText(s)}</li>`).join('')}</ol><p class="lbl" style="margin-top:2mm">On the day</p><ol class="steps" style="counter-reset:s ${cook.length}">${day.map((s) => `<li>${esc(s.summary)}</li>`).join('')}</ol>`
     : `<ol class="steps">${cook.concat(day).map((s) => `<li>${stepText(s)}</li>`).join('')}</ol>`;
   return `<section class="page recipe${xlong ? ' long xlong' : long ? ' long' : short ? ' short' : ''}">
-  <div class="photo"><img src="${imgFor(m)}" alt=""><div class="tag">${esc(kicker)}</div></div>
+  <div class="photo">${photo(m)}<div class="tag">${esc(kicker)}</div></div>
   <div class="body">
     <h2 class="serif">${esc(m.display_name)}</h2>
     <p class="desc">${esc(plate.description || '')}</p>
@@ -340,7 +385,7 @@ const recipe = (m) => {
 </section>`;
 };
 
-const closing = `<section class="page dark closing">
+const closing = `<section class="page closing">
   <p class="mono dim">JSON.fit for iPhone and Android</p>
   <h2 class="serif">Now let the app <span class="g">do it.</span></h2>
   <p>The book is the static version. The app takes these same ${meals.length} meals and builds your week around your numbers: which batch to cook, which tubs go in the fridge and which in the freezer, one shopping list, one cook.</p>
@@ -353,7 +398,7 @@ const html = head + cover + contents + skim + startHere + sections.map((s) => di
 const htmlPath = path.join(OUT_DIR, 'cookbook.html');
 if (process.argv.includes('--preview')) {
   const pick = (slug) => meals.find((m) => m.slug === slug);
-  const one = { cover, start: startHere, closing, mains: divider(sections[0]), 'page-breakfast': recipe(pick('protein_pancakes')), 'page-main': recipe(pick('butter_chicken_and_rice')), 'page-dessert': recipe(pick('fudgy_protein_brownies')) };
+  const one = { cover, 'cover-dark': coverDark, 'cover-white': coverWhite, contents, start: startHere, closing, mains: divider(sections[0]), 'page-breakfast': recipe(pick('protein_pancakes')), 'page-main': recipe(pick('butter_chicken_and_rice')), 'page-dessert': recipe(pick('fudgy_protein_brownies')) };
   for (const [k, v] of Object.entries(one)) writeFileSync(path.join(OUT_DIR, `preview-${k}.html`), head + v + '</body></html>');
   console.log('preview-*.html written');
 }
