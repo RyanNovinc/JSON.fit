@@ -407,3 +407,30 @@ a{color:inherit}
 .v2 .final2 h2.d{font-size:clamp(2.6rem,7vw,5rem)}
 .v2 .hero2 h1.d{font-size:clamp(2.6rem,6.4vw,4.8rem)}
 .v2 .final2 h2.d{text-transform:none}
+
+/* ===== Page load-in (every page but home and the landing pages, which have their own).
+   CSS only, so it starts on first paint: no flash, and nothing waits on JS. Mark a hero
+   container with data-enter: its first six children rise in turn and the H1's accent
+   (em or coloured span) wipes in like home's "on autopilot.". data-enter="fade" is a
+   plain fade (legal pages). data-enter-vis marks the hero's picture (cover, Lab photo).
+   Transform/opacity/clip-path only, fill "backwards": no layout shift, ends on the
+   element's own style. Reduced Motion: off. ===== */
+@keyframes enRise{from{opacity:0;transform:translateY(18px)}}
+@keyframes enSharp{from{opacity:0;transform:translateY(22px);filter:blur(8px)}}
+@keyframes enWipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -5% 0 0)}}
+@keyframes enFade{from{opacity:0}}
+@keyframes enVis{from{opacity:0;transform:translateY(40px) scale(.96)}}
+[data-enter]>*{animation:enRise .7s cubic-bezier(.2,.8,.2,1) backwards}
+[data-enter]>h1,[data-enter]>header>h1{animation-name:enSharp;animation-duration:.8s}
+[data-enter]>:nth-child(1){animation-delay:.05s}
+[data-enter]>:nth-child(2){animation-delay:.14s}
+[data-enter]>:nth-child(3){animation-delay:.28s}
+[data-enter]>:nth-child(4){animation-delay:.38s}
+[data-enter]>:nth-child(5){animation-delay:.46s}
+[data-enter]>:nth-child(6){animation-delay:.54s}
+[data-enter]>:nth-child(n+7){animation-delay:.6s}
+[data-enter] h1 em,[data-enter] h1 .cyan,[data-enter] h1 .green,[data-enter] h1 .violet{animation:enWipe .9s cubic-bezier(.65,0,.35,1) .4s backwards}
+[data-enter="fade"]>*{animation:enFade .6s ease-out backwards}
+[data-enter="fade"] h1 *{animation:none}
+[data-enter-vis]{animation:enVis 1s cubic-bezier(.16,1,.3,1) .2s backwards}
+@media(prefers-reduced-motion:reduce){[data-enter]>*,[data-enter] h1 em,[data-enter] h1 .cyan,[data-enter] h1 .green,[data-enter] h1 .violet,[data-enter-vis]{animation:none!important}}

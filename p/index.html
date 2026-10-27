@@ -687,6 +687,11 @@ footer {
 .pp-meals ul{margin:6px 0 0;padding:0;list-style:none;color:#fff;font-size:.88rem;line-height:1.6}
 .pp-how{color:var(--text-2);font-size:.9rem;line-height:1.55;margin:22px 0 0}
 .pp-how b{color:#fff}
+
+/* load-in: same fade as the site's data-enter="fade" (this page has its own styles, not site.css) */
+@keyframes enFade{from{opacity:0}}
+[data-enter="fade"]>*{animation:enFade .6s ease-out backwards}
+@media(prefers-reduced-motion:reduce){[data-enter]>*{animation:none!important}}
 </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -706,7 +711,7 @@ footer {
   </a>
 </nav>
 
-<main>
+<main data-enter="fade">
 
   <!-- LOADING STATE -->
   <div class="state active" id="state-loading">
