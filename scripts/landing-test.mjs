@@ -9,7 +9,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-const BASE = process.argv[2] || 'http://localhost:8712';
+const BASE = process.argv[2] || 'http://localhost:8711';
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = 9333 + Math.floor(Math.random() * 500);
 const prof = mkdtempSync(path.join(os.tmpdir(), 'landtest-'));
