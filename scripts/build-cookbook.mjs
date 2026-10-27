@@ -166,7 +166,7 @@ img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 .cover.white .food{top:96mm;grid-template-rows:1.35fr 1fr 1fr;gap:2mm 6mm}
 .cover.white .food div{background:none;overflow:hidden;border-radius:0;min-height:0;min-width:0}
 .cover.white .food img{transform:none;object-fit:contain!important;mix-blend-mode:multiply}
-.cover.white .food div:first-child{padding-top:5mm}
+.cover.white .food div:first-child img{height:100%;transform:scale(.96)}
 .cover.white .badge{z-index:2}
 .cover.white .food img.framed{transform:none}
 .cover.white h1{color:#15151a}
