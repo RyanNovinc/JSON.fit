@@ -22,6 +22,17 @@
 
   var params = new URLSearchParams(location.search);
 
+  // Landing-page variant (27 Oct 2026). Pages set <meta name="page-variant"> before this script; their
+  // "Build my free plan" links pass it on as /try/?v=<variant>. It's remembered for the browser session
+  // so the try page's events keep it, and added to every event as properties.page_variant.
+  var pageVariant = null;
+  try {
+    var pvMeta = document.querySelector('meta[name="page-variant"]');
+    pageVariant = (pvMeta && pvMeta.content) || params.get('v') || sessionStorage.getItem('jf_page_variant');
+    if (pageVariant) pageVariant = String(pageVariant).toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 32) || null;
+    if (pageVariant) sessionStorage.setItem('jf_page_variant', pageVariant);
+  } catch (e) {}
+
   // Internal-traffic flag: visit any page with ?internal=1 once to exclude
   // yourself from the data (?internal=0 to undo).
   if (params.get('internal') === '1') set('jsonfit_internal', '1');
@@ -98,6 +109,11 @@
       is_internal: IS_INTERNAL || undefined
     };
   }
+  function withVariant(properties) {
+    var p = properties || {};
+    if (pageVariant && p.page_variant == null) p.page_variant = pageVariant;
+    return p;
+  }
   function track(event, properties) {
     rollSession();
     queue.push({
@@ -106,7 +122,7 @@
       timestamp: new Date().toISOString(),
       anon_id: anonId,
       session_id: sessionId,
-      properties: properties || {},
+      properties: withVariant(properties),
       context: context()
     });
     if (queue.length >= 10) flush(false);
