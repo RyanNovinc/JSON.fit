@@ -214,7 +214,7 @@ function renderPage(meal) {
   const waysCount = plates(meal).length;
   const metaDesc = desc
     ? String(desc).slice(0, 155)
-    : `${name} — full ingredients, steps and macros. A calorie-dense JSON.fit meal built for eating big.`;
+    : `${name}: full ingredients, steps and macros. A JSON.fit meal built for batch cooking.`;
 
   const ingRows = (list, divisor) =>
     list.map((i) => {
