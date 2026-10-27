@@ -190,6 +190,7 @@
     { id: 'shop', sec: 'food', r: rShop, side: true },
     { id: 'alldone', sec: 'food', grp: '', r: rFinish, noBack: true },
     { id: 'keep', sec: 'done', r: rKeep },
+    { id: 'back', sec: 'done', r: rBack, side: true, noBack: true },
   ];
   var IDX = {}; SCREENS.forEach(function (s, i) { IDX[s.id] = i; });
   /** The screens that ask something: kept to the question, the choices and the button. */
@@ -3878,23 +3879,209 @@
   }
 
   /* ================= keep it ================= */
+  /* ================= the plan pass =================
+   * The end of the page: the plan as a pass, carried into the app through the
+   * app's own share links (json.fit/p/<id>). Nothing leaves this page until they
+   * ask for it: "Show my code" (computer) or "Open my plan" (phone) saves the
+   * answers the plan was built from (each build's passStorage, the app's own
+   * storage writes) to the share API for 7 days. The app writes them back and
+   * runs its own builds (the app's utils/planPass.ts). The link is kept in this
+   * browser only, so coming back within 7 days lands on "Welcome back".
+   */
+  var SHARE_API = 'https://eb6x42gp3h.execute-api.ap-southeast-2.amazonaws.com';
+  var PASS_KEY = 'jsonfit_plan_pass';
+  var ON_PHONE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+  var IS_ANDROID = /Android/i.test(navigator.userAgent);
+  var APPLE_SVG = '<svg width="15" height="18" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>';
+  var PLAY_SVG = '<svg width="15" height="16" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>';
+
+  function readPass() {
+    try {
+      var p = JSON.parse(localStorage.getItem(PASS_KEY) || 'null');
+      if (p && p.id && /^[A-Za-z0-9]{8}$/.test(p.id) && Date.parse(p.expiresAt) > Date.now()) return p;
+    } catch (e) {}
+    return null;
+  }
+  function forgetPass() { try { localStorage.removeItem(PASS_KEY); } catch (e) {} }
+
+  /** What the pass card shows, from the plan on this page. */
+  function passCard() {
+    var a = S.about || {}, P = S.program, M = S.meals;
+    var prog = P && P.program, days = prog ? Number(prog.days_per_week) || null : null;
+    var prof = null;
+    try { prof = JSON.parse(((M && M.passStorage) || (P && P.passStorage) || {})['@goals_profile'] || 'null'); } catch (e) {}
+    var wk = prof && typeof prof.trainingMinutesPerWeek === 'number' && days ? Math.round(prof.trainingMinutesPerWeek / days) : null;
+    var dates = M ? Object.keys(M.plan.dailyMeals).sort() : [];
+    var first = dates.length ? (M.plan.dailyMeals[dates[0]].meals || []).map(function (m) { return m && m.name; }).filter(Boolean).slice(0, 4) : [];
+    return {
+      // The locked profile is what the app gets; the page's answers only when it is missing.
+      goalKg: prof && typeof prof.goalWeightKg === 'number' ? r1(prof.goalWeightKg) : a.goalWeightKg != null ? r1(a.goalWeightKg) : null,
+      goalBf: prof && typeof prof.goalBodyFatPct === 'number' ? Math.round(prof.goalBodyFatPct) : a.goalBodyFatPct != null ? Math.round(a.goalBodyFatPct) : null,
+      days: days, sessionMin: wk, weekMin: prof && prof.trainingMinutesPerWeek || null, programName: prog ? prog.routine_name : null,
+      kcal: M ? Math.round(M.report.targets.kcal) : null, protein: M ? Math.round(M.report.targets.protein) : null,
+      mealDays: M ? M.report.counts.days : null, firstMeals: first, training: !!P, meals: !!M,
+    };
+  }
+
+  function passHtml(c, extra) {
+    var goal = c.goalKg != null ? fmtW(c.goalKg) + (c.goalBf != null ? '<small>at ' + c.goalBf + '% body fat</small>' : '') : 'Your goal';
+    var tv = c.training ? (c.days ? c.days + ' a week' + (c.sessionMin ? ' <span>· ~' + c.sessionMin + ' min</span>' : '') : 'Your program') : 'Not built yet';
+    var mv = c.meals ? (c.mealDays || 7) + ' days <span>· prep guide</span>' : 'Not built yet';
+    return '<div class="pass rise" style="--i:2"><div class="ptop"><span class="pbrand"><i></i>JSON.fit</span><span class="ptag">YOUR PLAN</span></div>' +
+      '<div class="pgoal">GOAL</div><div class="pbig">' + goal + '</div>' +
+      '<div class="pfields"><div><div class="ph">TRAINING</div><div class="pv">' + tv + '</div></div><div><div class="ph">MEALS</div><div class="pv">' + mv + '</div></div></div>' +
+      (extra || '') + '</div>';
+  }
+
+  function storesHtml(main) {
+    return '<div class="pstores">' +
+      '<a class="pstore' + (main === 'ios' ? ' main' : '') + '" href="' + APP_STORE + '" data-loc="try_pass" target="_blank" rel="noopener">' + APPLE_SVG + '<span><small>Download on the</small><b>App Store</b></span></a>' +
+      '<a class="pstore' + (main === 'android' ? ' main' : '') + '" href="' + PLAY + '" data-loc="try_pass" target="_blank" rel="noopener">' + PLAY_SVG + '<span><small>Get it on</small><b>Google Play</b></span></a></div>';
+  }
+
+  /** gzip+b64 like the app's shareService when the browser can, else plain JSON (the API takes both). */
+  function shareBody(json) {
+    if (typeof CompressionStream === 'undefined') return Promise.resolve(json);
+    try {
+      var stream = new Blob([json]).stream().pipeThrough(new CompressionStream('gzip'));
+      return new Response(stream).arrayBuffer().then(function (buf) {
+        var bytes = new Uint8Array(buf), bin = '';
+        for (var i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+        return JSON.stringify({ enc: 'gzip+b64', payload: btoa(bin) });
+      }, function () { return json; });
+    } catch (e) { return Promise.resolve(json); }
+  }
+
+  /** Saves the plan's answers to the share API (once), and remembers the link here. */
+  function uploadPass() {
+    var held = readPass();
+    if (S.passId && held && held.id === S.passId) return Promise.resolve(held);
+    var c = passCard();
+    var storage = Object.assign({}, (S.program && S.program.passStorage) || {}, (S.meals && S.meals.passStorage) || {});
+    if (!storage['@goals_profile']) return Promise.reject(new Error('Build your plan first.'));
+    var data = {
+      kind: 'jsonfit_plan', v: 1, createdAt: new Date().toISOString(), source: 'json.fit/try',
+      summary: { goalWeightKg: c.goalKg, goalBodyFatPct: c.goalBf, trainingDays: c.days, weekMinutes: c.weekMin, programName: c.programName, calories: c.kcal, protein: c.protein, mealDays: c.mealDays, firstMeals: c.firstMeals },
+      storage: storage,
+    };
+    return shareBody(JSON.stringify(data)).then(function (body) {
+      return fetch(SHARE_API + '/shares', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body });
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status === 413 ? 'This plan is too big to send. Try a shorter program.' : 'Could not save your plan. Check your connection and try again.');
+      return r.json();
+    }, function () { throw new Error('Could not save your plan. Check your connection and try again.'); }).then(function (j) {
+      if (!j || !/^[A-Za-z0-9]{8}$/.test(j.shareId || '')) throw new Error('Could not save your plan. Try again.');
+      // The API answers expiresAt in epoch seconds (DynamoDB TTL); kept here as an ISO date.
+      var exp = typeof j.expiresAt === 'number' ? new Date(j.expiresAt < 1e12 ? j.expiresAt * 1000 : j.expiresAt) : new Date(j.expiresAt || NaN);
+      if (isNaN(exp.getTime())) exp = new Date(Date.now() + 7 * 864e5);
+      var held = { id: j.shareId, expiresAt: exp.toISOString(), card: c };
+      try { localStorage.setItem(PASS_KEY, JSON.stringify(held)); } catch (e) {}
+      S.passId = held.id;
+      try { if (window.track) window.track('plan_pass_saved', { training: c.training, meals: c.meals, phone: ON_PHONE }); } catch (e) {}
+      return held;
+    });
+  }
+
+  function linkFor(id) { return 'https://json.fit/p/' + id; }
+
+  function qrSvg(text) {
+    var m = window.JsonFitQR(text), n = m.length, q = 2, out = '';
+    for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) if (m[y][x]) out += '<rect x="' + (x + q) + '" y="' + (y + q) + '" width="1.02" height="1.02"/>';
+    return '<svg viewBox="0 0 ' + (n + 2 * q) + ' ' + (n + 2 * q) + '" shape-rendering="crispEdges" fill="#0a0a0b" role="img" aria-label="QR code for your plan">' + out + '</svg>';
+  }
+  function needQr() {
+    if (window.JsonFitQR) return Promise.resolve();
+    return new Promise(function (res, rej) {
+      var sc = document.createElement('script'); sc.src = 'qr.min.js?v=1'; sc.onload = function () { res(); }; sc.onerror = function () { rej(new Error('Could not load the code.')); };
+      document.head.appendChild(sc);
+    });
+  }
+
+  /** The app's custom scheme opens it from Safari (a json.fit link would stay in the browser); else the share page. */
+  function openInApp(id) {
+    var gone = false;
+    var hide = function () { if (document.hidden) gone = true; };
+    document.addEventListener('visibilitychange', hide);
+    location.href = 'json-app://p/' + id;
+    setTimeout(function () {
+      document.removeEventListener('visibilitychange', hide);
+      if (!gone && !document.hidden) location.href = '/p/' + id;
+    }, 1800);
+  }
+
+  function copyLink(btn, id) {
+    var url = linkFor(id);
+    var done = function () { btn.textContent = 'Link copied'; setTimeout(function () { btn.textContent = 'Copy link'; }, 2000); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copy your plan link', url); });
+    else window.prompt('Copy your plan link', url);
+  }
+
+  var PRIVACY = 'Saved for 7 days so your phone can fetch it. No name, no email.';
+
+  /** The computer's pass: the QR (with the pass's glint) once they ask for it, one line, the stores. */
+  function desktopPass(el, c, held) {
+    var qrBox = '<div class="pqr" id="pqr">' + (held ? '' : '<button type="button" class="pshow" id="pshow">Show my code</button>') + '</div>';
+    el.insertAdjacentHTML('beforeend', passHtml(c, qrBox) +
+      '<p class="phow rise" style="--i:3">Scan with your phone</p>' +
+      storesHtml(null) +
+      '<p class="pnote small rise" style="--i:5" id="pnote">' + esc(PRIVACY) + '</p>' +
+      '<div class="perr" id="perr" hidden></div>');
+    var paint = function (h) {
+      needQr().then(function () {
+        $('#pqr', el).innerHTML = '<a href="' + linkFor(h.id) + '" class="pqrimg" target="_blank" rel="noopener" aria-label="Your plan link">' + qrSvg(linkFor(h.id)) + '</a>';
+        $('#pnote', el).innerHTML = '<button type="button" class="linkb small" id="pcopy">Copy link</button>';
+        $('#pcopy', el).onclick = function () { copyLink(this, h.id); };
+      }, function (e) { var x = $('#perr', el); x.hidden = false; x.textContent = e.message; });
+    };
+    if (held) paint(held);
+    var show = $('#pshow', el);
+    if (show) show.onclick = function () {
+      show.disabled = true; show.textContent = 'Saving…';
+      uploadPass().then(paint, function (e) { show.disabled = false; show.textContent = 'Show my code'; var x = $('#perr', el); x.hidden = false; x.textContent = e.message; });
+    };
+  }
+
+  /** The phone's pass: one button, then the stores. */
+  function phonePass(el, c) {
+    el.insertAdjacentHTML('beforeend', passHtml(c, '') +
+      storesHtml(IS_ANDROID ? 'android' : 'ios') +
+      '<p class="pnote small rise" style="--i:5">' + esc(PRIVACY) + '</p><div class="perr" id="perr" hidden></div>');
+    primary('Open my plan', function () {
+      nextBtn.disabled = true; nextBtn.textContent = 'Opening…';
+      uploadPass().then(function (h) {
+        nextBtn.disabled = false; nextBtn.textContent = 'Open my plan';
+        openInApp(h.id);
+      }, function (e) { nextBtn.disabled = false; nextBtn.textContent = 'Open my plan'; var x = $('#perr', el); x.hidden = false; x.textContent = e.message; });
+    });
+  }
+
+  function restartLink(el) {
+    el.insertAdjacentHTML('beforeend', '<p class="pnote rise" style="--i:6"><button type="button" class="linkb small" id="pnew">Start a new plan</button></p>');
+    $('#pnew', el).onclick = function () { forgetPass(); S.passId = null; stack = []; show(0, 1); };
+  }
+
   function rKeep(el) {
-    el.classList.add('keep');
-    el.innerHTML = '<p class="ov rise" style="--i:0">Your plan is ready</p><h1 class="qh rise" style="--i:1">All of it is decided <em>for you.</em></h1>' +
-      '<p class="sub rise" style="--i:2">The app runs these same engines, and does the rest every day.</p>' +
-      '<ul class="decided rise" style="--i:3">' +
-      '<li><div><b>Cook mode with timers</b><span>Every step on screen, timers set for you.</span></div></li>' +
-      '<li><div><b>Prep day reminders</b><span>A reminder when it is time to cook.</span></div></li>' +
-      '<li><div><b>Swap any meal, your macros hold</b><span>The day rebalances around the swap.</span></div></li>' +
-      '<li><div><b>Log workouts and see last time</b><span>Last session’s weights, right beside this one.</span></div></li>' +
-      '<li><div><b>The route updates as you check in</b><span>Log your weight and the phases adjust.</span></div></li></ul>' +
-      '<p class="closer rise" style="--i:4">You just show up and follow it.</p>' +
-      '<div class="badges rise" style="--i:5">' +
-        '<a class="badge" href="' + APP_STORE + '" data-loc="try_end"><svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><div><small>Download on the</small><span>App Store</span></div></a>' +
-        '<a class="badge ghost" href="' + PLAY + '" data-loc="try_end"><svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg><div><small>Get it on</small><span>Google Play</span></div></a>' +
-      '</div><p class="trust rise" style="--i:6"><b>Free</b> · No ads · No account</p>' +
-      '<p class="honest rise" style="--i:6">This plan stays on this page. It doesn’t carry over to the app: answer the same questions there and the app builds it again in about a minute.</p>';
-    primary('Start again', function () { stack = []; go('weight'); });
+    el.classList.add('keep', 'passscreen');
+    var held = readPass();
+    if (held && held.id !== S.passId) held = null; // a pass from an earlier plan on this browser is not this one
+    el.innerHTML = '<h1 class="qh rise" style="--i:1">Your plan is <em>ready.</em></h1>';
+    var c = passCard();
+    if (ON_PHONE) phonePass(el, c);
+    else { primary(null); desktopPass(el, c, held); }
+    restartLink(el);
+  }
+
+  /** Back within 7 days: the saved pass, not question one. */
+  function rBack(el) {
+    el.classList.add('keep', 'passscreen');
+    var held = readPass();
+    if (!held) { setTimeout(function () { stack = []; show(0, 0); }, 0); return; }
+    el.innerHTML = '<h1 class="qh rise" style="--i:1">Your plan is <em>still here.</em></h1>';
+    S.passId = held.id;
+    var c = held.card || {};
+    if (ON_PHONE) phonePass(el, c);
+    else { primary(null); desktopPass(el, c, held); }
+    restartLink(el);
   }
 
   /* ================= sheet ================= */
@@ -3928,7 +4115,7 @@
   document.getElementById('exitBtn').onclick = function () {
     var leave = function () { location.href = '/'; };
     // Nothing to lose yet on the intro, and nothing kept at the end: no sheet.
-    if (SCREENS[cur] && (SCREENS[cur].id === 'keep' || SCREENS[cur].sec === 'intro')) { leave(); return; }
+    if (SCREENS[cur] && (SCREENS[cur].id === 'keep' || SCREENS[cur].id === 'back' || SCREENS[cur].sec === 'intro')) { leave(); return; }
     openSheet('<div class="cf"><h2 class="sh-t c">Leave your plan?</h2><p class="sh-b c">Nothing is saved on this page, so you would start again next time.</p>' +
       '<button type="button" class="sh-go" data-a="stay">Keep going</button><button type="button" class="sh-sec" data-a="leave">Leave</button></div>', function (sh) {
       $('[data-a="stay"]', sh).onclick = function () { closeSheet(); };
@@ -3966,6 +4153,8 @@
     // Past the workout build, the demo's plan is built first, as the finish line orders it (training, then meals).
     var planFirst = function () { return target > IDX.progbuild && !params.get('noplan') ? needProgram() : null; };
     fill().then(function () { if (params.get('route')) S.about.route = params.get('route'); return planFirst(); }).then(function () { for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
+  } else if (!want && readPass()) {
+    show(IDX.back, 0);
   } else {
     show(0, 0);
   }

@@ -1359,3 +1359,40 @@ div.srow2{cursor:default}
 .screen.qs .opt > small,.screen.qs p.dlr,.screen.qs #ltl,.screen.qs .tnote,.screen.qs .preset small,.screen.qs .pinfo,.screen.qs .rlead,.screen.qs .rdet,.screen.qs .rwhy{display:none!important}
 .screen.qs .qc small,.screen.qs .iconopt small,.screen.qs .pillblk .nfoot,.screen.qs .seg small,.screen.qs .lg2,.screen.qs .guide,.screen.qs .idisc,.screen.qs .fact span{display:none!important}
 .screen.qs .uucard > p,.screen.qs #whyThese,.screen.qs .shead > small{display:none!important}
+
+/* ---------- the plan pass (end of the page, and welcome back) ---------- */
+.passscreen .qh{margin-bottom:22px}
+.pass{position:relative;max-width:380px;margin:0 auto;text-align:left;border-radius:22px;padding:18px 18px 16px;overflow:hidden;background:linear-gradient(155deg,#16323a 0%,#0f1d2a 45%,#151325 100%);border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -20px rgba(34,211,238,.35),0 0 0 1px rgba(34,211,238,.06) inset}
+.pass.rise{animation-name:passin;animation-duration:.9s}
+@keyframes passin{from{opacity:0;transform:translateY(40px) rotateX(18deg) scale(.96)}to{opacity:1;transform:none}}
+.pass::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,0) 40%,rgba(165,243,252,.32) 50%,rgba(255,255,255,0) 60%,transparent 65%);background-size:300% 100%;background-position:120% 0;animation:pglint 4.5s ease-in-out 1s infinite}
+@keyframes pglint{0%,55%{background-position:120% 0}85%,100%{background-position:-20% 0}}
+.ptop{display:flex;justify-content:space-between;align-items:center}
+.pbrand{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.78rem;color:#fff}
+.pbrand i{width:16px;height:10px;border-radius:2px;background:#22d3ee;display:inline-block}
+.ptag{font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;color:var(--text-2)}
+.pgoal{margin:20px 0 4px;font-family:var(--mono);font-size:.58rem;letter-spacing:.16em;color:var(--text-3)}
+.pbig{font-weight:900;font-size:2rem;letter-spacing:-.02em;line-height:1;color:#fff}
+.pbig small{font-weight:500;font-size:.9rem;color:var(--text-2);letter-spacing:0;margin-left:8px}
+.pfields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.14)}
+.pfields.psecond{border-top-style:solid;border-top-color:rgba(255,255,255,.08)}
+.ph{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;color:var(--text-3)}
+.pv{font-weight:600;font-size:.95rem;margin-top:3px;color:#fff}
+.pv span{color:var(--text-2);font-weight:400;font-size:.8rem}
+.pqr{margin:16px auto 2px;width:148px;height:148px;border-radius:12px;background:rgba(255,255,255,.06);display:grid;place-items:center}
+.pqrimg{display:block;width:148px;height:148px;border-radius:12px;background:#fff;padding:6px}
+.pqrimg svg{display:block;width:100%;height:100%}
+.pshow{border:0;border-radius:999px;background:#22d3ee;color:#0a0a0b;font:700 .9rem var(--sans);padding:11px 16px;cursor:pointer}
+.pshow:disabled{opacity:.6;cursor:default}
+.phow{text-align:center;color:var(--text-2);font-size:.9rem;line-height:1.55;margin:20px 0 0}
+.phow b{color:#fff}
+.pstores{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.pstore{display:flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:7px 12px;background:#0d0d10;color:#fff;text-decoration:none}
+.pstore svg{flex:none}
+.pstore small{display:block;font-size:.56rem;color:var(--text-2);line-height:1}
+.pstore b{display:block;font-size:.86rem;line-height:1.15}
+.pstore.main{border-color:rgba(34,211,238,.5)}
+.pnote{text-align:center;color:var(--text-3);font-size:.84rem;line-height:1.5;margin:16px auto 0;max-width:40ch}
+.pnote.small{font-size:.76rem}
+.perr{text-align:center;color:#f87171;font-size:.88rem;margin-top:12px}
+@media (prefers-reduced-motion:reduce){.pass.rise{animation:none}.pass::after{animation:none;opacity:0}}
