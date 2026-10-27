@@ -191,9 +191,9 @@ function build(page, home) {
   r(/(<div class="faq">\n)[\s\S]*?(\n    <\/div>)/, (m, a, b) => a + faqHtml + b, 'FAQ');
   r(/<h2 id="dl-h">[\s\S]*?<\/h2>/, `<h2 id="dl-h">${page.finalH2}</h2>`, 'closing h2');
 
-  const tries = s.split('href="/try/?v=home"').length - 1;
-  if (tries < 1) throw new Error('build-landing: no /try/?v=home links');
-  s = s.split('href="/try/?v=home"').join(`href="/try/?v=${page.variant}"`);
+  const tries = s.split('href="/try/?v=home#start"').length - 1;
+  if (tries < 1) throw new Error('build-landing: no /try/?v=home#start links');
+  s = s.split('href="/try/?v=home#start"').join(`href="/try/?v=${page.variant}#start"`);
   r(/var VARIANT_PPID='[^']*';/, `var VARIANT_PPID='${page.appStorePpid}';`, 'VARIANT_PPID');
 
   // The page lives one folder down: make the home page's relative URLs absolute.

@@ -200,10 +200,32 @@
   var SEC_NAME = { route: 'Your route', food: 'Your food', train: 'Training', done: 'Done', intro: '' };
 
   var cur = -1, stack = [], seen = {}, token = 0, holdBuild = false;
+  /** 'cta': came from a "Build my free plan" button (/try/#start); 'direct': ads, links, typed. */
+  var ENTRY = location.hash === '#start' ? 'cta' : 'direct';
   function trackScreen(i) {
     if (seen[i]) return; seen[i] = 1;
-    try { if (window.track) window.track('try_step', { step: i + 1, screen: SCREENS[i].id }); } catch (e) {}
+    try { if (window.track) window.track('try_step', { step: i + 1, screen: SCREENS[i].id, entry: ENTRY }); } catch (e) {}
   }
+  /* ---------- time left ----------
+   * Seconds a typical person spends on each screen (measured against the browser test's paths:
+   * quick taps ~6 s, the number rulers ~8 s, picks/sleep/volume ~15-20 s, builds ~6 s).
+   * Side screens and the end don't count; route steps that depend on the plan count once it's known. */
+  var SECS_ON = { weight: 8, sex: 4, bodyfat: 10, height: 7, age: 6, lifting: 5, goalweight: 8, goalbf: 8, route: 10, bulkto: 8, range: 12, wayin: 8, plan: 8, summary: 10, locked: 5,
+    volume: 15, days: 10, length: 6, refine: 10, trainsummary: 8, progbuild: 6, program: 8, traindone: 5,
+    active: 6, sessions: 6, diettype: 7, meat: 5, allergies: 6, skip: 7, keeplower: 5, sleep: 15, eat: 12, snacks: 10, appetite: 5, dessert: 8, cooker: 7, freezer: 6, cadence: 6, stockup: 6, planlength: 6, picks: 20, mealsummary: 8, mealbuild: 8, weekready: 6, today: 6, alldone: 5 };
+  function secsLeft(from) {
+    var t = 0;
+    for (var j = from; j < SCREENS.length; j++) {
+      var s = SCREENS[j];
+      if (s.side || s.sec === 'done' || s.sec === 'intro') continue;
+      var on = true;
+      if (s.when) { try { on = s.sec === 'route' && s.when !== 'plan' && !rvOk() ? (s.id === 'route' || s.id === 'range') : !!WHEN[s.when](); } catch (e) { on = true; } }
+      if (on) t += SECS_ON[s.id] || 7;
+    }
+    return t;
+  }
+  function etaText(sec) { return sec < 45 ? 'Almost done' : Math.ceil(sec / 60) + ' min left'; }
+  function aboutText() { return 'About ' + Math.ceil(secsLeft(IDX.weight) / 60) + ' min'; }
   function progress(i) {
     var s = SCREENS[i];
     prog.hidden = false;
@@ -221,7 +243,9 @@
       fills[k].style.width = w + '%';
     });
     // Route screens carry the app's own section names (RouteScreen SECTIONS); the summary is quiet.
-    document.getElementById('segLbl').textContent = s.grp != null ? s.grp : (SEC_NAME[s.sec] || '');
+    var lbl = document.getElementById('segLbl');
+    var eta = s.sec === 'done' || s.sec === 'intro' ? '' : etaText(secsLeft(i));
+    lbl.innerHTML = '<span class="sl-g">' + esc(s.grp != null ? s.grp : (SEC_NAME[s.sec] || '')) + '</span><span class="sl-t">' + (eta ? esc(eta) : '&nbsp;') + '</span>';
     backBtn.style.visibility = s.noBack ? 'hidden' : '';
   }
   /** Shows screen i. dir: 1 forward, -1 back, 0 replace in place. */
@@ -558,6 +582,7 @@
         disp: function (v) { return imp() ? v : v.toFixed(1); },
         onChange: function (v) { a.weightKg = imp() ? v / LB : v; },
       });
+      var ov = $('.ov', el); if (ov) ov.insertAdjacentHTML('afterend', '<p class="eta rise" style="--i:0">' + esc(aboutText()) + '</p>');
       primary('Continue');
     });
   }
@@ -4161,7 +4186,13 @@
     fill().then(function () { if (params.get('route')) S.about.route = params.get('route'); return planFirst(); }).then(function () { for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
   } else if (!want && readPass()) {
     show(IDX.back, 0);
+  } else if (ENTRY === 'cta') {
+    // From a "Build my free plan" button: straight to the first question; Back goes to the intro.
+    stack.push(0);
+    show(IDX.weight, 0);
   } else {
     show(0, 0);
   }
+  // Drop the #start so a reload, or a copied link, shows the intro as usual.
+  if (location.hash) { try { history.replaceState({ t: 0 }, '', location.pathname + location.search); } catch (e) {} }
 })();

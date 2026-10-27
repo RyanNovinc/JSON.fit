@@ -84,6 +84,19 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
     if (!/FREE NO SIGN-UP NO ADS 42 SOURCES/i.test(r.trust)) bad(`intro ${w}x${h}: trust row ` + r.trust);
     if (await ev(`/Runs on this page/.test(document.body.innerText)`)) bad('intro: old privacy line still showing');
   }
+  // From a "Build my free plan" button (/try/#start): straight to question 1, "About N min" under it,
+  // time left in the bar, the #start dropped from the address; Back goes to the intro.
+  await send('Page.navigate', { url: BASE + '/try/?v=home#start' });
+  await until(`!!document.querySelector('.screen[data-screen="weight"] .big') && !document.querySelector('.screen.out-l,.screen.out-r')`);
+  {
+    const r = await ev(`(function(){var e=document.querySelector('.screen[data-screen="weight"] .eta');return {eta:e?e.textContent:'',left:(document.querySelector('#segLbl .sl-t')||{}).textContent||'',hash:location.hash,intro:document.documentElement.classList.contains('ip-intro')}})()`);
+    if (!/^About \d+ min$/.test(r.eta)) bad('#start: no "About N min" on question 1: ' + r.eta);
+    if (!/^\d+ min left$/.test(r.left)) bad('#start: no time left in the bar: ' + r.left);
+    if (r.hash) bad('#start: hash kept in the address');
+    if (r.intro) bad('#start: intro styling still on');
+    await click('#backBtn');
+    await until(`!!document.querySelector('.screen[data-screen="start"]')`);
+  }
   // The X on the intro goes straight home, no sheet.
   await click('#exitBtn'); await until(`location.pathname === '/'`);
   for (const width of [400, 1280]) {

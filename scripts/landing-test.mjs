@@ -88,7 +88,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
       if (r.over > 1) bad(`horizontal overflow ${r.over}px`);
       if (r.imgs.length) bad('broken images ' + r.imgs.join(' '));
       if (r.meta !== p.variant || r.ss !== p.variant) bad(`variant meta=${r.meta} session=${r.ss}`);
-      if (!r.tries.length || r.tries.some((t) => !t.includes(`v=${p.variant}`) || !t.includes('utm_source=test'))) bad('try links ' + r.tries.join(' '));
+      if (!r.tries.length || r.tries.some((t) => !t.includes(`v=${p.variant}`) || !t.includes('utm_source=test') || !t.endsWith('#start'))) bad('try links ' + r.tries.join(' '));
       if (errors.length) bad(errors.join(' | '));
       // Every <img> on the page, lazy ones included, must exist on the server.
       const srcs = await ev(`[].slice.call(document.images).map(function(i){return i.currentSrc||i.src}).filter(function(s){return s.indexOf(location.origin)===0})`);

@@ -613,7 +613,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
       </div>
       <div class="mp-pips" aria-hidden="true"><i class="done"></i><i class="on"></i><i></i></div>
       <div class="ctas">
-        <a class="go" href="/try/?v=fifo" data-try="hero">Build my free plan <span class="arr" aria-hidden="true">&rarr;</span></a>
+        <a class="go" href="/try/?v=fifo#start" data-try="hero">Build my free plan <span class="arr" aria-hidden="true">&rarr;</span></a>
         <div class="badges">
       <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="hero">
         <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -887,7 +887,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
       <p class="label">JSON.fit for iPhone and Android</p>
       <h2 id="dl-h">Make your home weeks<br><em>count.</em></h2>
       <div class="ctas">
-        <a class="go" href="/try/?v=fifo" data-try="footer">Build my free plan <span class="arr" aria-hidden="true">&rarr;</span></a>
+        <a class="go" href="/try/?v=fifo#start" data-try="footer">Build my free plan <span class="arr" aria-hidden="true">&rarr;</span></a>
         <div class="badges">
       <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="footer_cta">
         <svg width="22" height="26" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -907,7 +907,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 
 <footer class="hfoot">
   <div class="cols">
-    <nav aria-label="Plan"><h4>Plan</h4><a href="/try/?v=fifo" data-try="footer_links">Build my free plan &rarr;</a><a href="/meals.html">Meals</a><a href="/cookbook/free-cookbook.html">Free cookbook</a><a href="/programs/">Programs</a></nav>
+    <nav aria-label="Plan"><h4>Plan</h4><a href="/try/?v=fifo#start" data-try="footer_links">Build my free plan &rarr;</a><a href="/meals.html">Meals</a><a href="/cookbook/free-cookbook.html">Free cookbook</a><a href="/programs/">Programs</a></nav>
     <nav aria-label="Learn"><h4>Learn</h4><a href="/exercises/">Exercises</a><a href="/research/">Research</a><a href="/blog.html">Blog</a><a href="/lab/">The Lab</a></nav>
     <nav aria-label="Help"><h4>Help</h4><a href="#" id="supportLink" rel="nofollow">Support</a><a href="/privacy-policy.html">Privacy</a><a href="/terms-of-service.html">Terms</a></nav>
     <div><h4>Follow</h4><div class="soc">
@@ -920,7 +920,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
   <div class="legal"><span>&copy; 2026 JSON.fit &middot; Built in Canberra</span><span>Free &middot; No ads &middot; No account</span></div>
 </footer>
 
-<div class="mbar" id="mbar"><a class="go" href="/try/?v=fifo" data-try="sticky">Build my free plan <span class="arr" aria-hidden="true">&rarr;</span></a></div>
+<div class="mbar" id="mbar"><a class="go" href="/try/?v=fifo#start" data-try="sticky">Build my free plan <span class="arr" aria-hidden="true">&rarr;</span></a></div>
 
 <script src="/assets/site.js"></script>
 <script>
@@ -972,7 +972,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
   },true);
   // Ad and campaign links: keep any utm_* tags on the way into /try/ so the plan funnel stays attributed.
   try{var q=new URLSearchParams(location.search),utm=[];q.forEach(function(v,k){if(/^utm_/.test(k))utm.push([k,v]);});
-    if(utm.length)[].forEach.call(document.querySelectorAll('a[data-try]'),function(a){var u=new URL(a.getAttribute('href'),location.href);utm.forEach(function(p){u.searchParams.set(p[0],p[1]);});a.setAttribute('href',u.pathname+u.search);});}catch(err){}
+    if(utm.length)[].forEach.call(document.querySelectorAll('a[data-try]'),function(a){var u=new URL(a.getAttribute('href'),location.href);utm.forEach(function(p){u.searchParams.set(p[0],p[1]);});a.setAttribute('href',u.pathname+u.search+u.hash);});}catch(err){}
   // App Store taps open the training custom product page when the visitor landed on #training.
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a'); if(!a||!a.href||a.href.indexOf('apps.apple.com')<0) return;
