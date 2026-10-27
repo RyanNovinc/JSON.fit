@@ -91,7 +91,7 @@ const SECTION = (m) => {
 };
 const ORDER = ['Slow cooker', 'Oven bakes', 'Breakfast', 'Desserts', 'Backup meals'];
 const BLURB = {
-  'Slow cooker': 'About ten minutes of work, then the pot does the rest. One cook makes 8 tubs: the next 3 days in the fridge, the rest in the freezer.',
+  'Slow cooker': 'About ten minutes of work, then the pot does the rest. One cook makes 8 tubs: the next 3 days in the fridge, the rest in the freezer. Any 5.5 L slow cooker works. Not sponsored, no commission: the Contempo 5.5 L is $24 at Big W (bigw.com.au), cheaper than one week of prepared meals.',
   'Oven bakes': 'One dish or tray into the oven, then cut into 8 and into tubs. The same week of food, no pot to watch.',
   Breakfast: 'Most take five minutes or are made once and kept. The rest are cooked fresh when you have the time.',
   Desserts: 'Protein in the one place you were going to have something sweet anyway. Several are made once for the week.',
@@ -247,7 +247,7 @@ const cover = `<section class="page dark cover">
   <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-3.png')}" alt=""><span>JSON.fit</span></div>
   <p class="mono dim" style="margin:104mm 0 0">The free cookbook</p>
   <h1 class="serif">The One Cook <span class="g">Cookbook.</span></h1>
-  <p class="lede">${SUBTITLE}. ${batchMeals.length} batch meals you cook once for 8 tubs, plus breakfasts, desserts and backup meals. Every ingredient, every step and the macros for each one.</p>
+  <p class="lede">You already train. Your food is the bit that falls apart by midweek. This book fixes that: one shop, one cook, about 10 minutes hands-on, 8 tubs. ${batchMeals.length} batch meals plus breakfasts, desserts and backup meals, with every ingredient, step and macro.</p>
   <div class="plates">${coverPlates.map((m) => `<div class="plate"><img src="${imgFor(m)}" alt=""><span>${esc(m.display_name)}<small>${activeMin(m)} min hands-on · ${m.batch.tubs} tubs</small></span></div>`).join('')}</div>
   <p class="trust"><b>Free</b> · No ads · No account · json.fit</p>
 </section>`;
@@ -347,7 +347,7 @@ const closing = `<section class="page dark closing">
   <p class="mono dim">JSON.fit for iPhone and Android</p>
   <h2 class="serif">Now let the app <span class="g">do it.</span></h2>
   <p>The book is the static version. The app takes these same ${meals.length} meals and builds your week around your numbers: which batch to cook, which tubs go in the fridge and which in the freezer, one shopping list, one cook.</p>
-  <ul><li>Your calorie and protein targets, worked out from your goal</li><li>A week of meals that lands on them. Swap any meal, the day rebalances.</li><li>One grocery list by aisle, one cook for the week</li><li>Cook mode with a timer on every step</li><li>Training programmed to match</li></ul>
+  <ul><li>Your calorie and protein targets, worked out from your goal</li><li>Weekly meals that land on them. Swap any meal, the day rebalances.</li><li>One grocery list by aisle, one cook for the week</li><li>Cook mode with a timer on every step</li><li>Your route: when to cut and when to bulk to reach your goal</li><li>A training program, up to a year, built around your week</li></ul>
   <div class="qr"><img src="file://${path.join(ROOT, 'images/qr-app.svg')}" alt="QR code"><span><b>json.fit/app</b>Point your phone's camera here, or search JSON.fit on the App Store or Google Play.<br>Free · No ads · No account</span></div>
   ${foot(CLOSING_PAGE)}
 </section>`;
