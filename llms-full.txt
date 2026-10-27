@@ -47,7 +47,7 @@ Each line: name, calories and protein per tub (batch meals, as served on the day
 - Citrus Pork Carnitas Bowls: 807 kcal, 56 g protein per tub, 10 min hands-on, 9 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/citrus_pork_carnitas_bowls/citrus_pork_carnitas_bowls_tub/
 - Butter Chicken & Rice: 772 kcal, 57 g protein per tub, 7 min hands-on, 4 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
 - Massaman Beef: 809 kcal, 45 g protein per tub, 8 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/massaman_beef/massaman_beef_tub/
-- Bulking Chilli Bowl: 835 kcal, 59 g protein per tub, 10 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/
+- Beef & Bean Chilli Bowl: 835 kcal, 59 g protein per tub, 10 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/
 - Satay Chicken & Rice: 738 kcal, 53 g protein per tub, 8 min hands-on, 4 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/satay_chicken_and_rice/satay_chicken_and_rice_tub/
 - Lamb Keema & Peas: 790 kcal, 48 g protein per tub, 10 min hands-on, 6 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/lamb_keema_and_peas/lamb_keema_and_peas_tub/
 - Dry Beef Rendang: 807 kcal, 42 g protein per tub, 8 min hands-on, 8 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/dry_beef_rendang/dry_beef_rendang_tub/
@@ -76,8 +76,8 @@ Each line: name, calories and protein per tub (batch meals, as served on the day
 - Baked Coconut Dal with Chickpeas: 829 kcal, 32 g protein per tub, 10 min hands-on, 1 h 35 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/baked_coconut_dal_with_chickpeas/baked_coconut_dal_with_chickpeas_tub/
 - Moroccan Chickpea & Lentil Bake: 818 kcal, 31 g protein per tub, 10 min hands-on, 1 h 35 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/moroccan_chickpea_and_lentil_bake/moroccan_chickpea_and_lentil_bake_tub/
 - Spanish Chicken & Chickpea Bake: 795 kcal, 43 g protein per tub, 10 min hands-on, 1 h 5 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/spanish_chicken_and_chickpea_bake/spanish_chicken_and_chickpea_bake_tub/
-- Maple Muscle Toast: 1,089 kcal, 60 g protein per serve, 12 min hands-on, 15 min total, Breakfast. https://json.fit/r/maple_muscle_toast/standard/
-- Muscle Oats: 945 kcal, 51 g protein per serve, 5 min hands-on, 8 min total, Breakfast. https://json.fit/r/muscle_oats/standard/
+- Maple Protein French Toast: 1,089 kcal, 60 g protein per serve, 12 min hands-on, 15 min total, Breakfast. https://json.fit/r/maple_muscle_toast/standard/
+- Peanut Butter Protein Oats: 945 kcal, 51 g protein per serve, 5 min hands-on, 8 min total, Breakfast. https://json.fit/r/muscle_oats/standard/
 - Scramble Stack: 933 kcal, 48 g protein per serve, 10 min hands-on, 12 min total, Breakfast. https://json.fit/r/scramble_stack/standard/
 - Protein Overnight Oats: 797 kcal, 51 g protein per serve, 5 min hands-on, 4 h 5 min total, Breakfast. https://json.fit/r/overnight_oats/standard/
 - Greek Yoghurt Power Bowl: 793 kcal, 56 g protein per serve, 5 min hands-on, 5 min total, Breakfast. https://json.fit/r/greek_yoghurt_bowl/standard/
@@ -102,18 +102,18 @@ Each line: name, calories and protein per tub (batch meals, as served on the day
 - Chocolate Protein Mousse: 396 kcal, 38 g protein per serve, 5 min hands-on, 35 min total, Dessert. https://json.fit/r/chocolate_protein_mousse/standard/
 - Frozen Date Snickers Bark: 187 kcal, 5 g protein per serve, 10 min hands-on, 40 min total, Dessert. https://json.fit/r/frozen_date_snickers_bark/standard/
 - Palačinke (Croatian Crêpes): 303 kcal, 8 g protein per serve, 30 min hands-on, 45 min total, Dessert. https://json.fit/r/palacinke/standard/
-- Brekkie to GROW-Grow: 1,164 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/brekkie_grow/standard/
-- Mango Mass: 1,128 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/mango_mass/standard/
-- King Kong Chocolate: 1,389 kcal, 95 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/king_kong_chocolate/standard/
+- PB Oat Breakfast Shake: 1,164 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/brekkie_grow/standard/
+- Mango Oat Smoothie: 1,128 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/mango_mass/standard/
+- Choc PB Smoothie: 1,389 kcal, 95 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/king_kong_chocolate/standard/
 - Strawberry Stack: 1,119 kcal, 65 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/strawberry_stack/standard/
-- Choc Muscle MAXX: 1,149 kcal, 77 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/choc_muscle_maxx/standard/
-- Cookies & Gains: 1,089 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/cookies_gains/standard/
+- Choc PB Thickshake: 1,149 kcal, 77 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/choc_muscle_maxx/standard/
+- Cookies & Cream Shake: 1,089 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/cookies_gains/standard/
 - Raspberry Rip: 1,055 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/raspberry_rip/standard/
-- Energy Lift Heavy: 931 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/energy_lift_heavy/standard/
-- Mornin' Muscle: 1,195 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/mornin_muscle/standard/
-- Dirty Eden: 1,101 kcal, 67 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/dirty_eden/standard/
-- Strawbrekkie BEAST: 1,191 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/strawbrekkie_beast/standard/
-- Banana Bulk: 1,260 kcal, 68 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/banana_bulk/standard/
+- Mango Iced Coffee Smoothie: 931 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/energy_lift_heavy/standard/
+- Mocha Oat Shake: 1,195 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/mornin_muscle/standard/
+- Green Pineapple Smoothie: 1,101 kcal, 67 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/dirty_eden/standard/
+- Berry Oat Smoothie: 1,191 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/strawbrekkie_beast/standard/
+- Banana Date Shake: 1,260 kcal, 68 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/banana_bulk/standard/
 
 ## The 25 decisions the app makes (How we know)
 

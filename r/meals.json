@@ -1864,7 +1864,7 @@
  },
  "bulking_chilli_bowl": {
   "slug": "bulking_chilli_bowl",
-  "display_name": "Bulking Chilli Bowl",
+  "display_name": "Beef & Bean Chilli Bowl",
   "cuisine": "mexican",
   "cuisine_detail": "mexican",
   "primary_protein": "beef",
@@ -1895,7 +1895,7 @@
   "plates": [
    {
     "id": "bulking_chilli_bowl_tub",
-    "display_name": "Bulking Chilli Bowl",
+    "display_name": "Beef & Bean Chilli Bowl",
     "description": "Extra lean beef mince, two kinds of beans and a chilli sachet. The mince goes in raw: no pan.",
     "base_serving_multiplier": 1,
     "assembly_time_minutes": 0,
@@ -9297,7 +9297,7 @@
  },
  "maple_muscle_toast": {
   "slug": "maple_muscle_toast",
-  "display_name": "Maple Muscle Toast",
+  "display_name": "Maple Protein French Toast",
   "cuisine": "breakfast",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -9322,7 +9322,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Maple Muscle Toast",
+    "display_name": "Maple Protein French Toast",
     "description": "Thick-cut brioche French toast soaked in a whey-spiked custard, stacked with yoghurt, banana, and maple.",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -9477,7 +9477,7 @@
  },
  "muscle_oats": {
   "slug": "muscle_oats",
-  "display_name": "Muscle Oats",
+  "display_name": "Peanut Butter Protein Oats",
   "cuisine": "breakfast",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -9501,8 +9501,8 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Muscle Oats",
-    "description": "Creamy oats cooked in milk with whey, banana, and peanut butter: the classic bulking porridge.",
+    "display_name": "Peanut Butter Protein Oats",
+    "description": "Creamy oats cooked in milk with whey, banana, and peanut butter. An easy high-protein porridge.",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
     "additional_instructions": [],
@@ -13940,7 +13940,7 @@
  },
  "brekkie_grow": {
   "slug": "brekkie_grow",
-  "display_name": "Brekkie to GROW-Grow",
+  "display_name": "PB Oat Breakfast Shake",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -13965,7 +13965,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Brekkie to GROW-Grow",
+    "display_name": "PB Oat Breakfast Shake",
     "description": "Banana, oats, peanut butter, and whey blended into a breakfast you drink",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -14082,7 +14082,7 @@
  },
  "mango_mass": {
   "slug": "mango_mass",
-  "display_name": "Mango Mass",
+  "display_name": "Mango Oat Smoothie",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -14106,7 +14106,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Mango Mass",
+    "display_name": "Mango Oat Smoothie",
     "description": "Frozen mango, banana, and oats blended thick with Greek yoghurt: like drinking a mango smoothie bowl",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -14224,7 +14224,7 @@
  },
  "king_kong_chocolate": {
   "slug": "king_kong_chocolate",
-  "display_name": "King Kong Chocolate",
+  "display_name": "Choc PB Smoothie",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -14249,7 +14249,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "King Kong Chocolate",
+    "display_name": "Choc PB Smoothie",
     "description": "Chocolate, peanut butter, and banana blended thick: tastes like a thick shake, not a sad gym drink",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -14515,7 +14515,7 @@
  },
  "choc_muscle_maxx": {
   "slug": "choc_muscle_maxx",
-  "display_name": "Choc Muscle MAXX",
+  "display_name": "Choc PB Thickshake",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -14540,7 +14540,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Choc Muscle MAXX",
+    "display_name": "Choc PB Thickshake",
     "description": "Post-workout powerhouse with chocolate whey, ice cream, and peanut butter: recovery in a glass",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -14664,7 +14664,7 @@
  },
  "cookies_gains": {
   "slug": "cookies_gains",
-  "display_name": "Cookies & Gains",
+  "display_name": "Cookies & Cream Shake",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -14691,7 +14691,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Cookies & Gains",
+    "display_name": "Cookies & Cream Shake",
     "description": "Oreo cookies blended with vanilla whey and banana: like drinking a cookies and cream milkshake",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -14943,7 +14943,7 @@
  },
  "energy_lift_heavy": {
   "slug": "energy_lift_heavy",
-  "display_name": "Energy Lift Heavy",
+  "display_name": "Mango Iced Coffee Smoothie",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -14965,7 +14965,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Energy Lift Heavy",
+    "display_name": "Mango Iced Coffee Smoothie",
     "description": "Caffeinated pre-workout smoothie with mango, banana, and a shot of espresso: energy and nutrition combined",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -15083,7 +15083,7 @@
  },
  "mornin_muscle": {
   "slug": "mornin_muscle",
-  "display_name": "Mornin' Muscle",
+  "display_name": "Mocha Oat Shake",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -15107,7 +15107,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Mornin' Muscle",
+    "display_name": "Mocha Oat Shake",
     "description": "Double espresso chocolate smoothie with peanut butter and oats: breakfast and coffee in one massive drink",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -15232,7 +15232,7 @@
  },
  "dirty_eden": {
   "slug": "dirty_eden",
-  "display_name": "Dirty Eden",
+  "display_name": "Green Pineapple Smoothie",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -15256,7 +15256,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Dirty Eden",
+    "display_name": "Green Pineapple Smoothie",
     "description": "Green smoothie that tastes tropical, not green: the pineapple and banana dominate",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -15380,7 +15380,7 @@
  },
  "strawbrekkie_beast": {
   "slug": "strawbrekkie_beast",
-  "display_name": "Strawbrekkie BEAST",
+  "display_name": "Berry Oat Smoothie",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -15404,7 +15404,7 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Strawbrekkie BEAST",
+    "display_name": "Berry Oat Smoothie",
     "description": "Mixed berry breakfast smoothie with oats: carb-heavy for post-workout recovery",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
@@ -15521,7 +15521,7 @@
  },
  "banana_bulk": {
   "slug": "banana_bulk",
-  "display_name": "Banana Bulk",
+  "display_name": "Banana Date Shake",
   "cuisine": "smoothie",
   "primary_protein": "dairy",
   "produces_servings": 1,
@@ -15546,8 +15546,8 @@
   "plates": [
    {
     "id": "standard",
-    "display_name": "Banana Bulk",
-    "description": "Simple banana-date smoothie with peanut butter: the cheapest bulker in the database",
+    "display_name": "Banana Date Shake",
+    "description": "Simple banana-date smoothie with peanut butter, one of the cheapest in the app",
     "base_serving_multiplier": 1,
     "additional_ingredients": [],
     "additional_instructions": [],
