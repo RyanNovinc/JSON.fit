@@ -438,3 +438,8 @@ a{color:inherit}
 [data-enter="fade"] h1 *{animation:none}
 [data-enter-vis]{animation:enVis 1s cubic-bezier(.16,1,.3,1) .2s backwards}
 @media(prefers-reduced-motion:reduce){[data-enter]>*,[data-enter] h1 em,[data-enter] h1 .cyan,[data-enter] h1 .green,[data-enter] h1 .violet,[data-enter-vis],.en-dot{animation:none!important}}
+/* Email capture inside a centred closing band: the field (class "in") must not pick up the band's ".in" wrapper styles, and the note sits centred under the field. */
+.v2 .final2 .cap-form input.in{display:block;z-index:auto}
+.cap-form .btn{z-index:3}
+.v2 .final2 .cap-block{width:100%;max-width:520px;justify-self:center}
+.v2 .final2 .cap-block .note{text-align:center;margin-top:10px}
