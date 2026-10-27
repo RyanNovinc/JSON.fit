@@ -164,7 +164,7 @@ img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 .foot b{font-weight:500;color:#15151a}.dark .foot b{color:#f2f2f4}
 /* cover: big title, big food, nothing small to read */
 .cover.white .food{top:96mm;grid-template-rows:1.35fr 1fr 1fr;gap:2mm 6mm}
-.cover.white .food div{background:none;overflow:visible;border-radius:0}
+.cover.white .food div{background:none;overflow:hidden;border-radius:0;min-height:0;min-width:0}
 .cover.white .food img{transform:none}
 .cover.white .food img.framed{transform:none}
 .cover.white h1{color:#15151a}
