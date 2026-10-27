@@ -132,8 +132,10 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .faq2 summary{font-size:1.1rem}
 .faq2 .a{font-size:1.02rem}
 /* Typing an email: the button sits inside the field's pill and folds into a round arrow,
-   so the whole address shows. The form never changes size, so nothing else on the page moves. */
-@media(min-width:701px){
+   so the whole address shows. The form never changes size, so nothing else on the page moves.
+   Sized by the form's own width (container query): too narrow for both, the button goes under the field. */
+.cap-block{container-type:inline-size}
+@container (min-width:400px){
 .cap-form{position:relative;display:block;max-width:520px}
 .cap-form .in{width:100%;box-sizing:border-box;padding-right:236px;transition:border-color .2s,box-shadow .2s,padding-right .7s cubic-bezier(.33,1,.68,1)}
 .cap-form .btn{position:absolute;top:5px;right:5px;bottom:5px;width:222px;padding:0;overflow:hidden;white-space:nowrap;transition:width .7s cubic-bezier(.33,1,.68,1),color .35s ease}
@@ -143,7 +145,8 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .cap-form:focus-within .btn::after{opacity:1}
 }
 @media(prefers-reduced-motion:reduce){.cap-form .btn,.cap-form .btn::after,.cap-form .in{transition:none}}
-@media(max-width:700px){.cap-form{flex-direction:column}.cap-form .btn{width:100%}.cap-form .in{font-size:16px}}
+@container (max-width:399.98px){.cap-form{flex-direction:column}.cap-form .btn{width:100%}}
+@media(max-width:700px){.cap-form .in{font-size:16px}}
 .v2 .hero2 .trust { margin-top:14px; }
 .app .badges { margin-top:22px; }
 .qa ul,details .a ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px}
@@ -478,7 +481,8 @@ document.addEventListener('DOMContentLoaded', function () {
   pf.on('changeOrientation', paint);
   /* One step: on a phone the zoom starts with the turn, so the book opens out as the page lifts. */
   var go = function (dir) {
-    if (pf.getState && pf.getState() !== 'read') return;
+    /* only a turn in progress blocks; a corner left lifted by the mouse hovering the book must not */
+    if (pf.getState && pf.getState() === 'flipping') return;
     var i = pf.getCurrentPageIndex(), n = pf.getPageCount(), total = views();
     var v = viewOf(i) + dir; if (v < 0 || v > total - 1) return;
     lazy();
