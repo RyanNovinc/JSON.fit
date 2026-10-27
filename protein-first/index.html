@@ -524,6 +524,8 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 /* Landing pages (scripts/build-landing.mjs): longer niche headlines step down a size */
 .hero h1.long{font-size:clamp(2.6rem,4.5vw,4.3rem)}
 @media(max-width:700px){.hero h1.long{font-size:2.15rem}}
+.hero .msub{display:none}
+@media(max-width:700px){.hero .msub{display:block;color:var(--text-2);font-size:1rem;line-height:1.45;max-width:30ch;margin:14px auto 0;text-wrap:balance}}
 </style>
 <script src="/analytics-web.js"
         data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -557,16 +559,17 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
     <div class="hcopy">
       <p class="label">Losing weight, keeping muscle</p>
       <h1 id="h1">Lose the fat.<em>Keep the muscle.</em></h1>
+      <p class="msub">High protein meals on your macros, a steady cut and strength training, planned for you.</p>
       <p class="sub">A high protein meal plan built to your macros, a cut paced so you hold onto muscle, and a strength program to give it a reason to stay. Cook once a week: 8 tubs, about 10 minutes hands-on.</p>
-      <div class="mprev" role="img" aria-label="Your route, your meals and your training, built for you">
-        <div class="mp-scene on" aria-hidden="true"><div class="mp-k" style="color:var(--violet-text)">Your route</div><div class="mp-t">When to cut, when to bulk</div><div class="mp-s">Phases timed to your body</div>
+      <div class="mprev" data-start="1" role="img" aria-label="Your route, your meals and your training, built for you">
+        <div class="mp-scene" aria-hidden="true"><div class="mp-k" style="color:var(--violet-text)">Your route</div><div class="mp-t">When to cut, when to bulk</div><div class="mp-s">Phases timed to your body</div>
           <svg viewBox="0 0 300 140"><line x1="0" y1="128" x2="300" y2="128" stroke="#24242a"/><path class="mp-curve" d="M8 34 C 60 36, 80 78, 120 80 S 180 72, 210 94 S 255 110, 286 108"/><circle class="mp-dot" cx="286" cy="108" r="6"/><text class="mp-lbl" x="282" y="94" text-anchor="end">Your goal</text></svg></div>
-        <div class="mp-scene" aria-hidden="true"><div class="mp-k" style="color:var(--green-text)">Your meals</div><div class="mp-t">Weekly meals on your macros</div><div class="mp-s">One cook, one shopping list, a prep guide</div>
+        <div class="mp-scene on" aria-hidden="true"><div class="mp-k" style="color:var(--green-text)">Your meals</div><div class="mp-t">Weekly meals on your macros</div><div class="mp-s">One cook, one shopping list, a prep guide</div>
           <div class="mp-meals"><img class="mp-meal" style="animation-delay:0.00s" src="/images/meals/batch-butter-chicken-and-rice.webp" alt="" width="80" height="80" loading="lazy" decoding="async"><img class="mp-meal" style="animation-delay:0.07s" src="/images/meals/baked-oats.webp" alt="" width="80" height="80" loading="lazy" decoding="async"><img class="mp-meal" style="animation-delay:0.14s" src="/images/meals/batch-beef-and-lentil-bolognese.webp" alt="" width="80" height="80" loading="lazy" decoding="async"><img class="mp-meal" style="animation-delay:0.21s" src="/images/meals/batch-chicken-and-chickpea-curry.webp" alt="" width="80" height="80" loading="lazy" decoding="async"><img class="mp-meal" style="animation-delay:0.28s" src="/images/meals/batch-chipotle-chicken-burritos-or-bowl.webp" alt="" width="80" height="80" loading="lazy" decoding="async"><img class="mp-meal" style="animation-delay:0.35s" src="/images/meals/batch-beef-stroganoff-and-rice.webp" alt="" width="80" height="80" loading="lazy" decoding="async"><img class="mp-meal" style="animation-delay:0.42s" src="/images/meals/batch-chicken-cacciatore-and-pasta.webp" alt="" width="80" height="80" loading="lazy" decoding="async"><img class="mp-meal" style="animation-delay:0.49s" src="/images/meals/batch-bulking-chilli-bowl.webp" alt="" width="80" height="80" loading="lazy" decoding="async"></div></div>
         <div class="mp-scene" aria-hidden="true"><div class="mp-k" style="color:var(--cyan)">Your training</div><div class="mp-t">A 1-year program, built instantly</div><div class="mp-s">Every set, rep and rest, decided</div>
           <div class="mp-sess"><div class="mp-ex" style="animation-delay:0.10s"><img src="/images/exercises/barbell-bench-press/blue/end.webp" alt="" width="160" height="50" loading="lazy" decoding="async"><b>Bench press</b><span>3 × 6–8</span></div><div class="mp-ex" style="animation-delay:0.25s"><img src="/images/exercises/chest-supported-dumbbell-row/blue/end.webp" alt="" width="160" height="50" loading="lazy" decoding="async"><b>Supported row</b><span>3 × 8–10</span></div><div class="mp-ex" style="animation-delay:0.40s"><img src="/images/exercises/seated-dumbbell-shoulder-press/blue/end.webp" alt="" width="160" height="50" loading="lazy" decoding="async"><b>Shoulder press</b><span>3 × 8–10</span></div><div class="mp-ex" style="animation-delay:0.55s"><img src="/images/exercises/lat-pulldown/blue/end.webp" alt="" width="160" height="50" loading="lazy" decoding="async"><b>Lat pulldown</b><span>2 × 10–12</span></div></div></div>
       </div>
-      <div class="mp-pips" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      <div class="mp-pips" aria-hidden="true"><i class="done"></i><i class="on"></i><i></i></div>
       <div class="ctas">
         <a class="go" href="/try/?v=protein-first" data-try="hero">Build my free plan <span class="arr" aria-hidden="true">&rarr;</span></a>
         <div class="badges">
@@ -906,6 +909,8 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
       scenes.forEach(function(s,i){s.classList.toggle('on',i===n);if(i===n)s.querySelectorAll('.mp-curve,.mp-dot,.mp-lbl,.mp-meal,.mp-ex').forEach(function(e){e.style.animation='none';void e.getBoundingClientRect();e.style.animation='';});});
       pips.forEach(function(p,i){p.className=i<n?'done':i===n?'on':'';});
     };
+    // Landing pages can open on their lead scene (data-start on .mprev, set by scripts/build-landing.mjs); home starts on the route.
+    k=+(prev.getAttribute('data-start')||0)%3;if(k)scene(k);
     if(!still)setInterval(function(){if(document.hidden||!prev.offsetParent)return;k=(k+1)%3;scene(k);},3400);
   }
   // Phone: the sticky "Build my free plan" bar shows once the hero has scrolled away and hides at the closing button.

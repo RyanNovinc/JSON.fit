@@ -38,6 +38,8 @@ const COST_FAQ = {
 const PAGES = [
   {
     variant: 'meal-prep',
+    phoneLine: 'One shop, one cook, 8 tubs on your macros. About 10 minutes hands-on.', // shown under the headline on phones only (the sub-heading is hidden there)
+    startScene: 1, // phone preview opens on the meals scene (0 route, 1 meals, 2 training)
     appStorePpid: '', // TODO: Custom Product Page id for /meal-prep/ (App Store Connect)
     title: 'High Protein Meal Prep on Your Macros: Cook Once a Week | JSON.fit',
     description: 'High protein meal prep for people who already train. One shop, one slow cooker cook, 8 tubs on your macros. Free app, no ads, no account.',
@@ -66,6 +68,8 @@ const PAGES = [
   },
   {
     variant: 'fifo',
+    phoneLine: 'Camp food on site. At home, one cook covers your week on your macros.', // shown under the headline on phones only (the sub-heading is hidden there)
+    startScene: 1, // phone preview opens on the meals scene (0 route, 1 meals, 2 training)
     appStorePpid: '', // TODO: Custom Product Page id for /fifo/ (App Store Connect)
     title: 'FIFO Meal Prep and Workout Plan for Your Home Weeks | JSON.fit',
     description: 'FIFO meal prep and a workout plan for your weeks at home. One cook covers your home week, on your macros. Free app, no ads, no account.',
@@ -94,6 +98,8 @@ const PAGES = [
   },
   {
     variant: 'protein-first',
+    phoneLine: 'High protein meals on your macros, a steady cut and strength training, planned for you.', // shown under the headline on phones only (the sub-heading is hidden there)
+    startScene: 1, // phone preview opens on the meals scene (0 route, 1 meals, 2 training)
     appStorePpid: '', // TODO: Custom Product Page id for /protein-first/ (App Store Connect)
     title: 'High Protein Meal Plan to Keep Muscle While Losing Weight | JSON.fit',
     description: 'Lose weight and keep your muscle: a high protein meal plan on your macros, a steady cut and strength training. Free app, no ads, no account.',
@@ -161,6 +167,16 @@ function build(page, home) {
   r(/(<div class="hcopy">\s*<p class="label">)[^<]*(<\/p>)/, (m, a, b) => a + page.label + b, 'hero label');
   r(/<h1 id="h1">[\s\S]*?<\/h1>/, `<h1 id="h1"${page.h1Long ? ' class="long"' : ''}>${page.h1}</h1>`, 'h1');
   r(/(<h1 id="h1"[^>]*>[\s\S]*?<\/h1>\s*<p class="sub">)[\s\S]*?(<\/p>)/, (m, a, b) => a + page.sub + b, 'hero sub');
+  if (page.phoneLine) r(/(<h1 id="h1"[^>]*>[\s\S]*?<\/h1>)/, (m, a) => `${a}\n      <p class="msub">${page.phoneLine}</p>`, 'phone line');
+  if (page.startScene) {
+    r(/<div class="mprev" role="img"/, `<div class="mprev" data-start="${page.startScene}" role="img"`, 'preview start');
+    // Mark the lead scene in the markup too, so the first paint already shows it (no flash of the route).
+    let n = 0;
+    s = s.replace(/<div class="mp-scene( on)?" aria-hidden="true">/g, () => `<div class="mp-scene${n++ === page.startScene ? ' on' : ''}" aria-hidden="true">`);
+    if (n !== 3) throw new Error(`build-landing: expected 3 preview scenes, found ${n}`);
+    const pips = [0, 1, 2].map((i) => `<i${i < page.startScene ? ' class="done"' : i === page.startScene ? ' class="on"' : ''}></i>`).join('');
+    r(/<div class="mp-pips" aria-hidden="true">[\s\S]*?<\/div>/, `<div class="mp-pips" aria-hidden="true">${pips}</div>`, 'preview pips');
+  }
 
   const chipCls = ['chip a on', 'chip b', 'chip c2'];
   page.chips.forEach(([b, span], i) => {
@@ -191,7 +207,7 @@ function build(page, home) {
   s = s.replace(/^<!DOCTYPE html>\n/i, (d) => d + banner);
 
   for (const bad of ['—', 'Ozempic', 'Wegovy', 'Mounjaro', 'semaglutide', 'tirzepatide', 'powered by AI', 'fat burning', 'meal replacement']) {
-    const visible = [page.title, page.description, page.ogTitle, page.ogDescription, page.label, page.h1, page.sub, page.perksSub, page.mealsP, page.finalH2, ...page.chips.flat(), ...page.faq.flatMap((f) => [f.q, f.a])].join(' ');
+    const visible = [page.phoneLine || '', page.title, page.description, page.ogTitle, page.ogDescription, page.label, page.h1, page.sub, page.perksSub, page.mealsP, page.finalH2, ...page.chips.flat(), ...page.faq.flatMap((f) => [f.q, f.a])].join(' ');
     if (visible.toLowerCase().includes(bad.toLowerCase())) throw new Error(`build-landing: "${bad}" in ${page.variant} copy`);
   }
   if (page.description.length > 160) throw new Error(`build-landing: ${page.variant} description is ${page.description.length} chars`);
