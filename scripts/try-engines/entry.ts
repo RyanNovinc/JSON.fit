@@ -241,6 +241,14 @@ async function buildRoute(about: any, nutrition?: any) {
   };
 }
 
+/** Everything the last build left in storage, less the routine and the page's own keys. */
+async function passStorage(): Promise<Record<string, string>> {
+  const keys = await AsyncStorage.getAllKeys();
+  const out: Record<string, string> = {};
+  for (const [k, v] of await AsyncStorage.multiGet(keys)) if (v != null && !/^workout_routines|^@try_/.test(k)) out[k] = v;
+  return out;
+}
+
 const API: any = {
   version: () => ({ app: __APP_VERSION__, rev: __APP_REV__ }),
   defaults,
@@ -251,6 +259,14 @@ const API: any = {
   repStyles: () => REP_STYLE_OPTIONS,
   ...MEALS_PART,
   ...TRAINING_PART,
+  storageSnapshot: passStorage,
+  // Each build also returns the answers it left in storage: the plan pass
+  // carries them to the app, which writes them back and runs its own builds
+  // (the app's utils/planPass.ts). The built program itself is not carried.
+  buildProgramFrom: async (...a: any[]) => ({ ...(await (TRAINING_PART as any).buildProgramFrom(...a)), passStorage: await passStorage() }),
+  buildMeals: async (...a: any[]) => ({ ...(await (MEALS_PART as any).buildMeals(...a)), passStorage: await passStorage() }),
+  // A gap fix saves its answers (saveMealFixes): the pass carries those instead.
+  useGapOption: async (...a: any[]) => ({ ...(await (MEALS_PART as any).useGapOption(...a)), passStorage: await passStorage() }),
 };
 MEALS_PART.initMeals({ wipe, planProfileFor, goalsProfileFrom, choiceOf });
 // The workout questions run first from the finish line ("Next: my training"),

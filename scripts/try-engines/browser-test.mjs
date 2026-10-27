@@ -73,7 +73,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
     if (!lock && r.lock) bad(`intro ${w}x${h}: scroll locked on a short viewport`);
     if (!r.btn) bad(`intro ${w}x${h}: button below the fold`);
     if (r.label !== 'Build my free plan' || !r.exit || r.back) bad(`intro ${w}x${h}: button/X/back wrong`);
-    if (!/FREE NO SIGN-UP NO ADS 62 STUDIES/i.test(r.trust)) bad(`intro ${w}x${h}: trust row ` + r.trust);
+    if (!/FREE NO SIGN-UP NO ADS 42 SOURCES/i.test(r.trust)) bad(`intro ${w}x${h}: trust row ` + r.trust);
     if (await ev(`/Runs on this page/.test(document.body.innerText)`)) bad('intro: old privacy line still showing');
   }
   // The X on the intro goes straight home, no sheet.

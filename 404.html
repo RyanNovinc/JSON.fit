@@ -624,6 +624,27 @@ main {
 }
 .debug-btn:hover { color: var(--cyan); border-color: var(--border-cyan); }
 .debug-btn.copied { color: var(--green); border-color: rgba(34,197,94,0.3); }
+/* A whole plan from json.fit/try */
+.pp-wrap{text-align:center;padding:28px 0 6px}
+.pp-ov{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:#22d3ee;margin:0}
+.pp-title{font-size:2rem;font-weight:900;letter-spacing:-.02em;margin:10px 0 22px;color:#fff}
+.pp-title em{font-style:italic;color:#22d3ee}
+.pp-pass{position:relative;max-width:380px;margin:0 auto;text-align:left;border-radius:22px;padding:18px;overflow:hidden;background:linear-gradient(155deg,#16323a 0%,#0f1d2a 45%,#151325 100%);border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -20px rgba(34,211,238,.35)}
+.pp-top{display:flex;justify-content:space-between;align-items:center}
+.pp-brand{display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:.78rem;color:#fff}
+.pp-brand i{width:16px;height:10px;border-radius:2px;background:#22d3ee;display:inline-block}
+.pp-tag{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.16em;color:var(--text-2)}
+.pp-goal{margin:20px 0 4px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.16em;color:var(--text-3)}
+.pp-big{font-weight:900;font-size:2rem;letter-spacing:-.02em;line-height:1;color:#fff}
+.pp-big small{font-weight:500;font-size:.9rem;color:var(--text-2);letter-spacing:0;margin-left:8px}
+.pp-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.14)}
+.pp-h{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.14em;color:var(--text-3)}
+.pp-v{font-weight:600;font-size:.95rem;margin-top:3px;color:#fff;overflow-wrap:anywhere}
+.pp-v span{color:var(--text-2);font-weight:400;font-size:.8rem}
+.pp-meals{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
+.pp-meals ul{margin:6px 0 0;padding:0;list-style:none;color:#fff;font-size:.88rem;line-height:1.6}
+.pp-how{color:var(--text-2);font-size:.9rem;line-height:1.55;margin:22px 0 0}
+.pp-how b{color:#fff}
 </style>
     <script src="/analytics-web.js"
             data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -738,6 +759,33 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// A whole plan from json.fit/try (the app's utils/planPass.ts): a pass card and
+// how to open it. Only the display summary is read here; the answers inside are
+// for the app.
+function renderPlanPass(p) {
+  const s = (p && typeof p.summary === 'object' && p.summary) || {};
+  const n = (v, lo, hi) => (typeof v === 'number' && isFinite(v) && v >= lo && v <= hi ? v : null);
+  const goalKg = n(s.goalWeightKg, 30, 300), goalBf = n(s.goalBodyFatPct, 3, 60), days = n(s.trainingDays, 1, 7);
+  const kcal = n(s.calories, 800, 7000), protein = n(s.protein, 20, 500), mealDays = n(s.mealDays, 1, 31);
+  const prog = typeof s.programName === 'string' ? s.programName.slice(0, 60) : '';
+  const meals = Array.isArray(s.firstMeals) ? s.firstMeals.filter((m) => typeof m === 'string').slice(0, 4) : [];
+  const field = (h, v, sub) => `<div><div class="pp-h">${h}</div><div class="pp-v">${v}${sub ? `<span> · ${sub}</span>` : ''}</div></div>`;
+  return `
+    <div class="pp-wrap">
+      <h1 class="pp-title">Your plan is <em>ready.</em></h1>
+      <div class="pp-pass">
+        <div class="pp-top"><span class="pp-brand"><i></i>JSON.fit</span><span class="pp-tag">YOUR PLAN</span></div>
+        <div class="pp-goal">GOAL</div>
+        <div class="pp-big">${goalKg != null ? escapeHtml(String(Math.round(goalKg * 10) / 10)) + ' kg' : 'Your goal'}${goalBf != null ? `<small>at ${Math.round(goalBf)}% body fat</small>` : ''}</div>
+        <div class="pp-fields">
+          ${field('TRAINING', days ? days + ' a week' : prog ? 'Your program' : 'Not built yet', '')}
+          ${field('MEALS', kcal ? Math.round(kcal).toLocaleString('en-AU') + ' kcal' : meals.length ? (mealDays || 7) + ' days' : 'Not built yet', protein ? Math.round(protein) + ' g protein' : '')}
+        </div>
+      </div>
+      <p class="pp-how"><b>1.</b> Get the free JSON.fit app below.<br><b>2.</b> Come back to this page and tap <b>Open my plan</b>.</p>
+    </div>`;
 }
 
 // Detect content type from the data shape
@@ -1146,12 +1194,12 @@ function renderCTA(type) {
     <div class="cta-section">
       <button class="cta-btn" id="open-in-app-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Import ${type === 'meal' ? 'meal plan' : 'workout'}
+        ${type === 'plan' ? 'Open my plan' : 'Import ' + (type === 'meal' ? 'meal plan' : 'workout')}
       </button>
 
       <div class="cta-divider">Don't have the app?</div>
 
-      <p class="cta-secondary-text">Get JSON.fit free to import this ${type === 'meal' ? 'meal plan' : 'workout'}.</p>
+      <p class="cta-secondary-text">${type === 'plan' ? 'Get JSON.fit free, then come back here and tap Open my plan.' : 'Get JSON.fit free to import this ' + (type === 'meal' ? 'meal plan' : 'workout') + '.'}</p>
 
       <div class="badges">
         <a href="${APP_STORE_URL}" class="badge" onclick="gtag('event','share_page_app_store_click',{type:'${type}',platform:'ios'})">
@@ -1164,7 +1212,7 @@ function renderCTA(type) {
         </a>
       </div>
 
-      <div class="cta-foot">Free · No ads · No subscription</div>
+      <div class="cta-foot">${type === 'plan' ? 'Free · No ads · No account · Saved for 7 days' : 'Free · No ads · No subscription'}</div>
 
       <button class="debug-toggle" id="debug-toggle" style="display:none;">show debug ▾</button>
       <div class="debug-panel" id="debug-panel">
@@ -1457,9 +1505,12 @@ async function init() {
     const inner = payload.workoutData || payload;
 
     // Determine type
-    const type = detectType(inner);
+    const type = payload.kind === 'jsonfit_plan' ? 'plan' : detectType(inner);
 
-    if (type === 'meal') {
+    if (type === 'plan') {
+      document.body.classList.add('type-plan');
+      document.getElementById('content-inner').innerHTML = renderPlanPass(payload) + renderCTA('plan');
+    } else if (type === 'meal') {
       document.body.classList.add('type-meal');
       document.getElementById('content-inner').innerHTML = renderMealPlan(inner);
     } else {
