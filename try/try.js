@@ -4022,8 +4022,9 @@
   function desktopPass(el, c, held) {
     var qrBox = '<div class="pqr" id="pqr">' + (held ? '' : '<button type="button" class="pshow" id="pshow">Show my code</button>') + '</div>';
     el.insertAdjacentHTML('beforeend', passHtml(c, qrBox) +
-      '<p class="phow rise" style="--i:3">Scan with your phone</p>' +
+      '<p class="pstep rise" style="--i:3"><b>1</b>Download the app</p>' +
       storesHtml(null) +
+      '<p class="pstep rise" style="--i:4"><b>2</b>Scan the QR code to add your full plan</p>' +
       '<p class="pnote small rise" style="--i:5" id="pnote">' + esc(PRIVACY) + '</p>' +
       '<div class="perr" id="perr" hidden></div>');
     var paint = function (h) {
@@ -4044,14 +4045,16 @@
   /** The phone's pass: one button, then the stores. */
   function phonePass(el, c) {
     el.insertAdjacentHTML('beforeend', passHtml(c, '') +
+      '<p class="pstep rise" style="--i:3"><b>1</b>Download the app</p>' +
       storesHtml(IS_ANDROID ? 'android' : 'ios') +
+      '<p class="pstep rise" style="--i:4"><b>2</b>Tap Add my plan to the app</p>' +
       '<p class="pnote small rise" style="--i:5">' + esc(PRIVACY) + '</p><div class="perr" id="perr" hidden></div>');
-    primary('Open my plan', function () {
+    primary('Add my plan to the app', function () {
       nextBtn.disabled = true; nextBtn.textContent = 'Opening…';
       uploadPass().then(function (h) {
-        nextBtn.disabled = false; nextBtn.textContent = 'Open my plan';
+        nextBtn.disabled = false; nextBtn.textContent = 'Add my plan to the app';
         openInApp(h.id);
-      }, function (e) { nextBtn.disabled = false; nextBtn.textContent = 'Open my plan'; var x = $('#perr', el); x.hidden = false; x.textContent = e.message; });
+      }, function (e) { nextBtn.disabled = false; nextBtn.textContent = 'Add my plan to the app'; var x = $('#perr', el); x.hidden = false; x.textContent = e.message; });
     });
   }
 

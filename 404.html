@@ -784,7 +784,7 @@ function renderPlanPass(p) {
           ${field('MEALS', kcal ? Math.round(kcal).toLocaleString('en-AU') + ' kcal' : meals.length ? (mealDays || 7) + ' days' : 'Not built yet', protein ? Math.round(protein) + ' g protein' : '')}
         </div>
       </div>
-      <p class="pp-how"><b>1.</b> Get the free JSON.fit app below.<br><b>2.</b> Come back to this page and tap <b>Open my plan</b>.</p>
+      <p class="pp-how"><b>1.</b> Get the free JSON.fit app below.<br><b>2.</b> Come back to this page and tap <b>Add my plan to the app</b>.</p>
     </div>`;
 }
 
@@ -1194,12 +1194,12 @@ function renderCTA(type) {
     <div class="cta-section">
       <button class="cta-btn" id="open-in-app-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        ${type === 'plan' ? 'Open my plan' : 'Import ' + (type === 'meal' ? 'meal plan' : 'workout')}
+        ${type === 'plan' ? 'Add my plan to the app' : 'Import ' + (type === 'meal' ? 'meal plan' : 'workout')}
       </button>
 
       <div class="cta-divider">Don't have the app?</div>
 
-      <p class="cta-secondary-text">${type === 'plan' ? 'Get JSON.fit free, then come back here and tap Open my plan.' : 'Get JSON.fit free to import this ' + (type === 'meal' ? 'meal plan' : 'workout') + '.'}</p>
+      <p class="cta-secondary-text">${type === 'plan' ? 'Get JSON.fit free, then come back here and tap Add my plan to the app.' : 'Get JSON.fit free to import this ' + (type === 'meal' ? 'meal plan' : 'workout') + '.'}</p>
 
       <div class="badges">
         <a href="${APP_STORE_URL}" class="badge" onclick="gtag('event','share_page_app_store_click',{type:'${type}',platform:'ios'})">

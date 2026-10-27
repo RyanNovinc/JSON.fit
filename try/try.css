@@ -1386,6 +1386,8 @@ div.srow2{cursor:default}
 .pshow:disabled{opacity:.6;cursor:default}
 .phow{text-align:center;color:var(--text-2);font-size:.9rem;line-height:1.55;margin:20px 0 0}
 .phow b{color:#fff}
+.pstep{display:flex;align-items:center;justify-content:center;gap:10px;margin:22px 0 0;color:#fff;font-weight:700;font-size:1.1rem}
+.pstep b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#22d3ee;color:#0a0a0b;font-size:.9rem;font-weight:800}
 .pstores{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
 .pstore{display:flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:7px 12px;background:#0d0d10;color:#fff;text-decoration:none}
 .pstore svg{flex:none}
