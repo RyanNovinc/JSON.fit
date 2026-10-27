@@ -66,3 +66,27 @@
     last.parentNode.insertBefore(dot,rest);
   });
 })();
+
+/* FAQ questions: open and close with a smooth height + fade instead of a jump.
+   The <details> still works without JS (and with reduced motion it just toggles). */
+(function(){
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce||!Element.prototype.animate) return;
+  document.querySelectorAll('details').forEach(function(d){
+    var s=d.querySelector(':scope > summary'); if(!s) return;
+    var anim=null;
+    s.addEventListener('click',function(e){
+      e.preventDefault();
+      if(anim){anim.cancel();anim=null;}
+      var start=d.offsetHeight, opening=!d.open;
+      if(opening) d.open=true;
+      var end=opening?d.offsetHeight:s.offsetHeight;
+      d.style.overflow='hidden';
+      var body=[].filter.call(d.children,function(c){return c!==s;});
+      anim=d.animate({height:[start+'px',end+'px']},{duration:opening?380:300,easing:'cubic-bezier(.2,.8,.2,1)'});
+      body.forEach(function(c){c.animate(opening?{opacity:[0,1],transform:['translateY(-6px)','none']}:{opacity:[1,0]},{duration:opening?380:200,easing:'ease-out'});});
+      d.classList.toggle('opening',opening);
+      anim.onfinish=function(){ if(!opening) d.open=false; d.style.overflow=''; anim=null; d.classList.remove('opening'); };
+    });
+  });
+})();

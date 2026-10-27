@@ -337,7 +337,8 @@ a{color:inherit}
 .v2 .faq2 details:first-child{border-top:0}
 .v2 .faq2 summary{cursor:pointer;list-style:none;padding:16px 0;font-weight:600;font-size:1.02rem;display:flex;justify-content:space-between;gap:16px;align-items:center}
 .v2 .faq2 summary::-webkit-details-marker{display:none}
-.v2 .faq2 summary::after{content:"+";font-family:var(--mono);color:var(--text-3);font-size:1.1rem;transition:transform .3s var(--spring)}
+.v2 .faq2 summary::after{content:"+";font-family:var(--mono);color:var(--text-3);font-size:1.1rem;transition:transform .38s cubic-bezier(.2,.8,.2,1),color .2s}
+.v2 .faq2 summary:hover::after{color:var(--text)}
 .v2 .faq2 details[open] summary::after{transform:rotate(45deg)}
 .v2 .faq2 .a{padding:0 0 18px;color:var(--text-2);max-width:62ch}
 @media(min-width:760px){.v2 .faq2{grid-template-columns:1fr 1fr;column-gap:40px}.v2 .faq2 details:nth-child(2){border-top:0}}
