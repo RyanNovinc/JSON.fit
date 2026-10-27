@@ -134,6 +134,14 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .app .badges { margin-top:22px; }
 .qa ul,details .a ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px}
 details .a p{margin:0}
+/* "Get your copy": the meal wall drifts slowly behind the form, with a soft green glow breathing through it. */
+#get{position:relative;overflow:hidden}
+#get .wall2{inset:-35% -12%;animation:getdrift 60s ease-in-out infinite alternate;will-change:transform}
+@keyframes getdrift{from{transform:rotate(-6deg) translate3d(-4%,-6%,0) scale(1.04)}to{transform:rotate(-6deg) translate3d(4%,6%,0) scale(1.1)}}
+#get::before{content:"";position:absolute;left:50%;top:50%;width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;border-radius:50%;background:radial-gradient(circle,rgba(74,222,128,.16),transparent 60%);animation:getglow 14s ease-in-out infinite alternate;pointer-events:none;z-index:1}
+@keyframes getglow{from{transform:translate3d(-12%,4%,0) scale(.9);opacity:.6}to{transform:translate3d(12%,-4%,0) scale(1.15);opacity:1}}
+#get .wrap{position:relative;z-index:2}
+@media(prefers-reduced-motion:reduce){#get .wall2,#get::before{animation:none}}
 </style>
 <script src="/analytics-web.js"
         data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
