@@ -38,6 +38,9 @@ a{color:inherit}
 .site-nav .nav-links a.m[aria-current="page"]{text-decoration-color:var(--green-text)}
 .site-nav .nav-links a.e[aria-current="page"]{text-decoration-color:var(--cyan)}
 .site-nav .nav-links a.l[aria-current="page"]{text-decoration-color:var(--violet)}
+.site-nav .nav-links a.c{display:inline-flex;align-items:center;gap:7px}
+.site-nav .nav-links a.c::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green-text);box-shadow:0 0 8px var(--green-text)}
+.site-nav .nav-links a.c[aria-current="page"]{text-decoration-color:var(--green-text)}
 .site-nav .nav-links a.r[aria-current="page"]{text-decoration-color:var(--cyan)}
 .site-nav .nav-cta{background:#fff;color:#0a0a0b !important;padding:.5rem 1rem;border-radius:999px;font-weight:700 !important}
 .site-nav .burger{display:none;background:none;border:0;padding:10px;cursor:pointer}

@@ -406,7 +406,7 @@
       '<p class="ip-k rise" style="--i:0">Fitness, on autopilot</p>' +
       '<h1 class="ip-h rise" style="--i:1">Set it up once.<span>Get hours back.</span></h1>' +
       '<div class="ip-card rise" style="--i:2" role="img" aria-label="Your route, your meals and your training, built for you">' +
-        '<div class="ip-scene on" aria-hidden="true"><div class="ip-sk" style="color:var(--violet-text,#c084fc)">Your route</div><div class="ip-st">77 kg → 70 kg, lean</div><div class="ip-ss">Phases timed to your body</div>' +
+        '<div class="ip-scene on" aria-hidden="true"><div class="ip-sk" style="color:var(--violet-text,#c084fc)">Your route</div><div class="ip-st">When to cut, when to bulk</div><div class="ip-ss">Phases timed to your body</div>' +
           '<svg viewBox="0 0 300 140"><line x1="0" y1="128" x2="300" y2="128" stroke="#24242a"/><path class="ip-curve" d="M8 34 C 60 36, 80 78, 120 80 S 180 72, 210 94 S 255 110, 286 108"/><circle class="ip-dot" cx="286" cy="108" r="6"/><text class="ip-lbl" x="282" y="94" text-anchor="end">Your goal</text></svg></div>' +
         '<div class="ip-scene" aria-hidden="true"><div class="ip-sk" style="color:var(--green-text)">Your meals</div><div class="ip-st">7 days on 2,144 kcal</div><div class="ip-ss">One cook, one shopping list, a prep guide</div>' +
           '<div class="ip-meals">' + meals + '</div><div class="ip-macro"><span style="flex:32;background:var(--green-text)"></span><span style="flex:42;background:#f59e0b"></span><span style="flex:26;background:#f472b6"></span></div></div>' +
