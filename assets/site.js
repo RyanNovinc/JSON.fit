@@ -53,19 +53,8 @@
   els.forEach(function(el){io.observe(el);});
 })();
 
-/* Hero headline: the final full stop lands last (CSS .en-dot). Only on pages with the load-in. */
-(function(){
-  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  document.querySelectorAll('[data-enter] h1').forEach(function(h){
-    var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT,null),n,last=null;
-    while((n=w.nextNode())) if(/\S/.test(n.nodeValue)) last=n;
-    if(!last||!/\.\s*$/.test(last.nodeValue)) return;
-    var i=last.nodeValue.lastIndexOf('.'),dot=document.createElement('span');
-    dot.className='en-dot';dot.textContent='.';
-    var rest=last.splitText(i);rest.nodeValue=rest.nodeValue.slice(1);
-    last.parentNode.insertBefore(dot,rest);
-  });
-})();
+/* Hero headline full stop: the span.en-dot is written into each page's HTML so it is
+   hidden from the first frame (wrapping it from JS here made it show, vanish, then land). */
 
 /* FAQ questions: open and close with a smooth height + fade instead of a jump.
    The <details> still works without JS (and with reduced motion it just toggles). */
