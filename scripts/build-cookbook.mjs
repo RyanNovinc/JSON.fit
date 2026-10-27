@@ -152,7 +152,7 @@ html,body{margin:0;padding:0}
 body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;break-after:page;background:#fff}
 /* photos on white: cut-outs float with a soft shadow; the few that keep their black studio sit in a rounded frame */
-img.cut{object-fit:contain!important}
+img.cut{object-fit:contain!important;mix-blend-mode:multiply}
 img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 .page:last-child{page-break-after:auto;break-after:auto}
 .dark{background:#08080b;color:#f2f2f4}
@@ -165,7 +165,9 @@ img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 /* cover: big title, big food, nothing small to read */
 .cover.white .food{top:96mm;grid-template-rows:1.35fr 1fr 1fr;gap:2mm 6mm}
 .cover.white .food div{background:none;overflow:hidden;border-radius:0;min-height:0;min-width:0}
-.cover.white .food img{transform:none}
+.cover.white .food img{transform:none;object-fit:contain!important;mix-blend-mode:multiply}
+.cover.white .food div:first-child{padding-top:5mm}
+.cover.white .badge{z-index:2}
 .cover.white .food img.framed{transform:none}
 .cover.white h1{color:#15151a}
 .cover.white .badge{left:2mm;top:0}
