@@ -526,11 +526,53 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 @media(max-width:700px){.hero h1.long{font-size:2.15rem}}
 .hero .msub{display:none}
 @media(max-width:700px){.hero .msub{display:block;color:var(--text-2);font-size:1rem;line-height:1.45;max-width:30ch;margin:14px auto 0;text-wrap:balance}}
+
+/* ===== load-in (27 Oct 2026): a short staggered entrance on first paint. Only runs when the
+   head script adds .hin (so no-JS and reduced-motion visitors see the page as it is). Every
+   animation uses fill "backwards" and ends on the element's own resting style: transform and
+   opacity only, so nothing moves the layout, and the phone tap, the chips' dimming and the
+   preview loop carry on untouched once it's done. ===== */
+@keyframes hinRise{from{opacity:0;transform:translateY(18px)}}
+@keyframes hinSharp{from{opacity:0;transform:translateY(22px);filter:blur(10px)}}
+@keyframes hinWipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -5% 0 0)}}
+@keyframes hinGlow{from{opacity:0}}
+@keyframes hinStage{from{opacity:0;translate:0 70px}}
+@keyframes hinChip{from{opacity:0;translate:0 14px;scale:.92}}
+@keyframes hinCard{from{opacity:0;transform:translateY(16px) scale(.96)}}
+.hin .hglow{animation:hinGlow 1.4s ease-out backwards,hdrift 16s ease-in-out infinite alternate}
+.hin .hero .label{animation:hinRise .6s cubic-bezier(.2,.8,.2,1) .05s backwards}
+.hin .hero h1{animation:hinSharp .8s cubic-bezier(.2,.8,.2,1) .12s backwards}
+.hin .hero h1 em{animation:hinWipe .9s cubic-bezier(.65,0,.35,1) .38s backwards}
+.hin .hero .sub,.hin .hero .msub{animation:hinRise .7s cubic-bezier(.2,.8,.2,1) .34s backwards}
+.hin .hero .ctas .go{animation:hinRise .7s cubic-bezier(.2,.8,.2,1) .46s backwards}
+.hin .hero .ctas .badge{animation:hinRise .7s cubic-bezier(.2,.8,.2,1) .56s backwards}
+.hin .hero .ctas .badge+.badge{animation-delay:.62s}
+.hin .hero .htrust{animation:hinRise .7s cubic-bezier(.2,.8,.2,1) .7s backwards}
+.hin .hstage{animation:hinStage 1s cubic-bezier(.16,1,.3,1) .1s backwards}
+/* the side phones start tucked behind the centre one, then fan out on the page's own slot transition */
+.hin-pre .ph[data-slot=l],.hin-pre .ph[data-slot=r]{transform:translateX(-50%) translateY(4%) scale(.9);opacity:0}
+.hin .chip{animation:hinChip .55s cubic-bezier(.2,.9,.3,1.2) backwards}
+.hin .chip.a{animation-delay:.95s}.hin .chip.b{animation-delay:1.05s}.hin .chip.c2{animation-delay:1.15s}
+@media(max-width:700px){
+  .hin .mprev{animation:hinCard .8s cubic-bezier(.2,.8,.2,1) .3s backwards}
+  .hin .mp-pips{animation:hinRise .6s ease-out .5s backwards}
+}
+@media(prefers-reduced-motion:reduce){.hin *,.hin-pre *{animation-name:none!important}}
 </style>
 <script src="/analytics-web.js"
         data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
         data-app-version="web"
         data-secret="d34039086646a0a1fdb3a3697742ca44"></script>
+<script>
+/* Load-in: only with JS and motion allowed. The side phones fan out a beat after first paint. */
+(function(){try{
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var d=document.documentElement;d.classList.add('hin','hin-pre');
+  var go=function(){setTimeout(function(){d.classList.remove('hin-pre')},380)};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go();
+  setTimeout(function(){d.classList.remove('hin-pre')},2500);
+}catch(e){}})();
+</script>
 </head>
 <body data-tab="meal">
 <script>document.documentElement.classList.add('js');(function(){try{var t=location.hash==='#training'?'train':'meal';document.body.setAttribute('data-tab',t);}catch(e){}})();</script>
