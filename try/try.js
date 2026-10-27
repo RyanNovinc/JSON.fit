@@ -192,6 +192,9 @@
     { id: 'keep', sec: 'done', r: rKeep },
   ];
   var IDX = {}; SCREENS.forEach(function (s, i) { IDX[s.id] = i; });
+  /** The screens that ask something: kept to the question, the choices and the button. */
+  var QUESTION = {};
+  'weight sex bodyfat height age lifting goalweight goalbf route bulkto range wayin volume days length refine active sessions diettype meat allergies skip keeplower sleep eat snacks appetite dessert cooker freezer cadence stockup planlength picks'.split(' ').forEach(function (k) { QUESTION[k] = 1; });
   var SECS = ['route', 'train', 'food'];
   var SEC_NAME = { route: 'Your route', food: 'Your food', train: 'Training', done: 'Done', intro: '' };
 
@@ -230,6 +233,7 @@
       var el = document.createElement('section');
       el.className = 'screen ' + (dir < 0 ? 'in-l' : 'in-r');
       el.setAttribute('data-screen', SCREENS[i].id);
+      if (QUESTION[SCREENS[i].id]) el.classList.add('qs');
       stage.innerHTML = '';
       stage.appendChild(el);
       progress(i);
@@ -290,7 +294,7 @@
     opts = opts || {};
     var html = '<div class="opts' + (opts.chips ? ' chips' : '') + (opts.tiles ? ' tiles' : '') + '" role="group">' + list.map(function (o, k) {
       var on = opts.multi ? current.indexOf(o.v) > -1 : current === o.v;
-      return '<button type="button" class="opt rise' + (opts.multi ? ' multi' : '') + '" style="--i:' + (k + 2) + '" data-v="' + esc(o.v) + '" aria-pressed="' + on + '"><b>' + esc(o.l) + '</b>' + (o.h ? '<small>' + esc(o.h) + '</small>' : '') + '</button>';
+      return '<button type="button" class="opt rise' + (opts.multi ? ' multi' : '') + '" style="--i:' + (k + 2) + '" data-v="' + esc(o.v) + '" aria-pressed="' + on + '"><b>' + esc(o.l) + '</b></button>';
     }).join('') + '</div>';
     el.insertAdjacentHTML('beforeend', html);
     $$('.opt', el).forEach(function (b) {
@@ -306,8 +310,9 @@
       };
     });
   }
-  function head(el, ov, q, sub) {
-    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">' + ov + '</p><h1 class="qh rise" style="--i:1">' + q + '</h1>' + (sub ? '<p class="sub rise" style="--i:1">' + sub + '</p>' : ''));
+  /** A question screen's heading: the question only. The bar shows progress; no step line, no explainer. */
+  function head(el, ov, q) {
+    el.insertAdjacentHTML('beforeend', '<h1 class="qh rise" style="--i:1">' + q + '</h1>');
   }
 
   /* ---------- the ruler (the app's ScaleRuler) ---------- */
@@ -526,6 +531,7 @@
       '<button type="button" class="sh-ghost" data-close="1">Got it</button>', function (sh) { $('[data-close]', sh).onclick = function () { closeSheet(); }; });
   }
   function setHelp(h) {
+    if (h && SCREENS[cur] && QUESTION[SCREENS[cur].id]) h = null;
     infoBtn.hidden = !h;
     infoBtn.onclick = h ? function () { helpSheet(typeof h === 'function' ? h() : h); } : null;
   }
@@ -680,7 +686,7 @@
   function rAge(el, my) {
     needAbout(el, my, function () {
       var a = S.about;
-      numBeat(el, { label: 'Age', aria: 'Age', unit: 'years', value: a.ageYears, min: 13, max: 100, step: 1, px: 14, major: 5, onChange: function (v) { a.ageYears = v; }, under: function () { return 'Sets your calorie targets when you build a meal plan.'; } });
+      numBeat(el, { label: 'Age', aria: 'Age', unit: 'years', value: a.ageYears, min: 13, max: 100, step: 1, px: 14, major: 5, onChange: function (v) { a.ageYears = v; } });
       primary('Continue');
     });
   }
@@ -694,7 +700,7 @@
   function rLifting(el, my) {
     needAbout(el, my, function () {
       el.classList.add('beat');
-      el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Experience</p><h1 class="expq rise" style="--i:1">Where are you with lifting?</h1>');
+      el.insertAdjacentHTML('beforeend', '<h1 class="expq rise" style="--i:1">How long have you lifted?</h1>');
       cards(el, LIFT, S.about.trainingState, function (v) { S.about.trainingState = v; pickCta(true); });
       pickCta(!!S.about.trainingState);
     });
@@ -844,7 +850,7 @@
     needAbout(el, my, function () {
       withRV(el, my, function (rv) {
         var a = S.about;
-        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">Do you want to stay lean while you grow?</h1><p class="rs rise" style="--i:1">You are at ' + Math.round(a.bodyFatPct) + '% body fat today. Both finish at ' + Math.round(a.goalBodyFatPct) + '%.</p>' +
+        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">How do you want to grow?</h1><p class="rs rise" style="--i:1">You are at ' + Math.round(a.bodyFatPct) + '% body fat today. Both finish at ' + Math.round(a.goalBodyFatPct) + '%.</p>' +
           '<div class="opts rise" style="--i:2" role="radiogroup">' + ROUTES.map(function (x) {
             var pv = rv.previews[x.v], on = a.route === x.v;
             return '<button type="button" class="opt ropt" role="radio" data-v="' + x.v + '" aria-checked="' + on + '" aria-pressed="' + on + '">' +
@@ -894,7 +900,7 @@
       withRV(el, my, function (rv) {
         var a = S.about, r = rv.range, lo = r.bottom, hi = r.top;
         var atStop = lo <= r.leanStop, atMin = hi - lo <= r.minWidth, onSug = lo === r.suggestedBottom && hi === r.suggestedTop;
-        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">What body fat do you want to sit at?</h1>' +
+        el.insertAdjacentHTML('beforeend', '<h1 class="rq rise" style="--i:0">What body fat range?</h1>' +
           '<button type="button" class="rec rise" style="--i:1"' + (onSug ? ' disabled' : '') + '><span>We recommend ' + r.suggestedBottom + ' to ' + r.suggestedTop + '%</span><b>' + (onSug ? 'In use' : 'Use') + '</b></button>' +
           '<div class="rise" style="--i:2">' + journeyChart(a.bodyFatPct, rv.roadmap, { bare: true, bandOnly: true, frame: true, leanStopPct: rv.leanStop }) + '</div>' +
           '<div class="erows rise" style="--i:3">' + edgeRow('hi', 'Top', hi, atMin) + edgeRow('lo', 'Bottom', lo, atStop) + '</div>' +
@@ -1104,9 +1110,9 @@
       picks: { saved: false, keys: [], allergenOk: {}, versionChoices: {}, useUp: [] },
     };
   }
-  /** One question screen: the mono step line, the question, the line under it. */
-  function qhead(el, line, q, sub) {
-    el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">' + esc(line) + '</p><h1 class="qh rise" style="--i:0">' + q + '</h1>' + (sub ? '<p class="sub rise" style="--i:1">' + sub + '</p>' : '<div style="height:16px"></div>'));
+  /** One question screen: the question and nothing else (27 Oct: people came here to answer, not to read). */
+  function qhead(el, line, q) {
+    el.insertAdjacentHTML('beforeend', '<h1 class="qh rise" style="--i:0">' + q + '</h1><div style="height:16px"></div>');
   }
   /** The CTA in edit mode (opened from the summary's rows) reads "Save" and goes back there. */
   function foodCta(label, disabled, onClick) {
@@ -1215,7 +1221,7 @@
         var pv = v.previews, sel = f.dietType, sp = sel ? pv[sel] : null;
         var cm = f.customMacros, cp = parseInt(cm.p, 10) || 0, cc = parseInt(cm.c, 10) || 0, cf = parseInt(cm.f, 10) || 0;
         var split = sp ? sp.pct : sel === 'custom' ? [cp, cc, cf] : sel ? DIETS.filter(function (d) { return d.v === sel; })[0].split : null;
-        box.innerHTML = donut(split, sp ? sp.proteinG : null, v.floor ? '<span class="shield">' + CHECK + '</span><span>' + esc(v.floor.phrase) + ', protein stays at <b>' + v.floor.g + ' g or more</b>, whichever style you pick.</span>' : '');
+        box.innerHTML = donut(split, sp ? sp.proteinG : null, '');
         list.innerHTML = DIETS.map(function (d) {
           var p = pv[d.v], s = esc(d.s);
           if (p && p.raised && d.split) s = '<s>' + d.split[0] + '%</s> <b class="accb">' + p.pct[0] + '% protein</b> · ' + p.pct[1] + '% carbs · ' + p.pct[2] + '% fat.' + esc(d.tail);
@@ -1317,7 +1323,7 @@
         impact();
       };
       var impact = function () {
-        if (!f.skip.length) { ctaNote('<p class="impact">Nothing skipped yet. Fine to leave it that way.</p>'); return; }
+        if (!f.skip.length) { ctaNote(''); return; }
         var k = f.skip.join('|');
         call('skipImpact', f.skip.slice()).then(function (m) {
           if (my !== token || f.skip.join('|') !== k || !m) return;
@@ -3003,14 +3009,15 @@
       if (edit && T.editPreset) { T.volume = T.editPreset; T.editPreset = null; }
       var weekDays = edit ? T.days : st.volumeDays;
       el.classList.add('vstage');
-      head(el, trainStepLine(0), 'How hard should we <em>push?</em>', esc(C.subtitle));
-      el.insertAdjacentHTML('beforeend', '<div class="vst rise" style="--i:2" aria-live="polite">' +
-        '<p class="vtag" id="vtag"></p><div class="vnm" id="vnm"><b></b><p></p></div>' +
-        '<div class="vstats"><div class="vstat"><b class="vg" id="vg"></b><span>' + esc(C.growthLabel) + '</span></div><div class="vstat" id="vtw"><b class="vt" id="vt"></b><span>' + esc(C.weekLabel) + '</span></div></div>' +
+      // 27 Oct: the time is the question. Hours a week big, growth small beside it, the tier's name small; Less / More plain.
+      head(el, trainStepLine(0), 'How much time <em>do you have?</em>');
+      el.insertAdjacentHTML('beforeend', '<div class="vst lean rise" style="--i:2" aria-live="polite">' +
+        '<div class="vnm" id="vnm"><b></b></div>' +
+        '<div class="vbig" id="vtw"><b class="vt" id="vt"></b><span>a week</span></div>' +
+        '<p class="vgr"><b id="vg"></b> growth</p>' +
         '<div class="vdots" id="vdots" aria-hidden="true"></div>' +
-        '<div class="vsteps"><button type="button" class="vsb" data-dir="-1"><b>' + esc(C.less) + '</b><span class="vd"></span></button><button type="button" class="vsb" data-dir="1"><b>' + esc(C.more) + '</b><span class="vd"></span></button></div>' +
-        '<div class="vlinks"><button type="button" id="vPct"></button><button type="button" id="vOwn">' + esc(C.ownLink) + '</button></div></div>' +
-        '<div class="reas rise" style="--i:3"><span>' + IC.check + '</span><p>' + esc(st.rampsIn ? C.rampIn : C.changeAnyTime) + '</p></div>');
+        '<div class="vsteps"><button type="button" class="vsb" data-dir="-1"><b>Less</b></button><button type="button" class="vsb" data-dir="1"><b>More</b></button></div>' +
+        '<div class="vlinks"><button type="button" id="vOwn">' + esc(C.ownLink) + '</button></div></div>');
       var read = estimator(my, function () { paint(); });
       var ests = {}, lastMins = null, lastKey = null, dir = 0, ownOpen = false;
       function steps() { return K.volumeSteps(T.customSets); }
@@ -3020,11 +3027,9 @@
         var A = at(), cur = A.cur;
         var order = [cur, A.lo, A.hi].concat(A.s).filter(function (x, k, a) { return x && a.indexOf(x) === k; });
         if (!ownOpen) ests = read(saved, answers, order.map(function (x) { return { key: x.key, override: Object.assign(K.volumeOverride(x.value, x.customWeeklySets), { totalTrainingDays: weekDays }) }; }));
-        var tag = cur.value === st.volume.custom ? C.tagYourOwn : cur.value === rec ? C.tagForYou : '';
-        $('#vtag', el).textContent = tag;
         var nm = $('#vnm', el);
         if (lastKey !== cur.key) {
-          $('b', nm).textContent = cur.name; $('p', nm).textContent = cur.what;
+          $('b', nm).textContent = cur.name;
           if (lastKey != null && !RM) { nm.style.setProperty('--dx', (dir * 14) + 'px'); nm.classList.remove('in'); void nm.offsetWidth; nm.classList.add('in'); }
           lastKey = cur.key;
         }
@@ -3037,32 +3042,14 @@
         $('#vtw', el).setAttribute('aria-label', shown != null ? 'about ' + K.halfHoursLabel(shown) + ' a week' : 'Working out the time');
         $('#vdots', el).innerHTML = A.s.map(function (x, k) { return '<i' + (k === A.i ? ' class="on"' : '') + '></i>'; }).join('');
         $$('.vsb', el).forEach(function (b) {
-          var d = +b.getAttribute('data-dir'), other = d < 0 ? A.lo : A.hi, om = mins(other), vd = $('.vd', b);
+          var d = +b.getAttribute('data-dir'), other = d < 0 ? A.lo : A.hi, om = mins(other);
           b.disabled = !other;
-          var key = other ? other.key + ':' + om + ':' + m : 'end';
-          if (vd.getAttribute('data-k') !== key) {
-            vd.setAttribute('data-k', key);
-            vd.innerHTML = other ? esc(K.growthDelta(cur.sets, other.sets)) + ' · ' + (om != null && m != null ? esc(K.weekTimeDelta(om - m)) : skel('skvd')) : esc(d < 0 ? C.lowest : C.highest);
-          }
           b.setAttribute('aria-label', other ? (d < 0 ? 'Less' : 'More') + ': ' + other.name + ', ' + K.growthDelta(cur.sets, other.sets) + ' growth' + (om != null && m != null ? ', ' + K.weekTimeDelta(om - m) + ' a week' : '') : d < 0 ? 'Less, already the lowest' : 'More, already the highest');
         });
-        $('#vPct', el).textContent = K.fill(C.pctLink, { n: growth });
       }
       $$('.vsb', el).forEach(function (b) {
         b.onclick = function () { var d = +b.getAttribute('data-dir'), A = at(), nx = A.s[A.i + d]; if (!nx) return; dir = d; T.volume = nx.value; paint(); };
       });
-      $('#vPct', el).onclick = function () {
-        var cur = at().cur;
-        tcall('volumeLines', aboutForEngine(), saved, answers, [{ key: cur.key, value: cur.value, customWeeklySets: cur.customWeeklySets }]).then(function (VL) {
-          if (my !== token) return;
-          openSheet('<h2 class="sh-t">' + esc(C.pctSheetTitle) + '</h2>' + C.pctSheet.map(function (p) { return '<p class="sh-b">' + esc(p) + '</p>'; }).join('') +
-            '<div class="vrule"></div><p class="sh-ov acc">' + esc(C.howWeSetThis) + '</p><p class="sh-b lead">' + esc(cur.name) + ': ' + esc(VL.lines[cur.key]) + '</p>' +
-            '<p class="sh-b">Each extra set adds a little less growth than the one before. About 10 sets a week gives a muscle roughly two-thirds of what 20 would.</p>' +
-            '<p class="sh-b">In one study of trained lifters, 12, 18 and 24 sets a week built about the same thigh muscle over 8 weeks, though other studies found more sets helped a little. High is for lifters who have stopped progressing on Moderate, and it needs the sleep and food to recover from.</p>' +
-            '<p class="sh-b">A long session you skip or rush builds less than a shorter one you finish well. Next you’ll pick how many days to spread this over.</p>' +
-            '<a class="whyl" href="/research/" target="_blank" rel="noopener">The research behind it</a>');
-        }, function () {});
-      };
       $('#vOwn', el).onclick = function () {
         ownOpen = true;
         ownSheet(st, my, { start: at().cur.sets, rec: rec, saved: saved, answers: answers, weekDays: weekDays, onUse: function (n) {

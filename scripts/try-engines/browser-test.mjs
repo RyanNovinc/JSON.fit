@@ -142,11 +142,13 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         // Training: the app's workout questions (Volume, Days, How long, Refinements), the build, the results.
         await go(); await scr('volume');
         // The one-at-a-time picker: opens on the tier For you; − Less / More + step; the stage keeps its place while the hours land.
-        if ((await ev(`document.getElementById('vtag').textContent`)) !== 'FOR YOU') bad('volume: does not open on the tier For you');
+        // 27 Oct: no "For you" kicker, no explainer; the question, hours big, growth small, Less / More.
+        if (await ev(`!!document.getElementById('vtag') || !!document.getElementById('vPct') || !!document.querySelector('.screen .sub, .vst + .reas')`)) bad('volume: explainer, kicker or % link still showing');
+        if (!/How much time do you have\?$/.test(await ev(`document.querySelector('.screen .qh').textContent`))) bad('volume: title');
         // Layout positions (offsetTop ignores the screen's rise-in transform).
-        const vlay = `(function(){var y=function(e){var t=0;for(;e;e=e.offsetParent)t+=e.offsetTop;return t};return [document.getElementById('vnm'),document.getElementById('vt'),document.getElementById('vdots'),document.querySelector('.vsteps'),document.querySelector('.vlinks'),document.querySelector('.vst + .reas')].map(y).join(',')})()`;
+        const vlay = `(function(){var y=function(e){var t=0;for(;e;e=e.offsetParent)t+=e.offsetTop;return t};return [document.getElementById('vnm'),document.getElementById('vt'),document.getElementById('vdots'),document.querySelector('.vsteps'),document.querySelector('.vlinks'),document.querySelector('.vgr')].map(y).join(',')})()`;
         const vlay0 = await ev(vlay);
-        await until(`!!document.querySelector('#vt') && /h$/.test(document.getElementById('vt').textContent) && !document.querySelector('.vd .sk')`, 30000);
+        await until(`!!document.querySelector('#vt') && /h$/.test(document.getElementById('vt').textContent) && !document.querySelector('#vt .sk')`, 30000);
         const vlay1 = await ev(vlay);
         if (vlay0 !== vlay1) bad(`volume: layout moved as the hours landed (${vlay0} -> ${vlay1})`);
         const TIER = { '4-8': 'Minimum', '8-12': 'Conservative', '12-16': 'Moderate', '16-20': 'High' };
@@ -155,23 +157,21 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
           await click(`.vsb[data-dir="${order.indexOf(TIER[P.volume]) < order.indexOf(now) ? -1 : 1}"]`); await sleep(120);
         }
         if ((await ev(`document.querySelector('#vnm b').textContent`)) !== TIER[P.volume]) bad('volume: could not step to ' + TIER[P.volume]);
-        await until(`/h$/.test(document.getElementById('vt').textContent) && !document.querySelector('#vt.held') && !document.querySelector('.vd .sk')`, 30000);
+        await until(`/h$/.test(document.getElementById('vt').textContent) && !document.querySelector('#vt.held') && !document.querySelector('#vt .sk')`, 30000);
         if ((await ev(vlay)) !== vlay1) bad('volume: layout moved on a step');
-        await click('#vPct'); await until(`!!document.querySelector('.sheet.on .sh-b.lead')`); await overflow('volume % sheet');
-        const pct = await ev(`document.getElementById('vPct').textContent + ' ' + document.querySelector('.sheet .sh-b.lead').textContent`);
-        await ev(`document.querySelector('.sheet-bg').click()`); await sleep(400);
+        const pct = '';
         if (P.custom) {
           await click('#vOwn'); await until(`!!document.querySelector('.sheet.on #oR')`);
           await ev(`(function(){var r=document.getElementById('oR'); r.value=${P.custom}; r.dispatchEvent(new Event('input',{bubbles:true})); return 1})()`);
           await until(`/h$/.test(document.getElementById('oT').textContent) && !document.querySelector('#oT.held')`, 30000); await overflow('set my own');
           const own = await ev(`[...document.querySelectorAll('.ownr b')].map(x=>x.textContent).join(' ') + ' | ' + document.getElementById('oUse').textContent`);
           await click('#oUse'); await sleep(400);
-          if ((await ev(`document.querySelector('#vnm b').textContent + ' ' + document.getElementById('vtag').textContent`)) !== 'Custom YOUR OWN') bad('volume: Set my own did not pick Custom');
-          await until(`/h$/.test(document.getElementById('vt').textContent) && !document.querySelector('#vt.held') && !document.querySelector('.vd .sk')`, 30000);
+          if ((await ev(`document.querySelector('#vnm b').textContent`)) !== 'Custom') bad('volume: Set my own did not pick Custom');
+          await until(`/h$/.test(document.getElementById('vt').textContent) && !document.querySelector('#vt.held') && !document.querySelector('#vt .sk')`, 30000);
           console.log(`  set my own: ${own} | dots ${await ev(`document.querySelectorAll('#vdots i').length`)}`);
         }
         await overflow('volume');
-        const vol = await ev(`document.querySelector('#vnm b').textContent + ' ' + document.getElementById('vg').textContent + ' ' + document.getElementById('vt').textContent + ' a week [' + [...document.querySelectorAll('.vd')].map(x=>x.textContent).join(' / ') + '] ' + ${JSON.stringify(pct)}`);
+        const vol = await ev(`document.querySelector('#vnm b').textContent + ' ' + document.getElementById('vg').textContent + ' ' + document.getElementById('vt').textContent + ' a week'`);
         await go(); await scr('days');
         if (!/can you lift\?$/.test(await ev(`document.querySelector('.screen .qh').textContent`))) bad('days: title');
         // The minutes arrive without moving anything: the week line, the week card and the session card keep their place and height.
@@ -241,7 +241,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         // The meal questions. With a workout plan the training question is left out and every step number moves up one.
         if (P.mealsFirst) await click('.spine [data-to="active"]'); else await go();
         await scr('active'); await overflow('active');
-        const activeStep = await ev(`document.querySelector('.screen .ov').textContent`);
+        const activeStep = await ev(`document.querySelector('.screen .qh').textContent`);
         await opt(P.active); await go();
         if (P.mealsFirst) {
           await scr('sessions'); await overflow('sessions');
@@ -250,7 +250,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
           await opt(P.training); await go();
         } else {
           await until(`(function(){var s=document.querySelector('.screen'); return !!s && !s.querySelector('.loading') && !document.querySelector('.screen.out-l,.screen.out-r') && s.children.length>0})()`, 45000);
-          const next = await ev(`document.querySelector('.screen').getAttribute('data-screen') + ' ' + document.querySelector('.screen .ov').textContent`);
+          const next = await ev(`document.querySelector('.screen').getAttribute('data-screen') + ' ' + document.querySelector('.screen .qh').textContent`);
           console.log(`  ${activeStep} | next: ${next}`);
           if (!/^diettype /.test(next)) bad('training question not skipped with a plan: ' + next);
         }
