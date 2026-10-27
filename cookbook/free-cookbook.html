@@ -100,6 +100,7 @@
 .fbwrap.phone .fbstage{transform:none;overflow:hidden;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;cursor:pointer}
 .fbwrap.phone .fb{margin:0;transform-origin:0 0;transition:transform .75s cubic-bezier(.33,1,.68,1);filter:drop-shadow(0 18px 30px rgba(0,0,0,.5))}
 .fbwrap.phone .fbnav{margin-top:16px}
+.fbwrap.fitted .fb{margin:0;transform-origin:0 0}
 @media (prefers-reduced-motion:reduce){.fbstage,.fbwrap.phone .fb{transition:none}}
 
 
@@ -226,7 +227,7 @@ details .a p{margin:0}
   <div class="wrap">
     <div class="grid">
       <div data-enter>
-        <h1 id="h1" class="d">The One Cook <em>Cookbook<span class="en-dot">.</span></em></h1>
+        <h1 id="h1" class="d">The One Cook <em><span class="en-w">Cookbook<span class="en-dot">.</span></span></em></h1>
         <p class="lede">Curated meals for minimal cooking, minimal prep time and maximum meal prep.</p>
         <div class="cap-block" data-location="hero">
           <form class="cap-form" novalidate>
@@ -412,7 +413,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var fit = function () {};
   try {
     el.hidden = false; wrap.classList.add('on');
-    phone = stage.clientWidth < 560;
+    /* phone layout only on an actual phone-width window; a narrow desktop column uses the scaled book */
+    phone = stage.clientWidth < 560 && window.innerWidth < 760;
     if (phone) {
       wrap.classList.add('phone');
       fit = function (target) {
@@ -425,6 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
         else t = 'translate(0,' + Math.round(PH * s / 2) + 'px) scale(' + s + ')';
         el.style.transform = t;
       };
+      el.style.width = 2 * PW + 'px';
       fit(0);
       pf = new St.PageFlip(el, {
         width: PW, height: PH, size: 'fixed', showCover: true, usePortrait: false,
@@ -432,10 +435,21 @@ document.addEventListener('DOMContentLoaded', function () {
         drawShadow: !still, flippingTime: still ? 1 : 800, autoSize: false
       });
     } else {
+      /* Desktop: a fixed-size book scaled to its column, so it fits at every window width and
+         follows resizes (the library's own "stretch" mis-sized it in mid-width windows). */
+      var DW = 330, DH = 467;
+      fit = function () {
+        var W = stage.clientWidth || 1, s = Math.min(1.09, W / (2 * DW));
+        stage.style.height = Math.round(DH * s) + 'px';
+        el.style.transform = 'translate(' + Math.round((W - 2 * DW * s) / 2) + 'px,0) scale(' + s + ')';
+      };
+      el.style.width = 2 * DW + 'px';
+      wrap.classList.add('fitted');
+      fit();
       pf = new St.PageFlip(el, {
-        width: 330, height: 467, size: 'stretch', minWidth: 210, maxWidth: 360, minHeight: 297, maxHeight: 509,
-        showCover: true, usePortrait: true, mobileScrollSupport: true, maxShadowOpacity: 0.45,
-        drawShadow: !still, flippingTime: still ? 1 : 850, autoSize: true
+        width: DW, height: DH, size: 'fixed', showCover: true, usePortrait: false,
+        mobileScrollSupport: true, maxShadowOpacity: 0.45,
+        drawShadow: !still, flippingTime: still ? 1 : 850, autoSize: false
       });
     }
     pf.loadFromHTML(el.querySelectorAll('.fb-page'));
@@ -489,8 +503,8 @@ document.addEventListener('DOMContentLoaded', function () {
       if (i >= n - 1) return go(-1);
       go(e.clientX - r.left > r.width / 2 ? 1 : -1);
     });
-    if (window.ResizeObserver) { var lastW = stage.clientWidth; new ResizeObserver(function () { if (stage.clientWidth !== lastW) { lastW = stage.clientWidth; fit(); } }).observe(stage); }
   }
+  if (window.ResizeObserver) { var lastW = stage.clientWidth; new ResizeObserver(function () { if (stage.clientWidth !== lastW) { lastW = stage.clientWidth; fit(); } }).observe(stage); }
   document.addEventListener('keydown', function (e) {
     if (/input|textarea|select/i.test((document.activeElement || {}).tagName || '')) return;
     var r = wrap.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;

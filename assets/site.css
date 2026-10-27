@@ -421,6 +421,7 @@ a{color:inherit}
 @keyframes enWipe{from{clip-path:inset(-25% 100% -35% -5%)}to{clip-path:inset(-25% -5% -35% -5%)}}
 /* the full stop lands last, with a little thud */
 @keyframes enDot{0%{opacity:0;transform:translateY(-.55em) scale(1.9)}55%{opacity:1;transform:translateY(0) scale(.86)}75%{transform:scale(1.08)}100%{transform:none}}
+.en-w{white-space:nowrap}
 .en-dot{display:inline-block;animation:enDot .55s cubic-bezier(.3,1.4,.5,1) 1.3s backwards}
 @keyframes enFade{from{opacity:0}}
 @keyframes enVis{from{opacity:0;transform:translateY(40px) scale(.96)}}
