@@ -62,6 +62,8 @@
 /* Flip-through preview (StPageFlip, MIT, /assets/vendor/page-flip.browser.js). The static cover above is the fallback. */
 @media(min-width:760px){.v2 .hero2 .grid{grid-template-columns:5fr 7fr}}
 .fbwrap{position:relative;width:100%;max-width:700px;margin:0 auto}
+.v2 .hero2{overflow-x:clip}
+.v2 .hero2 .grid>*{min-width:0}
 .fbwrap.on{display:block;padding:12px 0}
 .fbstage{width:100%}
 .v2 .hero2 .fbwrap.on .book{display:none}
@@ -82,7 +84,7 @@
 .fb-back button{margin-top:9%;border:0;border-radius:999px;background:#16a34a;color:#fff;font:700 .9rem var(--sans);padding:10px 18px;cursor:pointer;white-space:nowrap}
 .fbnav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px}
 .fbnav[hidden]{display:none}
-.fbnav .ar{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;display:grid;place-items:center;cursor:pointer}
+.fbnav .ar{width:46px;height:46px;flex:none;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;display:grid;place-items:center;cursor:pointer}
 .fbnav .ar:disabled{opacity:.3;cursor:default}
 .fbnav .ar:focus-visible{outline:2px solid var(--green-text);outline-offset:2px}
 .fbpeel{position:absolute;right:0;bottom:0;width:0;height:0;pointer-events:none;z-index:5;background:linear-gradient(315deg,#0e0f12 0 49%,rgba(0,0,0,.35) 49.5%,#f1eee8 51%,#d9d5cc 100%);border-radius:0 0 4px 0;box-shadow:-6px -6px 14px rgba(0,0,0,.35)}
@@ -91,7 +93,14 @@
 .fbdots{display:flex;gap:7px}
 .fbdots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .2s,transform .2s}
 .fbdots i.on{background:var(--green-text);transform:scale(1.25)}
-@media (prefers-reduced-motion:reduce){.fbstage{transition:none}}
+/* Phone: the book is laid out as an open book (two-page spreads) and zoomed: the cover and the back
+   page fill the width on their own, the spreads in between fit two pages side by side. The stage keeps
+   the cover's height the whole time, so nothing below it moves. Turning is ours (swipe, tap a half,
+   arrows); vertical swipes still scroll the page. */
+.fbwrap.phone .fbstage{transform:none;overflow:hidden;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;cursor:pointer}
+.fbwrap.phone .fb{margin:0;transform-origin:0 0;transition:transform .75s cubic-bezier(.33,1,.68,1);filter:drop-shadow(0 18px 30px rgba(0,0,0,.5))}
+.fbwrap.phone .fbnav{margin-top:16px}
+@media (prefers-reduced-motion:reduce){.fbstage,.fbwrap.phone .fb{transition:none}}
 
 
 /* meal wall */
@@ -386,15 +395,40 @@ document.addEventListener('DOMContentLoaded', function () {
   var nav = document.getElementById('fbnav'), dots = document.getElementById('fbdots');
   var prev = document.getElementById('fbprev'), next = document.getElementById('fbnext');
   var pf, seen = {};
+  var stage = el.parentNode;
+  /* Phone: a narrow column gets the zoomed open-book layout (see the CSS above). */
+  var PW = 180, PH = 255, phone = false;
+  var fit = function () {};
   try {
     el.hidden = false; wrap.classList.add('on');
-    pf = new St.PageFlip(el, {
-      width: 330, height: 467, size: 'stretch', minWidth: 210, maxWidth: 360, minHeight: 297, maxHeight: 509,
-      showCover: true, usePortrait: true, mobileScrollSupport: true, maxShadowOpacity: 0.45,
-      drawShadow: !still, flippingTime: still ? 1 : 850, autoSize: true
-    });
+    phone = stage.clientWidth < 560;
+    if (phone) {
+      wrap.classList.add('phone');
+      fit = function (target) {
+        var W = stage.clientWidth || 1, s = W / (2 * PW), n = pf ? pf.getPageCount() : 12;
+        stage.style.height = Math.round(PH * 2 * s) + 'px';
+        var i = target == null ? (pf ? pf.getCurrentPageIndex() : 0) : target;
+        var t;
+        if (i <= 0) t = 'translate(' + (-PW * 2 * s) + 'px,0) scale(' + (2 * s) + ')';
+        else if (i >= n - 1) t = 'translate(0,0) scale(' + (2 * s) + ')';
+        else t = 'translate(0,' + Math.round(PH * s / 2) + 'px) scale(' + s + ')';
+        el.style.transform = t;
+      };
+      fit(0);
+      pf = new St.PageFlip(el, {
+        width: PW, height: PH, size: 'fixed', showCover: true, usePortrait: false,
+        useMouseEvents: false, mobileScrollSupport: false, maxShadowOpacity: 0.45,
+        drawShadow: !still, flippingTime: still ? 1 : 800, autoSize: false
+      });
+    } else {
+      pf = new St.PageFlip(el, {
+        width: 330, height: 467, size: 'stretch', minWidth: 210, maxWidth: 360, minHeight: 297, maxHeight: 509,
+        showCover: true, usePortrait: true, mobileScrollSupport: true, maxShadowOpacity: 0.45,
+        drawShadow: !still, flippingTime: still ? 1 : 850, autoSize: true
+      });
+    }
     pf.loadFromHTML(el.querySelectorAll('.fb-page'));
-  } catch (e) { el.hidden = true; wrap.classList.remove('on'); return; }
+  } catch (e) { el.hidden = true; wrap.classList.remove('on', 'phone'); stage.style.height = ''; return; }
   var lazy = function () { document.querySelectorAll('#fbwrap img[data-fbsrc]').forEach(function (im) { im.src = im.getAttribute('data-fbsrc'); im.removeAttribute('data-fbsrc'); }); };
   var views = function () { var n = pf.getPageCount(); return pf.getOrientation() === 'portrait' ? n : 2 + (n - 2) / 2; };
   var viewOf = function (i) { var n = pf.getPageCount(); if (pf.getOrientation() === 'portrait') return i; if (i <= 0) return 0; if (i >= n - 1) return views() - 1; return Math.ceil(i / 2); };
@@ -402,8 +436,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var i = pf.getCurrentPageIndex(), n = pf.getPageCount(), v = viewOf(i), total = views();
     var portrait = pf.getOrientation() === 'portrait';
     wrap.classList.toggle('portrait', portrait);
-    wrap.classList.toggle('at-cover', !portrait && i === 0);
-    wrap.classList.toggle('at-back', !portrait && i >= n - 1);
+    if (phone) fit();
+    wrap.classList.toggle('at-cover', !phone && !portrait && i === 0);
+    wrap.classList.toggle('at-back', !phone && !portrait && i >= n - 1);
     if (dots.children.length !== total) { dots.innerHTML = ''; for (var k = 0; k < total; k++) dots.appendChild(document.createElement('i')); }
     [].forEach.call(dots.children, function (d, k) { d.classList.toggle('on', k === v); });
     prev.disabled = i === 0; next.disabled = v >= total - 1;
@@ -416,13 +451,40 @@ document.addEventListener('DOMContentLoaded', function () {
   pf.on('init', function () { nav.hidden = false; paint(); setTimeout(lazy, 1200); hint(); });
   pf.on('flip', function (e) { lazy(); paint(); report(e.data); });
   pf.on('changeOrientation', paint);
-  prev.addEventListener('click', function () { pf.flipPrev('bottom'); });
-  next.addEventListener('click', function () { pf.flipNext('bottom'); });
+  /* One step: on a phone the zoom starts with the turn, so the book opens out as the page lifts. */
+  var go = function (dir) {
+    if (pf.getState && pf.getState() !== 'read') return;
+    var i = pf.getCurrentPageIndex(), n = pf.getPageCount(), total = views();
+    var v = viewOf(i) + dir; if (v < 0 || v > total - 1) return;
+    lazy();
+    if (phone) fit(v === 0 ? 0 : v === total - 1 ? n - 1 : 1);
+    if (dir > 0) pf.flipNext('bottom'); else pf.flipPrev('bottom');
+  };
+  prev.addEventListener('click', function () { go(-1); });
+  next.addEventListener('click', function () { go(1); });
+  if (phone) {
+    var sx = 0, sy = 0, moved = false;
+    stage.addEventListener('touchstart', function (e) { var t = e.touches[0]; sx = t.clientX; sy = t.clientY; moved = false; }, { passive: true });
+    stage.addEventListener('touchmove', function (e) { var t = e.touches[0]; if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) moved = true; }, { passive: true });
+    stage.addEventListener('touchend', function (e) {
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) { go(dx < 0 ? 1 : -1); moved = true; }
+    }, { passive: true });
+    stage.addEventListener('click', function (e) {
+      if (moved) { moved = false; return; }
+      if (e.target.closest && e.target.closest('.fbget')) return;
+      var i = pf.getCurrentPageIndex(), n = pf.getPageCount(), r = stage.getBoundingClientRect();
+      if (i <= 0) return go(1);
+      if (i >= n - 1) return go(-1);
+      go(e.clientX - r.left > r.width / 2 ? 1 : -1);
+    });
+    if (window.ResizeObserver) { var lastW = stage.clientWidth; new ResizeObserver(function () { if (stage.clientWidth !== lastW) { lastW = stage.clientWidth; fit(); } }).observe(stage); }
+  }
   document.addEventListener('keydown', function (e) {
     if (/input|textarea|select/i.test((document.activeElement || {}).tagName || '')) return;
     var r = wrap.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
-    if (e.key === 'ArrowRight') { pf.flipNext('bottom'); e.preventDefault(); }
-    if (e.key === 'ArrowLeft') { pf.flipPrev('bottom'); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { go(1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft') { go(-1); e.preventDefault(); }
   });
   wrap.addEventListener('click', function (e) {
     if (!e.target.closest || !e.target.closest('.fbget')) return;
