@@ -134,18 +134,18 @@ body{font-family:'Outfit',-apple-system,sans-serif;color:#15151a;background:#fff
 .dim{color:#6f6f7a}.dark .dim{color:#8a8a95}
 .foot{position:absolute;left:14mm;right:14mm;bottom:9mm;display:flex;justify-content:space-between;align-items:baseline;font-family:'DM Mono',monospace;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:#8a8a95}
 .foot b{font-weight:500;color:#15151a}.dark .foot b{color:#f2f2f4}
-/* cover */
-.cover{padding:18mm 16mm}
-.cover .brand{display:flex;align-items:center;gap:4mm;font-weight:600;font-size:12pt}
+/* cover: big title, big food, nothing small to read */
+.cover{padding:16mm 14mm}
+.cover .brand{display:flex;align-items:center;gap:4mm;font-weight:600;font-size:13pt}
 .cover .brand img{width:9mm;height:9mm;border-radius:2.2mm}
-.cover h1{font-size:50pt;line-height:.98;margin:5mm 0 8mm;max-width:160mm}
-.cover p.lede{font-size:13pt;line-height:1.45;max-width:135mm;color:#c7c7cf;margin:0 0 10mm}
-.cover .plates{position:absolute;left:16mm;right:16mm;bottom:28mm;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm}
-.cover .plate{border-radius:4mm;overflow:hidden;height:46mm;position:relative;background:#111}
-.cover .plate img{width:100%;height:100%;object-fit:cover;display:block}
-.cover .plate span{position:absolute;left:0;right:0;bottom:0;padding:8mm 3.5mm 3mm;background:linear-gradient(180deg,rgba(8,8,11,0),rgba(8,8,11,.92));font-size:8.5pt;font-weight:600}
-.cover .plate small{display:block;font-family:'DM Mono',monospace;font-weight:400;font-size:7pt;color:#a3a3ad;margin-top:.6mm;letter-spacing:.04em}
-.cover .trust{position:absolute;left:16mm;bottom:16mm;font-size:10pt;color:#a3a3ad}.cover .trust b{color:#f2f2f4}
+.cover h1{font-size:72pt;line-height:.92;margin:10mm 0 0;letter-spacing:-.02em}
+.cover h1 span{display:block}
+.cover .food{position:absolute;left:14mm;right:14mm;top:92mm;bottom:14mm;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1.3fr 1fr 1fr;gap:4mm}
+.cover .food div{border-radius:5mm;overflow:hidden;background:#111;position:relative}
+.cover .food div:first-child{grid-column:1/-1}
+.cover .food img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.32)}
+.cover .food div:first-child img{transform:scale(1.18)}
+.cover .badge{position:absolute;left:6mm;top:6mm;z-index:2;display:inline-flex;align-items:center;gap:2.5mm;padding:3mm 5.5mm;border-radius:99px;background:#4ade80;color:#06210f;font-weight:800;font-size:15pt;letter-spacing:.01em}
 /* text pages */
 .text{padding:18mm 16mm}
 .text h2{font-size:30pt;line-height:1;margin:3mm 0 5mm}
@@ -242,14 +242,11 @@ const head = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
 const foot = (p, left) => `<div class="foot"><span>${left || `${TITLE} · <b>json.fit</b>`}</span><span>${p} / ${TOTAL}</span></div>`;
 const per = (m) => (m.batch ? 'per tub' : 'per serve');
 
-const coverPlates = ['butter_chicken_and_rice', 'spaghetti_bolognese', 'teriyaki_chicken_and_rice'].map((s) => meals.find((m) => m.slug === s)).filter(Boolean);
+const coverPlates = ['butter_chicken_and_rice', 'spaghetti_bolognese', 'bbq_pulled_pork_bowl_or_burger', 'massaman_beef', 'teriyaki_chicken_and_rice'].map((s) => meals.find((m) => m.slug === s)).filter(Boolean);
 const cover = `<section class="page dark cover">
   <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-3.png')}" alt=""><span>JSON.fit</span></div>
-  <p class="mono dim" style="margin:104mm 0 0">The free cookbook</p>
-  <h1 class="serif">The One Cook <span class="g">Cookbook.</span></h1>
-  <p class="lede">You already train. Your food is the bit that falls apart by midweek. This book fixes that: one shop, one cook, about 10 minutes hands-on, 8 tubs. ${batchMeals.length} batch meals plus breakfasts, desserts and backup meals, with every ingredient, step and macro.</p>
-  <div class="plates">${coverPlates.map((m) => `<div class="plate"><img src="${imgFor(m)}" alt=""><span>${esc(m.display_name)}<small>${activeMin(m)} min hands-on · ${m.batch.tubs} tubs</small></span></div>`).join('')}</div>
-  <p class="trust"><b>Free</b> · No ads · No account · json.fit</p>
+  <h1 class="serif"><span>The One Cook</span><span class="g">Cookbook.</span></h1>
+  <div class="food">${coverPlates.map((m, i) => `<div>${i === 0 ? '<span class="badge">10 min hands-on</span>' : ''}<img src="${imgFor(m)}" alt=""></div>`).join('')}</div>
 </section>`;
 
 const contents = `<section class="page text">

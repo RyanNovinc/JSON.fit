@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Batch Cooking Cookbook | JSON.fit</title>
-    <meta name="description" content="Free cookbook for people who train but whose food falls apart midweek: 37 batch meals, one cook for 8 tubs, about 10 minutes hands-on. Every ingredient, step and macro.">
+    <meta name="description" content="The One Cook Cookbook: 37 batch meals. One cook, 8 tubs, about 10 minutes hands-on. Free PDF.">
     <link rel="canonical" href="https://json.fit/cookbook/free-cookbook">
     <meta property="og:title" content="Free Batch Cooking Cookbook | JSON.fit">
     <meta property="og:description" content="Batch meals that cover your week: 37 one-cook recipes for 8 tubs each, with the macros, every ingredient and every step. Free to keep and print.">
@@ -57,51 +57,35 @@
 .bookwrap { display:flex; justify-content:center; align-items:center; padding:12px 0; }
 .v2 .hero2 .bookwrap .book { width:min(360px,78vw); height:auto; max-width:none; aspect-ratio:210/297; border-radius:6px 12px 12px 6px; box-shadow:0 30px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06); transform:rotate(-4deg); object-fit:cover; display:block; }
 @media(min-width:760px) { .v2 .hero2 .bookwrap .book { width:380px; } }
-        /* interior peek: real pages, print-friendly */
-        .spreads { display:flex; justify-content:center; align-items:center; padding:0.4rem 0 0; }
-        .page { position:relative; width:32%; max-width:238px; aspect-ratio:1/1.4145; background:#f6f3ea; border:none; padding:0; border-radius:5px; box-shadow:0 14px 28px rgba(0,0,0,0.5); overflow:hidden; flex-shrink:0; cursor:zoom-in; font:inherit; color:inherit; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent; transform:var(--pt,none); transition:transform 0.28s ease, box-shadow 0.28s ease; }
-        .page img { display:block; width:100%; height:100%; object-fit:cover; object-position:top center; }
-        .page:nth-child(1) { --pt:rotate(-3.5deg) translateY(8px); z-index:1; margin-right:-10px; }
-        .page:nth-child(2) { --pt:translateY(-4px); z-index:2; box-shadow:0 20px 38px rgba(0,0,0,0.62); }
-        .page:nth-child(3) { --pt:rotate(3.5deg) translateY(8px); z-index:1; margin-left:-10px; }
-        .page:focus-visible { transform:var(--pt,none) scale(1.045); z-index:4; outline:2px solid var(--cyan); outline-offset:4px; }
-        .page:active { transform:var(--pt,none) scale(0.985); }
-        .page-zoom { position:absolute; right:7px; bottom:7px; z-index:2; width:26px; height:26px; border-radius:8px; background:rgba(5,5,8,0.6); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; color:#eaf9fd; pointer-events:none; transition:background 0.25s ease, color 0.25s ease; }
-        @media (hover:hover) {
-            .page:hover { transform:var(--pt,none) scale(1.045); z-index:4; box-shadow:0 22px 44px rgba(0,0,0,0.66),0 0 0 2px var(--cyan-glow); }
-            .page:hover .page-zoom { background:var(--cyan); color:#04212a; }
-        }
-        .spread-cap { text-align:center; font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-top:1.3rem; }
 
-        /* full screen page viewer */
-        .lb { position:fixed; inset:0; z-index:9999; display:flex; opacity:0; pointer-events:none; transition:opacity 0.24s ease; }
-        .lb[hidden] { display:none; }
-        .lb.on { opacity:1; pointer-events:auto; }
-        .lb-bd { position:absolute; inset:0; background:rgba(5,5,8,0.94); -webkit-backdrop-filter:blur(9px); backdrop-filter:blur(9px); }
-        .lb-stage { position:relative; z-index:1; flex:1; display:flex; align-items:center; justify-content:center; overflow:hidden; touch-action:none; padding:calc(env(safe-area-inset-top,0px) + 3.4rem) 0.9rem calc(env(safe-area-inset-bottom,0px) + 3rem); transform:scale(0.965); transition:transform 0.3s cubic-bezier(0.22,0.61,0.36,1); }
-        .lb.on .lb-stage { transform:none; }
-        .lb-img { display:block; max-width:100%; max-height:100%; width:auto; height:auto; border-radius:4px; background:#f6f3ea; box-shadow:0 28px 60px rgba(0,0,0,0.72); transform-origin:center center; transform:translate3d(0,0,0) scale(1); transition:transform 0.28s cubic-bezier(0.22,0.61,0.36,1), opacity 0.18s ease; cursor:zoom-in; user-select:none; -webkit-user-select:none; -webkit-user-drag:none; will-change:transform; }
-        .lb-img.z { cursor:grab; }
-        .lb-img.drag { transition:none; cursor:grabbing; }
-        .lb-img.fade { opacity:0; }
-        .lb-btn { position:absolute; z-index:3; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); background:rgba(17,17,22,0.82); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); color:var(--text); border-radius:50%; cursor:pointer; transition:background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
-        .lb-btn:hover { background:var(--surface-2); border-color:var(--border-cyan); color:var(--cyan); }
-        .lb-btn:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
-        .lb-x { width:44px; height:44px; top:calc(env(safe-area-inset-top,0px) + 0.65rem); right:calc(env(safe-area-inset-right,0px) + 0.65rem); }
-        .lb-nav { width:48px; height:48px; top:50%; margin-top:-24px; }
-        .lb-prev { left:calc(env(safe-area-inset-left,0px) + 0.85rem); }
-        .lb-next { right:calc(env(safe-area-inset-right,0px) + 0.85rem); }
-        .lb-foot { position:absolute; z-index:3; left:0; right:0; bottom:calc(env(safe-area-inset-bottom,0px) + 0.8rem); text-align:center; pointer-events:none; }
-        .lb-num { font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.14em; color:var(--text-2); }
-        .lb-hint { display:block; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.09em; text-transform:uppercase; color:var(--text-3); margin-top:0.35rem; transition:opacity 0.5s ease; }
-        .lb-hint.gone { opacity:0; }
-        @media (max-width:600px) {
-            .lb-nav { display:none; }
-            .lb-stage { padding-left:0.55rem; padding-right:0.55rem; }
-        }
-
-.spreads { padding-top:10px; }
-.spread-cap { margin-top:2.4rem; }
+/* meal wall */
+.wall{margin-top:44px;padding-block:12px;display:grid;gap:14px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.track{display:flex;gap:14px;width:max-content;animation:drift 70s linear infinite}
+.track.rev{animation-direction:reverse;animation-duration:84s}
+@keyframes drift{to{transform:translateX(-50%)}}
+.mcard{position:relative;display:block;width:220px;height:240px;border-radius:22px;overflow:hidden;background:#111;text-decoration:none;color:#fff}
+.mcard img{width:100%;height:100%;object-fit:cover}
+.mcard{transition:transform .25s ease,box-shadow .25s ease}
+.mcard img{transition:transform .4s ease}
+.mcard:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 0 0 2px var(--green-text),0 14px 30px rgba(0,0,0,.5);z-index:2}
+.mcard:hover img{transform:scale(1.08)}
+a.mcard{cursor:pointer}
+a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.mcard,.mcard img{transition:none}.mcard:hover{transform:none}.mcard:hover img{transform:none}}
+.mcard::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82),transparent 55%)}
+.mcard .t{position:absolute;left:14px;right:14px;bottom:12px;z-index:1;font-weight:700;font-size:.95rem;line-height:1.2}
+.mcard .k{display:block;font-family:var(--mono);font-size:.68rem;color:var(--green-text);margin-top:4px;font-weight:400}
+@media(prefers-reduced-motion:reduce){.track{animation:none}}
+@media(max-width:700px){.mcard{width:170px;height:190px}}
+/* lean page: big, few words */
+.v2 .hero2 h1.d{font-size:clamp(2.8rem,6vw,4.6rem)}
+.v2 .hero2 .lede{font-size:clamp(1.15rem,1.8vw,1.35rem);color:var(--text);margin-top:16px}
+.note{font-family:var(--sans);font-size:.95rem;letter-spacing:0;margin-top:.8rem}
+.success{font-size:1rem}
+#meals .head{margin-bottom:0}
+.faq2 summary{font-size:1.1rem}
+.faq2 .a{font-size:1.02rem}
+@media(max-width:700px){.cap-form{flex-direction:column}.cap-form .btn{width:100%}.cap-form .in{font-size:16px}}
 .v2 .hero2 .trust { margin-top:14px; }
 .app .badges { margin-top:22px; }
 </style>
@@ -130,7 +114,7 @@
  "numberOfPages": 86,
  "isAccessibleForFree": true,
  "bookFormat": "https://schema.org/EBook",
- "description": "75 recipes: 37 batch meals you cook once for 8 tubs, 16 breakfasts, 10 desserts and 12 backup meals. One page per meal: photo, calories and macros per tub or serve, every ingredient with amounts, the method step by step, and how it keeps in the fridge and freezer. Free in exchange for an email.",
+ "description": "75 recipes: 37 batch meals you cook once for 8 tubs, plus breakfasts, desserts and backup meals. One page per meal with every ingredient, step and macro.",
  "image": "https://json.fit/images/cookbook/cover.jpg",
  "about": [
   "batch cooking",
@@ -164,9 +148,8 @@
   <div class="wrap">
     <div class="grid">
       <div>
-        <p class="kicker g">The free cookbook &middot; 75 recipes &middot; 86 pages</p>
-        <h1 id="h1" class="d">One cook. <em>Your week of food, sorted.</em></h1>
-        <p class="lede">You already train. Your food is the bit that falls apart by midweek. The One Cook Cookbook fixes that: one shop, one cook, about 10 minutes hands-on, and the slow cooker or oven does the rest. 37 batch meals for 8 tubs each, plus breakfasts, desserts and backup meals, with every ingredient, step and macro. Free for your email.</p>
+        <h1 id="h1" class="d">The One Cook <em>Cookbook.</em></h1>
+        <p class="lede">One cook. 8 tubs. 10 minutes hands-on.</p>
         <div class="cap-block" data-location="hero">
           <form class="cap-form" novalidate>
             <label class="sr" for="email-hero">Email address</label>
@@ -175,38 +158,10 @@
             <button class="btn" type="submit">Send me the cookbook</button>
           </form>
           <div class="success" role="status"><span class="tick">&#10003;</span><span class="successmsg">Check your inbox, your cookbook's on the way.</span></div>
-          <p class="note">No ads, no spam. Unsubscribe any time.</p>
+          <p class="note">Unsubscribe any time.</p>
         </div>
-        <p class="or">Or skip the PDF. <a href="#app">The app plans your whole week from the same meals &rarr;</a></p>
       </div>
-      <div class="bookwrap rv"><img class="book" src="/images/cookbook/cover.webp" width="900" height="1273" alt="Cover of The One Cook Cookbook" fetchpriority="high" onerror="this.onerror=null;this.src='/images/cookbook/cover.jpg'"></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec2 g" id="pages" aria-labelledby="pages-h">
-  <div class="wrap">
-    <div class="head rv">
-      <p class="kicker g">Straight from the book</p>
-      <h2 id="pages-h" class="d">Real pages. <em>Print them.</em></h2>
-      <p class="lede">One page per meal: the plate, the numbers, the ingredients with the pack to buy, the method, and how it keeps. Tap a page to read it.</p>
-    </div>
-    <div class="rv">
-                        <div class="spreads">
-                <button type="button" class="page" aria-label="Protein Pancakes page. Open full screen.">
-                    <img src="/images/cookbook/page-breakfast.webp" data-fallback="/images/cookbook/page-breakfast.jpg" alt="Protein Pancakes page from The One Cook Cookbook" loading="lazy" width="760" height="1075" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                    <span class="page-zoom" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></span>
-                </button>
-                <button type="button" class="page" aria-label="Butter Chicken &amp; Rice page. Open full screen.">
-                    <img src="/images/cookbook/page-main.webp" data-fallback="/images/cookbook/page-main.jpg" alt="Butter Chicken &amp; Rice page from The One Cook Cookbook" loading="lazy" width="760" height="1075" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                    <span class="page-zoom" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></span>
-                </button>
-                <button type="button" class="page" aria-label="Fudgy Protein Brownies page. Open full screen.">
-                    <img src="/images/cookbook/page-dessert.webp" data-fallback="/images/cookbook/page-dessert.jpg" alt="Fudgy Protein Brownies page from The One Cook Cookbook" loading="lazy" width="760" height="1075" onerror="if(this.src.indexOf('.webp')>-1){this.src=this.dataset.fallback;}else{this.style.display='none';}">
-                    <span class="page-zoom" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></span>
-                </button>
-            </div>
-            <p class="spread-cap">Tap a page to read it &middot; breakfast, mains, desserts</p>
+      <div class="bookwrap rv"><img class="book" src="/images/cookbook/cover.webp" width="900" height="1273" alt="The One Cook Cookbook cover: butter chicken, bolognese, pulled pork, massaman and teriyaki chicken" fetchpriority="high" onerror="this.onerror=null;this.src='/images/cookbook/cover.jpg'"></div>
     </div>
   </div>
 </section>
@@ -214,21 +169,12 @@
 <section class="sec2 g" id="meals" aria-labelledby="food-h">
   <div class="wrap">
     <div class="head rv">
-      <p class="kicker g">A few of the 37</p>
-      <h2 id="food-h" class="d">Ten minutes of work, <em>eight tubs of food.</em></h2>
-      <p class="lede">Butter chicken, bolognese, pulled pork, massaman and more: 29 slow cooker meals and 8 oven bakes. Each one is a single cook: 3 days of tubs in the fridge, the rest in the freezer. 31 of the 37 take 10 minutes or less of hands-on work.</p>
+      <h2 id="food-h" class="d">37 meals. <em>One cook each.</em></h2>
     </div>
-    <div class="mgrid rv">
-      <a class="mcard2" href="/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/"><img src="/images/meals/batch-butter-chicken-and-rice.webp" width="760" height="570" style="height:auto" loading="lazy" alt="Butter Chicken &amp; Rice"><div class="mb"><b>Butter Chicken &amp; Rice</b><div class="mm"><b class="num">772 kcal</b><span class="num">57 g protein</span><span>7 min hands-on</span></div></div></a>
-      <a class="mcard2" href="/r/spaghetti_bolognese/spaghetti_bolognese_tub/"><img src="/images/meals/batch-spaghetti-bolognese.webp" width="760" height="570" style="height:auto" loading="lazy" alt="Spaghetti Bolognese"><div class="mb"><b>Spaghetti Bolognese</b><div class="mm"><b class="num">893 kcal</b><span class="num">57 g protein</span><span>8 min hands-on</span></div></div></a>
-      <a class="mcard2" href="/r/bbq_pulled_pork_bowl_or_burger/bbq_pulled_pork_bowl_or_burger_tub/"><img src="/images/meals/batch-bbq-pulled-pork-bowl-or-burger.webp" width="760" height="570" style="height:auto" loading="lazy" alt="BBQ Pulled Pork, bowl or burger"><div class="mb"><b>BBQ Pulled Pork, bowl or burger</b><div class="mm"><b class="num">798 kcal</b><span class="num">50 g protein</span><span>10 min hands-on</span></div></div></a>
-      <a class="mcard2" href="/r/massaman_beef/massaman_beef_tub/"><img src="/images/meals/batch-massaman-beef.webp" width="760" height="570" style="height:auto" loading="lazy" alt="Massaman Beef"><div class="mb"><b>Massaman Beef</b><div class="mm"><b class="num">809 kcal</b><span class="num">45 g protein</span><span>8 min hands-on</span></div></div></a>
-      <a class="mcard2" href="/r/teriyaki_chicken_and_rice/teriyaki_chicken_and_rice_tub/"><img src="/images/meals/batch-teriyaki-chicken-and-rice.webp" width="760" height="570" style="height:auto" loading="lazy" alt="Teriyaki Chicken &amp; Rice"><div class="mb"><b>Teriyaki Chicken &amp; Rice</b><div class="mm"><b class="num">859 kcal</b><span class="num">54 g protein</span><span>8 min hands-on</span></div></div></a>
-      <a class="mcard2" href="/r/cottage_pie/cottage_pie_tub/"><img src="/images/meals/batch-cottage-pie.webp" width="760" height="570" style="height:auto" loading="lazy" alt="Cottage Pie"><div class="mb"><b>Cottage Pie</b><div class="mm"><b class="num">720 kcal</b><span class="num">57 g protein</span><span>13 min hands-on</span></div></div></a>
-      <a class="mcard2" href="/r/greek_lemon_chicken_gyro_bowls/greek_lemon_chicken_gyro_bowls_tub/"><img src="/images/meals/batch-greek-lemon-chicken-gyro-bowls.webp" width="760" height="570" style="height:auto" loading="lazy" alt="Greek Lemon Chicken Gyro Bowls"><div class="mb"><b>Greek Lemon Chicken Gyro Bowls</b><div class="mm"><b class="num">742 kcal</b><span class="num">66 g protein</span><span>10 min hands-on</span></div></div></a>
-      <a class="mcard2" href="/r/red_lentil_and_chickpea_dal/red_lentil_and_chickpea_dal_tub/"><img src="/images/meals/batch-red-lentil-and-chickpea-dal.webp" width="760" height="570" style="height:auto" loading="lazy" alt="Red Lentil &amp; Chickpea Dal"><div class="mb"><b>Red Lentil &amp; Chickpea Dal</b><div class="mm"><b class="num">895 kcal</b><span class="num">34 g protein</span><span>7 min hands-on</span></div></div></a>
-    </div>
-    <p class="rv" style="margin-top:28px"><a class="arrow g" href="/meals.html">Browse all 75 meals &rarr;</a></p>
+  </div>
+  <div class="wall" aria-label="All 37 batch meals in the cookbook">
+    <div class="track"><a class="mcard" href="/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/"><img src="/images/meals/batch-butter-chicken-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Butter Chicken &amp; Rice<span class="k">7 min hands-on</span></span></a><a class="mcard" href="/r/bbq_pulled_pork_bowl_or_burger/bbq_pulled_pork_bowl_or_burger_tub/"><img src="/images/meals/batch-bbq-pulled-pork-bowl-or-burger.webp" alt="" loading="lazy" width="220" height="240"><span class="t">BBQ Pulled Pork<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/teriyaki_chicken_and_rice/teriyaki_chicken_and_rice_tub/"><img src="/images/meals/batch-teriyaki-chicken-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Teriyaki Chicken &amp; Rice<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/chicken_mac_and_cheese_bake/chicken_mac_and_cheese_bake_tub/"><img src="/images/meals/batch-chicken-mac-and-cheese-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Mac &amp; Cheese Bake<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/greek_lemon_chicken_gyro_bowls/greek_lemon_chicken_gyro_bowls_tub/"><img src="/images/meals/batch-greek-lemon-chicken-gyro-bowls.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Greek Lemon Chicken Gyro Bowls<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/"><img src="/images/meals/batch-bulking-chilli-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Bean Chilli Bowl<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/lamb_keema_and_peas/lamb_keema_and_peas_tub/"><img src="/images/meals/batch-lamb-keema-and-peas.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Lamb Keema &amp; Peas<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/mild_chicken_korma/mild_chicken_korma_tub/"><img src="/images/meals/batch-mild-chicken-korma.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Mild Chicken Korma<span class="k">7 min hands-on</span></span></a><a class="mcard" href="/r/coconut_lentils_and_tofu/coconut_lentils_and_tofu_tub/"><img src="/images/meals/batch-coconut-lentils-and-tofu.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Coconut Lentils &amp; Tofu<span class="k">9 min hands-on</span></span></a><a class="mcard" href="/r/pulled_beef_ragu_pasta/pulled_beef_ragu_pasta_tub/"><img src="/images/meals/batch-pulled-beef-ragu-pasta.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Pulled Beef Ragu Pasta<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/cottage_pie/cottage_pie_tub/"><img src="/images/meals/batch-cottage-pie.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Cottage Pie<span class="k">13 min hands-on</span></span></a><a class="mcard" href="/r/black_bean_enchilada_bake/black_bean_enchilada_bake_tub/"><img src="/images/meals/batch-black-bean-enchilada-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Black Bean Enchilada Bake<span class="k">12 min hands-on</span></span></a><a class="mcard" href="/r/beef_stew_and_crusty_bread/beef_stew_and_crusty_bread_tub/"><img src="/images/meals/batch-beef-stew-and-crusty-bread.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Stew &amp; Crusty Bread<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/beef_stroganoff_and_rice/beef_stroganoff_and_rice_tub/"><img src="/images/meals/batch-beef-stroganoff-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Stroganoff &amp; Rice<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/moroccan_lamb_and_chickpeas/moroccan_lamb_and_chickpeas_tub/"><img src="/images/meals/batch-moroccan-lamb-and-chickpeas.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Moroccan Lamb &amp; Chickpeas<span class="k">12 min hands-on</span></span></a><a class="mcard" href="/r/smoky_beans_and_eggs/smoky_beans_and_eggs_tub/"><img src="/images/meals/batch-smoky-beans-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoky Beans &amp; Eggs<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/chicken_and_chickpea_curry/chicken_and_chickpea_curry_tub/"><img src="/images/meals/batch-chicken-and-chickpea-curry.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken &amp; Chickpea Curry<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/baked_coconut_dal_with_chickpeas/baked_coconut_dal_with_chickpeas_tub/"><img src="/images/meals/batch-baked-coconut-dal-with-chickpeas.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Baked Coconut Dal with Chickpeas<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/spanish_chicken_and_chickpea_bake/spanish_chicken_and_chickpea_bake_tub/"><img src="/images/meals/batch-spanish-chicken-and-chickpea-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spanish Chicken &amp; Chickpea Bake<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/"><img src="/images/meals/batch-butter-chicken-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Butter Chicken &amp; Rice<span class="k">7 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/bbq_pulled_pork_bowl_or_burger/bbq_pulled_pork_bowl_or_burger_tub/"><img src="/images/meals/batch-bbq-pulled-pork-bowl-or-burger.webp" alt="" loading="lazy" width="220" height="240"><span class="t">BBQ Pulled Pork<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/teriyaki_chicken_and_rice/teriyaki_chicken_and_rice_tub/"><img src="/images/meals/batch-teriyaki-chicken-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Teriyaki Chicken &amp; Rice<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/chicken_mac_and_cheese_bake/chicken_mac_and_cheese_bake_tub/"><img src="/images/meals/batch-chicken-mac-and-cheese-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Mac &amp; Cheese Bake<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/greek_lemon_chicken_gyro_bowls/greek_lemon_chicken_gyro_bowls_tub/"><img src="/images/meals/batch-greek-lemon-chicken-gyro-bowls.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Greek Lemon Chicken Gyro Bowls<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/"><img src="/images/meals/batch-bulking-chilli-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Bean Chilli Bowl<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/lamb_keema_and_peas/lamb_keema_and_peas_tub/"><img src="/images/meals/batch-lamb-keema-and-peas.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Lamb Keema &amp; Peas<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/mild_chicken_korma/mild_chicken_korma_tub/"><img src="/images/meals/batch-mild-chicken-korma.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Mild Chicken Korma<span class="k">7 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/coconut_lentils_and_tofu/coconut_lentils_and_tofu_tub/"><img src="/images/meals/batch-coconut-lentils-and-tofu.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Coconut Lentils &amp; Tofu<span class="k">9 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/pulled_beef_ragu_pasta/pulled_beef_ragu_pasta_tub/"><img src="/images/meals/batch-pulled-beef-ragu-pasta.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Pulled Beef Ragu Pasta<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/cottage_pie/cottage_pie_tub/"><img src="/images/meals/batch-cottage-pie.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Cottage Pie<span class="k">13 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/black_bean_enchilada_bake/black_bean_enchilada_bake_tub/"><img src="/images/meals/batch-black-bean-enchilada-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Black Bean Enchilada Bake<span class="k">12 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/beef_stew_and_crusty_bread/beef_stew_and_crusty_bread_tub/"><img src="/images/meals/batch-beef-stew-and-crusty-bread.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Stew &amp; Crusty Bread<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/beef_stroganoff_and_rice/beef_stroganoff_and_rice_tub/"><img src="/images/meals/batch-beef-stroganoff-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef Stroganoff &amp; Rice<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/moroccan_lamb_and_chickpeas/moroccan_lamb_and_chickpeas_tub/"><img src="/images/meals/batch-moroccan-lamb-and-chickpeas.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Moroccan Lamb &amp; Chickpeas<span class="k">12 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/smoky_beans_and_eggs/smoky_beans_and_eggs_tub/"><img src="/images/meals/batch-smoky-beans-and-eggs.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Smoky Beans &amp; Eggs<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/chicken_and_chickpea_curry/chicken_and_chickpea_curry_tub/"><img src="/images/meals/batch-chicken-and-chickpea-curry.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken &amp; Chickpea Curry<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/baked_coconut_dal_with_chickpeas/baked_coconut_dal_with_chickpeas_tub/"><img src="/images/meals/batch-baked-coconut-dal-with-chickpeas.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Baked Coconut Dal with Chickpeas<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/spanish_chicken_and_chickpea_bake/spanish_chicken_and_chickpea_bake_tub/"><img src="/images/meals/batch-spanish-chicken-and-chickpea-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spanish Chicken &amp; Chickpea Bake<span class="k">10 min hands-on</span></span></a></div>
+    <div class="track rev"><a class="mcard" href="/r/spaghetti_bolognese/spaghetti_bolognese_tub/"><img src="/images/meals/batch-spaghetti-bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Bolognese<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/massaman_beef/massaman_beef_tub/"><img src="/images/meals/batch-massaman-beef.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Massaman Beef<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/korean_shredded_beef/korean_shredded_beef_tub/"><img src="/images/meals/batch-korean-shredded-beef.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Korean Shredded Beef<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/chipotle_chicken_burritos_or_bowl/chipotle_chicken_burritos_or_bowl_tub/"><img src="/images/meals/batch-chipotle-chicken-burritos-or-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chipotle Chicken Burritos or Bowl<span class="k">18 min hands-on</span></span></a><a class="mcard" href="/r/citrus_pork_carnitas_bowls/citrus_pork_carnitas_bowls_tub/"><img src="/images/meals/batch-citrus-pork-carnitas-bowls.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Citrus Pork Carnitas Bowls<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/satay_chicken_and_rice/satay_chicken_and_rice_tub/"><img src="/images/meals/batch-satay-chicken-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Satay Chicken &amp; Rice<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/dry_beef_rendang/dry_beef_rendang_tub/"><img src="/images/meals/batch-dry-beef-rendang.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Dry Beef Rendang<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/red_lentil_and_chickpea_dal/red_lentil_and_chickpea_dal_tub/"><img src="/images/meals/batch-red-lentil-and-chickpea-dal.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Red Lentil &amp; Chickpea Dal<span class="k">7 min hands-on</span></span></a><a class="mcard" href="/r/three_bean_and_lentil_chilli/three_bean_and_lentil_chilli_tub/"><img src="/images/meals/batch-three-bean-and-lentil-chilli.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Three-Bean &amp; Lentil Chilli<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/garlic_butter_chicken_and_rice_tray/garlic_butter_chicken_and_rice_tray_tub/"><img src="/images/meals/batch-garlic-butter-chicken-and-rice-tray.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Garlic Butter Chicken &amp; Rice Tray<span class="k">15 min hands-on</span></span></a><a class="mcard" href="/r/chicken_and_bean_enchilada_bake/chicken_and_bean_enchilada_bake_tub/"><img src="/images/meals/batch-chicken-and-bean-enchilada-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken &amp; Bean Enchilada Bake<span class="k">15 min hands-on</span></span></a><a class="mcard" href="/r/lentil_ragu_pasta/lentil_ragu_pasta_tub/"><img src="/images/meals/batch-lentil-ragu-pasta.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Lentil Ragu Pasta<span class="k">7 min hands-on</span></span></a><a class="mcard" href="/r/shawarma_chicken_tray_and_rice/shawarma_chicken_tray_and_rice_tub/"><img src="/images/meals/batch-shawarma-chicken-tray-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shawarma Chicken Tray &amp; Rice<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/chicken_cacciatore_and_pasta/chicken_cacciatore_and_pasta_tub/"><img src="/images/meals/batch-chicken-cacciatore-and-pasta.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Cacciatore &amp; Pasta<span class="k">8 min hands-on</span></span></a><a class="mcard" href="/r/chicken_and_chorizo_jambalaya/chicken_and_chorizo_jambalaya_tub/"><img src="/images/meals/batch-chicken-and-chorizo-jambalaya.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken &amp; Chorizo Jambalaya<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/beef_and_lentil_bolognese/beef_and_lentil_bolognese_tub/"><img src="/images/meals/batch-beef-and-lentil-bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Lentil Bolognese<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/tuscan_chicken_and_white_bean_stew/tuscan_chicken_and_white_bean_stew_tub/"><img src="/images/meals/batch-tuscan-chicken-and-white-bean-stew.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Tuscan Chicken &amp; White Bean Stew<span class="k">10 min hands-on</span></span></a><a class="mcard" href="/r/moroccan_chickpea_and_lentil_bake/moroccan_chickpea_and_lentil_bake_tub/"><img src="/images/meals/batch-moroccan-chickpea-and-lentil-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Moroccan Chickpea &amp; Lentil Bake<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/spaghetti_bolognese/spaghetti_bolognese_tub/"><img src="/images/meals/batch-spaghetti-bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Spaghetti Bolognese<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/massaman_beef/massaman_beef_tub/"><img src="/images/meals/batch-massaman-beef.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Massaman Beef<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/korean_shredded_beef/korean_shredded_beef_tub/"><img src="/images/meals/batch-korean-shredded-beef.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Korean Shredded Beef<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/chipotle_chicken_burritos_or_bowl/chipotle_chicken_burritos_or_bowl_tub/"><img src="/images/meals/batch-chipotle-chicken-burritos-or-bowl.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chipotle Chicken Burritos or Bowl<span class="k">18 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/citrus_pork_carnitas_bowls/citrus_pork_carnitas_bowls_tub/"><img src="/images/meals/batch-citrus-pork-carnitas-bowls.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Citrus Pork Carnitas Bowls<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/satay_chicken_and_rice/satay_chicken_and_rice_tub/"><img src="/images/meals/batch-satay-chicken-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Satay Chicken &amp; Rice<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/dry_beef_rendang/dry_beef_rendang_tub/"><img src="/images/meals/batch-dry-beef-rendang.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Dry Beef Rendang<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/red_lentil_and_chickpea_dal/red_lentil_and_chickpea_dal_tub/"><img src="/images/meals/batch-red-lentil-and-chickpea-dal.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Red Lentil &amp; Chickpea Dal<span class="k">7 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/three_bean_and_lentil_chilli/three_bean_and_lentil_chilli_tub/"><img src="/images/meals/batch-three-bean-and-lentil-chilli.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Three-Bean &amp; Lentil Chilli<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/garlic_butter_chicken_and_rice_tray/garlic_butter_chicken_and_rice_tray_tub/"><img src="/images/meals/batch-garlic-butter-chicken-and-rice-tray.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Garlic Butter Chicken &amp; Rice Tray<span class="k">15 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/chicken_and_bean_enchilada_bake/chicken_and_bean_enchilada_bake_tub/"><img src="/images/meals/batch-chicken-and-bean-enchilada-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken &amp; Bean Enchilada Bake<span class="k">15 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/lentil_ragu_pasta/lentil_ragu_pasta_tub/"><img src="/images/meals/batch-lentil-ragu-pasta.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Lentil Ragu Pasta<span class="k">7 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/shawarma_chicken_tray_and_rice/shawarma_chicken_tray_and_rice_tub/"><img src="/images/meals/batch-shawarma-chicken-tray-and-rice.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Shawarma Chicken Tray &amp; Rice<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/chicken_cacciatore_and_pasta/chicken_cacciatore_and_pasta_tub/"><img src="/images/meals/batch-chicken-cacciatore-and-pasta.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken Cacciatore &amp; Pasta<span class="k">8 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/chicken_and_chorizo_jambalaya/chicken_and_chorizo_jambalaya_tub/"><img src="/images/meals/batch-chicken-and-chorizo-jambalaya.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Chicken &amp; Chorizo Jambalaya<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/beef_and_lentil_bolognese/beef_and_lentil_bolognese_tub/"><img src="/images/meals/batch-beef-and-lentil-bolognese.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Beef &amp; Lentil Bolognese<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/tuscan_chicken_and_white_bean_stew/tuscan_chicken_and_white_bean_stew_tub/"><img src="/images/meals/batch-tuscan-chicken-and-white-bean-stew.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Tuscan Chicken &amp; White Bean Stew<span class="k">10 min hands-on</span></span></a><a class="mcard" tabindex="-1" aria-hidden="true" href="/r/moroccan_chickpea_and_lentil_bake/moroccan_chickpea_and_lentil_bake_tub/"><img src="/images/meals/batch-moroccan-chickpea-and-lentil-bake.webp" alt="" loading="lazy" width="220" height="240"><span class="t">Moroccan Chickpea &amp; Lentil Bake<span class="k">10 min hands-on</span></span></a></div>
   </div>
 </section>
 
@@ -237,14 +183,7 @@
     <div class="weekrow">
       <div>
         <div class="head rv" style="margin-bottom:24px">
-          <p class="kicker g">The app</p>
-          <h2 id="app-h" class="d">The book is the menu. <em>The app is the week.</em></h2>
-          <p class="lede">Answer a few questions and JSON.fit sets your calories and protein, plans every week from these same meals, writes the shopping list by aisle and tells you which tubs go in the fridge and which in the freezer. Built in about a minute, on your phone.</p>
-        </div>
-        <div class="steps2 rv">
-          <div class="step"><span class="d">Sat</span><div><b>Shop once</b><p>Every ingredient for the week, by aisle. Tick them off in the trolley.</p></div></div>
-          <div class="step"><span class="d">Sun</span><div><b>Cook once</b><p>One batch, about ten minutes of work, then the slow cooker or the oven does the rest.</p></div></div>
-          <div class="step"><span class="d">Mon</span><div><b>Eat the plan</b><p>Each day lands on your numbers. Swap anything; the day rebalances. Cook mode times every step.</p></div></div>
+          <h2 id="app-h" class="d">The app plans <em>your week.</em></h2>
         </div>
         <div class="rv"><div class="badges">
           <a class="badge" href="https://apps.apple.com/au/app/json-fit/id6758357834" data-loc="cookbook_app">
@@ -255,8 +194,7 @@
             <svg width="22" height="24" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
             <div><small>Get it on</small><span>Google Play</span></div>
           </a>
-        </div>
-        <p class="trust"><b>Free</b> &middot; No ads &middot; No account</p></div>
+        </div></div>
       </div>
       <div class="shots rv">
         <div class="shot"><img src="/images/home/cap-picker.webp" width="600" height="1304" loading="lazy" alt="App screenshot: the meal picker with Got food to use up? chips"></div>
@@ -270,14 +208,12 @@
 <section class="sec2 g" id="faq" aria-labelledby="faq-h">
   <div class="wrap">
     <div class="head rv">
-      <p class="kicker g">Questions</p>
-      <h2 id="faq-h" class="d">The things you're <em>already thinking.</em></h2>
+      <h2 id="faq-h" class="d">Questions.</h2>
     </div>
     <div class="faq2 rv">
-      <details open><summary>What's actually in it?</summary><div class="a">86 pages. 37 batch meals (slow cooker and oven bakes), 16 breakfasts, 10 desserts and 12 backup meals, one page each with a photo, the calories and macros per tub or serve, every ingredient with amounts and the pack to buy, the method step by step, and how long it keeps in the fridge or freezer. Plus an index of every meal by time and calories, and four to start with.</div></details>
-      <details><summary>Is it really free?</summary><div class="a">Yes. You give an email, we send the PDF. No card, no trial, and you can unsubscribe from the list with one tap.</div></details>
-      <details><summary>Do I need a slow cooker?</summary><div class="a">For 29 of the 37, yes. The other 8 are oven bakes. Not sponsored, no commission: any 5.5 L slow cooker works. <a href="https://www.bigw.com.au/product/contempo-slow-cooker-5-5l/p/263539" target="_blank" rel="nofollow noopener">This one's $24 at Big W</a>, cheaper than one week of prepared meals.</div></details>
-      <details><summary>Do I need the app?</summary><div class="a">No. The book stands on its own. The app is for when you want the week planned, the list written and the macros hit without doing the maths. It's free too.</div></details>
+      <details><summary>What's in it?</summary><div class="a">75 recipes, one page each, with every ingredient, step and macro.</div></details>
+      <details><summary>Do I need a slow cooker?</summary><div class="a">Any 5.5 L slow cooker works. <a href="https://www.bigw.com.au/product/contempo-slow-cooker-5-5l/p/263539" target="_blank" rel="nofollow noopener">This $24 one from Big W</a> does. Not sponsored.</div></details>
+      <details><summary>Do I need the app?</summary><div class="a">No, but it plans your week from these meals, free.</div></details>
     </div>
   </div>
 </section>
@@ -285,9 +221,7 @@
 <section class="final2" id="get" aria-labelledby="get-h">
   <div class="wall2" aria-hidden="true"><img src="/images/meals/batch-butter-chicken-and-rice.webp" alt="" loading="lazy"><img src="/images/meals/protein-pancakes.webp" alt="" loading="lazy"><img src="/images/meals/batch-spaghetti-bolognese.webp" alt="" loading="lazy"><img src="/images/meals/shakshuka.webp" alt="" loading="lazy"><img src="/images/meals/batch-massaman-beef.webp" alt="" loading="lazy"><img src="/images/meals/smoked-salmon-bagel.webp" alt="" loading="lazy"><img src="/images/meals/batch-cottage-pie.webp" alt="" loading="lazy"><img src="/images/meals/freezer-breakfast-burrito.webp" alt="" loading="lazy"><img src="/images/meals/batch-korean-shredded-beef.webp" alt="" loading="lazy"><img src="/images/meals/batch-satay-chicken-and-rice.webp" alt="" loading="lazy"><img src="/images/meals/batch-beef-stew-and-crusty-bread.webp" alt="" loading="lazy"><img src="/images/meals/batch-chicken-and-chorizo-jambalaya.webp" alt="" loading="lazy"></div>
   <div class="wrap in">
-    <p class="kicker">Go on, it's free</p>
-    <h2 id="get-h" class="d">Your copy, <em class="g">in about a minute.</em></h2>
-    <p class="lede">Lands in your inbox after you confirm. Print it, or cook straight off your phone.</p>
+    <h2 id="get-h" class="d">Get your <em class="g">copy.</em></h2>
     <div class="cap-block" data-location="close">
           <form class="cap-form" novalidate>
             <label class="sr" for="email-close">Email address</label>
@@ -296,7 +230,7 @@
             <button class="btn" type="submit">Send me the cookbook</button>
           </form>
           <div class="success" role="status"><span class="tick">&#10003;</span><span class="successmsg">Check your inbox, your cookbook's on the way.</span></div>
-          <p class="note">No ads, no spam. Unsubscribe any time.</p>
+          <p class="note">Unsubscribe any time.</p>
         </div>
   </div>
 </section>
@@ -319,25 +253,6 @@
   </div>
 </footer>
 
-<div class="lb" id="pageLb" role="dialog" aria-modal="true" aria-label="Cookbook page, full screen" hidden>
-    <div class="lb-bd"></div>
-    <div class="lb-stage">
-        <img class="lb-img" alt="" decoding="async">
-    </div>
-    <button type="button" class="lb-btn lb-x" aria-label="Close">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-    </button>
-    <button type="button" class="lb-btn lb-nav lb-prev" aria-label="Previous page">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-    </button>
-    <button type="button" class="lb-btn lb-nav lb-next" aria-label="Next page">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-    </button>
-    <div class="lb-foot">
-        <span class="lb-num" aria-live="polite">1 / 3</span>
-        <span class="lb-hint">Tap to zoom &middot; swipe to turn</span>
-    </div>
-</div>
 <script>
 (function(){
     // Attribution: json.fit/cookbook?ref=yt  ->  source "cookbook-yt"
@@ -399,209 +314,6 @@
     } else {
         [].forEach.call(els, function(el){ el.classList.add('vis'); });
     }
-})();
-</script>
-<script>
-// Cookbook page viewer: tap a preview page to read it full screen
-(function(){
-    var pages = [].slice.call(document.querySelectorAll('.spreads .page'));
-    var lb = document.getElementById('pageLb');
-    if (!pages.length || !lb) return;
-
-    var stage   = lb.querySelector('.lb-stage');
-    var img     = lb.querySelector('.lb-img');
-    var btnX    = lb.querySelector('.lb-x');
-    var btnPrev = lb.querySelector('.lb-prev');
-    var btnNext = lb.querySelector('.lb-next');
-    var num     = lb.querySelector('.lb-num');
-    var hint    = lb.querySelector('.lb-hint');
-    var reduce  = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-
-    var items = pages.map(function(p){
-        var im = p.querySelector('img');
-        return {
-            src: im.getAttribute('src'),
-            fb:  im.getAttribute('data-fallback') || '',
-            alt: im.getAttribute('alt') || '',
-            key: (im.getAttribute('src') || '').split('/').pop().replace(/\.(webp|jpg|png)$/i, '')
-        };
-    });
-
-    var ZOOM = 2.4, SWIPE = 50, TAP = 9;
-    var idx = 0, isOpen = false, opener = null, primed = false, hintT = null, wheelT = null;
-    var scale = 1, tx = 0, ty = 0, base = { w:0, h:0 }, scrollY = 0, g = null;
-
-    function apply(){
-        img.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + scale.toFixed(4) + ')';
-        img.classList.toggle('z', scale > 1.01);
-    }
-    function measure(){ base.w = img.clientWidth; base.h = img.clientHeight; }
-    function clamp(){
-        var mx = Math.max(0, (base.w * scale - stage.clientWidth) / 2);
-        var my = Math.max(0, (base.h * scale - stage.clientHeight) / 2);
-        tx = Math.min(mx, Math.max(-mx, tx));
-        ty = Math.min(my, Math.max(-my, ty));
-    }
-    function reset(){ scale = 1; tx = 0; ty = 0; apply(); }
-    function zoomTo(ns, px, py){
-        var r = stage.getBoundingClientRect();
-        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-        if (px == null) { px = cx; py = cy; }
-        ns = Math.min(4, Math.max(1, ns));
-        tx = px - cx - ns * (px - cx - tx) / scale;
-        ty = py - cy - ns * (py - cy - ty) / scale;
-        scale = ns;
-        if (scale <= 1.005) { scale = 1; tx = 0; ty = 0; }
-        clamp(); apply();
-        if (hint) hint.classList.add('gone');
-    }
-
-    function settle(){ measure(); clamp(); apply(); img.classList.remove('fade'); }
-
-    function show(i){
-        idx = (i % items.length + items.length) % items.length;
-        var it = items[idx];
-        reset();
-        img.style.opacity = '';
-        img.classList.add('fade');
-        img.onerror = function(){ if (it.fb && img.src.indexOf('.webp') > -1) img.src = it.fb; };
-        img.onload = settle;
-        img.src = it.src;
-        img.alt = it.alt;
-        num.textContent = (idx + 1) + ' / ' + items.length;
-        lb.setAttribute('aria-label', (it.alt || ('Cookbook page ' + (idx + 1))) + ', full screen');
-        if (img.complete && img.naturalWidth) settle();
-    }
-
-    function prime(){
-        if (primed) return; primed = true;
-        items.forEach(function(it){
-            var im = new Image();
-            im.onerror = function(){ if (it.fb && im.src.indexOf('.webp') > -1) im.src = it.fb; };
-            im.src = it.src;
-        });
-    }
-
-    function openLb(i, from){
-        if (isOpen) return;
-        isOpen = true; opener = from || null;
-        prime();
-        scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-        document.body.style.position = 'fixed';
-        document.body.style.top = (-scrollY) + 'px';
-        document.body.style.left = '0';
-        document.body.style.right = '0';
-        document.body.style.width = '100%';
-        lb.hidden = false;
-        show(i);
-        requestAnimationFrame(function(){ lb.classList.add('on'); });
-        document.addEventListener('keydown', onKey, true);
-        window.addEventListener('resize', onResize);
-        setTimeout(function(){ btnX.focus(); }, 40);
-        if (hint) {
-            hint.classList.remove('gone');
-            clearTimeout(hintT);
-            hintT = setTimeout(function(){ hint.classList.add('gone'); }, 3400);
-        }
-        if (window.gtag) gtag('event', 'cookbook_page_view', { 'button_location':'cookbook_page', 'page': items[idx].key });
-    }
-
-    function closeLb(){
-        if (!isOpen) return;
-        isOpen = false;
-        lb.classList.remove('on');
-        document.removeEventListener('keydown', onKey, true);
-        window.removeEventListener('resize', onResize);
-        setTimeout(function(){ if (!isOpen) lb.hidden = true; }, reduce ? 0 : 250);
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.left = '';
-        document.body.style.right = '';
-        document.body.style.width = '';
-        window.scrollTo(0, scrollY);
-        if (opener) { try { opener.focus({ preventScroll:true }); } catch(e){ opener.focus(); } }
-        opener = null;
-        reset();
-    }
-
-    function onResize(){ if (isOpen) { reset(); measure(); } }
-
-    function onKey(e){
-        if (!isOpen) return;
-        var k = e.key;
-        if (k === 'Escape') { e.preventDefault(); closeLb(); }
-        else if (k === 'ArrowRight') { e.preventDefault(); show(idx + 1); }
-        else if (k === 'ArrowLeft') { e.preventDefault(); show(idx - 1); }
-        else if (k === '+' || k === '=') { e.preventDefault(); zoomTo(scale * 1.4); }
-        else if (k === '-' || k === '_') { e.preventDefault(); zoomTo(scale / 1.4); }
-        else if (k === '0') { e.preventDefault(); reset(); }
-        else if (k === 'Tab') {
-            var f = [].slice.call(lb.querySelectorAll('button')).filter(function(el){ return el.offsetParent !== null; });
-            e.preventDefault();
-            if (!f.length) return;
-            var at = f.indexOf(document.activeElement);
-            var n = e.shiftKey ? (at <= 0 ? f.length - 1 : at - 1) : (at === -1 || at === f.length - 1 ? 0 : at + 1);
-            f[n].focus();
-        }
-    }
-
-    stage.addEventListener('pointerdown', function(e){
-        if (e.pointerType === 'mouse' && e.button !== 0) return;
-        g = { x:e.clientX, y:e.clientY, tx:tx, ty:ty, onImg:(e.target === img), moved:false, t:Date.now() };
-        img.classList.add('drag');
-        try { stage.setPointerCapture(e.pointerId); } catch(err){}
-        if (g.onImg) e.preventDefault();
-    });
-
-    stage.addEventListener('pointermove', function(e){
-        if (!g) return;
-        var dx = e.clientX - g.x, dy = e.clientY - g.y;
-        if (!g.moved && Math.abs(dx) + Math.abs(dy) > TAP) g.moved = true;
-        if (!g.moved) return;
-        if (scale > 1.01 && g.onImg) {
-            tx = g.tx + dx; ty = g.ty + dy; clamp(); apply();
-        } else if (Math.abs(dx) > Math.abs(dy)) {
-            tx = dx * 0.45; ty = 0; apply();
-            img.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / 430));
-        }
-    });
-
-    function endGesture(e){
-        if (!g) return;
-        var gg = g; g = null;
-        img.classList.remove('drag');
-        try { stage.releasePointerCapture(e.pointerId); } catch(err){}
-        var dx = e.clientX - gg.x, dy = e.clientY - gg.y;
-
-        if (!gg.moved && Date.now() - gg.t < 500) {
-            if (gg.onImg) zoomTo(scale > 1.01 ? 1 : ZOOM, e.clientX, e.clientY);
-            else closeLb();
-            return;
-        }
-        if (scale > 1.01 && gg.onImg) { clamp(); apply(); return; }
-        img.style.opacity = '';
-        if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy)) show(idx + (dx < 0 ? 1 : -1));
-        else reset();
-    }
-    stage.addEventListener('pointerup', endGesture);
-    stage.addEventListener('pointercancel', endGesture);
-
-    stage.addEventListener('wheel', function(e){
-        if (!isOpen) return;
-        e.preventDefault();
-        img.classList.add('drag');
-        zoomTo(scale * (e.deltaY < 0 ? 1.18 : 1 / 1.18), e.clientX, e.clientY);
-        clearTimeout(wheelT);
-        wheelT = setTimeout(function(){ img.classList.remove('drag'); }, 90);
-    }, { passive:false });
-
-    btnX.addEventListener('click', closeLb);
-    btnPrev.addEventListener('click', function(){ show(idx - 1); });
-    btnNext.addEventListener('click', function(){ show(idx + 1); });
-
-    pages.forEach(function(p, i){
-        p.addEventListener('click', function(){ openLb(i, p); });
-    });
 })();
 </script>
 <script src="/assets/site.js"></script>
