@@ -48,11 +48,19 @@
         .success { display:none; align-items:center; gap:0.6rem; width:100%; margin-top:1.6rem; padding:0.95rem 1.1rem; border:1px solid var(--green-border); background:rgba(10,26,16,0.85); border-radius:18px; color:var(--text); font-size:0.95rem; text-align:left; line-height:1.45; }
         .success.show { display:flex; }
         .success .tick { flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--green); color:#041109; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; }
-        /* after sign-up: register interest in a printed copy */
-        .printask { display:none; align-items:center; flex-wrap:wrap; gap:6px 12px; min-height:44px; margin-top:12px; font-size:.95rem; color:var(--text-2); }
-        .printask.show { display:flex; }
-        .printask .btn { padding:.5rem 1.05rem; font-size:.9rem; }
-        @media(max-width:899px){ #get .printask { justify-content:center; } }
+        /* edition picker under the email box: choosing only changes the button and the line; the button sends */
+        .pick { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+        .pick button { height:54px; border-radius:999px; border:1px solid rgba(255,255,255,.26); background:transparent; color:#fff; font:700 .95rem var(--sans); cursor:pointer; display:grid; place-content:center; line-height:1.15; transition:background .2s,color .2s,border-color .2s; }
+        .pick button small { display:block; font:500 .6rem 'DM Mono',monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); margin-top:2px; }
+        .pick button[aria-pressed="true"] { background:#fff; color:#0a0a0b; border-color:#fff; }
+        .pick button[aria-pressed="true"] small { color:#2f7a4c; }
+        .pick button:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+        .priceq { display:none; flex-wrap:wrap; align-items:center; gap:8px 10px; margin-top:12px; font-size:.95rem; color:var(--text-2); }
+        .priceq.show { display:flex; }
+        .priceq .q { flex-basis:100%; }
+        .priceq button { border:1px solid rgba(255,255,255,.26); background:transparent; color:#fff; font:600 .9rem var(--sans); padding:.5rem 1.1rem; border-radius:999px; cursor:pointer; }
+        .priceq button:hover { border-color:#fff; }
+        @media(max-width:899px){ #get .priceq { justify-content:center; } }
 
 .cap-block { animation:none; margin:26px 0 0; max-width:460px; }
 .cap-form { margin-top:0; }
@@ -187,7 +195,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .cap-block{container-type:inline-size}
 /* "Unsubscribe any time." and the printed-copy line start where the typed email does (the field's left padding) */
 .cap-block{--in-x:1.2rem}
-.cap-block .note,.cap-block .printask{padding-left:var(--in-x)}
+.cap-block .note,.cap-block .priceq{padding-left:var(--in-x)}
 @container (min-width:400px){
 .cap-form{position:relative;display:block;max-width:520px}
 .cap-form .in{width:100%;box-sizing:border-box;padding-right:236px;transition:border-color .2s,box-shadow .2s,padding-right .7s cubic-bezier(.33,1,.68,1)}
@@ -221,8 +229,9 @@ details .a p{margin:0}
 #get .spread img:last-child{border-radius:0 6px 6px 0}
 #get .spread::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:14%;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(0,0,0,.18) 42%,rgba(0,0,0,.32) 50%,rgba(0,0,0,.18) 58%,transparent);pointer-events:none}
 @media(min-width:900px){#get .getgrid{grid-template-columns:5fr 6fr;gap:56px}#get .getbook{order:2}#get .getcopy{order:1}}
-@media(max-width:899px){#get .getcopy{justify-items:center;text-align:center}#get .cap-block .note{text-align:center}#get .cap-block .note,#get .cap-block .printask{padding-left:0}#get .cap-block{width:100%;justify-self:center}#get .spread{max-width:480px;transform:rotateX(10deg) rotateZ(-2deg)}}
+@media(max-width:899px){#get .getcopy{justify-items:center;text-align:center}#get .cap-block .note{text-align:center}#get .cap-block .note,#get .cap-block .priceq{padding-left:0}#get .cap-block{width:100%;justify-self:center}#get .spread{max-width:480px;transform:rotateX(10deg) rotateZ(-2deg)}}
 @media(prefers-reduced-motion:reduce){#get::before{animation:none}}
+
 </style>
 <script src="/analytics-web.js"
         data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -289,10 +298,11 @@ details .a p{margin:0}
             <label class="sr" for="email-hero">Email address</label>
             <input class="in" id="email-hero" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
             <input class="hp" type="text" id="website-hero" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <button class="btn" type="submit" aria-label="Send me the cookbook">Send me the cookbook</button>
+            <button class="btn" type="submit" aria-label="Send me the free PDF">Send me the free PDF</button>
           </form>
+          <div class="pick" role="group" aria-label="Choose an edition"><button type="button" data-mode="pdf" aria-pressed="true">Free PDF<small>To your inbox</small></button><button type="button" data-mode="hard" aria-pressed="false">Hardcover<small>Coming soon</small></button></div>
           <div class="success" role="status"><span class="tick">&#10003;</span><span class="successmsg">Check your inbox, your cookbook's on the way.</span></div>
-          <div class="printask" aria-live="polite"><span class="pq">Want a printed copy?</span><button type="button" class="btn ghost pbtn">Notify me</button></div>
+          <div class="priceq" aria-live="polite"></div>
           <p class="note">Unsubscribe any time.</p>
         </div>
       </div>
@@ -363,10 +373,11 @@ details .a p{margin:0}
             <label class="sr" for="email-close">Email address</label>
             <input class="in" id="email-close" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
             <input class="hp" type="text" id="website-close" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <button class="btn" type="submit" aria-label="Send me the cookbook">Send me the cookbook</button>
+            <button class="btn" type="submit" aria-label="Send me the free PDF">Send me the free PDF</button>
           </form>
+          <div class="pick" role="group" aria-label="Choose an edition"><button type="button" data-mode="pdf" aria-pressed="true">Free PDF<small>To your inbox</small></button><button type="button" data-mode="hard" aria-pressed="false">Hardcover<small>Coming soon</small></button></div>
           <div class="success" role="status"><span class="tick">&#10003;</span><span class="successmsg">Check your inbox, your cookbook's on the way.</span></div>
-          <div class="printask" aria-live="polite"><span class="pq">Want a printed copy?</span><button type="button" class="btn ghost pbtn">Notify me</button></div>
+          <div class="priceq" aria-live="polite"></div>
           <p class="note">Unsubscribe any time.</p>
         </div>
     </div>
@@ -400,66 +411,86 @@ details .a p{margin:0}
     var source = 'cookbook' + (ref ? '-' + ref : '');
     var blocks = [].slice.call(document.querySelectorAll('.cap-block'));
 
-    function showSuccess(msg){
-        blocks.forEach(function(b){
-            b.querySelector('.successmsg').textContent = msg;
-            b.querySelector('.cap-form').style.display = 'none';
-            b.querySelector('.note').style.display = 'none';
-            b.querySelector('.success').classList.add('show');
-            b.querySelector('.printask').classList.add('show');
-        });
+    var API = 'https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe';
+    var MODES = {
+        pdf:  { btn: 'Send me the free PDF', note: 'Unsubscribe any time.' },
+        hard: { btn: 'Reserve my hardcover', note: "Coming soon. Free to reserve, we'll email you first." }
+    };
+    function success(b, msg){
+        b.querySelector('.successmsg').textContent = msg;
+        b.querySelector('.cap-form').style.display = 'none';
+        b.querySelector('.pick').style.display = 'none';
+        b.querySelector('.note').style.display = 'none';
+        b.querySelector('.success').classList.add('show');
     }
 
-    // Printed copy: register interest after sign-up. Analytics always records it.
-    // PRINT_POST is off: the subscribe Lambda (jsonfit-subscribe) treats a second call for a pending
-    // address as a fresh sign-up (new token, source overwritten, a second confirmation email), which
-    // breaks the confirmation link people were just sent. Turn it on once the Lambda records
-    // source 'print_interest' without re-sending.
-    var PRINT_POST = false, signedUpEmail = '', printDone = false;
-    function printInterest(where){
-        if (printDone) return; printDone = true;
-        if (window.track) window.track('cookbook_print_interest', { location: where });
-        if (window.gtag) gtag('event', 'cookbook_print_interest', { 'button_location': 'cookbook_' + where });
-        if (PRINT_POST && signedUpEmail) {
-            fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe', {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ email: signedUpEmail, website: '', source: 'print_interest' })
-            }).catch(function(){});
-        }
-        blocks.forEach(function(b){ b.querySelector('.printask').textContent = "Noted. We'll tell you when it's ready."; });
+    /* What would people pay? Each visitor who reserves is asked about ONE price, picked at random
+       and kept for that visitor (Gabor-Granger). Answers are counted per price in analytics, which
+       gives a demand curve without showing anyone a price as if it were real. */
+    var PRICES = [29, 39, 49, 59];
+    function myPrice(){
+        var p; try { p = parseInt(localStorage.getItem('cb_hc_price'), 10); } catch (e) {}
+        if (PRICES.indexOf(p) === -1) { p = PRICES[Math.floor(Math.random() * PRICES.length)]; try { localStorage.setItem('cb_hc_price', p); } catch (e) {} }
+        return p;
     }
-    blocks.forEach(function(b){
-        var where = b.getAttribute('data-location') || 'hero';
-        b.querySelector('.pbtn').addEventListener('click', function(){ printInterest(where); });
-    });
+    function askPrice(b, where){
+        var box = b.querySelector('.priceq'), price = myPrice();
+        box.innerHTML = '<span class="q">One quick question: would you pre-order it at $' + price + '?</span>' +
+            '<button type="button" data-a="yes">Yes</button><button type="button" data-a="maybe">Maybe</button><button type="button" data-a="no">No</button>';
+        box.classList.add('show');
+        box.querySelectorAll('button').forEach(function(x){ x.addEventListener('click', function(){
+            var ans = x.getAttribute('data-a');
+            if (window.track) window.track('cookbook_hardcover_price', { price: price, answer: ans, location: where });
+            if (window.gtag) gtag('event', 'cookbook_hardcover_price', { price: price, answer: ans });
+            box.textContent = 'Thanks, that helps us set the price.';
+        }); });
+    }
 
     blocks.forEach(function(block){
         var form = block.querySelector('.cap-form');
         var email = block.querySelector('.in');
         var hp = block.querySelector('.hp');
         var btn = block.querySelector('.btn');
+        var note = block.querySelector('.note');
         var where = block.getAttribute('data-location') || 'hero';
+        var mode = 'pdf';
+
+        block.querySelectorAll('.pick button').forEach(function(t){
+            t.addEventListener('click', function(){
+                mode = t.getAttribute('data-mode');
+                block.querySelectorAll('.pick button').forEach(function(x){ x.setAttribute('aria-pressed', x === t ? 'true' : 'false'); });
+                btn.textContent = MODES[mode].btn; btn.setAttribute('aria-label', MODES[mode].btn);
+                note.textContent = MODES[mode].note;
+                if (window.track) window.track('cookbook_edition_pick', { edition: mode, location: where });
+            });
+        });
 
         form.addEventListener('submit', function(e){
             e.preventDefault();
             var val = (email.value || '').trim();
             if (!val || val.indexOf('@') === -1) { email.focus(); email.style.borderColor = '#ef4444'; return; }
-            if (window.gtag) gtag('event', 'cookbook_signup', { 'button_location': 'cookbook_' + where, 'ref': ref || 'direct' });
-            var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending\u2026';
-            fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe', {
+            var hard = mode === 'hard';
+            if (window.gtag) gtag('event', hard ? 'cookbook_hardcover_reserve' : 'cookbook_signup', { 'button_location': 'cookbook_' + where, 'ref': ref || 'direct' });
+            var label = btn.textContent; btn.disabled = true; btn.textContent = hard ? 'Saving…' : 'Sending…';
+            fetch(API, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ email: val, website: hp ? hp.value : '', source: source })
+                body: JSON.stringify({ email: val, website: hp ? hp.value : '', source: hard ? 'hardcover_reserve' : source })
             })
             .then(function(r){ return r.json(); })
             .then(function(d){
                 if (d && d.ok) {
-                    signedUpEmail = val;
-                    if (window.track) window.track('cookbook_email_submitted', { source: source, location: where });
-                    showSuccess(d.status === 'already_subscribed'
-                        ? "You're already on the list. Check your inbox for the cookbook."
-                        : "Almost there. Check your inbox to confirm and unlock your cookbook.");
+                    if (hard) {
+                        if (window.track) window.track('cookbook_hardcover_reserve', { location: where });
+                        success(block, "Hardcover reserved. We'll email you first when it's ready.");
+                        askPrice(block, where);
+                    } else {
+                        if (window.track) window.track('cookbook_email_submitted', { source: source, location: where });
+                        var msg = d.status === 'already_subscribed'
+                            ? "You're already on the list. Check your inbox for the cookbook."
+                            : "Almost there. Check your inbox to confirm and unlock your cookbook.";
+                        blocks.forEach(function(b){ success(b, msg); });
+                    }
                 } else {
                     email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label;
                 }
