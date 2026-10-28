@@ -662,7 +662,14 @@ details .a p{margin:0}
     hint.innerHTML = '<b>' + verb + '</b> to look inside';
     live.textContent = '';
   };
-  var setSpread = function (i) { s = i; oL.innerHTML = spreads[i][0]; oR.innerHTML = spreads[i][1]; report(i); preload(i + 1); };
+  /* a page's images are only swapped when its content changes, and a turn waits until the new images are
+     decoded, so no page ever paints blank white for a frame (that was the flash on every turn) */
+  var put = function (el, html) { if (el._h === html) return; el._h = html; el.innerHTML = html; };
+  var ready = function () {
+    var ims = []; for (var a = 0; a < arguments.length; a++) ims = ims.concat([].slice.call(arguments[a].querySelectorAll('img')));
+    return Promise.all(ims.map(function (im) { return im.decode ? im.decode().catch(function () {}) : null; }));
+  };
+  var setSpread = function (i) { s = i; put(oL, spreads[i][0]); put(oR, spreads[i][1]); report(i); preload(i + 1); };
   var leaf = function (cls, front, back) {
     var d = document.createElement('div'); d.className = 'cbturn ' + cls; d.setAttribute('aria-hidden', 'true');
     d.innerHTML = '<div class="cbface">' + front + '</div><div class="cbface bk">' + back + '</div>';
@@ -670,8 +677,13 @@ details .a p{margin:0}
     openEl.appendChild(d); return d;
   };
   var swing = function (el, to, ms, done) {
-    requestAnimationFrame(function () { requestAnimationFrame(function () { el.style.transform = to; }); });
-    setTimeout(function () { el.remove(); busy = false; if (done) done(); }, ms);
+    ready(el, oL, oR).then(function () {
+      requestAnimationFrame(function () { requestAnimationFrame(function () { el.style.transform = to; }); });
+      setTimeout(function () {
+        if (done) done();
+        ready(oL, oR).then(function () { requestAnimationFrame(function () { el.remove(); busy = false; }); });
+      }, ms);
+    });
   };
   var openHint = function () { hint.innerHTML = '<b>' + verb + '</b> the right page to turn, the left to go back'; };
   var markOpen = function () {
@@ -687,7 +699,7 @@ details .a p{margin:0}
     b3d.classList.add('flat');                                   /* 1. turn to face the reader */
     setTimeout(function () {                                     /* 2. the cover swings open as the book slides over */
       book.classList.remove('closed'); book.classList.add('is-open'); b3d.classList.remove('flat');
-      oL.innerHTML = ''; oR.innerHTML = spreads[0][1]; s = 0;
+      put(oL, ''); put(oR, spreads[0][1]); s = 0;
       var c = leaf('fwd slow', IMG(0, true), INSIDE);
       slide.classList.remove('center', 'sway');
       openHint();
@@ -700,26 +712,26 @@ details .a p{margin:0}
     if (s >= spreads.length - 1) return;
     if (still) return setSpread(s + 1);
     busy = true; var cur = spreads[s], nx = spreads[s + 1];
-    var t = leaf('fwd', cur[1], nx[0]); oR.innerHTML = nx[1];
+    var t = leaf('fwd', cur[1], nx[0]); put(oR, nx[1]);
     swing(t, 'rotateY(-180deg)', 580, function () { setSpread(s + 1); });
   };
   var prev = function () {
     if (busy || book.classList.contains('closed')) return;
     if (s === 0) {
-      if (still) { oL.innerHTML = ''; oR.innerHTML = ''; closedState(); return; }
-      busy = true; oL.innerHTML = '';                              /* close: the cover swings shut as the book slides back... */
+      if (still) { put(oL, ''); put(oR, ''); closedState(); return; }
+      busy = true; put(oL, '');                              /* close: the cover swings shut as the book slides back... */
       var c = leaf('bwd slow', INSIDE, IMG(0, true));
       slide.classList.add('center');
       requestAnimationFrame(function () { requestAnimationFrame(function () { c.style.transform = 'rotateY(180deg)'; }); });
       setTimeout(function () {                                     /* ...then turns back to its 3D angle */
-        b3d.classList.add('flat'); closedState(); c.remove(); oR.innerHTML = '';
+        b3d.classList.add('flat'); closedState(); c.remove(); put(oR, '');
         requestAnimationFrame(function () { requestAnimationFrame(function () { b3d.classList.remove('flat'); busy = false; }); });
       }, 720);
       return;
     }
     if (still) return setSpread(s - 1);
     busy = true; var cur = spreads[s], pv = spreads[s - 1];
-    var t = leaf('bwd', cur[0], pv[1]); oL.innerHTML = pv[0];
+    var t = leaf('bwd', cur[0], pv[1]); put(oL, pv[0]);
     swing(t, 'rotateY(180deg)', 580, function () { setSpread(s - 1); });
   };
 
