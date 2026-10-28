@@ -143,14 +143,11 @@ html.fbjs .fbwrap:not(.on) .book{visibility:hidden}
 .cbturn.fwd{left:var(--pw);transform-origin:0 50%}
 .cbturn.bwd{left:0;transform-origin:100% 50%}
 .cbturn.slow{transition-duration:.7s}
-/* the crease: every page draws its own half of the shade at the spine (the lying pages and both faces of the
-   turning one), so nothing is layered over the spread and the shade never changes as a page turns */
-.cbpg:not(:empty)::after{content:"";position:absolute;top:0;bottom:0;width:18px;pointer-events:none}
-.cbL::after{right:0;background:linear-gradient(270deg,rgba(0,0,0,.14),rgba(0,0,0,0))}
-.cbR::after{left:0;background:linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,0))}
-.cbturn .cbface::before{content:"";position:absolute;top:0;bottom:0;width:18px;z-index:5;pointer-events:none}
-.cbturn.fwd .cbface:not(.bk)::before,.cbturn.bwd .cbface.bk::before{left:0;background:linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,0))}
-.cbturn.fwd .cbface.bk::before,.cbturn.bwd .cbface:not(.bk)::before{right:0;background:linear-gradient(270deg,rgba(0,0,0,.14),rgba(0,0,0,0))}
+/* the crease: one fold laid over the open book from outside its 3D layer (.cbook flattens it), so it never
+   ties with a page at the same depth (that tie was the flicker); the turning page darkens a little mid-turn */
+.cbook.is-open::after{opacity:1}
+.cbturn .cbface::after{animation:cbshade .55s ease-in-out both}
+.cbturn.slow .cbface::after{animation-duration:.7s}
 .cbook:focus-visible.closed .cbfront{outline:3px solid var(--green-text);outline-offset:4px}
 .cbook:focus-visible.is-open .cbopen{outline:3px solid var(--green-text);outline-offset:5px}
 .cbhint{margin:14px 0 0;min-height:1.45em;text-align:center;color:var(--text-2);font-size:.95rem;line-height:1.45}
