@@ -72,7 +72,11 @@
 .fbwrap.at-cover .fbstage{transform:translateX(-25%)}
 .fbwrap.at-back .fbstage{transform:translateX(25%)}
 .fbwrap.portrait .fbstage{transform:none}
-.fb{margin:0 auto;filter:drop-shadow(0 30px 50px rgba(0,0,0,.55))}
+.fb{margin:0 auto}
+/* No filter or scale-in on the book: with the library's 3D page layers, Chrome on a Mac drew the pages
+   once at low resolution and left them soft until a page was grabbed. A plain glow sits underneath instead. */
+.fbwrap.on .fbstage::before{content:"";position:absolute;left:8%;right:8%;bottom:-18px;height:40px;border-radius:50%;background:rgba(0,0,0,.55);filter:blur(22px);pointer-events:none}
+.fbwrap[data-enter-vis]{animation-name:enRise;will-change:auto}
 .fb-page{background:#0b0b0d;overflow:hidden}
 .fb-page img{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .fb-back{background:#fff;color:#15151a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8% 9%;box-sizing:border-box;overflow:hidden;gap:0}
@@ -98,7 +102,7 @@
    the cover's height the whole time, so nothing below it moves. Turning is ours (swipe, tap a half,
    arrows); vertical swipes still scroll the page. */
 .fbwrap.phone .fbstage{transform:none;overflow:hidden;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;cursor:pointer}
-.fbwrap.phone .fb{margin:0;transform-origin:0 0;transition:transform .75s cubic-bezier(.33,1,.68,1);filter:drop-shadow(0 18px 30px rgba(0,0,0,.5))}
+.fbwrap.phone .fb{margin:0;transform-origin:0 0;transition:transform .75s cubic-bezier(.33,1,.68,1)}
 .fbwrap.phone .fbnav{margin-top:16px}
 .fbwrap.fitted .fb{margin:0;transform-origin:0 0}
 @media (prefers-reduced-motion:reduce){.fbstage,.fbwrap.phone .fb{transition:none}}
