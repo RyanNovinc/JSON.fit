@@ -180,7 +180,7 @@ function build(page, home) {
 
   const chipCls = ['chip a on', 'chip b', 'chip c2'];
   page.chips.forEach(([b, span], i) => {
-    const re = new RegExp(`(<button type="button" class="${chipCls[i]}" data-i="${i}"><i [^>]*><\\/i>)[\\s\\S]*?(<\\/button>)`);
+    const re = new RegExp(`(<button type="button" class="${chipCls[i]}" data-i="${i}"[^>]*><i [^>]*><\\/i>)[\\s\\S]*?(<\\/button>)`);
     r(re, (m, a, z) => a + `<b>${b}</b>` + (span ? `<span>${span}</span>` : '') + z, `chip ${i}`);
   });
 
