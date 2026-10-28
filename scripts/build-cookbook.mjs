@@ -183,8 +183,10 @@ const prepFlags = (m) => { const st = (m.meal_prep || {}).storage || {}; return 
 const defaultPlate = (m) => m.plates.find((p) => p.id === 'standard') || m.plates[0];
 const macros = (m) => defaultPlate(m).plate_macros || {};
 
-// Start-here picks: one per section (not the backup meals), the least hands-on time, then the most protein.
-const picks = sections.filter((s) => s.name !== 'Backup meals').map((s) => s.meals.slice().sort((a, b) => activeMin(a) - activeMin(b) || macros(b).protein_g - macros(a).protein_g)[0]).filter(Boolean);
+// Start-here picks: the book is about batch mains, so two from each batch section (no breakfast or
+// dessert here), the least hands-on time, then the most protein.
+const easiest = (s) => s.meals.slice().sort((a, b) => activeMin(a) - activeMin(b) || macros(b).protein_g - macros(a).protein_g);
+const picks = sections.filter((s) => s.name === 'Slow cooker' || s.name === 'Oven bakes').flatMap((s) => easiest(s).slice(0, 2));
 const batchTen = batchMeals.filter((m) => activeMin(m) <= 10).length;
 const freezes = meals.filter((m) => ((m.meal_prep || {}).storage || {}).freeze_months).length;
 
@@ -243,7 +245,7 @@ img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 .skim .r span:last-child{font-family:'DM Mono',monospace;font-size:7.2pt;color:#6f6f7a;white-space:nowrap}
 .starts{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:6mm}
 .start{border-radius:3.5mm;overflow:hidden;background:#fff;border:1px solid #e3e1da;break-inside:avoid}
-.start img{width:100%;height:34mm;object-fit:cover;display:block}
+.start img{width:100%;height:62mm;object-fit:cover;display:block}
 .start img.cut{padding:2mm 3mm 0}
 .start img.framed{border-radius:0}
 .start .b{padding:3.5mm 4mm 4mm}
@@ -351,7 +353,7 @@ const contents = `<section class="page text">
   <p>${batchMeals.length} batch meals, each one cook for 8 tubs. ${batchTen} of them take 10 minutes or less of hands-on work; the slow cooker or the oven does the rest. ${freezes} recipes in the book freeze. Each recipe is one page: the plate, the numbers, the ingredients, the method and how it keeps.</p>
   <div class="toc">
     <div class="row"><span class="n">01</span><span class="t">Skim it</span><span class="c">every meal, time and kcal</span><span class="p">${3 + OFF}</span></div>
-    <div class="row"><span class="n">02</span><span class="t">Start with these</span><span class="c">one from each section</span><span class="p">${5 + OFF}</span></div>
+    <div class="row"><span class="n">02</span><span class="t">Start with these</span><span class="c">the four easiest batches</span><span class="p">${5 + OFF}</span></div>
     ${sections.map((s, i) => `<div class="row"><span class="n">0${i + 3}</span><span class="t">${s.name}</span><span class="c">${s.meals.length} recipes</span><span class="p">${s.page}</span></div>`).join('')}
     <div class="row"><span class="n">0${sections.length + 3}</span><span class="t">Let the app build your week</span><span class="c">the same meals, planned</span><span class="p">${CLOSING_PAGE}</span></div>
   </div>
@@ -369,8 +371,8 @@ const skim = skimHalf(sections.slice(0, 2), 3 + OFF, true) + skimHalf(sections.s
 const startHere = `<section class="page text">
   <p class="mono g">Start here</p>
   <h2 class="serif">Start with these.</h2>
-  <p>New to batch cooking? One from each section, the least hands-on work in it. Cook one batch this week and you have lunch or dinner sorted for days.</p>
-  <div class="starts">${picks.map((m, i) => `<div class="start${i === 0 ? ' wide' : ''}">${photo(m)}<div class="b"><b>${esc(m.display_name)}</b><small>${SECTION(m)} · ${activeMin(m)} min hands-on · ${fmtTime(totalMin(m))} total · ${kcalFmt(macros(m).kcal)} kcal · ${Math.round(macros(m).protein_g)} g protein · p${m.page}</small><p>${esc(defaultPlate(m).description || '')}</p></div></div>`).join('')}</div>
+  <p>New to batch cooking? These four take the least hands-on work. Cook one this week and lunch or dinner is sorted for days.</p>
+  <div class="starts">${picks.map((m, i) => `<div class="start">${photo(m)}<div class="b"><b>${esc(m.display_name)}</b><small>${SECTION(m)} · ${activeMin(m)} min hands-on · ${fmtTime(totalMin(m))} total · ${kcalFmt(macros(m).kcal)} kcal · ${Math.round(macros(m).protein_g)} g protein · p${m.page}</small><p>${esc(defaultPlate(m).description || '')}</p></div></div>`).join('')}</div>
   ${foot(5 + OFF)}
 </section>`;
 
