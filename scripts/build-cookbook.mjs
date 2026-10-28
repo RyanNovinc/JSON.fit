@@ -41,7 +41,7 @@
  *                        Default out: cookbook/build/cookbook-cover-wrap.pdf
  *   --check              with --print: writes <out>.check.json (overflow past the safe area, image ppi)
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
@@ -85,6 +85,24 @@ if (process.argv.includes('--images')) {
   console.log('print images in cookbook/build/img/');
 }
 
+// Print: the photos "on white" are 253-254 white, which a printer can lay as a faint box of ink.
+// Their near-whites are eased up to paper white (240 and below untouched), saved in cookbook/build/print-white/.
+const PRINT_WHITE = new Map();
+const printWhite = (f) => PRINT_WHITE.get(f) || f;
+if (PRINT) {
+  const sharp = (await import('sharp')).default;
+  const dir = path.join(OUT_DIR, 'print-white'); mkdirSync(dir, { recursive: true });
+  const lut = new Uint8Array(256).map((_, v) => (v <= 240 ? v : Math.min(255, Math.round(240 + (v - 240) * 1.6))));
+  for (const n of readdirSync(path.join(ROOT, 'images/cookbook/white')).filter((n) => n.endsWith('.jpg'))) {
+    const src = path.join(ROOT, 'images/cookbook/white', n), out = path.join(dir, n);
+    if (!existsSync(out) || statSync(out).mtimeMs < statSync(src).mtimeMs) {
+      const { data, info } = await sharp(src).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+      for (let i = 0; i < data.length; i++) data[i] = lut[data[i]];
+      await sharp(data, { raw: info }).jpeg({ quality: 92, chromaSubsampling: '4:4:4' }).toFile(out);
+    }
+    PRINT_WHITE.set(src, out);
+  }
+}
 const imgFor = (m) => {
   const cands = [m.image_filename, (m.plates[0] || {}).image_filename, m.slug].map(stem).filter(Boolean);
   for (const c of cands) {
@@ -104,7 +122,7 @@ const photoFor = (m) => {
   for (const c of cands) {
     // A photo shot on white (images/cookbook/white/<stem>.jpg) beats the automatic cut-out.
     const shot = path.join(ROOT, 'images/cookbook/white', c + '.jpg');
-    if (existsSync(shot)) return { src: 'file://' + shot, cut: true };
+    if (existsSync(shot)) return { src: 'file://' + (PRINT ? printWhite(shot) : shot), cut: true };
     const w = path.join(OUT_DIR, 'white-photos', c + '.jpg');
     if (!KEEP_BLACK.has(c) && existsSync(w)) return { src: 'file://' + w, cut: true };
   }
@@ -440,7 +458,16 @@ const WRAP_H = WRAP + BOARD_H + WRAP;
 // The interior: one sheet per page, trim + bleed on the outside edge, top and bottom. Odd pages are
 // rectos (bind edge on the left), even pages versos. Inside margin 19 mm for the hardcover gutter,
 // outside 14 mm, nothing within 12.7 mm (0.5 in) of the trim.
-const printCss = `@page{size:${TRIM_W + BLEED}in ${TRIM_H + 2 * BLEED}in;margin:0}
+// Print fonts: static instances (scripts/print-fonts/, OFL) so the PDF embeds real TrueType fonts.
+// Google's variable Outfit and Fraunces come out of Chrome as Type 3 fonts, which printers reject.
+const FONT_DIR = path.join(ROOT, 'scripts/print-fonts');
+const printFonts = [400, 500, 600, 700, 800].map((w) => `@font-face{font-family:'Outfit';font-weight:${w};src:url('file://${FONT_DIR}/Outfit-${w}.ttf')}`).join('\n')
+  + '\n' + [500, 600, 700].map((w) => `@font-face{font-family:'Fraunces';font-style:italic;font-weight:${w};src:url('file://${FONT_DIR}/Fraunces144-Italic-${w}.ttf')}`).join('\n')
+  + '\n.serif{font-variation-settings:normal}\n';
+const printHead = (extraCss, fonts = '') => head.replace('&family=Fraunces:ital,opsz,wght@1,9..144,500..700&family=Outfit:wght@400;500;600;700', fonts).replace('<style>', '<style>' + printFonts).replace('</style>', extraCss + '</style>');
+// Chrome rounds the page size, so it gets a slightly bigger page and setMediaBox() trims it to the exact size.
+const PAD = 0.03;
+const printCss = `@page{size:${TRIM_W + BLEED + PAD}in ${TRIM_H + 2 * BLEED + PAD}in;margin:0}
 .sheet{width:${TRIM_W + BLEED}in;height:${TRIM_H + 2 * BLEED}in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always}
 .sheet:last-of-type{break-after:auto;page-break-after:auto}
 .sheet .page{position:absolute;top:${BLEED}in;width:${TRIM_W}in;height:${TRIM_H}in;break-after:auto;page-break-after:auto}
@@ -456,12 +483,14 @@ img.cut,.cover.white .food img{mix-blend-mode:normal}
 .divider .wall{left:var(--pl);right:var(--pr);top:14mm;height:150mm;grid-auto-rows:48mm}
 .divider .wall img.framed{height:42mm}
 .divider p{margin-bottom:6mm}
-.recipe .photo{padding:10mm var(--pr) 0 var(--pl);height:78mm}
+/* DM Mono has no bold: a synthetic bold comes out as a Type 3 font */
+.skim h3{font-weight:500}
+.recipe .photo{padding:14mm var(--pr) 0 var(--pl);height:82mm}
 .recipe .photo .tag{left:var(--pl)}
 .recipe .body{padding:6mm var(--pr) 0 var(--pl)}
-.recipe.long .photo{height:66mm}
-.recipe.short .photo{height:98mm}
-.recipe.xlong .photo{height:52mm}
+.recipe.long .photo{height:69mm}
+.recipe.short .photo{height:101mm}
+.recipe.xlong .photo{height:55mm}
 .recipe.xlong .body{padding-top:4mm}
 /* title page and imprint */
 .titlep{padding:20mm var(--pr) 0 var(--pl)}
@@ -475,7 +504,7 @@ img.cut,.cover.white .food img{mix-blend-mode:normal}
 .imp p{margin:0 0 3mm}
 .imp b{color:#15151a;font-weight:600}
 `;
-// Recipe pages: shrink the photo until the method clears the footer (never below 40 mm).
+// Recipe pages: shrink the photo until the method clears the footer (never below 40 mm), or grow it into spare room.
 const fitScript = `<script>
 (function(){
   var MM = 96 / 25.4;
@@ -485,8 +514,11 @@ const fitScript = `<script>
       var limit = foot.getBoundingClientRect().top - 3 * MM;
       for (var i = 0; i < 40; i++) {
         var b = 0; pg.querySelectorAll('.body *').forEach(function(e){ var r = e.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); });
-        var over = b - limit; if (over <= 0) break;
-        var h = ph.getBoundingClientRect().height, nh = Math.max(40 * MM, h - over);
+        var over = b - limit, h = ph.getBoundingClientRect().height;
+        // room to spare: give it to the photo (up to 92 mm), keeping 2 mm of the slack
+        if (over < -2 * MM) { var gh = Math.min(Math.max(h, 92 * MM), h - over - 2 * MM); if (gh - h < 1) break; ph.style.height = gh + 'px'; continue; }
+        if (over <= 0) break;
+        var nh = Math.max(40 * MM, h - over);
         if (nh >= h) { pg.setAttribute('data-overflow', (over / MM).toFixed(1)); break; }
         ph.style.height = nh + 'px';
       }
@@ -506,19 +538,33 @@ const checkScript = `<script>
       var P = pg.getBoundingClientRect(), safe = 12.7 * MM, foot = pg.querySelector('.foot');
       var limit = foot ? foot.getBoundingClientRect().top - 2 * MM : P.bottom - safe;
       var bad = [];
-      pg.querySelectorAll('*').forEach(function(e){
-        if (foot && (e === foot || foot.contains(e))) return;
-        if (e.closest('.guide')) return;
-        var r = e.getBoundingClientRect(); if (!r.width || !r.height) return;
-        if (getComputedStyle(e).visibility === 'hidden') return;
-        var cl = e.parentElement && e.parentElement.closest('.food div, .photo, .wall, .start, .hero');
-        if (cl && e.tagName === 'IMG') { var c = cl.getBoundingClientRect(); r = { left: Math.max(r.left, c.left), right: Math.min(r.right, c.right), top: Math.max(r.top, c.top), bottom: Math.min(r.bottom, c.bottom) }; }
+      var test = function(r, what){
         var o = [];
         if (r.bottom > limit + 0.5) o.push('bottom ' + ((r.bottom - limit) / MM).toFixed(1));
         if (r.top < P.top + safe - 0.5) o.push('top ' + ((P.top + safe - r.top) / MM).toFixed(1));
         if (r.left < P.left + safe - 0.5) o.push('left ' + ((P.left + safe - r.left) / MM).toFixed(1));
         if (r.right > P.right - safe + 0.5) o.push('right ' + ((r.right - P.right + safe) / MM).toFixed(1));
-        if (o.length) bad.push(e.tagName.toLowerCase() + '.' + (e.className && e.className.baseVal === undefined ? e.className : '') + ' ' + o.join(','));
+        if (o.length) bad.push(what + ': ' + o.join(','));
+      };
+      // text: every line box of every text node (not the boxes around it)
+      var tw = document.createTreeWalker(pg, NodeFilter.SHOW_TEXT), n;
+      while ((n = tw.nextNode())) {
+        if (!n.textContent.trim() || (foot && foot.contains(n)) || n.parentElement.closest('.guide')) continue;
+        var rg = document.createRange(); rg.selectNodeContents(n);
+        Array.prototype.forEach.call(rg.getClientRects(), function(r){ if (r.width && r.height) test(r, '"' + n.textContent.trim().slice(0, 24) + '"'); });
+      }
+      // pictures: the part actually drawn (object-fit, and clipped by its frame)
+      pg.querySelectorAll('img, svg').forEach(function(im){
+        if (im.closest('.guide') || (foot && foot.contains(im)) || (im.tagName.toLowerCase() === 'svg' && im.closest('svg') !== im)) return;
+        var r = im.getBoundingClientRect(); if (!r.width) return;
+        var R = { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+        if (im.tagName === 'IMG' && im.naturalWidth) {
+          var f = getComputedStyle(im).objectFit;
+          if (f === 'contain') { var sc = Math.min(r.width / im.naturalWidth, r.height / im.naturalHeight), w = im.naturalWidth * sc, h = im.naturalHeight * sc; R = { left: r.left + (r.width - w) / 2, right: r.left + (r.width + w) / 2, top: r.top + (r.height - h) / 2, bottom: r.top + (r.height + h) / 2 }; }
+        }
+        var cl = im.parentElement.closest('.food div, .photo, .wall, .start, .hero');
+        if (cl) { var c = cl.getBoundingClientRect(); R = { left: Math.max(R.left, c.left), right: Math.min(R.right, c.right), top: Math.max(R.top, c.top), bottom: Math.min(R.bottom, c.bottom) }; }
+        test(R, (im.getAttribute('src') || 'svg').split('/').pop());
       });
       var imgs = [];
       pg.querySelectorAll('img').forEach(function(im){
@@ -556,7 +602,7 @@ const blankPage = `<section class="page blank"></section>`;
 const sheets = (body) => body.split('<section class="page').slice(1).map((p, i) => `<div class="sheet ${i % 2 ? 'v' : 'r'}"><section class="page${p.trimEnd()}</div>`).join('\n');
 
 // The cover wrap: back board | hinge | spine | hinge | front board, 0.625 in wrapped round every edge.
-const wrapCss = `@page{size:${WRAP_W}in ${WRAP_H}in;margin:0}
+const wrapCss = `@page{size:${WRAP_W + PAD}in ${WRAP_H + PAD}in;margin:0}
 .wrap{break-after:auto;page-break-after:auto;position:relative;width:${WRAP_W}in;height:${WRAP_H}in;overflow:hidden;background:#fff}
 .board{position:absolute;top:${WRAP}in;width:${BOARD_W}in;height:${BOARD_H}in}
 .board.back{left:${WRAP}in}
@@ -564,13 +610,13 @@ const wrapCss = `@page{size:${WRAP_W}in ${WRAP_H}in;margin:0}
 .board.front .page{width:${BOARD_W}in;height:${BOARD_H}in;break-after:auto;page-break-after:auto}
 .cover.white .food img{mix-blend-mode:normal}
 .spine{position:absolute;top:0;height:${WRAP_H}in;left:${WRAP + BOARD_W + HINGE}in;width:${SPINE}in;background:linear-gradient(90deg,#0c2f1b,#166534 30%,#1a7a40 55%,#0f3d22)}
-.spine .t{position:absolute;left:0;right:0;top:${WRAP}in;height:${BOARD_H - 1.6}in;display:flex;align-items:center;justify-content:center}
-.spine .t b{writing-mode:vertical-rl;font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-weight:400;color:#f2f7f3;font-size:${(SPINE * 72 * 0.4).toFixed(2)}pt;line-height:1;letter-spacing:.01em;white-space:nowrap}
+.spine .t{position:absolute;left:0;right:0;top:${WRAP}in;height:${BOARD_H}in;display:flex;align-items:center;justify-content:center}
+.spine .t b{writing-mode:vertical-rl;font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-weight:400;color:#f2f7f3;font-size:${(SPINE * 72 * 0.46).toFixed(2)}pt;line-height:1;letter-spacing:.01em;white-space:nowrap}
 .spine .t b i{color:#4ade80;font-style:inherit}
 .spine .wm{position:absolute;left:50%;bottom:${WRAP + 0.45}in;height:${(SPINE * 0.26).toFixed(4)}in;width:auto;transform:translateX(-50%) rotate(90deg);transform-origin:50% 50%;color:#fff;display:block}
 .back .in{position:absolute;inset:0;padding:22mm 18mm 0}
-.back h2{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;font-variation-settings:"opsz" 144;font-size:38pt;line-height:1;letter-spacing:-.01em;margin:4mm 0 7mm;color:#15151a}
-.back h2 .g{color:#16a34a}
+.back h2{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;font-size:38pt;line-height:1;letter-spacing:-.01em;margin:4mm 0 7mm;color:#15151a}
+.back h2 .g,.back p.g{color:#16a34a}
 .back p{font-size:11.5pt;line-height:1.5;color:#3b3b44;margin:0 0 5mm;max-width:150mm}
 .back .sys{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin:8mm 0 8mm}
 .back .sys div{border:1px solid #e3e1da;border-radius:2.5mm;padding:3.5mm 3.5mm 3mm}
@@ -593,7 +639,7 @@ const wrapCss = `@page{size:${WRAP_W}in ${WRAP_H}in;margin:0}
 const sections_ = sections; // (same order as the book)
 const back = `<div class="board back"><div class="in">
   <p class="mono g">${TITLE}</p>
-  <h2>Every meal here is in the <span class="g">Coast app.</span></h2>
+  <h2>Every meal here is<br>in the <span class="g">Coast app.</span></h2>
   <p>One cook on the weekend fills 8 tubs: the next 3 days in the fridge, the rest in the freezer. About 10 minutes of hands-on work, then the slow cooker or the oven does the rest. Every recipe gives the macros per tub or serve.</p>
   <div class="sys"><div><b>1 cook</b><span>covers the week</span></div><div><b>8 tubs</b><span>fridge and freezer</span></div><div><b>~10 min</b><span>hands-on</span></div><div><b>Macros</b><span>per serve</span></div></div>
   <p>${meals.length} recipes: ${batchMeals.length} big-batch meals for the slow cooker and the oven, plus ${sections_.filter((s) => !/Slow|Oven/.test(s.name)).map((s) => s.name.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ' and $1')}.</p>
@@ -627,29 +673,48 @@ const guides = [
 
 if (PRINT === 'letter') {
   const body = titlePage + imprintPage + contents + skim + startHere + sections.map((s) => divider(s) + s.meals.map(recipe).join('')).join('') + closing + blankPage.repeat(BLANKS);
-  const out = head.replace('</style>', printCss + '</style>') + sheets(body) + fitScript + (process.argv.includes('--check') ? checkScript : '') + '</body></html>';
+  // Outfit has no 1/3 or 2/3 glyph (Chrome would fall back to a system font and a Type 3 font)
+  const pages = sheets(body).replace(/⅓/g, '1/3').replace(/⅔/g, '2/3');
   const p = path.join(OUT_DIR, 'cookbook-print-letter.html');
-  writeFileSync(p, out);
-  printPdf(p, `${TOTAL} pages, ${TRIM_W} x ${TRIM_H} in trim + ${BLEED} in bleed (sheet ${TRIM_W + BLEED} x ${TRIM_H + 2 * BLEED} in)`);
+  writeFileSync(p, printHead(printCss) + pages + fitScript + '</body></html>');
+  writeFileSync(p.replace('.html', '.check.html'), printHead(printCss) + pages + fitScript + checkScript + '</body></html>');
+  printPdf(p, TRIM_W + BLEED, TRIM_H + 2 * BLEED, `${TOTAL} pages, ${TRIM_W} x ${TRIM_H} in trim + ${BLEED} in bleed (sheet ${TRIM_W + BLEED} x ${TRIM_H + 2 * BLEED} in)`);
 } else if (PRINT === 'wrap') {
-  const wrapHead = head.replace('family=DM+Mono', 'family=DM+Serif+Display:ital@1&family=DM+Mono').replace('</style>', wrapCss + '</style>');
-  const out = wrapHead + `<section class="page wrap">${back}${spine}${front}${process.argv.includes('--guides') ? guides : ''}</section>` + (process.argv.includes('--check') ? checkScript : '') + '</body></html>';
+  const wrapHead = printHead(wrapCss, '&family=DM+Serif+Display:ital@1');
+  const wrapBody = wrapHead + `<section class="page wrap">${back}${spine}${front}${process.argv.includes('--guides') ? guides : ''}</section>`;
   const p = path.join(OUT_DIR, 'cookbook-cover-wrap.html');
-  writeFileSync(p, out);
-  printPdf(p, `cover wrap ${WRAP_W.toFixed(3)} x ${WRAP_H} in (spine ${SPINE} in, board ${BOARD_W} x ${BOARD_H} in)`);
+  writeFileSync(p, wrapBody + '</body></html>');
+  writeFileSync(p.replace('.html', '.check.html'), wrapBody + checkScript + '</body></html>');
+  printPdf(p, WRAP_W, WRAP_H, `cover wrap ${WRAP_W.toFixed(3)} x ${WRAP_H} in (spine ${SPINE} in, board ${BOARD_W} x ${BOARD_H} in)`);
 }
-function printPdf(p, what) {
+function printPdf(p, wIn, hIn, what) {
   console.log(what);
   if (process.argv.includes('--check')) {
-    const dom = execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--virtual-time-budget=20000', '--window-size=1400,1200', '--dump-dom', 'file://' + p], { encoding: 'utf8', maxBuffer: 1 << 28 });
+    const dom = execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--virtual-time-budget=20000', '--window-size=1400,1200', '--dump-dom', 'file://' + p.replace('.html', '.check.html')], { encoding: 'utf8', maxBuffer: 1 << 28 });
     const m = dom.match(/<pre id="__check">([\s\S]*?)<\/pre>/);
     writeFileSync(PDF.replace(/\.pdf$/, '') + '.check.json', m ? m[1].replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>') : '[]');
     console.log('check written');
   }
   if (!process.argv.includes('--html')) {
     execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--no-pdf-header-footer', '--virtual-time-budget=20000', `--print-to-pdf=${PDF}`, 'file://' + p], { stdio: 'ignore' });
+    setMediaBox(PDF, wIn * 72, hIn * 72);
     console.log(`wrote ${PDF}`);
   }
+}
+// Every page's MediaBox to the exact size (Chrome's PDFs have one classic xref table: shift its offsets).
+function setMediaBox(file, w, h) {
+  const s = readFileSync(file).toString('latin1');
+  const box = `/MediaBox [0 0 ${+w.toFixed(3)} ${+h.toFixed(3)}]`;
+  const edits = []; let out = '', last = 0;
+  for (const m of s.matchAll(/\/MediaBox \[0 0 [\d.]+ [\d.]+\]/g)) { out += s.slice(last, m.index) + box; edits.push([m.index, box.length - m[0].length]); last = m.index + m[0].length; }
+  out += s.slice(last);
+  const shift = (o) => o + edits.filter(([i]) => i < o).reduce((a, [, d]) => a + d, 0);
+  const sx = s.lastIndexOf('startxref'), xref = +s.slice(sx + 9).trim().split(/\s/)[0];
+  if (s.slice(xref, xref + 4) !== 'xref') throw new Error('unexpected PDF xref in ' + file);
+  const nx = shift(xref);
+  const head_ = out.slice(0, nx), rest = out.slice(nx);
+  const fixed = rest.replace(/^(\d{10}) (\d{5}) n/gm, (_, o, g) => String(shift(+o)).padStart(10, '0') + ' ' + g + ' n').replace(/startxref\s+\d+/, 'startxref\n' + nx);
+  writeFileSync(file, Buffer.from(head_ + fixed, 'latin1'));
 }
 
 if (!PRINT) {
