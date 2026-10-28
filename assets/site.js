@@ -79,3 +79,19 @@
     });
   });
 })();
+
+/* The logo on the page it links to (home): glide back to the top instead of reloading the page
+   and replaying its entrance. */
+(function(){
+  document.querySelectorAll('a.logo').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var u; try{ u=new URL(a.href, location.href); }catch(_){ return; }
+      var here=location.pathname.replace(/index\.html$/,''), there=u.pathname.replace(/index\.html$/,'');
+      if(u.origin!==location.origin || here!==there || e.metaKey||e.ctrlKey||e.shiftKey||e.button) return;
+      e.preventDefault();
+      var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({top:0,behavior:still?'auto':'smooth'});
+      if(location.hash) history.replaceState(null,'',u.pathname);
+    });
+  });
+})();

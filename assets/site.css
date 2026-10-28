@@ -452,3 +452,11 @@ a{color:inherit}
 .cap-form .btn{z-index:3}
 .v2 .final2 .cap-block{width:100%;max-width:520px;justify-self:center}
 .v2 .final2 .cap-block .note{text-align:center;margin-top:10px}
+
+/* Page to page: a quick cross-fade instead of a blank flash, with the menu bar held in place
+   (cross-document View Transitions; browsers without it just navigate as before). */
+@view-transition{navigation:auto}
+.site-nav{view-transition-name:site-nav}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.28s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+::view-transition-group(site-nav){animation-duration:0s}
+@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}
