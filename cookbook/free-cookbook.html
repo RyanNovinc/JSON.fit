@@ -37,7 +37,7 @@
         /* capture block (used twice) */
         .cap-block { width:100%; max-width:460px; margin:0 auto; animation:heroFadeUp 0.7s ease 0.28s both; }
         .cap-form { display:flex; gap:0.6rem; width:100%; margin-top:1.6rem; }
-        .cap-form .in { flex:1; min-width:0; background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:0.9rem 1.2rem; color:var(--text); font-family:var(--sans); font-size:1rem; transition:border-color 0.2s,box-shadow 0.2s; }
+        .cap-form .in { flex:1; min-width:0; background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:0.9rem var(--in-x); color:var(--text); font-family:var(--sans); font-size:1rem; transition:border-color 0.2s,box-shadow 0.2s; }
         .cap-form .in::placeholder { color:var(--text-3); }
         .cap-form .in:focus { outline:none; border-color:var(--green-border); box-shadow:0 0 0 3px var(--green-soft); }
         .btn { flex-shrink:0; background:#fff; color:#0a0a0b; border:none; border-radius:999px; padding:0.9rem 1.4rem; font-family:var(--sans); font-weight:700; font-size:0.98rem; cursor:pointer; transition:transform 0.2s; }
@@ -48,6 +48,11 @@
         .success { display:none; align-items:center; gap:0.6rem; width:100%; margin-top:1.6rem; padding:0.95rem 1.1rem; border:1px solid var(--green-border); background:rgba(10,26,16,0.85); border-radius:18px; color:var(--text); font-size:0.95rem; text-align:left; line-height:1.45; }
         .success.show { display:flex; }
         .success .tick { flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--green); color:#041109; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; }
+        /* after sign-up: register interest in a printed copy */
+        .printask { display:none; align-items:center; flex-wrap:wrap; gap:6px 12px; min-height:44px; margin-top:12px; font-size:.95rem; color:var(--text-2); }
+        .printask.show { display:flex; }
+        .printask .btn { padding:.5rem 1.05rem; font-size:.9rem; }
+        @media(max-width:899px){ #get .printask { justify-content:center; } }
 
 .cap-block { animation:none; margin:26px 0 0; max-width:460px; }
 .cap-form { margin-top:0; }
@@ -180,6 +185,9 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
    so the whole address shows. The form never changes size, so nothing else on the page moves.
    Sized by the form's own width (container query): too narrow for both, the button goes under the field. */
 .cap-block{container-type:inline-size}
+/* "Unsubscribe any time." and the printed-copy line start where the typed email does (the field's left padding) */
+.cap-block{--in-x:1.2rem}
+.cap-block .note,.cap-block .printask{padding-left:var(--in-x)}
 @container (min-width:400px){
 .cap-form{position:relative;display:block;max-width:520px}
 .cap-form .in{width:100%;box-sizing:border-box;padding-right:236px;transition:border-color .2s,box-shadow .2s,padding-right .7s cubic-bezier(.33,1,.68,1)}
@@ -213,7 +221,7 @@ details .a p{margin:0}
 #get .spread img:last-child{border-radius:0 6px 6px 0}
 #get .spread::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:14%;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(0,0,0,.18) 42%,rgba(0,0,0,.32) 50%,rgba(0,0,0,.18) 58%,transparent);pointer-events:none}
 @media(min-width:900px){#get .getgrid{grid-template-columns:5fr 6fr;gap:56px}#get .getbook{order:2}#get .getcopy{order:1}}
-@media(max-width:899px){#get .getcopy{justify-items:center;text-align:center}#get .cap-block .note{text-align:center}#get .cap-block{width:100%;justify-self:center}#get .spread{max-width:480px;transform:rotateX(10deg) rotateZ(-2deg)}}
+@media(max-width:899px){#get .getcopy{justify-items:center;text-align:center}#get .cap-block .note{text-align:center}#get .cap-block .note,#get .cap-block .printask{padding-left:0}#get .cap-block{width:100%;justify-self:center}#get .spread{max-width:480px;transform:rotateX(10deg) rotateZ(-2deg)}}
 @media(prefers-reduced-motion:reduce){#get::before{animation:none}}
 </style>
 <script src="/analytics-web.js"
@@ -284,6 +292,7 @@ details .a p{margin:0}
             <button class="btn" type="submit" aria-label="Send me the cookbook">Send me the cookbook</button>
           </form>
           <div class="success" role="status"><span class="tick">&#10003;</span><span class="successmsg">Check your inbox, your cookbook's on the way.</span></div>
+          <div class="printask" aria-live="polite"><span class="pq">Want a printed copy?</span><button type="button" class="btn ghost pbtn">Notify me</button></div>
           <p class="note">Unsubscribe any time.</p>
         </div>
       </div>
@@ -357,6 +366,7 @@ details .a p{margin:0}
             <button class="btn" type="submit" aria-label="Send me the cookbook">Send me the cookbook</button>
           </form>
           <div class="success" role="status"><span class="tick">&#10003;</span><span class="successmsg">Check your inbox, your cookbook's on the way.</span></div>
+          <div class="printask" aria-live="polite"><span class="pq">Want a printed copy?</span><button type="button" class="btn ghost pbtn">Notify me</button></div>
           <p class="note">Unsubscribe any time.</p>
         </div>
     </div>
@@ -396,8 +406,33 @@ details .a p{margin:0}
             b.querySelector('.cap-form').style.display = 'none';
             b.querySelector('.note').style.display = 'none';
             b.querySelector('.success').classList.add('show');
+            b.querySelector('.printask').classList.add('show');
         });
     }
+
+    // Printed copy: register interest after sign-up. Analytics always records it.
+    // PRINT_POST is off: the subscribe Lambda (jsonfit-subscribe) treats a second call for a pending
+    // address as a fresh sign-up (new token, source overwritten, a second confirmation email), which
+    // breaks the confirmation link people were just sent. Turn it on once the Lambda records
+    // source 'print_interest' without re-sending.
+    var PRINT_POST = false, signedUpEmail = '', printDone = false;
+    function printInterest(where){
+        if (printDone) return; printDone = true;
+        if (window.track) window.track('cookbook_print_interest', { location: where });
+        if (window.gtag) gtag('event', 'cookbook_print_interest', { 'button_location': 'cookbook_' + where });
+        if (PRINT_POST && signedUpEmail) {
+            fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ email: signedUpEmail, website: '', source: 'print_interest' })
+            }).catch(function(){});
+        }
+        blocks.forEach(function(b){ b.querySelector('.printask').textContent = "Noted. We'll tell you when it's ready."; });
+    }
+    blocks.forEach(function(b){
+        var where = b.getAttribute('data-location') || 'hero';
+        b.querySelector('.pbtn').addEventListener('click', function(){ printInterest(where); });
+    });
 
     blocks.forEach(function(block){
         var form = block.querySelector('.cap-form');
@@ -420,6 +455,7 @@ details .a p{margin:0}
             .then(function(r){ return r.json(); })
             .then(function(d){
                 if (d && d.ok) {
+                    signedUpEmail = val;
                     if (window.track) window.track('cookbook_email_submitted', { source: source, location: where });
                     showSuccess(d.status === 'already_subscribed'
                         ? "You're already on the list. Check your inbox for the cookbook."
