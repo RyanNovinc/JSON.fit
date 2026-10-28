@@ -422,6 +422,8 @@ a{color:inherit}
 /* the full stop lands last, with a little thud */
 @keyframes enDot{0%{opacity:0;transform:translateY(-.55em) scale(1.9)}55%{opacity:1;transform:translateY(0) scale(.86)}75%{transform:scale(1.08)}100%{transform:none}}
 .en-w{white-space:nowrap}
+/* the coloured phrase in a big headline never splits, so the line count can't change mid-animation */
+@media(min-width:400px){[data-enter] h1.d em{white-space:nowrap}}
 .en-dot{display:inline-block;animation:enDot .55s cubic-bezier(.3,1.4,.5,1) 1.3s backwards}
 /* Keep animated hero parts on their own layer for good: otherwise, when an animation ends, the
    browser drops the layer and redraws the hero, which shows as a visible jolt on GPU browsers. */
