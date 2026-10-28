@@ -68,7 +68,11 @@
 .fbstage{width:100%}
 .v2 .hero2 .fbwrap.on .book{display:none}
 .fbwrap.on::before{display:none}
-.fbstage{position:relative;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.fbstage{position:relative;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .45s ease}
+/* First load: the book stays hidden until it is laid out, then riffles from the back page to the cover.
+   html.fbjs hides the static fallback cover meanwhile (cleared if the flip script never starts). */
+.fbwrap.intro .fbstage{opacity:0;transition:none}
+html.fbjs .fbwrap:not(.on) .book{visibility:hidden}
 .fbwrap.at-cover .fbstage{transform:translateX(-25%)}
 .fbwrap.at-back .fbstage{transform:translateX(25%)}
 .fbwrap.portrait .fbstage{transform:none}
@@ -246,7 +250,7 @@ details .a p{margin:0}
           <p class="note">Unsubscribe any time.</p>
         </div>
       </div>
-      <div class="bookwrap fbwrap" id="fbwrap" data-enter-vis><img class="book" src="/images/cookbook/cover.webp" width="900" height="1273" alt="The One Cook Cookbook cover: butter chicken, bolognese, pulled pork, massaman and teriyaki chicken" fetchpriority="high" onerror="this.onerror=null;this.src='/images/cookbook/cover.jpg'"><div class="fbstage"><div class="fb" id="fb" hidden><div class="fb-page" data-density="hard"><img src="/images/cookbook/preview/01-cover.webp" alt="The One Cook Cookbook cover" width="794" height="1123" draggable="false"></div><div class="fb-page"><img src="/images/cookbook/preview/02-contents.webp" alt="Contents" width="794" height="1123" draggable="false"></div><div class="fb-page"><img src="/images/cookbook/preview/03-start-here.webp" alt="Start here" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/04-slow-cooker.webp" alt="Slow cooker section" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/05-butter-chicken.webp" alt="Butter Chicken and Rice recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/06-bolognese.webp" alt="Spaghetti Bolognese recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/07-pulled-pork.webp" alt="BBQ Pulled Pork recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/08-massaman.webp" alt="Massaman Beef recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/09-teriyaki.webp" alt="Teriyaki Chicken and Rice recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/10-oven-bakes.webp" alt="Oven bakes section" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/11-garlic-butter.webp" alt="Garlic Butter Chicken recipe" width="794" height="1123" draggable="false"></div><div class="fb-page fb-back" data-density="hard"><div class="bk-grid"><img src="/images/cookbook/white/batch-butter-chicken-and-rice.jpg" alt=""><img src="/images/cookbook/white/batch-spaghetti-bolognese.jpg" alt=""><img src="/images/cookbook/white/batch-bbq-pulled-pork-bowl-or-burger.jpg" alt=""><img src="/images/cookbook/white/batch-teriyaki-chicken-and-rice.jpg" alt=""></div><p class="bk-h">Get the full book.</p><p class="bk-s"><b>75</b> recipes, free.</p><button type="button" class="fbget">Get it free</button></div></div></div><div class="fbnav" id="fbnav" hidden><button type="button" class="ar" id="fbprev" aria-label="Previous page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="fbdots" id="fbdots" aria-hidden="true"></div><button type="button" class="ar" id="fbnext" aria-label="Next page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
+      <script>document.documentElement.classList.add("fbjs");setTimeout(function(){if(!document.querySelector("#fbwrap.on"))document.documentElement.classList.remove("fbjs")},4000)</script><div class="bookwrap fbwrap" id="fbwrap" data-enter-vis><img class="book" src="/images/cookbook/cover.webp" width="900" height="1273" alt="The One Cook Cookbook cover: butter chicken, bolognese, pulled pork, massaman and teriyaki chicken" fetchpriority="high" onerror="this.onerror=null;this.src='/images/cookbook/cover.jpg'"><div class="fbstage"><div class="fb" id="fb" hidden><div class="fb-page" data-density="hard"><img src="/images/cookbook/preview/01-cover.webp" alt="The One Cook Cookbook cover" width="794" height="1123" draggable="false"></div><div class="fb-page"><img src="/images/cookbook/preview/02-contents.webp" alt="Contents" width="794" height="1123" draggable="false"></div><div class="fb-page"><img src="/images/cookbook/preview/03-start-here.webp" alt="Start here" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/04-slow-cooker.webp" alt="Slow cooker section" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/05-butter-chicken.webp" alt="Butter Chicken and Rice recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/06-bolognese.webp" alt="Spaghetti Bolognese recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/07-pulled-pork.webp" alt="BBQ Pulled Pork recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/08-massaman.webp" alt="Massaman Beef recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/09-teriyaki.webp" alt="Teriyaki Chicken and Rice recipe" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/10-oven-bakes.webp" alt="Oven bakes section" width="794" height="1123" draggable="false"></div><div class="fb-page"><img data-fbsrc="/images/cookbook/preview/11-garlic-butter.webp" alt="Garlic Butter Chicken recipe" width="794" height="1123" draggable="false"></div><div class="fb-page fb-back" data-density="hard"><div class="bk-grid"><img src="/images/cookbook/white/batch-butter-chicken-and-rice.jpg" alt=""><img src="/images/cookbook/white/batch-spaghetti-bolognese.jpg" alt=""><img src="/images/cookbook/white/batch-bbq-pulled-pork-bowl-or-burger.jpg" alt=""><img src="/images/cookbook/white/batch-teriyaki-chicken-and-rice.jpg" alt=""></div><p class="bk-h">Get the full book.</p><p class="bk-s"><b>75</b> recipes, free.</p><button type="button" class="fbget">Get it free</button></div></div></div><div class="fbnav" id="fbnav" hidden><button type="button" class="ar" id="fbprev" aria-label="Previous page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="fbdots" id="fbdots" aria-hidden="true"></div><button type="button" class="ar" id="fbnext" aria-label="Next page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
     </div>
   </div>
 </section>
@@ -412,13 +416,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var nav = document.getElementById('fbnav'), dots = document.getElementById('fbdots');
   var prev = document.getElementById('fbprev'), next = document.getElementById('fbnext');
-  var pf, seen = {};
+  var pf, seen = {}, riffling = false;
   var stage = el.parentNode;
   /* Phone: a narrow column gets the zoomed open-book layout (see the CSS above). */
   var PW = 180, PH = 255, phone = false;
   var fit = function () {};
   try {
-    el.hidden = false; wrap.classList.add('on');
+    el.hidden = false; if (!still) wrap.classList.add('intro'); wrap.classList.add('on');
     /* phone layout only on an actual phone-width window; a narrow desktop column uses the scaled book */
     phone = stage.clientWidth < 560 && window.innerWidth < 760;
     if (phone) {
@@ -468,8 +472,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var portrait = pf.getOrientation() === 'portrait';
     wrap.classList.toggle('portrait', portrait);
     if (phone) fit();
-    wrap.classList.toggle('at-cover', !phone && !portrait && i === 0);
-    wrap.classList.toggle('at-back', !phone && !portrait && i >= n - 1);
+    wrap.classList.toggle('at-cover', !riffling && !phone && !portrait && i === 0);
+    wrap.classList.toggle('at-back', !riffling && !phone && !portrait && i >= n - 1);
     if (dots.children.length !== total) { dots.innerHTML = ''; for (var k = 0; k < total; k++) dots.appendChild(document.createElement('i')); }
     [].forEach.call(dots.children, function (d, k) { d.classList.toggle('on', k === v); });
     prev.disabled = i === 0; next.disabled = v >= total - 1;
@@ -479,13 +483,48 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.track) window.track('cookbook_preview_flip', { page: i });
     if (window.gtag) gtag('event', 'cookbook_preview_flip', { page: i });
   };
-  pf.on('init', function () { nav.hidden = false; paint(); setTimeout(lazy, 1200); hint(); });
-  pf.on('flip', function (e) { lazy(); paint(); report(e.data); });
+  /* First load on a computer: open on the back page and riffle quickly to the cover, so the book reads as
+     a real book straight away. Phones (and Reduce Motion) just fade the cover in. */
+  var reveal = function () {
+    stage.style.transition = 'none'; paint(); void stage.offsetWidth; stage.style.transition = '';
+    wrap.classList.remove('intro');
+  };
+  var riffle = function () {
+    var S = pf.getSettings(), slow = S.flippingTime, n = pf.getPageCount();
+    lazy();
+    var imgs = [].slice.call(el.querySelectorAll('img')).filter(function (im) { return !im.complete; });
+    var ready = Promise.race([
+      Promise.all(imgs.map(function (im) { return new Promise(function (r) { im.addEventListener('load', r, { once: true }); im.addEventListener('error', r, { once: true }); }); })),
+      new Promise(function (r) { setTimeout(r, 1800); })
+    ]);
+    ready.then(function () {
+      riffling = true;
+      pf.turnToPage(n - 1);
+      reveal();
+      S.flippingTime = 260;
+      var step = function () {
+        if (pf.getCurrentPageIndex() <= 0) {
+          S.flippingTime = slow; riffling = false;
+          setTimeout(function () { paint(); hint(); }, 60);
+          return;
+        }
+        pf.flipPrev('top');
+      };
+      pf.on('flip', function () { if (riffling) setTimeout(step, 40); });
+      setTimeout(step, 420);
+    });
+  };
+  pf.on('init', function () {
+    nav.hidden = false;
+    if (!still && !phone) { riffle(); }
+    else { reveal(); setTimeout(lazy, 1200); hint(); }
+  });
+  pf.on('flip', function (e) { lazy(); paint(); if (!riffling) report(e.data); });
   pf.on('changeOrientation', paint);
   /* One step: on a phone the zoom starts with the turn, so the book opens out as the page lifts. */
   var go = function (dir) {
     /* only a turn in progress blocks; a corner left lifted by the mouse hovering the book must not */
-    if (pf.getState && pf.getState() === 'flipping') return;
+    if (riffling || (pf.getState && pf.getState() === 'flipping')) return;
     var i = pf.getCurrentPageIndex(), n = pf.getPageCount(), total = views();
     var v = viewOf(i) + dir; if (v < 0 || v > total - 1) return;
     lazy();
