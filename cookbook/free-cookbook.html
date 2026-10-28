@@ -235,14 +235,14 @@ details .a p{margin:0}
 @media(prefers-reduced-motion:reduce){#get::before{animation:none}}
 
 
-/* Smoothie Book teaser: closed black book that leans with the cursor + a "tell me first" box (source smoothie_notify) */
+/* Smoothie Book teaser: closed black book that leans with the cursor */
 .sm{background:#000;overflow:hidden}
 .sm .smgrid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:clamp(28px,6vw,72px);align-items:center}
 @media(max-width:800px){.sm .smgrid{grid-template-columns:minmax(0,1fr)}.sm .smstage{order:2}}
 .smstage{perspective:1400px;display:flex;justify-content:center}
-.smbook{--rx:0deg;--ry:-14deg;position:relative;width:min(300px,72vw);aspect-ratio:8.5/11;transform-style:preserve-3d;transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.smbook{--rx:5deg;--ry:30deg;--T:18px;position:relative;width:min(300px,72vw);aspect-ratio:8.5/11;transform-style:preserve-3d;transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .smbook.live{transition:transform .12s linear}
-.smcover{position:absolute;inset:0;background:#000;border-radius:3px 9px 9px 3px;padding:10% 9% 0;display:flex;flex-direction:column;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 40px 70px rgba(0,0,0,.6),0 0 90px rgba(192,132,252,.10);transform:translateZ(9px);overflow:hidden}
+.smcover{position:absolute;inset:0;background:#000;border-radius:3px 9px 9px 3px;padding:10% 9% 0;display:flex;flex-direction:column;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 40px 70px rgba(0,0,0,.6),0 0 90px rgba(192,132,252,.10);transform:translateZ(calc(var(--T) / 2));overflow:hidden}
 .smcover::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,.07),transparent 38%);pointer-events:none}
 .smcover .mk{font-family:var(--serif);font-style:italic;font-size:1rem;color:#fff}
 .smcover .mk b{color:var(--green-text);font-weight:400}
@@ -250,15 +250,16 @@ details .a p{margin:0}
 .sme{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#8d8e96;margin-top:5%}
 .smg{display:grid;grid-template-columns:repeat(4,1fr);margin:auto -9% 0}
 .smg img{display:block;width:100%;height:auto}
-.smedge{position:absolute;top:1.5%;bottom:1.5%;right:-1px;width:16px;background:repeating-linear-gradient(90deg,#1a1a1a 0 1px,#0c0c0c 1px 3px);transform:rotateY(90deg) translateZ(1px);transform-origin:right center}
-.smspine{position:absolute;top:0;bottom:0;left:0;width:18px;background:#050505;transform:rotateY(-90deg) translateZ(0);transform-origin:left center;border-radius:3px 0 0 3px}
+.smedge{position:absolute;top:1.4%;bottom:1.4%;left:calc(100% - var(--T) / 2 - 3px);width:var(--T);background:repeating-linear-gradient(90deg,#2a2a2a 0 1px,#111 1px 2.4px);transform:rotateY(90deg)}
+.smback{position:absolute;inset:0;background:#000;border-radius:9px 3px 3px 9px;transform:rotateY(180deg) translateZ(calc(var(--T) / 2))}
+.smspine{position:absolute;top:0;bottom:0;left:calc(var(--T) / -2);width:var(--T);background:linear-gradient(90deg,#000,#0b0b0b 45%,#000);transform:rotateY(-90deg);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:14px 0;box-sizing:border-box}
+.smspine b{writing-mode:vertical-rl;font-family:var(--serif);font-style:italic;font-weight:400;font-size:11px;white-space:nowrap}
+.smspine i{writing-mode:vertical-rl;font-family:var(--serif);font-style:italic;font-size:9px;color:#fff}
+.smspine i u{text-decoration:none;color:var(--green-text)}
 .bl{background:linear-gradient(90deg,#c084fc,#22d3ee 45%,#4ade80);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-right:.06em}
 .sm .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
 .sm h2{margin:10px 0 0}
-.sm .sml{color:var(--text-2);font-size:1.08rem;margin:14px 0 22px}
-.sm .smnote{color:var(--text-3);font-size:.84rem;margin:10px 0 0 var(--in-x)}
-.sm .success{margin-top:0}
-.smblock{--in-x:1.2rem}
+.sm .sml{color:var(--text-2);font-size:1.08rem;margin:14px 0 0}
 @media(prefers-reduced-motion:reduce){.smbook,.smbook.live{transition:none}}
 </style>
 <script src="/analytics-web.js"
@@ -356,7 +357,7 @@ details .a p{margin:0}
     <div class="smgrid">
       <div class="smstage" aria-hidden="true">
         <div class="smbook" id="smbook">
-          <span class="smspine"></span>
+          <span class="smback"></span><span class="smspine"><b class="bl">The Smoothie Book.</b><i>coast<u>.</u></i></span>
           <div class="smcover">
             <span class="mk">coast<b>.</b></span>
             <span class="smt bl">The Smoothie<br>Book.</span>
@@ -370,16 +371,6 @@ details .a p{margin:0}
         <span class="eyebrow">The black book</span>
         <h2 id="sm-h" class="d">The Smoothie <em class="bl">Book.</em></h2>
         <p class="sml">Members only. Not available yet.</p>
-        <div class="smblock">
-          <form class="cap-form smform" novalidate>
-            <label class="sr" for="email-sm">Email address</label>
-            <input class="in" id="email-sm" type="email" inputmode="email" placeholder="your@email.com" autocomplete="email" required>
-            <input class="hp" type="text" id="website-sm" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <button class="btn" type="submit" aria-label="Tell me first">Tell me first</button>
-          </form>
-          <div class="success" role="status"><span class="tick">&#10003;</span><span class="successmsg">You're on the list. We'll tell you first.</span></div>
-          <p class="smnote">One email when it's ready. Nothing else.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -574,7 +565,7 @@ details .a p{margin:0}
 })();
 </script>
 <script>
-/* Smoothie Book teaser: lean with the cursor (sway on touch), and a "tell me first" sign-up (no email sent). */
+/* Smoothie Book teaser: lean with the cursor (sway on touch). */
 (function(){
   var book = document.getElementById('smbook'), sec = document.getElementById('smoothie');
   if (book && sec && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -583,35 +574,17 @@ details .a p{margin:0}
       sec.addEventListener('pointermove', function(e){
         var r = book.getBoundingClientRect(), x = (e.clientX - (r.left + r.width/2)) / innerWidth, y = (e.clientY - (r.top + r.height/2)) / innerHeight;
         book.classList.add('live');
-        book.style.setProperty('--ry', (-14 + x * 30).toFixed(2) + 'deg');
-        book.style.setProperty('--rx', (-y * 16).toFixed(2) + 'deg');
+        book.style.setProperty('--ry', (30 + x * 36).toFixed(2) + 'deg');
+        book.style.setProperty('--rx', (5 - y * 18).toFixed(2) + 'deg');
       });
-      sec.addEventListener('pointerleave', function(){ book.classList.remove('live'); book.style.setProperty('--ry','-14deg'); book.style.setProperty('--rx','0deg'); });
+      sec.addEventListener('pointerleave', function(){ book.classList.remove('live'); book.style.setProperty('--ry','30deg'); book.style.setProperty('--rx','5deg'); });
     } else {
       var t0 = performance.now(), on = false;
       var io = new IntersectionObserver(function(en){ on = en[0].isIntersecting; if (on) requestAnimationFrame(sway); });
       io.observe(sec);
-      function sway(now){ if (!on) return; var t = (now - t0) / 1000; book.style.setProperty('--ry', (-14 + Math.sin(t * .8) * 9).toFixed(2) + 'deg'); book.style.setProperty('--rx', (Math.sin(t * .6) * 3).toFixed(2) + 'deg'); requestAnimationFrame(sway); }
+      function sway(now){ if (!on) return; var t = (now - t0) / 1000; book.style.setProperty('--ry', (31 + Math.sin(t * .8) * 5).toFixed(2) + 'deg'); book.style.setProperty('--rx', (5.5 + Math.sin(t * .6) * 1.5).toFixed(2) + 'deg'); requestAnimationFrame(sway); }
     }
   }
-  var blk = document.querySelector('.smblock'); if (!blk) return;
-  var form = blk.querySelector('form'), email = blk.querySelector('.in'), hp = blk.querySelector('.hp'), btn = blk.querySelector('.btn');
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var val = (email.value || '').trim();
-    if (!val || val.indexOf('@') === -1) { email.focus(); email.style.borderColor = '#ef4444'; return; }
-    var label = btn.textContent; btn.disabled = true; btn.textContent = 'Saving…';
-    fetch('https://2w2wk18qp8.execute-api.ap-southeast-2.amazonaws.com/subscribe', {
-      method: 'POST', headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ email: val, website: hp ? hp.value : '', source: 'smoothie_notify' })
-    }).then(function(r){ return r.json(); }).then(function(d){
-      if (d && d.ok) {
-        if (window.track) window.track('smoothie_book_notify', {});
-        if (window.gtag) gtag('event', 'smoothie_book_notify');
-        form.style.display = 'none'; blk.querySelector('.smnote').style.display = 'none'; blk.querySelector('.success').classList.add('show');
-      } else { email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label; }
-    }).catch(function(){ email.style.borderColor = '#ef4444'; btn.disabled = false; btn.textContent = label; });
-  });
 })();
 </script>
 <script>
