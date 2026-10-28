@@ -1,735 +1,735 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://json.fit/</loc>
+    <loc>https://getcoast.fit/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://json.fit/meal-prep/</loc>
+    <loc>https://getcoast.fit/meal-prep/</loc>
     <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://json.fit/fifo/</loc>
+    <loc>https://getcoast.fit/fifo/</loc>
     <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://json.fit/protein-first/</loc>
+    <loc>https://getcoast.fit/protein-first/</loc>
     <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://json.fit/try/</loc>
+    <loc>https://getcoast.fit/try/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://json.fit/meals.html</loc>
+    <loc>https://getcoast.fit/meals.html</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://json.fit/time/</loc>
+    <loc>https://getcoast.fit/time/</loc>
     <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/cookbook/free-cookbook</loc>
+    <loc>https://getcoast.fit/cookbook/free-cookbook</loc>
     <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://json.fit/lab/</loc>
+    <loc>https://getcoast.fit/lab/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://json.fit/programs/</loc>
+    <loc>https://getcoast.fit/programs/</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog.html</loc>
+    <loc>https://getcoast.fit/blog.html</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-protein-amount-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-protein-amount-matters.html</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-stretching-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-stretching-matters.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-training-to-failure-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-training-to-failure-matters.html</loc>
     <lastmod>2026-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/ai-answer-key.html</loc>
+    <loc>https://getcoast.fit/blog/ai-answer-key.html</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-cardio-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-cardio-matters.html</loc>
     <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-soreness-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-soreness-matters.html</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-deloads-matter.html</loc>
+    <loc>https://getcoast.fit/blog/why-deloads-matter.html</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-rep-ranges-matter.html</loc>
+    <loc>https://getcoast.fit/blog/why-rep-ranges-matter.html</loc>
     <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-fiber-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-fiber-matters.html</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-protein-distribution-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-protein-distribution-matters.html</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-meal-timing-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-meal-timing-matters.html</loc>
     <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-rest-periods-matter.html</loc>
+    <loc>https://getcoast.fit/blog/why-rest-periods-matter.html</loc>
     <lastmod>2026-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-volume-counting-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-volume-counting-matters.html</loc>
     <lastmod>2026-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-rir-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-rir-matters.html</loc>
     <lastmod>2026-04-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/json-fit-vs-competitors.html</loc>
+    <loc>https://getcoast.fit/blog/json-fit-vs-competitors.html</loc>
     <lastmod>2026-03-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-no-ai-subscription.html</loc>
+    <loc>https://getcoast.fit/blog/why-no-ai-subscription.html</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/meal-plan-claude.html</loc>
+    <loc>https://getcoast.fit/blog/meal-plan-claude.html</loc>
     <lastmod>2026-03-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/chatgpt-hypertrophy-program.html</loc>
+    <loc>https://getcoast.fit/blog/chatgpt-hypertrophy-program.html</loc>
     <lastmod>2026-03-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/privacy-policy.html</loc>
+    <loc>https://getcoast.fit/privacy-policy.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://json.fit/terms-of-service.html</loc>
+    <loc>https://getcoast.fit/terms-of-service.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <!-- BUILD:RECIPES-START -->
   <url>
-    <loc>https://json.fit/r/bbq_pulled_pork_bowl_or_burger/bbq_pulled_pork_bowl_or_burger_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/bbq_pulled_pork_bowl_or_burger/bbq_pulled_pork_bowl_or_burger_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/teriyaki_chicken_and_rice/teriyaki_chicken_and_rice_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/teriyaki_chicken_and_rice/teriyaki_chicken_and_rice_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/korean_shredded_beef/korean_shredded_beef_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/korean_shredded_beef/korean_shredded_beef_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chipotle_chicken_burritos_or_bowl/chipotle_chicken_burritos_or_bowl_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chipotle_chicken_burritos_or_bowl/chipotle_chicken_burritos_or_bowl_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/greek_lemon_chicken_gyro_bowls/greek_lemon_chicken_gyro_bowls_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/greek_lemon_chicken_gyro_bowls/greek_lemon_chicken_gyro_bowls_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/citrus_pork_carnitas_bowls/citrus_pork_carnitas_bowls_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/citrus_pork_carnitas_bowls/citrus_pork_carnitas_bowls_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/massaman_beef/massaman_beef_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/massaman_beef/massaman_beef_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/satay_chicken_and_rice/satay_chicken_and_rice_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/satay_chicken_and_rice/satay_chicken_and_rice_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/lamb_keema_and_peas/lamb_keema_and_peas_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/lamb_keema_and_peas/lamb_keema_and_peas_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/dry_beef_rendang/dry_beef_rendang_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/dry_beef_rendang/dry_beef_rendang_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/mild_chicken_korma/mild_chicken_korma_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/mild_chicken_korma/mild_chicken_korma_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/red_lentil_and_chickpea_dal/red_lentil_and_chickpea_dal_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/red_lentil_and_chickpea_dal/red_lentil_and_chickpea_dal_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/coconut_lentils_and_tofu/coconut_lentils_and_tofu_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/coconut_lentils_and_tofu/coconut_lentils_and_tofu_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/three_bean_and_lentil_chilli/three_bean_and_lentil_chilli_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/three_bean_and_lentil_chilli/three_bean_and_lentil_chilli_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/spaghetti_bolognese/spaghetti_bolognese_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/spaghetti_bolognese/spaghetti_bolognese_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chicken_mac_and_cheese_bake/chicken_mac_and_cheese_bake_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chicken_mac_and_cheese_bake/chicken_mac_and_cheese_bake_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/pulled_beef_ragu_pasta/pulled_beef_ragu_pasta_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/pulled_beef_ragu_pasta/pulled_beef_ragu_pasta_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/garlic_butter_chicken_and_rice_tray/garlic_butter_chicken_and_rice_tray_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/garlic_butter_chicken_and_rice_tray/garlic_butter_chicken_and_rice_tray_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/cottage_pie/cottage_pie_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/cottage_pie/cottage_pie_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chicken_and_bean_enchilada_bake/chicken_and_bean_enchilada_bake_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chicken_and_bean_enchilada_bake/chicken_and_bean_enchilada_bake_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/black_bean_enchilada_bake/black_bean_enchilada_bake_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/black_bean_enchilada_bake/black_bean_enchilada_bake_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/lentil_ragu_pasta/lentil_ragu_pasta_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/lentil_ragu_pasta/lentil_ragu_pasta_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/beef_stew_and_crusty_bread/beef_stew_and_crusty_bread_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/beef_stew_and_crusty_bread/beef_stew_and_crusty_bread_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/shawarma_chicken_tray_and_rice/shawarma_chicken_tray_and_rice_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/shawarma_chicken_tray_and_rice/shawarma_chicken_tray_and_rice_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/beef_stroganoff_and_rice/beef_stroganoff_and_rice_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/beef_stroganoff_and_rice/beef_stroganoff_and_rice_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chicken_cacciatore_and_pasta/chicken_cacciatore_and_pasta_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chicken_cacciatore_and_pasta/chicken_cacciatore_and_pasta_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/moroccan_lamb_and_chickpeas/moroccan_lamb_and_chickpeas_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/moroccan_lamb_and_chickpeas/moroccan_lamb_and_chickpeas_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chicken_and_chorizo_jambalaya/chicken_and_chorizo_jambalaya_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chicken_and_chorizo_jambalaya/chicken_and_chorizo_jambalaya_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/smoky_beans_and_eggs/smoky_beans_and_eggs_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/smoky_beans_and_eggs/smoky_beans_and_eggs_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/beef_and_lentil_bolognese/beef_and_lentil_bolognese_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/beef_and_lentil_bolognese/beef_and_lentil_bolognese_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chicken_and_chickpea_curry/chicken_and_chickpea_curry_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chicken_and_chickpea_curry/chicken_and_chickpea_curry_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/tuscan_chicken_and_white_bean_stew/tuscan_chicken_and_white_bean_stew_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/tuscan_chicken_and_white_bean_stew/tuscan_chicken_and_white_bean_stew_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/baked_coconut_dal_with_chickpeas/baked_coconut_dal_with_chickpeas_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/baked_coconut_dal_with_chickpeas/baked_coconut_dal_with_chickpeas_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/moroccan_chickpea_and_lentil_bake/moroccan_chickpea_and_lentil_bake_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/moroccan_chickpea_and_lentil_bake/moroccan_chickpea_and_lentil_bake_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/spanish_chicken_and_chickpea_bake/spanish_chicken_and_chickpea_bake_tub/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/spanish_chicken_and_chickpea_bake/spanish_chicken_and_chickpea_bake_tub/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/maple_muscle_toast/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/maple_muscle_toast/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/muscle_oats/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/muscle_oats/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/scramble_stack/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/scramble_stack/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/overnight_oats/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/overnight_oats/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/overnight_oats/loaded/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/overnight_oats/loaded/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/greek_yoghurt_bowl/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/greek_yoghurt_bowl/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/greek_yoghurt_bowl/loaded/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/greek_yoghurt_bowl/loaded/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/cottage_cheese_bowl/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/cottage_cheese_bowl/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/pb_banana_toast/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/pb_banana_toast/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/protein_pancakes/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/protein_pancakes/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/protein_pancakes/loaded/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/protein_pancakes/loaded/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/steak_and_eggs/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/steak_and_eggs/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/shakshuka/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/shakshuka/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/freezer_breakfast_burrito/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/freezer_breakfast_burrito/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/baked_oats/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/baked_oats/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/baked_oats/loaded/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/baked_oats/loaded/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/smoked_salmon_bagel/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/smoked_salmon_bagel/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/big_breakfast_plate/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/big_breakfast_plate/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/egg_muffins/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/egg_muffins/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/protein_banana_bread/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/protein_banana_bread/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/protein_ice_cream/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/protein_ice_cream/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/cottage_cheese_ice_cream/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/cottage_cheese_ice_cream/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chocolate_protein_mug_cake/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chocolate_protein_mug_cake/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/fudgy_protein_brownies/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/fudgy_protein_brownies/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/protein_chocolate_chip_cookies/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/protein_chocolate_chip_cookies/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/edible_protein_cookie_dough/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/edible_protein_cookie_dough/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/no_bake_protein_cheesecake/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/no_bake_protein_cheesecake/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/chocolate_protein_mousse/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/chocolate_protein_mousse/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/frozen_date_snickers_bark/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/frozen_date_snickers_bark/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/palacinke/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/palacinke/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/brekkie_grow/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/brekkie_grow/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/mango_mass/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/mango_mass/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/king_kong_chocolate/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/king_kong_chocolate/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/strawberry_stack/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/strawberry_stack/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/choc_muscle_maxx/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/choc_muscle_maxx/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/cookies_gains/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/cookies_gains/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/raspberry_rip/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/raspberry_rip/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/energy_lift_heavy/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/energy_lift_heavy/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/mornin_muscle/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/mornin_muscle/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/dirty_eden/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/dirty_eden/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/strawbrekkie_beast/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/strawbrekkie_beast/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/r/banana_bulk/standard/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <loc>https://getcoast.fit/r/banana_bulk/standard/</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <!-- BUILD:RECIPES-END -->
   <url>
-    <loc>https://json.fit/research/</loc>
+    <loc>https://getcoast.fit/research/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://json.fit/exercises/</loc>
+    <loc>https://getcoast.fit/exercises/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/sets-or-effort.html</loc>
+    <loc>https://getcoast.fit/blog/sets-or-effort.html</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/five-to-thirty-reps.html</loc>
+    <loc>https://getcoast.fit/blog/five-to-thirty-reps.html</loc>
     <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/more-protein-on-a-cut.html</loc>
+    <loc>https://getcoast.fit/blog/more-protein-on-a-cut.html</loc>
     <lastmod>2026-09-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/cut-first-or-bulk-first.html</loc>
+    <loc>https://getcoast.fit/blog/cut-first-or-bulk-first.html</loc>
     <lastmod>2026-09-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/cutting-fast-versus-slow.html</loc>
+    <loc>https://getcoast.fit/blog/cutting-fast-versus-slow.html</loc>
     <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/training-doesnt-change-with-your-diet.html</loc>
+    <loc>https://getcoast.fit/blog/training-doesnt-change-with-your-diet.html</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-fasted-cardio-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-fasted-cardio-matters.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-spot-reduction-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-spot-reduction-matters.html</loc>
     <lastmod>2026-07-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-squat-depth-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-squat-depth-matters.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://json.fit/blog/why-protein-timing-matters.html</loc>
+    <loc>https://getcoast.fit/blog/why-protein-timing-matters.html</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
