@@ -423,6 +423,10 @@ a{color:inherit}
 @keyframes enDot{0%{opacity:0;transform:translateY(-.55em) scale(1.9)}55%{opacity:1;transform:translateY(0) scale(.86)}75%{transform:scale(1.08)}100%{transform:none}}
 .en-w{white-space:nowrap}
 .en-dot{display:inline-block;animation:enDot .55s cubic-bezier(.3,1.4,.5,1) 1.3s backwards}
+/* Keep animated hero parts on their own layer for good: otherwise, when an animation ends, the
+   browser drops the layer and redraws the hero, which shows as a visible jolt on GPU browsers. */
+[data-enter]>*,[data-enter] h1 em,[data-enter] h1 .cyan,[data-enter] h1 .green,[data-enter] h1 .violet,.en-dot,[data-enter-vis]{will-change:transform,opacity}
+[data-enter]>h1,[data-enter]>header>h1{will-change:transform,opacity,filter}
 @keyframes enFade{from{opacity:0}}
 @keyframes enVis{from{opacity:0;transform:translateY(40px) scale(.96)}}
 [data-enter]>*{animation:enRise .7s cubic-bezier(.2,.8,.2,1) backwards}
