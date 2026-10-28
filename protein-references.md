@@ -1,8 +1,8 @@
 # Protein Distribution Research References
 
-The protein distribution recommendations in JSON.fit are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
+The protein distribution recommendations in Coast are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
 
-For the practical guidance applied to meal plans, see [protein-distribution-guidance.md](https://json.fit/protein-distribution-guidance.md).
+For the practical guidance applied to meal plans, see [protein-distribution-guidance.md](https://getcoast.fit/protein-distribution-guidance.md).
 
 ---
 

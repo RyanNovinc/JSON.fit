@@ -10,7 +10,7 @@ Your whole visible response is three parts, in this order: a short summary, the 
 
 ---
 
-Please convert the meal plan you just created into a specific JSON format that can be imported into JSON.fit.
+Please convert the meal plan you just created into a specific JSON format that can be imported into Coast.
 
 **CRITICAL: This is a DATA TRANSFER operation only. NEVER recalculate nutrition values - this causes calorie inflation bugs. Copy the EXACT calories, macros, and ingredient amounts from your reviewed meal plan.**
 
@@ -25,7 +25,7 @@ This JSON format is designed to work directly with the app's simplified meal pla
 **You MUST:**
 
 1. Create a file (use Code Interpreter on ChatGPT, or computer tool on Claude)
-2. **Name the file with a `.json` extension** — for example `meal-plan.json`. This matters: the extension is what lets the user's phone offer JSON.fit as an app to open it with. A file saved without `.json` cannot be imported by tapping.
+2. **Name the file with a `.json` extension** — for example `meal-plan.json`. This matters: the extension is what lets the user's phone offer Coast as an app to open it with. A file saved without `.json` cannot be imported by tapping.
 3. Write the complete JSON structure to the file
 4. If you reach output limits, STOP at the end of a complete day, then continue appending to the same file
 5. Never stop mid-day or mid-meal
@@ -425,8 +425,8 @@ This section is for LATER messages, after you have already delivered the file an
 
 If the user comes back saying the import isn't working:
 
-- The working route is: tap the file, tap the ••• button, tap Share or Download, then choose JSON.fit from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
-- If JSON.fit doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open JSON.fit and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
+- The working route is: tap the file, tap the ••• button, tap Share or Download, then choose Coast from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
+- If Coast doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open Coast and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
 - If the import screen reports a format error, ask them to paste the exact error text. Do not guess at the cause.
 - Do not invent other routes. There is no import link, no QR code, and no share URL for an AI-generated plan. The website's share links only exist for plans already saved in someone's app.
 - If they ask for changes to the plan instead, make the change and hand back a fresh file.
@@ -441,9 +441,9 @@ The VERY LAST thing in your response must be this callout, formatted as a code b
 1. Tap the file that was just created.
 2. Tap ••• or Share.
 3. Tap "Save as JSON" or "Share a copy" — whichever you see.
-4. Choose JSON.fit from the list of apps.
+4. Choose Coast from the list of apps.
 
-No JSON.fit in the list? Save or copy the file, then import it in the app.
+No Coast in the list? Save or copy the file, then import it in the app.
 ```
 
 This is the end of the flow. Do not offer further steps, and do not ask the user to confirm anything.

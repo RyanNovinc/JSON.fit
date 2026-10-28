@@ -1,6 +1,6 @@
 # Curated meal ingredients — global instructions
 
-This file explains how to read and use any per-meal ingredient file under `https://json.fit/curated-meals/ingredients/{meal_slug}.md`. Each per-meal file is pure structured data (identity, methods, plates) with no preamble and no inline rules. The rules below apply to every meal.
+This file explains how to read and use any per-meal ingredient file under `https://getcoast.fit/curated-meals/ingredients/{meal_slug}.md`. Each per-meal file is pure structured data (identity, methods, plates) with no preamble and no inline rules. The rules below apply to every meal.
 
 ---
 

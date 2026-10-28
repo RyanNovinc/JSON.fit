@@ -1,4 +1,4 @@
-Add/repair the curated MAIN meal "Lamb Kofta" in JSON.fit. Lunch/dinner, batch (4), cuisine mediterranean. TWO plates: rice_bowl, wrap. First and only lamb dish.
+Add/repair the curated MAIN meal "Lamb Kofta" in Coast. Lunch/dinner, batch (4), cuisine mediterranean. TWO plates: rice_bowl, wrap. First and only lamb dish.
 
 ==================================================================
 IDEMPOTENCY — READ FIRST

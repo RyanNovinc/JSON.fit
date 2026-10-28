@@ -1,8 +1,8 @@
-**FETCH REQUIRED:** This prompt requires fetching files from json.fit. Try to fetch them. If fetch fails for ANY reason (no fetch tool, network blocked, allowlist denied, 404, etc.):
+**FETCH REQUIRED:** This prompt requires fetching files from getcoast.fit. Try to fetch them. If fetch fails for ANY reason (no fetch tool, network blocked, allowlist denied, 404, etc.):
 
 Stop immediately. Respond ONLY with this exact text:
 
-"This prompt needs to fetch files from json.fit, but fetching isn't working in your AI. To use JSON.fit:
+"This prompt needs to fetch files from getcoast.fit, but fetching isn't working in your AI. To use Coast:
 
 - Use Claude.ai with web search enabled in the message composer
 - Or ChatGPT with browsing enabled
@@ -371,8 +371,8 @@ The VERY LAST thing in your response must be this callout, formatted as a code b
 ```
 ✅ Quality check complete.
 
-▶ Reply "happy" and I'll convert this into your JSON.fit file.
+▶ Reply "happy" and I'll convert this into your Coast file.
 ✏️ Want changes? Just tell me what to adjust.
 ```
 
-When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://json.fit/prompts/v2/meal-json-prompt.md and follow it. Don't mention URLs to the user.
+When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://getcoast.fit/prompts/v2/meal-json-prompt.md and follow it. Don't mention URLs to the user.

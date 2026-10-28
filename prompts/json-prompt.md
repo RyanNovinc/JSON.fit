@@ -31,7 +31,7 @@ Use these when validating day structure.
 **You MUST:**
 
 1. Create a file (use Code Interpreter on ChatGPT, or computer tool on Claude)
-2. **Name every file with a `.json` extension.** The extension is what lets the user's phone offer JSON.fit as an app to open the file with — a file saved without `.json` cannot be imported by tapping.
+2. **Name every file with a `.json` extension.** The extension is what lets the user's phone offer Coast as an app to open the file with — a file saved without `.json` cannot be imported by tapping.
 3. Write the complete JSON structure to the file
 4. Never stop mid-block or mid-day
 5. When finished, present the file so the user can download it
@@ -123,7 +123,7 @@ The plan is fully self-contained: it lists all exercise pools, block structures,
 
 ## Translation Principles
 
-1. **The plan is authoritative for structure; the exercise library is authoritative for tags** — use the exercise names, sets, superset pairings, and day structure exactly as specified from the plan. However, before finalizing any JSON, verify every exercise's primaryMuscles and secondaryMuscles tags against the canonical exercise library at https://json.fit/exercises.md. If the plan's tags differ from the library, use the library's tags (the library is authoritative). Do not add, remove, or rename exercises. If the plan declares a mesocycle structure, append the mesocycle name to routine_name in every JSON file. The reviewed plan's set counts are final — do not adjust them based on your own volume recalculation.
+1. **The plan is authoritative for structure; the exercise library is authoritative for tags** — use the exercise names, sets, superset pairings, and day structure exactly as specified from the plan. However, before finalizing any JSON, verify every exercise's primaryMuscles and secondaryMuscles tags against the canonical exercise library at https://getcoast.fit/exercises.md. If the plan's tags differ from the library, use the library's tags (the library is authoritative). Do not add, remove, or rename exercises. If the plan declares a mesocycle structure, append the mesocycle name to routine_name in every JSON file. The reviewed plan's set counts are final — do not adjust them based on your own volume recalculation.
 2. **Treat exercise names as identifiers** — use the exact same string for the same exercise across all blocks, days and superset references. Never vary naming.
 3. **Design what the plan doesn't specify** — you are responsible for alternative exercises. Do NOT write technique notes: the app ships its own coaching cues for every library exercise and shows those, never text from this file. For rep progressions: follow the plan's scheme if stated, otherwise use the defaults below. You are NOT responsible for rest periods — see the Rest Periods section.
 4. **Only program working sets** — do not include warm-up sets.
@@ -137,7 +137,7 @@ The plan is fully self-contained: it lists all exercise pools, block structures,
 For each exercise, design a weekly rep progression across the block. Since the app doesn't track weight, progressions are expressed entirely through rep targets — the user manages their own load increases.
 
 **Starting point rule:**
-Start at the BOTTOM of the prescribed range in Week 1 and step UP across the block. The load stays the same for the whole block; the reps climb as RIR falls. The rep floor is Week 1; the highest target is the final training week before deload, and it never goes past the top of the range. This matches the double progression default in https://json.fit/rep-range-guidance.md.
+Start at the BOTTOM of the prescribed range in Week 1 and step UP across the block. The load stays the same for the whole block; the reps climb as RIR falls. The rep floor is Week 1; the highest target is the final training week before deload, and it never goes past the top of the range. This matches the double progression default in https://getcoast.fit/rep-range-guidance.md.
 
 **Double progression (default for all exercises):**
 Add one rep per set per week. Do not climb faster: the falling RIR across a block only frees up two or three reps, and anything beyond that has to come from real strength gain. Use the same rep target on every set within a week — RIR already falls from the first set to the last, which is what holds the reps level as fatigue builds. If the block has more training weeks than the range has room for, hold a target for two weeks rather than passing the top of the range. When the lifter reaches the top of the range they add load, and the next block starts again from the bottom.
@@ -181,7 +181,7 @@ Do not regenerate RIR guidance from scratch — translate from the plan's RIR li
 
 **Do not design rest periods. The app calculates them.**
 
-JSON.fit resolves rest at runtime from the exercise's category, how heavily it is loaded in the current block (read from `reps_weekly` and `rir_weekly`), whether the week is a deload, and whether the exercise is part of a superset. It resolves all three rest tiers for every exercise, and the user chooses between them — including mid-workout. Nothing you write into the file is used for timing.
+Coast resolves rest at runtime from the exercise's category, how heavily it is loaded in the current block (read from `reps_weekly` and `rir_weekly`), whether the week is a deload, and whether the exercise is part of a superset. It resolves all three rest tiers for every exercise, and the user chooses between them — including mid-workout. Nothing you write into the file is used for timing.
 
 Set the `rest` field to a plain integer number of seconds anyway. It is a compatibility fallback for users on app versions that predate runtime resolution, and it is ignored by current versions. A sensible category default is enough — 180 for free-weight compounds, 120 for machine compounds and large-muscle isolation, 90 for small-muscle isolation. Do not spend effort tuning it, do not derive a second reduced value from it, and do not give superset members a special value.
 
@@ -233,7 +233,7 @@ Place superset exercises adjacent in the exercises array. Add "superset_group": 
 
 ## Muscle Taxonomy
 
-Before generating JSON, read the canonical exercise library at https://json.fit/exercises.md to get authoritative muscle tags. Every exercise in your JSON must use primaryMuscles and secondaryMuscles tags that exactly match what's in that library. Do not use generic terms like "Shoulders", "Back", "Arms", or "Legs". If an exercise is not found in the library, do not include it in the JSON — flag it as an error requiring replacement.
+Before generating JSON, read the canonical exercise library at https://getcoast.fit/exercises.md to get authoritative muscle tags. Every exercise in your JSON must use primaryMuscles and secondaryMuscles tags that exactly match what's in that library. Do not use generic terms like "Shoulders", "Back", "Arms", or "Legs". If an exercise is not found in the library, do not include it in the JSON — flag it as an error requiring replacement.
 
 Exercise names must also match the library exactly. The app looks up each exercise by name to determine its rest category, so a renamed or invented exercise falls back to a generic default rest instead of the right one.
 
@@ -335,7 +335,7 @@ Before presenting each block, silently verify:
 - [ ] Deload week rir_weekly is flat on every set and never below 3
 - [ ] Every block's `days` array totals 7 objects — training days plus REST DAY entries — ordered to match its weekly_schedule
 - [ ] `days_per_week` at the root is the count of TRAINING days, not 7 and not the length of the `days` array (a 4-day split says 4 while its `days` array holds 7 objects)
-- [ ] Every exercise's muscle tags verified against canonical library at https://json.fit/exercises.md (library tags override plan tags)
+- [ ] Every exercise's muscle tags verified against canonical library at https://getcoast.fit/exercises.md (library tags override plan tags)
 - [ ] No exercise carries the retired tags `Forearms` or `Neck`; neck and wrist exercises carry the library's flexor or extensor tag
 - [ ] Every alternative shares its exercise's primary tags exactly, at most 2 per exercise, with an empty array where the library has no same-muscle option
 - [ ] Block-relative week keys start from "1"
@@ -353,8 +353,8 @@ This section is for LATER messages, after you have already delivered a file and 
 
 If the user comes back saying the import isn't working:
 
-- The working route is: tap the file, tap the ••• button, tap Share or Download, then choose JSON.fit from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
-- If JSON.fit doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open JSON.fit and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
+- The working route is: tap the file, tap the ••• button, tap Share or Download, then choose Coast from the list of apps. The wording on step 3 differs by AI app (Claude on iOS says Download, ChatGPT says Share) and may differ again on Android, so describe the action rather than insisting on a label.
+- If Coast doesn't appear in that list, the likely causes are that the file was saved without a `.json` extension, or their installed app version predates file support. Two fallbacks both work: download the file, then open Coast and use its Import screen to pick it; or copy the file contents and paste them into that same Import screen.
 - Multi-block programs are delivered as cumulative files, each holding every block up to that point. The user only needs the last one, `workout-program-all-[Y]-blocks.json` — it holds the whole program on its own. If they've been importing along the way, the newest file supersedes the earlier ones; re-importing that final file gives them everything. If they ask why the earlier files are numbered, the number is how many blocks are inside that file, not which single block it holds.
 - If the import screen reports a format error, ask them to paste the exact error text. Do not guess at the cause.
 - Do not invent other routes. There is no import link, no QR code, and no share URL for an AI-generated program. The website's share links only exist for programs already saved in someone's app.
@@ -389,9 +389,9 @@ If you know the user's first name, put it on its own line as the FIRST line insi
 1. Tap the file that was just created.
 2. Tap ••• or Share.
 3. Tap "Save as JSON" or "Share a copy" — whichever you see.
-4. Choose JSON.fit from the list of apps.
+4. Choose Coast from the list of apps.
 
-No JSON.fit in the list? Save or copy the file, then import it in the app.
+No Coast in the list? Save or copy the file, then import it in the app.
 ```
 
 (The `Ryan:` line is an EXAMPLE — replace it with the actual user's first name, or drop the line if you don't know it.)

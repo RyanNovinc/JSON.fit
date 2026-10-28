@@ -2,7 +2,7 @@
   "name": "json-fit-site",
   "private": true,
   "version": "1.0.0",
-  "description": "json.fit — static GitHub Pages site. No bundler: the build steps below just generate committed files.",
+  "description": "getcoast.fit — static GitHub Pages site. No bundler: the build steps below just generate committed files.",
   "scripts": {
     "build": "npm run build:social && npm run build:recipes",
     "build:social": "node scripts/build-social-images.mjs",

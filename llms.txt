@@ -1,8 +1,8 @@
-# JSON.fit
+# Coast
 
-> JSON.fit is a free iOS and Android app for fitness on autopilot: working adults, men and women, who want results with the least time. You set it up once, then it plans your training and your food. You set your goal weight and body fat; the app plans the order of cuts and bulks to get there (a "route" of trim and build phases) and how long each one takes, from published research. Then it builds weekly high-protein meal plans around your calories, mostly batch meals you cook once for 8 tubs, with every ingredient and step, one shopping list and one cook, plus a periodised training program with sets, reps, rest and deload weeks already set. Everything is built in the app in about a minute from research-backed rules; there is no AI inside the app. Free, no ads, no account, data stays on the phone.
+> Coast (formerly JSON.fit) is a free iOS and Android app for fitness on autopilot: working adults, men and women, who want results with the least time. You set it up once, then it plans your training and your food. You set your goal weight and body fat; the app plans the order of cuts and bulks to get there (a "route" of trim and build phases) and how long each one takes, from published research. Then it builds weekly high-protein meal plans around your calories, mostly batch meals you cook once for 8 tubs, with every ingredient and step, one shopping list and one cook, plus a periodised training program with sets, reps, rest and deload weeks already set. Everything is built in the app in about a minute from research-backed rules; there is no AI inside the app. Free, no ads, no account, data stays on the phone.
 
-JSON.fit's library has 75 meals: 37 batch meals you cook once for 8 tubs (29 in the slow cooker, 8 oven bakes; 31 take 10 minutes or less of hands-on work; every one keeps 3 days in the fridge and freezes), 16 breakfasts, 10 desserts and 12 backup meals (smoothies for when a meal gets missed), every one photographed with exact ingredients and every step. Meals can be swapped and the day rebalances to the calorie and protein targets. Training programs run 1 to 6 days a week, at a gym, at home or bodyweight only, up to a year long, with 144 exercises. 25 decisions the app makes carry a confidence label (strong, good, best estimate) and link to 42 sources. Built in Canberra, Australia, by Ryan Novinc, who is using the app on himself in public: 77 kg at the July 2026 restart, 80.6 kg at 23.8% on the September DEXA, routed down to 72.9 kg at 16% and then up to 90 kg at 13%.
+Coast's library has 75 meals: 37 batch meals you cook once for 8 tubs (29 in the slow cooker, 8 oven bakes; 31 take 10 minutes or less of hands-on work; every one keeps 3 days in the fridge and freezes), 16 breakfasts, 10 desserts and 12 backup meals (smoothies for when a meal gets missed), every one photographed with exact ingredients and every step. Meals can be swapped and the day rebalances to the calorie and protein targets. Training programs run 1 to 6 days a week, at a gym, at home or bodyweight only, up to a year long, with 144 exercises. 25 decisions the app makes carry a confidence label (strong, good, best estimate) and link to 42 sources. Built in Canberra, Australia, by Ryan Novinc, who is using the app on himself in public: 77 kg at the July 2026 restart, 80.6 kg at 23.8% on the September DEXA, routed down to 72.9 kg at 16% and then up to 90 kg at 13%.
 
 ## Who this is for
 
@@ -10,34 +10,34 @@ Busy working adults, men and women, who want to eat right and train with the lea
 
 ## Core pages
 
-- [Try it](https://json.fit/try/): Build your plan in the browser, no sign-up: answer a few questions and see your route, your training program and your weekly meals, made by the same engines as the app.
-- [Meal prep for people who already train](https://json.fit/meal-prep/): For people who train but whose food falls apart midweek: high protein meal prep from one shop and one slow cooker cook, 8 tubs on your macros.
-- [FIFO and shift workers](https://json.fit/fifo/): For FIFO and shift workers: one cook covers the weeks at home, on your macros, plus training at a gym, at home or bodyweight only. It does not plan camp food.
-- [Keep muscle while losing weight](https://json.fit/protein-first/): For people losing weight who want to keep their muscle: a high protein meal plan, a cut paced to keep muscle and a strength program.
-- [Home](https://json.fit/): What the app does, the route, the meals, the week, the training, the evidence and FAQ. Primary reference page.
-- [Meals](https://json.fit/meals.html): All 75 meals with calories, protein and hands-on time, filterable by batch meals, breakfast, desserts, backup meals, slow cooker, oven bakes, 10 minutes hands-on or less and 40 g+ protein.
-- [Recipe pages](https://json.fit/r/): One page per meal with ingredients, method, macros and how it keeps, e.g. https://json.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
-- [Programs](https://json.fit/programs/): Free periodised programs (beginner to advanced) that import directly into the app.
-- [Exercises](https://json.fit/exercises/): 144 exercises with start and finish photos, what each trains and how to do it.
-- [6 hours a week](https://json.fit/time/): How the figure of about 6 hours a week saved on food was worked out, from Australian time-use data, a food-logging study and the app's own meal plans.
-- [How we know](https://json.fit/research/): The 25 decisions the app makes, what the studies found, the confidence level and the sources, plus the full reference files.
-- [The Lab](https://json.fit/lab/): The founder's own route on the app, with DEXA scans, the planned route and progress photos as they happen.
-- [Free cookbook](https://json.fit/cookbook/free-cookbook): "The One Cook Cookbook: batch meals that cover your week", 86 pages: the 37 batch meals plus the breakfasts, desserts and backup meals as a printable PDF, free in exchange for an email.
+- [Try it](https://getcoast.fit/try/): Build your plan in the browser, no sign-up: answer a few questions and see your route, your training program and your weekly meals, made by the same engines as the app.
+- [Meal prep for people who already train](https://getcoast.fit/meal-prep/): For people who train but whose food falls apart midweek: high protein meal prep from one shop and one slow cooker cook, 8 tubs on your macros.
+- [FIFO and shift workers](https://getcoast.fit/fifo/): For FIFO and shift workers: one cook covers the weeks at home, on your macros, plus training at a gym, at home or bodyweight only. It does not plan camp food.
+- [Keep muscle while losing weight](https://getcoast.fit/protein-first/): For people losing weight who want to keep their muscle: a high protein meal plan, a cut paced to keep muscle and a strength program.
+- [Home](https://getcoast.fit/): What the app does, the route, the meals, the week, the training, the evidence and FAQ. Primary reference page.
+- [Meals](https://getcoast.fit/meals.html): All 75 meals with calories, protein and hands-on time, filterable by batch meals, breakfast, desserts, backup meals, slow cooker, oven bakes, 10 minutes hands-on or less and 40 g+ protein.
+- [Recipe pages](https://getcoast.fit/r/): One page per meal with ingredients, method, macros and how it keeps, e.g. https://getcoast.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
+- [Programs](https://getcoast.fit/programs/): Free periodised programs (beginner to advanced) that import directly into the app.
+- [Exercises](https://getcoast.fit/exercises/): 144 exercises with start and finish photos, what each trains and how to do it.
+- [6 hours a week](https://getcoast.fit/time/): How the figure of about 6 hours a week saved on food was worked out, from Australian time-use data, a food-logging study and the app's own meal plans.
+- [How we know](https://getcoast.fit/research/): The 25 decisions the app makes, what the studies found, the confidence level and the sources, plus the full reference files.
+- [The Lab](https://getcoast.fit/lab/): The founder's own route on the app, with DEXA scans, the planned route and progress photos as they happen.
+- [Free cookbook](https://getcoast.fit/cookbook/free-cookbook): "The One Cook Cookbook: batch meals that cover your week", 86 pages: the 37 batch meals plus the breakfasts, desserts and backup meals as a printable PDF, free in exchange for an email.
 
 ## Guides
 
-- [Blog](https://json.fit/blog.html): Articles on training, nutrition, cutting and bulking, protein, training volume, rep ranges, deloads and rest periods, each with its sources.
+- [Blog](https://getcoast.fit/blog.html): Articles on training, nutrition, cutting and bulking, protein, training volume, rep ranges, deloads and rest periods, each with its sources.
 
 ## Get the app
 
-- [JSON.fit on the App Store](https://apps.apple.com/au/app/json-fit/id6758357834): Free download. iOS.
-- [JSON.fit on Google Play](https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON): Free download. Android.
+- [Coast on the App Store](https://apps.apple.com/au/app/json-fit/id6758357834): Free download. iOS.
+- [Coast on Google Play](https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON): Free download. Android.
 
 ## Optional
 
-- [Privacy policy](https://json.fit/privacy-policy.html): No accounts, no personal-data collection. Data stays on device.
-- [Terms of service](https://json.fit/terms-of-service.html): Terms of use.
+- [Privacy policy](https://getcoast.fit/privacy-policy.html): No accounts, no personal-data collection. Data stays on device.
+- [Terms of service](https://getcoast.fit/terms-of-service.html): Terms of use.
 
 ## Full index
 
-- [llms-full.txt](https://json.fit/llms-full.txt): every meal with calories and protein, the 25 decisions with confidence labels, every blog post, the programs and the reference files, in one file.
+- [llms-full.txt](https://getcoast.fit/llms-full.txt): every meal with calories and protein, the 25 decisions with confidence labels, every blog post, the programs and the reference files, in one file.

@@ -105,4 +105,4 @@ Isolation stays on its full 10–15 band in every mesocycle. A program with no m
 - **Map by category, not goal.** A heavy compound at 6 reps and an isolation at 14 reps are both hypertrophy work in the same program.
 - **Audit volume and effort before changing rep range** when results stall.
 
-For full citations see https://json.fit/rep-range-references.md
+For full citations see https://getcoast.fit/rep-range-references.md

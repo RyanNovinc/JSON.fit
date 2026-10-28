@@ -28,7 +28,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
-const SITE = 'https://json.fit';
+const SITE = 'https://getcoast.fit';
 const MEALS_JSON = path.resolve('r/meals.json');
 // Meals the app no longer offers (scripts/refresh-offered-meals.mjs). Their pages are
 // still built, so inbound links keep working, with a note pointing to the meals page;
@@ -154,7 +154,7 @@ function recipeSchema(meal, plate, url) {
     '@type': 'Recipe',
     name: plate.display_name || meal.display_name,
     url,
-    author: { '@type': 'Organization', name: 'JSON.fit', url: SITE },
+    author: { '@type': 'Organization', name: 'Coast', url: SITE },
   };
   if (img) data.image = [img];
   if (plate.description) data.description = plate.description;
@@ -188,7 +188,7 @@ const minutes = (n) => {
 // The meta description. Plain facts from the app data, no claims beyond them.
 function describe(meal, plate, mealCount) {
   if (meal.retired) {
-    return `This recipe is no longer in the JSON.fit meal list. See the ${mealCount} meals the app plans with now at json.fit/meals.html.`;
+    return `This recipe is no longer in the Coast meal list. See the ${mealCount} meals the app plans with now at getcoast.fit/meals.html.`;
   }
   const b = meal.batch;
   if (b) {
@@ -201,7 +201,7 @@ function describe(meal, plate, mealCount) {
   const lead = meal.site && meal.site.section === 'backup'
     ? `Didn't get to a meal? Blend this in about ${active || 4} minutes.`
     : `${active != null ? active + ' min hands-on' : minutes(totalMinutes(meal, plate))}, every ingredient and every step.`;
-  return `${lead} One of ${mealCount} meals in JSON.fit, with the macros per serve.`;
+  return `${lead} One of ${mealCount} meals in Coast, with the macros per serve.`;
 }
 
 function buildHead(meal, plate, slug, mealCount) {
@@ -221,11 +221,11 @@ function buildHead(meal, plate, slug, mealCount) {
 
   const schema = recipeSchema(meal, plate, url);
 
-  return `<title>${esc(name)} | JSON.fit</title>
+  return `<title>${esc(name)} | Coast</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(url)}">
 <meta property="og:type" content="article">
-<meta property="og:site_name" content="JSON.fit">
+<meta property="og:site_name" content="Coast">
 <meta property="og:title" content="${esc(ogTitle)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(url)}">
@@ -333,7 +333,7 @@ for (const slug of slugs) {
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="${SITE}/r/${slug}/${canon.id}/">
 <meta http-equiv="refresh" content="0;url=/r/${slug}/${canon.id}/">
-<title>${esc(meal.display_name)} | JSON.fit</title>
+<title>${esc(meal.display_name)} | Coast</title>
 </head>
 <body><script>location.replace('/r/${slug}/${canon.id}/');</script>
 <p>Redirecting to <a href="/r/${slug}/${canon.id}/">${esc(meal.display_name)}</a>.</p></body>

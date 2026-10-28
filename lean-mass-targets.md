@@ -1,8 +1,8 @@
-# JSON.fit Lean-Mass Targets
+# Coast Lean-Mass Targets
 
 Canonical reference for turning a goal weight + goal body-fat into a training target, and for the "overshoot then cut" strategy. AI MUST apply this when the user's profile includes a goal weight and/or a goal body-fat. If neither is provided, skip this file's math and plan from the stated phase alone.
 
-For the theory and measurement-error limits behind this page, see [lean-mass-targets-references.md](https://json.fit/lean-mass-targets-references.md).
+For the theory and measurement-error limits behind this page, see [lean-mass-targets-references.md](https://getcoast.fit/lean-mass-targets-references.md).
 
 ## Core Rule
 

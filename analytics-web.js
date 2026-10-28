@@ -1,4 +1,4 @@
-// analytics-web.js — self-hosted event tracking for json.fit (v2, enriched).
+// analytics-web.js — self-hosted event tracking for getcoast.fit (v2, enriched).
 // Adds acquisition attribution, device/locale context, new-vs-returning,
 // scroll depth, engagement time, and an internal-traffic filter.
 // Load as a NORMAL script (NOT type="module").

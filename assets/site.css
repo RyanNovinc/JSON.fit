@@ -1,4 +1,4 @@
-/* json.fit shared styles: the homepage design system (Oct 2026), used by every page except the homepage,
+/* getcoast.fit shared styles: the homepage design system (Oct 2026), used by every page except the homepage,
    which carries its own layout rules inline. Dark studio, Outfit + DM Mono + Georgia italic, food in green,
    training in cyan, The Lab in violet. Page-specific rules stay in each page's own <style>. */
 :root{
@@ -30,7 +30,9 @@ a{color:inherit}
 /* nav */
 .site-nav{position:fixed;inset:0 0 auto 0;z-index:1000;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;
   background:rgba(8,8,11,.72);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
-.site-nav .logo,.site-foot .logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--mono);font-weight:500;font-size:1rem;color:var(--text)}
+.site-nav .logo,.site-foot .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text)}
+.logo-ic{display:block;flex:none;width:24px;height:24px}
+.logo-wm{display:block;flex:none;width:75px;height:20px;margin-top:1px}
 .site-nav .nav-links{display:flex;align-items:center;gap:1.6rem;list-style:none;margin:0;padding:0}
 .site-nav .nav-links a{text-decoration:none;color:var(--text-2);font-size:.88rem;font-weight:500;transition:color .2s}
 .site-nav .nav-links a:hover{color:var(--text)}

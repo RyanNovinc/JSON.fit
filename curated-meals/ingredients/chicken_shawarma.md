@@ -1,4 +1,4 @@
-Add/repair the curated MAIN meal "Chicken Shawarma" in JSON.fit. Lunch/dinner, batch (4), cuisine mediterranean. TWO plates: wrap, rice_bowl.
+Add/repair the curated MAIN meal "Chicken Shawarma" in Coast. Lunch/dinner, batch (4), cuisine mediterranean. TWO plates: wrap, rice_bowl.
 
 ==================================================================
 IDEMPOTENCY — READ FIRST

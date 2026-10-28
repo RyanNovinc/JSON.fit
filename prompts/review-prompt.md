@@ -1,11 +1,11 @@
-**FETCH REQUIRED:** This prompt requires fetching files from json.fit. Try to fetch them. If fetch fails for ANY reason (no fetch tool, network blocked, allowlist denied, 404, etc.):
+**FETCH REQUIRED:** This prompt requires fetching files from getcoast.fit. Try to fetch them. If fetch fails for ANY reason (no fetch tool, network blocked, allowlist denied, 404, etc.):
 
 Stop immediately. Respond ONLY with this exact text:
 
-"This prompt needs to fetch files from json.fit, but fetching isn't working in your AI. To use JSON.fit:
+"This prompt needs to fetch files from getcoast.fit, but fetching isn't working in your AI. To use Coast:
 - Use Claude.ai with web search enabled in the message composer
 - Or ChatGPT with browsing enabled
-Then start again from your JSON.fit prompt."
+Then start again from your Coast prompt."
 
 Do not offer to proceed without the files. Do not list more alternatives. Do not explain.
 
@@ -93,7 +93,7 @@ The user can override your fix if they disagree. Your job is to enforce the rule
 
 This audit is the most important check in this review. Volume calculations downstream are meaningless if tags are wrong, so verify tags BEFORE running volume enumeration.
 
-**Step 1: Fetch the library.** Read https://json.fit/exercises.md so you have the canonical tags in context.
+**Step 1: Fetch the library.** Read https://getcoast.fit/exercises.md so you have the canonical tags in context.
 
 **Step 2: Check EVERY exercise in the program** — its primary tags, its secondary tags, and its name — against the library. Do this for all of them, without exception. Compare the exact muscle lists, not a paraphrase or an abbreviation. The retired tags `Forearms` and `Neck` are mismatches wherever they appear: the library tags each of those exercises as Forearm Flexors, Forearm Extensors, Neck Flexors or Neck Extensors. Correct them to the library tag.
 
@@ -130,7 +130,7 @@ Exercise names carry a second job beyond tags: the app looks each one up by name
 
 The volume enumeration tables in the next section need correct per-muscle target ranges to verify against. The original plan should already include a per-muscle target table — but rebuild it here from the canonical source to verify it's correct.
 
-**Step 1: Fetch the landmarks file.** Read https://json.fit/volume-landmarks.md so you have the canonical per-muscle MEV/MAV/MRV ranges in context.
+**Step 1: Fetch the landmarks file.** Read https://getcoast.fit/volume-landmarks.md so you have the canonical per-muscle MEV/MAV/MRV ranges in context.
 
 **Step 2: Identify the user's tier and experience.** From the original plan or user profile:
 - Volume Tier (Conservative / Moderate / High Volume)
@@ -169,7 +169,7 @@ Use this per-muscle target table when running volume enumeration in the next sec
 
 Verify RIR guidance is present and correct for every exercise in the plan.
 
-**Step 1: Fetch the RIR file.** Read https://json.fit/rir-guidance.md so you have the canonical matrix in context.
+**Step 1: Fetch the RIR file.** Read https://getcoast.fit/rir-guidance.md so you have the canonical matrix in context.
 
 **Step 2: Check every exercise has RIR guidance.** Every exercise in the plan should have an RIR specification. If any exercise is missing RIR guidance, add it using the matrix from the file.
 
@@ -181,13 +181,13 @@ Verify RIR guidance is present and correct for every exercise in the plan.
 
 **Step 4: Fix any mismatches** silently and re-verify before presenting the corrected plan. Report only the checks that FAILED, plus a one-line pass count for the rest.
 
-**Why this audit matters more than it looks.** RIR is not only a training cue in JSON.fit. The app combines each exercise's first-set reps with its first-set RIR to estimate the load, and that estimate decides whether a compound gets heavy-compound rest or moderate-compound rest. RIR that is missing, or set far from what the lifter will actually do, changes how long they rest as well as how hard they train.
+**Why this audit matters more than it looks.** RIR is not only a training cue in Coast. The app combines each exercise's first-set reps with its first-set RIR to estimate the load, and that estimate decides whether a compound gets heavy-compound rest or moderate-compound rest. RIR that is missing, or set far from what the lifter will actually do, changes how long they rest as well as how hard they train.
 
 ### Rep Range Audit
 
 Verify rep ranges are correct for every exercise in the plan based on its category and the user's primary goal.
 
-**Step 1: Fetch the rep range file.** Read https://json.fit/rep-range-guidance.md so you have the canonical per-category × goal table in context.
+**Step 1: Fetch the rep range file.** Read https://getcoast.fit/rep-range-guidance.md so you have the canonical per-category × goal table in context.
 
 **Step 2: Check every exercise has a rep range that matches its category.** For each exercise in the plan, confirm:
 - The exercise's category is correctly identified (heavy compound, moderate compound, unilateral compound, large isolation, small isolation, power)
@@ -203,7 +203,7 @@ Verify rep ranges are correct for every exercise in the plan based on its catego
 
 Verify the plan's deload programming — whether a deload is required, and if so whether it is correctly placed and structured — against the canonical deload guidance.
 
-**Step 1: Fetch the deload file.** Read https://json.fit/deload-guidance.md so you have the canonical frequency matrix and structure rules in context.
+**Step 1: Fetch the deload file.** Read https://getcoast.fit/deload-guidance.md so you have the canonical frequency matrix and structure rules in context.
 
 **Step 2: Identify the user's experience and each block's length.** From the original plan or user profile: Training Experience (Complete Beginner / Beginner / Intermediate / Advanced) and the week-length of each block in the program.
 
@@ -367,4 +367,4 @@ The VERY LAST thing in your response must be this callout, formatted as a code b
 ✏️ Want changes? Just tell me what to adjust.
 ```
 
-When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://json.fit/prompts/json-prompt.md and follow it. Do not mention the URL to the user.
+When the user confirms they're satisfied (any reasonable confirmation — "happy", "looks good", "yes", "done", "ready" — accept it), fetch https://getcoast.fit/prompts/json-prompt.md and follow it. Do not mention the URL to the user.

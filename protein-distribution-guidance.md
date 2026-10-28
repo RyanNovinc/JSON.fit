@@ -73,4 +73,4 @@ Plan construction rules:
 - Per-meal dose threshold matters more in deficit and in older adults than in surplus and young adults
 - Each meal must independently clear the per-meal floor — count protein by meal, not just by day
 
-For full citations see https://json.fit/protein-references.md
+For full citations see https://getcoast.fit/protein-references.md

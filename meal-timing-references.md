@@ -1,8 +1,8 @@
 # Meal Timing Research References
 
-The meal timing recommendations in JSON.fit are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
+The meal timing recommendations in Coast are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
 
-For the practical guidance applied to meal plans, see [meal-timing-guidance.md](https://json.fit/meal-timing-guidance.md).
+For the practical guidance applied to meal plans, see [meal-timing-guidance.md](https://getcoast.fit/meal-timing-guidance.md).
 
 ---
 

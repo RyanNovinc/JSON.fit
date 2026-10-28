@@ -1,8 +1,8 @@
 # Fiber Research References
 
-The fiber recommendations in JSON.fit are grounded in peer-reviewed research and major guideline bodies. This page documents the studies and how they inform the guidance.
+The fiber recommendations in Coast are grounded in peer-reviewed research and major guideline bodies. This page documents the studies and how they inform the guidance.
 
-For the practical guidance applied to meal plans, see [fiber-guidance.md](https://json.fit/fiber-guidance.md).
+For the practical guidance applied to meal plans, see [fiber-guidance.md](https://getcoast.fit/fiber-guidance.md).
 
 ---
 

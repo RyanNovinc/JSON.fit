@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * build-exercises.js — builds the public exercise library for json.fit/exercises/
+ * build-exercises.js — builds the public exercise library for getcoast.fit/exercises/
  *
  * Run from the website repo root:
  *   node build-exercises.js               (finds the app repo on disk)

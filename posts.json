@@ -93,7 +93,7 @@
   {
     "slug": "ai-answer-key",
     "title": "We Didn't Make the AI Smarter. We Gave It the Answer Key",
-    "description": "Ask a general-purpose AI about fitness and it confidently repeats the field's oldest myths. Here's how JSON.fit feeds it curated, citation-backed research so it applies the right knowledge instead of guessing.",
+    "description": "Ask a general-purpose AI about fitness and it confidently repeats the field's oldest myths. Here's how Coast feeds it curated, citation-backed research so it applies the right knowledge instead of guessing.",
     "date": "2026-06-10",
     "readTime": "7 min read"
   },
@@ -169,8 +169,8 @@
   },
   {
     "slug": "json-fit-vs-competitors",
-    "title": "JSON.fit vs MyFitnessPal vs MacroFactor vs Hevy",
-    "description": "An honest comparison of what each app does well, where it falls short, and where JSON.fit fits in.",
+    "title": "Coast vs MyFitnessPal vs MacroFactor vs Hevy",
+    "description": "An honest comparison of what each app does well, where it falls short, and where Coast fits in.",
     "date": "2026-03-25",
     "readTime": "5 min read"
   },
@@ -184,7 +184,7 @@
   {
     "slug": "meal-plan-claude",
     "title": "How to Create a Personalised Meal Plan with Claude",
-    "description": "Optional: have your own AI write a custom meal plan and import it into JSON.fit for the grocery list and meal prep. The app does this itself now; this is for people who want their own AI involved.",
+    "description": "Optional: have your own AI write a custom meal plan and import it into Coast for the grocery list and meal prep. The app does this itself now; this is for people who want their own AI involved.",
     "date": "2026-03-14",
     "readTime": "5 min read"
   },

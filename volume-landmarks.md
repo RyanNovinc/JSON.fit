@@ -1,6 +1,6 @@
-# JSON.fit Volume Landmarks 
+# Coast Volume Landmarks 
 
-This file is the canonical reference for weekly volume targets per muscle group on JSON.fit.
+This file is the canonical reference for weekly volume targets per muscle group on Coast.
 
 ## Instructions for AI
 
@@ -9,7 +9,7 @@ When generating workout programs, you MUST:
 1. Use these per-muscle volume ranges as targets, NOT a single major/medium classification.
 2. Each muscle has its own MEV/MAV/MRV — respect them individually.
 3. The user's selected volume tier (Conservative/Moderate/High) and training experience map to specific positions within each muscle's MAV range.
-4. Volume is measured in EFFECTIVE sets (Primary × 1.0 + Secondary × 0.5), consistent with the rest of the JSON.fit system.
+4. Volume is measured in EFFECTIVE sets (Primary × 1.0 + Secondary × 0.5), consistent with the rest of the Coast system.
 
 ## Volume Landmark Definitions
 

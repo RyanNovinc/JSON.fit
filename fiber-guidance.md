@@ -71,4 +71,4 @@ Specific supplement ceilings: Inulin/FOS ~10 g/day; GOS ~12 g/day; Psyllium up t
 - Total kcal and protein dominate; fiber is a secondary lever
 - Adherence and source diversity matter more than soluble/insoluble ratios
 
-For full citations see https://json.fit/fiber-references.md
+For full citations see https://getcoast.fit/fiber-references.md

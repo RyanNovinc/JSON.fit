@@ -2,7 +2,7 @@
 
 > **Operating principle:** A deload is the planned removal of accumulated fatigue, not motivation — cut volume hard, hold load, raise RIR, and place it as the final week *inside* the block's existing week range.
 
-This file is the single source of truth for deciding **when**, **how**, and **how much** to deload when generating a JSON.fit program. Deloads in this system are **scheduled**, **experience-scaled**, and **expressed as the final week of the block** with reduced `sets_weekly` and raised `RIR`.
+This file is the single source of truth for deciding **when**, **how**, and **how much** to deload when generating a Coast program. Deloads in this system are **scheduled**, **experience-scaled**, and **expressed as the final week of the block** with reduced `sets_weekly` and raised `RIR`.
 
 ---
 
@@ -43,7 +43,7 @@ A block ramps volume from ~MEV toward MRV; fatigue beyond MRV causes the next we
 | Needs | Nothing at runtime | RIR/velocity/readiness logging + adjustment authority |
 | Failure mode | Mistimed if recovery differs | Drifts late; lifter rationalises "one more week" |
 
-- JSON.fit emits a **pre-written program**. There is no live readiness feed at generation time, so autoregulated triggers cannot be evaluated.
+- Coast emits a **pre-written program**. There is no live readiness feed at generation time, so autoregulated triggers cannot be evaluated.
 - Therefore the system **defaults to scheduled**: the deload is written into the plan at a fixed position (the block's final week).
 - Autoregulation is documented in §2 for completeness and for downstream tools that *do* have a feedback loop; it is not the default emission behaviour.
 
@@ -155,7 +155,7 @@ The per-week values and the `deload_weeks` flag are **complementary, not alterna
 ## Operating Principles
 
 - Deload = fatigue removal, expressed as the **final week within the block's week range**, never an appended week.
-- **Default scheduled**, because JSON.fit emits pre-written plans with no live readiness feed; autoregulation (§2) is documented for tools that have one.
+- **Default scheduled**, because Coast emits pre-written plans with no live readiness feed; autoregulation (§2) is documented for tools that have one.
 - Frequency is **experience × block-length scaled**: short beginner blocks (≤4 wk) get **no** deload; advanced and all ≥6–8 wk blocks get a mandatory one.
 - Default structure: **drop effective volume ~40–50%, hold load, raise RIR +2–3.** Volume is the primary lever; intensity cuts are the exception (joint/connective recovery).
 - Cut fatigue where it lives: **heaviest compound categories first**, small-muscle isolation last.
@@ -163,4 +163,4 @@ The per-week values and the `deload_weeks` flag are **complementary, not alterna
 - Emit **both** deload mechanisms: reduced `sets_weekly` / raised `rir_weekly` **per-week** (the prescription) **and** the block-level `deload_weeks` flag (the marker). Downstream formatters read the prescription from the data and identify the deload week from the flag.
 - A real deload reduces fatigue; a trimmed-but-still-hard week does not.
 
-For full citations see https://json.fit/deload-references.md
+For full citations see https://getcoast.fit/deload-references.md

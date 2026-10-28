@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""json.fit website analytics report (first-party events, surface=web).
+"""Coast website (getcoast.fit, formerly json.fit) analytics report (first-party events, surface=web).
 
 Monthly review: python3 -I scripts/site-report.py --days 30 --pull
 Needs Ryan's aws CLI creds (ryan-admin). Event data is kept outside the repo.
@@ -63,7 +63,7 @@ C = collections.Counter
 def host(r):
     if not r: return '(direct)'
     m = re.match(r'https?://([^/]+)', r); h = m.group(1) if m else r
-    return '(own site)' if h.endswith('json.fit') else h
+    return '(own site)' if h.endswith(('json.fit', 'getcoast.fit')) else h
 def stats(E):
     s = {}
     ss = [e for e in E if e['event']=='session_started']
@@ -82,7 +82,7 @@ def stats(E):
     s['home median seconds'] = round(statistics.median(eng)) if eng else 0
     return s
 T, L = stats(P['this']), stats(P['last'])
-print(f"json.fit — last {DAYS} days vs the {DAYS} before  (dropped {DUPES} duplicate events; excluded {sum(1 for r in drop.values() if r=='bot')} bot ids, {sum(1 for r in drop.values() if r=='heavy')} heavy ids)")
+print(f"getcoast.fit — last {DAYS} days vs the {DAYS} before  (dropped {DUPES} duplicate events; excluded {sum(1 for r in drop.values() if r=='bot')} bot ids, {sum(1 for r in drop.values() if r=='heavy')} heavy ids)")
 print(f"{'':28s}{'this':>8s}{'last':>8s}")
 for k in T: print(f"{k:28s}{T[k]:8d}{L[k]:8d}")
 E = P['this']

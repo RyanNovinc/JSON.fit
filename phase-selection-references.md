@@ -1,10 +1,10 @@
 # Phase Selection & Body Composition Research References
 
-The phase-selection, rate, surplus/deficit, and protein recommendations in JSON.fit are grounded in peer-reviewed research where it exists, and in clearly-labelled practitioner models where it does not. This page documents the studies and how they inform the guidance.
+The phase-selection, rate, surplus/deficit, and protein recommendations in Coast are grounded in peer-reviewed research where it exists, and in clearly-labelled practitioner models where it does not. This page documents the studies and how they inform the guidance.
 
-For the practical guidance applied to plans, see [phase-selection.md](https://json.fit/phase-selection.md).
+For the practical guidance applied to plans, see [phase-selection.md](https://getcoast.fit/phase-selection.md).
 
-(The lean-mass math is a separate document with its own references: [lean-mass-targets.md](https://json.fit/lean-mass-targets.md) + [lean-mass-targets-references.md](https://json.fit/lean-mass-targets-references.md).)
+(The lean-mass math is a separate document with its own references: [lean-mass-targets.md](https://getcoast.fit/lean-mass-targets.md) + [lean-mass-targets-references.md](https://getcoast.fit/lean-mass-targets-references.md).)
 
 ---
 
@@ -15,7 +15,7 @@ The largest meta-analysis on the topic pooled 49 studies and 1863 participants (
 
 [Morton et al. 2018 — Br J Sports Med 52(6):376–384](https://pmc.ncbi.nlm.nih.gov/articles/PMC5867436/) · doi:10.1136/bjsports-2017-097608
 
-**Application in JSON.fit:** protein target 1.6–2.2 g/kg bodyweight across all phases. The upper end is used on a cut, where protein needs rise to protect lean mass and support satiety (see deficit section).
+**Application in Coast:** protein target 1.6–2.2 g/kg bodyweight across all phases. The upper end is used on a cut, where protein needs rise to protect lean mass and support satiety (see deficit section).
 
 ---
 
@@ -31,7 +31,7 @@ A meta-analysis and meta-regression of RCTs of resistance training in an energy 
 
 [Murphy & Koehler 2022 — Scand J Med Sci Sports 32(1):125–137](https://pubmed.ncbi.nlm.nih.gov/34623696/) · doi:10.1111/sms.14075
 
-**Application in JSON.fit:** cut deficit capped at ~500 kcal/day; recomp uses maintenance-to-small deficit (<~400 kcal/day). Both bias protein high.
+**Application in Coast:** cut deficit capped at ~500 kcal/day; recomp uses maintenance-to-small deficit (<~400 kcal/day). Both bias protein high.
 
 ---
 
@@ -47,7 +47,7 @@ A review synthesising the (limited) direct evidence plus overfeeding studies con
 
 [Helms et al. 2023 — Sports Med Open 9:102](https://pubmed.ncbi.nlm.nih.gov/37914977/) · doi:10.1186/s40798-023-00651-y
 
-**Application in JSON.fit:** a small surplus (~+5% lean bulk, up to ~+10% bulk) is used, scaled down with training experience. The exact percentage is a practitioner target, not a validated optimum — the evidence supports the *direction* (small is enough; large just adds fat), not a precise number.
+**Application in Coast:** a small surplus (~+5% lean bulk, up to ~+10% bulk) is used, scaled down with training experience. The exact percentage is a practitioner target, not a validated optimum — the evidence supports the *direction* (small is enough; large just adds fat), not a precise number.
 
 ---
 
@@ -60,7 +60,7 @@ A narrative review documented body recomposition not only in novice and overweig
 
 A supporting RCT (Longland et al. 2016, Am J Clin Nutr) found that a higher-protein diet during an energy deficit combined with intense training produced simultaneous lean-mass gain and fat-mass loss in young men.
 
-**Application in JSON.fit:** recomp is offered as a recommended phase for new, returning, and higher-body-fat users — not for lean, well-trained lifters, in whom it is slow.
+**Application in Coast:** recomp is offered as a recommended phase for new, returning, and higher-body-fat users — not for lean, well-trained lifters, in whom it is slow.
 
 ---
 
@@ -76,7 +76,7 @@ The *observation* that detrained lifters regain quickly is reasonably supported.
 
 [Myonuclear permanence — systematic review & meta-analysis 2022 — PMC9530508](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9530508/)
 
-**Application in JSON.fit:** a "returning after a break" training-state option routes toward recomp/regain framing. Framed as a faster-regain *phenomenon*, not a claim about a specific cellular mechanism.
+**Application in Coast:** a "returning after a break" training-state option routes toward recomp/regain framing. Framed as a faster-regain *phenomenon*, not a claim about a specific cellular mechanism.
 
 ---
 
@@ -87,7 +87,7 @@ The *observation* that detrained lifters regain quickly is reasonably supported.
 
 [Byrne et al. 2018 (MATADOR) — Int J Obes 42(2):129–138](https://pubmed.ncbi.nlm.nih.gov/28925405/) · doi:10.1038/ijo.2017.206
 
-**Application in JSON.fit:** a 1–2 week maintenance break is suggested on cuts running beyond ~8–12 weeks. Note the trial was in obese men, not lean lifters, and used a fixed 2-week alternating structure — the "every 8–12 weeks" cadence is a practitioner extrapolation.
+**Application in Coast:** a 1–2 week maintenance break is suggested on cuts running beyond ~8–12 weeks. Note the trial was in obese men, not lean lifters, and used a fixed 2-week alternating structure — the "every 8–12 weeks" cadence is a practitioner extrapolation.
 
 ---
 
@@ -105,7 +105,7 @@ However, this analysis is **debated.** Henselmans published a detailed rebuttal 
 
 **Where they agree:** across a normal, healthy body-fat range (roughly ≤20–25% for men), there is no compelling evidence that body-fat percentage meaningfully impairs muscle gain, and no evidence that cutting first improves future gains. Reasons to get leaner are health, aesthetics, recovery, and keeping a later cut short — not an inability to build muscle.
 
-**Application in JSON.fit:** the "no cut-first mandate" rule in phase-selection.md rests on the *agreed* conclusion (cutting first does not potentiate hypertrophy), not on the stronger contested claim. The guidance does not tell users body fat is irrelevant; it tells them cutting first is optional and about preference/health.
+**Application in Coast:** the "no cut-first mandate" rule in phase-selection.md rests on the *agreed* conclusion (cutting first does not potentiate hypertrophy), not on the stronger contested claim. The guidance does not tell users body fat is irrelevant; it tells them cutting first is optional and about preference/health.
 
 ---
 
@@ -116,7 +116,7 @@ A theoretical model derived from Minnesota Starvation Experiment data estimated 
 
 [Alpert 2005 — J Theor Biol 233(1):1–13](https://pubmed.ncbi.nlm.nih.gov/15615615/) · doi:10.1016/j.jtbi.2004.08.029
 
-**Application in JSON.fit:** cut rate is expressed as % of bodyweight and reduced as the user leans out. Note this is a single theoretical model, not a direct experimental measurement.
+**Application in Coast:** cut rate is expressed as % of bodyweight and reduced as the user leans out. Note this is a single theoretical model, not a direct experimental measurement.
 
 ---
 
@@ -126,7 +126,7 @@ The tiered monthly rates (new ~1–1.5%/mo of bodyweight, intermediate ~0.5–1%
 
 Lyle McDonald — [genetic muscular potential model](https://bodyrecomposition.com/muscle-gain/genetic-muscular-potential) (practitioner). Alan Aragon — percentage-of-bodyweight model (practitioner).
 
-**Application in JSON.fit:** these rates set the *ceiling* used to scale the bulk surplus by training state and to set user expectations. Labelled as estimates, not guarantees.
+**Application in Coast:** these rates set the *ceiling* used to scale the bulk surplus by training state and to set user expectations. Labelled as estimates, not guarantees.
 
 ---
 
@@ -166,7 +166,7 @@ Lyle McDonald — [genetic muscular potential model](https://bodyrecomposition.c
 
 4. **Consumer body-fat readings (bioimpedance, and even DEXA) carry several points of error.** Every body-fat threshold in the guidance should be applied to *trends* (scale weight, waist, photos, strength), not a single reading.
 
-5. **The p-ratio literature is genuinely debated.** JSON.fit's guidance deliberately rests only on the agreed conclusion (cutting first doesn't potentiate hypertrophy), not on the stronger contested claim.
+5. **The p-ratio literature is genuinely debated.** Coast's guidance deliberately rests only on the agreed conclusion (cutting first doesn't potentiate hypertrophy), not on the stronger contested claim.
 
 6. **None of this is medical advice, and it is not for people with eating disorders.** Users with a history of disordered eating should not be steered toward aggressive deficits, narrowed windows, or rigid body-fat targeting.
 

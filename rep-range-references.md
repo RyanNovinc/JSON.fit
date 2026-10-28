@@ -1,8 +1,8 @@
 # Rep Range Research References
 
-The rep range recommendations in JSON.fit are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
+The rep range recommendations in Coast are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
 
-For the practical guidance applied to programs, see [rep-range-guidance.md](https://json.fit/rep-range-guidance.md).
+For the practical guidance applied to programs, see [rep-range-guidance.md](https://getcoast.fit/rep-range-guidance.md).
 
 ---
 

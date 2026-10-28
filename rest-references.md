@@ -1,8 +1,8 @@
 # Rest Period Research References
 
-The rest period recommendations in JSON.fit are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
+The rest period recommendations in Coast are grounded in peer-reviewed research. This page documents the studies and how they inform the guidance.
 
-For the practical guidance applied to programs, see [rest-guidance.md](https://json.fit/rest-guidance.md).
+For the practical guidance applied to programs, see [rest-guidance.md](https://getcoast.fit/rest-guidance.md).
 
 ---
 

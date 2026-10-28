@@ -1,6 +1,6 @@
 # Authoring `meal_prep` — classification rubric
 
-> Hosted reference doc (GitHub Pages, e.g. `https://json.fit/curated-meals/meal-prep-authoring.md`).
+> Hosted reference doc (GitHub Pages, e.g. `https://getcoast.fit/curated-meals/meal-prep-authoring.md`).
 > This is for **whoever (or whatever) authors curated meals**. It is NOT fetched by the AI meal-planning pipeline — the app now derives the prep session deterministically from `meal_prep` + the plan. Keep it accurate; the prep feature is only as good as these classifications.
 
 Every curated meal should carry a `meal_prep` block on the meal (and optionally an override on individual plates). It tells `buildPrepSession` how a meal is prepped ahead when the user batches their week.

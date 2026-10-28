@@ -174,6 +174,7 @@ img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 .cover{padding:16mm 14mm}
 .cover .brand{display:flex;align-items:center;gap:4mm;font-weight:600;font-size:13pt}
 .cover .brand img{width:9mm;height:9mm;border-radius:2.2mm}
+.cover .brand .wm{display:block;height:7.5mm;width:auto}
 .cover h1{font-size:72pt;line-height:.92;margin:10mm 0 0;letter-spacing:-.02em}
 .cover h1 span{display:block}
 .cover .food{position:absolute;left:14mm;right:14mm;top:92mm;bottom:14mm;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1.3fr 1fr 1fr;gap:4mm}
@@ -280,17 +281,19 @@ const head = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@1,9..144,500..700&family=Outfit:wght@400;500;600;700&display=swap">
 <style>${css}</style></head><body>`;
 
-const foot = (p, left) => `<div class="foot"><span>${left || `${TITLE} · <b>json.fit</b>`}</span><span>${p} / ${TOTAL}</span></div>`;
+// The Coast wordmark (DM Serif Display italic, outlined so the PDF needs no web font).
+const WORDMARK = `<svg class="wm" viewBox="4 -63 248 66" role="img" aria-label="Coast"><path fill="currentColor" d="M21.9 1.5Q14.5 1.5 9.8 -3.5Q5.1 -8.5 5.1 -17.5Q5.1 -23.9 7.3 -29.6Q9.5 -35.4 13.5 -39.9Q17.4 -44.4 22.6 -47Q27.7 -49.6 33.6 -49.6Q37.1 -49.6 40.2 -48.5Q43.2 -47.4 45.1 -45.4Q46.9 -43.4 46.8 -40.7Q46.7 -38 45.1 -36.5Q43.5 -34.9 40.9 -34.9Q38.1 -34.9 36.4 -36.6Q34.7 -38.3 33.7 -40.5L33.1 -42.2Q31.7 -45.5 30.7 -46.2Q29.6 -46.8 27.1 -44.7Q24.4 -42.4 22.1 -38.5Q19.7 -34.6 18.3 -29.9Q16.9 -25.2 16.9 -20.3Q16.9 -12.8 20.2 -9.2Q23.4 -5.7 28.9 -5.7Q32.5 -5.7 36 -8Q39.5 -10.3 42.5 -14.4L43.9 -13.4Q41.8 -9.5 38.5 -6.1Q35.2 -2.7 31 -0.6Q26.7 1.5 21.9 1.5ZM69 1.5Q63.8 1.5 59.5 -0.6Q55.2 -2.6 52.7 -6.8Q50.2 -10.9 50.2 -17.3Q50.2 -23.7 52.4 -29.5Q54.5 -35.3 58.4 -39.9Q62.3 -44.4 67.5 -47Q72.7 -49.6 78.8 -49.6Q84.1 -49.6 88.2 -47.5Q92.4 -45.5 94.9 -41.4Q97.3 -37.3 97.3 -30.9Q97.3 -24.6 95.2 -18.8Q93 -12.9 89.2 -8.3Q85.3 -3.8 80.2 -1.2Q75 1.5 69 1.5ZM70.2 -0.5Q73.3 -0.5 75.9 -3.4Q78.4 -6.2 80.3 -11Q82.2 -15.7 83.2 -21.5Q84.2 -27.2 84.2 -32.9Q84.2 -41.2 82.5 -44.4Q80.8 -47.6 78.1 -47.6Q74.9 -47.6 72.2 -44.8Q69.5 -42 67.5 -37.3Q65.5 -32.6 64.4 -26.9Q63.3 -21.2 63.3 -15.5Q63.3 -7 65.3 -3.8Q67.3 -0.5 70.2 -0.5ZM113.2 1.5Q110.4 1.5 107.9 0.2Q105.4 -1.1 103.9 -4.1Q102.3 -7.1 102.3 -12Q102.3 -17.3 104.4 -22.6Q106.5 -28 110 -32.9Q113.5 -37.7 117.8 -41.5Q122.1 -45.2 126.7 -47.4Q131.3 -49.6 135.4 -49.6Q137.4 -49.6 139.2 -48.9Q140.9 -48.1 142.5 -46.8L150.6 -49.9L151.4 -49.4L142.7 -11.1Q142 -8.3 142 -6.5Q142 -4.4 143.9 -4.4Q145.3 -4.4 147.2 -5.7Q149 -7 151.4 -9.2L152.2 -8.4Q150.7 -6 148.5 -3.8Q146.2 -1.5 143.5 0Q140.7 1.5 137.6 1.5Q134.2 1.5 132.1 -0.6Q130 -2.6 130 -6.9Q130 -8.3 130.1 -9.6Q126.1 -5.1 121.7 -1.8Q117.2 1.5 113.2 1.5ZM114.1 -16.5Q114.1 -11.2 115.9 -8.9Q117.6 -6.5 120.5 -6.5Q122.9 -6.5 125.3 -8Q127.7 -9.5 130.5 -12.3Q130.7 -13.5 131 -14.8L137.3 -43.6Q136 -45.2 134.2 -45.8Q132.4 -46.4 131 -46.4Q126.7 -46.4 122 -41.3Q118.3 -37.2 116.2 -30.5Q114.1 -23.8 114.1 -16.5ZM170.7 1.5Q164.4 1.5 160.5 -1Q156.6 -3.5 156.6 -8.1Q156.6 -10.5 158.3 -12.3Q160 -14.1 162.7 -14.1Q167.7 -14.1 168.9 -8L169.5 -5.2Q170 -3.1 170.8 -1.8Q171.5 -0.5 173.7 -0.5Q176.2 -0.5 178.1 -2.6Q180 -4.7 180 -8.4Q180 -11.2 178.3 -13.8Q176.5 -16.4 172.4 -19.5Q168.3 -22.7 165.8 -26.2Q163.3 -29.6 163.3 -34.4Q163.3 -38.6 165.5 -42Q167.6 -45.5 171.7 -47.5Q175.8 -49.6 181.4 -49.6Q187.9 -49.6 191.7 -47Q195.4 -44.4 195.4 -40.3Q195.4 -38.1 194.1 -36.7Q192.8 -35.2 190.2 -35.2Q185.4 -35.2 183.7 -41L182.7 -43.8Q182.2 -45.8 181.5 -46.6Q180.8 -47.4 179.3 -47.4Q177.7 -47.4 176 -45.7Q174.3 -43.9 174.3 -40.1Q174.3 -36.5 176.5 -33.5Q178.6 -30.6 182.9 -27.4Q187.3 -24.1 189.4 -21Q191.4 -17.9 191.4 -13.5Q191.4 -9.4 189 -6Q186.6 -2.6 182 -0.6Q177.4 1.5 170.7 1.5ZM208.7 1.5Q205.6 1.5 203.6 -0.2Q201.5 -1.8 201.5 -5Q201.5 -7 201.9 -9.4Q202.3 -11.7 202.8 -14.4L209.7 -46H201.4L201.7 -47.2L205.3 -47.6Q208.1 -47.9 210.2 -49Q212.3 -50.1 214.2 -52.1L223.8 -61.8H225.3L222.5 -48.1H233.4L232.9 -46H222L215.1 -12.7Q214.7 -10.8 214.5 -9.4Q214.3 -8.1 214.3 -7.2Q214.3 -6.2 214.9 -5.6Q215.5 -5 216.2 -5Q217.6 -5 219.2 -6.2Q220.8 -7.3 223.2 -9.6L224.4 -8.6Q221.9 -4.9 217.9 -1.7Q213.9 1.5 208.7 1.5Z"/><path fill="#4ade80" d="M241.3 1.3Q237.9 1.3 235.8 -0.8Q233.6 -3 233.6 -6Q233.6 -9.8 236.3 -12.4Q239.1 -15 242.7 -15Q246.1 -15 248.2 -12.8Q250.4 -10.6 250.4 -7.5Q250.4 -3.8 247.7 -1.2Q244.9 1.3 241.3 1.3Z"/></svg>`;
+const foot = (p, left) => `<div class="foot"><span>${left || `${TITLE} · <b>getcoast.fit</b>`}</span><span>${p} / ${TOTAL}</span></div>`;
 const per = (m) => (m.batch ? 'per tub' : 'per serve');
 
 const coverPlates = ['butter_chicken_and_rice', 'spaghetti_bolognese', 'bbq_pulled_pork_bowl_or_burger', 'massaman_beef', 'teriyaki_chicken_and_rice'].map((s) => meals.find((m) => m.slug === s)).filter(Boolean);
 const coverDark = `<section class="page dark cover">
-  <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-3.png')}" alt=""><span>JSON.fit</span></div>
+  <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-4.png')}" alt="">${WORDMARK}</div>
   <h1 class="serif"><span>The One Cook</span><span class="g">Cookbook.</span></h1>
   <div class="food">${coverPlates.map((m, i) => `<div>${i === 0 ? '<span class="badge">10 min hands-on</span>' : ''}<img src="${imgFor(m)}" alt=""></div>`).join('')}</div>
 </section>`;
 const coverWhite = `<section class="page cover white">
-  <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-3.png')}" alt=""><span>JSON.fit</span></div>
+  <div class="brand"><img src="file://${path.join(ROOT, 'icon-180-4.png')}" alt="">${WORDMARK}</div>
   <h1 class="serif"><span>The One Cook</span><span class="g">Cookbook.</span></h1>
   <div class="food">${coverPlates.map((m) => (photoFor(m).cut ? m : meals.find((x) => x.slug === 'chicken_mac_and_cheese_bake') || m)).map((m, i) => `<div>${i === 0 ? '<span class="badge">10 min hands-on</span>' : ''}${photo(m)}</div>`).join('')}</div>
 </section>`;
@@ -388,11 +391,11 @@ const recipe = (m) => {
 };
 
 const closing = `<section class="page closing">
-  <p class="mono dim">JSON.fit for iPhone and Android</p>
+  <p class="mono dim">Coast for iPhone and Android</p>
   <h2 class="serif">Now let the app <span class="g">do it.</span></h2>
   <p>The book is the static version. The app takes these same ${meals.length} meals and builds your week around your numbers: which batch to cook, which tubs go in the fridge and which in the freezer, one shopping list, one cook.</p>
   <ul><li>Your calorie and protein targets, worked out from your goal</li><li>Weekly meals that land on them. Swap any meal, the day rebalances.</li><li>One grocery list by aisle, one cook for the week</li><li>Cook mode with a timer on every step</li><li>Your route: when to cut and when to bulk to reach your goal</li><li>A training program, up to a year, built around your week</li></ul>
-  <div class="qr"><img src="file://${path.join(ROOT, 'images/qr-app.svg')}" alt="QR code"><span><b>json.fit/app</b>Point your phone's camera here, or search JSON.fit on the App Store or Google Play.<br>Free · No ads · No account</span></div>
+  <div class="qr"><img src="file://${path.join(ROOT, 'images/qr-app.svg')}" alt="QR code"><span><b>getcoast.fit/app</b>Point your phone's camera here, or search Coast on the App Store or Google Play.<br>Free · No ads · No account</span></div>
   ${foot(CLOSING_PAGE)}
 </section>`;
 

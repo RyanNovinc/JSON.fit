@@ -49,4 +49,4 @@ A small, lean, protein-skewed evening meal (400–500 kcal, ≤30% fat) is accep
 - Composition × timing interact — fat content and meal size modify how strict the buffer needs to be
 - Meal timing is a secondary lever behind energy balance, protein adequacy, and fiber
 
-For full citations see https://json.fit/meal-timing-references.md
+For full citations see https://getcoast.fit/meal-timing-references.md

@@ -1,6 +1,6 @@
 # deload-references.md
 
-The peer-reviewed and practitioner backing for JSON.fit's deload programming. For the practical guidance applied to programs, see https://json.fit/deload-guidance.md
+The peer-reviewed and practitioner backing for Coast's deload programming. For the practical guidance applied to programs, see https://getcoast.fit/deload-guidance.md
 
 **Read this first.** Direct, well-controlled RCTs on *deloading* (as opposed to tapering or full detraining) are rare, recent, and not unanimous. Much of the guidance file's reasoning is extrapolated from (a) taper research in athletes, (b) detraining/maintenance-volume studies, and (c) fatigue-management theory and coach-consensus work — not from head-to-head deload trials. Where a claim rests on extrapolation or on practitioner convention rather than direct evidence, it is flagged as such below and in the Confidence Assessment.
 
@@ -52,7 +52,7 @@ These studies justify the *one-week duration* and the claim that holding/cutting
 
 ## Autoregulation / RPE / RIR (the §2 fatigue-trigger markers)
 
-These validate the *tools* the guidance lists for autoregulated deloads — they are not deload trials, and JSON.fit defaults to scheduled deloads precisely because these markers need a live feedback loop.
+These validate the *tools* the guidance lists for autoregulated deloads — they are not deload trials, and Coast defaults to scheduled deloads precisely because these markers need a live feedback loop.
 
 - **Zourdos, Klemp, Dolan et al. (2016), *J Strength Cond Res* 30(1):267–75.** Introduced and tested the RIR-based RPE scale; RPE/RIR is inversely related to bar velocity, and experienced lifters rate more accurately. Backs RIR as a usable fatigue/effort gauge. https://pubmed.ncbi.nlm.nih.gov/26049792/
 
@@ -113,4 +113,4 @@ The qualitative/consensus backbone for *how* deloads are structured and position
 
 ## Bottom Line
 
-The safety of a one-week deload is well established: brief low-volume training does not detrain, and volume can be cut substantially without losing what was built. The *shape* of the recommended deload — cut volume, hold load, raise RIR — is strongly supported by taper research and by coach consensus, and is mechanistically sound. What is **not** firmly established is that a deload actively *improves* outcomes versus simply training through, especially for strength in trained lifters, where the one most relevant trial found a small decrement. The frequency rules and the experience × block-length scaling are sensible, consensus-aligned **conventions**, not trial-validated constants. JSON.fit's defaults are therefore best read as a low-risk, evidence-consistent **bet**: the downside of a well-built deload is minimal, the upside is probable but not proven, and the precise numbers are chosen for programmatic consistency rather than because research has pinned them down. Use the guidance confidently for safety and structure; hold its frequency and magnitude specifics loosely.
+The safety of a one-week deload is well established: brief low-volume training does not detrain, and volume can be cut substantially without losing what was built. The *shape* of the recommended deload — cut volume, hold load, raise RIR — is strongly supported by taper research and by coach consensus, and is mechanistically sound. What is **not** firmly established is that a deload actively *improves* outcomes versus simply training through, especially for strength in trained lifters, where the one most relevant trial found a small decrement. The frequency rules and the experience × block-length scaling are sensible, consensus-aligned **conventions**, not trial-validated constants. Coast's defaults are therefore best read as a low-risk, evidence-consistent **bet**: the downside of a well-built deload is minimal, the upside is probable but not proven, and the precise numbers are chosen for programmatic consistency rather than because research has pinned them down. Use the guidance confidently for safety and structure; hold its frequency and magnitude specifics loosely.

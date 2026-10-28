@@ -1,8 +1,8 @@
-# JSON.fit
+# Coast
 
-> JSON.fit is a free iOS and Android app for fitness on autopilot: working adults, men and women, who want results with the least time. You set it up once, then it plans your training and your food. You set your goal weight and body fat; the app plans the order of cuts and bulks to get there (a "route" of trim and build phases) and how long each one takes, from published research. Then it builds weekly high-protein meal plans around your calories, mostly batch meals you cook once for 8 tubs, with every ingredient and step, one shopping list and one cook, plus a periodised training program with sets, reps, rest and deload weeks already set. Everything is built in the app in about a minute from research-backed rules; there is no AI inside the app. Free, no ads, no account, data stays on the phone.
+> Coast (formerly JSON.fit) is a free iOS and Android app for fitness on autopilot: working adults, men and women, who want results with the least time. You set it up once, then it plans your training and your food. You set your goal weight and body fat; the app plans the order of cuts and bulks to get there (a "route" of trim and build phases) and how long each one takes, from published research. Then it builds weekly high-protein meal plans around your calories, mostly batch meals you cook once for 8 tubs, with every ingredient and step, one shopping list and one cook, plus a periodised training program with sets, reps, rest and deload weeks already set. Everything is built in the app in about a minute from research-backed rules; there is no AI inside the app. Free, no ads, no account, data stays on the phone.
 
-JSON.fit's library has 75 meals: 37 batch meals you cook once for 8 tubs (29 in the slow cooker, 8 oven bakes; 31 take 10 minutes or less of hands-on work; every one keeps 3 days in the fridge and freezes), 16 breakfasts, 10 desserts and 12 backup meals (smoothies for when a meal gets missed), every one photographed with exact ingredients and every step. Meals can be swapped and the day rebalances to the calorie and protein targets. Training programs run 1 to 6 days a week, at a gym, at home or bodyweight only, up to a year long, with 144 exercises. 25 decisions the app makes carry a confidence label (strong, good, best estimate) and link to 42 sources. Built in Canberra, Australia, by Ryan Novinc, who is using the app on himself in public: 77 kg at the July 2026 restart, 80.6 kg at 23.8% on the September DEXA, routed down to 72.9 kg at 16% and then up to 90 kg at 13%.
+Coast's library has 75 meals: 37 batch meals you cook once for 8 tubs (29 in the slow cooker, 8 oven bakes; 31 take 10 minutes or less of hands-on work; every one keeps 3 days in the fridge and freezes), 16 breakfasts, 10 desserts and 12 backup meals (smoothies for when a meal gets missed), every one photographed with exact ingredients and every step. Meals can be swapped and the day rebalances to the calorie and protein targets. Training programs run 1 to 6 days a week, at a gym, at home or bodyweight only, up to a year long, with 144 exercises. 25 decisions the app makes carry a confidence label (strong, good, best estimate) and link to 42 sources. Built in Canberra, Australia, by Ryan Novinc, who is using the app on himself in public: 77 kg at the July 2026 restart, 80.6 kg at 23.8% on the September DEXA, routed down to 72.9 kg at 16% and then up to 90 kg at 13%.
 
 ## Who this is for
 
@@ -10,114 +10,114 @@ Busy working adults, men and women, who want to eat right and train with the lea
 
 ## Core pages
 
-- [Try it](https://json.fit/try/): Build your plan in the browser, no sign-up: answer a few questions and see your route, your training program and your weekly meals, made by the same engines as the app.
-- [Home](https://json.fit/): What the app does, the route, the meals, the week, the training, the evidence and FAQ. Primary reference page.
-- [Meals](https://json.fit/meals.html): All 75 meals with calories, protein and hands-on time, filterable by batch meals, breakfast, desserts, backup meals, slow cooker, oven bakes, 10 minutes hands-on or less and 40 g+ protein.
-- [Recipe pages](https://json.fit/r/): One page per meal with ingredients, method, macros and how it keeps, e.g. https://json.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
-- [Programs](https://json.fit/programs/): Free periodised programs (beginner to advanced) that import directly into the app.
-- [Exercises](https://json.fit/exercises/): 144 exercises with start and finish photos, what each trains and how to do it.
-- [6 hours a week](https://json.fit/time/): How the figure of about 6 hours a week saved on food was worked out, from Australian time-use data, a food-logging study and the app's own meal plans.
-- [How we know](https://json.fit/research/): The 25 decisions the app makes, what the studies found, the confidence level and the sources, plus the full reference files.
-- [The Lab](https://json.fit/lab/): The founder's own route on the app, with DEXA scans, the planned route and progress photos as they happen.
-- [Free cookbook](https://json.fit/cookbook/free-cookbook): "The One Cook Cookbook: batch meals that cover your week", 86 pages: the 37 batch meals plus the breakfasts, desserts and backup meals as a printable PDF, free in exchange for an email.
+- [Try it](https://getcoast.fit/try/): Build your plan in the browser, no sign-up: answer a few questions and see your route, your training program and your weekly meals, made by the same engines as the app.
+- [Home](https://getcoast.fit/): What the app does, the route, the meals, the week, the training, the evidence and FAQ. Primary reference page.
+- [Meals](https://getcoast.fit/meals.html): All 75 meals with calories, protein and hands-on time, filterable by batch meals, breakfast, desserts, backup meals, slow cooker, oven bakes, 10 minutes hands-on or less and 40 g+ protein.
+- [Recipe pages](https://getcoast.fit/r/): One page per meal with ingredients, method, macros and how it keeps, e.g. https://getcoast.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
+- [Programs](https://getcoast.fit/programs/): Free periodised programs (beginner to advanced) that import directly into the app.
+- [Exercises](https://getcoast.fit/exercises/): 144 exercises with start and finish photos, what each trains and how to do it.
+- [6 hours a week](https://getcoast.fit/time/): How the figure of about 6 hours a week saved on food was worked out, from Australian time-use data, a food-logging study and the app's own meal plans.
+- [How we know](https://getcoast.fit/research/): The 25 decisions the app makes, what the studies found, the confidence level and the sources, plus the full reference files.
+- [The Lab](https://getcoast.fit/lab/): The founder's own route on the app, with DEXA scans, the planned route and progress photos as they happen.
+- [Free cookbook](https://getcoast.fit/cookbook/free-cookbook): "The One Cook Cookbook: batch meals that cover your week", 86 pages: the 37 batch meals plus the breakfasts, desserts and backup meals as a printable PDF, free in exchange for an email.
 
 ## Guides
 
-- [Blog](https://json.fit/blog.html): Articles on training, nutrition, cutting and bulking, protein, training volume, rep ranges, deloads and rest periods, each with its sources.
+- [Blog](https://getcoast.fit/blog.html): Articles on training, nutrition, cutting and bulking, protein, training volume, rep ranges, deloads and rest periods, each with its sources.
 
 ## Get the app
 
-- [JSON.fit on the App Store](https://apps.apple.com/au/app/json-fit/id6758357834): Free download. iOS.
-- [JSON.fit on Google Play](https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON): Free download. Android.
+- [Coast on the App Store](https://apps.apple.com/au/app/json-fit/id6758357834): Free download. iOS.
+- [Coast on Google Play](https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON): Free download. Android.
 
 ## Optional
 
-- [Privacy policy](https://json.fit/privacy-policy.html): No accounts, no personal-data collection. Data stays on device.
-- [Terms of service](https://json.fit/terms-of-service.html): Terms of use.
+- [Privacy policy](https://getcoast.fit/privacy-policy.html): No accounts, no personal-data collection. Data stays on device.
+- [Terms of service](https://getcoast.fit/terms-of-service.html): Terms of use.
 
 ## All 75 meals
 
 Each line: name, calories and protein per tub (batch meals, as served on the day) or per serve, hands-on and total time, category, recipe page. Batch meals are cooked once for the whole pot and divided into 8 tubs.
 
-- BBQ Pulled Pork, bowl or burger: 798 kcal, 50 g protein per tub, 10 min hands-on, 9 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/bbq_pulled_pork_bowl_or_burger/bbq_pulled_pork_bowl_or_burger_tub/
-- Teriyaki Chicken & Rice: 859 kcal, 54 g protein per tub, 8 min hands-on, 4 h 40 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/teriyaki_chicken_and_rice/teriyaki_chicken_and_rice_tub/
-- Korean Shredded Beef: 839 kcal, 51 g protein per tub, 8 min hands-on, 8 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/korean_shredded_beef/korean_shredded_beef_tub/
-- Chipotle Chicken Burritos or Bowl: 856 kcal, 67 g protein per tub, 18 min hands-on, 5 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/chipotle_chicken_burritos_or_bowl/chipotle_chicken_burritos_or_bowl_tub/
-- Greek Lemon Chicken Gyro Bowls: 742 kcal, 66 g protein per tub, 10 min hands-on, 4 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/greek_lemon_chicken_gyro_bowls/greek_lemon_chicken_gyro_bowls_tub/
-- Citrus Pork Carnitas Bowls: 807 kcal, 56 g protein per tub, 10 min hands-on, 9 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/citrus_pork_carnitas_bowls/citrus_pork_carnitas_bowls_tub/
-- Butter Chicken & Rice: 772 kcal, 57 g protein per tub, 7 min hands-on, 4 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
-- Massaman Beef: 809 kcal, 45 g protein per tub, 8 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/massaman_beef/massaman_beef_tub/
-- Beef & Bean Chilli Bowl: 835 kcal, 59 g protein per tub, 10 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/
-- Satay Chicken & Rice: 738 kcal, 53 g protein per tub, 8 min hands-on, 4 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/satay_chicken_and_rice/satay_chicken_and_rice_tub/
-- Lamb Keema & Peas: 790 kcal, 48 g protein per tub, 10 min hands-on, 6 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/lamb_keema_and_peas/lamb_keema_and_peas_tub/
-- Dry Beef Rendang: 807 kcal, 42 g protein per tub, 8 min hands-on, 8 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/dry_beef_rendang/dry_beef_rendang_tub/
-- Mild Chicken Korma: 739 kcal, 54 g protein per tub, 7 min hands-on, 4 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/mild_chicken_korma/mild_chicken_korma_tub/
-- Red Lentil & Chickpea Dal: 895 kcal, 34 g protein per tub, 7 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/red_lentil_and_chickpea_dal/red_lentil_and_chickpea_dal_tub/
-- Coconut Lentils & Tofu: 776 kcal, 42 g protein per tub, 9 min hands-on, 5 h 35 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/coconut_lentils_and_tofu/coconut_lentils_and_tofu_tub/
-- Three-Bean & Lentil Chilli: 827 kcal, 35 g protein per tub, 8 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/three_bean_and_lentil_chilli/three_bean_and_lentil_chilli_tub/
-- Spaghetti Bolognese: 893 kcal, 57 g protein per tub, 8 min hands-on, 8 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/spaghetti_bolognese/spaghetti_bolognese_tub/
-- Chicken Mac & Cheese Bake: 720 kcal, 61 g protein per tub, 10 min hands-on, 1 h 15 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/chicken_mac_and_cheese_bake/chicken_mac_and_cheese_bake_tub/
-- Pulled Beef Ragu Pasta: 778 kcal, 49 g protein per tub, 8 min hands-on, 8 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/pulled_beef_ragu_pasta/pulled_beef_ragu_pasta_tub/
-- Garlic Butter Chicken & Rice Tray: 732 kcal, 53 g protein per tub, 15 min hands-on, 1 h 15 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/garlic_butter_chicken_and_rice_tray/garlic_butter_chicken_and_rice_tray_tub/
-- Cottage Pie: 720 kcal, 57 g protein per tub, 13 min hands-on, 6 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/cottage_pie/cottage_pie_tub/
-- Chicken & Bean Enchilada Bake: 843 kcal, 50 g protein per tub, 15 min hands-on, 1 h 25 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/chicken_and_bean_enchilada_bake/chicken_and_bean_enchilada_bake_tub/
-- Black Bean Enchilada Bake: 887 kcal, 42 g protein per tub, 12 min hands-on, 1 h total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/black_bean_enchilada_bake/black_bean_enchilada_bake_tub/
-- Lentil Ragu Pasta: 780 kcal, 36 g protein per tub, 7 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/lentil_ragu_pasta/lentil_ragu_pasta_tub/
-- Beef Stew & Crusty Bread: 782 kcal, 51 g protein per tub, 10 min hands-on, 8 h 25 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/beef_stew_and_crusty_bread/beef_stew_and_crusty_bread_tub/
-- Shawarma Chicken Tray & Rice: 835 kcal, 59 g protein per tub, 10 min hands-on, 55 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/shawarma_chicken_tray_and_rice/shawarma_chicken_tray_and_rice_tub/
-- Beef Stroganoff & Rice: 821 kcal, 47 g protein per tub, 8 min hands-on, 8 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/beef_stroganoff_and_rice/beef_stroganoff_and_rice_tub/
-- Chicken Cacciatore & Pasta: 836 kcal, 60 g protein per tub, 8 min hands-on, 4 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/chicken_cacciatore_and_pasta/chicken_cacciatore_and_pasta_tub/
-- Moroccan Lamb & Chickpeas: 778 kcal, 48 g protein per tub, 12 min hands-on, 8 h 40 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/moroccan_lamb_and_chickpeas/moroccan_lamb_and_chickpeas_tub/
-- Chicken & Chorizo Jambalaya: 734 kcal, 57 g protein per tub, 10 min hands-on, 4 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/chicken_and_chorizo_jambalaya/chicken_and_chorizo_jambalaya_tub/
-- Smoky Beans & Eggs: 725 kcal, 46 g protein per tub, 8 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/smoky_beans_and_eggs/smoky_beans_and_eggs_tub/
-- Beef & Lentil Bolognese: 836 kcal, 48 g protein per tub, 10 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/beef_and_lentil_bolognese/beef_and_lentil_bolognese_tub/
-- Chicken & Chickpea Curry: 801 kcal, 46 g protein per tub, 10 min hands-on, 5 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/chicken_and_chickpea_curry/chicken_and_chickpea_curry_tub/
-- Tuscan Chicken & White Bean Stew: 775 kcal, 44 g protein per tub, 10 min hands-on, 6 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://json.fit/r/tuscan_chicken_and_white_bean_stew/tuscan_chicken_and_white_bean_stew_tub/
-- Baked Coconut Dal with Chickpeas: 829 kcal, 32 g protein per tub, 10 min hands-on, 1 h 35 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/baked_coconut_dal_with_chickpeas/baked_coconut_dal_with_chickpeas_tub/
-- Moroccan Chickpea & Lentil Bake: 818 kcal, 31 g protein per tub, 10 min hands-on, 1 h 35 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/moroccan_chickpea_and_lentil_bake/moroccan_chickpea_and_lentil_bake_tub/
-- Spanish Chicken & Chickpea Bake: 795 kcal, 43 g protein per tub, 10 min hands-on, 1 h 5 min total, makes 8 tubs, Batch meal, oven bake. https://json.fit/r/spanish_chicken_and_chickpea_bake/spanish_chicken_and_chickpea_bake_tub/
-- Maple Protein French Toast: 1,089 kcal, 60 g protein per serve, 12 min hands-on, 15 min total, Breakfast. https://json.fit/r/maple_muscle_toast/standard/
-- Peanut Butter Protein Oats: 945 kcal, 51 g protein per serve, 5 min hands-on, 8 min total, Breakfast. https://json.fit/r/muscle_oats/standard/
-- Scramble Stack: 933 kcal, 48 g protein per serve, 10 min hands-on, 12 min total, Breakfast. https://json.fit/r/scramble_stack/standard/
-- Protein Overnight Oats: 797 kcal, 51 g protein per serve, 5 min hands-on, 4 h 5 min total, Breakfast. https://json.fit/r/overnight_oats/standard/
-- Greek Yoghurt Power Bowl: 793 kcal, 56 g protein per serve, 5 min hands-on, 5 min total, Breakfast. https://json.fit/r/greek_yoghurt_bowl/standard/
-- Cottage Cheese Power Bowl: 412 kcal, 30 g protein per serve, 3 min hands-on, 3 min total, Breakfast. https://json.fit/r/cottage_cheese_bowl/standard/
-- PB Banana Toast: 854 kcal, 44 g protein per serve, 5 min hands-on, 5 min total, Breakfast. https://json.fit/r/pb_banana_toast/standard/
-- Protein Pancakes: 789 kcal, 55 g protein per serve, 15 min hands-on, 18 min total, Breakfast. https://json.fit/r/protein_pancakes/standard/
-- Steak & Eggs: 795 kcal, 68 g protein per serve, 20 min hands-on, 22 min total, Breakfast. https://json.fit/r/steak_and_eggs/standard/
-- Shakshuka: 895 kcal, 48 g protein per serve, 15 min hands-on, 25 min total, Breakfast. https://json.fit/r/shakshuka/standard/
-- Freezer Breakfast Burrito: 741 kcal, 37 g protein per serve, 30 min hands-on, 40 min total, Breakfast. https://json.fit/r/freezer_breakfast_burrito/standard/
-- Baked Oats: 813 kcal, 53 g protein per serve, 8 min hands-on, 30 min total, Breakfast. https://json.fit/r/baked_oats/standard/
-- Smoked Salmon Bagel: 795 kcal, 45 g protein per serve, 10 min hands-on, 12 min total, Breakfast. https://json.fit/r/smoked_salmon_bagel/standard/
-- Big Breakfast Plate: 1,296 kcal, 65 g protein per serve, 20 min hands-on, 25 min total, Breakfast. https://json.fit/r/big_breakfast_plate/standard/
-- Egg Muffins: 850 kcal, 45 g protein per serve, 15 min hands-on, 35 min total, Breakfast. https://json.fit/r/egg_muffins/standard/
-- Protein Banana Bread: 186 kcal, 10 g protein per serve, 10 min hands-on, 1 h 10 min total, Breakfast. https://json.fit/r/protein_banana_bread/standard/
-- Protein Ice Cream: 415 kcal, 40 g protein per serve, 5 min hands-on, 6 h 5 min total, Dessert. https://json.fit/r/protein_ice_cream/standard/
-- Cottage Cheese Ice Cream: 428 kcal, 35 g protein per serve, 5 min hands-on, 5 h 5 min total, Dessert. https://json.fit/r/cottage_cheese_ice_cream/standard/
-- Chocolate Protein Mug Cake: 340 kcal, 34 g protein per serve, 3 min hands-on, 5 min total, Dessert. https://json.fit/r/chocolate_protein_mug_cake/standard/
-- Fudgy Protein Brownies: 240 kcal, 12 g protein per serve, 10 min hands-on, 40 min total, Dessert. https://json.fit/r/fudgy_protein_brownies/standard/
-- Protein Chocolate Chip Cookies: 210 kcal, 10 g protein per serve, 10 min hands-on, 25 min total, Dessert. https://json.fit/r/protein_chocolate_chip_cookies/standard/
-- Edible Protein Cookie Dough: 340 kcal, 19 g protein per serve, 5 min hands-on, 5 min total, Dessert. https://json.fit/r/edible_protein_cookie_dough/standard/
-- No-Bake Protein Cheesecake: 456 kcal, 21 g protein per serve, 15 min hands-on, 4 h 15 min total, Dessert. https://json.fit/r/no_bake_protein_cheesecake/standard/
-- Chocolate Protein Mousse: 396 kcal, 38 g protein per serve, 5 min hands-on, 35 min total, Dessert. https://json.fit/r/chocolate_protein_mousse/standard/
-- Frozen Date Snickers Bark: 187 kcal, 5 g protein per serve, 10 min hands-on, 40 min total, Dessert. https://json.fit/r/frozen_date_snickers_bark/standard/
-- Palačinke (Croatian Crêpes): 303 kcal, 8 g protein per serve, 30 min hands-on, 45 min total, Dessert. https://json.fit/r/palacinke/standard/
-- PB Oat Breakfast Shake: 1,164 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/brekkie_grow/standard/
-- Mango Oat Smoothie: 1,128 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/mango_mass/standard/
-- Choc PB Smoothie: 1,389 kcal, 95 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/king_kong_chocolate/standard/
-- Strawberry Stack: 1,119 kcal, 65 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/strawberry_stack/standard/
-- Choc PB Thickshake: 1,149 kcal, 77 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/choc_muscle_maxx/standard/
-- Cookies & Cream Shake: 1,089 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/cookies_gains/standard/
-- Raspberry Rip: 1,055 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/raspberry_rip/standard/
-- Mango Iced Coffee Smoothie: 931 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/energy_lift_heavy/standard/
-- Mocha Oat Shake: 1,195 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/mornin_muscle/standard/
-- Green Pineapple Smoothie: 1,101 kcal, 67 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/dirty_eden/standard/
-- Berry Oat Smoothie: 1,191 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/strawbrekkie_beast/standard/
-- Banana Date Shake: 1,260 kcal, 68 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://json.fit/r/banana_bulk/standard/
+- BBQ Pulled Pork, bowl or burger: 798 kcal, 50 g protein per tub, 10 min hands-on, 9 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/bbq_pulled_pork_bowl_or_burger/bbq_pulled_pork_bowl_or_burger_tub/
+- Teriyaki Chicken & Rice: 859 kcal, 54 g protein per tub, 8 min hands-on, 4 h 40 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/teriyaki_chicken_and_rice/teriyaki_chicken_and_rice_tub/
+- Korean Shredded Beef: 839 kcal, 51 g protein per tub, 8 min hands-on, 8 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/korean_shredded_beef/korean_shredded_beef_tub/
+- Chipotle Chicken Burritos or Bowl: 856 kcal, 67 g protein per tub, 18 min hands-on, 5 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/chipotle_chicken_burritos_or_bowl/chipotle_chicken_burritos_or_bowl_tub/
+- Greek Lemon Chicken Gyro Bowls: 742 kcal, 66 g protein per tub, 10 min hands-on, 4 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/greek_lemon_chicken_gyro_bowls/greek_lemon_chicken_gyro_bowls_tub/
+- Citrus Pork Carnitas Bowls: 807 kcal, 56 g protein per tub, 10 min hands-on, 9 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/citrus_pork_carnitas_bowls/citrus_pork_carnitas_bowls_tub/
+- Butter Chicken & Rice: 772 kcal, 57 g protein per tub, 7 min hands-on, 4 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/butter_chicken_and_rice/butter_chicken_and_rice_tub/
+- Massaman Beef: 809 kcal, 45 g protein per tub, 8 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/massaman_beef/massaman_beef_tub/
+- Beef & Bean Chilli Bowl: 835 kcal, 59 g protein per tub, 10 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/bulking_chilli_bowl/bulking_chilli_bowl_tub/
+- Satay Chicken & Rice: 738 kcal, 53 g protein per tub, 8 min hands-on, 4 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/satay_chicken_and_rice/satay_chicken_and_rice_tub/
+- Lamb Keema & Peas: 790 kcal, 48 g protein per tub, 10 min hands-on, 6 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/lamb_keema_and_peas/lamb_keema_and_peas_tub/
+- Dry Beef Rendang: 807 kcal, 42 g protein per tub, 8 min hands-on, 8 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/dry_beef_rendang/dry_beef_rendang_tub/
+- Mild Chicken Korma: 739 kcal, 54 g protein per tub, 7 min hands-on, 4 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/mild_chicken_korma/mild_chicken_korma_tub/
+- Red Lentil & Chickpea Dal: 895 kcal, 34 g protein per tub, 7 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/red_lentil_and_chickpea_dal/red_lentil_and_chickpea_dal_tub/
+- Coconut Lentils & Tofu: 776 kcal, 42 g protein per tub, 9 min hands-on, 5 h 35 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/coconut_lentils_and_tofu/coconut_lentils_and_tofu_tub/
+- Three-Bean & Lentil Chilli: 827 kcal, 35 g protein per tub, 8 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/three_bean_and_lentil_chilli/three_bean_and_lentil_chilli_tub/
+- Spaghetti Bolognese: 893 kcal, 57 g protein per tub, 8 min hands-on, 8 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/spaghetti_bolognese/spaghetti_bolognese_tub/
+- Chicken Mac & Cheese Bake: 720 kcal, 61 g protein per tub, 10 min hands-on, 1 h 15 min total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/chicken_mac_and_cheese_bake/chicken_mac_and_cheese_bake_tub/
+- Pulled Beef Ragu Pasta: 778 kcal, 49 g protein per tub, 8 min hands-on, 8 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/pulled_beef_ragu_pasta/pulled_beef_ragu_pasta_tub/
+- Garlic Butter Chicken & Rice Tray: 732 kcal, 53 g protein per tub, 15 min hands-on, 1 h 15 min total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/garlic_butter_chicken_and_rice_tray/garlic_butter_chicken_and_rice_tray_tub/
+- Cottage Pie: 720 kcal, 57 g protein per tub, 13 min hands-on, 6 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/cottage_pie/cottage_pie_tub/
+- Chicken & Bean Enchilada Bake: 843 kcal, 50 g protein per tub, 15 min hands-on, 1 h 25 min total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/chicken_and_bean_enchilada_bake/chicken_and_bean_enchilada_bake_tub/
+- Black Bean Enchilada Bake: 887 kcal, 42 g protein per tub, 12 min hands-on, 1 h total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/black_bean_enchilada_bake/black_bean_enchilada_bake_tub/
+- Lentil Ragu Pasta: 780 kcal, 36 g protein per tub, 7 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/lentil_ragu_pasta/lentil_ragu_pasta_tub/
+- Beef Stew & Crusty Bread: 782 kcal, 51 g protein per tub, 10 min hands-on, 8 h 25 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/beef_stew_and_crusty_bread/beef_stew_and_crusty_bread_tub/
+- Shawarma Chicken Tray & Rice: 835 kcal, 59 g protein per tub, 10 min hands-on, 55 min total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/shawarma_chicken_tray_and_rice/shawarma_chicken_tray_and_rice_tub/
+- Beef Stroganoff & Rice: 821 kcal, 47 g protein per tub, 8 min hands-on, 8 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/beef_stroganoff_and_rice/beef_stroganoff_and_rice_tub/
+- Chicken Cacciatore & Pasta: 836 kcal, 60 g protein per tub, 8 min hands-on, 4 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/chicken_cacciatore_and_pasta/chicken_cacciatore_and_pasta_tub/
+- Moroccan Lamb & Chickpeas: 778 kcal, 48 g protein per tub, 12 min hands-on, 8 h 40 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/moroccan_lamb_and_chickpeas/moroccan_lamb_and_chickpeas_tub/
+- Chicken & Chorizo Jambalaya: 734 kcal, 57 g protein per tub, 10 min hands-on, 4 h 20 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/chicken_and_chorizo_jambalaya/chicken_and_chorizo_jambalaya_tub/
+- Smoky Beans & Eggs: 725 kcal, 46 g protein per tub, 8 min hands-on, 6 h 5 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/smoky_beans_and_eggs/smoky_beans_and_eggs_tub/
+- Beef & Lentil Bolognese: 836 kcal, 48 g protein per tub, 10 min hands-on, 8 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/beef_and_lentil_bolognese/beef_and_lentil_bolognese_tub/
+- Chicken & Chickpea Curry: 801 kcal, 46 g protein per tub, 10 min hands-on, 5 h 15 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/chicken_and_chickpea_curry/chicken_and_chickpea_curry_tub/
+- Tuscan Chicken & White Bean Stew: 775 kcal, 44 g protein per tub, 10 min hands-on, 6 h 10 min total, makes 8 tubs, Batch meal, slow cooker. https://getcoast.fit/r/tuscan_chicken_and_white_bean_stew/tuscan_chicken_and_white_bean_stew_tub/
+- Baked Coconut Dal with Chickpeas: 829 kcal, 32 g protein per tub, 10 min hands-on, 1 h 35 min total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/baked_coconut_dal_with_chickpeas/baked_coconut_dal_with_chickpeas_tub/
+- Moroccan Chickpea & Lentil Bake: 818 kcal, 31 g protein per tub, 10 min hands-on, 1 h 35 min total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/moroccan_chickpea_and_lentil_bake/moroccan_chickpea_and_lentil_bake_tub/
+- Spanish Chicken & Chickpea Bake: 795 kcal, 43 g protein per tub, 10 min hands-on, 1 h 5 min total, makes 8 tubs, Batch meal, oven bake. https://getcoast.fit/r/spanish_chicken_and_chickpea_bake/spanish_chicken_and_chickpea_bake_tub/
+- Maple Protein French Toast: 1,089 kcal, 60 g protein per serve, 12 min hands-on, 15 min total, Breakfast. https://getcoast.fit/r/maple_muscle_toast/standard/
+- Peanut Butter Protein Oats: 945 kcal, 51 g protein per serve, 5 min hands-on, 8 min total, Breakfast. https://getcoast.fit/r/muscle_oats/standard/
+- Scramble Stack: 933 kcal, 48 g protein per serve, 10 min hands-on, 12 min total, Breakfast. https://getcoast.fit/r/scramble_stack/standard/
+- Protein Overnight Oats: 797 kcal, 51 g protein per serve, 5 min hands-on, 4 h 5 min total, Breakfast. https://getcoast.fit/r/overnight_oats/standard/
+- Greek Yoghurt Power Bowl: 793 kcal, 56 g protein per serve, 5 min hands-on, 5 min total, Breakfast. https://getcoast.fit/r/greek_yoghurt_bowl/standard/
+- Cottage Cheese Power Bowl: 412 kcal, 30 g protein per serve, 3 min hands-on, 3 min total, Breakfast. https://getcoast.fit/r/cottage_cheese_bowl/standard/
+- PB Banana Toast: 854 kcal, 44 g protein per serve, 5 min hands-on, 5 min total, Breakfast. https://getcoast.fit/r/pb_banana_toast/standard/
+- Protein Pancakes: 789 kcal, 55 g protein per serve, 15 min hands-on, 18 min total, Breakfast. https://getcoast.fit/r/protein_pancakes/standard/
+- Steak & Eggs: 795 kcal, 68 g protein per serve, 20 min hands-on, 22 min total, Breakfast. https://getcoast.fit/r/steak_and_eggs/standard/
+- Shakshuka: 895 kcal, 48 g protein per serve, 15 min hands-on, 25 min total, Breakfast. https://getcoast.fit/r/shakshuka/standard/
+- Freezer Breakfast Burrito: 741 kcal, 37 g protein per serve, 30 min hands-on, 40 min total, Breakfast. https://getcoast.fit/r/freezer_breakfast_burrito/standard/
+- Baked Oats: 813 kcal, 53 g protein per serve, 8 min hands-on, 30 min total, Breakfast. https://getcoast.fit/r/baked_oats/standard/
+- Smoked Salmon Bagel: 795 kcal, 45 g protein per serve, 10 min hands-on, 12 min total, Breakfast. https://getcoast.fit/r/smoked_salmon_bagel/standard/
+- Big Breakfast Plate: 1,296 kcal, 65 g protein per serve, 20 min hands-on, 25 min total, Breakfast. https://getcoast.fit/r/big_breakfast_plate/standard/
+- Egg Muffins: 850 kcal, 45 g protein per serve, 15 min hands-on, 35 min total, Breakfast. https://getcoast.fit/r/egg_muffins/standard/
+- Protein Banana Bread: 186 kcal, 10 g protein per serve, 10 min hands-on, 1 h 10 min total, Breakfast. https://getcoast.fit/r/protein_banana_bread/standard/
+- Protein Ice Cream: 415 kcal, 40 g protein per serve, 5 min hands-on, 6 h 5 min total, Dessert. https://getcoast.fit/r/protein_ice_cream/standard/
+- Cottage Cheese Ice Cream: 428 kcal, 35 g protein per serve, 5 min hands-on, 5 h 5 min total, Dessert. https://getcoast.fit/r/cottage_cheese_ice_cream/standard/
+- Chocolate Protein Mug Cake: 340 kcal, 34 g protein per serve, 3 min hands-on, 5 min total, Dessert. https://getcoast.fit/r/chocolate_protein_mug_cake/standard/
+- Fudgy Protein Brownies: 240 kcal, 12 g protein per serve, 10 min hands-on, 40 min total, Dessert. https://getcoast.fit/r/fudgy_protein_brownies/standard/
+- Protein Chocolate Chip Cookies: 210 kcal, 10 g protein per serve, 10 min hands-on, 25 min total, Dessert. https://getcoast.fit/r/protein_chocolate_chip_cookies/standard/
+- Edible Protein Cookie Dough: 340 kcal, 19 g protein per serve, 5 min hands-on, 5 min total, Dessert. https://getcoast.fit/r/edible_protein_cookie_dough/standard/
+- No-Bake Protein Cheesecake: 456 kcal, 21 g protein per serve, 15 min hands-on, 4 h 15 min total, Dessert. https://getcoast.fit/r/no_bake_protein_cheesecake/standard/
+- Chocolate Protein Mousse: 396 kcal, 38 g protein per serve, 5 min hands-on, 35 min total, Dessert. https://getcoast.fit/r/chocolate_protein_mousse/standard/
+- Frozen Date Snickers Bark: 187 kcal, 5 g protein per serve, 10 min hands-on, 40 min total, Dessert. https://getcoast.fit/r/frozen_date_snickers_bark/standard/
+- Palačinke (Croatian Crêpes): 303 kcal, 8 g protein per serve, 30 min hands-on, 45 min total, Dessert. https://getcoast.fit/r/palacinke/standard/
+- PB Oat Breakfast Shake: 1,164 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/brekkie_grow/standard/
+- Mango Oat Smoothie: 1,128 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/mango_mass/standard/
+- Choc PB Smoothie: 1,389 kcal, 95 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/king_kong_chocolate/standard/
+- Strawberry Stack: 1,119 kcal, 65 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/strawberry_stack/standard/
+- Choc PB Thickshake: 1,149 kcal, 77 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/choc_muscle_maxx/standard/
+- Cookies & Cream Shake: 1,089 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/cookies_gains/standard/
+- Raspberry Rip: 1,055 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/raspberry_rip/standard/
+- Mango Iced Coffee Smoothie: 931 kcal, 62 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/energy_lift_heavy/standard/
+- Mocha Oat Shake: 1,195 kcal, 63 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/mornin_muscle/standard/
+- Green Pineapple Smoothie: 1,101 kcal, 67 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/dirty_eden/standard/
+- Berry Oat Smoothie: 1,191 kcal, 72 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/strawbrekkie_beast/standard/
+- Banana Date Shake: 1,260 kcal, 68 g protein per serve, 4 min hands-on, 5 min total, Backup meal. https://getcoast.fit/r/banana_bulk/standard/
 
 ## The 25 decisions the app makes (How we know)
 
-Each with the confidence label the app shows (strong, good, or best estimate) and the lead source. Numbers in the titles are example values; the app computes yours. Full detail: https://json.fit/research/
+Each with the confidence label the app shows (strong, good, or best estimate) and the lead source. Numbers in the titles are example values; the app computes yours. Full detail: https://getcoast.fit/research/
 
 - [route] Lose about 0.5 to 1% of your weight a week — strong. Garthe et al. 2011
 - [route] The faster pace needs fat to spare — estimate. Alpert 2005
@@ -147,54 +147,54 @@ Each with the confidence label the app shows (strong, good, or best estimate) an
 
 ## Blog posts
 
-- [Volume or Effort? What Actually Builds Muscle](https://json.fit/blog/sets-or-effort.html) (2026-09-30): Volume is the dial and effort is what makes a set count. The research supports both camps because they're describing one rule from opposite ends.
-- [5 to 30 Reps: The Range Is Wide, the Rule Is Narrow](https://json.fit/blog/five-to-thirty-reps.html) (2026-09-23): Muscle grows anywhere from about 5 to 30 reps when sets are taken close to failure. The rep count is almost free. The effort isn't, and some exercises need high reps just to hit the right muscle.
-- [You Need More Protein On a Cut](https://json.fit/blog/more-protein-on-a-cut.html) (2026-09-16): 1.6 g per kilo is the number for building. In a deficit, protein's job changes from building to protecting, and the research says 2.2 to 3 g per kilo, higher the leaner you are.
-- [Cut First or Bulk First? Same Finish Line](https://json.fit/blog/cut-first-or-bulk-first.html) (2026-09-09): The partitioning argument is dead, the arithmetic says the order costs about two weeks either way, and the only real rule is to stay inside a healthy body-fat band.
-- [Cutting Fast Doesn't Cost What You Think](https://json.fit/blog/cutting-fast-versus-slow.html) (2026-09-02): A fast cut doesn't strip your muscle for good. It costs you the gains a slow cut leaves room for, and it costs you adherence. And the leaner you are, the slower you physically have to go.
-- [Cutting Doesn't Change Your Training](https://json.fit/blog/training-doesnt-change-with-your-diet.html) (2026-08-26): Weekly hard sets build muscle. Food decides your fat. The phase you're in should move where you sit inside each muscle's range, and nothing else.
-- [Fasted Cardio Doesn't Burn More Fat](https://json.fit/blog/why-fasted-cardio-matters.html) (2026-07-29): Training on an empty stomach is sold as a fat-loss cheat code. Over a full day the difference disappears, and you may just be lifting worse for it.
-- [You Can't Crunch Away Belly Fat](https://json.fit/blog/why-spot-reduction-matters.html) (2026-07-22): Targeted ab work to burn stomach fat is one of fitness's most stubborn myths. The research is clear: you don't get to choose where fat comes off.
-- [You Don't Always Need to Squat Ass to Grass](https://json.fit/blog/why-squat-depth-matters.html) (2026-07-15): Full depth is treated as the only real squat. Depth does matter for some muscles, but the all-or-nothing framing misses what the evidence actually shows.
-- [The Anabolic Window Is Hours, Not Minutes](https://json.fit/blog/why-protein-timing-matters.html) (2026-07-08): The post-workout protein scramble is sold as a 30-minute emergency. The research says the window is open for hours, and total daily protein is what counts.
-- [You're Probably Eating More Protein Than You Need](https://json.fit/blog/why-protein-amount-matters.html) (2026-07-01): The "more is always better" mantra breaks down past a point. The useful ceiling sits lower than most lifters think, and the rest is just expensive.
-- [Stretching Won't Save You From Injury](https://json.fit/blog/why-stretching-matters.html) (2026-06-24): Static stretching before training is sold as injury insurance. The evidence says it does little for injury risk and can blunt your strength. Here's what the research actually supports.
-- [You Don't Need to Train to Failure](https://json.fit/blog/why-training-to-failure-matters.html) (2026-06-17): Going to absolute failure on every set feels hardcore, but the research shows it adds fatigue without adding much growth. Here's where stopping short actually wins.
-- [We Didn't Make the AI Smarter. We Gave It the Answer Key](https://json.fit/blog/ai-answer-key.html) (2026-06-10): Ask a general-purpose AI about fitness and it confidently repeats the field's oldest myths. Here's how JSON.fit feeds it curated, citation-backed research so it applies the right knowledge instead of guessing.
-- [Cardio Isn't Stealing Your Gains](https://json.fit/blog/why-cardio-matters.html) (2026-06-03): The interference effect is real, but "cardio kills gains" is a wild overstatement of it. Here's what the research actually says, and the three things that decide whether cardio costs you anything.
-- [If You're Not Sore, It Still Worked](https://json.fit/blog/why-soreness-matters.html) (2026-05-27): Delayed-onset muscle soreness feels like proof your workout worked. The research says it's a signal of novelty, not growth, and chasing it can backfire.
-- [Your Deload Is Probably Fake](https://json.fit/blog/why-deloads-matter.html) (2026-05-20): Most lifters either never deload or do a "fake" one that clears no fatigue. Here's what a real deload is, and the honest truth about how thin the evidence for it actually is.
-- [The 8-12 Rep Range Isn't Magic](https://json.fit/blog/why-rep-ranges-matter.html) (2026-05-13): The hypertrophy rep range of 8 to 12 reps is one of the most cited rules in fitness. The research says it isn't biologically privileged. Here's what actually drives muscle growth.
-- [Why Most Bulks Are Wrecked by Too Much Fiber](https://json.fit/blog/why-fiber-matters.html) (2026-05-06): The standard fiber recommendation scales with calories. For lifters eating 4,000+ kcal, that math gets ugly fast. Here's why bulking and cutting need different fiber strategies.
-- [The 30g Protein Rule Is Mostly Made Up](https://json.fit/blog/why-protein-distribution-matters.html) (2026-04-29): You've heard you can only absorb 30 grams of protein per meal. The number is a practitioner extrapolation, not a proven threshold. Here's what the research actually says.
-- [The 8-Hour Eating Window Isn't What You Think](https://json.fit/blog/why-meal-timing-matters.html) (2026-04-22): Time-restricted eating is sold as a magic bullet for fat loss and metabolic health. The longest trial ever run says it's not better than just eating less.
-- [Your Rest Timer Is Probably Wrong](https://json.fit/blog/why-rest-periods-matter.html) (2026-04-15): Most fitness apps default to 60-90 seconds between sets. The research says that's too short for trained lifters. Here's what the evidence actually shows.
-- [Why Your Volume Tracking Is Lying to You](https://json.fit/blog/why-volume-counting-matters.html) (2026-04-08): Most fitness apps either ignore secondary muscle work or count it the same as direct work. Both are wrong. Here's the evidence-based middle ground.
-- [Why Your Workout Plan Should Tell You When to Push](https://json.fit/blog/why-rir-matters.html) (2026-04-01): Most fitness apps give you sets and reps but never tell you how hard to actually train. The research is clear: proximity to failure is the variable that drives muscle growth.
-- [JSON.fit vs MyFitnessPal vs MacroFactor vs Hevy](https://json.fit/blog/json-fit-vs-competitors.html) (2026-03-25): An honest comparison of what each app does well, where it falls short, and where JSON.fit fits in.
-- [Why You Don't Need Another AI Subscription for Fitness](https://json.fit/blog/why-no-ai-subscription.html) (2026-03-19): You're already paying for ChatGPT or Claude. Why are fitness apps charging you again for the same thing?
-- [How to Create a Personalised Meal Plan with Claude](https://json.fit/blog/meal-plan-claude.html) (2026-03-14): Optional: have your own AI write a custom meal plan and import it into JSON.fit for the grocery list and meal prep. The app does this itself now; this is for people who want their own AI involved.
-- [How to Generate a 12-Week Hypertrophy Program with ChatGPT](https://json.fit/blog/chatgpt-hypertrophy-program.html) (2026-03-08): A step-by-step tutorial walking through the full workflow, from setup to AI prompt to imported program, ready to track.
+- [Volume or Effort? What Actually Builds Muscle](https://getcoast.fit/blog/sets-or-effort.html) (2026-09-30): Volume is the dial and effort is what makes a set count. The research supports both camps because they're describing one rule from opposite ends.
+- [5 to 30 Reps: The Range Is Wide, the Rule Is Narrow](https://getcoast.fit/blog/five-to-thirty-reps.html) (2026-09-23): Muscle grows anywhere from about 5 to 30 reps when sets are taken close to failure. The rep count is almost free. The effort isn't, and some exercises need high reps just to hit the right muscle.
+- [You Need More Protein On a Cut](https://getcoast.fit/blog/more-protein-on-a-cut.html) (2026-09-16): 1.6 g per kilo is the number for building. In a deficit, protein's job changes from building to protecting, and the research says 2.2 to 3 g per kilo, higher the leaner you are.
+- [Cut First or Bulk First? Same Finish Line](https://getcoast.fit/blog/cut-first-or-bulk-first.html) (2026-09-09): The partitioning argument is dead, the arithmetic says the order costs about two weeks either way, and the only real rule is to stay inside a healthy body-fat band.
+- [Cutting Fast Doesn't Cost What You Think](https://getcoast.fit/blog/cutting-fast-versus-slow.html) (2026-09-02): A fast cut doesn't strip your muscle for good. It costs you the gains a slow cut leaves room for, and it costs you adherence. And the leaner you are, the slower you physically have to go.
+- [Cutting Doesn't Change Your Training](https://getcoast.fit/blog/training-doesnt-change-with-your-diet.html) (2026-08-26): Weekly hard sets build muscle. Food decides your fat. The phase you're in should move where you sit inside each muscle's range, and nothing else.
+- [Fasted Cardio Doesn't Burn More Fat](https://getcoast.fit/blog/why-fasted-cardio-matters.html) (2026-07-29): Training on an empty stomach is sold as a fat-loss cheat code. Over a full day the difference disappears, and you may just be lifting worse for it.
+- [You Can't Crunch Away Belly Fat](https://getcoast.fit/blog/why-spot-reduction-matters.html) (2026-07-22): Targeted ab work to burn stomach fat is one of fitness's most stubborn myths. The research is clear: you don't get to choose where fat comes off.
+- [You Don't Always Need to Squat Ass to Grass](https://getcoast.fit/blog/why-squat-depth-matters.html) (2026-07-15): Full depth is treated as the only real squat. Depth does matter for some muscles, but the all-or-nothing framing misses what the evidence actually shows.
+- [The Anabolic Window Is Hours, Not Minutes](https://getcoast.fit/blog/why-protein-timing-matters.html) (2026-07-08): The post-workout protein scramble is sold as a 30-minute emergency. The research says the window is open for hours, and total daily protein is what counts.
+- [You're Probably Eating More Protein Than You Need](https://getcoast.fit/blog/why-protein-amount-matters.html) (2026-07-01): The "more is always better" mantra breaks down past a point. The useful ceiling sits lower than most lifters think, and the rest is just expensive.
+- [Stretching Won't Save You From Injury](https://getcoast.fit/blog/why-stretching-matters.html) (2026-06-24): Static stretching before training is sold as injury insurance. The evidence says it does little for injury risk and can blunt your strength. Here's what the research actually supports.
+- [You Don't Need to Train to Failure](https://getcoast.fit/blog/why-training-to-failure-matters.html) (2026-06-17): Going to absolute failure on every set feels hardcore, but the research shows it adds fatigue without adding much growth. Here's where stopping short actually wins.
+- [We Didn't Make the AI Smarter. We Gave It the Answer Key](https://getcoast.fit/blog/ai-answer-key.html) (2026-06-10): Ask a general-purpose AI about fitness and it confidently repeats the field's oldest myths. Here's how Coast feeds it curated, citation-backed research so it applies the right knowledge instead of guessing.
+- [Cardio Isn't Stealing Your Gains](https://getcoast.fit/blog/why-cardio-matters.html) (2026-06-03): The interference effect is real, but "cardio kills gains" is a wild overstatement of it. Here's what the research actually says, and the three things that decide whether cardio costs you anything.
+- [If You're Not Sore, It Still Worked](https://getcoast.fit/blog/why-soreness-matters.html) (2026-05-27): Delayed-onset muscle soreness feels like proof your workout worked. The research says it's a signal of novelty, not growth, and chasing it can backfire.
+- [Your Deload Is Probably Fake](https://getcoast.fit/blog/why-deloads-matter.html) (2026-05-20): Most lifters either never deload or do a "fake" one that clears no fatigue. Here's what a real deload is, and the honest truth about how thin the evidence for it actually is.
+- [The 8-12 Rep Range Isn't Magic](https://getcoast.fit/blog/why-rep-ranges-matter.html) (2026-05-13): The hypertrophy rep range of 8 to 12 reps is one of the most cited rules in fitness. The research says it isn't biologically privileged. Here's what actually drives muscle growth.
+- [Why Most Bulks Are Wrecked by Too Much Fiber](https://getcoast.fit/blog/why-fiber-matters.html) (2026-05-06): The standard fiber recommendation scales with calories. For lifters eating 4,000+ kcal, that math gets ugly fast. Here's why bulking and cutting need different fiber strategies.
+- [The 30g Protein Rule Is Mostly Made Up](https://getcoast.fit/blog/why-protein-distribution-matters.html) (2026-04-29): You've heard you can only absorb 30 grams of protein per meal. The number is a practitioner extrapolation, not a proven threshold. Here's what the research actually says.
+- [The 8-Hour Eating Window Isn't What You Think](https://getcoast.fit/blog/why-meal-timing-matters.html) (2026-04-22): Time-restricted eating is sold as a magic bullet for fat loss and metabolic health. The longest trial ever run says it's not better than just eating less.
+- [Your Rest Timer Is Probably Wrong](https://getcoast.fit/blog/why-rest-periods-matter.html) (2026-04-15): Most fitness apps default to 60-90 seconds between sets. The research says that's too short for trained lifters. Here's what the evidence actually shows.
+- [Why Your Volume Tracking Is Lying to You](https://getcoast.fit/blog/why-volume-counting-matters.html) (2026-04-08): Most fitness apps either ignore secondary muscle work or count it the same as direct work. Both are wrong. Here's the evidence-based middle ground.
+- [Why Your Workout Plan Should Tell You When to Push](https://getcoast.fit/blog/why-rir-matters.html) (2026-04-01): Most fitness apps give you sets and reps but never tell you how hard to actually train. The research is clear: proximity to failure is the variable that drives muscle growth.
+- [Coast vs MyFitnessPal vs MacroFactor vs Hevy](https://getcoast.fit/blog/json-fit-vs-competitors.html) (2026-03-25): An honest comparison of what each app does well, where it falls short, and where Coast fits in.
+- [Why You Don't Need Another AI Subscription for Fitness](https://getcoast.fit/blog/why-no-ai-subscription.html) (2026-03-19): You're already paying for ChatGPT or Claude. Why are fitness apps charging you again for the same thing?
+- [How to Create a Personalised Meal Plan with Claude](https://getcoast.fit/blog/meal-plan-claude.html) (2026-03-14): Optional: have your own AI write a custom meal plan and import it into Coast for the grocery list and meal prep. The app does this itself now; this is for people who want their own AI involved.
+- [How to Generate a 12-Week Hypertrophy Program with ChatGPT](https://getcoast.fit/blog/chatgpt-hypertrophy-program.html) (2026-03-08): A step-by-step tutorial walking through the full workflow, from setup to AI prompt to imported program, ready to track.
 
 ## Training programs
 
-- [Ryan's Program](https://json.fit/programs/?program=ryans-program): Upper / Lower, 4 days a week, 52 weeks. Advanced, full gym. Program file: https://json.fit/programs/ryans-program.json
-- [Beginner Foundation](https://json.fit/programs/?program=upper-lower-beginner): Upper / Lower, 4 days a week, 52 weeks. Beginner. Program file: https://json.fit/programs/upper-lower-beginner.json
-- [Intermediate Hybrid](https://json.fit/programs/?program=ppl-upper-lower): Push / Pull / Legs plus Upper / Lower, 5 days a week, 54 weeks. Intermediate. Program file: https://json.fit/programs/ppl-upper-lower.json
-- [Advanced High-Volume](https://json.fit/programs/?program=ppl-advanced): Push / Pull / Legs twice, 6 days a week, 52 weeks. Advanced. Program file: https://json.fit/programs/ppl-advanced.json
+- [Ryan's Program](https://getcoast.fit/programs/?program=ryans-program): Upper / Lower, 4 days a week, 52 weeks. Advanced, full gym. Program file: https://getcoast.fit/programs/ryans-program.json
+- [Beginner Foundation](https://getcoast.fit/programs/?program=upper-lower-beginner): Upper / Lower, 4 days a week, 52 weeks. Beginner. Program file: https://getcoast.fit/programs/upper-lower-beginner.json
+- [Intermediate Hybrid](https://getcoast.fit/programs/?program=ppl-upper-lower): Push / Pull / Legs plus Upper / Lower, 5 days a week, 54 weeks. Intermediate. Program file: https://getcoast.fit/programs/ppl-upper-lower.json
+- [Advanced High-Volume](https://getcoast.fit/programs/?program=ppl-advanced): Push / Pull / Legs twice, 6 days a week, 52 weeks. Advanced. Program file: https://getcoast.fit/programs/ppl-advanced.json
 
 ## Reference files the app and this site cite
 
 Plain-text research summaries behind the training rules, each with a matching references file:
 
-- https://json.fit/deload-guidance.md
-- https://json.fit/fiber-guidance.md
-- https://json.fit/meal-timing-guidance.md
-- https://json.fit/protein-distribution-guidance.md
-- https://json.fit/rep-range-guidance.md
-- https://json.fit/rest-guidance.md
-- https://json.fit/rir-guidance.md
-- https://json.fit/volume-landmarks.md
-- https://json.fit/lean-mass-targets.md
-- https://json.fit/phase-selection.md
-- https://json.fit/exercises.md
+- https://getcoast.fit/deload-guidance.md
+- https://getcoast.fit/fiber-guidance.md
+- https://getcoast.fit/meal-timing-guidance.md
+- https://getcoast.fit/protein-distribution-guidance.md
+- https://getcoast.fit/rep-range-guidance.md
+- https://getcoast.fit/rest-guidance.md
+- https://getcoast.fit/rir-guidance.md
+- https://getcoast.fit/volume-landmarks.md
+- https://getcoast.fit/lean-mass-targets.md
+- https://getcoast.fit/phase-selection.md
+- https://getcoast.fit/exercises.md

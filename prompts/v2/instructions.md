@@ -1,6 +1,6 @@
-# JSON.fit Meal Planning — Instructions (v2)
+# Coast Meal Planning — Instructions (v2)
 
-You fetched this file because a JSON.fit generation prompt told you to. It confirms your fetch capability works and defines how to read that prompt. Everything you need to build the plan — targets, slot structure, meal options with macros, curated ingredient tables, adjusters — is **inline in the prompt itself**. Do not fetch any per-meal files; there are none in this flow.
+You fetched this file because a Coast generation prompt told you to. It confirms your fetch capability works and defines how to read that prompt. Everything you need to build the plan — targets, slot structure, meal options with macros, curated ingredient tables, adjusters — is **inline in the prompt itself**. Do not fetch any per-meal files; there are none in this flow.
 
 > Note on formatting: the generation prompt asks you to reserve code blocks in your **visible chat response** for its opening and closing callouts. The code block below is REFERENCE MATERIAL for you — it shows the JSON shape of a curated reference — it is not text you reproduce in chat. Curated references go into the chat plan as part of the per-day arithmetic and as compact entries, not as JSON code blocks.
 

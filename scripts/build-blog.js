@@ -19,7 +19,7 @@ const path = require('path');
 
 const ROOT = process.cwd();
 const TZ = 'Australia/Canberra';
-const SITE_URL = 'https://json.fit';
+const SITE_URL = 'https://getcoast.fit';
 const PENDING_DIR = 'upcoming-blogs'; // where unpublished finished posts wait
 const LIVE_DIR = 'blog';              // where published posts live
 
@@ -86,17 +86,17 @@ const listHtml = live.map(p => `        <a href="${LIVE_DIR}/${p.slug}.html" cla
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
-  name: 'JSON.fit Blog',
+  name: 'Coast Blog',
   description: 'Training and nutrition articles for busy people who want results without making the gym their life.',
   url: `${SITE_URL}/blog.html`,
-  publisher: { '@type': 'Organization', name: 'JSON.fit', url: SITE_URL },
+  publisher: { '@type': 'Organization', name: 'Coast', url: SITE_URL },
   blogPost: live.map(p => ({
     '@type': 'BlogPosting',
     headline: p.title,
     description: p.description,
     url: `${SITE_URL}/${LIVE_DIR}/${p.slug}.html`,
     datePublished: p.date,
-    author: { '@type': 'Organization', name: 'JSON.fit' }
+    author: { '@type': 'Organization', name: 'Coast' }
   }))
 };
 

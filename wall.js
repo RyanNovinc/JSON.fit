@@ -1,5 +1,5 @@
 /* Hero food wall, shared by every page that mounts a <div id="fWall">.
-   Real meal photos from the JSON.fit library (r/meals.json), not a hardcoded list.
+   Real meal photos from the Coast library (r/meals.json), not a hardcoded list.
 
    Add data-rings="true" on the #fWall element for the ring/"LOGGED" treatment
    (used on the homepage); omit it for a plain name+macro card (used elsewhere,

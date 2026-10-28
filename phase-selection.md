@@ -1,8 +1,8 @@
-# JSON.fit Phase Selection
+# Coast Phase Selection
 
 Canonical reference for training-phase selection (bulk / lean bulk / recomp / cut / maintenance). AI MUST apply this when generating workout and meal plans. The app derives the phase from the user's profile and states it in the generation prompt's PHASE CONTEXT block — your job is to HONOUR that phase and understand its consequences, not to re-derive or override it.
 
-For the studies, effect sizes, and confidence grading behind the numbers on this page, see [phase-selection-references.md](https://json.fit/phase-selection-references.md).
+For the studies, effect sizes, and confidence grading behind the numbers on this page, see [phase-selection-references.md](https://getcoast.fit/phase-selection-references.md).
 
 ## Core Rules
 

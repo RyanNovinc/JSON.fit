@@ -2,7 +2,7 @@
 
 User's rest tier (Optimal / Moderate / Minimal) comes from questionnaire. Apply matrix by exercise category.
 
-**This file is the source of truth for the numbers, and the JSON.fit app implements it directly.** Rest is no longer written into a user's plan by the AI — the app resolves it at runtime from the exercise's category, how heavily it is loaded in the current block, and whichever tier the user is on. All three tiers are resolved for every exercise, and the user can switch between them mid-workout. Editing a number here changes what every existing plan rests for; nothing has to be regenerated.
+**This file is the source of truth for the numbers, and the Coast app implements it directly.** Rest is no longer written into a user's plan by the AI — the app resolves it at runtime from the exercise's category, how heavily it is loaded in the current block, and whichever tier the user is on. All three tiers are resolved for every exercise, and the user can switch between them mid-workout. Editing a number here changes what every existing plan rests for; nothing has to be regenerated.
 
 ## Matrix
 
@@ -20,7 +20,7 @@ Hard floor on heavy compounds: never below 2 min, regardless of tier or instruct
 
 The two superset rows are the per-tier split of the antagonist-superset range given under Edge Cases below. They are listed as matrix rows because a superset member needs a tier lookup like any other exercise — the edge-case note gives the range, these rows give the value.
 
-**Unilateral note.** The row above gives two numbers because a unilateral exercise has two rest events. JSON.fit counts one set as both sides, so the only rest event its timer fires is the between-pairs one — that is the value the app uses. The between-sides number is for the lifter's own pacing.
+**Unilateral note.** The row above gives two numbers because a unilateral exercise has two rest events. Coast counts one set as both sides, so the only rest event its timer fires is the between-pairs one — that is the value the app uses. The between-sides number is for the lifter's own pacing.
 
 **Isolation category names.** These two rows were "Large-muscle isolation" and "Small-muscle isolation" until 24 Aug 2026. A rest category describes what a set COSTS to recover from, not the size of the muscle it trains, and the old names invited the wrong comparison: a barbell curl is a small muscle doing an expensive set, which is why it sits on the higher row. `rep-range-guidance.md` still sorts the same exercises by muscle size, correctly, because reps ARE prescribed by muscle size. The two files are not in conflict; they were never measuring the same thing.
 
@@ -70,4 +70,4 @@ Rest is a secondary lever. Adaptation drivers in order:
 3. Progressive overload
 4. Exercise selection
 
-For full citations see https://json.fit/research/?topic=rest
+For full citations see https://getcoast.fit/research/?topic=rest

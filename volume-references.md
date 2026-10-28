@@ -1,8 +1,8 @@
 # Volume Landmarks — Research References
 
-This document lists the research and sources behind the volume landmarks used in JSON.fit's program generation. The numbers in [volume-landmarks.md](./volume-landmarks.md) are synthesised from the meta-analyses, peer-reviewed studies, and recognised practitioner sources listed below.
+This document lists the research and sources behind the volume landmarks used in Coast's program generation. The numbers in [volume-landmarks.md](./volume-landmarks.md) are synthesised from the meta-analyses, peer-reviewed studies, and recognised practitioner sources listed below.
 
-All volume landmarks in JSON.fit use **fractional set counting** (Primary × 1.0 + Secondary × 0.5), which is the same convention used in Pelland et al. 2024 and Remmert et al. 2025 — the most current and rigorous meta-regressions on resistance training volume. Their analyses found fractional counting to be the most predictive of hypertrophy outcomes vs. total counting (1.0 for any contribution) or direct-only counting (0 for indirect contribution).
+All volume landmarks in Coast use **fractional set counting** (Primary × 1.0 + Secondary × 0.5), which is the same convention used in Pelland et al. 2024 and Remmert et al. 2025 — the most current and rigorous meta-regressions on resistance training volume. Their analyses found fractional counting to be the most predictive of hypertrophy outcomes vs. total counting (1.0 for any contribution) or direct-only counting (0 for indirect contribution).
 
 ---
 
@@ -101,7 +101,7 @@ https://bretcontreras.com/neck-training-101/
 
 ## Note on Auxiliary Muscles
 
-The following muscles do not have peer-reviewed volume landmark research. Their landmarks in JSON.fit are practitioner-derived estimates extrapolated from analogous small-muscle conventions and coaching consensus:
+The following muscles do not have peer-reviewed volume landmark research. Their landmarks in Coast are practitioner-derived estimates extrapolated from analogous small-muscle conventions and coaching consensus:
 
 - Neck
 - Obliques

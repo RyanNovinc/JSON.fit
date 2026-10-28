@@ -1,4 +1,4 @@
-# JSON.fit RIR Guidance
+# Coast RIR Guidance
 
 Canonical reference for RIR (Reps In Reserve) prescription. AI MUST apply this when generating workouts.
 

@@ -1,4 +1,4 @@
-/* json.fit shared page script: menu, footer, download tracking, reveal-on-scroll.
+/* getcoast.fit shared page script: menu, footer, download tracking, reveal-on-scroll.
    Pages with <body data-store="train"> send App Store taps to the Training custom product page. */
 (function(){
   var PPID='b08433ee-bbbe-4c5a-8066-4c6c2df76d44';

@@ -1,10 +1,10 @@
-# JSON.fit Exercise Library
+# Coast Exercise Library
 
-This file is the canonical exercise reference for AI-generated programs on JSON.fit.
+This file is the canonical exercise reference for AI-generated programs on Coast.
 
 ## Instructions for AI
 
-When generating workout programs for JSON.fit users, you MUST:
+When generating workout programs for Coast users, you MUST:
 
 1. Select exercises ONLY from the list below. Do NOT invent exercises not in this library.
 2. Use the exact exercise name shown — do not vary or abbreviate names.
