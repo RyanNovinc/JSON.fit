@@ -626,7 +626,7 @@ details .a p{margin:0}
     flip = stage.querySelector('.cbflip'); fbEl = flip.firstChild;
     if (!window.St || !window.St.PageFlip) throw new Error('no PageFlip');
     pf = new St.PageFlip(fbEl, { width: 340, height: 481, size: 'fixed', showCover: true, usePortrait: false, autoSize: false,
-      mobileScrollSupport: true, maxShadowOpacity: 0.45, drawShadow: !still, flippingTime: still ? 1 : 800 });
+      useMouseEvents: mouse, mobileScrollSupport: true, maxShadowOpacity: 0.45, drawShadow: !still, flippingTime: still ? 1 : 800 });
     pf.loadFromHTML(fbEl.querySelectorAll('.fb-page'));
     wrap.classList.add('on');
   } catch (e) {
@@ -664,7 +664,7 @@ details .a p{margin:0}
     hint.innerHTML = '<b>' + verb + '</b> to look inside';
     live.textContent = '';
   };
-  var openHint = function () { hint.innerHTML = '<b>Drag</b> a page or ' + verb.toLowerCase() + ' it to turn'; };
+  var openHint = function () { hint.innerHTML = mouse ? '<b>Drag</b> a page or click it to turn' : '<b>Tap</b> the right page to turn, the left to go back'; };
   var markOpen = function () {
     if (opened) return; opened = true;
     if (window.track) window.track('cookbook_book_open', {});
@@ -707,8 +707,14 @@ details .a p{margin:0}
     if (busy || !isOpen() || turning()) return;
     pf.flipPrev('bottom');
   };
+  /* computers grab and drag pages (the library); phones just tap: right half forward, left half back,
+     measured on screen here because the library's own touch points miss under the scaled book */
   flip.addEventListener('click', function (e) {
-    if (!(e.target.closest && e.target.closest('.fbget'))) return;
+    if (!(e.target.closest && e.target.closest('.fbget'))) {
+      if (mouse) return;
+      var r = flip.getBoundingClientRect();
+      return (e.clientX - r.left > r.width / 2) ? next() : prev();
+    }
     var f = document.getElementById('email-hero'); if (!f) return;
     f.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
     setTimeout(function () { f.focus({ preventScroll: true }); }, still ? 0 : 450);
