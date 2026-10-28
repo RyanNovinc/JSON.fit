@@ -15,8 +15,12 @@
   var ua=navigator.userAgent||'';
   var ios=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   var android=/Android/i.test(ua);
-  var to=ios?'https://apps.apple.com/au/app/json-fit/id6758357834?pt=127775601&ct=website_qr&mt=8':android?'https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON&referrer=utm_source%3Djson.fit%26utm_medium%3Dweb%26utm_content%3Dqr':'/#download';
-  try{ if(window.gtag) gtag('event','download_click',{button_location:'qr_app_link',store:ios?'app_store':android?'play':'web'}); }catch(e){}
+  /* ?from=cookbook (or any short tag) marks where the QR code was printed: it becomes the App Store
+     campaign (ct, visible in App Store Connect > Analytics > Sources), the Play referrer and the event. */
+  var from='';try{from=(new URLSearchParams(location.search).get('from')||'').replace(/[^a-z0-9_-]/gi,'').slice(0,30);}catch(e){}
+  var tag=from?from+'_qr':'website_qr';
+  var to=ios?'https://apps.apple.com/au/app/json-fit/id6758357834?pt=127775601&ct='+tag+'&mt=8':android?'https://play.google.com/store/apps/details?id=com.RyanNovinc.JSON&referrer=utm_source%3Dgetcoast.fit%26utm_medium%3Dweb%26utm_content%3D'+(from||'qr'):'/#download';
+  try{ if(window.gtag) gtag('event','download_click',{button_location:from?'qr_'+from:'qr_app_link',store:ios?'app_store':android?'play':'web'}); }catch(e){}
   setTimeout(function(){ location.replace(to); }, ios||android?150:0);
 })();
 </script>

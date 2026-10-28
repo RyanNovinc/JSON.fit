@@ -259,6 +259,10 @@ img.framed{object-fit:cover;border-radius:3.5mm;background:#08080b}
 .closing ul{margin:0 0 10mm;padding:0;list-style:none;font-size:11pt;line-height:1.8;color:#15151a}
 .closing ul li::before{content:"✓";color:#16a34a;margin-right:3mm}
 .closing .qr{display:flex;align-items:center;gap:6mm}
+.appnote{display:flex;align-items:center;gap:5mm;margin-top:9mm;padding:4mm 5mm;border:1px solid #e3e1da;border-radius:3mm;background:#f7faf8}
+.appnote img{width:20mm;height:20mm;flex:none;background:#fff;padding:1.5mm;border-radius:2mm}
+.appnote span{font-size:9.5pt;line-height:1.5;color:#3b3b44}
+.appnote span b{display:block;color:#15151a;font-size:11pt;margin-bottom:1mm}
 .closing .qr img{width:30mm;height:30mm;background:#fff;padding:2mm;border-radius:2.5mm;border:1px solid #e3e1da}
 .closing .qr span{font-size:10.5pt;line-height:1.5;color:#3b3b44}
 .closing .qr span b{display:block;color:#15151a;font-size:13pt}
@@ -307,8 +311,9 @@ const contents = `<section class="page text">
     <div class="row"><span class="n">01</span><span class="t">Skim it</span><span class="c">every meal, time and kcal</span><span class="p">3</span></div>
     <div class="row"><span class="n">02</span><span class="t">Start with these</span><span class="c">one from each section</span><span class="p">5</span></div>
     ${sections.map((s, i) => `<div class="row"><span class="n">0${i + 3}</span><span class="t">${s.name}</span><span class="c">${s.meals.length} recipes</span><span class="p">${s.page}</span></div>`).join('')}
-    <div class="row"><span class="n">0${sections.length + 3}</span><span class="t">Now let the app do it</span><span class="c">the same meals, planned</span><span class="p">${CLOSING_PAGE}</span></div>
+    <div class="row"><span class="n">0${sections.length + 3}</span><span class="t">Let the app build your week</span><span class="c">the same meals, planned</span><span class="p">${CLOSING_PAGE}</span></div>
   </div>
+  <div class="appnote"><img src="file://${path.join(ROOT, 'images/qr-cookbook.svg')}" alt="QR code"><span><b>Every meal here is in the Coast app.</b>Pick the ones you like and it builds your week to your macros, with one shopping list. Scan to get it.</span></div>
   ${foot(2)}
 </section>`;
 
@@ -391,11 +396,11 @@ const recipe = (m) => {
 };
 
 const closing = `<section class="page closing">
-  <p class="mono dim">Coast for iPhone and Android</p>
-  <h2 class="serif">Now let the app <span class="g">do it.</span></h2>
-  <p>The book is the static version. The app takes these same ${meals.length} meals and builds your week around your numbers: which batch to cook, which tubs go in the fridge and which in the freezer, one shopping list, one cook.</p>
-  <ul><li>Your calorie and protein targets, worked out from your goal</li><li>Weekly meals that land on them. Swap any meal, the day rebalances.</li><li>One grocery list by aisle, one cook for the week</li><li>Cook mode with a timer on every step</li><li>Your route: when to cut and when to bulk to reach your goal</li><li>A training program, up to a year, built around your week</li></ul>
-  <div class="qr"><img src="file://${path.join(ROOT, 'images/qr-app.svg')}" alt="QR code"><span><b>getcoast.fit/app</b>Point your phone's camera here, or search Coast on the App Store or Google Play.<br>Free · No ads · No account</span></div>
+  <p class="mono dim">These meals are in the Coast app</p>
+  <h2 class="serif">Pick the meals you like. <span class="g">Coast builds your week.</span></h2>
+  <p>Every recipe in this book is in the app, ready to plan with.</p>
+  <ul><li>Choose your favourites from this book</li><li>Coast builds them into a week that hits your macros, with one shopping list and a prep guide</li><li>Swap any meal and the week rebalances</li><li>Your training and your cut or bulk plan come with it</li></ul>
+  <div class="qr"><img src="file://${path.join(ROOT, 'images/qr-cookbook.svg')}" alt="QR code"><span><b>getcoast.fit/app</b>Point your phone's camera here, or search Coast on the App Store or Google Play.<br>No ads · No account</span></div>
   ${foot(CLOSING_PAGE)}
 </section>`;
 
