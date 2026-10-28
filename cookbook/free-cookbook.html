@@ -427,7 +427,7 @@ details .a p{margin:0}
     /* What would people pay? Each visitor who reserves is asked about ONE price, picked at random
        and kept for that visitor (Gabor-Granger). Answers are counted per price in analytics, which
        gives a demand curve without showing anyone a price as if it were real. */
-    var PRICES = [29, 39, 49, 59];
+    var PRICES = [49, 59, 69, 79];
     function myPrice(){
         var p; try { p = parseInt(localStorage.getItem('cb_hc_price'), 10); } catch (e) {}
         if (PRICES.indexOf(p) === -1) { p = PRICES[Math.floor(Math.random() * PRICES.length)]; try { localStorage.setItem('cb_hc_price', p); } catch (e) {} }
