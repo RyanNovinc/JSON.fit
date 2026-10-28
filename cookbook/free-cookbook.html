@@ -134,19 +134,17 @@ html.fbjs .fbwrap:not(.on) .book{visibility:hidden}
 /* turns to face the reader before it opens, and back after it closes */
 .cbslide.center.tilt .cb3d.flat{transform:rotateY(0deg) rotateX(0deg) translateZ(0)!important;transition:transform .38s cubic-bezier(.4,0,.2,1)!important;animation:none!important}
 /* the open book */
-/* the open book: every page is built once as a sheet (front = a right page, back = the next left page) and a
-   turn only rotates one sheet. The sheets sit in a flat layer, drawn in z-index order, so two pages at the
-   same depth never fight over which is in front, and no page is created, swapped or removed mid-turn. */
-.cbopen{position:absolute;inset:0;display:none;perspective:2200px}
-.cbook.is-open .cbopen{display:block}
-.cbook.is-open .cbcover{visibility:hidden}
-.cbsheet{position:absolute;top:0;left:var(--pw);width:var(--pw);height:var(--ph);transform-origin:0 50%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.45,.05,.3,1);cursor:e-resize}
-.cbsheet.left{transform:rotateY(-180deg);cursor:w-resize}
-.cbsheet.slow{transition-duration:.7s}
-.cbsheet .cbface:empty{background:transparent}
-/* no shading on the open book: plain white pages */
+/* the open book: StPageFlip (MIT, /assets/vendor/page-flip.browser.js), so pages can be grabbed and dragged.
+   It sits beside the 3D book (not inside its filter or 3D layers), drawn at 340 px a page and scaled to --pw.
+   .center lines its cover up with the closed book; it shows once the closed cover has turned flat. */
+.cbflip{position:absolute;left:50%;top:14px;width:calc(var(--pw) * 2);height:var(--ph);margin-left:calc(var(--pw) * -1);transform:scale(var(--so));transition:transform .7s cubic-bezier(.2,.8,.2,1);visibility:hidden;z-index:2}
+.cbflip.center{transform:translateX(calc(var(--pw) * -.5))}
+.cbstage.open .cbflip{visibility:visible}
+.cbstage.open .cbslide{visibility:hidden}
+.cbfb{width:680px;height:481px;transform-origin:0 0}
+.cbfb .fb-page{background:#fff;overflow:hidden}
+.cbfb .fb-page img{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .cbook:focus-visible.closed .cbfront{outline:3px solid var(--green-text);outline-offset:4px}
-.cbook:focus-visible.is-open .cbopen{outline:3px solid var(--green-text);outline-offset:5px}
 .cbhint{margin:14px 0 0;min-height:1.45em;text-align:center;color:var(--text-2);font-size:.95rem;line-height:1.45}
 .cbhint b{color:var(--text);font-weight:600}
 @media(max-width:480px){.cbhint{min-height:2.9em;font-size:.9rem}}
@@ -162,7 +160,7 @@ html.fbjs .fbwrap:not(.on) .book{visibility:hidden}
 /* Reduce Motion: no riffle, no sway or tilt; the closed book rests at a slight angle; opening and turning are instant */
 .cbstage.still .cbslide,.cbstage.still .cb3d,.cbstage.still .cbground{transition:none!important;animation:none!important}
 .cbstage.still .cbslide.center.tilt .cb3d{transform:rotateY(14deg) rotateX(3deg) translateZ(0)}
-@media(prefers-reduced-motion:reduce){.cbslide,.cb3d,.cbsheet{transition:none!important}.cb3d{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.cbslide,.cb3d,.cbflip{transition:none!important}.cb3d{animation:none!important}}
 
 
 /* meal wall */
@@ -588,6 +586,7 @@ details .a p{margin:0}
   }
 })();
 </script>
+<script src="/assets/vendor/page-flip.browser.js"></script>
 <script>
 /* Look-inside book: riffle from the back page to the cover, then a 3D hardcover; click/tap/swipe/arrows to read. */
 (function () {
@@ -596,7 +595,7 @@ details .a p{margin:0}
   var mm = function (q) { return !!(window.matchMedia && matchMedia(q).matches); };
   var still = mm('(prefers-reduced-motion: reduce)');
   var mouse = mm('(hover: hover) and (pointer: fine)');
-  var stage, slide, book, b3d, sheets, openEl, hint, live;
+  var stage, slide, book, b3d, flip, fbEl, pf, hint, live;
   try {
     var PAGES = [['01-cover', 'The One Cook Cookbook cover'], ['02-contents', 'Contents'], ['03-start-here', 'Start here'], ['04-slow-cooker', 'Slow cooker section'],
       ['05-butter-chicken', 'Butter Chicken and Rice recipe'], ['06-bolognese', 'Spaghetti Bolognese recipe'], ['07-pulled-pork', 'BBQ Pulled Pork recipe'],
@@ -607,8 +606,8 @@ details .a p{margin:0}
     /* a riffle face: page k (11 = the back page), decorative copies */
     var FACE = function (k) { return k === 11 ? BACK.replace('<button', '<button tabindex="-1"') : IMG(k, true); };
     /* like a real book: inside cover + contents, then 03|04 ... 11|back page */
-    /* sheet k: front is a right-hand page, back the left-hand page after it. Sheet 0 is the cover. */
-    var SHEETS = [[IMG(0, true), INSIDE], [IMG(1), IMG(2)], [IMG(3), IMG(4)], [IMG(5), IMG(6)], [IMG(7), IMG(8)], [IMG(9), IMG(10)], [BACK, '']];
+    /* the open book's pages: cover, inside cover, the 10 preview pages, the back page (pairs 1|2 ... 11|12) */
+    var FLIP = [IMG(0, true), INSIDE, IMG(1), IMG(2), IMG(3), IMG(4), IMG(5), IMG(6), IMG(7), IMG(8), IMG(9), IMG(10), BACK];
     var NAMES = ['Inside cover and contents', 'Start here and slow cooker section', 'Butter chicken and bolognese', 'Pulled pork and massaman beef', 'Teriyaki chicken and oven bakes', 'Garlic butter chicken and the back page'];
     var leaves = '';
     if (!still) for (var i = 0; i <= 10; i++) leaves += '<div class="cbleaf" aria-hidden="true" style="--i:' + i + ';--z0:' + (11 - i) + ';--z1:' + (100 + i) + '"><div class="cbface">' + FACE(11 - i) + '</div><div class="cbface bk">' + FACE(10 - i) + '</div></div>';
@@ -618,12 +617,17 @@ details .a p{margin:0}
       leaves +
       '<div class="cbpg cbR cbcover"><div class="cb3d"><div class="cbf cbfront">' + IMG(0) + '<span class="cbhinge"></span><span class="cbsheen"></span></div>' +
       '<div class="cbf cbedge"></div><div class="cbf cbtop"></div><div class="cbf cbspine" aria-hidden="true"><b>The One Cook <i>Cookbook.</i></b><svg class="cbwm" viewBox="4 -63 248 66"><path fill="#fff" d="M21.9 1.5Q14.5 1.5 9.8 -3.5Q5.1 -8.5 5.1 -17.5Q5.1 -23.9 7.3 -29.6Q9.5 -35.4 13.5 -39.9Q17.4 -44.4 22.6 -47Q27.7 -49.6 33.6 -49.6Q37.1 -49.6 40.2 -48.5Q43.2 -47.4 45.1 -45.4Q46.9 -43.4 46.8 -40.7Q46.7 -38 45.1 -36.5Q43.5 -34.9 40.9 -34.9Q38.1 -34.9 36.4 -36.6Q34.7 -38.3 33.7 -40.5L33.1 -42.2Q31.7 -45.5 30.7 -46.2Q29.6 -46.8 27.1 -44.7Q24.4 -42.4 22.1 -38.5Q19.7 -34.6 18.3 -29.9Q16.9 -25.2 16.9 -20.3Q16.9 -12.8 20.2 -9.2Q23.4 -5.7 28.9 -5.7Q32.5 -5.7 36 -8Q39.5 -10.3 42.5 -14.4L43.9 -13.4Q41.8 -9.5 38.5 -6.1Q35.2 -2.7 31 -0.6Q26.7 1.5 21.9 1.5ZM69 1.5Q63.8 1.5 59.5 -0.6Q55.2 -2.6 52.7 -6.8Q50.2 -10.9 50.2 -17.3Q50.2 -23.7 52.4 -29.5Q54.5 -35.3 58.4 -39.9Q62.3 -44.4 67.5 -47Q72.7 -49.6 78.8 -49.6Q84.1 -49.6 88.2 -47.5Q92.4 -45.5 94.9 -41.4Q97.3 -37.3 97.3 -30.9Q97.3 -24.6 95.2 -18.8Q93 -12.9 89.2 -8.3Q85.3 -3.8 80.2 -1.2Q75 1.5 69 1.5ZM70.2 -0.5Q73.3 -0.5 75.9 -3.4Q78.4 -6.2 80.3 -11Q82.2 -15.7 83.2 -21.5Q84.2 -27.2 84.2 -32.9Q84.2 -41.2 82.5 -44.4Q80.8 -47.6 78.1 -47.6Q74.9 -47.6 72.2 -44.8Q69.5 -42 67.5 -37.3Q65.5 -32.6 64.4 -26.9Q63.3 -21.2 63.3 -15.5Q63.3 -7 65.3 -3.8Q67.3 -0.5 70.2 -0.5ZM113.2 1.5Q110.4 1.5 107.9 0.2Q105.4 -1.1 103.9 -4.1Q102.3 -7.1 102.3 -12Q102.3 -17.3 104.4 -22.6Q106.5 -28 110 -32.9Q113.5 -37.7 117.8 -41.5Q122.1 -45.2 126.7 -47.4Q131.3 -49.6 135.4 -49.6Q137.4 -49.6 139.2 -48.9Q140.9 -48.1 142.5 -46.8L150.6 -49.9L151.4 -49.4L142.7 -11.1Q142 -8.3 142 -6.5Q142 -4.4 143.9 -4.4Q145.3 -4.4 147.2 -5.7Q149 -7 151.4 -9.2L152.2 -8.4Q150.7 -6 148.5 -3.8Q146.2 -1.5 143.5 0Q140.7 1.5 137.6 1.5Q134.2 1.5 132.1 -0.6Q130 -2.6 130 -6.9Q130 -8.3 130.1 -9.6Q126.1 -5.1 121.7 -1.8Q117.2 1.5 113.2 1.5ZM114.1 -16.5Q114.1 -11.2 115.9 -8.9Q117.6 -6.5 120.5 -6.5Q122.9 -6.5 125.3 -8Q127.7 -9.5 130.5 -12.3Q130.7 -13.5 131 -14.8L137.3 -43.6Q136 -45.2 134.2 -45.8Q132.4 -46.4 131 -46.4Q126.7 -46.4 122 -41.3Q118.3 -37.2 116.2 -30.5Q114.1 -23.8 114.1 -16.5ZM170.7 1.5Q164.4 1.5 160.5 -1Q156.6 -3.5 156.6 -8.1Q156.6 -10.5 158.3 -12.3Q160 -14.1 162.7 -14.1Q167.7 -14.1 168.9 -8L169.5 -5.2Q170 -3.1 170.8 -1.8Q171.5 -0.5 173.7 -0.5Q176.2 -0.5 178.1 -2.6Q180 -4.7 180 -8.4Q180 -11.2 178.3 -13.8Q176.5 -16.4 172.4 -19.5Q168.3 -22.7 165.8 -26.2Q163.3 -29.6 163.3 -34.4Q163.3 -38.6 165.5 -42Q167.6 -45.5 171.7 -47.5Q175.8 -49.6 181.4 -49.6Q187.9 -49.6 191.7 -47Q195.4 -44.4 195.4 -40.3Q195.4 -38.1 194.1 -36.7Q192.8 -35.2 190.2 -35.2Q185.4 -35.2 183.7 -41L182.7 -43.8Q182.2 -45.8 181.5 -46.6Q180.8 -47.4 179.3 -47.4Q177.7 -47.4 176 -45.7Q174.3 -43.9 174.3 -40.1Q174.3 -36.5 176.5 -33.5Q178.6 -30.6 182.9 -27.4Q187.3 -24.1 189.4 -21Q191.4 -17.9 191.4 -13.5Q191.4 -9.4 189 -6Q186.6 -2.6 182 -0.6Q177.4 1.5 170.7 1.5ZM208.7 1.5Q205.6 1.5 203.6 -0.2Q201.5 -1.8 201.5 -5Q201.5 -7 201.9 -9.4Q202.3 -11.7 202.8 -14.4L209.7 -46H201.4L201.7 -47.2L205.3 -47.6Q208.1 -47.9 210.2 -49Q212.3 -50.1 214.2 -52.1L223.8 -61.8H225.3L222.5 -48.1H233.4L232.9 -46H222L215.1 -12.7Q214.7 -10.8 214.5 -9.4Q214.3 -8.1 214.3 -7.2Q214.3 -6.2 214.9 -5.6Q215.5 -5 216.2 -5Q217.6 -5 219.2 -6.2Q220.8 -7.3 223.2 -9.6L224.4 -8.6Q221.9 -4.9 217.9 -1.7Q213.9 1.5 208.7 1.5Z"/><path fill="#4ade80" d="M241.3 1.3Q237.9 1.3 235.8 -0.8Q233.6 -3 233.6 -6Q233.6 -9.8 236.3 -12.4Q239.1 -15 242.7 -15Q246.1 -15 248.2 -12.8Q250.4 -10.6 250.4 -7.5Q250.4 -3.8 247.7 -1.2Q244.9 1.3 241.3 1.3Z"/></svg></div><div class="cbf cbbackc"></div></div><div class="cbground"></div></div>' +
-      '<div class="cbopen">' + SHEETS.map(function (f, i) { return '<div class="cbsheet" aria-hidden="true"><div class="cbface">' + f[0] + '</div><div class="cbface bk">' + f[1] + '</div></div>'; }).join('') + '</div></div></div>';
+      '</div></div>' +
+      '<div class="cbflip center" aria-hidden="true"><div class="cbfb">' + FLIP.map(function (h, i) { return '<div class="fb-page"' + (i === 0 || i === FLIP.length - 1 ? ' data-density="hard"' : '') + '>' + h + '</div>'; }).join('') + '</div></div>';
     hint = document.createElement('p'); hint.className = 'cbhint';
     live = document.createElement('p'); live.className = 'sr'; live.setAttribute('aria-live', 'polite');
     wrap.appendChild(stage); wrap.appendChild(hint); wrap.appendChild(live);
     slide = stage.firstChild; book = slide.firstChild; b3d = book.querySelector('.cb3d');
-    openEl = book.querySelector('.cbopen'); sheets = [].slice.call(openEl.children);
+    flip = stage.querySelector('.cbflip'); fbEl = flip.firstChild;
+    if (!window.St || !window.St.PageFlip) throw new Error('no PageFlip');
+    pf = new St.PageFlip(fbEl, { width: 340, height: 481, size: 'fixed', showCover: true, usePortrait: false, autoSize: false,
+      mobileScrollSupport: true, maxShadowOpacity: 0.45, drawShadow: !still, flippingTime: still ? 1 : 800 });
+    pf.loadFromHTML(fbEl.querySelectorAll('.fb-page'));
     wrap.classList.add('on');
   } catch (e) {
     if (stage && stage.parentNode) stage.remove();
@@ -640,6 +644,7 @@ details .a p{margin:0}
     stage.style.setProperty('--pw', pw + 'px');
     stage.style.setProperty('--ph', Math.round(pw * 1123 / 794) + 'px');
     stage.style.setProperty('--so', so.toFixed(4));
+    fbEl.style.transform = 'scale(' + (pw / 340).toFixed(4) + ')';
   };
   size();
   if (window.ResizeObserver) { var lastW = wrap.clientWidth; new ResizeObserver(function () { if (wrap.clientWidth !== lastW) { lastW = wrap.clientWidth; size(); } }).observe(wrap); }
@@ -659,60 +664,55 @@ details .a p{margin:0}
     hint.innerHTML = '<b>' + verb + '</b> to look inside';
     live.textContent = '';
   };
-  /* s = how many sheets lie on the left: 0 closed, 1 inside cover + contents ... 6 the back page */
-  var N = sheets.length;
-  var stack = function () { sheets.forEach(function (el, k) { el.classList.toggle('left', k < s); el.style.zIndex = k < s ? k + 1 : 2 * N - k; }); };
-  stack();
-  var decoded = function () {
-    return Promise.all([].slice.call(openEl.querySelectorAll('img')).map(function (im) { return im.decode ? im.decode().catch(function () {}) : null; }));
-  };
-  /* turn sheet k over (to the left when fwd), on top of everything while it moves */
-  var turn = function (k, fwd, slow, done) {
-    var el = sheets[k], ms = still ? 0 : slow ? 700 : 550;
-    el.style.zIndex = 3 * N; el.classList.toggle('slow', !!slow); el.classList.remove('turning'); void el.offsetWidth; el.classList.add('turning');
-    el.classList.toggle('left', fwd);
-    setTimeout(function () { el.classList.remove('turning'); s = fwd ? k + 1 : k; stack(); if (done) done(); }, ms + 30);
-  };
-  var openHint = function () { hint.innerHTML = '<b>' + verb + '</b> the right page to turn, the left to go back'; };
+  var openHint = function () { hint.innerHTML = '<b>Drag</b> a page or ' + verb.toLowerCase() + ' it to turn'; };
   var markOpen = function () {
     if (opened) return; opened = true;
     if (window.track) window.track('cookbook_book_open', {});
     if (window.gtag) gtag('event', 'cookbook_book_open');
   };
+  var isOpen = function () { return stage.classList.contains('open'); };
   var openBook = function () {
     if (busy || !book.classList.contains('closed')) return;
     markOpen(); busy = true;
-    decoded().then(function () {
-      if (still) { book.classList.remove('closed'); book.classList.add('is-open'); slide.classList.remove('center', 'sway'); s = 1; stack(); report(0); openHint(); busy = false; return; }
-      b3d.classList.remove('follow'); b3d.style.setProperty('--tx', '0deg'); b3d.style.setProperty('--ty', '0deg');
-      b3d.classList.add('flat');                                 /* 1. turn to face the reader */
-      setTimeout(function () {                                   /* 2. the cover swings open as the book slides over */
-        book.classList.remove('closed'); book.classList.add('is-open'); b3d.classList.remove('flat');
-        slide.classList.remove('center', 'sway'); openHint();
-        requestAnimationFrame(function () { requestAnimationFrame(function () { turn(0, true, true, function () { report(0); busy = false; }); }); });
-      }, 400);
-    });
+    b3d.classList.remove('follow'); b3d.style.setProperty('--tx', '0deg'); b3d.style.setProperty('--ty', '0deg');
+    b3d.classList.add('flat');                                   /* 1. turn to face the reader */
+    setTimeout(function () {                                     /* 2. swap to the flip book on its cover, then open it */
+      book.classList.remove('closed'); b3d.classList.remove('flat'); slide.classList.remove('sway');
+      stage.classList.add('open'); openHint();
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        flip.classList.remove('center'); pf.flipNext('bottom'); busy = false;
+      }); });
+    }, still ? 0 : 400);
   };
+  /* back on the cover (dragged or turned there): slide back and become the 3D book again */
+  var closeBook = function () {
+    busy = true; flip.classList.add('center');
+    setTimeout(function () {
+      stage.classList.remove('open'); b3d.classList.add('flat'); closedState();
+      requestAnimationFrame(function () { requestAnimationFrame(function () { b3d.classList.remove('flat'); busy = false; }); });
+    }, still ? 0 : 700);
+  };
+  pf.on('flip', function (e) {
+    var p = e.data;
+    if (p <= 0) return closeBook();
+    report(Math.min(NAMES.length - 1, Math.floor((p - 1) / 2)));
+  });
+  var turning = function () { return pf.getState && pf.getState() !== 'read'; };
   var next = function () {
     if (busy) return;
     if (book.classList.contains('closed')) return openBook();
-    if (s >= N - 1) return;
-    busy = true; turn(s, true, false, function () { report(s - 1); busy = false; });
+    if (!turning()) pf.flipNext('bottom');
   };
   var prev = function () {
-    if (busy || book.classList.contains('closed')) return;
-    busy = true;
-    if (s === 1) {                                               /* close: the cover swings shut as the book slides back... */
-      if (!still) slide.classList.add('center');
-      turn(0, false, true, function () {                         /* ...then turns back to its 3D angle */
-        if (still) { closedState(); busy = false; return; }
-        b3d.classList.add('flat'); closedState();
-        requestAnimationFrame(function () { requestAnimationFrame(function () { b3d.classList.remove('flat'); busy = false; }); });
-      });
-      return;
-    }
-    turn(s - 1, false, false, function () { report(s - 1); busy = false; });
+    if (busy || !isOpen() || turning()) return;
+    pf.flipPrev('bottom');
   };
+  flip.addEventListener('click', function (e) {
+    if (!(e.target.closest && e.target.closest('.fbget'))) return;
+    var f = document.getElementById('email-hero'); if (!f) return;
+    f.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
+    setTimeout(function () { f.focus({ preventScroll: true }); }, still ? 0 : 450);
+  });
 
   /* clicks: the back page's button goes to the form; otherwise right half forward, left half back */
   var swiped = false;
@@ -732,6 +732,7 @@ details .a p{margin:0}
   var sx = 0, sy = 0;
   stage.addEventListener('touchstart', function (e) { var t = e.touches[0]; sx = t.clientX; sy = t.clientY; swiped = false; }, { passive: true });
   stage.addEventListener('touchend', function (e) {
+    if (isOpen()) return; /* the open book handles its own drags and swipes */
     var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
     if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) { swiped = true; setTimeout(function () { swiped = false; }, 400); dx < 0 ? next() : prev(); }
   }, { passive: true });
