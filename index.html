@@ -518,6 +518,25 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
   .hin .mp-pips{animation:hinRise .6s ease-out .5s backwards}
 }
 @media(prefers-reduced-motion:reduce){.hin *,.hin-pre *{animation-name:none!important}}
+/* hero "No" list: one line of pills drifting left, faded at both ends; pauses on hover */
+.hero .sub b{color:var(--text);font-weight:600}
+.hero .sub .plus{display:block;margin-top:8px;font-size:.92em}
+.hero .sub .plus i{font-style:normal;color:var(--green-text);font-weight:700;margin-right:4px}
+.nos{position:relative;overflow:hidden;max-width:34em;margin:0 0 30px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.nos-belt{display:flex;gap:8px;width:max-content;animation:nosBelt 38s linear infinite}
+.nos:hover .nos-belt{animation-play-state:paused}
+@keyframes nosBelt{to{transform:translateX(-50%)}}
+.nos-belt span{flex:none;font-size:.93rem;color:var(--text);background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:999px;padding:7px 14px;white-space:nowrap}
+.nos-belt span b{color:var(--green-text);font-weight:600}
+@media(max-width:900px){.nos{margin-left:auto;margin-right:auto}}
+@media(max-width:700px){
+  .hero .sub{display:block;font-size:1rem;max-width:30ch;margin:14px auto 18px;text-wrap:balance}
+  .hero .mprev,.hero .mp-pips{display:none}
+  .nos{max-width:none;margin:0 -16px 24px}
+}
+@media(prefers-reduced-motion:reduce){.nos-belt{animation:none;flex-wrap:wrap;justify-content:center;width:auto}.nos{-webkit-mask-image:none;mask-image:none}}
+.hin .hero .nos{animation:hinRise .7s cubic-bezier(.2,.8,.2,1) .4s backwards}
+
 </style>
 <script src="/analytics-web.js"
         data-endpoint="https://kmgao3kfmhtqu47poior5mbqce0nyxfx.lambda-url.ap-southeast-2.on.aws/"
@@ -560,7 +579,8 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
     <div class="hcopy">
       <p class="label">Science-backed training and food</p>
       <h1 id="h1">Fitness,<em>on autopilot.</em></h1>
-      <p class="sub">Tell us where you want to be. We plan every step: when to cut or bulk, a 1-year training program, and weekly meals built to your macros, with the shopping list and a quick prep guide. Set it up once and get hours back every week.</p>
+      <p class="sub">Every meal and workout planned for you, so you get <b>hours back every week.</b><span class="plus"><i aria-hidden="true">+</i> When to cut, when to bulk, and meal plans that change to match.</span></p>
+      <div class="nos" aria-label="No logging food, no calorie counting, no deciding what to buy or cook, no hours in the kitchen, no guessing sets, reps or when to cut, no worrying about fibre, salt or vitamins"><div class="nos-belt" aria-hidden="true"></div></div>
       <div class="mprev" role="img" aria-label="Your route, your meals and your training, built for you">
         <div class="mp-scene on" aria-hidden="true"><div class="mp-k" style="color:var(--violet-text)">Your route</div><div class="mp-t">When to cut, when to bulk</div><div class="mp-s">Phases timed to your body</div>
           <svg viewBox="0 0 300 140"><line x1="0" y1="128" x2="300" y2="128" stroke="#24242a"/><path class="mp-curve" d="M8 34 C 60 36, 80 78, 120 80 S 180 72, 210 94 S 255 110, 286 108"/><circle class="mp-dot" cx="286" cy="108" r="6"/><text class="mp-lbl" x="282" y="94" text-anchor="end">Your goal</text></svg></div>
@@ -953,5 +973,6 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
   },true);
 })();
 </script>
+<script>(function(){var b=document.querySelector('.nos-belt');if(!b)return;var n=['logging food','calorie counting','“what do I buy?”','“what do I cook?”','hours in the kitchen','guessing sets and reps','guessing when to cut','worrying about fibre, salt or vitamins'];var h=n.map(function(t){return '<span><b>No</b> '+t+'</span>'}).join('');b.innerHTML=h+h})();</script>
 </body>
 </html>
