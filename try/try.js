@@ -201,7 +201,10 @@
 
   var cur = -1, stack = [], seen = {}, token = 0, holdBuild = false;
   /** 'cta': came from a "Build my free plan" button (/try/#start); 'direct': ads, links, typed. */
+  var PHONE = window.matchMedia && (matchMedia('(max-width: 760px)').matches || matchMedia('(hover: none) and (pointer: coarse)').matches);
   var ENTRY = location.hash === '#start' ? 'cta' : 'direct';
+  /** Phones skip the intro from a button; a computer shows it first. */
+  var SKIP_INTRO = ENTRY === 'cta' && PHONE;
   function trackScreen(i) {
     if (seen[i]) return; seen[i] = 1;
     try { if (window.track) window.track('try_step', { step: i + 1, screen: SCREENS[i].id, entry: ENTRY }); } catch (e) {}
@@ -300,7 +303,7 @@
   }
   backBtn.addEventListener('click', function () {
     // From a "Build my free plan" button there is no intro behind the first question: Back returns to the page they came from.
-    if (!stack.length) { if (ENTRY === 'cta') { if (document.referrer.indexOf(location.origin + '/') === 0) history.back(); else location.href = '/'; } return; }
+    if (!stack.length) { if (SKIP_INTRO) { if (document.referrer.indexOf(location.origin + '/') === 0) history.back(); else location.href = '/'; } return; }
     // Screens this visit pushed go back through history, so the browser's Back agrees; a deep link steps back in place.
     if (history.state && history.state.t === 1) history.back(); else back();
   });
@@ -4189,8 +4192,9 @@
     fill().then(function () { if (params.get('route')) S.about.route = params.get('route'); return planFirst(); }).then(function () { for (var k = 0; k < target; k++) if (!SCREENS[k].build) stack.push(k); show(target, 0); }, function (e) { stage.innerHTML = errBox(e.message); });
   } else if (!want && readPass()) {
     show(IDX.back, 0);
-  } else if (ENTRY === 'cta') {
-    // From a "Build my free plan" button: straight to the first question; Back goes back to the page they came from, not the intro.
+  } else if (SKIP_INTRO) {
+    // From a "Build my free plan" button on a phone: straight to the first question; Back goes back to the page they came from.
+    // On a computer the intro shows first (the else below).
     show(IDX.weight, 0);
   } else {
     show(0, 0);
