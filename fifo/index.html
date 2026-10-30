@@ -328,6 +328,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .ctas .badge{flex:1;justify-content:center;white-space:nowrap}
 .htrust{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
 .htrust .free{color:var(--green-text)}
+.htrust a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.25)}
 
 /* three real app screens; one moves to the front only when tapped */
 .hstage{position:relative;height:clamp(460px,46vw,620px)}
@@ -627,7 +628,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
       </a>
     </div>
       </div>
-      <p class="htrust"><span class="free">Free</span><span>No ads</span><span>No account</span><span>42 sources</span></p>
+      <p class="htrust"><span class="free">Free</span><span>No ads</span><span>No account</span><a href="/research/" class="tsrc">Built on 42 research papers</a></p>
     </div>
     <div class="hstage" id="hstage">
       <button type="button" class="ph" data-i="0" data-slot="c" aria-label="Show the welcome screen"><img src="/images/home/cap-welcome.webp" width="599" height="1302" fetchpriority="high" alt="Coast's welcome screen: Fitness, on autopilot."></button>
@@ -838,7 +839,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
     <div class="sec-head rv">
       <p class="label">Where the rules come from</p>
       <h2 id="res-h" class="caps">Research,<br>not opinions.</h2>
-      <p>42 sources behind the 25 decisions the app makes about your route, your training and your food. Where the evidence is thin, it says so.</p>
+      <p>42 research papers behind the 25 decisions the app makes about your route, your training and your food. Where the evidence is thin, it says so.</p>
     </div>
     <div class="rgrid rv">
       <a class="rcard" href="/research/"><span class="k">Training &middot; <span class="g">Good</span></span><h4>How many sets.</h4><p>A muscle's hard sets each week. Pelland et al. 2026, meta-regression of 67 studies.</p></a>

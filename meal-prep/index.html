@@ -67,7 +67,7 @@
       "name": "Is this high protein meal prep?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Your protein target comes from the research (see the 42 sources), and every day is planned to hit it. The batch meals are built around chicken, beef, pork, lamb, fish or plant protein."
+        "text": "Yes. Your protein target comes from the research (see the 42 research papers), and every day is planned to hit it. The batch meals are built around chicken, beef, pork, lamb, fish or plant protein."
       }
     },
     {
@@ -328,6 +328,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .ctas .badge{flex:1;justify-content:center;white-space:nowrap}
 .htrust{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
 .htrust .free{color:var(--green-text)}
+.htrust a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.25)}
 
 /* three real app screens; one moves to the front only when tapped */
 .hstage{position:relative;height:clamp(460px,46vw,620px)}
@@ -627,7 +628,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
       </a>
     </div>
       </div>
-      <p class="htrust"><span class="free">Free</span><span>No ads</span><span>No account</span><span>42 sources</span></p>
+      <p class="htrust"><span class="free">Free</span><span>No ads</span><span>No account</span><a href="/research/" class="tsrc">Built on 42 research papers</a></p>
     </div>
     <div class="hstage" id="hstage">
       <button type="button" class="ph" data-i="0" data-slot="c" aria-label="Show the welcome screen"><img src="/images/home/cap-welcome.webp" width="599" height="1302" fetchpriority="high" alt="Coast's welcome screen: Fitness, on autopilot."></button>
@@ -838,7 +839,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
     <div class="sec-head rv">
       <p class="label">Where the rules come from</p>
       <h2 id="res-h" class="caps">Research,<br>not opinions.</h2>
-      <p>42 sources behind the 25 decisions the app makes about your route, your training and your food. Where the evidence is thin, it says so.</p>
+      <p>42 research papers behind the 25 decisions the app makes about your route, your training and your food. Where the evidence is thin, it says so.</p>
     </div>
     <div class="rgrid rv">
       <a class="rcard" href="/research/"><span class="k">Training &middot; <span class="g">Good</span></span><h4>How many sets.</h4><p>A muscle's hard sets each week. Pelland et al. 2026, meta-regression of 67 studies.</p></a>
@@ -873,7 +874,7 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
     </div>
     <div class="faq">
       <details><summary>I already train. Why is my food the problem?</summary><div class="a">Training is a few sessions a week. Food is every day: deciding, shopping, cooking and guessing the macros. Coast plans it once. One shopping list, one cook, and each day already adds up to your calories and protein.</div></details>
-      <details><summary>Is this high protein meal prep?</summary><div class="a">Yes. Your protein target comes from the research (see the <a href="/research/">42 sources</a>), and every day is planned to hit it. The batch meals are built around chicken, beef, pork, lamb, fish or plant protein.</div></details>
+      <details><summary>Is this high protein meal prep?</summary><div class="a">Yes. Your protein target comes from the research (see the <a href="/research/">42 research papers</a>), and every day is planned to hit it. The batch meals are built around chicken, beef, pork, lamb, fish or plant protein.</div></details>
       <details><summary>Do I need a slow cooker?</summary><div class="a">For 29 of the 37 batch meals, yes. The other 8 are oven bakes. Any 5.5 L slow cooker works: <a href="https://www.bigw.com.au/product/contempo-slow-cooker-5-5l/p/263539" rel="nofollow noopener" target="_blank">this one is $24 at Big W</a>. Not sponsored, no commission.</div></details>
       <details><summary>Won't I get sick of eating the same thing?</summary><div class="a">One cook covers different meals across the week, not one dish seven times. Swap any meal for another you like and the app re-balances the day so it still lands on your macros.</div></details>
       <details><summary>Can I use it to cut, not just bulk?</summary><div class="a">Yes. Set your goal weight and body fat and your route plans the phases: a cut, a build or both, in the right order. Your calories and meals follow the phase you are in.</div></details>
