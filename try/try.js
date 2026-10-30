@@ -299,7 +299,8 @@
     show(i, -1);
   }
   backBtn.addEventListener('click', function () {
-    if (!stack.length) return;
+    // From a "Build my free plan" button there is no intro behind the first question: Back returns to the page they came from.
+    if (!stack.length) { if (ENTRY === 'cta') { if (document.referrer.indexOf(location.origin + '/') === 0) history.back(); else location.href = '/'; } return; }
     // Screens this visit pushed go back through history, so the browser's Back agrees; a deep link steps back in place.
     if (history.state && history.state.t === 1) history.back(); else back();
   });
@@ -4189,8 +4190,7 @@
   } else if (!want && readPass()) {
     show(IDX.back, 0);
   } else if (ENTRY === 'cta') {
-    // From a "Build my free plan" button: straight to the first question; Back goes to the intro.
-    stack.push(0);
+    // From a "Build my free plan" button: straight to the first question; Back goes back to the page they came from, not the intro.
     show(IDX.weight, 0);
   } else {
     show(0, 0);
