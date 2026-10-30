@@ -328,7 +328,9 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
 .ctas .badge{flex:1;justify-content:center;white-space:nowrap}
 .htrust{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
 .htrust .free{color:var(--green-text)}
-.htrust a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.25)}
+.sline{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:.88rem;color:var(--text-2);text-decoration:none}.sline:hover{color:var(--text)}.sline b{color:var(--text);font-weight:600}.sline .seal{width:18px;height:18px;flex:none}.sline .seal polygon{fill:rgba(74,222,128,.16);stroke:var(--green-text);stroke-width:1.2}.sline .seal path{fill:none;stroke:var(--green-text);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:900px){.sline{display:flex;justify-content:center}}
+.hin .hero .sline{animation:hinRise .7s cubic-bezier(.2,.8,.2,1) .76s backwards}
 
 /* three real app screens; one moves to the front only when tapped */
 .hstage{position:relative;height:clamp(460px,46vw,620px)}
@@ -628,7 +630,8 @@ a.mcard:focus-visible{outline:2px solid var(--green-text);outline-offset:3px}
       </a>
     </div>
       </div>
-      <p class="htrust"><span class="free">Free</span><span>No ads</span><span>No account</span><a href="/research/" class="tsrc">Built on 42 research papers</a></p>
+      <p class="htrust"><span class="free">Free</span><span>No ads</span><span>No account</span></p>
+      <a class="sline" href="/research/"><svg class="seal" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12.00,1.00 14.41,3.02 17.50,2.47 18.58,5.42 21.53,6.50 20.98,9.59 23.00,12.00 20.98,14.41 21.53,17.50 18.58,18.58 17.50,21.53 14.41,20.98 12.00,23.00 9.59,20.98 6.50,21.53 5.42,18.58 2.47,17.50 3.02,14.41 1.00,12.00 3.02,9.59 2.47,6.50 5.42,5.42 6.50,2.47 9.59,3.02"/><path d="M7.6 12.3l3 3 5.8-6.2"/></svg><span>Built on <b>42 research papers</b> &rarr;</span></a>
     </div>
     <div class="hstage" id="hstage">
       <button type="button" class="ph" data-i="0" data-slot="c" aria-label="Show the welcome screen"><img src="/images/home/cap-welcome.webp" width="599" height="1302" fetchpriority="high" alt="Coast's welcome screen: Fitness, on autopilot."></button>
