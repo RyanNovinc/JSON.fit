@@ -129,6 +129,19 @@ async function appProgram(profile: any, a: any) {
   await updateQuestionnaireField('programDuration', a.length);
   const stored = await loadQuestionnaireAnswers();
   if (!stored?.selectedEquipment?.length) await updateQuestionnaireField('selectedEquipment', DEFAULT_EQUIPMENT);
+  // Refinements opens: ExerciseVarietySection builds the user's session for each
+  // choice (useSessionEstimates: saved answers + answersSoFar + the screen's
+  // picks with that choice), so the page's example sessions can be compared.
+  const sexKey0 = presetSexKey(profile.sex);
+  const inputs = { priorityMuscleGroups: a.priority, auxiliaryMuscles: a.aux, movementLimitations: a.avoid, includeDirectCore: a.core, repStyle: a.rep, exerciseVariety: a.variety };
+  const soFar: any = { ...((await loadQuestionnaireAnswers()) || {}) };
+  delete soFar.lastUpdatedAt;
+  const samples: any = {};
+  for (const v of [a.variety, ...['fewer', 'balanced', 'variety'].filter((x) => x !== a.variety)]) {
+    const e = await variant(soFar, { ...inputs, exerciseVariety: v });
+    samples[v] = e?.sample ?? null;
+  }
+  void sexKey0;
   // Refinements
   const sexKey = presetSexKey(profile.sex);
   const state = { priorityMuscles: a.priority, auxiliaryMuscles: a.aux, includeDirectCore: a.core };
@@ -139,6 +152,7 @@ async function appProgram(profile: any, a: any) {
   if (profile.sex) await updateQuestionnaireField('gender', profile.sex);
   await updateQuestionnaireField('includeDirectCore', a.core);
   await updateQuestionnaireField('repStyle', a.rep);
+  await updateQuestionnaireField('exerciseVariety', a.variety);
   // Refinements -> the summary, "Here's your week" (afterRefinementsRoute, 26 Oct 2026).
   const summary = await summaryView();
   // Changes made there: the week sheet's Save ({ days, time, exactMinute, asked }).
@@ -160,7 +174,7 @@ async function appProgram(profile: any, a: any) {
     if (!d.ok) throw new Error(d.error);
     block.deload_weeks = d.weeks;
   }
-  return { program: parsed, notes, questionnaire: p.questionnaire, summary, after };
+  return { program: parsed, notes, questionnaire: p.questionnaire, summary, after, samples };
 }
 
 /**

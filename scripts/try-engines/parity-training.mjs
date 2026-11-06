@@ -41,7 +41,7 @@ const man = { sex: 'male', ageYears: 34, heightCm: 180, weightKg: 92, bodyFatPct
 const woman = { sex: 'female', ageYears: 41, heightCm: 165, weightKg: 74, bodyFatPct: 34, goalWeightKg: 64, goalBodyFatPct: 26, trainingState: 'new', activityLevel: 'sedentary', route: 'lean' };
 const lifter = { sex: 'male', ageYears: 22, heightCm: 183, weightKg: 66, bodyFatPct: 12, goalWeightKg: 80, goalBodyFatPct: 13, trainingState: 'advanced', activityLevel: 'moderate', route: 'bulk' };
 const back = { sex: 'female', ageYears: 29, heightCm: 170, weightKg: 58, bodyFatPct: 24, goalWeightKg: 63, goalBodyFatPct: 24, trainingState: 'returning', activityLevel: 'moderate', route: 'capped' };
-const base = { priority: [], aux: [], avoid: [], core: true, rep: 'classic' };
+const base = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', variety: 'balanced' };
 const SETS = [
   { name: 'man 4 days 8 weeks moderate', about: man, a: { ...base, days: 4, length: '8_weeks', volume: '12-16' } },
   { name: 'new woman 3 days 12 weeks conservative, glutes', about: woman, a: { ...base, days: 3, length: '12_weeks', volume: '8-12', priority: ['Glutes', 'Hamstrings'], rep: 'higher' } },
@@ -55,6 +55,15 @@ const SETS = [
   { name: 'Set my own 20 on 2 days, lowered to High on Days', about: lifter, a: { ...base, days: 2, length: '8_weeks', volume: 'custom', custom: 20, lowerTo: '16-20' } },
   { name: 'Set my own 5, summary week sheet: Mon Wed Fri Sat mornings, Rebuild for 4 days', about: back, a: { ...base, days: 3, length: '12_weeks', volume: 'custom', custom: 5, rep: 'higher', sheet: { days: [1, 3, 5, 6], time: 'morning', rebuild: true } } },
   { name: 'Moderate, summary week sheet: days change, 6:15 pm', about: woman, a: { ...base, days: 4, length: '8_weeks', volume: '12-16', sheet: { days: null, time: 'evening', exactMinute: 18 * 60 + 15 } } },
+  // Exercises (6 Nov 2026): Fewer exercises and More variety, several profiles each.
+  { name: 'Fewer: man 4 days 8 weeks moderate', about: man, a: { ...base, days: 4, length: '8_weeks', volume: '12-16', variety: 'fewer' } },
+  { name: 'More variety: man 4 days 8 weeks moderate', about: man, a: { ...base, days: 4, length: '8_weeks', volume: '12-16', variety: 'variety' } },
+  { name: 'Fewer: new woman 3 days 12 weeks, glutes, higher', about: woman, a: { ...base, days: 3, length: '12_weeks', volume: '8-12', priority: ['Glutes', 'Hamstrings'], rep: 'higher', variety: 'fewer' } },
+  { name: 'More variety: new woman 3 days 12 weeks, glutes', about: woman, a: { ...base, days: 3, length: '12_weeks', volume: '8-12', priority: ['Glutes', 'Hamstrings'], variety: 'variety' } },
+  { name: 'Fewer: advanced 6 days 1 year high, mix, avoid', about: lifter, a: { ...base, days: 6, length: '1_year', volume: '16-20', rep: 'mix', aux: ['neck', 'forearms'], avoid: ['Heavy deadlifts', 'Overhead pressing'], core: false, variety: 'fewer' } },
+  { name: 'More variety: advanced 5 days 6 months high', about: lifter, a: { ...base, days: 5, length: '6_months', volume: '16-20', variety: 'variety' } },
+  { name: 'Fewer: returning 2 days 4 weeks, heavier', about: back, a: { ...base, days: 2, length: '4_weeks', volume: '12-16', rep: 'heavier', priority: ['Side Delts', 'Lats', 'Chest'], variety: 'fewer' } },
+  { name: 'More variety: Set my own 14, 4 days, 3 priorities', about: man, a: { ...base, days: 4, length: '12_weeks', volume: 'custom', custom: 14, priority: ['Chest', 'Lats', 'Glutes'], variety: 'variety' } },
 ];
 
 function firstDiff(a, b, p = '') {
@@ -134,8 +143,13 @@ for (const T of SETS) {
     // savedThrough: the pick, and the number Volume saved (a lower tier on Days keeps it stored).
     ...K.volumeOverride(T.a.volume, custom), volumePreference: vol, totalTrainingDays: T.a.days, programDuration: T.a.length, selectedEquipment: st.defaultEquipment,
     refinementPresets: await E.activePresets(st.sexKey, state), priorityMuscleGroups: T.a.priority, auxiliaryMuscles: T.a.aux, movementLimitations: T.a.avoid,
-    ...(st.sex ? { gender: st.sex } : {}), includeDirectCore: T.a.core, repStyle: T.a.rep,
+    ...(st.sex ? { gender: st.sex } : {}), includeDirectCore: T.a.core, repStyle: T.a.rep, exerciseVariety: T.a.variety,
   };
+  // Refinements' example sessions (rRefine samples()): savedThrough(3), the screen's picks, each choice, the pick first.
+  const saved3 = { ...K.volumeOverride(T.a.volume, custom), volumePreference: vol, totalTrainingDays: T.a.days, programDuration: T.a.length, selectedEquipment: st.defaultEquipment };
+  const refValue = { priorityMuscleGroups: T.a.priority, auxiliaryMuscles: T.a.aux, movementLimitations: T.a.avoid, includeDirectCore: T.a.core, repStyle: T.a.rep, exerciseVariety: T.a.variety };
+  const webSamples = {};
+  for (const v of [T.a.variety, ...st.varieties.map((o) => o.value).filter((x) => x !== T.a.variety)]) webSamples[v] = (await E.sessionEstimate(T.about, saved3, saved3, { ...refValue, exerciseVariety: v }))?.sample ?? null;
   // The page's week: what Days opened on, unless a number or weekdays were tapped.
   const tapped = T.a.days !== st.start.selected || !!T.a.week;
   const week = tapped ? (T.a.week || await E.weekFor(T.a.days)) : st.start.days;
@@ -178,9 +192,14 @@ for (const T of SETS) {
     ['Days opens on', firstDiff(appStart, st.start)],
     ['summary', firstDiff(app.summary, webSum)],
     ['summary after the week sheet', firstDiff(app.after, webAfter)],
+    ['Exercises example sessions', firstDiff(app.samples, webSamples)],
+    ['plan records the Exercises choice', T.a.variety === 'balanced' ? ('exercise_variety' in web.program ? 'balanced plan has exercise_variety' : null) : (web.program.exercise_variety === T.a.variety ? null : `exercise_variety ${web.program.exercise_variety}`)],
+    ['the plan pass carries the Exercises choice', JSON.parse(web.passStorage?.['@workout_questionnaire_answers'] || '{}').exerciseVariety === T.a.variety ? null : 'not in @workout_questionnaire_answers'],
+    ['answers carry the Exercises choice', web.profile.questionnaire.exerciseVariety === T.a.variety ? null : `questionnaire.exerciseVariety ${web.profile.questionnaire.exerciseVariety}`],
   ];
   const cur = appQ6.steps.find((s) => s.key === (custom != null && !K.tierForSets(custom) ? 'custom' : T.a.volume));
-  say(`${T.name}: ${shape(app.program)} | Volume ${cur.name} ${cur.growth}% ${cur.hours} (${appQ6.steps.map((s) => s.hours).join(' / ')}) | Days ${appQ3.weekLine.join(' ')}, tiles ${Object.values(appQ3.tiles).map((e) => e.headline).join('/')} min${appQ3.down ? `, ${appQ3.down.label} ${appQ3.down.headline}` : ''} | summary ${app.summary.volume}, ${app.summary.week.weekValue}, ${app.summary.panel.headline} min${app.summary.panel.offered.length ? ' + ' + app.summary.panel.offered.map((f) => f.label).join(', ') : ''}${app.after ? ` -> sheet ${app.after.week.weekValue} ${app.after.week.timeValue}, ${app.after.days} days` : ''}`);
+  const sm = (v) => { const x = app.samples[v]; return x ? `${x.exercises.length}ex/${x.exercises.reduce((t, e) => t + e.sets, 0)}s/${x.minutes}m` : '-'; };
+  say(`${T.name}: ${shape(app.program)} | ${app.samples[T.a.variety]?.name} F ${sm('fewer')} B ${sm('balanced')} V ${sm('variety')} | Volume ${cur.name} ${cur.growth}% ${cur.hours} (${appQ6.steps.map((s) => s.hours).join(' / ')}) | Days ${appQ3.weekLine.join(' ')}, tiles ${Object.values(appQ3.tiles).map((e) => e.headline).join('/')} min${appQ3.down ? `, ${appQ3.down.label} ${appQ3.down.headline}` : ''} | summary ${app.summary.volume}, ${app.summary.week.weekValue}, ${app.summary.panel.headline} min${app.summary.panel.offered.length ? ' + ' + app.summary.panel.offered.map((f) => f.label).join(', ') : ''}${app.after ? ` -> sheet ${app.after.week.weekValue} ${app.after.week.timeValue}, ${app.after.days} days` : ''}`);
   for (const [what, d] of checks) if (d) { fail++; say(`  DIFF ${what}: ${d}`); }
 }
 say(fail ? `${fail} difference(s)` : 'training parity OK: the web program is the app\'s, exactly');

@@ -41,8 +41,8 @@ const stepIsOld = (n) => until(`document.getElementById('barLbl') && document.ge
 
 const PROFILES = [
   { name: 'default man, meals first from the finish line (no plan, training yes)', mealsFirst: true, sex: 'male', lift: 'consistent', route: 'lean', active: 'light', training: 'yes', meat: 'any', allergies: [], skip: [], meals: '3', snacks: 'ai_decide', dessert: 'ai_decide', picks: 0, days: '4', length: '8_weeks', volume: '12-16', rep: 'classic' },
-  { name: 'woman cut vegetarian home 2, training edited at the summary', editTraining: 'no', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '4-8', rep: 'higher', preset: 1, estimate: true, editSummary: true },
-  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', diet: 'custom', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', snacks: '2', dessert: '0', freezer: 60, picks: 3, days: '6', length: '1_year', volume: '16-20', rep: 'mix', imperial: true },
+  { name: 'woman cut vegetarian home 2, training edited at the summary', editTraining: 'no', sex: 'female', lift: 'new', gw: -6, route: 'lean', active: 'sedentary', diet: 'high_protein', meat: 'vegetarian', allergies: ['Nuts'], typedAllergy: 'Kiwi', skip: [], search: 'cinnamon', keepLower: 'salt', meals: '4', snacks: '1', dessert: 'once_per_week', cooker: 'none', freezer: 8, picks: 0, days: '2', length: '12_weeks', volume: '4-8', rep: 'higher', variety: 'fewer', preset: 1, estimate: true, editSummary: true },
+  { name: 'man gain 6 days bodyweight, picks', sex: 'male', lift: 'returning', gw: +8, route: 'bulk', active: 'moderate', diet: 'custom', meat: 'any', allergies: [], skip: ['mushrooms'], meals: '5', snacks: '2', dessert: '0', freezer: 60, picks: 3, days: '6', length: '1_year', volume: '16-20', rep: 'mix', variety: 'variety', imperial: true },
   { name: 'vegan, capped, basic', sex: 'female', lift: 'advanced', gw: +25, route: 'capped', active: 'heavy', meat: 'vegan', allergies: ['Soy'], skip: [], meals: '2', snacks: '0', sleepSkip: true, dessert: 'ai_decide', picks: 1, days: '3', length: '4_weeks', volume: '12-16', custom: 14, rep: 'heavier', preset: 3, weekSheet: true },
 ];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
@@ -81,14 +81,16 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
     if (!lock && r.lock) bad(`intro ${w}x${h}: scroll locked on a short viewport`);
     if (!r.btn) bad(`intro ${w}x${h}: button below the fold`);
     if (r.label !== 'Build my free plan' || !r.exit || r.back) bad(`intro ${w}x${h}: button/X/back wrong`);
-    if (!/FREE NO SIGN-UP NO ADS 42 SOURCES/i.test(r.trust)) bad(`intro ${w}x${h}: trust row ` + r.trust);
+    if (!/FREE NO SIGN-UP NO ADS BUILT ON 42 RESEARCH PAPERS/i.test(r.trust)) bad(`intro ${w}x${h}: trust row ` + r.trust);
     if (await ev(`/Runs on this page/.test(document.body.innerText)`)) bad('intro: old privacy line still showing');
   }
   // From a "Build my free plan" button (/try/#start): straight to question 1, "About N min" under it,
   // time left in the bar, the #start dropped from the address; Back goes to the intro.
+  // Since 30 Oct 2026 (4205efc) only phones skip the intro; this headless Chrome is a computer, so it opens on the intro.
   await send('Page.navigate', { url: BASE + '/try/?v=home#start' });
-  await until(`!!document.querySelector('.screen[data-screen="weight"] .big') && !document.querySelector('.screen.out-l,.screen.out-r')`);
-  {
+  await until(`(!!document.querySelector('.screen[data-screen="weight"] .big') || !!document.querySelector('.screen[data-screen="start"]')) && !document.querySelector('.screen.out-l,.screen.out-r')`);
+  if (await ev(`!!document.querySelector('.screen[data-screen="start"]')`)) console.log('#start on a computer: intro first (phones skip it)');
+  else {
     const r = await ev(`(function(){var e=document.querySelector('.screen[data-screen="weight"] .eta');return {eta:e?e.textContent:'',left:(document.querySelector('#segLbl .sl-t')||{}).textContent||'',hash:location.hash,intro:document.documentElement.classList.contains('ip-intro')}})()`);
     if (!/^About \d+ min$/.test(r.eta)) bad('#start: no "About N min" on question 1: ' + r.eta);
     if (!/^\d+ min left$/.test(r.left)) bad('#start: no time left in the bar: ' + r.left);
@@ -210,6 +212,20 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
         await go(); await scr('refine');
         if (P.preset) await click(`.presets .preset:nth-child(${P.preset}) .pmain`);
         await click(`.rep[data-rep="${P.rep}"]`); await sleep(300);
+        // Exercises: the example session lands for the default (Balanced), then for the pick, without the card changing height.
+        const vDone = `!!document.querySelector('#vpv .vex span') && !document.querySelector('#vpv .vlist.dim')`;
+        await until(vDone, 30000);
+        const vh0 = await ev(`document.getElementById('vpv').offsetHeight`);
+        if (P.variety) {
+          const before = await ev(`document.querySelector('#vpv .vsh em').textContent`);
+          await click(`.var[data-var="${P.variety}"]`); await until(vDone, 30000);
+          const vh1 = await ev(`document.getElementById('vpv').offsetHeight`);
+          if (vh0 !== vh1) bad(`refine: example session moved (${vh0} -> ${vh1}px)`);
+          if ((await ev(`document.querySelector('.var.on').getAttribute('data-var')`)) !== P.variety) bad('refine: Exercises pick not shown');
+          console.log(`  exercises: Balanced ${before} -> ${P.variety} ${await ev(`document.querySelector('#vpv .vsh span').textContent + ' ' + document.querySelector('#vpv .vsh em').textContent`)}`);
+        }
+        const cut = await ev(`[...document.querySelectorAll('#vpv .vex span, .var b, .var small, #vpv .vsh em')].filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.textContent).join(' / ')`);
+        if (cut) console.log('  exercises, cut short at this width: ' + cut);
         await click('#repWhy'); await until(`!!document.querySelector('.sheet.on [data-dec]')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
         await click('.pinfo'); await until(`!!document.querySelector('.sheet.on .ppick')`); await ev(`document.querySelector('.sheet [data-close]').click()`); await sleep(400);
         await until(`!!document.querySelector('#slpin .slr b') && document.querySelector('#slpin .slr b').textContent.indexOf('About')===0`, 20000); await overflow('refine');

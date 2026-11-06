@@ -2753,10 +2753,10 @@
     if (step >= 2) q.totalTrainingDays = T.days;
     if (step >= 3) { q.programDuration = T.length; q.selectedEquipment = T.start.defaultEquipment; }
     if (step >= 4) {
-      var r = T.refine || (T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} });
+      var r = T.refine || (T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', variety: 'balanced', active: [], open: {} });
       q.refinementPresets = r.active; q.priorityMuscleGroups = r.priority; q.auxiliaryMuscles = r.aux; q.movementLimitations = r.avoid;
       if (T.start.sex) q.gender = T.start.sex;
-      q.includeDirectCore = r.core; q.repStyle = r.rep;
+      q.includeDirectCore = r.core; q.repStyle = r.rep; q.exerciseVariety = r.variety || 'balanced';
     }
     return q;
   }
@@ -3386,8 +3386,9 @@
   function countLabel(n) { return n === 0 ? 'none picked' : n + ' picked'; }
   function rRefine(el, my) {
     withTrain(el, my, function (st) {
-      if (!T.refine) T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} };
+      if (!T.refine) T.refine = { priority: [], aux: [], avoid: [], core: true, rep: 'classic', variety: 'balanced', active: [], open: {} };
       var R = T.refine, saved = savedThrough(T.edit ? 4 : 3);
+      if (!R.variety) R.variety = 'balanced';
       // "Fewer priority muscles" on the summary opens this with More volume open.
       if (T.edit && T.editFocus) { R.open[T.editFocus] = true; T.editFocus = null; }
       el.insertAdjacentHTML('beforeend', '<p class="ov rise" style="--i:0">Optional</p><h1 class="qh rise" style="--i:1">Want to refine <em>further?</em></h1><div id="rbody"></div><div class="slpin" id="slpin"></div>');
@@ -3414,6 +3415,7 @@
             return '<button type="button" class="rep' + (on ? ' on' : '') + '" data-rep="' + o.value + '" role="radio" aria-checked="' + on + '"><span class="rtop"><b>' + esc(o.label) + '</b><em>' + esc(o.tag) + '</em><span class="rk">' + (on ? IC.check : '') + '</span></span>' +
               (on ? '<span class="rdet"><span><i class="acc">PROS</i>' + esc(o.pros) + '</span><span><i>CONS</i>' + esc(o.cons) + '</span></span>' : '') + '</button>';
           }).join('') + '<button type="button" class="rwhy" id="repWhy"><span>' + IC.infoO + '</span>Why</button></div>' +
+          varietyHtml() +
           group('priority', 'More volume', R.priority.length, chips(PRIORITY, R.priority, 'priority')) +
           group('looks', 'Extra work · for looks', looksN, chips(AUX_LOOKS, R.aux, 'aux')) +
           group('strength', 'Extra work · for strength and injury prevention', strN, chips(AUX_STRENGTH, R.aux, 'aux')) +
@@ -3429,6 +3431,7 @@
         $$('[data-ev]', body).forEach(function (b) { b.onclick = function () { presetSheet(st, b.getAttribute('data-ev')); }; });
         $$('[data-rep]', body).forEach(function (b) { b.onclick = function () { R.rep = b.getAttribute('data-rep'); changed(); }; });
         $('#repWhy', body).onclick = function () { repProof(st); };
+        $$('[data-var]', body).forEach(function (b) { b.onclick = function () { if (R.variety === b.getAttribute('data-var')) return; R.variety = b.getAttribute('data-var'); changed(); }; });
         $$('[data-open-g]', body).forEach(function (b) { b.onclick = function () { var k = b.getAttribute('data-open-g'); R.open[k] = !R.open[k]; draw(); }; });
         $$('.rchip', body).forEach(function (b) {
           b.onclick = function () {
@@ -3439,13 +3442,62 @@
         });
         $('#coreSw', body).onclick = function () { R.core = !R.core; changed(); };
       }
+      /*
+       * ExerciseVarietySection (components/ExerciseVarietyPicker.tsx): the
+       * question, the three cards with their bar glyphs, and the user's own
+       * session for the pick (block 1 of the real build for this screen's picks,
+       * estimateFromProgram's sample). All three are built, the pick first, so a
+       * tap is instant once they land; the last session stays up, dimmed, while
+       * a new one builds, and the list keeps room for 9 rows so it never jumps.
+       */
+      var vcache = {}, vlast = null, vrun = 0, vtimer = 0;
+      function vkey(v) { return keyOf([saved, Object.assign({}, value(), { exerciseVariety: v })]); }
+      function sampleHtml(sm, working) {
+        var sets = sm ? sm.exercises.reduce(function (t, e) { return t + e.sets; }, 0) : 0;
+        var rows = sm ? sm.exercises.map(function (e) {
+          return '<div class="vex" aria-label="' + esc(e.name + ', ' + e.sets + ' sets') + '"><span>' + esc(e.name) + '</span><i>' + new Array(e.sets + 1).join('<s></s>') + '</i></div>';
+        }).join('') : [0, 1, 2, 3, 4, 5].map(function (i) { return '<div class="vex"><b style="width:' + (55 + ((i * 17) % 30)) + '%"></b></div>'; }).join('');
+        return '<div class="vsh"><span>' + (sm ? esc(sm.name.toUpperCase()) : '&nbsp;') + '</span><em>' + (sm ? sm.exercises.length + ' exercises · ' + sets + ' sets · ' + sm.minutes + ' min' : '&nbsp;') + '</em></div>' +
+          '<div class="vlist' + (working || !sm ? ' dim' : '') + '">' + rows + '</div>';
+      }
+      function varietyHtml() {
+        var now = vcache[vkey(R.variety)];
+        return '<p class="vq">How do you like your sessions?</p><div class="vars" role="radiogroup">' + st.varieties.map(function (o) {
+          var on = R.variety === o.value;
+          return '<button type="button" class="var' + (on ? ' on' : '') + '" data-var="' + o.value + '" role="radio" aria-checked="' + on + '" aria-label="' + esc(o.label + ', ' + o.sub) + '"><span class="vt"><b>' + esc(o.label) + '</b><small>' + esc(o.sub) + '</small></span><span class="vg" aria-hidden="true">' +
+            o.bars.map(function (h) { return '<i style="height:' + h + 'px"></i>'; }).join('') + '</span></button>';
+        }).join('') + '</div><div class="vpv" id="vpv" aria-live="polite">' + sampleHtml(now || vlast, !now) + '</div>';
+      }
+      function samples() {
+        var id = ++vrun, pick = R.variety;
+        clearTimeout(vtimer);
+        vtimer = setTimeout(function () {
+          var order = [pick].concat(st.varieties.map(function (o) { return o.value; }).filter(function (v) { return v !== pick; }));
+          (function nextOne(i) {
+            if (i >= order.length || id !== vrun || my !== token) return;
+            var v = order[i], k = vkey(v);
+            if (vcache[k]) { if (v === R.variety) paintSample(); nextOne(i + 1); return; }
+            tcall('sessionEstimate', aboutForEngine(), saved, saved, Object.assign({}, value(), { exerciseVariety: v })).then(function (e) {
+              if (e && e.sample) vcache[k] = e.sample;
+              if (id === vrun && my === token && v === R.variety) paintSample();
+              nextOne(i + 1);
+            }, function () { nextOne(i + 1); });
+          })(0);
+        }, 250);
+      }
+      function paintSample() {
+        var box = $('#vpv', el), now = vcache[vkey(R.variety)];
+        if (now) vlast = now;
+        if (box) box.innerHTML = sampleHtml(now || vlast, !now);
+      }
       function changed() {
         tcall('activePresets', st.sexKey, { priorityMuscles: R.priority, auxiliaryMuscles: R.aux }).then(function (ids) { R.active = ids; if (my === token) draw(); });
-        draw(); panel();
+        draw(); panel(); samples();
       }
+      var value = function () { return { priorityMuscleGroups: R.priority.slice(), auxiliaryMuscles: R.aux.slice(), movementLimitations: R.avoid.slice(), includeDirectCore: R.core, repStyle: R.rep, exerciseVariety: R.variety || 'balanced' }; };
       var panel = sessionPanel($('#slpin', el), my, {
         kind: 'refine', compact: true, saved: saved, answers: function () { return saved; },
-        value: function () { return { priorityMuscleGroups: R.priority.slice(), auxiliaryMuscles: R.aux.slice(), movementLimitations: R.avoid.slice(), includeDirectCore: R.core, repStyle: R.rep }; },
+        value: value,
       });
       changed();
       // The summary ("Here's your week") for everyone since 26 Oct 2026 (afterRefinementsRoute).
@@ -4177,7 +4229,7 @@
             S.about = { sex: 'female', ageYears: 36, heightCm: 166, weightKg: 72, bodyFatPct: 32, bodyFatSource: 'reported', goalWeightKg: 64, goalBodyFatPct: 25, trainingState: 'new', activityLevel: 'light', route: 'lean' };
             S.touched = { goalWeightKg: true, goalBodyFatPct: true, heightCm: true, bodyFatPct: true };
             S.food = Object.assign(freshFood(), { dietType: 'high_protein', dietPattern: 'vegetarian', allergies: ['Nuts'], keepLower: ['salt'], mealsPerDay: 3, snackFrequency: '1', dessertFrequency: 'once_per_week', dessertDays: [6], slowCooker: 'none', blender: 'no', freezerTubs: 8, shopCadence: 'weekly', stockUp: false });
-            Object.assign(S.training, { days: 3, length: '8_weeks', volume: '8-12', refine: { priority: ['Glutes'], aux: [], avoid: [], core: true, rep: 'classic', active: [], open: {} } });
+            Object.assign(S.training, { days: 3, length: '8_weeks', volume: '8-12', refine: { priority: ['Glutes'], aux: [], avoid: [], core: true, rep: 'classic', variety: 'balanced', active: [], open: {} } });
           });
         }
       : function () {

@@ -73,6 +73,8 @@ const SETS = [
     food: base({ dietType: 'high_protein', dietPattern: 'vegetarian', allergies: ['Nuts', 'Kiwi'], skip: ['mushrooms', 'coriander'], keepLower: ['salt'], sleep: { bed: 1380, wake: 360, strictness: 'maximum', overrides: { lunch: '1:00 PM' } },
       mealsPerDay: 4, snackFrequency: '1', mealVariety: 'variety', snacks: { ticked: ['sn_banana', 'sn_greek_yog'], own: [{ name: 'Protein bar', kcal: 210, protein: 20, serve: '1 bar' }] },
       dessertFrequency: 'few_per_week', dessertDays: [1, 3, 5], slowCooker: 'none', blender: 'no', freezerTubs: 8 }) },
+  { name: 'man cut, 4-day plan first with Fewer exercises (Exercises, 6 Nov 2026)', about: man, train: { days: 4, length: '8_weeks', volume: '12-16', variety: 'fewer' }, food: base({}) },
+  { name: 'man cut, 4-day plan first with More variety', about: man, train: { days: 4, length: '8_weeks', volume: '12-16', variety: 'variety' }, food: base({}) },
   { name: '5-day plan first: gainer, low appetite, picks + use-up, chest freezer, cook2, stock up', about: gainer, train: { days: 5, length: '12_weeks', volume: '8-12' },
     food: base({ dietType: 'custom', customMacros: { protein: 30, carbs: 45, fat: 25 }, mealsPerDay: 5, snackFrequency: '2', lowAppetite: true, dessertFrequency: 'every_night', dessertDays: [0, 1, 2, 3, 4, 5, 6],
       slowCooker: '7l_plus', slowCookerCount: 2, blender: 'yes', freezerTubs: 60, shopCadence: 'cook2', stockUp: true, startDate: 'today',
@@ -86,7 +88,7 @@ const trainFirst = async (S) => {
   if (!S.train) return;
   const st = await WEB.trainingStart(S.about);
   const saved = { totalTrainingDays: S.train.days, programDuration: S.train.length, selectedEquipment: st.defaultEquipment, volumePreference: S.train.volume,
-    refinementPresets: [], priorityMuscleGroups: [], auxiliaryMuscles: [], movementLimitations: [], ...(st.sex ? { gender: st.sex } : {}), includeDirectCore: true, repStyle: 'classic' };
+    refinementPresets: [], priorityMuscleGroups: [], auxiliaryMuscles: [], movementLimitations: [], ...(st.sex ? { gender: st.sex } : {}), includeDirectCore: true, repStyle: 'classic', exerciseVariety: S.train.variety || 'balanced' };
   const w = await WEB.buildProgramFrom(S.about, saved, { daysTouched: false, timeTouched: false, hadWeek: false, varies: false, days: null, selected: S.train.days, time: null });
   S.food.plan = { program: w.program, totalTrainingDays: S.train.days };
 };

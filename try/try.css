@@ -1072,6 +1072,22 @@ svg.vcurve{display:block;width:100%;height:auto;font-family:var(--sans)}
 .rdet i{font-style:normal;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:#71717a;padding-top:2px}.rdet i.acc{color:var(--acc)}
 .rwhy{display:flex;align-items:center;gap:6px;justify-self:start;background:none;border:0;color:var(--acc);font:600 .86rem var(--sans);cursor:pointer;padding:4px 0}
 .rwhy svg{width:15px;height:15px;display:block}
+/* Exercises (ExerciseVarietyPicker.tsx): the question, three cards with bar glyphs, the example session */
+.vq{font-size:1.06rem;font-weight:700;color:#fff;margin:24px 0 12px}
+.vars{display:grid;gap:8px}
+.var{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1.5px solid #1f1f24;border-radius:14px;background:#121215;color:inherit;font:inherit;padding:13px 14px;cursor:pointer}
+.var.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 10%,#121215)}
+.vt{flex:1;min-width:0}.vt b{display:block;font-size:.98rem;color:#fff}.var.on .vt b{color:var(--acc)}
+.vt small{display:block;margin-top:4px;font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;color:#8b949b}
+.vg{flex:none;display:flex;align-items:flex-end;gap:4px;height:26px}.vg i{display:block;width:6px;border-radius:2px;background:#5d656b}.var.on .vg i{background:var(--acc)}
+.vpv{margin-top:14px;background:#0d0d10;border-radius:14px;padding:12px 14px 4px}
+.vsh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:2px;font-family:var(--mono);font-size:.64rem}
+.vsh span{letter-spacing:.13em;color:#5d656b;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vsh em{font-style:normal;letter-spacing:.03em;color:#8b949b;white-space:nowrap}
+.vlist{min-height:333px;transition:opacity .2s}.vlist.dim{opacity:.45}
+.vex{display:flex;align-items:center;gap:10px;height:37px;border-top:1px solid #1f2429}.vex:first-child{border-top:0}
+.vex span{flex:1;min-width:0;font-size:.86rem;font-weight:600;color:#f2f4f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vex i{flex:none;display:flex;gap:3px}.vex s{display:block;width:9px;height:9px;border-radius:3px;background:var(--acc);opacity:.85}
+.vex b{display:block;height:10px;border-radius:4px;background:#1f2429}
 .rgrp{display:flex;align-items:center;gap:10px;width:100%;margin-top:18px;padding:12px 0;border:0;border-top:1px solid #1f1f24;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
 .rgrp span{flex:1;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#a1a1aa;line-height:1.5}
 .rgrp small{font-size:.76rem;color:#71717a;white-space:nowrap}

@@ -47,6 +47,7 @@ import { rampsIn } from 'APP_DIR/src/utils/workoutGenerator/check';
 import { trainingDayCount } from 'APP_DIR/src/utils/blockProgress';
 import { REFINEMENT_PRESETS, applyPreset, removePreset, isPresetActive, presetSexKey } from 'APP_DIR/src/data/refinementPresets';
 import { REP_STYLE_OPTIONS, REP_STYLE_LEAD, normalizeRepStyle } from 'APP_DIR/src/data/repStyles';
+import { EXERCISE_VARIETY_OPTIONS, normalizeExerciseVariety } from 'APP_DIR/src/data/exerciseVariety';
 import { prepareDecisions, REP_STYLE_EVIDENCE, repStyleEvidenceContext } from 'APP_DIR/src/utils/evidenceContext';
 import { CONFIDENCE_LABEL } from 'APP_DIR/src/data/evidence';
 import { loadGoalsProfile } from 'APP_DIR/src/utils/goalsProfileStorage';
@@ -91,7 +92,7 @@ const auxTitle = (v: string) => AUX_TITLES[v] ?? v;
 /** The order the screens save their answers in (each one an updateQuestionnaireField): Volume, Days, How long, Refinements. */
 const SAVE_ORDER = [
   'volumePreference', 'customWeeklySets', 'totalTrainingDays', 'programDuration', 'selectedEquipment',
-  'refinementPresets', 'priorityMuscleGroups', 'auxiliaryMuscles', 'movementLimitations', 'gender', 'includeDirectCore', 'repStyle',
+  'refinementPresets', 'priorityMuscleGroups', 'auxiliaryMuscles', 'movementLimitations', 'gender', 'includeDirectCore', 'repStyle', 'exerciseVariety',
 ];
 
 let routeFor: (about: any) => Promise<any> = async () => { throw new Error('training: no route builder'); };
@@ -205,6 +206,8 @@ async function trainingStart(about: any) {
     repStyles: REP_STYLE_OPTIONS,
     repLead: REP_STYLE_LEAD,
     repEvidence,
+    // Exercises (6 Nov 2026): Fewer exercises / Balanced / More variety, under rep style.
+    varieties: EXERCISE_VARIETY_OPTIONS,
     confidenceLabel: CONFIDENCE_LABEL,
     defaultEquipment: DEFAULT_EQUIPMENT,
   };
@@ -271,7 +274,8 @@ async function sessionEstimate(about: any, saved: any, answers: any, override: a
   const est = estimate(buildEstimateProfile(base, answers, override));
   if (!est) return null;
   const week = weeklyMinutes(est);
-  return { days: est.days, average: est.average, headline: est.headline, rampWeeks: est.rampWeeks, week, hours: week == null ? null : hoursLabel(week) };
+  // sample: the Exercises picker's example session (estimateFromProgram's sample).
+  return { days: est.days, average: est.average, headline: est.headline, rampWeeks: est.rampWeeks, week, hours: week == null ? null : hoursLabel(week), sample: est.sample ?? null };
 }
 
 /**
@@ -499,5 +503,5 @@ export default {
   programViews,
   _setRoute(fn: any) { routeFor = fn; },
   trainingStart, weekFor, toggleDay, weekLabel, sessionPanel, sessionEstimate, volumeLines, summaryFixes, weekRow, daysStart,
-  presetToggle, activePresets, buildProgramFrom, normalizeRepStyle,
+  presetToggle, activePresets, buildProgramFrom, normalizeRepStyle, normalizeExerciseVariety,
 };
