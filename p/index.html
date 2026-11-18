@@ -1522,10 +1522,14 @@ async function init() {
 
     // Backend response shape: { shareId, data: { workoutData/dailyMeals/exportMetadata }, createdAt, expiresAt }
     const payload = response.data || response;
-    const inner = payload.workoutData || payload;
+    // The app shares a meal plan as { mealPlanData: plan } (NutritionHomeScreen
+    // createShare) and a workout as { workoutData: ... }. Until 18 Nov 2026 the
+    // meal wrapper wasn't opened, so detectType fell back to 'workout'.
+    const mealPlan = payload.mealPlanData || (payload.data && payload.data.mealPlanData);
+    const inner = mealPlan || payload.workoutData || payload;
 
     // Determine type
-    const type = payload.kind === 'jsonfit_plan' ? 'plan' : detectType(inner);
+    const type = payload.kind === 'jsonfit_plan' ? 'plan' : mealPlan ? 'meal' : detectType(inner);
 
     if (type === 'plan') {
       document.body.classList.add('type-plan');
