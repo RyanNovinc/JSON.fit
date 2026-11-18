@@ -21,7 +21,7 @@ mkdir -p "$OUT"
 VER=$(sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' "$APP/app.json" | head -1)
 REV=$(cd "$APP" && git rev-parse --short HEAD 2>/dev/null || echo '?')
 for f in entry meals-part training-part; do sed "s#APP_DIR#$APP#g" "$HERE/$f.ts" > "$OUT/$f.ts"; done
-COMMON="--bundle --log-level=warning \
+COMMON="--bundle --log-level=warning --loader:.webp=empty --loader:.png=empty --loader:.jpg=empty \
   --alias:react-native=$S/rn.js --alias:@react-native-async-storage/async-storage=$S/asyncstorage.js \
   --alias:expo-notifications=$S/empty.js --alias:expo-file-system=$S/fs \
   --alias:react=$S/react.js --alias:@react-navigation/native=$S/nav.js \

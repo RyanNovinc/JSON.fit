@@ -224,7 +224,10 @@ async function pickerMeals(answers: any) {
   const dietPattern = activeDietPattern(answers);
   const fav = await loadCuratedFavoritesV2();
   const noBlender = hidesBlenderMeals(answers, fav, batchSettings);
-  return offeredMeals(undefined, dietPattern, undefined, noBlender);
+  // offeredMeals(dietPattern, noBlender) since app 1.0.48 (18 Nov 2026); before:
+  // offeredMeals(batchLibrary, dietPattern, batchPlanner, noBlender). Its first
+  // parameter has no default only in the new form.
+  return (offeredMeals as any).length >= 1 ? (offeredMeals as any)(dietPattern, noBlender) : (offeredMeals as any)(undefined, dietPattern, undefined, noBlender);
 }
 
 /** N4bTrainingScreen.handleNext: 'yes' counts the plan's minutes (else the no-plan default), 'no' counts none. */

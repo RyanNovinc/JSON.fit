@@ -300,7 +300,7 @@ export async function appMealPath(lockProfile: any, about: any, taps: any) {
   if ((pk.useUp ?? []).length) await saveUseUp(pk.useUp);
   if (pk.saved) {
     const fav0 = await loadCuratedFavoritesV2();
-    const allMeals = offeredMeals(undefined, activeDietPattern(p), undefined, hidesBlenderMeals(p, fav0, freezer.settings));
+    const allMeals = (offeredMeals as any).length >= 1 ? (offeredMeals as any)(activeDietPattern(p), hidesBlenderMeals(p, fav0, freezer.settings)) : (offeredMeals as any)(undefined, activeDietPattern(p), undefined, hidesBlenderMeals(p, fav0, freezer.settings));
     const myAllergies: string[] = Array.isArray(p.allergies) ? p.allergies : [];
     const versionChoices = pk.versionChoices ?? {};
     const allergenOk = pk.allergenOk ?? {};
