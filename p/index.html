@@ -1182,7 +1182,7 @@ function renderMealPlan(data) {
   if (avgFat) row2.push({ num: Math.round(avgFat) + 'g', lbl: 'fat' });
 
   const renderStatRow = (row) => row.length ? `
-    <div class="preview-stats">
+    <div class="preview-stats" style="grid-template-columns: repeat(${row.length}, 1fr);">
       ${row.map(s => `
         <div class="stat green">
           <div class="stat-num">${escapeHtml(String(s.num))}</div>
